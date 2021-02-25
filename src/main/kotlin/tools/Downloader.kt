@@ -5,6 +5,7 @@ import com.google.common.collect.EvictingQueue
 import kotlinx.coroutines.*
 import java.io.*
 import java.net.http.HttpResponse
+import java.util.*
 import kotlin.system.measureNanoTime
 
 object Downloader {
@@ -21,11 +22,11 @@ object Downloader {
                     var len: Int
                     var totalLen = 0L
 
-                    val chunk = ArrayList<Triple<Long, Long, Long>>(1000)
+                    val chunk = Collections.synchronizedCollection(ArrayList<Triple<Long, Long, Long>>(1000))
 
                     while (isActive) {
                         val nano = measureNanoTime {
-                            len = input.readNBytes(read, 0, chunkSize)
+                            len = input.read(read, 0, chunkSize)
                             totalLen += len
 
                             if (len > 0) {
@@ -35,16 +36,20 @@ object Downloader {
 
                         if (len <= 0) break
 
-                        chunk.add(Triple(nano, len.toLong(), System.nanoTime()))
-
                         val current = System.nanoTime()
-                        chunk.removeIf { current - it.third > 1000 * 1000 * 1000 }
-
-                        val timeAvg = chunk.map { it.first }.sum()
-                        val lenAvg = chunk.map { it.second }.sum()
+                        val lenF = len
+                        val totalLenF = totalLen
 
                         async {
-                            progressCallback(totalLen + offset, size, (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong())
+                            chunk.add(Triple(nano, lenF.toLong(), current))
+                            chunk.removeIf { current - it.third > 1000 * 1000 * 1000 }
+
+                            val chunkSnapshot = ArrayList(chunk)
+
+                            val timeAvg = chunkSnapshot.map { it.first }.sum()
+                            val lenAvg = chunkSnapshot.map { it.second }.sum()
+
+                            progressCallback(totalLenF + offset, size, (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong())
                         }
                     }
                 }
