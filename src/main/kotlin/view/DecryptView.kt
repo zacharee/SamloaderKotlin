@@ -1,28 +1,19 @@
 package view
 
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import model.DecryptModel
 import tools.Crypt
+import java.awt.FileDialog
+import java.awt.Frame
 import java.io.File
-import javax.swing.JFileChooser
-import javax.swing.JFrame
-import kotlin.math.roundToInt
 
 @Composable
 fun DecryptView(model: DecryptModel) {
@@ -48,11 +39,12 @@ fun DecryptView(model: DecryptModel) {
             Spacer(Modifier.weight(1f))
             Button(
                 onClick = {
-                    val chooser = JFileChooser()
-                    val res = chooser.showOpenDialog(JFrame())
+                    val chooser = FileDialog(Frame())
+                    chooser.mode = FileDialog.LOAD
+                    chooser.isVisible = true
 
-                    if (res == JFileChooser.APPROVE_OPTION) {
-                        val input = chooser.selectedFile
+                    if (chooser.file != null) {
+                        val input = File(chooser.file)
                         if (!input.name.endsWith(".enc2") && !input.name.endsWith(".enc4")) {
                             model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
                         } else {

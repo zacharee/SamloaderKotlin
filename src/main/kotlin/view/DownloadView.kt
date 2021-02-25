@@ -13,9 +13,6 @@ import util.MD5
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
-import java.nio.file.Paths
-import javax.swing.JFileChooser
-import javax.swing.JFrame
 
 val client = FusClient()
 val main = Main()
@@ -48,12 +45,8 @@ fun DownloadView(model: DownloadModel) {
                             val fullFileName = fileName.replace(".zip",
                                 "_${model.fw.replace("/", "_")}_${model.region}.zip")
 
-//                            val chooser = JFileChooser()
-//                            chooser.selectedFile = File(Paths.get("").toAbsolutePath().toString(), fullFileName)
-//                            val res = chooser.showSaveDialog(JFrame())
-
                             val chooser = FileDialog(Frame())
-                            chooser.file = File(Paths.get("").toAbsolutePath().toString(), fullFileName).absolutePath
+                            chooser.file = fullFileName
                             chooser.mode = FileDialog.SAVE
                             chooser.isVisible = true
 
