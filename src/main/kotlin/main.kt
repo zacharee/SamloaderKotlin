@@ -199,7 +199,8 @@ fun main() = Window {
                         onValueChange = { model.value = it },
                         label = { Text("Model") },
                         modifier = Modifier.weight(1f),
-                        readOnly = !canChangeOption
+                        readOnly = !canChangeOption,
+                        enabled = canChangeOption
                     )
 
                     Spacer(Modifier.width(8.dp))
@@ -209,7 +210,8 @@ fun main() = Window {
                         onValueChange = { region.value = it },
                         label = { Text("Region") },
                         modifier = Modifier.weight(1f),
-                        readOnly = !canChangeOption
+                        readOnly = !canChangeOption,
+                        enabled = canChangeOption
                     )
                 }
 
@@ -223,7 +225,8 @@ fun main() = Window {
                         onValueChange = { fw.value = it },
                         label = { Text("Firmware") },
                         modifier = Modifier.fillMaxWidth(),
-                        readOnly = !manual.value || !canChangeOption
+                        readOnly = !manual.value || !canChangeOption,
+                        enabled = manual.value && canChangeOption
                     )
                 }
 
