@@ -37,74 +37,77 @@ fun DownloadView(model: DownloadModel) {
             Button(
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
-                        model.statusText = "Downloading"
-                        val (path, fileName, size, crc32) = main.getBinaryFile(client, model.fw, model.model, model.region)
-                        val request = Request.binaryInit(fileName, client.nonce)
-                        val resp = client.makeReq("NF_DownloadBinaryInitForMass.do", request)
+                        try {
+                            model.statusText = "Downloading"
+                            val (path, fileName, size, crc32) = main.getBinaryFile(client, model.fw, model.model, model.region)
+                            val request = Request.binaryInit(fileName, client.nonce)
+                            val resp = client.makeReq("NF_DownloadBinaryInitForMass.do", request)
 
-                        val fullFileName = fileName.replace(".zip",
-                            "_${model.fw.replace("/", "_")}_${model.region}.zip")
+                            val fullFileName = fileName.replace(".zip",
+                                "_${model.fw.replace("/", "_")}_${model.region}.zip")
 
-                        val chooser = JFileChooser()
-                        chooser.selectedFile = File(Paths.get("").toAbsolutePath().toString(), fullFileName)
-                        val res = chooser.showSaveDialog(JFrame())
+                            val chooser = JFileChooser()
+                            chooser.selectedFile = File(Paths.get("").toAbsolutePath().toString(), fullFileName)
+                            val res = chooser.showSaveDialog(JFrame())
 
-                        if (res == JFileChooser.APPROVE_OPTION) {
-                            val output = chooser.selectedFile
-                            val offset = if (output.exists()) output.length() else 0
+                            if (res == JFileChooser.APPROVE_OPTION) {
+                                val output = chooser.selectedFile
+                                val offset = if (output.exists()) output.length() else 0
 
-                            val response = client.downloadFile(path + fileName, offset)
-                            val md5 = if (response.headers().firstValue("Content-MD5").isPresent) response.headers().firstValue("Content-MD5").get() else null
+                                val response = client.downloadFile(path + fileName, offset)
+                                val md5 = if (response.headers().firstValue("Content-MD5").isPresent) response.headers().firstValue("Content-MD5").get() else null
 
-                            Downloader.download(response, size, output) { current, max, bps ->
-                                model.progress = current to max
-                                model.speed = bps
-                            }
-
-                            model.speed = 0L
-
-                            if (crc32 != null) {
-                                model.statusText = "Checking CRC"
-                                val result = Crypt.checkCrc32(output, crc32) { current, max, bps ->
+                                Downloader.download(response, size, output) { current, max, bps ->
                                     model.progress = current to max
                                     model.speed = bps
                                 }
 
-                                if (!result) {
-                                    model.endJob("CRC check failed. Please download again.")
-                                    output.delete()
-                                    return@launch
+                                model.speed = 0L
+
+                                if (crc32 != null) {
+                                    model.statusText = "Checking CRC"
+                                    val result = Crypt.checkCrc32(output, crc32) { current, max, bps ->
+                                        model.progress = current to max
+                                        model.speed = bps
+                                    }
+
+                                    if (!result) {
+                                        model.endJob("CRC check failed. Please download again.")
+                                        output.delete()
+                                        return@launch
+                                    }
                                 }
-                            }
 
-                            if (md5 != null) {
-                                model.statusText = "Checking MD5"
-                                model.progress = 1L to 2L
+                                if (md5 != null) {
+                                    model.statusText = "Checking MD5"
+                                    model.progress = 1L to 2L
 
-                                val result = withContext(Dispatchers.IO) {
-                                    MD5.checkMD5(md5, output)
+                                    val result = withContext(Dispatchers.IO) {
+                                        MD5.checkMD5(md5, output)
+                                    }
+
+                                    if (!result) {
+                                        model.endJob("MD5 check failed. Please download again.")
+                                        output.delete()
+                                        return@launch
+                                    }
                                 }
 
-                                if (!result) {
-                                    model.endJob("MD5 check failed. Please download again.")
-                                    output.delete()
-                                    return@launch
+                                model.statusText = "Decrypting Firmware"
+                                val decFile = File(output.parentFile, fullFileName.replace(".enc4", "").replace(".enc2", ""))
+                                val key = if (fullFileName.endsWith(".enc2")) Crypt.getV2Key(model.fw, model.model, model.region) else
+                                    Crypt.getV4Key(model.fw, model.model, model.region)
+
+                                Crypt.decryptProgress(output, decFile.outputStream(), key, output.length()) { current, max, bps ->
+                                    model.progress = current to max
+                                    model.speed = bps
                                 }
+                                model.endJob("Done")
+                            } else {
+                                model.endJob("")
                             }
-
-                            model.statusText = "Decrypting Firmware"
-                            val decFile = File(output.parentFile, fullFileName.replace(".enc4", "").replace(".enc2", ""))
-                            val key = if (fullFileName.endsWith(".enc2")) Crypt.getV2Key(model.fw, model.model, model.region) else
-                                Crypt.getV4Key(model.fw, model.model, model.region)
-
-                            Crypt.decryptProgress(output, decFile.outputStream(), key, output.length()) { current, max, bps ->
-                                model.progress = current to max
-                                model.speed = bps
-                            }
-
-                            model.endJob("Done")
-                        } else {
-                            model.endJob("")
+                        } catch (e: Exception) {
+                            model.endJob("Error: ${e.message}")
                         }
                     }
                 },
@@ -117,7 +120,16 @@ fun DownloadView(model: DownloadModel) {
 
             Button(
                 onClick = {
-                    model.fw = VersionFetch.getLatestVer(model.model, model.region)
+                    model.job = model.scope.launch {
+                        model.fw = try {
+                            VersionFetch.getLatestVer(model.model, model.region).also {
+                                model.endJob("")
+                            }
+                        } catch (e: Exception) {
+                            model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${e.message}")
+                            ""
+                        }
+                    }
                 },
                 enabled = canCheckVersion
             ) {
