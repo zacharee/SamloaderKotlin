@@ -26,13 +26,17 @@ object Tester {
         val response = client.downloadFile(path + fileName, offset)
         val md5 = if (response.headers.containsKey("Content-MD5")) response.headers["Content-MD5"].first() else null
 
-        Downloader.download(response, size, output) { current, max ->
-            println("$current, $max, ${current.toFloat() / max * 100}%")
+        runBlocking {
+            Downloader.download(response, size, output) { current, max, bps ->
+                println("$current, $max, ${current.toFloat() / max * 100}%")
+            }
         }
 
-        val crcResult = runBlocking {
-            Crypt.checkCrc32(output, crc32) { current, max ->
-                println("${current.toFloat() / max * 100f}%")
+        if (crc32 != null) {
+            val crcResult = runBlocking {
+                Crypt.checkCrc32(output, crc32) { current, max, bps ->
+                    println("${current.toFloat() / max * 100f}%")
+                }
             }
         }
 

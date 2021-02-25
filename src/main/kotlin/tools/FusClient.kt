@@ -55,7 +55,7 @@ class FusClient(
             .header("User-Agent", "Kies2.0_FUS")
             .apply {
                 if (start > 0) {
-                    header("Range", "bytes=$start")
+                    header("Range", "bytes=$start-")
                 }
             }
             .responseString()

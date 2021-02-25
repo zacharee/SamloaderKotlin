@@ -8,7 +8,7 @@ class Main {
         val path: String,
         val fileName: String,
         val size: Long,
-        val crc32: Long
+        val crc32: Long?
     )
 
     fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): BinaryFileInfo {
@@ -49,7 +49,7 @@ class Main {
             .getChild("Put")
             .getChild("BINARY_CRC")
             .getChild("Data")
-            .text.toLong()
+            .text?.toLong()
 
         return BinaryFileInfo(path, fileName, size, crc32)
     }
