@@ -39,6 +39,8 @@ fun main() = Window {
         val canDownload = model.value.isNotBlank() && region.value.isNotBlank() && fw.value.isNotBlank()
                 && downloadJob.value == null
 
+        val canChangeManual = downloadJob.value == null
+
         Surface {
             Column(
                 modifier = Modifier.fillMaxSize()
@@ -175,7 +177,8 @@ fun main() = Window {
                             onCheckedChange = {
                                 manual.value = it
                             },
-                            modifier = Modifier.align(Alignment.CenterVertically)
+                            modifier = Modifier.align(Alignment.CenterVertically),
+                            enabled = canChangeManual
                         )
                     }
                 }
