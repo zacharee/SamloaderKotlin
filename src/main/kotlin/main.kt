@@ -39,7 +39,7 @@ fun main() = Window {
         val canDownload = model.value.isNotBlank() && region.value.isNotBlank() && fw.value.isNotBlank()
                 && downloadJob.value == null
 
-        val canChangeManual = downloadJob.value == null
+        val canChangeOption = downloadJob.value == null
 
         Surface {
             Column(
@@ -178,7 +178,7 @@ fun main() = Window {
                                 manual.value = it
                             },
                             modifier = Modifier.align(Alignment.CenterVertically),
-                            enabled = canChangeManual
+                            enabled = canChangeOption
                         )
                     }
                 }
@@ -192,7 +192,8 @@ fun main() = Window {
                         value = model.value,
                         onValueChange = { model.value = it },
                         label = { Text("Model") },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        readOnly = !canChangeOption
                     )
 
                     Spacer(Modifier.width(8.dp))
@@ -201,7 +202,8 @@ fun main() = Window {
                         value = region.value,
                         onValueChange = { region.value = it },
                         label = { Text("Region") },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        readOnly = !canChangeOption
                     )
                 }
 
@@ -215,7 +217,7 @@ fun main() = Window {
                         onValueChange = { fw.value = it },
                         label = { Text("Firmware") },
                         modifier = Modifier.fillMaxWidth(),
-                        readOnly = !manual.value
+                        readOnly = !manual.value || !canChangeOption
                     )
                 }
 
