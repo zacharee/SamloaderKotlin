@@ -253,19 +253,19 @@ fun main() = Window {
                             modifier = Modifier.align(Alignment.End)
                         ) {
                             Text(
-                                text = "${(progress.value.first.toFloat() / progress.value.second * 10000).roundToInt() / 100.0}%",
+                                text = "${(progress.value.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0} / ${(progress.value.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0} MB",
                             )
 
-                            Spacer(Modifier.width(8.dp))
+                            Spacer(Modifier.width(16.dp))
 
                             Text(
                                 text = "${speed.value / 1024} KB/s",
                             )
 
-                            Spacer(Modifier.width(8.dp))
+                            Spacer(Modifier.weight(1f))
 
                             Text(
-                                text = "${(progress.value.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0} / ${(progress.value.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0} MB",
+                                text = "${(progress.value.first.toFloat() / progress.value.second * 10000).roundToInt() / 100.0}%",
                             )
                         }
 
