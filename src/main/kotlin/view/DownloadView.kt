@@ -1,10 +1,12 @@
 package view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.*
 import model.DownloadModel
@@ -177,20 +179,22 @@ fun DownloadView(model: DownloadModel) {
         ) {
             TextField(
                 value = model.model,
-                onValueChange = { model.model = it },
+                onValueChange = { model.model = it.toUpperCase() },
                 label = { Text("Model") },
                 modifier = Modifier.weight(1f),
                 readOnly = !canChangeOption,
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
             )
 
             Spacer(Modifier.width(8.dp))
 
             TextField(
                 value = model.region,
-                onValueChange = { model.region = it },
+                onValueChange = { model.region = it.toUpperCase() },
                 label = { Text("Region") },
                 modifier = Modifier.weight(1f),
                 readOnly = !canChangeOption,
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
             )
         }
 
@@ -201,10 +205,11 @@ fun DownloadView(model: DownloadModel) {
         ) {
             TextField(
                 value = model.fw,
-                onValueChange = { model.fw = it },
+                onValueChange = { model.fw = it.toUpperCase() },
                 label = { Text("Firmware") },
                 modifier = Modifier.fillMaxWidth(),
                 readOnly = !model.manual || !canChangeOption,
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
             )
         }
 

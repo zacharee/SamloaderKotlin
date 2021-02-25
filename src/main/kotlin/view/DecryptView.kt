@@ -1,11 +1,13 @@
 package view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -93,20 +95,22 @@ fun DecryptView(model: DecryptModel) {
         ) {
             TextField(
                 value = model.model,
-                onValueChange = { model.model = it },
+                onValueChange = { model.model = it.toUpperCase() },
                 label = { Text("Model") },
                 modifier = Modifier.weight(1f),
-                readOnly = !canChangeOption
+                readOnly = !canChangeOption,
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
             )
 
             Spacer(Modifier.width(8.dp))
 
             TextField(
                 value = model.region,
-                onValueChange = { model.region = it },
+                onValueChange = { model.region = it.toUpperCase() },
                 label = { Text("Region") },
                 modifier = Modifier.weight(1f),
-                readOnly = !canChangeOption
+                readOnly = !canChangeOption,
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
             )
         }
 
@@ -117,10 +121,11 @@ fun DecryptView(model: DecryptModel) {
         ) {
             TextField(
                 value = model.fw,
-                onValueChange = { model.fw = it },
+                onValueChange = { model.fw = it.toUpperCase() },
                 label = { Text("Firmware") },
                 modifier = Modifier.weight(1f),
-                readOnly = !canChangeOption
+                readOnly = !canChangeOption,
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
             )
         }
 
