@@ -4,15 +4,16 @@ import com.github.kittinunf.fuel.core.Response
 import com.google.common.collect.EvictingQueue
 import kotlinx.coroutines.*
 import java.io.*
+import java.net.http.HttpResponse
 import kotlin.system.measureNanoTime
 
 object Downloader {
-    suspend fun download(response: Response, size: Long, output: File, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
+    suspend fun download(response: HttpResponse<InputStream>, size: Long, output: File, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
         coroutineScope {
             withContext(Dispatchers.IO) {
                 val offset = if (output.exists()) output.length() else 0
                 val chunkSize = 0x300000
-                val input = BufferedInputStream(response.body().toStream())
+                val input = BufferedInputStream(response.body())
 
                 val read = ByteArray(chunkSize)
 
@@ -26,7 +27,10 @@ object Downloader {
                         val nano = measureNanoTime {
                             len = input.readNBytes(read, 0, chunkSize)
                             totalLen += len
-                            writer.write(read, 0, len)
+
+                            if (len > 0) {
+                                writer.write(read, 0, len)
+                            }
                         }
 
                         if (len <= 0) break

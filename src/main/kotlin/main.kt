@@ -69,7 +69,7 @@ fun main() = Window {
                                 val offset = if (output.exists()) output.length() else 0
 
                                 val response = client.downloadFile(path + fileName, offset)
-                                val md5 = if (response.headers.containsKey("Content-MD5")) response.headers["Content-MD5"].first() else null
+                                val md5 = if (response.headers().firstValue("Content-MD5").isPresent) response.headers().firstValue("Content-MD5").get() else null
 
                                 Downloader.download(response, size, output) { current, max, bps ->
                                     progress.value = current to max

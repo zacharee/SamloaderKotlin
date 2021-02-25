@@ -4,7 +4,11 @@ import com.github.kittinunf.fuel.core.Headers
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.httpPost
+import java.io.InputStream
+import java.net.URI
 import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 
 class FusClient(
     var auth: String = "",
@@ -46,11 +50,12 @@ class FusClient(
         return response.body().asString(response.headers[Headers.CONTENT_TYPE].lastOrNull())
     }
 
-    fun downloadFile(fileName: String, start: Long = 0): Response {
+    fun downloadFile(fileName: String, start: Long = 0): HttpResponse<InputStream> {
         val authV = "FUS nonce=\"${encNonce}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
 
-        val (request, response, result) = "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do?file=${fileName}"
-            .httpGet()
+        val client = HttpClient.newHttpClient()
+        val request = HttpRequest.newBuilder(URI("http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do?file=${fileName}"))
+            .GET()
             .header("Authorization", authV)
             .header("User-Agent", "Kies2.0_FUS")
             .apply {
@@ -58,7 +63,9 @@ class FusClient(
                     header("Range", "bytes=$start-")
                 }
             }
-            .responseString()
+            .build()
+
+        val response = client.send(request, HttpResponse.BodyHandlers.ofInputStream())
 
         return response
     }

@@ -71,8 +71,11 @@ object Crypt {
                         val nano = measureNanoTime {
                             len = input.read(buffer)
                             count += len
-                            val decBlock = cipher.doFinal(buffer, 0, len)
-                            writer.write(decBlock, 0, decBlock.size)
+
+                            if (len > 0) {
+                                val decBlock = cipher.doFinal(buffer, 0, len)
+                                writer.write(decBlock, 0, decBlock.size)
+                            }
                         }
 
                         if (len <= 0) break
@@ -114,7 +117,10 @@ object Crypt {
                             val nano = measureNanoTime {
                                 len = d.read(buffer, 0, 0x10000)
                                 count += len
-                                crc.update(buffer, 0, len)
+
+                                if (len > 0) {
+                                    crc.update(buffer, 0, len)
+                                }
                             }
 
                             if (len <= 0) break
