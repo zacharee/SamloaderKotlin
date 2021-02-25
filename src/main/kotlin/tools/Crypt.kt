@@ -55,11 +55,11 @@ object Crypt {
                 val cipher = Cipher.getInstance("AES/ECB/NoPadding")
                 cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(key, "AES"))
 
-                val input = RandomAccessFile(inf, "r")
+                val input = inf.inputStream()
 
                 assert(length % 16 == 0L)
 
-                val buffer = ByteArray(4096)
+                val buffer = ByteArray(0x300000)
 
                 outf.use { writer ->
                     var len: Int
@@ -69,7 +69,7 @@ object Crypt {
 
                     while (this.isActive) {
                         val nano = measureNanoTime {
-                            len = input.read(buffer)
+                            len = input.read(buffer, 0, 0x300000)
                             count += len
 
                             if (len > 0) {
@@ -104,37 +104,35 @@ object Crypt {
 
         coroutineScope {
             withContext(Dispatchers.IO) {
-                enc.inputStream().use { input ->
-                    val buffer = ByteArray(0x10000)
+                enc.inputStream().use { d ->
+                    val buffer = ByteArray(0x300000)
 
-                    input.use { d ->
-                        var len: Int
-                        var count = 0L
+                    var len: Int
+                    var count = 0L
 
-                        val chunk = ArrayList<Triple<Long, Long, Long>>(1000)
+                    val chunk = ArrayList<Triple<Long, Long, Long>>(1000)
 
-                        while (isActive) {
-                            val nano = measureNanoTime {
-                                len = d.read(buffer, 0, 0x10000)
-                                count += len
+                    while (isActive) {
+                        val nano = measureNanoTime {
+                            len = d.read(buffer, 0, 0x300000)
+                            count += len
 
-                                if (len > 0) {
-                                    crc.update(buffer, 0, len)
-                                }
+                            if (len > 0) {
+                                crc.update(buffer, 0, len)
                             }
+                        }
 
-                            if (len <= 0) break
+                        if (len <= 0) break
 
-                            chunk.add(Triple(nano, len.toLong(), System.nanoTime()))
-                            val current = System.nanoTime()
-                            chunk.removeIf { current - it.third > 1000 * 1000 * 1000 }
+                        chunk.add(Triple(nano, len.toLong(), System.nanoTime()))
+                        val current = System.nanoTime()
+                        chunk.removeIf { current - it.third > 1000 * 1000 * 1000 }
 
-                            val timeAvg = chunk.map { it.first }.sum()
-                            val lenAvg = chunk.map { it.second }.sum()
+                        val timeAvg = chunk.map { it.first }.sum()
+                        val lenAvg = chunk.map { it.second }.sum()
 
-                            async {
-                                progressCallback(count, enc.length(), (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong())
-                            }
+                        async {
+                            progressCallback(count, enc.length(), (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong())
                         }
                     }
                 }

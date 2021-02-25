@@ -85,6 +85,9 @@ fun main() = Window {
                                         if (!result) {
                                             statusText.value = "CRC check failed. Please download again."
                                             output.delete()
+                                            progress.value = 0L to 0L
+                                            speed.value = 0
+                                            downloadJob.value = null
                                             return@launch
                                         }
                                     }
@@ -100,6 +103,9 @@ fun main() = Window {
                                         if (!result) {
                                             statusText.value = "MD5 check failed. Please download again."
                                             output.delete()
+                                            progress.value = 0L to 0L
+                                            speed.value = 0
+                                            downloadJob.value = null
                                             return@launch
                                         }
                                     }

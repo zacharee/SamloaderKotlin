@@ -18,6 +18,10 @@ object Downloader {
 
                 val read = ByteArray(chunkSize)
 
+                if (offset >= size) {
+                    return@withContext
+                }
+
                 FileOutputStream(output, true).use { writer ->
                     var len: Int
                     var totalLen = 0L
