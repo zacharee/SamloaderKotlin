@@ -24,8 +24,6 @@ dependencies {
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
     implementation("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
     implementation("com.google.guava:guava:30.1-jre")
-    implementation("com.arkivanov.decompose:decompose:0.1.9")
-    implementation("com.arkivanov.decompose:extensions-compose-jetbrains:0.1.9")
 }
 
 tasks.withType<KotlinCompile> {
