@@ -26,8 +26,20 @@ dependencies {
     implementation("com.google.guava:guava:30.1-jre")
 }
 
+sourceSets {
+    main {
+        java {
+
+        }
+    }
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
+}
+
+tasks.withType<org.gradle.jvm.tasks.Jar> {
+    exclude("META-INF/*.RSA", "META-INF/*.DSA", "META-INF/*.SF")
 }
 
 compose.desktop {
