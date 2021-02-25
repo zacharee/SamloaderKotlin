@@ -29,7 +29,6 @@ fun main() = Window {
         Surface {
             Column(
                 modifier = Modifier.fillMaxSize()
-                    .padding(8.dp)
             ) {
                 TabRow(
                     modifier = Modifier.fillMaxWidth()
@@ -61,6 +60,7 @@ fun main() = Window {
 
                 Column(
                     modifier = Modifier.fillMaxSize()
+                        .padding(8.dp)
                 ) {
                     when (page) {
                         Page.DOWNLOADER -> DownloadView(downloadModel)
