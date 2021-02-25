@@ -10,6 +10,8 @@ import kotlinx.coroutines.*
 import model.DownloadModel
 import tools.*
 import util.MD5
+import java.awt.FileDialog
+import java.awt.Frame
 import java.io.File
 import java.nio.file.Paths
 import javax.swing.JFileChooser
@@ -46,12 +48,17 @@ fun DownloadView(model: DownloadModel) {
                             val fullFileName = fileName.replace(".zip",
                                 "_${model.fw.replace("/", "_")}_${model.region}.zip")
 
-                            val chooser = JFileChooser()
-                            chooser.selectedFile = File(Paths.get("").toAbsolutePath().toString(), fullFileName)
-                            val res = chooser.showSaveDialog(JFrame())
+//                            val chooser = JFileChooser()
+//                            chooser.selectedFile = File(Paths.get("").toAbsolutePath().toString(), fullFileName)
+//                            val res = chooser.showSaveDialog(JFrame())
 
-                            if (res == JFileChooser.APPROVE_OPTION) {
-                                val output = chooser.selectedFile
+                            val chooser = FileDialog(Frame())
+                            chooser.file = File(Paths.get("").toAbsolutePath().toString(), fullFileName).absolutePath
+                            chooser.mode = FileDialog.SAVE
+                            chooser.isVisible = true
+
+                            if (chooser.file != null) {
+                                val output = File(chooser.file)
                                 val offset = if (output.exists()) output.length() else 0
 
                                 val response = client.downloadFile(path + fileName, offset)

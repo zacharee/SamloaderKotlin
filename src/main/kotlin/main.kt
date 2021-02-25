@@ -8,6 +8,7 @@ import model.DecryptModel
 import model.DownloadModel
 import view.DecryptView
 import view.DownloadView
+import javax.swing.UIManager
 
 enum class Page {
     DOWNLOADER,
@@ -15,6 +16,8 @@ enum class Page {
 }
 
 fun main() = Window {
+    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+
     var page by remember { mutableStateOf(Page.DOWNLOADER) }
 
     val downloadModel = remember { DownloadModel() }
