@@ -90,44 +90,7 @@ fun DecryptView(model: DecryptModel) {
 
         Spacer(Modifier.height(16.dp))
 
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            TextField(
-                value = model.model,
-                onValueChange = { model.model = it.toUpperCase() },
-                label = { Text("Model") },
-                modifier = Modifier.weight(1f),
-                readOnly = !canChangeOption,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
-            )
-
-            Spacer(Modifier.width(8.dp))
-
-            TextField(
-                value = model.region,
-                onValueChange = { model.region = it.toUpperCase() },
-                label = { Text("Region") },
-                modifier = Modifier.weight(1f),
-                readOnly = !canChangeOption,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
-            )
-        }
-
-        Spacer(Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            TextField(
-                value = model.fw,
-                onValueChange = { model.fw = it.toUpperCase() },
-                label = { Text("Firmware") },
-                modifier = Modifier.weight(1f),
-                readOnly = !canChangeOption,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
-            )
-        }
+        MRFLayout(model, canChangeOption, canChangeOption)
 
         Spacer(Modifier.height(16.dp))
 
