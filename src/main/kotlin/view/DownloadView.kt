@@ -53,7 +53,7 @@ fun DownloadView(model: DownloadModel) {
                             chooser.isVisible = true
 
                             if (chooser.file != null) {
-                                val output = File(chooser.file)
+                                val output = File(chooser.directory, chooser.file)
                                 val offset = if (output.exists()) output.length() else 0
 
                                 val response = client.downloadFile(path + fileName, offset)
