@@ -65,6 +65,9 @@ object Downloader {
                         }
                     }
                 }
+
+                response.close()
+                output.close()
             }
         }
     }
