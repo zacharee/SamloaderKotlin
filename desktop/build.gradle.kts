@@ -41,8 +41,17 @@ compose.desktop {
 
             windows {
                 menu = true
-
                 this.console = true
+
+                iconFile.set(project.file("src/jvmMain/resources/icon.ico"))
+            }
+
+            macOS {
+                iconFile.set(project.file("src/jvmMain/resources/icon.icns"))
+            }
+
+            linux {
+                iconFile.set(project.file("src/jvmMain/resources/icon.png"))
             }
 
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe, TargetFormat.AppImage)
