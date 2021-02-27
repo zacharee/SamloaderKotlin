@@ -60,7 +60,6 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
 
-                api("bouncycastle:bcprov-jdk16:136")
                 api("org.jdom:jdom2:2.0.6")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
@@ -75,7 +74,6 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
 
-                api("bouncycastle:bcprov-jdk16:136")
                 api("org.jdom:jdom2:2.0.6")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
