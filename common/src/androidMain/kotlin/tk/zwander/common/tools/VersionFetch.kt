@@ -4,16 +4,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jdom2.filter.Filters
 import org.jdom2.input.SAXBuilder
-import java.net.URL
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 
-actual object VersionFetch {
-    actual suspend fun getLatestVer(model: String, region: String): String {
+actual object PlatformVersionFetch {
+    actual suspend fun getLatestVer(model: String, region: String, response: String): String {
         return withContext(Dispatchers.IO) {
-            val request = URL("https://fota-cloud-dn.ospserver.net/firmware/${region}/${model}/version.xml")
-                .openConnection()
-
-            val response = request.content.toString()
-
             val root = SAXBuilder().build(response.byteInputStream())
 
             val error = root.getContent(Filters.element("Error"))

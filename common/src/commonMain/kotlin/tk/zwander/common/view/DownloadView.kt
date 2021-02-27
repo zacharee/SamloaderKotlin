@@ -76,7 +76,7 @@ fun DownloadView(model: DownloadModel) {
 
                                     model.speed = 0L
 
-                                    if (crc32 != null && false) {
+                                    if (crc32 != null) {
                                         model.statusText = "Checking CRC"
                                         val result = Crypt.checkCrc32(input(), size, crc32) { current, max, bps ->
                                             model.progress = current to max
