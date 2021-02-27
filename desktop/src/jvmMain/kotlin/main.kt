@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
@@ -29,8 +30,7 @@ enum class Page {
 @ExperimentalTime
 fun main() = Window(
     title = "Samsung Firmware Downloader",
-    icon = Thread.currentThread().contextClassLoader.getResource("icon.png")
-        ?.openStream().use(ImageIO::read)
+    icon = getImage("icon.png")
 ) {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
@@ -208,22 +208,28 @@ fun main() = Window(
                     ) {
                         Spacer(Modifier.weight(1f))
 
-                        TextButton(
+                        IconButton(
                             onClick = {
                                 handler("https://twitter.com/wander1236")
-                            }
+                            },
                         ) {
-                            Text("Follow me on Twitter")
+                            Icon(
+                                imageResource("twitter.png"), "Twitter",
+                                modifier = Modifier.padding(8.dp)
+                            )
                         }
 
                         Spacer(Modifier.width(8.dp))
 
-                        TextButton(
+                        IconButton(
                             onClick = {
                                 handler("https://patreon.com/zacharywander")
-                            }
+                            },
                         ) {
-                            Text("Check out my Patreon")
+                            Icon(
+                                imageResource("patreon.png"), "Patreon",
+                                modifier = Modifier.padding(8.dp)
+                            )
                         }
                     }
                 }
