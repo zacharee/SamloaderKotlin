@@ -8,6 +8,8 @@ import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.view.DecryptView
 import tk.zwander.common.view.DownloadView
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
 import javax.swing.UIManager
 import kotlin.time.ExperimentalTime
 
@@ -17,7 +19,11 @@ enum class Page {
 }
 
 @ExperimentalTime
-fun main() = Window {
+fun main() = Window(
+    title = "Samsung Firmware Downloader",
+    icon = Thread.currentThread().contextClassLoader.getResource("icon.png")
+        ?.openStream().use(ImageIO::read)
+) {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
     Test.main(arrayOf())
