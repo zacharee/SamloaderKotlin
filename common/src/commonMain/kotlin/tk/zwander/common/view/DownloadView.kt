@@ -6,18 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.soywiz.korio.async.runBlockingNoJs
 import com.soywiz.korio.stream.AsyncOutputStream
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
-import kotlinx.io.core.Output
-import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.MD5
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 import kotlin.time.ExperimentalTime
 
 @OptIn(DangerousInternalIoApi::class)
@@ -174,6 +169,7 @@ fun DownloadView(model: DownloadModel) {
                 Text(
                     text = "Manual",
                     modifier = Modifier.align(Alignment.CenterVertically)
+                        .offset(y = (-2).dp)
                 )
 
                 Spacer(Modifier.width(8.dp))
