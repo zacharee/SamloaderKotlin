@@ -1,14 +1,21 @@
 package tk.zwander.common.view
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.soywiz.korio.async.launch
+import com.soywiz.korio.async.runBlockingNoJs
 import com.soywiz.korio.stream.AsyncOutputStream
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
@@ -163,28 +170,36 @@ fun DownloadView(model: DownloadModel) {
 
             Spacer(Modifier.weight(1f))
 
+            val boxSource = remember { MutableInteractionSource() }
+
             Row(
                 modifier = Modifier.align(Alignment.CenterVertically)
+                    .clickable(
+                        interactionSource = boxSource,
+                        indication = null
+                    ) {
+                        model.manual = !model.manual
+                    }
+                    .padding(4.dp)
             ) {
                 Text(
                     text = "Manual",
                     modifier = Modifier.align(Alignment.CenterVertically)
-                        .offset(y = (-1.75).dp)
                 )
 
                 Spacer(Modifier.width(8.dp))
 
-                Switch(
+                Checkbox(
                     checked = model.manual,
                     onCheckedChange = {
                         model.manual = it
                     },
                     modifier = Modifier.align(Alignment.CenterVertically),
                     enabled = canChangeOption,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colors.primary,
-                        checkedTrackColor = MaterialTheme.colors.primaryVariant
-                    )
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = MaterialTheme.colors.primary,
+                    ),
+                    interactionSource = boxSource
                 )
             }
         }

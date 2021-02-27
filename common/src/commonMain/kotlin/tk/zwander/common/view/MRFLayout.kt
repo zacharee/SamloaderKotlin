@@ -2,6 +2,7 @@ package tk.zwander.common.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -16,7 +17,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
-        TextField(
+        OutlinedTextField(
             value = model.model,
             onValueChange = {
                 model.model = it.toUpperCase().trim()
@@ -32,7 +33,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
 
         Spacer(Modifier.width(8.dp))
 
-        TextField(
+        OutlinedTextField(
             value = model.region,
             onValueChange = {
                 model.region = it.toUpperCase().trim()
@@ -47,12 +48,12 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
         )
     }
 
-    Spacer(Modifier.height(16.dp))
+    Spacer(Modifier.height(8.dp))
 
     Row(
         modifier = Modifier.fillMaxWidth()
     ) {
-        TextField(
+        OutlinedTextField(
             value = model.fw,
             onValueChange = { model.fw = it.toUpperCase().trim() },
             label = { Text("Firmware") },

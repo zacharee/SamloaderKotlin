@@ -3,6 +3,7 @@ package tk.zwander.common.view
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -91,12 +92,12 @@ fun DecryptView(model: DecryptModel) {
 
         MRFLayout(model, canChangeOption, canChangeOption)
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            TextField(
+            OutlinedTextField(
                 value = model.fileToDecrypt?.inputPath ?: "",
                 onValueChange = {},
                 label = { Text("File") },
