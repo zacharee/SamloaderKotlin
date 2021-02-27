@@ -39,8 +39,14 @@ compose.desktop {
         nativeDistributions {
             modules("jdk.crypto.ec")
 
+            windows {
+                menu = true
+
+                this.console = true
+            }
+
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe, TargetFormat.AppImage)
-            packageName = "jvm"
+            packageName = "Samsung Firmware Downloader"
         }
     }
 }

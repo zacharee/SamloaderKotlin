@@ -9,21 +9,10 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 
-actual object VersionFetch {
-    private val client = HttpClient.newBuilder()
-        .build()
-
-    actual suspend fun getLatestVer(model: String, region: String): String {
+actual object PlatformVersionFetch {
+    actual suspend fun getLatestVer(model: String, region: String, response: String): String {
         return withContext(Dispatchers.IO) {
-            val request = HttpRequest.newBuilder(
-                URI(
-                    "https://fota-cloud-dn.ospserver.net/firmware/${region}/${model}/version.xml"
-                )
-            ).GET().build()
-
-            val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
-            val root = SAXBuilder().build(response.body().byteInputStream())
+            val root = SAXBuilder().build(response.byteInputStream())
 
             val error = root.getContent(Filters.element("Error"))
 
