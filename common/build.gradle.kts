@@ -69,10 +69,10 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material)
-                api(compose.ui)
+                api("androidx.compose.ui:ui:1.0.0-beta01")
+                api("androidx.compose.ui:ui-tooling:1.0.0-beta01")
+                api("androidx.compose.foundation:foundation:1.0.0-beta01")
+                api("androidx.compose.material:material:1.0.0-beta01")
 
                 api("org.jdom:jdom2:2.0.6")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")

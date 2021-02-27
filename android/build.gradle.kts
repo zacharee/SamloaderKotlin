@@ -13,10 +13,17 @@ repositories {
 
 dependencies {
     implementation(project(":common"))
+
+    implementation("androidx.compose.ui:ui:1.0.0-beta01")
+    implementation("androidx.compose.ui:ui-tooling:1.0.0-beta01")
+    implementation("androidx.compose.foundation:foundation:1.0.0-beta01")
+    implementation("androidx.compose.material:material:1.0.0-beta01")
+    implementation("androidx.activity:activity-compose:1.3.0-alpha03")
 }
 
 android {
     compileSdkVersion(29)
+
     defaultConfig {
         applicationId = "tk.zwander.samsungfirmwaredownloader"
         minSdkVersion(24)
@@ -24,9 +31,31 @@ android {
         versionCode = 1
         versionName = "1.0"
     }
+
+    buildFeatures {
+        compose = true
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
         }
     }
+
+    compileOptions {
+        sourceCompatibility(JavaVersion.VERSION_1_8)
+        targetCompatibility(JavaVersion.VERSION_1_8)
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = ("1.0.0-beta01")
+    }
+}
+
+tasks.register<Wrapper>("wrapper") {
+    gradleVersion = "6.7.1"
 }
