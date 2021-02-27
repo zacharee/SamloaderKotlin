@@ -27,7 +27,7 @@ fun main() = Window(
 ) {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
-    Test.main(arrayOf())
+//    Test.main(arrayOf())
 
     var page by remember { mutableStateOf(Page.DOWNLOADER) }
 
