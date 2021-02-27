@@ -17,7 +17,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
     ) {
         TextField(
             value = model.model,
-            onValueChange = { model.model = it.toUpperCase() },
+            onValueChange = { model.model = it.toUpperCase().trim() },
             label = { Text("Model") },
             modifier = Modifier.weight(1f),
             readOnly = !canChangeOption,
@@ -28,7 +28,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
 
         TextField(
             value = model.region,
-            onValueChange = { model.region = it.toUpperCase() },
+            onValueChange = { model.region = it.toUpperCase().trim() },
             label = { Text("Region") },
             modifier = Modifier.weight(1f),
             readOnly = !canChangeOption,
@@ -43,7 +43,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
     ) {
         TextField(
             value = model.fw,
-            onValueChange = { model.fw = it.toUpperCase() },
+            onValueChange = { model.fw = it.toUpperCase().trim() },
             label = { Text("Firmware") },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmare,
