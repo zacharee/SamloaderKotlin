@@ -20,7 +20,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
             value = model.model,
             onValueChange = {
                 model.model = it.toUpperCase().trim()
-                if ((model is DownloadModel && !model.manual) || model !is DownloadModel) {
+                if ((model is DownloadModel && !model.manual)) {
                     model.fw = ""
                 }
             },
@@ -36,7 +36,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
             value = model.region,
             onValueChange = {
                 model.region = it.toUpperCase().trim()
-                if ((model is DownloadModel && !model.manual) || model !is DownloadModel) {
+                if ((model is DownloadModel && !model.manual)) {
                     model.fw = ""
                 }
             },
