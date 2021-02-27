@@ -2,8 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version "0.3.0"
     id("com.android.library")
-    id("kotlin-android-extensions")
-    kotlin("plugin.serialization") version "1.4.0"
+    kotlin("plugin.serialization") version "1.4.30"
 }
 
 group = "tk.zwander"
