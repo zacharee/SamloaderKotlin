@@ -3,6 +3,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
@@ -34,7 +35,12 @@ fun main() = Window(
     val decryptModel = remember { DecryptModel() }
 
     MaterialTheme(
-        colors = darkColors()
+        colors = darkColors(
+            primary = Color(0x4C, 0xAF, 0x50),
+            primaryVariant = Color(0x52, 0xC7, 0x56),
+            secondary = Color(0xFFBB86FC),
+            secondaryVariant = Color(0xFF3700B3)
+        )
     ) {
         Surface {
             Column(
