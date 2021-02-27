@@ -15,7 +15,7 @@ object Downloader {
     @OptIn(ExperimentalTime::class)
     suspend fun download(response: AsyncInputStream, size: Long, output: AsyncOutputStream, outputSize: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
         coroutineScope {
-            withContext(Dispatchers.Default) {
+            withContext(Dispatchers.Unconfined) {
                 val chunkSize = 0x300000
 
                 val read = ByteArray(chunkSize)
