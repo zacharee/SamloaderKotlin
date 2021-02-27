@@ -4,10 +4,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jdom2.filter.Filters
 import org.jdom2.input.SAXBuilder
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
 
 actual object PlatformVersionFetch {
     actual suspend fun getLatestVer(model: String, region: String, response: String): String {

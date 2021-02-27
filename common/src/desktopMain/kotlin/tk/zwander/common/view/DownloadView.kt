@@ -1,14 +1,9 @@
 package tk.zwander.common.view
 
 import com.soywiz.korio.stream.AsyncOutputStream
-import com.soywiz.korio.stream.AsyncStream
-import com.soywiz.korio.stream.AsyncStreamBase
 import com.soywiz.korio.stream.toAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
-import kotlinx.io.core.Output
-import kotlinx.io.streams.asInput
-import kotlinx.io.streams.asOutput
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.util.toAsync
 import java.awt.FileDialog
@@ -16,7 +11,6 @@ import java.awt.Frame
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.OutputStream
 
 actual object PlatformDownloadView {
     actual suspend fun getInput(fileName: String, callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit) {

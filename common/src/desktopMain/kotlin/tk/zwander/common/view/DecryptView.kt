@@ -1,8 +1,6 @@
 package tk.zwander.common.view
 
 import com.soywiz.korio.stream.toAsync
-import kotlinx.io.streams.asInput
-import kotlinx.io.streams.asOutput
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.util.toAsync
 import java.awt.FileDialog
