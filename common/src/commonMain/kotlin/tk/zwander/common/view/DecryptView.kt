@@ -1,8 +1,8 @@
 package tk.zwander.common.view
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.OutlinedButton
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,7 +34,7 @@ fun DecryptView(model: DecryptModel) {
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Button(
+            OutlinedButton(
                 onClick = {
                     model.endJob("")
                 },
@@ -43,7 +43,7 @@ fun DecryptView(model: DecryptModel) {
                 Text("Cancel")
             }
             Spacer(Modifier.weight(1f))
-            Button(
+            OutlinedButton(
                 onClick = {
                       PlatformDecryptView.getInput { info ->
                           if (info != null) {
@@ -61,7 +61,7 @@ fun DecryptView(model: DecryptModel) {
                 Text("Pick File")
             }
             Spacer(Modifier.width(8.dp))
-            Button(
+            OutlinedButton(
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         val info = model.fileToDecrypt!!

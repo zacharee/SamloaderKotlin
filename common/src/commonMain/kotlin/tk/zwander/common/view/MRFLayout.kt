@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
+import tk.zwander.common.model.DownloadModel
 
 @Composable
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Boolean) {
@@ -17,8 +18,13 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
     ) {
         TextField(
             value = model.model,
-            onValueChange = { model.model = it.toUpperCase().trim() },
-            label = { Text("Model") },
+            onValueChange = {
+                model.model = it.toUpperCase().trim()
+                if ((model is DownloadModel && !model.manual) || model !is DownloadModel) {
+                    model.fw = ""
+                }
+            },
+            label = { Text("Model (e.g. SM-N986U1)") },
             modifier = Modifier.weight(1f),
             readOnly = !canChangeOption,
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
@@ -28,8 +34,13 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
 
         TextField(
             value = model.region,
-            onValueChange = { model.region = it.toUpperCase().trim() },
-            label = { Text("Region") },
+            onValueChange = {
+                model.region = it.toUpperCase().trim()
+                if ((model is DownloadModel && !model.manual) || model !is DownloadModel) {
+                    model.fw = ""
+                }
+            },
+            label = { Text("Region (e.g. XAA)") },
             modifier = Modifier.weight(1f),
             readOnly = !canChangeOption,
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)

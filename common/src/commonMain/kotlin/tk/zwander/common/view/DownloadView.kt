@@ -44,7 +44,7 @@ fun DownloadView(model: DownloadModel) {
         Row(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Button(
+            OutlinedButton(
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         try {
@@ -132,7 +132,7 @@ fun DownloadView(model: DownloadModel) {
 
             Spacer(Modifier.width(8.dp))
 
-            Button(
+            OutlinedButton(
                 onClick = {
                     model.job = model.scope.launch {
                         model.fw = try {
@@ -140,7 +140,7 @@ fun DownloadView(model: DownloadModel) {
                                 model.endJob("")
                             }
                         } catch (e: Exception) {
-                            model.endJob("Error checking for firmware. Make sure the tk.zwander.common.model and region are correct.\nMore info: ${e.message}")
+                            model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${e.message}")
                             ""
                         }
                     }
@@ -152,7 +152,7 @@ fun DownloadView(model: DownloadModel) {
 
             Spacer(Modifier.width(8.dp))
 
-            Button(
+            OutlinedButton(
                 onClick = {
                     model.endJob("")
                 },
@@ -169,7 +169,7 @@ fun DownloadView(model: DownloadModel) {
                 Text(
                     text = "Manual",
                     modifier = Modifier.align(Alignment.CenterVertically)
-                        .offset(y = (-2).dp)
+                        .offset(y = (-1.75).dp)
                 )
 
                 Spacer(Modifier.width(8.dp))
@@ -180,7 +180,11 @@ fun DownloadView(model: DownloadModel) {
                         model.manual = it
                     },
                     modifier = Modifier.align(Alignment.CenterVertically),
-                    enabled = canChangeOption
+                    enabled = canChangeOption,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = MaterialTheme.colors.primary,
+                        checkedTrackColor = MaterialTheme.colors.primaryVariant
+                    )
                 )
             }
         }
