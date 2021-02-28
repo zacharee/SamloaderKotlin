@@ -144,6 +144,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
                     .replace(".enc4", ""))
             }
 
+            openCallback = null
+
             val outputFile = DocumentFile.fromSingleUri(this@MainActivity, outputUri!!) ?: return@input
 
             val output = contentResolver.openOutputStream(outputFile.uri, "w").toAsync()

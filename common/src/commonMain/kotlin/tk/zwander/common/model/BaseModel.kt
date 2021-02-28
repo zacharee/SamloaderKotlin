@@ -28,4 +28,8 @@ open class BaseModel {
         speed = 0L
         statusText = text
     }
+
+    protected open fun onEnd(text: String) {
+
+    }
 }
