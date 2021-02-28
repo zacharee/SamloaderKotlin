@@ -1,5 +1,8 @@
 package tk.zwander.common
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -48,9 +51,14 @@ fun MainView() {
                             .fillMaxSize()
                             .padding(8.dp)
                     ) {
-                        when (page.value) {
-                            Page.DOWNLOADER -> DownloadView(downloadModel)
-                            Page.DECRYPTER -> DecryptView(decryptModel)
+                        Crossfade(
+                            targetState = page.value,
+                            animationSpec = tween(300)
+                        ) {
+                            when (it) {
+                                Page.DOWNLOADER -> DownloadView(downloadModel)
+                                Page.DECRYPTER -> DecryptView(decryptModel)
+                            }
                         }
                     }
                 }
