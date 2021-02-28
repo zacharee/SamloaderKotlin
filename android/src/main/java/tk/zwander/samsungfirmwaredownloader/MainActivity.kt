@@ -34,34 +34,28 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         private const val REQ_SAVE_DECRYPT = 10001
     }
 
-    private var decryptCallback: (suspend CoroutineScope.(AsyncOutputStream?) -> Unit)? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         PlatformDownloadView.getInputCallback = { fileName, callback ->
-            launch {
-                val outputFile = File(cacheDir, fileName)
-                callback(
-                    DownloadFileInfo(
-                        outputFile.absolutePath,
-                        FileOutputStream(outputFile, true).toAsync(),
-                        { FileInputStream(outputFile).toAsync() },
-                        outputFile.length()
-                    )
+            val outputFile = File(cacheDir, fileName)
+            callback(
+                DownloadFileInfo(
+                    outputFile.absolutePath,
+                    FileOutputStream(outputFile, true).toAsync(),
+                    { FileInputStream(outputFile).toAsync() },
+                    outputFile.length()
                 )
-            }
+            )
         }
 
         PlatformDownloadView.getDecryptOutputCallback = { encPath, encName, callback ->
-            launch(Dispatchers.IO) {
-                val encFile = File(encPath)
-                val decFile = File(encFile.parentFile,
-                    encName.replace(".enc2", "")
-                        .replace(".enc4", ""))
+            val encFile = File(encPath)
+            val decFile = File(encFile.parentFile,
+                encName.replace(".enc2", "")
+                    .replace(".enc4", ""))
 
-                callback(decFile.outputStream().toAsync())
-            }
+            callback(decFile.outputStream().toAsync())
         }
 
         setContent {
