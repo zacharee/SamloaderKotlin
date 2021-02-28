@@ -154,7 +154,7 @@ fun DownloadView(model: DownloadModel) {
                 Text("Check for Updates")
             }
 
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.weight(1f))
 
             OutlinedButton(
                 onClick = {
