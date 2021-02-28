@@ -18,7 +18,7 @@ Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) p
 Building this project should be fairly easy.
 
 ## Prep:
-1. Make sure you have the latest [Android Studio Canary]() installed.
+1. Make sure you have the latest [Android Studio Canary](https://developer.android.com/studio/preview) installed.
 2. Clone this project into Android Studio and let it import.
    
 ## Desktop:
