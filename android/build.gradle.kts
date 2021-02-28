@@ -14,6 +14,7 @@ repositories {
 dependencies {
     implementation(project(":common"))
 
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.31")
     implementation("androidx.compose.ui:ui:1.0.0-beta01")
     implementation("androidx.compose.ui:ui-tooling:1.0.0-beta01")
     implementation("androidx.compose.foundation:foundation:1.0.0-beta01")
@@ -51,9 +52,9 @@ android {
         jvmTarget = "1.8"
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = ("1.0.0-beta01")
-    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion = ("1.0.0-beta01")
+//    }
 }
 
 tasks.register<Wrapper>("wrapper") {

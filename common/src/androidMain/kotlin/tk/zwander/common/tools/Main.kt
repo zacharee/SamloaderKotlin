@@ -1,7 +1,9 @@
 package tk.zwander.common.tools
 
+import io.ktor.utils.io.core.internal.*
 import org.jdom2.input.SAXBuilder
 
+@DangerousInternalIoApi
 actual object PlatformMain {
     actual fun getBinaryInfo(response: String): Main.BinaryFileInfo {
         val doc = SAXBuilder().build(response.byteInputStream())

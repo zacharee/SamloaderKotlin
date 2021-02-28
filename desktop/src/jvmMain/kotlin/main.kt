@@ -7,17 +7,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.io.core.internal.DangerousInternalIoApi
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
-import tk.zwander.common.view.CustomMaterialTheme
-import tk.zwander.common.view.DecryptView
-import tk.zwander.common.view.DownloadView
-import tk.zwander.common.view.FooterView
+import tk.zwander.common.view.*
 import javax.swing.UIManager
 import kotlin.time.ExperimentalTime
-
-enum class Page {
-    DOWNLOADER,
-    DECRYPTER
-}
 
 @ExperimentalTime
 @OptIn(DangerousInternalIoApi::class)
@@ -27,7 +19,7 @@ fun main() = Window(
 ) {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
-    var page by remember { mutableStateOf(Page.DOWNLOADER) }
+    val page = remember { mutableStateOf(Page.DOWNLOADER) }
 
     val downloadModel = remember { DownloadModel() }
     val decryptModel = remember { DecryptModel() }
@@ -41,26 +33,7 @@ fun main() = Window(
                     modifier = Modifier.weight(1f)
                         .fillMaxWidth()
                 ) {
-                    TabRow(
-                        modifier = Modifier.fillMaxWidth()
-                            .height(48.dp),
-                        selectedTabIndex = page.ordinal
-                    ) {
-                        Tab(
-                            selected = page == Page.DOWNLOADER,
-                            text = { Text("Downloader") },
-                            onClick = {
-                                page = Page.DOWNLOADER
-                            }
-                        )
-                        Tab(
-                            selected = page == Page.DECRYPTER,
-                            text = { Text("Decrypter") },
-                            onClick = {
-                                page = Page.DECRYPTER
-                            }
-                        )
-                    }
+                    TabView(page)
 
                     Divider(
                         thickness = 1.dp,
@@ -73,7 +46,7 @@ fun main() = Window(
                         modifier = Modifier.fillMaxSize()
                             .padding(8.dp)
                     ) {
-                        when (page) {
+                        when (page.value) {
                             Page.DOWNLOADER -> DownloadView(downloadModel)
                             Page.DECRYPTER -> DecryptView(decryptModel)
                         }
