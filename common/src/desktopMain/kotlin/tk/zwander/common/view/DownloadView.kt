@@ -1,7 +1,5 @@
 package tk.zwander.common.view
 
-import androidx.compose.runtime.Composable
-import com.soywiz.korio.stream.AsyncOutputStream
 import com.soywiz.korio.stream.toAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
@@ -25,23 +23,16 @@ actual object PlatformDownloadView {
                 callback(null)
             } else {
                 val outputFile = File(dialog.directory, dialog.file)
+                val decFile = File(dialog.directory, fileName.replace(".enc2", "").replace(".enc4", ""))
 
                 callback(DownloadFileInfo(
                     outputFile.absolutePath,
                     FileOutputStream(outputFile, true).toAsync(),
                     { FileInputStream(outputFile).toAsync() },
-                    outputFile.length()
+                    outputFile.length(),
+                    FileOutputStream(decFile).toAsync()
                 ))
             }
-        }
-    }
-
-    actual suspend fun openDecryptOutput(encPath: String, encName: String, callback: suspend CoroutineScope.(AsyncOutputStream) -> Unit) {
-        coroutineScope {
-            val encFile = File(encPath)
-            val decFile = File(encFile.parentFile, encName.replace(".enc2", "").replace(".enc4", ""))
-
-            callback(decFile.outputStream().toAsync())
         }
     }
 

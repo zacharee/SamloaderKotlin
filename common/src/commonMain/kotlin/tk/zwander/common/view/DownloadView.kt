@@ -29,7 +29,6 @@ val main = Main()
 
 expect object PlatformDownloadView {
     suspend fun getInput(fileName: String, callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit)
-    suspend fun openDecryptOutput(encPath: String, encName: String, callback: suspend CoroutineScope.(AsyncOutputStream) -> Unit)
     suspend fun deleteFile(path: String)
 }
 
@@ -109,17 +108,15 @@ fun DownloadView(model: DownloadModel) {
 
                                     model.statusText = "Decrypting Firmware"
 
-                                    PlatformDownloadView.openDecryptOutput(info.path, fullFileName) {
-                                        val key = if (fullFileName.endsWith(".enc2")) Crypt.getV2Key(model.fw, model.model, model.region) else
-                                            Crypt.getV4Key(model.fw, model.model, model.region)
+                                    val key = if (fullFileName.endsWith(".enc2")) Crypt.getV2Key(model.fw, model.model, model.region) else
+                                        Crypt.getV4Key(model.fw, model.model, model.region)
 
-                                        Crypt.decryptProgress(info.input(), it, key, size) { current, max, bps ->
-                                            model.progress = current to max
-                                            model.speed = bps
-                                        }
-
-                                        model.endJob("Done")
+                                    Crypt.decryptProgress(info.input(), info.decryptOutput, key, size) { current, max, bps ->
+                                        model.progress = current to max
+                                        model.speed = bps
                                     }
+
+                                    model.endJob("Done")
                                 } else {
                                     model.endJob("")
                                 }

@@ -81,8 +81,6 @@ object Crypt {
                     }
                 }
 
-                println("read $count, actual $length")
-
                 inf.close()
                 outf.close()
             }

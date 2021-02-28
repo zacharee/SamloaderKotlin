@@ -17,5 +17,6 @@ data class DownloadFileInfo(
     val path: String,
     val output: AsyncOutputStream,
     val input: () -> AsyncInputStream,
-    val existingSize: Long
+    val existingSize: Long,
+    val decryptOutput: AsyncOutputStream
 )

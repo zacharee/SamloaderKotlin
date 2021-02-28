@@ -66,6 +66,8 @@ object Downloader {
                     }
                 }
 
+                println("Downloaded")
+
                 response.close()
                 output.close()
             }
