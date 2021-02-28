@@ -2,19 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="15">
-      <module name="SamloaderKotlin.android" target="11" />
-      <module name="SamloaderKotlin.common" target="11" />
-      <module name="SamloaderKotlin.common.commonMain" target="11" />
-      <module name="SamloaderKotlin.common.commonTest" target="11" />
-      <module name="SamloaderKotlin.common.desktopMain" target="11" />
-      <module name="SamloaderKotlin.common.desktopTest" target="11" />
       <module name="SamloaderKotlin.common.jvmMain" target="11" />
       <module name="SamloaderKotlin.common.jvmTest" target="11" />
-      <module name="SamloaderKotlin.desktop" target="11" />
-      <module name="SamloaderKotlin.desktop.commonMain" target="11" />
-      <module name="SamloaderKotlin.desktop.commonTest" target="11" />
-      <module name="SamloaderKotlin.desktop.jvmMain" target="11" />
-      <module name="SamloaderKotlin.desktop.jvmTest" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

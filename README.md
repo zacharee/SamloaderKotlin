@@ -26,14 +26,29 @@ Run the `package` Gradle task.
 
 ### Command Line:
 1. Open the Terminal view in Android Studio (bottom-left).
-2. Enter `gradlew packageAppImage` on Windows or `./gradlew packageAppImage` on Linux and macOS.
-3. Once it builds, check the output log to see where the executable was saved.
+2. Enter `gradlew packageAppImage` on Windows, `./gradlew packageAppImage` on Linux, or `./gradlew packageDmg` on macOS.
+3. Once it finishes building, check the output log to see where the executable was saved.
 
 ### GUI:
 1. Open the Gradle view in Android Studio (top-right).
 2. Expand the project, then expand "desktop".
-3. Expand "Tasks," then "build," and double-click "packageAppImage".
-4. Once it builds, check the output log to see where the executable was saved.
+3. Expand "Tasks," then "build," and double-click "packageAppImage" on Windows and Linux, or "packageDmg" on macOS.
+4. Once it finishes building, check the output log to see where the executable was saved.
+
+On macOS, you'll have to also add an extra step. Use the same process as above to run the "notarizeDmg" task after packaging.
+
+## Android:
+
+### Command Line:
+1. Open the Terminal view in Android Studio (bottom-left).
+2. Enter `gradlew :android:build` on Windows or `./gradlew :android:build` on macOS and Linux.
+3. Once it finishes building, go to `android/build/outputs/apk/debug` and install `android-debug.apk`.
+
+### GUI:
+1. Open the Gradle view in Android Studio (top-right).
+2. Expand the project, then expand "android".
+3. Expand "Tasks," then "build," and double-click "build".
+4. Once it finishes building, go to `android/build/outputs/apk/debug` and install `android-debug.apk`.
 
 # Screenshots
 
