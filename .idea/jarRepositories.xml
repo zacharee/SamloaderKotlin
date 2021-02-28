@@ -46,5 +46,10 @@
       <option name="name" value="maven3" />
       <option name="url" value="https://maven.pkg.jetbrains.space/public/p/ktor/eap/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven" />
+      <option name="name" value="maven" />
+      <option name="url" value="https://dl.bintray.com/korlibs/korlibs" />
+    </remote-repository>
   </component>
 </project>

@@ -5,7 +5,7 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="WRAPPED" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="$USER_HOME$/.sdkman/candidates/gradle/current" />
         <option name="modules">
@@ -20,7 +20,7 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="WRAPPED" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/android" />
         <option name="modules">
           <set>

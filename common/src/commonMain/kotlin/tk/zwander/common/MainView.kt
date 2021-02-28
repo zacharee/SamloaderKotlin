@@ -1,17 +1,13 @@
 package tk.zwander.common
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
@@ -28,6 +24,7 @@ fun MainView() {
 
     val downloadModel = remember { DownloadModel() }
     val decryptModel = remember { DecryptModel() }
+    val scrollState = rememberScrollState(0)
 
     CustomMaterialTheme {
         Surface {
@@ -40,9 +37,7 @@ fun MainView() {
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
-                        .verticalScroll(
-                            ScrollState(0)
-                        )
+                        .verticalScroll(scrollState)
                 ) {
                     Spacer(Modifier.height(16.dp))
 
@@ -61,11 +56,9 @@ fun MainView() {
                             }
                         }
                     }
-
-                    Spacer(Modifier.height(16.dp))
-
-                    FooterView()
                 }
+
+                FooterView()
             }
         }
     }

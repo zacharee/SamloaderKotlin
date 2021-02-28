@@ -3,7 +3,6 @@ package tk.zwander.samsungfirmwaredownloader
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -158,7 +157,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#${primary}")))
+        supportActionBar?.hide()
+//        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#${primary}")))
         window.statusBarColor = Color.parseColor("#${primary}")
         window.navigationBarColor = Color.parseColor("#${background}")
 

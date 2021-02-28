@@ -23,9 +23,7 @@ fun FooterView() {
         modifier = Modifier.fillMaxWidth()
             .padding(8.dp)
     ) {
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
+        Column {
             val copyrightAnnotated = buildAnnotatedString {
                 pushStyle(
                     SpanStyle(
@@ -114,11 +112,10 @@ fun FooterView() {
             )
         }
 
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.weight(1f))
 
         Row(
-            modifier = Modifier.weight(1f)
-                .align(Alignment.Bottom)
+            modifier = Modifier.align(Alignment.Bottom)
         ) {
             Spacer(Modifier.weight(1f))
 
