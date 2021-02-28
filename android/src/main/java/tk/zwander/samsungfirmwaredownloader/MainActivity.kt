@@ -180,6 +180,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             val decryptModel = remember { DecryptModel() }
 
             CustomMaterialTheme {
+                window.navigationBarColor = MaterialTheme.colors.background.run {
+                    Color.argb((alpha * 255).toInt(), (red * 255).toInt(), (green * 255).toInt(), (blue * 255).toInt()) }
+
                 Surface {
                     Column(
                         modifier = Modifier.fillMaxSize()
