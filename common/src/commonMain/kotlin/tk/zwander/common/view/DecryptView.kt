@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
@@ -17,7 +18,7 @@ import tk.zwander.common.tools.Crypt
 import kotlin.time.ExperimentalTime
 
 expect object PlatformDecryptView {
-    fun getInput(callback: (DecryptFileInfo?) -> Unit)
+    suspend fun getInput(callback: suspend CoroutineScope.(DecryptFileInfo?) -> Unit)
 }
 
 @DangerousInternalIoApi
@@ -46,14 +47,16 @@ fun DecryptView(model: DecryptModel) {
             Spacer(Modifier.weight(1f))
             OutlinedButton(
                 onClick = {
-                      PlatformDecryptView.getInput { info ->
-                          if (info != null) {
-                                if (!info.fileName.endsWith(".enc2") && !info.fileName.endsWith(".enc4")) {
-                                    model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
-                                } else {
-                                    model.fileToDecrypt = info
-                                    model.endJob("")
-                                }
+                      model.scope.launch {
+                          PlatformDecryptView.getInput { info ->
+                              if (info != null) {
+                                  if (!info.fileName.endsWith(".enc2") && !info.fileName.endsWith(".enc4")) {
+                                      model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
+                                  } else {
+                                      model.fileToDecrypt = info
+                                      model.endJob("")
+                                  }
+                              }
                           }
                       }
                 },
