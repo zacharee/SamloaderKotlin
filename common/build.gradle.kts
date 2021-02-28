@@ -1,6 +1,6 @@
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "0.3.0"
+    id("org.jetbrains.compose") version "0.3.1"
     id("com.android.library")
     kotlin("plugin.serialization") version "1.4.30"
 }
@@ -15,6 +15,24 @@ repositories {
         url = uri("https://dl.bintray.com/pdvrieze/maven")
     }
     maven(url = "https://kotlin.bintray.com/kotlinx/")
+}
+
+android {
+    compileSdkVersion(29)
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    defaultConfig {
+        minSdkVersion(24)
+        targetSdkVersion(29)
+    }
+
+    configurations {
+        create("androidTestApi")
+        create("androidTestDebugApi")
+        create("androidTestReleaseApi")
+        create("testApi")
+        create("testDebugApi")
+        create("testReleaseApi")
+    }
 }
 
 kotlin {
@@ -46,8 +64,8 @@ kotlin {
                 implementation("co.touchlab:stately-common:1.1.4")
                 implementation("co.touchlab:stately-isolate:1.1.4-a1")
                 implementation("com.ionspin.kotlin:bignum:0.2.8")
-                implementation("io.ktor:ktor-client-core:1.6.0-eap-25")
-                implementation("io.ktor:ktor-client-cio:1.6.0-eap-25")
+                api("io.ktor:ktor-client-core:1.6.0-eap-25")
+                api("io.ktor:ktor-client-cio:1.6.0-eap-25")
             }
         }
 
@@ -77,18 +95,9 @@ kotlin {
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
                 api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
 
-                api("androidx.appcompat:appcompat:1.2.0")
+                api("androidx.appcompat:appcompat:1.3.0-beta01")
                 api("androidx.core:core-ktx:1.3.2")
             }
         }
-    }
-}
-
-android {
-    compileSdkVersion(29)
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdkVersion(24)
-        targetSdkVersion(29)
     }
 }

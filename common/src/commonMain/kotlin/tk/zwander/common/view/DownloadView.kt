@@ -49,7 +49,7 @@ fun DownloadView(model: DownloadModel) {
         modifier = Modifier.fillMaxSize()
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.align(Alignment.CenterHorizontally),
         ) {
             OutlinedButton(
                 onClick = {
@@ -132,7 +132,7 @@ fun DownloadView(model: DownloadModel) {
                         }
                     }
                 },
-                enabled = canDownload
+                enabled = canDownload,
             ) {
                 Text("Download")
             }
@@ -167,41 +167,41 @@ fun DownloadView(model: DownloadModel) {
             ) {
                 Text("Cancel")
             }
+        }
 
-            Spacer(Modifier.weight(1f))
+        Spacer(Modifier.height(16.dp))
 
-            val boxSource = remember { MutableInteractionSource() }
+        val boxSource = remember { MutableInteractionSource() }
 
-            Row(
+        Row(
+            modifier = Modifier.align(Alignment.End)
+                .clickable(
+                    interactionSource = boxSource,
+                    indication = null
+                ) {
+                    model.manual = !model.manual
+                }
+                .padding(4.dp)
+        ) {
+            Text(
+                text = "Manual",
                 modifier = Modifier.align(Alignment.CenterVertically)
-                    .clickable(
-                        interactionSource = boxSource,
-                        indication = null
-                    ) {
-                        model.manual = !model.manual
-                    }
-                    .padding(4.dp)
-            ) {
-                Text(
-                    text = "Manual",
-                    modifier = Modifier.align(Alignment.CenterVertically)
-                )
+            )
 
-                Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(8.dp))
 
-                Checkbox(
-                    checked = model.manual,
-                    onCheckedChange = {
-                        model.manual = it
-                    },
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    enabled = canChangeOption,
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = MaterialTheme.colors.primary,
-                    ),
-                    interactionSource = boxSource
-                )
-            }
+            Checkbox(
+                checked = model.manual,
+                onCheckedChange = {
+                    model.manual = it
+                },
+                modifier = Modifier.align(Alignment.CenterVertically),
+                enabled = canChangeOption,
+                colors = CheckboxDefaults.colors(
+                    checkedColor = MaterialTheme.colors.primary,
+                ),
+                interactionSource = boxSource
+            )
         }
 
         Spacer(Modifier.height(16.dp))

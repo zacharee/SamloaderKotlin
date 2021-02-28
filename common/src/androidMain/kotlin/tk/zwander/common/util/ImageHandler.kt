@@ -11,7 +11,7 @@ import androidx.compose.ui.res.vectorResource
 actual fun imageResource(path: String): ImageBitmap {
     val ctx = LocalContext.current
     val res = ctx.resources
-    val idForName = res.getIdentifier(path, "drawable", ctx.packageName)
+    val idForName = res.getIdentifier(path.replace(Regex("\\..*$"), ""), "drawable", ctx.packageName)
 
     return ImageBitmap.imageResource(idForName)
 }

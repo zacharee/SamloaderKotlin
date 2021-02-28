@@ -6,8 +6,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30")
-        classpath("com.android.tools.build:gradle:4.1.1")
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30"
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha08'
     }
 }
 
@@ -19,7 +19,7 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-        maven(url = "https://kotlin.bintray.com/kotlinx/")
-        maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap/")
+        maven { url = uri("https://kotlin.bintray.com/kotlinx/") }
+        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap/") }
     }
 }
