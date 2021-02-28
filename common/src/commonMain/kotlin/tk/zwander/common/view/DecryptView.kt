@@ -38,35 +38,6 @@ fun DecryptView(model: DecryptModel) {
         ) {
             OutlinedButton(
                 onClick = {
-                    model.endJob("")
-                },
-                enabled = model.job != null
-            ) {
-                Text("Cancel")
-            }
-            Spacer(Modifier.weight(1f))
-            OutlinedButton(
-                onClick = {
-                      model.scope.launch {
-                          PlatformDecryptView.getInput { info ->
-                              if (info != null) {
-                                  if (!info.fileName.endsWith(".enc2") && !info.fileName.endsWith(".enc4")) {
-                                      model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
-                                  } else {
-                                      model.fileToDecrypt = info
-                                      model.endJob("")
-                                  }
-                              }
-                          }
-                      }
-                },
-                enabled = canChangeOption
-            ) {
-                Text("Pick File")
-            }
-            Spacer(Modifier.width(8.dp))
-            OutlinedButton(
-                onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         val info = model.fileToDecrypt!!
 
@@ -88,6 +59,35 @@ fun DecryptView(model: DecryptModel) {
                 enabled = canDecrypt
             ) {
                 Text("Decrypt")
+            }
+            Spacer(Modifier.width(8.dp))
+            OutlinedButton(
+                onClick = {
+                    model.scope.launch {
+                        PlatformDecryptView.getInput { info ->
+                            if (info != null) {
+                                if (!info.fileName.endsWith(".enc2") && !info.fileName.endsWith(".enc4")) {
+                                    model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
+                                } else {
+                                    model.fileToDecrypt = info
+                                    model.endJob("")
+                                }
+                            }
+                        }
+                    }
+                },
+                enabled = canChangeOption
+            ) {
+                Text("Pick File")
+            }
+            Spacer(Modifier.weight(1f))
+            OutlinedButton(
+                onClick = {
+                    model.endJob("")
+                },
+                enabled = model.job != null
+            ) {
+                Text("Cancel")
             }
         }
 
