@@ -13,22 +13,12 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.core.graphics.toColorInt
 import androidx.documentfile.provider.DocumentFile
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.MainView
 import tk.zwander.common.data.*
-import tk.zwander.common.model.DecryptModel
-import tk.zwander.common.model.DownloadModel
-import tk.zwander.common.util.toAsync
+import tk.zwander.common.util.inputAsync
 import tk.zwander.common.view.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -104,9 +94,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             val enc = dir.findFile(fileName) ?: dir.createFile("application/octet-stream", fileName) ?: return@input
             val dec = dir.findFile(decName) ?: dir.createFile("application/zip", decName) ?: return@input
 
-            val output = contentResolver.openOutputStream(enc.uri, "wa").toAsync()
-            val input = { contentResolver.openInputStream(enc.uri).toAsync() }
-            val decOutput = contentResolver.openOutputStream(dec.uri).toAsync()
+            val output = contentResolver.openOutputStream(enc.uri, "wa").inputAsync()
+            val input = { contentResolver.openInputStream(enc.uri).inputAsync() }
+            val decOutput = contentResolver.openOutputStream(dec.uri).inputAsync()
 
             callback(
                 DownloadFileInfo(
@@ -151,8 +141,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
             val outputFile = DocumentFile.fromSingleUri(this@MainActivity, outputUri!!) ?: return@input
 
-            val output = contentResolver.openOutputStream(outputFile.uri, "w").toAsync()
-            val input = contentResolver.openInputStream(inputFile.uri).toAsync()
+            val output = contentResolver.openOutputStream(outputFile.uri, "w").inputAsync()
+            val input = contentResolver.openInputStream(inputFile.uri).inputAsync()
             callback(
                 DecryptFileInfo(
                     inputFile.name!!,

@@ -4,12 +4,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.util.toAsync
+import tk.zwander.common.util.inputAsync
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import tk.zwander.common.util.toAsync as toAsync1
 
 actual object PlatformDownloadView {
     actual suspend fun getInput(fileName: String, callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit) {
@@ -28,7 +28,7 @@ actual object PlatformDownloadView {
                 callback(DownloadFileInfo(
                     outputFile.absolutePath,
                     FileOutputStream(outputFile, true).toAsync(),
-                    { FileInputStream(outputFile).toAsync1() },
+                    { FileInputStream(outputFile).inputAsync() },
                     outputFile.length(),
                     FileOutputStream(decFile).toAsync()
                 ))
