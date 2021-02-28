@@ -2,6 +2,8 @@ package tk.zwander.samsungfirmwaredownloader
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -18,11 +20,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import androidx.documentfile.provider.DocumentFile
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
+import tk.zwander.common.data.primary
+import tk.zwander.common.data.primaryVariant
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.util.toAsync
@@ -164,6 +169,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#${primary}")))
+        window.statusBarColor = Color.parseColor("#${primary}")
 
         setContent {
             val page = remember { mutableStateOf(Page.DOWNLOADER) }
