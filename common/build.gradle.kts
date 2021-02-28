@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "tk.zwander"
-version = "1.0"
+version = project.properties["versionName"].toString()
 
 repositories {
     google()

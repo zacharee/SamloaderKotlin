@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "tk.zwander"
-version = "1.0.0"
+version = project.properties["versionName"].toString()
 
 kotlin {
     jvm {
@@ -52,6 +52,7 @@ compose.desktop {
 
             linux {
                 iconFile.set(project.file("src/jvmMain/resources/icon.png"))
+                packageVersion = project.properties["versionCode"].toString()
             }
 
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe, TargetFormat.AppImage)

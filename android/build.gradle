@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "tk.zwander"
-version = "1.0"
+version = project.properties['versionName']
 
 repositories {
     google()
@@ -19,6 +19,7 @@ dependencies {
 //    implementation("androidx.compose.ui:ui-tooling:1.0.0-beta01")
 //    implementation("androidx.compose.foundation:foundation:1.0.0-beta01")
 //    implementation("androidx.compose.material:material:1.0.0-beta01")
+    implementation("androidx.fragment:fragment-ktx:1.3.0")
     implementation("androidx.activity:activity-compose:1.3.0-alpha03")
     implementation("androidx.documentfile:documentfile:1.0.1")
 }
@@ -30,8 +31,8 @@ android {
         applicationId = "tk.zwander.samsungfirmwaredownloader"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = Integer.parseInt(project.properties['versionCode'])
+        versionName = project.properties['versionName']
     }
 
     buildFeatures {

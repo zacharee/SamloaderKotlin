@@ -12,7 +12,7 @@ buildscript {
 }
 
 group = "tk.zwander"
-version = "1.0"
+version = properties['versionName']
 
 allprojects {
     repositories {
