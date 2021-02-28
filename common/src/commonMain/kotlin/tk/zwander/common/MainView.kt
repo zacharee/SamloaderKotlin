@@ -3,7 +3,9 @@ package tk.zwander.common
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -32,18 +34,16 @@ fun MainView() {
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
+                TabView(page)
+
                 Column(
                     modifier = Modifier
                         .weight(1f)
                         .fillMaxWidth()
+                        .verticalScroll(
+                            ScrollState(0)
+                        )
                 ) {
-                    TabView(page)
-
-                    Divider(
-                        thickness = 1.dp,
-                        color = MaterialTheme.colors.onSurface
-                    )
-
                     Spacer(Modifier.height(16.dp))
 
                     Column(
@@ -61,11 +61,11 @@ fun MainView() {
                             }
                         }
                     }
+
+                    Spacer(Modifier.height(16.dp))
+
+                    FooterView()
                 }
-
-                Spacer(Modifier.height(16.dp))
-
-                FooterView()
             }
         }
     }
