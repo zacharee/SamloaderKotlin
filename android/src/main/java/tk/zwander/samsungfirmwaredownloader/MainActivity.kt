@@ -24,10 +24,8 @@ import androidx.core.graphics.toColorInt
 import androidx.documentfile.provider.DocumentFile
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
-import tk.zwander.common.data.DecryptFileInfo
-import tk.zwander.common.data.DownloadFileInfo
-import tk.zwander.common.data.primary
-import tk.zwander.common.data.primaryVariant
+import tk.zwander.common.MainView
+import tk.zwander.common.data.*
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.util.toAsync
@@ -172,53 +170,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#${primary}")))
         window.statusBarColor = Color.parseColor("#${primary}")
+        window.navigationBarColor = Color.parseColor("#${background}")
 
         setContent {
-            val page = remember { mutableStateOf(Page.DOWNLOADER) }
-
-            val downloadModel = remember { DownloadModel() }
-            val decryptModel = remember { DecryptModel() }
-
-            CustomMaterialTheme {
-                window.navigationBarColor = MaterialTheme.colors.background.run {
-                    Color.argb((alpha * 255).toInt(), (red * 255).toInt(), (green * 255).toInt(), (blue * 255).toInt()) }
-
-                Surface {
-                    Column(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxWidth()
-                        ) {
-                            TabView(page)
-
-                            Divider(
-                                thickness = 1.dp,
-                                color = MaterialTheme.colors.onSurface
-                            )
-
-                            Spacer(Modifier.height(16.dp))
-
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(8.dp)
-                            ) {
-                                when (page.value) {
-                                    Page.DOWNLOADER -> DownloadView(downloadModel)
-                                    Page.DECRYPTER -> DecryptView(decryptModel)
-                                }
-                            }
-                        }
-
-                        Spacer(Modifier.height(16.dp))
-
-                        FooterView()
-                    }
-                }
-            }
+            MainView()
         }
     }
 }

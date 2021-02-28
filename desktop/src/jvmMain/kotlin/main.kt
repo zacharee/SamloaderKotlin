@@ -5,6 +5,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
+import tk.zwander.common.MainView
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.view.*
@@ -19,44 +20,5 @@ fun main() = Window(
 ) {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
-    val page = remember { mutableStateOf(Page.DOWNLOADER) }
-
-    val downloadModel = remember { DownloadModel() }
-    val decryptModel = remember { DecryptModel() }
-
-    CustomMaterialTheme {
-        Surface {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f)
-                        .fillMaxWidth()
-                ) {
-                    TabView(page)
-
-                    Divider(
-                        thickness = 1.dp,
-                        color = MaterialTheme.colors.onSurface
-                    )
-
-                    Spacer(Modifier.height(16.dp))
-
-                    Column(
-                        modifier = Modifier.fillMaxSize()
-                            .padding(8.dp)
-                    ) {
-                        when (page.value) {
-                            Page.DOWNLOADER -> DownloadView(downloadModel)
-                            Page.DECRYPTER -> DecryptView(decryptModel)
-                        }
-                    }
-                }
-
-                Spacer(Modifier.height(16.dp))
-
-                FooterView()
-            }
-        }
-    }
+     MainView()
 }
