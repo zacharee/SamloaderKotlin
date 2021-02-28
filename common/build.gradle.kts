@@ -59,11 +59,11 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-io-jvm:0.1.16")
                 api("com.soywiz.korlibs.krypto:krypto:2.0.6")
 
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
-                implementation("com.soywiz.korlibs.korio:korio:2.0.8")
-                implementation("co.touchlab:stately-common:1.1.4")
-                implementation("co.touchlab:stately-isolate:1.1.4-a1")
-                implementation("com.ionspin.kotlin:bignum:0.2.8")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+                api("com.soywiz.korlibs.korio:korio:2.0.8")
+                api("co.touchlab:stately-common:1.1.4")
+                api("co.touchlab:stately-isolate:1.1.4-a1")
+                api("com.ionspin.kotlin:bignum:0.2.8")
                 api("io.ktor:ktor-client-core:1.6.0-eap-25")
                 api("io.ktor:ktor-client-cio:1.6.0-eap-25")
             }

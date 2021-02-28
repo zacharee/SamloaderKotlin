@@ -11,17 +11,58 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.soywiz.korio.stream.AsyncOutputStream
 import io.ktor.utils.io.core.internal.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
+import tk.zwander.common.util.toAsync
 import tk.zwander.common.view.*
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @OptIn(DangerousInternalIoApi::class)
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+    companion object {
+        private const val REQ_SAVE_DECRYPT = 10001
+    }
+
+    private var decryptCallback: (suspend CoroutineScope.(AsyncOutputStream?) -> Unit)? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        PlatformDownloadView.getInputCallback = { fileName, callback ->
+            launch {
+                val outputFile = File(cacheDir, fileName)
+                callback(
+                    DownloadFileInfo(
+                        outputFile.absolutePath,
+                        FileOutputStream(outputFile, true).toAsync(),
+                        { FileInputStream(outputFile).toAsync() },
+                        outputFile.length()
+                    )
+                )
+            }
+        }
+
+        PlatformDownloadView.getDecryptOutputCallback = { encPath, encName, callback ->
+            launch(Dispatchers.IO) {
+                val encFile = File(encPath)
+                val decFile = File(encFile.parentFile,
+                    encName.replace(".enc2", "")
+                        .replace(".enc4", ""))
+
+                callback(decFile.outputStream().toAsync())
+            }
+        }
 
         setContent {
             val page = remember { mutableStateOf(Page.DOWNLOADER) }
@@ -35,7 +76,8 @@ class MainActivity : AppCompatActivity() {
                         modifier = Modifier.fillMaxSize()
                     ) {
                         Column(
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
                                 .fillMaxWidth()
                         ) {
                             TabView(page)
@@ -48,7 +90,8 @@ class MainActivity : AppCompatActivity() {
                             Spacer(Modifier.height(16.dp))
 
                             Column(
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier
+                                    .fillMaxSize()
                                     .padding(8.dp)
                             ) {
                                 when (page.value) {
