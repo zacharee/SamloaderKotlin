@@ -34,8 +34,6 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
 
-                api("bouncycastle:bcprov-jdk16:136")
-                api("org.jdom:jdom2:2.0.6")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
                 api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
@@ -69,10 +67,10 @@ kotlin {
 
         val androidMain by getting {
             dependencies {
-                api("androidx.compose.ui:ui:1.0.0-beta01")
-                api("androidx.compose.ui:ui-tooling:1.0.0-beta01")
-                api("androidx.compose.foundation:foundation:1.0.0-beta01")
-                api("androidx.compose.material:material:1.0.0-beta01")
+                api(compose.runtime)
+                api(compose.foundation)
+                api(compose.material)
+                api(compose.ui)
 
                 api("org.jdom:jdom2:2.0.6")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
