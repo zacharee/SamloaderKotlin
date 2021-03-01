@@ -5,13 +5,23 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
+import com.soywiz.korim.format.nativeImageFormatProvider
+import com.soywiz.korim.format.readBitmap
+import com.soywiz.korim.format.readBitmapInfo
+import com.soywiz.korim.format.readNativeImage
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.async.runBlockingNoJs
+import com.soywiz.korio.file.VfsFile
+import com.soywiz.korio.file.std.applicationVfs
+import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korio.stream.AsyncOutputStream
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
@@ -20,6 +30,7 @@ import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.MD5
+import tk.zwander.common.util.imageResource
 import kotlin.time.ExperimentalTime
 
 @OptIn(DangerousInternalIoApi::class)
@@ -47,10 +58,13 @@ fun DownloadView(model: DownloadModel) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        val rowSize = remember { mutableStateOf(0.dp) }
+
         Row(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+                .onSizeChanged { rowSize.value = it.width.dp },
         ) {
-            OutlinedButton(
+            HybridButton(
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         try {
@@ -130,13 +144,15 @@ fun DownloadView(model: DownloadModel) {
                     }
                 },
                 enabled = canDownload,
-            ) {
-                Text("Download")
-            }
+                icon = imageResource("download.png"),
+                text = "Download",
+                description = "Download Firmware",
+                parentSize = rowSize.value
+            )
 
             Spacer(Modifier.width(8.dp))
 
-            OutlinedButton(
+            HybridButton(
                 onClick = {
                     model.job = model.scope.launch {
                         model.fw = try {
@@ -149,21 +165,25 @@ fun DownloadView(model: DownloadModel) {
                         }
                     }
                 },
-                enabled = canCheckVersion
-            ) {
-                Text("Check for Updates")
-            }
+                enabled = canCheckVersion,
+                text = "Check for Updates",
+                icon = imageResource("refresh.png"),
+                description = "Check for Firmware Updates",
+                parentSize = rowSize.value
+            )
 
             Spacer(Modifier.weight(1f))
 
-            OutlinedButton(
+            HybridButton(
                 onClick = {
                     model.endJob("")
                 },
-                enabled = model.job != null
-            ) {
-                Text("Cancel")
-            }
+                enabled = model.job != null,
+                text = "Cancel",
+                description = "Cancel",
+                icon = imageResource("cancel.png"),
+                parentSize = rowSize.value
+            )
         }
 
         Spacer(Modifier.height(16.dp))

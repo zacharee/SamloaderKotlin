@@ -52,6 +52,8 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
 
+                api("com.soywiz.korlibs.korim:korim:2.0.7")
+
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
                 api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")

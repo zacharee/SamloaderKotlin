@@ -6,7 +6,10 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +18,7 @@ import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.tools.Crypt
+import tk.zwander.common.util.imageResource
 import kotlin.time.ExperimentalTime
 
 expect object PlatformDecryptView {
@@ -33,10 +37,12 @@ fun DecryptView(model: DecryptModel) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        val rowSize = remember { mutableStateOf(0.dp) }
         Row(
             modifier = Modifier.fillMaxWidth()
+                .onSizeChanged { rowSize.value = it.width.dp }
         ) {
-            OutlinedButton(
+            HybridButton(
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         val info = model.fileToDecrypt!!
@@ -56,12 +62,14 @@ fun DecryptView(model: DecryptModel) {
                         model.endJob("Done")
                     }
                 },
-                enabled = canDecrypt
-            ) {
-                Text("Decrypt")
-            }
+                enabled = canDecrypt,
+                text = "Decrypt",
+                description = "Decrypt Firmware",
+                icon = imageResource("decrypt.png"),
+                parentSize = rowSize.value
+            )
             Spacer(Modifier.width(8.dp))
-            OutlinedButton(
+            HybridButton(
                 onClick = {
                     model.scope.launch {
                         PlatformDecryptView.getInput { info ->
@@ -76,19 +84,23 @@ fun DecryptView(model: DecryptModel) {
                         }
                     }
                 },
-                enabled = canChangeOption
-            ) {
-                Text("Pick File")
-            }
+                enabled = canChangeOption,
+                text = "Open File",
+                description = "Open File to Decrypt",
+                icon = imageResource("open.png"),
+                parentSize = rowSize.value
+            )
             Spacer(Modifier.weight(1f))
-            OutlinedButton(
+            HybridButton(
                 onClick = {
                     model.endJob("")
                 },
-                enabled = model.job != null
-            ) {
-                Text("Cancel")
-            }
+                enabled = model.job != null,
+                text = "Cancel",
+                description = "Cancel",
+                icon = imageResource("cancel.png"),
+                parentSize = rowSize.value
+            )
         }
 
         Spacer(Modifier.height(16.dp))
