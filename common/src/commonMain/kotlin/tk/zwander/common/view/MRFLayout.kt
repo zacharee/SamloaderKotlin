@@ -98,7 +98,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
     OutlinedTextField(
         value = model.fw,
         onValueChange = { model.fw = it.toUpperCase().trim() },
-        label = { Text("Firmware") },
+        label = { Text("Firmware (PDA/CSC/CP/AP)") },
         modifier = Modifier.fillMaxWidth(),
         readOnly = !canChangeFirmare,
         keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
