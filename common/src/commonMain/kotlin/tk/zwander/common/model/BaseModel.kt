@@ -27,6 +27,8 @@ open class BaseModel {
         progress = 0L to 0L
         speed = 0L
         statusText = text
+
+        onEnd(text)
     }
 
     protected open fun onEnd(text: String) {
