@@ -2,18 +2,13 @@ package tk.zwander.common.tools
 
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
-import com.soywiz.korio.stream.openAsync
 import com.soywiz.korio.util.checksum.CRC32
-import com.soywiz.korio.util.checksum.checksum
 import com.soywiz.krypto.AES
 import com.soywiz.krypto.MD5
 import com.soywiz.krypto.Padding
-import com.soywiz.krypto.encoding.hex
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
-import kotlinx.io.core.Input
-import kotlinx.io.core.Output
 import kotlinx.io.core.toByteArray
 import kotlin.time.*
 

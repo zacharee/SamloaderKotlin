@@ -1,3 +1,4 @@
+import com.github.aakira.napier.Napier
 import tk.zwander.common.tools.Auth
 import java.util.*
 import javax.crypto.Cipher
@@ -12,7 +13,6 @@ object Test {
         return d.slice(0 until padIndex).toByteArray()
     }
 
-
     @JvmStatic
     fun main(args: Array<String>) {
         val start = arrayOf(
@@ -25,16 +25,16 @@ object Test {
         val out = Auth.aesDecrypt(start, key)
         val testOut = aesDecrypt(start, key)
 
-        println("out ${out.contentToString()}")
-        println("testOut ${testOut.contentToString()}")
-        println("eq ${out.contentEquals(testOut)}")
+        Napier.e("out ${out.contentToString()}", tag = "SamsungFirmwareDownloader")
+        Napier.e("testOut ${testOut.contentToString()}", tag = "SamsungFirmwareDownloader")
+        Napier.e("eq ${out.contentEquals(testOut)}", tag = "SamsungFirmwareDownloader")
 
         val k = Auth.KEY_1.toByteArray()
         val kt = Auth.BA
 
-        println("k ${k.contentToString()}")
-        println("kt ${kt.contentToString()}")
-        println("eq ${k.contentEquals(kt)}")
+        Napier.e("k ${k.contentToString()}", tag = "SamsungFirmwareDownloader")
+        Napier.e("kt ${kt.contentToString()}", tag = "SamsungFirmwareDownloader")
+        Napier.e("eq ${k.contentEquals(kt)}", tag = "SamsungFirmwareDownloader")
     }
 
     fun aesDecrypt(input: ByteArray, key: ByteArray): ByteArray {

@@ -9,25 +9,23 @@ package tk.zwander.common.util
  * or at https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
+import com.github.aakira.napier.Napier
 import com.soywiz.korio.lang.format
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.krypto.MD5
-import kotlinx.io.core.Input
 
 object MD5 {
     private const val TAG = "MD5"
     suspend fun checkMD5(md5: String, updateFile: AsyncInputStream?): Boolean {
         if (md5.isBlank() || updateFile == null) {
-            println("MD5 string empty or updateFile null")
+            Napier.e("MD5 string empty or updateFile null", tag = TAG)
             return false
         }
         val calculatedDigest = calculateMD5(updateFile)
         if (calculatedDigest == null) {
-            println("calculatedDigest null")
+            Napier.e("calculatedDigest null", tag = TAG)
             return false
         }
-        println("Calculated digest: $calculatedDigest")
-        println("Provided digest: $md5")
         return calculatedDigest.equals(md5, ignoreCase = true)
             .also { updateFile.close() }
     }
@@ -48,7 +46,7 @@ object MD5 {
             try {
                 updateFile.close()
             } catch (e: Exception) {
-                println("Exception on closing MD5 input stream")
+                Napier.e("Exception on closing MD5 input stream", tag = TAG)
                 e.printStackTrace()
             }
         }
