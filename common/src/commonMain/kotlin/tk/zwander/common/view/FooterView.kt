@@ -50,7 +50,7 @@ fun FooterView() {
                         fontSize = 16.sp
                     )
                 )
-                append("Code based on ")
+                append("Based on ")
                 pushStyle(
                     SpanStyle(
                         color = MaterialTheme.colors.primary,
@@ -59,25 +59,6 @@ fun FooterView() {
                 )
                 pushStringAnnotation("SamloaderLink", "https://github.com/nlscc/samloader")
                 append("Samloader")
-                pop()
-            }
-
-            val githubAnnotated = buildAnnotatedString {
-                pushStyle(
-                    SpanStyle(
-                        color = LocalContentColor.current,
-                        fontSize = 16.sp
-                    )
-                )
-                append("Check out the source on ")
-                pushStyle(
-                    SpanStyle(
-                        color = MaterialTheme.colors.primary,
-                        textDecoration = TextDecoration.Underline
-                    )
-                )
-                pushStringAnnotation("GitHubLink", "https://github.com/zacharee/SamloaderKotlin")
-                append("GitHub")
                 pop()
             }
 
@@ -100,16 +81,6 @@ fun FooterView() {
                         }
                 }
             )
-            Spacer(Modifier.height(4.dp))
-            ClickableText(
-                text = githubAnnotated,
-                onClick = {
-                    githubAnnotated.getStringAnnotations("GitHubLink", it, it)
-                        .firstOrNull()?.let { item ->
-                            UrlHandler.launchUrl(item.item)
-                        }
-                }
-            )
         }
 
         Spacer(Modifier.weight(1f))
@@ -118,6 +89,19 @@ fun FooterView() {
             modifier = Modifier.align(Alignment.Bottom)
         ) {
             Spacer(Modifier.weight(1f))
+
+            IconButton(
+                onClick = {
+                    UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
+                }
+            ) {
+                Icon(
+                    imageResource("github.png"), "GitHub",
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+
+            Spacer(Modifier.width(8.dp))
 
             IconButton(
                 onClick = {
