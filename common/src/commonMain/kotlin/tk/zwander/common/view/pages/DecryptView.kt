@@ -1,10 +1,10 @@
-package tk.zwander.common.view
+package tk.zwander.common.view.pages
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +19,9 @@ import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.tools.Crypt
 import tk.zwander.common.util.imageResource
+import tk.zwander.common.view.HybridButton
+import tk.zwander.common.view.MRFLayout
+import tk.zwander.common.view.ProgressInfo
 import kotlin.time.ExperimentalTime
 
 expect object PlatformDecryptView {
@@ -28,7 +31,7 @@ expect object PlatformDecryptView {
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-fun DecryptView(model: DecryptModel) {
+fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
     val canDecrypt = model.fileToDecrypt != null && model.job == null
             && model.fw.isNotBlank() && model.model.isNotBlank() && model.region.isNotBlank()
 
@@ -36,6 +39,7 @@ fun DecryptView(model: DecryptModel) {
 
     Column(
         modifier = Modifier.fillMaxSize()
+            .verticalScroll(scrollState)
     ) {
         val rowSize = remember { mutableStateOf(0.dp) }
         Row(

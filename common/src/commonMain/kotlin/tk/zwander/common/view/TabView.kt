@@ -12,7 +12,8 @@ import androidx.compose.ui.unit.dp
 
 enum class Page {
     DOWNLOADER,
-    DECRYPTER
+    DECRYPTER,
+    HISTORY
 }
 
 @Composable
@@ -34,6 +35,13 @@ fun TabView(page: MutableState<Page>) {
             text = { Text("Decrypter") },
             onClick = {
                 page.value = Page.DECRYPTER
+            }
+        )
+        Tab(
+            selected = page.value == Page.HISTORY,
+            text = { Text("History") },
+            onClick = {
+                page.value = Page.HISTORY
             }
         )
     }

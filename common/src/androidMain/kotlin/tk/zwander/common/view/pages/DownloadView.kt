@@ -1,4 +1,4 @@
-package tk.zwander.common.view
+package tk.zwander.common.view.pages
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope

@@ -1,4 +1,4 @@
-package tk.zwander.common.view
+package tk.zwander.common.view.pages
 
 import com.soywiz.korio.stream.toAsync
 import kotlinx.coroutines.CoroutineScope

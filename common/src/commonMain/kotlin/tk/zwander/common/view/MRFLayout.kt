@@ -26,7 +26,7 @@ import tk.zwander.common.model.DownloadModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Boolean) {
+fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Boolean, showFirmware: Boolean = true) {
     val fontScale = LocalDensity.current.fontScale
     val size = remember { mutableStateOf(0.dp) }
 
@@ -93,14 +93,16 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
         }
     }
 
-    Spacer(Modifier.size(8.dp))
+    if (showFirmware) {
+        Spacer(Modifier.size(8.dp))
 
-    OutlinedTextField(
-        value = model.fw,
-        onValueChange = { model.fw = it.toUpperCase().trim() },
-        label = { Text("Firmware (PDA/CSC/CP/AP)") },
-        modifier = Modifier.fillMaxWidth(),
-        readOnly = !canChangeFirmare,
-        keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
-    )
+        OutlinedTextField(
+            value = model.fw,
+            onValueChange = { model.fw = it.toUpperCase().trim() },
+            label = { Text("Firmware (PDA/CSC/CP/AP)") },
+            modifier = Modifier.fillMaxWidth(),
+            readOnly = !canChangeFirmare,
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
+        )
+    }
 }

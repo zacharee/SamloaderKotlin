@@ -67,8 +67,9 @@ kotlin {
                 api("co.touchlab:stately-common:1.1.4")
                 api("co.touchlab:stately-isolate:1.1.4-a1")
                 api("com.ionspin.kotlin:bignum:0.2.8")
-                api("io.ktor:ktor-client-core:1.6.0-eap-25")
-                api("io.ktor:ktor-client-cio:1.6.0-eap-25")
+                api("io.ktor:ktor-client-core:1.5.2")
+                api("io.ktor:ktor-client-cio:1.5.2")
+                api("org.jetbrains.kotlinx:kotlinx-html:0.7.2")
             }
         }
 
@@ -83,6 +84,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
                 api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
+                api("org.jsoup:jsoup:1.13.1")
             }
         }
 
@@ -97,6 +99,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
                 api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
+                api("org.jsoup:jsoup:1.13.1")
 
                 api("androidx.appcompat:appcompat:1.3.0-beta01")
                 api("androidx.core:core-ktx:1.3.2")
