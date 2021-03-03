@@ -180,7 +180,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             )
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         val boxSource = remember { MutableInteractionSource() }
 
@@ -215,7 +215,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             )
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         MRFLayout(model, canChangeOption, model.manual && canChangeOption)
 

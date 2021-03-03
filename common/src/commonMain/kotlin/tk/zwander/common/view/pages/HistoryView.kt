@@ -96,11 +96,11 @@ fun HistoryView(model: HistoryModel) {
             )
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         MRFLayout(model, model.job == null, model.job == null, false)
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(8.dp))
 
         Box {
             Text(
