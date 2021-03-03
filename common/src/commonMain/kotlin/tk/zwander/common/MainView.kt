@@ -40,7 +40,7 @@ fun MainView() {
 
                 Column(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .weight(1f)
                         .padding(8.dp)
                 ) {
                     Crossfade(
