@@ -3,7 +3,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "0.3.1"
+    id("org.jetbrains.compose") version "0.3.2"
 }
 
 group = "tk.zwander"
