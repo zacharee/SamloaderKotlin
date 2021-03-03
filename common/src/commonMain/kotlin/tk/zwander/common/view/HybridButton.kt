@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import tk.zwander.common.util.DPScale
 
 @Composable
 fun HybridButton(
@@ -31,9 +32,10 @@ fun HybridButton(
     parentSize: Dp
 ) {
     val fontScale = LocalDensity.current.fontScale
+    val dpScale = DPScale.dpScale
 
     BoxWithConstraints {
-        if (parentSize / fontScale >= 800.dp) {
+        if (parentSize / fontScale * dpScale >= 800.dp) {
             OutlinedButton(modifier = modifier, onClick = onClick, enabled = enabled) {
                 Text(text)
             }

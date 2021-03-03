@@ -28,7 +28,8 @@ fun HistoryItem(
                     onValueChange = {},
                     readOnly = true,
                     modifier = Modifier.weight(1f),
-                    label = { Text("Date") }
+                    label = { Text("Date") },
+                    singleLine = true
                 )
 
                 Spacer(Modifier.width(8.dp))
@@ -38,7 +39,8 @@ fun HistoryItem(
                     onValueChange = {},
                     readOnly = true,
                     modifier = Modifier.weight(1f),
-                    label = { Text("Android Version") }
+                    label = { Text("Android Version") },
+                    singleLine = true
                 )
             }
 
@@ -49,7 +51,8 @@ fun HistoryItem(
                 onValueChange = {},
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Firmware") }
+                label = { Text("Firmware") },
+                singleLine = true
             )
         }
     }

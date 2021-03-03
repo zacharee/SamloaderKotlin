@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
 import tk.zwander.common.model.DownloadModel
+import tk.zwander.common.util.DPScale
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -46,7 +47,8 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("Model (e.g. SM-N986U1)") },
                 readOnly = !canChangeOption,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+                singleLine = true
             )
         }
 
@@ -62,11 +64,12 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("Region (e.g. XAA)") },
                 readOnly = !canChangeOption,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+                singleLine = true
             )
         }
 
-        if (size.value / fontScale >= 800.dp) {
+        if (size.value / fontScale * DPScale.dpScale >= 800.dp) {
             Row {
                 Box(
                     modifier = Modifier.weight(0.6f, true)
@@ -102,7 +105,8 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
             label = { Text("Firmware (PDA/CSC/CP/AP)") },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmare,
-            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters)
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+            singleLine = true
         )
     }
 }
