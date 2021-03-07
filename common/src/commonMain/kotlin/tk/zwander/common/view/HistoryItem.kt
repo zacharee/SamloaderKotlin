@@ -33,7 +33,7 @@ fun HistoryItem(
                     Text(
                         text = info.date.format("MMM dd, yyyy"),
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.align(Alignment.CenterVertically),
+                        modifier = Modifier.align(Alignment.Bottom),
                         fontSize = 20.sp,
                         lineHeight = 20.sp
                     )
