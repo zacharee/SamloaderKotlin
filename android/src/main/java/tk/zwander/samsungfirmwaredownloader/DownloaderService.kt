@@ -5,17 +5,19 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.drawable.VectorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.documentfile.provider.DocumentFile
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
-import tk.zwander.common.util.getBinder
-import tk.zwander.common.util.inputAsync
-import tk.zwander.common.util.putBinder
+import tk.zwander.common.util.*
 import tk.zwander.common.view.pages.PlatformDecryptView
 import tk.zwander.common.view.pages.PlatformDownloadView
 import kotlin.coroutines.resume
@@ -60,7 +62,7 @@ class DownloaderService : Service() {
         val foregroundNotification = NotificationCompat.Builder(this, "progress")
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.notification_progress_text))
-            .setSmallIcon(R.drawable.download)
+            .setSmallIcon(IconCompat.createWithBitmap(imageFromResource("download.png")))
             .build()
 
         startForeground(100, foregroundNotification)

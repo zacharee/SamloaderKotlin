@@ -20,6 +20,7 @@ repositories {
 android {
     compileSdkVersion(29)
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].resources.srcDir("src/commonMain/resources")
     defaultConfig {
         minSdkVersion(24)
         targetSdkVersion(29)
