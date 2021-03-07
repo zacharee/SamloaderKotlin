@@ -9,7 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tk.zwander.common.data.HistoryInfo
-import tk.zwander.common.util.imageResource
+import tk.zwander.common.util.vectorResource
 
 @Composable
 fun HistoryItem(
@@ -58,7 +58,7 @@ fun HistoryItem(
                         modifier = Modifier.align(Alignment.Bottom)
                             .size(32.dp)
                     ) {
-                        Icon(imageResource("download.png"), "Download")
+                        Icon(vectorResource("download.xml"), "Download")
                     }
 
                     Spacer(Modifier.width(8.dp))
@@ -70,7 +70,7 @@ fun HistoryItem(
                         modifier = Modifier.align(Alignment.Bottom)
                             .size(32.dp)
                     ) {
-                        Icon(imageResource("decrypt.png"), "Decrypt")
+                        Icon(vectorResource("decrypt.xml"), "Decrypt")
                     }
                 }
 

@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.util.getFirmwareHistoryString
-import tk.zwander.common.util.imageResource
+import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HistoryItem
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
@@ -71,7 +71,7 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                 enabled = canCheckHistory,
                 text = "Check History",
                 description = "Check History",
-                icon = imageResource("refresh.png"),
+                vectorIcon = vectorResource("refresh.xml"),
                 parentSize = rowSize.value
             )
 
@@ -94,7 +94,7 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                 enabled = model.job != null,
                 text = "Cancel",
                 description = "Cancel",
-                icon = imageResource("cancel.png"),
+                vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )
         }

@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.tools.Crypt
-import tk.zwander.common.util.imageResource
+import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
 import tk.zwander.common.view.ProgressInfo
@@ -69,7 +69,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                 enabled = canDecrypt,
                 text = "Decrypt",
                 description = "Decrypt Firmware",
-                icon = imageResource("decrypt.png"),
+                vectorIcon = vectorResource("decrypt.xml"),
                 parentSize = rowSize.value
             )
             Spacer(Modifier.width(8.dp))
@@ -91,7 +91,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                 enabled = canChangeOption,
                 text = "Open File",
                 description = "Open File to Decrypt",
-                icon = imageResource("open.png"),
+                vectorIcon = vectorResource("open.xml"),
                 parentSize = rowSize.value
             )
             Spacer(Modifier.weight(1f))
@@ -102,7 +102,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                 enabled = model.job != null,
                 text = "Cancel",
                 description = "Cancel",
-                icon = imageResource("cancel.png"),
+                vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )
         }

@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tk.zwander.common.util.UrlHandler
-import tk.zwander.common.util.imageResource
+import tk.zwander.common.util.vectorResource
 
 @Composable
 fun FooterView() {
@@ -96,7 +96,7 @@ fun FooterView() {
                 }
             ) {
                 Icon(
-                    imageResource("github.png"), "GitHub",
+                    vectorResource("github.xml"), "GitHub",
                     modifier = Modifier.padding(8.dp)
                 )
             }
@@ -109,7 +109,7 @@ fun FooterView() {
                 },
             ) {
                 Icon(
-                    imageResource("twitter.png"), "Twitter",
+                    vectorResource("twitter.xml"), "Twitter",
                     modifier = Modifier.padding(8.dp)
                 )
             }
@@ -122,7 +122,7 @@ fun FooterView() {
                 },
             ) {
                 Icon(
-                    imageResource("patreon.png"), "Patreon",
+                    vectorResource("patreon.xml"), "Patreon",
                     modifier = Modifier.padding(8.dp)
                 )
             }

@@ -1,22 +1,14 @@
 package tk.zwander.common.util
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.VectorDrawable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.vectorResource
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import org.xml.sax.InputSource
 import tk.zwander.common.util.jetbrains.parseVectorRoot
-import tk.zwander.samsungfirmwaredownloader.App
 import java.io.InputStream
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -51,11 +43,20 @@ fun imageFromResource(path: String): Bitmap {
     )
 }
 
-fun vectorFromResource(path: String): VectorDrawable {
-    return VectorDrawableCompat.createFromResourceStream(
-        null, null,
-        Thread.currentThread().contextClassLoader!!
-            .getResourceAsStream(path),
-        null, null
-    ) as VectorDrawable
-}
+//Non-functional because of how Android works
+//fun Context.vectorFromResource(path: String): Drawable {
+//    return VectorDrawableCompat.createFromXml(
+//        null,
+//        XmlPullParserFactory
+//            .newInstance()
+//            .apply {
+//                this.isNamespaceAware = true
+//            }
+//            .newPullParser()
+//            .apply {
+//                setInput(
+//                    Thread.currentThread().contextClassLoader!!
+//                        .getResourceAsStream(path).reader()
+//                )
+//            })
+//}

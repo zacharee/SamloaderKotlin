@@ -20,7 +20,7 @@ import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.MD5
-import tk.zwander.common.util.imageResource
+import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
 import tk.zwander.common.view.ProgressInfo
@@ -138,7 +138,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     }
                 },
                 enabled = canDownload,
-                icon = imageResource("download.png"),
+                vectorIcon = vectorResource("download.xml"),
                 text = "Download",
                 description = "Download Firmware",
                 parentSize = rowSize.value
@@ -164,7 +164,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 },
                 enabled = canCheckVersion,
                 text = "Check for Updates",
-                icon = imageResource("refresh.png"),
+                vectorIcon = vectorResource("refresh.xml"),
                 description = "Check for Firmware Updates",
                 parentSize = rowSize.value
             )
@@ -178,7 +178,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 enabled = model.job != null,
                 text = "Cancel",
                 description = "Cancel",
-                icon = imageResource("cancel.png"),
+                vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )
         }

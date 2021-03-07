@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -15,7 +16,8 @@ import tk.zwander.common.util.DPScale
 
 @Composable
 fun HybridButton(
-    icon: ImageBitmap,
+    icon: ImageBitmap? = null,
+    vectorIcon: ImageVector? = null,
     description: String?,
     text: String,
     modifier: Modifier = Modifier,
@@ -33,7 +35,23 @@ fun HybridButton(
             }
         } else {
             IconButton(modifier = modifier, onClick = onClick, enabled = enabled) {
-                Icon(bitmap = icon, contentDescription = description)
+                when {
+                    icon != null -> {
+                        Icon(
+                            bitmap = icon,
+                            contentDescription = description,
+                        )
+                    }
+                    vectorIcon != null -> {
+                        Icon(
+                            imageVector = vectorIcon,
+                            contentDescription = description,
+                        )
+                    }
+                    else -> {
+                        throw IllegalArgumentException("Either icon or vectorIcon must not be null.")
+                    }
+                }
             }
         }
     }

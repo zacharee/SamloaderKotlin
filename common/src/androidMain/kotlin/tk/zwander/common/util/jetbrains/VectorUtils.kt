@@ -242,7 +242,7 @@ private val Element.childrenSequence get() = sequence<Node> {
     }
 }
 
-private const val ALPHA_MASK = 0xFF000000.toInt()
+private const val ALPHA_MASK = 0xFF000000
 
 // parseColorValue is copied from Android:
 // https://cs.android.com/android-studio/platform/tools/base/+/05fadd8cb2aaafb77da02048c7a240b2147ff293:sdk-common/src/main/java/com/android/ide/common/vectordrawable/VdUtil.kt;l=58
@@ -255,7 +255,34 @@ private const val ALPHA_MASK = 0xFF000000.toInt()
 internal fun parseColorValue(color: String): Int {
     require(color.startsWith("#")) { "Invalid color value $color" }
 
-    return android.graphics.Color.parseColor(color)
+    return when (color.length) {
+        7 -> {
+            // #RRGGBB
+            java.lang.Long.parseLong(color.substring(1), 16) or ALPHA_MASK
+        }
+        9 -> {
+            // #AARRGGBB
+            java.lang.Long.parseLong(color.substring(1), 16)
+        }
+        4 -> {
+            // #RGB
+            val v = java.lang.Long.parseLong(color.substring(1), 16)
+            var k = (v shr 8 and 0xF) * 0x110000
+            k = k or (v shr 4 and 0xF) * 0x1100
+            k = k or (v and 0xF) * 0x11
+            k or ALPHA_MASK
+        }
+        5 -> {
+            // #ARGB
+            val v = java.lang.Long.parseLong(color.substring(1), 16)
+            var k = (v shr 12 and 0xF) * 0x11000000
+            k = k or (v shr 8 and 0xF) * 0x110000
+            k = k or (v shr 4 and 0xF) * 0x1100
+            k = k or (v and 0xF) * 0x11
+            k or ALPHA_MASK
+        }
+        else -> ALPHA_MASK
+    }.toInt()
 }
 
 internal fun parseFillType(fillType: String): PathFillType = when (fillType) {
