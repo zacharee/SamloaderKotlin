@@ -50,7 +50,25 @@ fun MainView() {
                         when (it) {
                             Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
                             Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
-                            Page.HISTORY -> HistoryView(historyModel)
+                            Page.HISTORY -> HistoryView(
+                                historyModel,
+                                { model, region, fw ->
+                                    downloadModel.manual = true
+                                    downloadModel.model = model
+                                    downloadModel.region = region
+                                    downloadModel.fw = fw
+
+                                    page.value = Page.DOWNLOADER
+                                },
+                                { model, region, fw ->
+                                    decryptModel.fileToDecrypt = null
+                                    decryptModel.model = model
+                                    decryptModel.region = region
+                                    decryptModel.fw = fw
+
+                                    page.value = Page.DECRYPTER
+                                }
+                            )
                         }
                     }
                 }

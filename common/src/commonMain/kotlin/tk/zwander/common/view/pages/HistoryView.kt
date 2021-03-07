@@ -1,7 +1,9 @@
 package tk.zwander.common.view.pages
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -27,8 +29,9 @@ expect object PlatformHistoryView {
     suspend fun parseHistory(body: String): List<HistoryInfo>
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HistoryView(model: HistoryModel) {
+fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String, fw: String) -> Unit, onDecrypt: (model: String, region: String, fw: String) -> Unit) {
     val canCheckHistory = model.model.isNotBlank()
             && model.region.isNotBlank() && model.job == null
 
@@ -107,12 +110,16 @@ fun HistoryView(model: HistoryModel) {
                 text = model.statusText
             )
 
-            LazyColumn(
+            LazyVerticalGrid(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                cells = GridCells.Adaptive(400.dp)
             ) {
-                items(model.historyItems) {
-                    HistoryItem(it)
+                items(model.historyItems) { historyInfo ->
+                    HistoryItem(
+                        historyInfo,
+                        { onDownload(model.model, model.region, it) },
+                        { onDecrypt(model.model, model.region, it) }
+                    )
                 }
             }
         }
