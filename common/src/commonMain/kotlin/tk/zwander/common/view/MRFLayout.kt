@@ -42,6 +42,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
                     model.model = it.toUpperCase().trim()
                     if ((model is DownloadModel && !model.manual)) {
                         model.fw = ""
+                        model.osCode = ""
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
@@ -59,6 +60,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
                     model.region = it.toUpperCase().trim()
                     if ((model is DownloadModel && !model.manual)) {
                         model.fw = ""
+                        model.osCode = ""
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
