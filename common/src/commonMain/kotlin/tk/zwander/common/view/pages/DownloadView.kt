@@ -149,14 +149,17 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             HybridButton(
                 onClick = {
                     model.job = model.scope.launch {
-                        model.fw = try {
+                        val (fw, os) = try {
                             VersionFetch.getLatestVer(model.model, model.region).also {
                                 model.endJob("")
                             }
                         } catch (e: Exception) {
                             model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${e.message}")
-                            ""
+                            "" to ""
                         }
+
+                        model.fw = fw
+                        model.osCode = os
                     }
                 },
                 enabled = canCheckVersion,
@@ -218,6 +221,14 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
         Spacer(Modifier.height(8.dp))
 
         MRFLayout(model, canChangeOption, model.manual && canChangeOption)
+
+        if (!model.manual && model.osCode.isNotEmpty()) {
+            Spacer(Modifier.height(4.dp))
+
+            Text(
+                text = "OS Version: ${model.osCode}"
+            )
+        }
 
         Spacer(Modifier.height(16.dp))
 
