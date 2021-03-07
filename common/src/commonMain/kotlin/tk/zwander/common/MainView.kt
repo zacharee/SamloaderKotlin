@@ -54,6 +54,7 @@ fun MainView() {
                                 historyModel,
                                 { model, region, fw ->
                                     downloadModel.manual = true
+                                    downloadModel.osCode = ""
                                     downloadModel.model = model
                                     downloadModel.region = region
                                     downloadModel.fw = fw
