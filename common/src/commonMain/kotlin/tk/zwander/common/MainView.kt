@@ -7,6 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
@@ -42,6 +43,8 @@ fun MainView() {
                     modifier = Modifier
                         .weight(1f)
                         .padding(8.dp)
+                        .widthIn(max = 1200.dp)
+                        .align(Alignment.CenterHorizontally)
                 ) {
                     Crossfade(
                         targetState = page.value,
