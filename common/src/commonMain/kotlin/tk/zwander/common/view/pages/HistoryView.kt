@@ -141,7 +141,7 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                                 )
                             )
                             pushStringAnnotation("SammobileLink", "https://sammobile.com")
-                            append("Sammobile")
+                            append("SamMobile")
                             pop()
                         }
 
