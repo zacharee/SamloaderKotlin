@@ -5,7 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,12 +16,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.model.HistoryModel
+import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HistoryItem
@@ -106,20 +114,55 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
         Spacer(Modifier.height(8.dp))
 
         Box {
-            Text(
-                text = model.statusText
-            )
+            if (model.statusText.isNotBlank()) {
+                Text(
+                    text = model.statusText,
+                )
+            }
 
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxWidth(),
-                cells = GridCells.Adaptive(400.dp)
-            ) {
-                items(model.historyItems) { historyInfo ->
-                    HistoryItem(
-                        historyInfo,
-                        { onDownload(model.model, model.region, it) },
-                        { onDecrypt(model.model, model.region, it) }
-                    )
+            if (model.historyItems.isNotEmpty()) {
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxWidth(),
+                    cells = GridCells.Adaptive(400.dp)
+                ) {
+                    item {
+                        val sammobileSource = buildAnnotatedString {
+                            pushStyle(
+                                SpanStyle(
+                                    color = LocalContentColor.current,
+                                    fontSize = 16.sp
+                                )
+                            )
+                            append("Source: ")
+                            pushStyle(
+                                SpanStyle(
+                                    color = MaterialTheme.colors.primary,
+                                    textDecoration = TextDecoration.Underline
+                                )
+                            )
+                            pushStringAnnotation("SammobileLink", "https://sammobile.com")
+                            append("Sammobile")
+                            pop()
+                        }
+
+                        ClickableText(
+                            text = sammobileSource,
+                            modifier = Modifier.padding(start = 4.dp),
+                            onClick = {
+                                sammobileSource.getStringAnnotations("SammobileLink", it, it)
+                                    .firstOrNull()?.let { item ->
+                                        UrlHandler.launchUrl(item.item)
+                                    }
+                            }
+                        )
+                    }
+                    items(model.historyItems) { historyInfo ->
+                        HistoryItem(
+                            historyInfo,
+                            { onDownload(model.model, model.region, it) },
+                            { onDecrypt(model.model, model.region, it) }
+                        )
+                    }
                 }
             }
         }
