@@ -14,6 +14,7 @@ import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
 import kotlinx.io.core.toByteArray
+import tk.zwander.common.util.Averager
 import kotlin.time.*
 
 /**
@@ -184,7 +185,7 @@ object CryptUtils {
                 var len: Int
                 var count = 0L
 
-                val chunk = ArrayList<Triple<Long, Long, Long>>(1000)
+                val averager = Averager()
 
                 while (this.isActive) {
                     val nano = measureTime {
@@ -200,19 +201,17 @@ object CryptUtils {
 
                     if (len <= 0) break
 
-                    val currentNano = Clock.System.now().toEpochMilliseconds() * 1000 * 1000
-                    chunk.add(Triple(nano, len.toLong(), currentNano))
-
-                    chunk.removeAll { currentNano - it.third > 1000 * 1000 * 1000 }
-
-                    val timeAvg = chunk.sumOf { it.first }
-                    val lenAvg = chunk.sumOf { it.second }
+                    val lenF = len
+                    val totalLenF = count
 
                     async {
+                        averager.update(nano, lenF.toLong())
+                        val (totalTime, totalRead, _) = averager.sum()
+
                         progressCallback(
-                            count,
+                            totalLenF,
                             length,
-                            (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong()
+                            (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
                         )
                     }
                 }
@@ -241,7 +240,7 @@ object CryptUtils {
                 var len: Int
                 var count = 0L
 
-                val chunk = ArrayList<Triple<Long, Long, Long>>(1000)
+                val averager = Averager()
 
                 while (isActive) {
                     val nano = measureTime {
@@ -255,16 +254,18 @@ object CryptUtils {
 
                     if (len <= 0) break
 
-                    val currentNano = Clock.System.now().toEpochMilliseconds() * 1000 * 1000
-
-                    chunk.add(Triple(nano, len.toLong(), currentNano))
-                    chunk.removeAll { currentNano - it.third > 1000 * 1000 * 1000 }
-
-                    val timeAvg = chunk.sumOf { it.first }
-                    val lenAvg = chunk.sumOf { it.second }
+                    val lenF = len
+                    val totalLenF = count
 
                     async {
-                        progressCallback(count, encSize, (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong())
+                        averager.update(nano, lenF.toLong())
+                        val (totalTime, totalRead, _) = averager.sum()
+
+                        progressCallback(
+                            totalLenF,
+                            encSize,
+                            (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
+                        )
                     }
                 }
             }

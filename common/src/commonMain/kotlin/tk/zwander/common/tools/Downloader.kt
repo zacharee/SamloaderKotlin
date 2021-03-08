@@ -7,6 +7,7 @@ import com.soywiz.korio.stream.AsyncOutputStream
 import io.ktor.utils.io.*
 import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
+import tk.zwander.common.util.Averager
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
@@ -37,7 +38,7 @@ object Downloader {
                 var len: Int
                 var totalLen = 0L
 
-                val chunk = IsolateState { ArrayList<Triple<Long, Long, Long>>(1000) }
+                val averager = Averager()
 
                 try {
                     while (isActive) {
@@ -52,27 +53,19 @@ object Downloader {
 
                         if (len <= 0) break
 
-                        val currentNano = Clock.System.now().toEpochMilliseconds() * 1000 * 1000
                         val lenF = len
                         val totalLenF = totalLen
 
                         async {
-                            chunk.access { chunk ->
-                                chunk.add(Triple(nano, lenF.toLong(), currentNano))
-                                chunk.removeAll { currentNano - it.third > 1000 * 1000 * 1000 }
+                            averager.update(nano, lenF.toLong())
+                            val (totalTime, totalRead, _) = averager.sum()
 
-                                val chunkSnapshot = ArrayList(chunk)
-
-                                val timeAvg = chunkSnapshot.sumOf { it.first }
-                                val lenAvg = chunkSnapshot.sumOf { it.second }
-
-                                this@coroutineScope.launchImmediately {
-                                    progressCallback(
-                                        totalLenF + outputSize,
-                                        size,
-                                        (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong()
-                                    )
-                                }
+                            this@coroutineScope.launchImmediately {
+                                progressCallback(
+                                    totalLenF + outputSize,
+                                    size,
+                                    (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
+                                )
                             }
                         }
                     }
