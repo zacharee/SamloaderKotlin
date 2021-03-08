@@ -71,6 +71,7 @@ kotlin {
                 api("io.ktor:ktor-client-core:1.5.2")
                 api("io.ktor:ktor-client-cio:1.5.2")
                 api("org.jetbrains.kotlinx:kotlinx-html:0.7.2")
+                api("net.devrieze:xmlutil:0.80.1")
             }
         }
 

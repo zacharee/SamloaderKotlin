@@ -2,6 +2,7 @@ package tk.zwander.common.tools
 
 import com.github.aakira.napier.Napier
 import com.soywiz.korio.lang.format
+import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
 import com.soywiz.korio.util.checksum.CRC32
@@ -14,13 +15,6 @@ import kotlinx.coroutines.*
 import kotlinx.datetime.Clock
 import kotlinx.io.core.toByteArray
 import kotlin.time.*
-
-/**
- * Delegate XML processing to platform until there's an MPP library for it.
- */
-expect object PlatformCrypt {
-    fun getFwAndLogic(response: String): Pair<String, String>
-}
 
 /**
  * Handle encryption and decryption stuff.
@@ -143,7 +137,20 @@ object CryptUtils {
         val request = Request.createBinaryInform(version, model, region, client.nonce)
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
-        val (fwVer, logicVal) = PlatformCrypt.getFwAndLogic(response)
+        val responseXml = Xml(response)
+
+        val fwVer = responseXml.child("FUSBody")
+            ?.child("Results")
+            ?.child("LATEST_FW_VERSION")
+            ?.child("Data")
+            ?.text!!
+
+        val logicVal = responseXml.child("FUSBody")
+            ?.child("Put")
+            ?.child("LOGIC_VALUE_FACTORY")
+            ?.child("Data")
+            ?.text!!
+
         val decKey = Request.getLogicCheck(fwVer, logicVal)
 
         return MD5.digest(decKey.toByteArray()).bytes

@@ -1,16 +1,9 @@
 package tk.zwander.common.tools
 
+import com.soywiz.korio.serialization.xml.Xml
+import com.soywiz.korio.serialization.xml.buildXml
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.data.BinaryFileInfo
-
-/**
- * Delegate XML creation to the platform until there's an MPP library.
- */
-expect object PlatformRequest {
-    fun createBinaryInform(fw: String, model: String, region: String, nonce: String): String
-    fun createBinaryInit(fileName: String, nonce: String): String
-    fun getBinaryInfo(response: String): BinaryFileInfo
-}
 
 /**
  * Handle some requests to Samsung's servers.
@@ -40,7 +33,54 @@ object Request {
      * @return the needed XML.
      */
     fun createBinaryInform(fw: String, model: String, region: String, nonce: String): String {
-        return PlatformRequest.createBinaryInform(fw, model, region, nonce)
+        val xml = buildXml("FUSMsg") {
+            node("FUSHdr") {
+                node("ProtoVer") {
+                    text("1.0")
+                }
+            }
+            node("FUSBody") {
+                node("Put") {
+                    node("ACCESS_MODE") {
+                        node("Data") {
+                            text("2")
+                        }
+                    }
+                    node("BINARY_NATURE") {
+                        node("Data") {
+                            text("1")
+                        }
+                    }
+                    node("CLIENT_PRODUCT") {
+                        node("Data") {
+                            text("Smart Switch")
+                        }
+                    }
+                    node("DEVICE_FW_VERSION") {
+                        node("Data") {
+                            text(fw)
+                        }
+                    }
+                    node("DEVICE_LOCAL_CODE") {
+                        node("Data") {
+                            text(region)
+                        }
+                    }
+                    node("DEVICE_MODEL_NAME") {
+                        node("Data") {
+                            text(model)
+                        }
+                    }
+                    node("LOGIC_CHECK") {
+                        node("Data") {
+                            text(getLogicCheck(fw, nonce))
+                        }
+                    }
+                }
+            }
+        }
+
+        return xml.outerXml
     }
 
     /**
@@ -50,7 +90,31 @@ object Request {
      * @return the needed XML.
      */
     fun createBinaryInit(fileName: String, nonce: String): String {
-        return PlatformRequest.createBinaryInit(fileName, nonce)
+        val xml = buildXml("FUSMsg") {
+            node("FUSHdr") {
+                node("ProtoVer") {
+                    text("1.0")
+                }
+            }
+            node("FUSBody") {
+                node("Put") {
+                    node("BINARY_FILE_NAME") {
+                        node("Data") {
+                            text(fileName)
+                        }
+                    }
+                    node("LOGIC_CHECK") {
+                        node("Data") {
+                            val special = fileName.split(".").first()
+                                .run { slice(this.length - (16 % this.length)..this.lastIndex) }
+                            text(getLogicCheck(special, nonce))
+                        }
+                    }
+                }
+            }
+        }
+        
+        return xml.outerXml
     }
 
     /**
@@ -64,7 +128,42 @@ object Request {
     suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): BinaryFileInfo {
         val request = createBinaryInform(fw, model, region, client.nonce)
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
+        
+        val responseXml = Xml(response)
+        
+        val status = responseXml.child("FUSBody")
+            ?.child("Results")
+            ?.child("Status")
+            ?.text?.toInt()!!
+        
+        if (status != 200) {
+            throw Exception("Bad return status: $status")
+        }
+        
+        val size = responseXml.child("FUSBody")
+            ?.child("Put")
+            ?.child("BINARY_BYTE_SIZE")
+            ?.child("Data")
+            ?.text?.toLong()!!
 
-        return PlatformRequest.getBinaryInfo(response)
+        val fileName = responseXml.child("FUSBody")
+            ?.child("Put")
+            ?.child("BINARY_NAME")
+            ?.child("Data")
+            ?.text!!
+
+        val path = responseXml.child("FUSBody")
+            ?.child("Put")
+            ?.child("MODEL_PATH")
+            ?.child("Data")
+            ?.text!!
+
+        val crc32 = responseXml.child("FUSBody")
+            ?.child("Put")
+            ?.child("BINARY_CRC")
+            ?.child("Data")
+            ?.text?.toLong()
+
+        return BinaryFileInfo(path, fileName, size, crc32)
     }
 }

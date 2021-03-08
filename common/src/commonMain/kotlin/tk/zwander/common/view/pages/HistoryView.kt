@@ -79,7 +79,7 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                                       model.historyItems = parsed
                                       model.endJob("")
                                   } catch (e: Exception) {
-                                      model.endJob("Error retrieving firmware history. Make sure the model and region are correct.")
+                                      model.endJob("Error retrieving firmware history. Make sure the model and region are correct.\nError: ${e.message}")
                                   }
                               }
                           }

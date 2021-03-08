@@ -4,7 +4,6 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +13,7 @@ import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
+import tk.zwander.common.tools.Request
 import tk.zwander.common.view.*
 import tk.zwander.common.view.pages.DecryptView
 import tk.zwander.common.view.pages.DownloadView

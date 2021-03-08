@@ -2,14 +2,8 @@ package tk.zwander.common.tools
 
 import com.soywiz.korio.net.http.Http
 import com.soywiz.korio.net.http.HttpClient
+import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.stream.readAll
-
-/**
- * Delegate XML creation to the platform until there's a proper MPP library.
- */
-expect object PlatformVersionFetch {
-    suspend fun getLatestVersion(model: String, region: String, response: String): Pair<String, String>
-}
 
 /**
  * Handle fetching the latest version for a given model and region.
@@ -28,6 +22,29 @@ object VersionFetch {
             "https://fota-cloud-dn.ospserver.net/firmware/${region}/${model}/version.xml"
         )
 
-        return PlatformVersionFetch.getLatestVersion(model, region, response.content.readAll().decodeToString())
+        val responseString = response.content.readAll().decodeToString()
+        val responseXml = Xml(responseString)
+
+        if (responseXml.name == "Error") {
+            val code = responseXml.child("Code")!!.text
+            val message = responseXml.child("Message")!!.text
+
+            throw IllegalStateException("Code: ${code}, Message: $message")
+        }
+
+        val latest = responseXml.child("firmware")
+            ?.child("version")
+            ?.child("latest")!!
+
+        val vc = latest.text.split("/").toMutableList()
+
+        if (vc.size == 3) {
+            vc.add(vc[0])
+        }
+        if (vc[2] == "") {
+            vc[2] = vc[0]
+        }
+
+        return vc.joinToString("/") to (latest.attribute("o") ?: "")
     }
 }
