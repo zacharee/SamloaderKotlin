@@ -1,22 +1,19 @@
 package tk.zwander.common.data
 
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncOutputStream
-import kotlinx.io.core.Input
-import kotlinx.io.core.Output
-
+/**
+ * Holds a reference to an encrypted firmware file along with
+ * where the decrypted version should be placed.
+ */
 data class DecryptFileInfo(
-    val fileName: String,
-    val inputPath: String,
-    val input: AsyncInputStream,
-    val inputSize: Long,
-    val output: AsyncOutputStream
+    val encFile: IPlatformFile,
+    val decFile: IPlatformFile
 )
 
+/**
+ * Holds a reference to where an encrypted firmware file should
+ * be downloaded along with where it should be decrypted.
+ */
 data class DownloadFileInfo(
-    val path: String,
-    val output: AsyncOutputStream,
-    val input: () -> AsyncInputStream,
-    val existingSize: Long,
-    val decryptOutput: AsyncOutputStream
+    val downloadFile: IPlatformFile,
+    val decryptFile: IPlatformFile
 )

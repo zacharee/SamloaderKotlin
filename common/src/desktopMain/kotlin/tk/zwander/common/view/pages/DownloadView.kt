@@ -3,16 +3,16 @@ package tk.zwander.common.view.pages
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DownloadFileInfo
-import tk.zwander.common.util.toAsync
-import tk.zwander.common.util.inputAsync
+import tk.zwander.common.data.PlatformFile
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 
 actual object PlatformDownloadView {
-    actual suspend fun getInput(fileName: String, callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit) {
+    actual suspend fun getInput(
+        fileName: String,
+        callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit
+    ) {
         coroutineScope {
             val dialog = FileDialog(Frame())
             dialog.mode = FileDialog.SAVE
@@ -23,15 +23,15 @@ actual object PlatformDownloadView {
                 callback(null)
             } else {
                 val outputFile = File(dialog.directory, dialog.file)
-                val decFile = File(dialog.directory, fileName.replace(".enc2", "").replace(".enc4", ""))
+                val decFile =
+                    File(dialog.directory, fileName.replace(".enc2", "").replace(".enc4", ""))
 
-                callback(DownloadFileInfo(
-                    outputFile.absolutePath,
-                    FileOutputStream(outputFile, true).toAsync(),
-                    { FileInputStream(outputFile).inputAsync() },
-                    outputFile.length(),
-                    FileOutputStream(decFile).toAsync()
-                ))
+                callback(
+                    DownloadFileInfo(
+                        PlatformFile(outputFile),
+                        PlatformFile(decFile)
+                    )
+                )
             }
         }
     }

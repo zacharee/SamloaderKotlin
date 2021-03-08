@@ -50,15 +50,17 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         val info = model.fileToDecrypt!!
+                        val inputFile = info.encFile
+                        val outputFile = info.decFile
 
-                        val key = if (info.fileName.endsWith(".enc2")) Crypt.getV2Key(
+                        val key = if (inputFile.name.endsWith(".enc2")) Crypt.getV2Key(
                             model.fw,
                             model.model,
                             model.region
                         ) else
                             Crypt.getV4Key(model.fw, model.model, model.region)
 
-                        Crypt.decryptProgress(info.input, info.output, key, info.inputSize) { current, max, bps ->
+                        Crypt.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.length) { current, max, bps ->
                             model.progress = current to max
                             model.speed = bps
                         }
@@ -78,7 +80,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                     model.scope.launch {
                         PlatformDecryptView.getInput { info ->
                             if (info != null) {
-                                if (!info.fileName.endsWith(".enc2") && !info.fileName.endsWith(".enc4")) {
+                                if (!info.encFile.name.endsWith(".enc2") && !info.encFile.name.endsWith(".enc4")) {
                                     model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
                                 } else {
                                     model.fileToDecrypt = info
@@ -117,7 +119,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
             modifier = Modifier.fillMaxWidth()
         ) {
             OutlinedTextField(
-                value = model.fileToDecrypt?.inputPath ?: "",
+                value = model.fileToDecrypt?.encFile?.absolutePath ?: "",
                 onValueChange = {},
                 label = { Text("File") },
                 modifier = Modifier.weight(1f),

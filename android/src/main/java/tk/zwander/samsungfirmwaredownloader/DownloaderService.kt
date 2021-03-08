@@ -13,16 +13,29 @@ import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
+import tk.zwander.common.data.PlatformUriFile
 import tk.zwander.common.util.*
 import tk.zwander.common.view.pages.PlatformDecryptView
 import tk.zwander.common.view.pages.PlatformDownloadView
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+/**
+ * A Service to manage downloading and decrypting on Android. This is used mostly to just keep the
+ * app running when it's in the background. It will run as long as the app is running.
+ *
+ * TODO: Maybe this should be completely separate from the Activity, so the app can be cleared
+ * TODO: from Recents and still function?
+ */
 class DownloaderService : Service() {
     companion object {
         const val EXTRA_ACTIVITY_CALLBACK = "activity_callback"
 
+        /**
+         * Start the Service.
+         * @param context a Context object.
+         * @param callback the MainActivity callback.
+         */
         fun start(context: Context, callback: IMainActivity) {
             val startIntent = Intent(context, DownloaderService::class.java)
             startIntent.putBinder(EXTRA_ACTIVITY_CALLBACK, callback.asBinder())
@@ -30,6 +43,10 @@ class DownloaderService : Service() {
             ContextCompat.startForegroundService(context, startIntent)
         }
 
+        /**
+         * Stop the Service.
+         * @param context a Context object.
+         */
         fun stop(context: Context) {
             val stopIntent = Intent(context, DownloaderService::class.java)
 
@@ -37,9 +54,13 @@ class DownloaderService : Service() {
         }
     }
 
+    /**
+     * Used to communicate with MainActivity.
+     */
     private var activityCallback: IMainActivity? = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        //Retrieve the callback.
         activityCallback = IMainActivity.Stub.asInterface(
             intent.getBinder(EXTRA_ACTIVITY_CALLBACK)
         )
@@ -49,18 +70,21 @@ class DownloaderService : Service() {
     override fun onCreate() {
         super.onCreate()
 
+        //Create the notification channel if applicable.
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
             (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
                 .createNotificationChannel(NotificationChannel("progress", getString(R.string.notification_progress_channel_name),
                     NotificationManager.IMPORTANCE_LOW))
         }
 
+        //Create the foreground notification.
         val foregroundNotification = NotificationCompat.Builder(this, "progress")
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.notification_progress_text))
             .setSmallIcon(R.mipmap.ic_launcher_foreground)
             .build()
 
+        //Start in the foreground.
         startForeground(100, foregroundNotification)
 
         //TODO: This is an absolute mess and hopefully there will be a way to
@@ -93,18 +117,9 @@ class DownloaderService : Service() {
             val dec =
                 dir.findFile(decName) ?: dir.createFile("application/zip", decName) ?: return@input
 
-            val output = contentResolver.openOutputStream(enc.uri, "wa").inputAsync()
-            val input = { contentResolver.openInputStream(enc.uri).inputAsync() }
-            val decOutput = contentResolver.openOutputStream(dec.uri).inputAsync()
-
             callback(
-                DownloadFileInfo(
-                    inputUri.toString(),
-                    output,
-                    input,
-                    enc.length(),
-                    decOutput
-                )
+                DownloadFileInfo(PlatformUriFile(this@DownloaderService, enc),
+                    PlatformUriFile(this@DownloaderService, dec))
             )
         }
 
@@ -141,15 +156,10 @@ class DownloaderService : Service() {
             val outputFile =
                 DocumentFile.fromSingleUri(this@DownloaderService, outputUri!!) ?: return@input
 
-            val output = contentResolver.openOutputStream(outputFile.uri, "w").inputAsync()
-            val input = contentResolver.openInputStream(inputFile.uri).inputAsync()
             callback(
                 DecryptFileInfo(
-                    inputFile.name!!,
-                    inputFile.uri.toString(),
-                    input,
-                    inputFile.length(),
-                    output
+                    PlatformUriFile(this@DownloaderService, inputFile),
+                    PlatformUriFile(this@DownloaderService, outputFile)
                 )
             )
         }

@@ -104,6 +104,7 @@ kotlin {
 
                 api("androidx.appcompat:appcompat:1.3.0-beta01")
                 api("androidx.core:core-ktx:1.3.2")
+                api("androidx.documentfile:documentfile:1.0.1")
             }
         }
     }

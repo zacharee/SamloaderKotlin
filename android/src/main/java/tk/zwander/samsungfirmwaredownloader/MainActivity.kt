@@ -12,20 +12,23 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
-import androidx.documentfile.provider.DocumentFile
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.MainView
 import tk.zwander.common.data.*
-import tk.zwander.common.util.inputAsync
 import tk.zwander.common.view.*
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 import kotlin.time.ExperimentalTime
 
+/**
+ * The Activity to show the downloader UI.
+ */
 @ExperimentalTime
 @OptIn(DangerousInternalIoApi::class)
 class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+    /**
+     * Set whenever the DownloaderService needs to select a file or folder.
+     * Called once the user makes a selection.
+     */
     private var openCallback: IOpenCallback? = null
 
     private val openDownloadTree = registerForActivityResult(object : ActivityResultContract<Uri?, Uri?>() {
@@ -67,6 +70,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Start the DownloaderService.
         DownloaderService.start(this, object : IMainActivity.Stub() {
             override fun openDecryptInput(callback: IOpenCallback) {
                 openCallback = callback
@@ -84,11 +88,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
             }
         })
 
+        //Set up windowing stuff.
         supportActionBar?.hide()
-//        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.parseColor("#${primary}")))
         window.statusBarColor = Color.parseColor("#${primary}")
         window.navigationBarColor = Color.parseColor("#${background}")
 
+        //Set the Compose content.
         setContent {
             MainView()
         }

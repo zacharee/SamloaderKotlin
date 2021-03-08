@@ -29,45 +29,47 @@ object Downloader {
 
                 val chunk = IsolateState { ArrayList<Triple<Long, Long, Long>>(1000) }
 
-                while (isActive) {
-                    val nano = measureTime {
-                        len = response.read(read, 0, chunkSize)
-                        totalLen += len
+                try {
+                    while (isActive) {
+                        val nano = measureTime {
+                            len = response.read(read, 0, chunkSize)
+                            totalLen += len
 
-                        if (len > 0) {
-                            output.write(read, 0, len)
-                        }
-                    }.toLongNanoseconds()
+                            if (len > 0) {
+                                output.write(read, 0, len)
+                            }
+                        }.toLongNanoseconds()
 
-                    if (len <= 0) break
+                        if (len <= 0) break
 
-                    val currentNano = Clock.System.now().toEpochMilliseconds() * 1000 * 1000
-                    val lenF = len
-                    val totalLenF = totalLen
+                        val currentNano = Clock.System.now().toEpochMilliseconds() * 1000 * 1000
+                        val lenF = len
+                        val totalLenF = totalLen
 
-                    async {
-                        chunk.access { chunk ->
-                            chunk.add(Triple(nano, lenF.toLong(), currentNano))
-                            chunk.removeAll { currentNano - it.third > 1000 * 1000 * 1000 }
+                        async {
+                            chunk.access { chunk ->
+                                chunk.add(Triple(nano, lenF.toLong(), currentNano))
+                                chunk.removeAll { currentNano - it.third > 1000 * 1000 * 1000 }
 
-                            val chunkSnapshot = ArrayList(chunk)
+                                val chunkSnapshot = ArrayList(chunk)
 
-                            val timeAvg = chunkSnapshot.sumOf { it.first }
-                            val lenAvg = chunkSnapshot.sumOf { it.second }
+                                val timeAvg = chunkSnapshot.sumOf { it.first }
+                                val lenAvg = chunkSnapshot.sumOf { it.second }
 
-                            this@coroutineScope.launchImmediately {
-                                progressCallback(
-                                    totalLenF + outputSize,
-                                    size,
-                                    (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong()
-                                )
+                                this@coroutineScope.launchImmediately {
+                                    progressCallback(
+                                        totalLenF + outputSize,
+                                        size,
+                                        (lenAvg / (timeAvg.toDouble() / 1000.0 / 1000.0 / 1000.0)).toLong()
+                                    )
+                                }
                             }
                         }
                     }
+                } finally {
+                    response.close()
+                    output.close()
                 }
-
-                response.close()
-                output.close()
             }
         }
     }

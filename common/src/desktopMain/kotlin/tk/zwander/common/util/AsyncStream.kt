@@ -7,7 +7,7 @@ import com.soywiz.korio.stream.AsyncOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 
-fun OutputStream.toAsync(length: Long? = null): AsyncOutputStream {
+fun OutputStream.flushingAsync(length: Long? = null): AsyncOutputStream {
     val syncOS = this
 
     if (length != null) {
@@ -44,6 +44,7 @@ fun OutputStream.toAsync(length: Long? = null): AsyncOutputStream {
             }
 
             override suspend fun close() {
+                syncOS.flush()
                 syncOS.close()
             }
         }

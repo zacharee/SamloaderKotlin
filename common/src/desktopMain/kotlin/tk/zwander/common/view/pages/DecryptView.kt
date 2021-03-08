@@ -4,10 +4,11 @@ import com.soywiz.korio.stream.toAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DecryptFileInfo
+import tk.zwander.common.data.PlatformFile
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
-import tk.zwander.common.util.toAsync as toAsync1
+import tk.zwander.common.util.flushingAsync as toAsync1
 
 actual object PlatformDecryptView {
     actual suspend fun getInput(callback: suspend CoroutineScope.(DecryptFileInfo?) -> Unit) {
@@ -21,11 +22,8 @@ actual object PlatformDecryptView {
 
                 callback(
                     DecryptFileInfo(
-                        input.name,
-                        input.absolutePath,
-                        input.inputStream().toAsync(),
-                        input.length(),
-                        File(input.parentFile, input.nameWithoutExtension).outputStream().toAsync1()
+                        PlatformFile(input),
+                        PlatformFile(input.parentFile, input.nameWithoutExtension)
                     )
                 )
             }

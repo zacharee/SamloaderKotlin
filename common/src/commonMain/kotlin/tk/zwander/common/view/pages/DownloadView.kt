@@ -72,13 +72,9 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                             PlatformDownloadView.getInput(fullFileName) { info ->
                                 if (info != null) {
-                                    val output = info.output
-                                    val input = info.input
-                                    val offset = info.existingSize
+                                    val (response, md5) = client.downloadFile(path + fileName, info.downloadFile.length)
 
-                                    val (response, md5) = client.downloadFile(path + fileName, offset)
-
-                                    Downloader.download(response, size, output, offset) { current, max, bps ->
+                                    Downloader.download(response, size, info.downloadFile.openOutputStream(true), info.downloadFile.length) { current, max, bps ->
                                         model.progress = current to max
                                         model.speed = bps
                                     }
@@ -87,14 +83,14 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                                     if (crc32 != null) {
                                         model.statusText = "Checking CRC"
-                                        val result = Crypt.checkCrc32(input(), size, crc32) { current, max, bps ->
+                                        val result = Crypt.checkCrc32(info.downloadFile.openInputStream(), size, crc32) { current, max, bps ->
                                             model.progress = current to max
                                             model.speed = bps
                                         }
 
                                         if (!result) {
                                             model.endJob("CRC check failed. Please download again.")
-                                            PlatformDownloadView.deleteFile(info.path)
+//                                            PlatformDownloadView.deleteFile(info.path)
                                             return@getInput
                                         }
                                     }
@@ -104,12 +100,12 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                         model.progress = 1L to 2L
 
                                         val result = withContext(Dispatchers.Default) {
-                                            MD5.checkMD5(md5, input())
+                                            MD5.checkMD5(md5, info.downloadFile.openInputStream())
                                         }
 
                                         if (!result) {
                                             model.endJob("MD5 check failed. Please download again.")
-                                            PlatformDownloadView.deleteFile(info.path)
+//                                            PlatformDownloadView.deleteFile(info.path)
                                             return@getInput
                                         }
                                     }
@@ -119,7 +115,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                     val key = if (fullFileName.endsWith(".enc2")) Crypt.getV2Key(model.fw, model.model, model.region) else
                                         Crypt.getV4Key(model.fw, model.model, model.region)
 
-                                    Crypt.decryptProgress(info.input(), info.decryptOutput, key, size) { current, max, bps ->
+                                    Crypt.decryptProgress(info.downloadFile.openInputStream(), info.decryptFile.openOutputStream(), key, size) { current, max, bps ->
                                         model.progress = current to max
                                         model.speed = bps
                                     }
