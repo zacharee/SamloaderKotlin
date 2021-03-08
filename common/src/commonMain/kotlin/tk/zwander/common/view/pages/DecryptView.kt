@@ -91,8 +91,8 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                                 if (!info.encFile.name.endsWith(".enc2") && !info.encFile.name.endsWith(".enc4")) {
                                     model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
                                 } else {
-                                    model.fileToDecrypt = info
                                     model.endJob("")
+                                    model.fileToDecrypt = info
                                 }
                             }
                         }
