@@ -16,6 +16,8 @@ object VersionFetch {
             "https://fota-cloud-dn.ospserver.net/firmware/${region}/${model}/version.xml"
         )
 
-        return PlatformVersionFetch.getLatestVer(model, region, response.content.readAll().decodeToString())
+        return PlatformVersionFetch.getLatestVer(model, region, response.content.readAll().decodeToString().also {
+            println(it)
+        })
     }
 }

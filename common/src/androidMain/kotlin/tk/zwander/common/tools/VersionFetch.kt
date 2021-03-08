@@ -24,7 +24,7 @@ actual object PlatformVersionFetch {
                 .getContent(Filters.element("version"))[0]
                 .getContent(Filters.element("latest"))[0]
                 .run {
-                    getAttribute("o").value to text
+                    getAttribute("o")?.value to text
                 }
 
             if (verCode.isNullOrBlank()) {
@@ -40,7 +40,7 @@ actual object PlatformVersionFetch {
                 vc[2] = vc[0]
             }
 
-            vc.joinToString("/") to osVer
+            vc.joinToString("/") to (osVer ?: "")
         }
     }
 }
