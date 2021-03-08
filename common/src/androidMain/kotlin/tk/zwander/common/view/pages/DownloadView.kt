@@ -12,7 +12,4 @@ actual object PlatformDownloadView {
             getInputCallback?.invoke(this, fileName, callback)
         }
     }
-
-    actual suspend fun deleteFile(path: String) {
-    }
 }

@@ -33,11 +33,9 @@ val client = FusClient()
 
 /**
  * Delegate retrieving the download location to the platform.
- * TODO: Remove deleteFile().
  */
 expect object PlatformDownloadView {
     suspend fun getInput(fileName: String, callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit)
-    suspend fun deleteFile(path: String)
 }
 
 /**
@@ -99,8 +97,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                         }
 
                                         if (!result) {
-                                            model.endJob("CRC check failed. Please download again.")
-//                                            PlatformDownloadView.deleteFile(info.path)
+                                            model.endJob("CRC check failed. Please delete the file and download again.")
                                             return@getInput
                                         }
                                     }
@@ -114,8 +111,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                         }
 
                                         if (!result) {
-                                            model.endJob("MD5 check failed. Please download again.")
-//                                            PlatformDownloadView.deleteFile(info.path)
+                                            model.endJob("MD5 check failed. Please delete the file and download again.")
                                             return@getInput
                                         }
                                     }

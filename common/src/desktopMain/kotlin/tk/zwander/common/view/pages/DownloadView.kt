@@ -35,8 +35,4 @@ actual object PlatformDownloadView {
             }
         }
     }
-
-    actual suspend fun deleteFile(path: String) {
-//        File(path).delete()
-    }
 }
