@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.model.DecryptModel
-import tk.zwander.common.tools.Crypt
+import tk.zwander.common.tools.CryptUtils
 import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
@@ -61,14 +61,14 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                         val inputFile = info.encFile
                         val outputFile = info.decFile
 
-                        val key = if (inputFile.name.endsWith(".enc2")) Crypt.getV2Key(
+                        val key = if (inputFile.name.endsWith(".enc2")) CryptUtils.getV2Key(
                             model.fw,
                             model.model,
                             model.region
                         ) else
-                            Crypt.getV4Key(model.fw, model.model, model.region)
+                            CryptUtils.getV4Key(model.fw, model.model, model.region)
 
-                        Crypt.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.length) { current, max, bps ->
+                        CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.length) { current, max, bps ->
                             model.progress = current to max
                             model.speed = bps
                         }

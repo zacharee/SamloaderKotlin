@@ -6,7 +6,7 @@ import org.jdom2.filter.Filters
 import org.jdom2.input.SAXBuilder
 
 actual object PlatformVersionFetch {
-    actual suspend fun getLatestVer(model: String, region: String, response: String): Pair<String, String> {
+    actual suspend fun getLatestVersion(model: String, region: String, response: String): Pair<String, String> {
         return withContext(Dispatchers.IO) {
             val root = SAXBuilder().build(response.byteInputStream())
 

@@ -1,16 +1,21 @@
 package tk.zwander.common.tools
 
+import io.ktor.utils.io.core.internal.*
+import tk.zwander.common.data.BinaryFileInfo
+
 /**
  * Delegate XML creation to the platform until there's an MPP library.
  */
 expect object PlatformRequest {
-    fun binaryInform(fw: String, model: String, region: String, nonce: String): String
-    fun binaryInit(fileName: String, nonce: String): String
+    fun createBinaryInform(fw: String, model: String, region: String, nonce: String): String
+    fun createBinaryInit(fileName: String, nonce: String): String
+    fun getBinaryInfo(response: String): BinaryFileInfo
 }
 
 /**
- * Handle some request to Samsung's servers.
+ * Handle some requests to Samsung's servers.
  */
+@OptIn(DangerousInternalIoApi::class)
 object Request {
     /**
      * Generate a logic-check for a given input.
@@ -34,8 +39,8 @@ object Request {
      * @param nonce the session nonce.
      * @return the needed XML.
      */
-    fun binaryInform(fw: String, model: String, region: String, nonce: String): String {
-        return PlatformRequest.binaryInform(fw, model, region, nonce)
+    fun createBinaryInform(fw: String, model: String, region: String, nonce: String): String {
+        return PlatformRequest.createBinaryInform(fw, model, region, nonce)
     }
 
     /**
@@ -44,7 +49,22 @@ object Request {
      * @param nonce the session nonce.
      * @return the needed XML.
      */
-    fun binaryInit(fileName: String, nonce: String): String {
-        return PlatformRequest.binaryInit(fileName, nonce)
+    fun createBinaryInit(fileName: String, nonce: String): String {
+        return PlatformRequest.createBinaryInit(fileName, nonce)
+    }
+
+    /**
+     * Retrieve the file information for a given firmware.
+     * @param client the FusClient used to request the data.
+     * @param fw the firmware version string.
+     * @param model the device model.
+     * @param region the device region.
+     * @return a BinaryFileInfo instance representing the file.
+     */
+    suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): BinaryFileInfo {
+        val request = createBinaryInform(fw, model, region, client.nonce)
+        val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
+
+        return PlatformRequest.getBinaryInfo(response)
     }
 }

@@ -19,7 +19,6 @@ import kotlinx.coroutines.*
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
-import tk.zwander.common.util.MD5
 import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
@@ -73,9 +72,10 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         try {
                             model.statusText = "Downloading"
-                            val (path, fileName, size, crc32) = Main.getBinaryFile(client, model.fw, model.model, model.region)
-                            val request = Request.binaryInit(fileName, client.nonce)
-                            val resp = client.makeReq("NF_DownloadBinaryInitForMass.do", request)
+                            val (path, fileName, size, crc32) = Request.getBinaryFile(client, model.fw, model.model, model.region)
+                            val request = Request.createBinaryInit(fileName, client.nonce)
+
+                            client.makeReq(FusClient.Request.BINARY_INIT, request)
 
                             val fullFileName = fileName.replace(".zip",
                                 "_${model.fw.replace("/", "_")}_${model.region}.zip")
@@ -93,7 +93,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                                     if (crc32 != null) {
                                         model.statusText = "Checking CRC"
-                                        val result = Crypt.checkCrc32(info.downloadFile.openInputStream(), size, crc32) { current, max, bps ->
+                                        val result = CryptUtils.checkCrc32(info.downloadFile.openInputStream(), size, crc32) { current, max, bps ->
                                             model.progress = current to max
                                             model.speed = bps
                                         }
@@ -110,7 +110,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                         model.progress = 1L to 2L
 
                                         val result = withContext(Dispatchers.Default) {
-                                            MD5.checkMD5(md5, info.downloadFile.openInputStream())
+                                            CryptUtils.checkMD5(md5, info.downloadFile.openInputStream())
                                         }
 
                                         if (!result) {
@@ -122,10 +122,10 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                                     model.statusText = "Decrypting Firmware"
 
-                                    val key = if (fullFileName.endsWith(".enc2")) Crypt.getV2Key(model.fw, model.model, model.region) else
-                                        Crypt.getV4Key(model.fw, model.model, model.region)
+                                    val key = if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(model.fw, model.model, model.region) else
+                                        CryptUtils.getV4Key(model.fw, model.model, model.region)
 
-                                    Crypt.decryptProgress(info.downloadFile.openInputStream(), info.decryptFile.openOutputStream(), key, size) { current, max, bps ->
+                                    CryptUtils.decryptProgress(info.downloadFile.openInputStream(), info.decryptFile.openOutputStream(), key, size) { current, max, bps ->
                                         model.progress = current to max
                                         model.speed = bps
                                     }
@@ -156,7 +156,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 onClick = {
                     model.job = model.scope.launch {
                         val (fw, os) = try {
-                            VersionFetch.getLatestVer(model.model, model.region).also {
+                            VersionFetch.getLatestVersion(model.model, model.region).also {
                                 model.endJob("")
                             }
                         } catch (e: Exception) {

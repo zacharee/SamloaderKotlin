@@ -8,40 +8,47 @@ import io.ktor.client.request.*
 import io.ktor.client.request.request
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.utils.io.*
 import io.ktor.utils.io.core.internal.*
+import kotlin.time.ExperimentalTime
 
 /**
  * Manage communications with Samsung's server.
  */
 @DangerousInternalIoApi
+@OptIn(ExperimentalTime::class)
 class FusClient(
     var auth: String = "",
     var sessId: String = ""
 ) {
+    enum class Request(val value: String) {
+        GENERATE_NONCE("NF_DownloadGenerateNonce.do"),
+        BINARY_INFORM("NF_DownloadBinaryInform.do"),
+        BINARY_INIT("NF_DownloadBinaryInitForMass.do")
+    }
+
     var encNonce = ""
     var nonce = ""
 
     init {
         runBlockingNoJs {
             //We need a nonce first of all.
-            makeReq("NF_DownloadGenerateNonce.do")
+            makeReq(Request.GENERATE_NONCE)
         }
     }
 
     /**
      * Make a request to Samsung, automatically inserting authorization data.
-     * @param path the path-name of the request.
+     * @param request the request to make.
      * @param data any body data that needs to go into the request.
      * @return the response body data, as text. Usually XML.
      */
-    suspend fun makeReq(path: String, data: String = ""): String {
+    suspend fun makeReq(request: Request, data: String = ""): String {
         val authV = "FUS nonce=\"\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
 
         val client = HttpClient()
 
         val response = client.request<HttpResponse>(HttpRequestBuilder().apply {
-            url("https://neofussvr.sslcs.cdngc.net/${path}")
+            url("https://neofussvr.sslcs.cdngc.net/${request.value}")
             method = HttpMethod.Post
             headers {
                 append("Authorization", authV)
@@ -54,8 +61,8 @@ class FusClient(
 
         if (response.headers["NONCE"] != null) {
             encNonce = response.headers["NONCE"] ?: ""
-            nonce = Auth.decryptNonce(encNonce)
-            auth = Auth.getAuth(nonce)
+            nonce = CryptUtils.decryptNonce(encNonce)
+            auth = CryptUtils.getAuth(nonce)
         }
 
         if (response.headers["Set-Cookie"] != null) {
