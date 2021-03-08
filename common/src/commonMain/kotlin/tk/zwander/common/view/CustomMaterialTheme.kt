@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import tk.zwander.common.data.*
 
+/**
+ * A Material theme with custom colors and such.
+ */
 @Composable
 fun CustomMaterialTheme(block: @Composable()() -> Unit) {
     MaterialTheme(

@@ -12,6 +12,9 @@ import kotlinx.datetime.Clock
 import kotlinx.io.core.toByteArray
 import kotlin.time.*
 
+/**
+ * Delegate XML processing to platform until there's an MPP library for it.
+ */
 expect object PlatformCrypt {
     fun getFwAndLogic(response: String): Pair<String, String>
 }
@@ -19,6 +22,13 @@ expect object PlatformCrypt {
 @DangerousInternalIoApi
 @ExperimentalTime
 object Crypt {
+    /**
+     * Retrieve the decryption key for a .enc4 firmware file.
+     * @param version the firmware string corresponding to the file.
+     * @param model the device model corresponding to the file.
+     * @param region the device region corresponding to the file.
+     * @return the decryption key for this firmware.
+     */
     suspend fun getV4Key(version: String, model: String, region: String): ByteArray {
         val client = FusClient()
         val request = Request.binaryInform(version, model, region, client.nonce)
@@ -30,11 +40,26 @@ object Crypt {
         return MD5.digest(decKey.toByteArray()).bytes
     }
 
+    /**
+     * Create the decryption key for a .enc2 firmware file.
+     * @param version the firmware string corresponding to the file.
+     * @param model the device model corresponding to the file.
+     * @param region the device region corresponding to the file.
+     * @return the decryption key for this firmware.
+     */
     suspend fun getV2Key(version: String, model: String, region: String): ByteArray {
         val decKey = "${region}:${model}:${version}"
         return MD5.digest(decKey.toByteArray()).bytes
     }
 
+    /**
+     * Decrypt a provided file to a specified target, with a progress callback.
+     * @param inf the encrypted file to decrypt.
+     * @param outf where to store the decrypted firmware.
+     * @param key the decryption key for this firmware.
+     * @param length the size of the encrypted file.
+     * @param progressCallback a callback to keep track of the progress.
+     */
     suspend fun decryptProgress(inf: AsyncInputStream, outf: AsyncOutputStream, key: ByteArray, length: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
         coroutineScope {
             withContext(Dispatchers.Default) {
@@ -82,6 +107,14 @@ object Crypt {
         }
     }
 
+    /**
+     * Check the CRC32 of a given encrypted firmware file.
+     * @param enc the encrypted file to verify.
+     * @param encSize the size of the encrypted file.
+     * @param expected the expected CRC32.
+     * @param progressCallback a callback to keep track of the progress.
+     * @return true if the file's CRC32 matches the expected value.
+     */
     suspend fun checkCrc32(enc: AsyncInputStream, encSize: Long, expected: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit): Boolean {
         var crcVal = CRC32.initialValue
 

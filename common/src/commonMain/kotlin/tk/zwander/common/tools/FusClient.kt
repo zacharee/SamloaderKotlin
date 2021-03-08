@@ -11,6 +11,9 @@ import io.ktor.http.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.internal.*
 
+/**
+ * Manage communications with Samsung's server.
+ */
 @DangerousInternalIoApi
 class FusClient(
     var auth: String = "",
@@ -21,10 +24,17 @@ class FusClient(
 
     init {
         runBlockingNoJs {
+            //We need a nonce first of all.
             makeReq("NF_DownloadGenerateNonce.do")
         }
     }
 
+    /**
+     * Make a request to Samsung, automatically inserting authorization data.
+     * @param path the path-name of the request.
+     * @param data any body data that needs to go into the request.
+     * @return the response body data, as text. Usually XML.
+     */
     suspend fun makeReq(path: String, data: String = ""): String {
         val authV = "FUS nonce=\"\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
 
@@ -62,6 +72,11 @@ class FusClient(
         return response.readText()
     }
 
+    /**
+     * Download a file from Samsung's server.
+     * @param fileName the name of the file to download.
+     * @param start an optional offset. Used for resuming downloads.
+     */
     suspend fun downloadFile(fileName: String, start: Long = 0): Pair<AsyncInputStream, String?> {
         val authV =
             "FUS nonce=\"${encNonce}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""

@@ -2,32 +2,31 @@ package tk.zwander.common.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalViewConfiguration
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.util.DPScale
 
+/**
+ * A common container for the model, region, and firmware text inputs used in [DownloadView] and [DecryptView]
+ * @param model the view model.
+ * @param canChangeOption whether the model and region fields should be editable.
+ * @param canChangeFirmware whether the firmware field should be editable.
+ * @param showFirmware whether to show the firmware field.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Boolean, showFirmware: Boolean = true) {
+fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
     val fontScale = LocalDensity.current.fontScale
     val size = remember { mutableStateOf(0.dp) }
 
@@ -106,7 +105,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmare: Bool
             onValueChange = { model.fw = it.toUpperCase().trim() },
             label = { Text("Firmware (PDA/CSC/CP/AP)") },
             modifier = Modifier.fillMaxWidth(),
-            readOnly = !canChangeFirmare,
+            readOnly = !canChangeFirmware,
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
             singleLine = true
         )

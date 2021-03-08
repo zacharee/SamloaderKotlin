@@ -11,6 +11,12 @@ import androidx.compose.ui.unit.sp
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.vectorResource
 
+/**
+ * An item in the firmware history list.
+ * @param info the information about this item.
+ * @param onDownload called when the user hits the "Download" button.
+ * @param onDecrypt called when the user hits the "Decrypt" button.
+ */
 @Composable
 fun HistoryItem(
     info: HistoryInfo,

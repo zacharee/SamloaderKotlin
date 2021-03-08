@@ -11,7 +11,18 @@ import kotlinx.io.core.Output
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
+/**
+ * Manage downloading firmware.
+ */
 object Downloader {
+    /**
+     * Download an encrypted firmware file given an input and output.
+     * @param response a stream of the firmware from Samsung's server.
+     * @param size the size of the download.
+     * @param output where to save the file.
+     * @param outputSize the current size of the output file. Used for resuming downloads.
+     * @param progressCallback a callback to keep track of the download.
+     */
     @OptIn(ExperimentalTime::class)
     suspend fun download(response: AsyncInputStream, size: Long, output: AsyncOutputStream, outputSize: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
         coroutineScope {

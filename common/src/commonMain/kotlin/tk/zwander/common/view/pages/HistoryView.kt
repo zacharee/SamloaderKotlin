@@ -33,10 +33,19 @@ import tk.zwander.common.view.HistoryItem
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
 
+/**
+ * Delegate HTML parsing to the platform until there's an MPP library.
+ */
 expect object PlatformHistoryView {
     suspend fun parseHistory(body: String): List<HistoryInfo>
 }
 
+/**
+ * The History View.
+ * @param model the History model.
+ * @param onDownload a callback for when the user hits the "Download" button on an item.
+ * @param onDecrypt a callback for when the user hits the "Decrypt" button on an item.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String, fw: String) -> Unit, onDecrypt: (model: String, region: String, fw: String) -> Unit) {

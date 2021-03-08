@@ -24,10 +24,18 @@ import tk.zwander.common.view.MRFLayout
 import tk.zwander.common.view.ProgressInfo
 import kotlin.time.ExperimentalTime
 
+/**
+ * Delegate getting the decryption input and output to the platform.
+ */
 expect object PlatformDecryptView {
     suspend fun getInput(callback: suspend CoroutineScope.(DecryptFileInfo?) -> Unit)
 }
 
+/**
+ * The Decrypter View.
+ * @param model the model for this View.
+ * @param scrollState a shared scroll state among all pages.
+ */
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable

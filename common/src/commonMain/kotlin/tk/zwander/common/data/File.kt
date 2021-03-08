@@ -3,12 +3,21 @@ package tk.zwander.common.data
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
 
+/**
+ * Platforms should actuate this class to implement
+ * various filesystem classes they use.
+ */
 expect open class PlatformFile : File {
     constructor(pathName: String)
     constructor(parent: String, child: String)
     constructor(parent: File, child: String)
 }
 
+/**
+ * A "File" representation for Kotlin MPP, to
+ * allow easier interaction with platform filesystem
+ * stuff.
+ */
 abstract class File : IPlatformFile {
     companion object {
         operator fun invoke(pathName: String): File {
@@ -25,6 +34,10 @@ abstract class File : IPlatformFile {
     }
 }
 
+/**
+ * The base File representation for Platform Files to
+ * override if needed.
+ */
 interface IPlatformFile : Comparable<IPlatformFile> {
     val name: String
     val parent: String

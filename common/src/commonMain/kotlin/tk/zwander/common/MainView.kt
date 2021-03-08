@@ -20,6 +20,9 @@ import tk.zwander.common.view.pages.DownloadView
 import tk.zwander.common.view.pages.HistoryView
 import kotlin.time.ExperimentalTime
 
+/**
+ * The main UI view.
+ */
 @OptIn(DangerousInternalIoApi::class)
 @ExperimentalTime
 @Composable

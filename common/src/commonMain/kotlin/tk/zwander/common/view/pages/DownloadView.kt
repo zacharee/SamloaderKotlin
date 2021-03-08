@@ -26,16 +26,26 @@ import tk.zwander.common.view.MRFLayout
 import tk.zwander.common.view.ProgressInfo
 import kotlin.time.ExperimentalTime
 
+/**
+ * The FusClient for retrieving firmware.
+ */
 @OptIn(DangerousInternalIoApi::class)
 val client = FusClient()
-@OptIn(DangerousInternalIoApi::class)
-val main = Main()
 
+/**
+ * Delegate retrieving the download location to the platform.
+ * TODO: Remove deleteFile().
+ */
 expect object PlatformDownloadView {
     suspend fun getInput(fileName: String, callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit)
     suspend fun deleteFile(path: String)
 }
 
+/**
+ * The Downloader View.
+ * @param model the Download model.
+ * @param scrollState a shared scroll state.
+ */
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
@@ -63,7 +73,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         try {
                             model.statusText = "Downloading"
-                            val (path, fileName, size, crc32) = main.getBinaryFile(client, model.fw, model.model, model.region)
+                            val (path, fileName, size, crc32) = Main.getBinaryFile(client, model.fw, model.model, model.region)
                             val request = Request.binaryInit(fileName, client.nonce)
                             val resp = client.makeReq("NF_DownloadBinaryInitForMass.do", request)
 

@@ -10,6 +10,10 @@ import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
 import kotlin.math.roundToInt
 
+/**
+ * A progress indicator.
+ * @param model the view model to use as a data source.
+ */
 @Composable
 fun ProgressInfo(model: BaseModel) {
     Column(

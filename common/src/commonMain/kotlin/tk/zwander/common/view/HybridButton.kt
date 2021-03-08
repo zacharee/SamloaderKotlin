@@ -14,6 +14,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.util.DPScale
 
+/**
+ * A special Button that shows as a text button if there's enough room
+ * and an image button otherwise.
+ */
 @Composable
 fun HybridButton(
     icon: ImageBitmap? = null,

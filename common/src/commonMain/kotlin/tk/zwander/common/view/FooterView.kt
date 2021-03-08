@@ -17,6 +17,9 @@ import androidx.compose.ui.unit.sp
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.vectorResource
 
+/**
+ * The footer shown on all pages.
+ */
 @Composable
 fun FooterView() {
     Row(

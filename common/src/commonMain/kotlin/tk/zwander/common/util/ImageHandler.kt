@@ -5,6 +5,10 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.soywiz.korim.bitmap.Bitmap
 
+/**
+ * Handle retrieving images and vector images from the platform.
+ */
+
 @Composable
 expect fun imageResource(path: String): ImageBitmap
 

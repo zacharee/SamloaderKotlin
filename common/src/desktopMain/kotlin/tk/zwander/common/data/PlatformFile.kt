@@ -7,6 +7,9 @@ import tk.zwander.common.util.flushingAsync
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
+/**
+ * A File implementation that wraps Java's File class.
+ */
 actual open class PlatformFile : File {
     private val wrappedFile: java.io.File
 

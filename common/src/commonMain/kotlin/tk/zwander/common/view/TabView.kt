@@ -10,12 +10,18 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
+/**
+ * Represents the available pages.
+ */
 enum class Page {
     DOWNLOADER,
     DECRYPTER,
     HISTORY
 }
 
+/**
+ * Allows the user to switch among the different app pages.
+ */
 @Composable
 fun TabView(page: MutableState<Page>) {
     TabRow(
