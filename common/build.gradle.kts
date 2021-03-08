@@ -82,7 +82,6 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
 
-                api("org.jdom:jdom2:2.0.6")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
                 api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
@@ -97,7 +96,6 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
 
-                api("org.jdom:jdom2:2.0.6")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
                 api("com.github.kittinunf.fuel:fuel:2.3.1")
                 api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
