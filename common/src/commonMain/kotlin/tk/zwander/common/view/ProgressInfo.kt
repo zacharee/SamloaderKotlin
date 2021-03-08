@@ -40,7 +40,7 @@ fun ProgressInfo(model: BaseModel) {
                 val totalMB = (model.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
 
                 Text(
-                    text = "$currentMB / $totalMB MB",
+                    text = "$currentMB / $totalMB MiB",
                 )
 
                 Spacer(Modifier.height(8.dp))
@@ -50,7 +50,7 @@ fun ProgressInfo(model: BaseModel) {
                 val finalSpeed = "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
 
                 Text(
-                    text = "$finalSpeed ${if (shouldUseMB) "MB/s" else "KB/s"}",
+                    text = "$finalSpeed ${if (shouldUseMB) "MiB/s" else "KiB/s"}",
                 )
 
                 Spacer(Modifier.height(8.dp))
