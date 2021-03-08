@@ -53,25 +53,17 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
 
-                api("com.soywiz.korlibs.korim:korim:2.0.7")
-                api("com.github.aakira:napier:1.5.0-alpha1")
-
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-                api("com.github.kittinunf.fuel:fuel:2.3.1")
-                api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
-
-                api("org.jetbrains.kotlinx:kotlinx-io-jvm:0.1.16")
-                api("com.soywiz.korlibs.krypto:krypto:2.0.6")
-
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+                api("org.jetbrains.kotlinx:kotlinx-io-jvm:0.1.16")
+
+                api("com.github.aakira:napier:1.5.0-alpha1")
+                api("com.soywiz.korlibs.krypto:krypto:2.0.6")
                 api("com.soywiz.korlibs.korio:korio:2.0.8")
                 api("co.touchlab:stately-common:1.1.4")
                 api("co.touchlab:stately-isolate:1.1.4-a1")
-                api("com.ionspin.kotlin:bignum:0.2.8")
                 api("io.ktor:ktor-client-core:1.5.2")
                 api("io.ktor:ktor-client-cio:1.5.2")
-                api("org.jetbrains.kotlinx:kotlinx-html:0.7.2")
-                api("net.devrieze:xmlutil:0.80.1")
             }
         }
 
@@ -83,8 +75,6 @@ kotlin {
                 api(compose.ui)
 
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-                api("com.github.kittinunf.fuel:fuel:2.3.1")
-                api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
                 api("org.jsoup:jsoup:1.13.1")
             }
         }
@@ -97,8 +87,7 @@ kotlin {
                 api(compose.ui)
 
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
-                api("com.github.kittinunf.fuel:fuel:2.3.1")
-                api("com.github.kittinunf.fuel:fuel-coroutines:2.3.1")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
                 api("org.jsoup:jsoup:1.13.1")
 
                 api("androidx.appcompat:appcompat:1.3.0-beta01")
