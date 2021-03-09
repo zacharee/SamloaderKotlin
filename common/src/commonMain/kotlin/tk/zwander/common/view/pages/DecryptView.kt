@@ -29,6 +29,9 @@ import kotlin.time.ExperimentalTime
  */
 expect object PlatformDecryptView {
     suspend fun getInput(callback: suspend CoroutineScope.(DecryptFileInfo?) -> Unit)
+    fun onStart()
+    fun onFinish()
+    fun onProgress(status: String, current: Long, max: Long)
 }
 
 /**
@@ -57,6 +60,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
             HybridButton(
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
+                        PlatformDecryptView.onStart()
                         val info = model.fileToDecrypt!!
                         val inputFile = info.encFile
                         val outputFile = info.decFile
@@ -71,8 +75,10 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                         CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.length) { current, max, bps ->
                             model.progress = current to max
                             model.speed = bps
+                            PlatformDecryptView.onProgress("Decrypting", current, max)
                         }
 
+                        PlatformDecryptView.onFinish()
                         model.endJob("Done")
                     }
                 },
@@ -107,6 +113,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
             Spacer(Modifier.weight(1f))
             HybridButton(
                 onClick = {
+                    PlatformDecryptView.onFinish()
                     model.endJob("")
                 },
                 enabled = model.job != null,

@@ -2,6 +2,7 @@ package tk.zwander.common.model
 
 import androidx.compose.runtime.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 
@@ -43,12 +44,22 @@ open class BaseModel {
     /**
      * Any Job currently running.
      */
-    var job by mutableStateOf<Job?>(null)
+    var job: Job?
+        get() = _job
+        set(value) {
+            onFinish()
+            _job = value
+            if (value != null) {
+                onStart()
+            }
+        }
+
+    private var _job by mutableStateOf<Job?>(null)
 
     /**
      * A coroutine scope.
      */
-    var scope = CoroutineScope(Job())
+    var scope = CoroutineScope(Dispatchers.Main)
 
     /**
      * Called when a Job should be ended.
@@ -68,10 +79,18 @@ open class BaseModel {
     }
 
     /**
+     * Called when a new Job is set.
+     */
+    protected open fun onStart() {}
+
+    /**
+     * Called when the Job is cleared.
+     */
+    protected open fun onFinish() {}
+
+    /**
      * Sub-classes can override this to perform
      * extra operations when a Job ends.
      */
-    protected open fun onEnd(text: String) {
-
-    }
+    protected open fun onEnd(text: String) {}
 }

@@ -29,4 +29,8 @@ actual object PlatformDecryptView {
             }
         }
     }
+
+    actual fun onStart() {}
+    actual fun onFinish() {}
+    actual fun onProgress(status: String, current: Long, max: Long) {}
 }

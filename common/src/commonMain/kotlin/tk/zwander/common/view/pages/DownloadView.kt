@@ -36,6 +36,9 @@ val client = FusClient()
  */
 expect object PlatformDownloadView {
     suspend fun getInput(fileName: String, callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit)
+    fun onStart()
+    fun onFinish()
+    fun onProgress(status: String, current: Long, max: Long)
 }
 
 /**
@@ -68,6 +71,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             HybridButton(
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
+                        PlatformDownloadView.onStart()
                         try {
                             model.statusText = "Downloading"
                             val (path, fileName, size, crc32) = Request.getBinaryFile(client, model.fw, model.model, model.region)
@@ -85,6 +89,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                     Downloader.download(response, size, info.downloadFile.openOutputStream(true), info.downloadFile.length) { current, max, bps ->
                                         model.progress = current to max
                                         model.speed = bps
+
+                                        PlatformDownloadView.onProgress("Downloading", current, max)
                                     }
 
                                     model.speed = 0L
@@ -94,6 +100,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                         val result = CryptUtils.checkCrc32(info.downloadFile.openInputStream(), size, crc32) { current, max, bps ->
                                             model.progress = current to max
                                             model.speed = bps
+
+                                            PlatformDownloadView.onProgress("Checking CRC32", current, max)
                                         }
 
                                         if (!result) {
@@ -105,6 +113,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                     if (md5 != null) {
                                         model.statusText = "Checking MD5"
                                         model.progress = 1L to 2L
+
+                                        PlatformDownloadView.onProgress("Checking MD5", 0, 1)
 
                                         val result = withContext(Dispatchers.Default) {
                                             CryptUtils.checkMD5(md5, info.downloadFile.openInputStream())
@@ -124,6 +134,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                     CryptUtils.decryptProgress(info.downloadFile.openInputStream(), info.decryptFile.openOutputStream(), key, size) { current, max, bps ->
                                         model.progress = current to max
                                         model.speed = bps
+
+                                        PlatformDownloadView.onProgress("Decrypting", current, max)
                                     }
 
                                     model.endJob("Done")
@@ -137,6 +149,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                 model.endJob("Error: ${e.message}")
                             }
                         }
+
+                        PlatformDownloadView.onFinish()
                     }
                 },
                 enabled = canDownload,
@@ -175,6 +189,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
             HybridButton(
                 onClick = {
+                    PlatformDownloadView.onFinish()
                     model.endJob("")
                 },
                 enabled = model.job != null,

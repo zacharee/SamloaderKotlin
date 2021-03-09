@@ -2,6 +2,7 @@ package tk.zwander.common.model
 
 import androidx.compose.runtime.*
 import tk.zwander.common.data.DecryptFileInfo
+import tk.zwander.common.view.pages.PlatformDecryptView
 
 /**
  * The model for the Decrypter view.

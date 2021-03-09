@@ -20,6 +20,10 @@ import tk.zwander.common.view.pages.DownloadView
 import tk.zwander.common.view.pages.HistoryView
 import kotlin.time.ExperimentalTime
 
+val downloadModel = DownloadModel()
+val decryptModel = DecryptModel()
+val historyModel = HistoryModel()
+
 /**
  * The main UI view.
  */
@@ -28,10 +32,6 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun MainView() {
     val page = remember { mutableStateOf(Page.DOWNLOADER) }
-
-    val downloadModel = remember { DownloadModel() }
-    val decryptModel = remember { DecryptModel() }
-    val historyModel = remember { HistoryModel() }
 
     val scrollState = rememberScrollState(0)
 

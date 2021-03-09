@@ -102,6 +102,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
     override fun onDestroy() {
         super.onDestroy()
 
-        DownloaderService.stop(this)
+//        DownloaderService.stop(this)
     }
 }
