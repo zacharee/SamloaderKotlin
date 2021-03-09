@@ -79,11 +79,13 @@ class DownloaderService : Service() {
                         .setContentTitle(getString(R.string.notification_finished_channel_name))
                         .setContentText(getString(R.string.notification_finished_channel_text))
                         .setSmallIcon(R.mipmap.ic_launcher_foreground)
-                        .setContentIntent(PendingIntent.getActivity(
-                            this, 101,
-                            Intent(this, MainActivity::class.java),
-                            PendingIntent.FLAG_UPDATE_CURRENT
-                        ))
+                        .setContentIntent(
+                            PendingIntent.getActivity(
+                                this, 101,
+                                Intent(this, MainActivity::class.java),
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                            )
+                        )
                         .build()
                 )
 
@@ -133,11 +135,19 @@ class DownloaderService : Service() {
 
         //Create the notification channel if applicable.
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
-            nm.createNotificationChannel(NotificationChannel("progress", getString(R.string.notification_progress_channel_name),
-                    NotificationManager.IMPORTANCE_LOW))
+            nm.createNotificationChannel(
+                NotificationChannel(
+                    "progress", getString(R.string.notification_progress_channel_name),
+                    NotificationManager.IMPORTANCE_LOW
+                )
+            )
 
-            nm.createNotificationChannel(NotificationChannel("notification", getString(R.string.notification_finished_channel_text),
-                    NotificationManager.IMPORTANCE_DEFAULT))
+            nm.createNotificationChannel(
+                NotificationChannel(
+                    "notification", getString(R.string.notification_finished_channel_text),
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
+            )
         }
 
         //Create the foreground notification.
@@ -160,7 +170,10 @@ class DownloaderService : Service() {
                 })
             }
 
-            if (inputUri == null) return@input
+            if (inputUri == null) {
+                callback(null)
+                return@input
+            }
 
             contentResolver.takePersistableUriPermission(
                 inputUri,
@@ -171,14 +184,20 @@ class DownloaderService : Service() {
             val decName = fileName.replace(".enc2", "")
                 .replace(".enc4", "")
 
-            val enc = dir.findFile(fileName) ?: dir.createFile("application/octet-stream", fileName)
-            ?: return@input
+            val enc = dir.findFile(fileName)
+                ?: dir.createFile("application/octet-stream", fileName)
+                ?: run {
+                    callback(null)
+                    return@input
+                }
             val dec =
                 dir.findFile(decName) ?: dir.createFile("application/zip", decName) ?: return@input
 
             callback(
-                DownloadFileInfo(PlatformUriFile(this@DownloaderService, enc),
-                    PlatformUriFile(this@DownloaderService, dec))
+                DownloadFileInfo(
+                    PlatformUriFile(this@DownloaderService, enc),
+                    PlatformUriFile(this@DownloaderService, dec)
+                )
             )
         }
         PlatformDecryptView.decryptCallback = input@{ callback ->
@@ -194,9 +213,15 @@ class DownloaderService : Service() {
                 })
             }
 
-            if (inputUri == null) return@input
+            if (inputUri == null) {
+                callback(null)
+                return@input
+            }
             val inputFile =
-                DocumentFile.fromSingleUri(this@DownloaderService, inputUri!!) ?: return@input
+                DocumentFile.fromSingleUri(this@DownloaderService, inputUri!!) ?: run {
+                    callback(null)
+                    return@input
+                }
 
             suspendCoroutine<Unit> { cont ->
                 activityCallback?.openDecryptOutput(
@@ -212,7 +237,10 @@ class DownloaderService : Service() {
             }
 
             val outputFile =
-                DocumentFile.fromSingleUri(this@DownloaderService, outputUri!!) ?: return@input
+                DocumentFile.fromSingleUri(this@DownloaderService, outputUri!!) ?: run {
+                    callback(null)
+                    return@input
+                }
 
             callback(
                 DecryptFileInfo(
@@ -267,16 +295,19 @@ class DownloaderService : Service() {
             .setContentTitle(getString(R.string.app_name))
             .setStyle(NotificationCompat.BigTextStyle())
             .setContentText(getString(R.string.notification_progress_text))
-            .setContentIntent(PendingIntent.getActivity(
-                this, 101,
-                Intent(this, MainActivity::class.java),
-                PendingIntent.FLAG_UPDATE_CURRENT
-            ))
+            .setContentIntent(
+                PendingIntent.getActivity(
+                    this, 101,
+                    Intent(this, MainActivity::class.java),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            )
             .apply {
                 if (progress != null) {
                     setStyle(NotificationCompat.DecoratedCustomViewStyle())
 
-                    val percent = ((progress.second.toDouble() / progress.third.toDouble() * 100.0 * 100.0).roundToInt() / 100.0)
+                    val percent =
+                        ((progress.second.toDouble() / progress.third.toDouble() * 100.0 * 100.0).roundToInt() / 100.0)
 
                     setCustomBigContentView(
                         RemoteViews(packageName, R.layout.progress)

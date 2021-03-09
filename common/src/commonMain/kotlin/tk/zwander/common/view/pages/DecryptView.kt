@@ -100,6 +100,8 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                                     model.endJob("")
                                     model.fileToDecrypt = info
                                 }
+                            } else {
+                                model.endJob("")
                             }
                         }
                     }
