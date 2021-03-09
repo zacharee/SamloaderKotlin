@@ -26,6 +26,8 @@ actual object PlatformDecryptView {
                         PlatformFile(input.parentFile, input.nameWithoutExtension)
                     )
                 )
+            } else {
+                callback(null)
             }
         }
     }
