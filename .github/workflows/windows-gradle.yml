@@ -52,4 +52,6 @@ jobs:
         artifacts: 'Samsung_Firmware_Downloader_Windows.zip'
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
+        replacesArtifacts: false
+        omitBodyDuringUpdate: true
         tag: ${{ steps.release.outputs.release }}
