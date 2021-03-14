@@ -4,14 +4,12 @@
 name: Build for Ubuntu
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  release:
+    types:
+      - published
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -36,3 +34,15 @@ jobs:
       with:
         name: Samsung Firmware Downloader
         path: /home/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/binaries/main/app/Samsung Firmware Downloader/
+    - name: Create Release ZIP
+      uses: thedoctor0/zip-release@master
+      with:
+        filename: 'Samsung_Firmware_Downloader_Linux.zip'
+        path: /home/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/binaries/main/app/
+    - name: Upload Release ZIP
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: 'Samsung_Firmware_Downloader_Linux.zip'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        allowUpdates: true
+        tag: ${{ github.event.release.tag_name }}
