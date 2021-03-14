@@ -33,18 +33,18 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: logs
-        path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/logs/
+        path: ${{ github.workspace }}/desktop/build/compose/logs/
     - name: Upload DMG
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: Samsung Firmware Downloader
-        path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/binaries/main/dmg/Samsung Firmware Downloader-*.dmg
+        path: ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/Samsung Firmware Downloader-*.dmg
     - name: Create Release ZIP
       uses: papeloto/action-zip@v1
       with:
         dest: 'Samsung_Firmware_Downloader_macOS.zip'
-        files: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/binaries/main/dmg
+        files: ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/
     - name: Upload Release ZIP
       uses: ncipollo/release-action@v1
       with:
