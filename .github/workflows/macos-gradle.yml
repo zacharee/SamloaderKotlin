@@ -26,3 +26,7 @@ jobs:
       run: ./gradlew packageDmg
     - name: Notarize
       run: ./gradlew notarizeDmg
+    - uses: actions/upload-artifact@v2
+      with:
+        name: logs
+        path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/logs/packageDmg
