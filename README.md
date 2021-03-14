@@ -10,7 +10,7 @@ Most of the functionality in Samsung Firmware Downloader is based on [Samloader]
 Samsung Firmware Downloader uses Jetpack Compose, JetBrains Compose for Desktop, and Kotlin Multiplatform to create a shared codebase for all supported platforms.
 
 # Download
-Currently, binaries are available for Windows, Linux, and Android. JetBrains Compose and Kotlin Multiplatform can only compile for the platform they're currently running on, and I don't have a Mac.
+Binaries are available for 64-bit versions Windows, Linux, macOS, and Android. JetBrains Compose can't currently build for 32-bit operating systems.
 
 Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) page for the downloads.
 
@@ -35,8 +35,6 @@ Run the `package` Gradle task.
 3. Expand "Tasks," then "build," and double-click "createDistributable" on Windows and Linux, or "packageDmg" on macOS.
 4. Once it finishes building, check the output log to see where the executable was saved.
 
-On macOS, you'll have to also add an extra step. Use the same process as above to run the "notarizeDmg" task after packaging.
-
 ## Android:
 
 ### Command Line:
@@ -49,6 +47,33 @@ On macOS, you'll have to also add an extra step. Use the same process as above t
 2. Expand the project, then expand "android".
 3. Expand "Tasks," then "build," and double-click "build".
 4. Once it finishes building, go to `android/build/outputs/apk/debug` and install `android-debug.apk`.
+
+# Running
+
+## Windows
+
+1. Extract the release ZIP for Windows and go through the folders until you find "Samsung Firmware Downloader.exe".
+2. Launch the EXE. If it fails, launch as Administrator.
+
+## Linux
+
+1. Extract the release ZIP for Linux and go through the folders until you find the "Samsung Firmware Downloader".
+2. Open a terminal in this location.
+3. Enter `chmod +x Samsung\ Firmware\ Downloader`.
+4. Enter `./Samsung\ Firmware\ Downloader`.
+
+## macOS
+
+1. Extract the release ZIP and open the DMG.
+2. Move "Samsung Firmware Downloader.app" to the Applications folder.
+3. Launch the app.
+
+There may be a security error when launching the app. If there is, follow the steps outlined [here](https://github.com/hashicorp/terraform/issues/23033#issuecomment-542302933).
+
+## Android
+
+1. Download the release APK to your phone.
+2. Install and run it.
 
 # Screenshots
 
