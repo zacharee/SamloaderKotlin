@@ -22,11 +22,10 @@ jobs:
         java-version: 15
     - name: Get Latest Release
       id: release
-      uses: rez0n/actions-github-release@main
-      env:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        repository: ${{ github.repository }}
-        type: "latest"
+      uses: InsonusK/get-latest-release@v1.0.1
+      with:
+        myToken: ${{ secrets.GITHUB_TOKEN }}
+        view_top: 1
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
@@ -58,4 +57,4 @@ jobs:
         allowUpdates: true
         replacesArtifacts: false
         omitBodyDuringUpdate: true
-        tag: ${{ steps.release.outputs.release }}
+        tag: ${{ steps.release.outputs.tag_name }}
