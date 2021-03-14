@@ -52,6 +52,7 @@ compose.desktop {
                 iconFile.set(project.file("src/jvmMain/resources/icon.icns"))
                 packageVersion = "1." + project.properties["versionCode"]
                 targetFormats(TargetFormat.Dmg)
+                packageName = "SamsungFirmwareDownloader"
             }
 
             linux {
