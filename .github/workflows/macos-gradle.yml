@@ -21,9 +21,11 @@ jobs:
         java-version: 15
     - name: Get Latest Release
       id: release
-      uses: pozetroninc/github-action-get-latest-release@master
-      with:
+      uses: rez0n/actions-github-release@main
+      env:
+        token: ${{ secrets.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
+        type: "latest"
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
