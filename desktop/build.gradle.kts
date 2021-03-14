@@ -44,19 +44,22 @@ compose.desktop {
                 this.console = true
 
                 iconFile.set(project.file("src/jvmMain/resources/icon.ico"))
+                targetFormats(TargetFormat.Exe, TargetFormat.AppImage)
             }
 
             macOS {
                 iconFile.set(project.file("src/jvmMain/resources/icon.icns"))
                 packageVersion = "1." + project.properties["versionCode"]
+                targetFormats(TargetFormat.Dmg)
             }
 
             linux {
                 iconFile.set(project.file("src/jvmMain/resources/icon.png"))
                 packageVersion = project.properties["versionCode"].toString()
+                targetFormats(TargetFormat.Deb, TargetFormat.AppImage)
             }
 
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe, TargetFormat.AppImage)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
             packageName = "Samsung Firmware Downloader"
         }
     }
