@@ -36,7 +36,7 @@ jobs:
         name: logs
         path: ${{ github.workspace }}\desktop\build\compose\logs\
     - name: Check Output Exists
-      run: dir /s ${{ github.workspace }}\desktop\build\compose\binaries\main\app\
+      run: dir -s ${{ github.workspace }}\desktop\build\compose\binaries\main\app\
     - name: Create Release ZIP
       uses: papeloto/action-zip@v1
       with:
