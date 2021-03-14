@@ -24,11 +24,15 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew packageDmg
-    - name: Notarize
-      run: ./gradlew notarizeDmg
-    - name: Upload
+    - name: Upload Logs
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: logs
         path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/logs/packageDmg
+    - name: Upload DMG
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: Samsung Firmware Downloader
+        path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/binaries/main/dmg/Samsung Firmware Downloader-*.dmg
