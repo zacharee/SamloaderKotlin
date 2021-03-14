@@ -19,6 +19,11 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 15
+    - name: Get Latest Release
+      id: release
+      uses: pozetroninc/github-action-get-latest-release@master
+      with:
+        repository: ${{ github.repository }}
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
@@ -36,14 +41,14 @@ jobs:
         name: Samsung Firmware Downloader
         path: D:\a\SamloaderKotlin\SamloaderKotlin\desktop\build\compose\binaries\main\app\Samsung Firmware Downloader\
     - name: Create Release ZIP
-      uses: thedoctor0/zip-release@master
+      uses: papeloto/action-zip@v1
       with:
-        filename: 'Samsung_Firmware_Downloader_Windows.zip'
-        path: D:\a\SamloaderKotlin\SamloaderKotlin\desktop\build\compose\binaries\main\app\Samsung Firmware Downloader\
+        dest: 'Samsung_Firmware_Downloader_Windows.zip'
+        files: D:\a\SamloaderKotlin\SamloaderKotlin\desktop\build\compose\binaries\main\app\Samsung Firmware Downloader\
     - name: Upload Release ZIP
       uses: ncipollo/release-action@v1
       with:
         artifacts: 'Samsung_Firmware_Downloader_Windows.zip'
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
-        tag: ${{ github.event.release.tag_name }}
+        tag: ${{ steps.release.outputs.release }}
