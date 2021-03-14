@@ -29,10 +29,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: logs
-        path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/logs/
-    - name: Upload DMG
+        path: D:\a\SamloaderKotlin\SamloaderKotlin\desktop\build\compose\logs\
+    - name: Upload Windows Executable
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: Samsung Firmware Downloader
-        path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/binaries/main/app/Samsung Firmware Downloader/
+        path: D:\a\SamloaderKotlin\SamloaderKotlin\desktop\build\compose\binaries\main\app\Samsung Firmware Downloader\

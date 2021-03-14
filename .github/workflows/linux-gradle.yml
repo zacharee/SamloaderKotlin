@@ -29,10 +29,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: logs
-        path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/logs/
-    - name: Upload DMG
+        path: /home/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/logs/
+    - name: Upload Linux Executable
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: Samsung Firmware Downloader
-        path: /Users/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/binaries/main/app/Samsung Firmware Downloader/
+        path: /home/runner/work/SamloaderKotlin/SamloaderKotlin/desktop/build/compose/binaries/main/app/Samsung Firmware Downloader/
