@@ -40,7 +40,7 @@ jobs:
       uses: papeloto/action-zip@v1
       with:
         dest: 'Samsung_Firmware_Downloader_Linux.zip'
-        files: ${{ github.workspace }}/desktop/build/compose/binaries/main/app/
+        files: desktop/build/compose/binaries/main/app/
     - name: Upload Linux Executable
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

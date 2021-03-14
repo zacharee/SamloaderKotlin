@@ -40,7 +40,7 @@ jobs:
       uses: papeloto/action-zip@v1
       with:
         dest: 'Samsung_Firmware_Downloader_macOS.zip'
-        files: ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/
+        files: desktop/build/compose/binaries/main/dmg/
     - name: Upload DMG
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
