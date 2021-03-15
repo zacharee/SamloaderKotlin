@@ -58,6 +58,7 @@ jobs:
         security unlock-keychain -p $MACOS_CERTIFICATE_PWD build.keychain ;
         security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign ;
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD build.keychain ;
+        security find-identity ;
         /usr/bin/codesign -fs "Zachary Wander Codesign 2" $DMG
     - name: Create Release ZIP
       uses: papeloto/action-zip@v1
