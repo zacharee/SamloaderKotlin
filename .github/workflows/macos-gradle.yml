@@ -59,7 +59,7 @@ jobs:
         security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign ;
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD build.keychain ;
         security find-identity ;
-        /usr/bin/codesign -fs "Zachary Wander Codesign 2" $(ls $WORKSPACE//desktop/build/compose/binaries/main/dmg/Samsung\ Firmware\ Downloader-*.dmg)
+        /usr/bin/codesign -fs "Zachary Wander Codesign 2" "$(ls $WORKSPACE//desktop/build/compose/binaries/main/dmg/Samsung\ Firmware\ Downloader-*.dmg)"
     - name: Create Release ZIP
       uses: papeloto/action-zip@v1
       with:
