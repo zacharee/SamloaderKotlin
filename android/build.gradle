@@ -23,6 +23,7 @@ dependencies {
 }
 
 android {
+    buildToolsVersion "30.0.3"
     compileSdkVersion 29
 
     defaultConfig {
