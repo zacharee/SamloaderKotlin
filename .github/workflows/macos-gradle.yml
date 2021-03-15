@@ -37,6 +37,15 @@ jobs:
         path: ${{ github.workspace }}/desktop/build/compose/logs/
     - name: Check Output Exists
       run: ls -laR ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/
+    - name: Unlock Keychain
+      continue-on-error: true
+      env:
+        MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+        MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+        WORKSPACE: ${{ github.workspace }}
+        DMG: ls ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/Samsung\ Firmware\ Downloader-*.dmg
+      run:
+        security create-keychain -p $MACOS_CERTIFICATE_PWD build.keychain security default-keychain -s build.keychain
     - name: Sign Executable
       continue-on-error: true
       env:
@@ -46,7 +55,6 @@ jobs:
         DMG: ls ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/Samsung\ Firmware\ Downloader-*.dmg
       run: >
         echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12 ;
-        security create-keychain -p $MACOS_CERTIFICATE_PWD build.keychain security default-keychain -s build.keychain ;
         security unlock-keychain -p $MACOS_CERTIFICATE_PWD build.keychain ;
         security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign ;
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD build.keychain ;
