@@ -38,6 +38,7 @@ jobs:
     - name: Check Output Exists
       run: ls -laR ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/
     - name: Sign Executable
+      continue-on-error: true
       env:
         MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
         MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
