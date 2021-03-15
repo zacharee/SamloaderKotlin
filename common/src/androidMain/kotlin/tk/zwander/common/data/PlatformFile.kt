@@ -494,11 +494,11 @@ class PlatformUriFile : IPlatformFile {
     }
 
     override fun openOutputStream(append: Boolean): AsyncOutputStream {
-        return context.contentResolver.openOutputStream(wrappedFile.uri, "w${if (append) "a" else ""}").flushingAsync()
+        return context.contentResolver.openOutputStream(wrappedFile.uri, "w${if (append) "a" else ""}")!!.flushingAsync()
     }
 
     override fun openInputStream(): AsyncInputStream {
-        return context.contentResolver.openInputStream(wrappedFile.uri).inputAsync()
+        return context.contentResolver.openInputStream(wrappedFile.uri)!!.inputAsync()
     }
 
     override fun compareTo(other: IPlatformFile): Int {

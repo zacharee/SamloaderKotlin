@@ -40,7 +40,7 @@ fun imageFromResource(path: String): Bitmap {
         Thread.currentThread().contextClassLoader!!
             .getResourceAsStream(path),
         null, null
-    )
+    )!!
 }
 
 //Non-functional because of how Android works
