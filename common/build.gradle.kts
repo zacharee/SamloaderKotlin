@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose") version "0.3.2"
     id("com.android.library")
     kotlin("plugin.serialization") version "1.4.31"
+    id("com.github.gmazzo.buildconfig") version "3.0.0"
 }
 
 group = "tk.zwander"
@@ -24,6 +25,9 @@ android {
     defaultConfig {
         minSdkVersion(24)
         targetSdkVersion(29)
+
+        versionCode(project.properties["versionCode"].toString().toInt())
+        versionName(version.toString())
     }
 
     configurations {
@@ -36,6 +40,12 @@ android {
     }
 }
 
+buildConfig {
+    className("GradleConfig")
+    buildConfigField("String", "versionName", "\"${project.properties["versionName"]}\"")
+    buildConfigField("String", "versionCode", "\"${project.properties["versionCode"]}\"")
+}
+
 kotlin {
     android()
 
@@ -44,7 +54,7 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
-
+    
     sourceSets {
         val commonMain by getting {
             dependencies {

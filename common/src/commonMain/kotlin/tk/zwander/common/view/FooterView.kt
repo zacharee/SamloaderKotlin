@@ -14,6 +14,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.vectorResource
 
@@ -34,7 +35,7 @@ fun FooterView() {
                         fontSize = 16.sp
                     )
                 )
-                append("\u00A9 ")
+                append("v${GradleConfig.versionName} \u00A9 ")
                 pushStyle(
                     SpanStyle(
                         color = MaterialTheme.colors.primary,
