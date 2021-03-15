@@ -55,6 +55,7 @@ jobs:
         DMG: ls ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/Samsung\ Firmware\ Downloader-*.dmg
       run: >
         echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12 ;
+        security default-keychain build.keychain ;
         security unlock-keychain -p $MACOS_CERTIFICATE_PWD build.keychain ;
         security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign ;
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD build.keychain ;
