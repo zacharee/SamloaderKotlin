@@ -53,11 +53,11 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Samsung Firmware Downloader
-        path: ${{ steps.sign_app.outputs.signedReleaseFile }}
+        path: ${{ steps.sign_apk.outputs.signedReleaseFile }}
     - name: Upload Release APK
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ steps.sign_app.outputs.signedReleaseFile }}
+        artifacts: ${{ steps.sign_apk.outputs.signedReleaseFile }}
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
         replacesArtifacts: false
