@@ -74,6 +74,8 @@ kotlin {
                 api("co.touchlab:stately-isolate:1.1.4-a1")
                 api("io.ktor:ktor-client-core:1.5.2")
                 api("io.ktor:ktor-client-cio:1.5.2")
+                api("io.fluidsonic.i18n:fluid-i18n:0.9.4")
+                api("io.fluidsonic.country:fluid-country:0.9.5")
             }
         }
 

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../common/build/generated/source/buildConfig/desktopMain/desktopMain" />
+    <content url="file://$MODULE_DIR$/../../../common/src/desktopMain/kotlin">
+      <sourceFolder url="file://$MODULE_DIR$/../../../common/src/desktopMain/kotlin" isTestSource="false" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../common/src/desktopMain/resources" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.korio:korio-jvm:2.0.8" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klogger:klogger-jvm:2.0.7" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kmem:kmem-jvm:2.0.7" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kds:kds-jvm:2.0.7" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klock:klock-jvm:2.0.6" level="project" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
+    <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-io-jvm:0.1.16" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.13.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-cio-jvm:1.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core-jvm:1.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.4.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.4.31" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu:0.14.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-io:0.1.16" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.31" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-common:0.14.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.aakira:napier-jvm:1.5.0-alpha1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.krypto:krypto-jvm:2.0.6" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-common-jvm:1.1.4" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate-jvm:1.1.4-a1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.4.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics-desktop:0.3.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.compose.ui:ui-util-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio-jvm:1.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls-jvm:1.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:1.5.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.skiko:skiko-jvm:0.2.16" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-layout-desktop:0.3.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-network-jvm:1.5.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: co.touchlab:stately-concurrency-jvm:1.1.4" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-utils-jvm:1.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-io-jvm:1.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.korio:korio:2.0.9" level="project" />
+  </component>
+</module>

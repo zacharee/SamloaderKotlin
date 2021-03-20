@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.MainView
+import tk.zwander.common.data.csc.CSCDB
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.view.*
@@ -20,5 +21,14 @@ fun main() = Window(
 ) {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
-     MainView()
+    val all = CSCDB.getAll()
+    val counts = HashMap<String, Int>()
+
+    all.forEach {
+        counts[it.code] = 1 + counts.getOrDefault(it.code, 0)
+    }
+
+    println(counts.filter { it.value > 1 })
+
+    MainView()
 }
