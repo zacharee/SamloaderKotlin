@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version "0.3.2"
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.4.31"
+    kotlin("plugin.serialization") version "1.5.0-RC"
     id("com.github.gmazzo.buildconfig") version "3.0.0"
 }
 
@@ -102,7 +102,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
                 api("org.jsoup:jsoup:1.13.1")
 
-                api("androidx.appcompat:appcompat:1.3.0-beta01")
+                api("androidx.appcompat:appcompat:1.3.0-rc01")
                 api("androidx.core:core-ktx:1.3.2")
                 api("androidx.documentfile:documentfile:1.0.1")
             }
