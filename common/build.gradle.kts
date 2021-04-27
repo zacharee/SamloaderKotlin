@@ -2,7 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose") version "0.3.2"
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.5.0-RC"
+    kotlin("plugin.serialization") version "1.4.31"
     id("com.github.gmazzo.buildconfig") version "3.0.0"
 }
 
