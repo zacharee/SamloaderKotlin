@@ -21,14 +21,5 @@ fun main() = Window(
 ) {
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
-    val all = CSCDB.getAll()
-    val counts = HashMap<String, Int>()
-
-    all.forEach {
-        counts[it.code] = 1 + counts.getOrDefault(it.code, 0)
-    }
-
-    println(counts.filter { it.value > 1 })
-
     MainView()
 }
