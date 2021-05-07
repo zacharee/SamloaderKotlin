@@ -43,12 +43,12 @@ fun TabView(page: MutableState<Page>) {
                 page.value = Page.DECRYPTER
             }
         )
-        Tab(
-            selected = page.value == Page.HISTORY,
-            text = { Text("History") },
-            onClick = {
-                page.value = Page.HISTORY
-            }
-        )
+//        Tab(
+//            selected = page.value == Page.HISTORY,
+//            text = { Text("History") },
+//            onClick = {
+//                page.value = Page.HISTORY
+//            }
+//        )
     }
 }

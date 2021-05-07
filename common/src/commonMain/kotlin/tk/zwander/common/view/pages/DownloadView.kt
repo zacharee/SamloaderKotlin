@@ -202,40 +202,40 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
         Spacer(Modifier.height(8.dp))
 
-        val boxSource = remember { MutableInteractionSource() }
-
-        Row(
-            modifier = Modifier.align(Alignment.End)
-                .clickable(
-                    interactionSource = boxSource,
-                    indication = null
-                ) {
-                    model.manual = !model.manual
-                }
-                .padding(4.dp)
-        ) {
-            Text(
-                text = "Manual",
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
-
-            Spacer(Modifier.width(8.dp))
-
-            Checkbox(
-                checked = model.manual,
-                onCheckedChange = {
-                    model.manual = it
-                },
-                modifier = Modifier.align(Alignment.CenterVertically),
-                enabled = canChangeOption,
-                colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colors.primary,
-                ),
-                interactionSource = boxSource
-            )
-        }
-
-        Spacer(Modifier.height(8.dp))
+//        val boxSource = remember { MutableInteractionSource() }
+//
+//        Row(
+//            modifier = Modifier.align(Alignment.End)
+//                .clickable(
+//                    interactionSource = boxSource,
+//                    indication = null
+//                ) {
+//                    model.manual = !model.manual
+//                }
+//                .padding(4.dp)
+//        ) {
+//            Text(
+//                text = "Manual",
+//                modifier = Modifier.align(Alignment.CenterVertically)
+//            )
+//
+//            Spacer(Modifier.width(8.dp))
+//
+//            Checkbox(
+//                checked = model.manual,
+//                onCheckedChange = {
+//                    model.manual = it
+//                },
+//                modifier = Modifier.align(Alignment.CenterVertically),
+//                enabled = canChangeOption,
+//                colors = CheckboxDefaults.colors(
+//                    checkedColor = MaterialTheme.colors.primary,
+//                ),
+//                interactionSource = boxSource
+//            )
+//        }
+//
+//        Spacer(Modifier.height(8.dp))
 
         MRFLayout(model, canChangeOption, model.manual && canChangeOption)
 
