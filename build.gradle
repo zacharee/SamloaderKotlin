@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        maven { url = "https://dl.bintray.com/korlibs/korlibs" }
         google()
         mavenCentral()
     }
@@ -15,14 +14,8 @@ version = properties['versionName']
 
 allprojects {
     repositories {
-        maven { url = "https://dl.bintray.com/korlibs/korlibs" }
         mavenCentral()
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-        maven { url = uri("https://kotlin.bintray.com/kotlinx/") }
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap/") }
-        maven { url "https://dl.bintray.com/aakira/maven" }
-        maven {
-            url  "https://dl.bintray.com/pdvrieze/maven"
-        }
     }
 }

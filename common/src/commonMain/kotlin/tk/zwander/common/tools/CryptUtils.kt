@@ -1,6 +1,5 @@
 package tk.zwander.common.tools
 
-import com.github.aakira.napier.Napier
 import com.soywiz.korio.lang.format
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.stream.AsyncInputStream
@@ -12,7 +11,6 @@ import com.soywiz.krypto.Padding
 import com.soywiz.krypto.encoding.Base64
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
-import kotlinx.datetime.Clock
 import kotlinx.io.core.toByteArray
 import tk.zwander.common.util.Averager
 import kotlin.time.*
@@ -296,12 +294,12 @@ object CryptUtils {
      */
     suspend fun checkMD5(md5: String, updateFile: AsyncInputStream?): Boolean {
         if (md5.isBlank() || updateFile == null) {
-            Napier.e("MD5 string empty or updateFile null", tag = "SamsungFirmwareDownloader")
+//            Napier.e("MD5 string empty or updateFile null", tag = "SamsungFirmwareDownloader")
             return false
         }
         val calculatedDigest = calculateMD5(updateFile)
         if (calculatedDigest == null) {
-            Napier.e("calculatedDigest null", tag = "SamsungFirmwareDownloader")
+//            Napier.e("calculatedDigest null", tag = "SamsungFirmwareDownloader")
             return false
         }
         return calculatedDigest.equals(md5, ignoreCase = true)
@@ -329,7 +327,7 @@ object CryptUtils {
             try {
                 updateFile.close()
             } catch (e: Exception) {
-                Napier.e("Exception on closing MD5 input stream", tag = "SamsungFirmwareDownloader")
+//                Napier.e("Exception on closing MD5 input stream", tag = "SamsungFirmwareDownloader")
                 e.printStackTrace()
             }
         }

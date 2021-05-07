@@ -12,10 +12,6 @@ version = project.properties["versionName"].toString()
 repositories {
     google()
     mavenCentral()
-    maven {
-        url = uri("https://dl.bintray.com/pdvrieze/maven")
-    }
-    maven(url = "https://kotlin.bintray.com/kotlinx/")
 }
 
 android {
@@ -67,9 +63,8 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
                 api("org.jetbrains.kotlinx:kotlinx-io-jvm:0.1.16")
 
-                api("com.github.aakira:napier:1.5.0-alpha1")
-                api("com.soywiz.korlibs.krypto:krypto:2.0.6")
-                api("com.soywiz.korlibs.korio:korio:2.0.9")
+                api("com.soywiz.korlibs.krypto:krypto:2.0.7")
+                api("com.soywiz.korlibs.korio:korio:2.0.10")
                 api("co.touchlab:stately-common:1.1.4")
                 api("co.touchlab:stately-isolate:1.1.4-a1")
                 api("io.ktor:ktor-client-core:1.5.2")
