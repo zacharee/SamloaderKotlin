@@ -33,6 +33,8 @@ object Request {
      * @return the needed XML.
      */
     fun createBinaryInform(fw: String, model: String, region: String, nonce: String): String {
+        val (pda, csc, phone, data) = fw.split("/")
+
         val xml = buildXml("FUSMsg") {
             node("FUSHdr") {
                 node("ProtoVer") {
@@ -56,6 +58,11 @@ object Request {
                             text("Smart Switch")
                         }
                     }
+                    node("CLIENT_VERSION") {
+                        node("Data") {
+                            text("4.1.16014_12")
+                        }
+                    }
                     node("DEVICE_FW_VERSION") {
                         node("Data") {
                             text(fw)
@@ -74,6 +81,31 @@ object Request {
                     node("LOGIC_CHECK") {
                         node("Data") {
                             text(getLogicCheck(fw, nonce))
+                        }
+                    }
+                    node("DEVICE_CONTENTS_DATA_VERSION") {
+                        node("Data") {
+                            text(data)
+                        }
+                    }
+                    node("DEVICE_CSC_CODE2_VERSION") {
+                        node("Data") {
+                            text(csc)
+                        }
+                    }
+                    node("DEVICE_PDA_CODE1_VERSION") {
+                        node("Data") {
+                            text(pda)
+                        }
+                    }
+                    node("DEVICE_PHONE_FONT_VERSION") {
+                        node("Data") {
+                            text(phone)
+                        }
+                    }
+                    node("DEVICE_PLATFORM") {
+                        node("Data") {
+                            text("Android")
                         }
                     }
                 }
