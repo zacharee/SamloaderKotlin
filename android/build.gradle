@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.compose" version "0.3.2"
+    id "org.jetbrains.compose" version "0.4.0-build188"
     id "com.android.application"
     id "kotlin-android"
 }
@@ -14,7 +14,7 @@ repositories {
 dependencies {
     implementation(project(":common"))
 
-    implementation('org.jetbrains.kotlin:kotlin-stdlib:1.4.31')
+    implementation('org.jetbrains.kotlin:kotlin-stdlib:1.4.32')
     implementation("androidx.fragment:fragment-ktx:1.3.3")
     implementation("androidx.activity:activity-compose:1.3.0-alpha07")
     implementation("androidx.documentfile:documentfile:1.0.1")
