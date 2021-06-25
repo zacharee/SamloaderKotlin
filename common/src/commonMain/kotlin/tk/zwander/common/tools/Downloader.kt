@@ -1,12 +1,10 @@
 package tk.zwander.common.tools
 
-import co.touchlab.stately.isolate.IsolateState
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
 import io.ktor.utils.io.*
 import kotlinx.coroutines.*
-import kotlinx.datetime.Clock
 import tk.zwander.common.util.Averager
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
