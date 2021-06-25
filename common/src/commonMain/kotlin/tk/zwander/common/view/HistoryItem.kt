@@ -57,17 +57,17 @@ fun HistoryItem(
 
                     Spacer(Modifier.weight(1f))
 
-                    IconButton(
-                        onClick = {
-                            onDownload(info.firmwareString)
-                        },
-                        modifier = Modifier.align(Alignment.Bottom)
-                            .size(32.dp)
-                    ) {
-                        Icon(vectorResource("download.xml"), "Download")
-                    }
-
-                    Spacer(Modifier.width(8.dp))
+//                    IconButton(
+//                        onClick = {
+//                            onDownload(info.firmwareString)
+//                        },
+//                        modifier = Modifier.align(Alignment.Bottom)
+//                            .size(32.dp)
+//                    ) {
+//                        Icon(vectorResource("download.xml"), "Download")
+//                    }
+//
+//                    Spacer(Modifier.width(8.dp))
 
                     IconButton(
                         onClick = {

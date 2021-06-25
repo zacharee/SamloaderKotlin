@@ -52,6 +52,25 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
     val canCheckHistory = model.model.isNotBlank()
             && model.region.isNotBlank() && model.job == null
 
+    val sammobileSource = buildAnnotatedString {
+        pushStyle(
+            SpanStyle(
+                color = LocalContentColor.current,
+                fontSize = 16.sp
+            )
+        )
+        append("Source: ")
+        pushStyle(
+            SpanStyle(
+                color = MaterialTheme.colors.primary,
+                textDecoration = TextDecoration.Underline
+            )
+        )
+        pushStringAnnotation("SammobileLink", "https://sammobile.com")
+        append("SamMobile")
+        pop()
+    }
+
     Column(
         Modifier.fillMaxWidth()
     ) {
@@ -120,6 +139,17 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
 
         MRFLayout(model, model.job == null, model.job == null, false)
 
+        ClickableText(
+            text = sammobileSource,
+            modifier = Modifier.padding(start = 4.dp),
+            onClick = {
+                sammobileSource.getStringAnnotations("SammobileLink", it, it)
+                    .firstOrNull()?.let { item ->
+                        UrlHandler.launchUrl(item.item)
+                    }
+            }
+        )
+
         Spacer(Modifier.height(8.dp))
 
         Box {
@@ -134,37 +164,6 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                     modifier = Modifier.fillMaxWidth(),
                     cells = GridCells.Adaptive(400.dp)
                 ) {
-                    item {
-                        val sammobileSource = buildAnnotatedString {
-                            pushStyle(
-                                SpanStyle(
-                                    color = LocalContentColor.current,
-                                    fontSize = 16.sp
-                                )
-                            )
-                            append("Source: ")
-                            pushStyle(
-                                SpanStyle(
-                                    color = MaterialTheme.colors.primary,
-                                    textDecoration = TextDecoration.Underline
-                                )
-                            )
-                            pushStringAnnotation("SammobileLink", "https://sammobile.com")
-                            append("SamMobile")
-                            pop()
-                        }
-
-                        ClickableText(
-                            text = sammobileSource,
-                            modifier = Modifier.padding(start = 4.dp),
-                            onClick = {
-                                sammobileSource.getStringAnnotations("SammobileLink", it, it)
-                                    .firstOrNull()?.let { item ->
-                                        UrlHandler.launchUrl(item.item)
-                                    }
-                            }
-                        )
-                    }
                     items(model.historyItems) { historyInfo ->
                         HistoryItem(
                             historyInfo,
