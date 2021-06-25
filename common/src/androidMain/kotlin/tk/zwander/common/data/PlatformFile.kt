@@ -39,10 +39,10 @@ actual open class PlatformFile : File {
 
     override val name: String
         get() = this.wrappedFile.name
-    override val parent: String
+    override val parent: String?
         get() = this.wrappedFile.parent
-    override val parentFile: File
-        get() = File(this.wrappedFile.parentFile.absolutePath)
+    override val parentFile: File?
+        get() = this.wrappedFile.parentFile?.absolutePath?.let { File(it) }
     override val path: String
         get() = this.wrappedFile.path
     override val isAbsolute: Boolean
@@ -197,10 +197,10 @@ class PlatformFileFile : PlatformFile {
 
     override val name: String
         get() = wrappedFile.name
-    override val parent: String
+    override val parent: String?
         get() = wrappedFile.parent
-    override val parentFile: File
-        get() = File(wrappedFile.parentFile.absolutePath)
+    override val parentFile: File?
+        get() = wrappedFile.parentFile?.absolutePath?.let { File(it) }
     override val path: String
         get() = wrappedFile.path
     override val isAbsolute: Boolean

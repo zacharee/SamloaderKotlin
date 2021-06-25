@@ -40,8 +40,8 @@ abstract class File : IPlatformFile {
  */
 interface IPlatformFile : Comparable<IPlatformFile> {
     val name: String
-    val parent: String
-    val parentFile: IPlatformFile
+    val parent: String?
+    val parentFile: IPlatformFile?
     val path: String
     val isAbsolute: Boolean
     val absolutePath: String

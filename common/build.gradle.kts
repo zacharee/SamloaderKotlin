@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
@@ -13,8 +15,18 @@ repositories {
     mavenCentral()
 }
 
+kotlin.sourceSets.all {
+    languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
+}
+
 kotlin {
-    android()
+    android() {
+        compilations.forEach {
+            it.kotlinOptions {
+                freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+            }
+        }
+    }
 
     jvm("desktop") {
         compilations.all {
@@ -77,7 +89,7 @@ kotlin {
 }
 
 android {
-    compileSdk = 29
+    compileSdk = 30
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].resources.srcDir("src/commonMain/resources")
