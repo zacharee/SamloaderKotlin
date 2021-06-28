@@ -97,19 +97,19 @@ class DownloaderService : Service() {
     private val nm by lazy { getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
     private val lifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {}
-        override fun onActivityResumed(activity: Activity?) {}
-        override fun onActivityPaused(activity: Activity?) {}
-        override fun onActivityStopped(activity: Activity?) {}
-        override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {}
+        override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+        override fun onActivityResumed(activity: Activity) {}
+        override fun onActivityPaused(activity: Activity) {}
+        override fun onActivityStopped(activity: Activity) {}
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) {}
 
-        override fun onActivityStarted(activity: Activity?) {
+        override fun onActivityStarted(activity: Activity) {
             if (activity is MainActivity) {
                 activityRunning = true
             }
         }
 
-        override fun onActivityDestroyed(activity: Activity?) {
+        override fun onActivityDestroyed(activity: Activity) {
             if (activity is MainActivity) {
                 activityRunning = false
                 if (runningJobs == 0) {

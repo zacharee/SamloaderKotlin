@@ -90,6 +90,11 @@ kotlin {
 android {
     compileSdk = 30
 
+    defaultConfig {
+        minSdk = 24
+        targetSdk = 29
+    }
+
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].resources.srcDir("src/commonMain/resources")
 }
