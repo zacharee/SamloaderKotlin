@@ -1,5 +1,5 @@
 # Notice
-Manual firmware downloads and the firmware history feature have been disabled for now. Samsung changed something on the backend and always serves the latest available firmware, no matter which is requested.
+Manual firmware downloads and downloading from the firmware history feature have been disabled for now. Samsung changed something on the backend and always serves the latest available firmware, no matter which is requested.
 
 If you know a workaround, please follow up on [this issue](https://github.com/zacharee/SamloaderKotlin/issues/10).
 
