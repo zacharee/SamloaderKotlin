@@ -12,5 +12,5 @@ fun Intent.putBinder(key: String, binder: IBinder) {
 
 fun Intent.getBinder(key: String): IBinder? {
     val bundle = getBundleExtra(key)
-    return bundle.getBinder(key)
+    return bundle?.getBinder(key)
 }
