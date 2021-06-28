@@ -52,6 +52,7 @@ kotlin {
                 api("io.ktor:ktor-client-cio:1.5.2")
                 api("io.fluidsonic.i18n:fluid-i18n:0.9.4")
                 api("io.fluidsonic.country:fluid-country:0.9.5")
+                api("com.soywiz.korlibs.klock:klock:2.0.7")
             }
         }
 
