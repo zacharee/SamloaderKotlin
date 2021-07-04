@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.model.HistoryModel
+import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.vectorResource
@@ -95,6 +96,7 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                                           historyString
                                       )
 
+                                      model.changelogs = ChangelogHandler.getChangelogs(model.model, model.region)
                                       model.historyItems = parsed
                                       model.endJob("")
                                   } catch (e: Exception) {
@@ -167,6 +169,7 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                     items(model.historyItems) { historyInfo ->
                         HistoryItem(
                             historyInfo,
+                            model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
                             { onDownload(model.model, model.region, it) },
                             { onDecrypt(model.model, model.region, it) }
                         )

@@ -1,15 +1,26 @@
 package tk.zwander.common.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tk.zwander.common.data.HistoryInfo
+import tk.zwander.common.data.changelog.Changelog
+import tk.zwander.common.util.parseHtml
 import tk.zwander.common.util.vectorResource
+import tk.zwander.common.view.components.ExpandButton
 
 /**
  * An item in the firmware history list.
@@ -20,6 +31,7 @@ import tk.zwander.common.util.vectorResource
 @Composable
 fun HistoryItem(
     info: HistoryInfo,
+    changelog: Changelog?,
     onDownload: (fw: String) -> Unit,
     onDecrypt: (fw: String) -> Unit
 ) {
@@ -94,6 +106,31 @@ fun HistoryItem(
                         label = { Text("Firmware") },
                         singleLine = true
                     )
+                }
+
+                if (changelog != null) {
+                    var changelogExpanded by remember { mutableStateOf(false) }
+
+                    Spacer(Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Spacer(Modifier.height(8.dp))
+
+                        Column {
+                            ExpandButton(
+                                changelogExpanded,
+                                "Changelog"
+                            ) { changelogExpanded = it }
+
+                            if (changelogExpanded) {
+                                Spacer(Modifier.height(8.dp))
+
+                                Text(changelog.notes.parseHtml())
+                            }
+                        }
+                    }
                 }
             }
         }

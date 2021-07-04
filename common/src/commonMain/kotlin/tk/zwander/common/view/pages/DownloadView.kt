@@ -38,6 +38,7 @@ import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
 import tk.zwander.common.view.ProgressInfo
+import tk.zwander.common.view.components.ExpandButton
 import kotlin.time.ExperimentalTime
 
 /**
@@ -272,34 +273,10 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
         if (model.changelog != null && !model.manual && model.job == null && model.fw.isNotBlank()) {
             Spacer(Modifier.height(8.dp))
 
-            val changelogExpandText = buildAnnotatedString {
-                append("Changelog")
-                append(" ")
-                appendInlineContent("expandIcon", "[icon]")
-            }
-            val inlineContent = mapOf(
-                "expandIcon" to InlineTextContent(
-                    placeholder = Placeholder(
-                        16.sp,
-                        16.sp,
-                        placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-                    )
-                ) {
-                    Icon(if (model.changelogExpanded) Icons.Filled.KeyboardArrowUp else
-                        Icons.Filled.KeyboardArrowDown, "")
-                }
-            )
-
-            TextButton(
-                onClick = {
-                    model.changelogExpanded = !model.changelogExpanded
-                }
-            ) {
-                Text(
-                    text = changelogExpandText,
-                    inlineContent = inlineContent,
-                )
-            }
+            ExpandButton(
+                model.changelogExpanded,
+                "Changelog"
+            ) { model.changelogExpanded = it }
 
             Spacer(Modifier.height(8.dp))
 
