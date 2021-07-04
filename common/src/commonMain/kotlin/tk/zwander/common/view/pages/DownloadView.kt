@@ -266,9 +266,11 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             )
         }
 
-        Spacer(Modifier.height(16.dp))
+        if (model.progress.first > 0 || model.progress.second > 0 || model.statusText.isNotBlank()) {
+            Spacer(Modifier.height(16.dp))
 
-        ProgressInfo(model)
+            ProgressInfo(model)
+        }
 
         if (model.changelog != null && !model.manual && model.job == null && model.fw.isNotBlank()) {
             Spacer(Modifier.height(8.dp))
