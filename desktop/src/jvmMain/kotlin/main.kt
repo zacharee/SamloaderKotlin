@@ -1,15 +1,6 @@
 import androidx.compose.desktop.Window
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.MainView
-import tk.zwander.common.data.csc.CSCDB
-import tk.zwander.common.model.DecryptModel
-import tk.zwander.common.model.DownloadModel
-import tk.zwander.common.view.*
 import javax.swing.UIManager
 import kotlin.time.ExperimentalTime
 

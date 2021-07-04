@@ -1,6 +1,7 @@
 package tk.zwander.common.model
 
 import androidx.compose.runtime.*
+import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.view.pages.PlatformDownloadView
 
 /**
@@ -17,4 +18,14 @@ class DownloadModel : BaseModel() {
      * firmware.
      */
     var osCode by mutableStateOf("")
+
+    /**
+     * The changelog for the auto-retrieved firmware.
+     */
+    var changelog by mutableStateOf<Changelog?>(null)
+
+    /**
+     * Whether the changelog is expanded.
+     */
+    var changelogExpanded by mutableStateOf(false)
 }

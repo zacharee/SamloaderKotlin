@@ -4,21 +4,36 @@ import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
+import com.soywiz.korio.lang.Charsets
+import com.soywiz.korio.lang.toString
+import com.soywiz.korio.util.htmlspecialchars
+import com.soywiz.krypto.encoding.fromBase64
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
+import tk.zwander.common.util.ChangelogHandler
+import tk.zwander.common.util.parseHtml
 import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
@@ -166,16 +181,19 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 onClick = {
                     model.job = model.scope.launch {
                         val (fw, os) = try {
-                            VersionFetch.getLatestVersion(model.model, model.region).also {
-                                model.endJob("")
-                            }
+                            VersionFetch.getLatestVersion(model.model, model.region)
                         } catch (e: Exception) {
                             model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${e.message}")
                             "" to ""
+                            return@launch
                         }
+
+                        model.changelog = ChangelogHandler.getChangelog(model.model, model.region, fw.split("/")[0])
 
                         model.fw = fw
                         model.osCode = os
+
+                        model.endJob("")
                     }
                 },
                 enabled = canCheckVersion,
@@ -250,5 +268,44 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
         Spacer(Modifier.height(16.dp))
 
         ProgressInfo(model)
+
+        if (model.changelog != null && !model.manual && model.job == null && model.fw.isNotBlank()) {
+            Spacer(Modifier.height(8.dp))
+
+            val changelogExpandText = buildAnnotatedString {
+                append("Changelog")
+                append(" ")
+                appendInlineContent("expandIcon", "[icon]")
+            }
+            val inlineContent = mapOf(
+                "expandIcon" to InlineTextContent(
+                    placeholder = Placeholder(
+                        16.sp,
+                        16.sp,
+                        placeholderVerticalAlign = PlaceholderVerticalAlign.Center
+                    )
+                ) {
+                    Icon(if (model.changelogExpanded) Icons.Filled.KeyboardArrowUp else
+                        Icons.Filled.KeyboardArrowDown, "")
+                }
+            )
+
+            TextButton(
+                onClick = {
+                    model.changelogExpanded = !model.changelogExpanded
+                }
+            ) {
+                Text(
+                    text = changelogExpandText,
+                    inlineContent = inlineContent,
+                )
+            }
+
+            Spacer(Modifier.height(8.dp))
+
+            if (model.changelogExpanded) {
+                Text(model.changelog?.notes!!.parseHtml())
+            }
+        }
     }
 }
