@@ -3,13 +3,11 @@ package tk.zwander.common.view.pages
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +31,7 @@ import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HistoryItem
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
+import tk.zwander.common.view.components.StaggeredVerticalGrid
 
 /**
  * Delegate HTML parsing to the platform until there's an MPP library.
@@ -162,17 +161,21 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
             }
 
             if (model.historyItems.isNotEmpty()) {
-                LazyVerticalGrid(
-                    modifier = Modifier.fillMaxWidth(),
-                    cells = GridCells.Adaptive(400.dp)
-                ) {
-                    items(model.historyItems) { historyInfo ->
-                        HistoryItem(
-                            historyInfo,
-                            model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
-                            { onDownload(model.model, model.region, it) },
-                            { onDecrypt(model.model, model.region, it) }
-                        )
+                LazyColumn {
+                    item {
+                        StaggeredVerticalGrid(
+                            modifier = Modifier.fillMaxWidth(),
+                            maxColumnWidth = 400.dp
+                        ) {
+                            (model.historyItems).forEach { historyInfo ->
+                                HistoryItem(
+                                    historyInfo,
+                                    model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
+                                    { onDownload(model.model, model.region, it) },
+                                    { onDecrypt(model.model, model.region, it) }
+                                )
+                            }
+                        }
                     }
                 }
             }
