@@ -20,6 +20,7 @@ import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.util.parseHtml
 import tk.zwander.common.util.vectorResource
+import tk.zwander.common.view.components.ChangelogDisplay
 import tk.zwander.common.view.components.ExpandButton
 
 /**
@@ -127,7 +128,7 @@ fun HistoryItem(
                             if (changelogExpanded) {
                                 Spacer(Modifier.height(8.dp))
 
-                                Text(changelog.notes.parseHtml())
+                                ChangelogDisplay(changelog)
                             }
                         }
                     }

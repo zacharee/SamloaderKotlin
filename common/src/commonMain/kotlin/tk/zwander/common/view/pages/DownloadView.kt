@@ -38,6 +38,7 @@ import tk.zwander.common.util.vectorResource
 import tk.zwander.common.view.HybridButton
 import tk.zwander.common.view.MRFLayout
 import tk.zwander.common.view.ProgressInfo
+import tk.zwander.common.view.components.ChangelogDisplay
 import tk.zwander.common.view.components.ExpandButton
 import kotlin.time.ExperimentalTime
 
@@ -283,7 +284,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             Spacer(Modifier.height(8.dp))
 
             if (model.changelogExpanded) {
-                Text(model.changelog?.notes!!.parseHtml())
+                ChangelogDisplay(model.changelog!!)
             }
         }
     }
