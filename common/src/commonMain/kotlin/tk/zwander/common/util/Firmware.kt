@@ -16,12 +16,12 @@ fun makeFirmwareString(pda: String, csc: String): String {
 }
 
 /**
- * Get the HTML from SamMobile to scrape for version history.
+ * Get the HTML from OdinRom to scrape for version history.
  * @param model the device model.
  * @param region the device region.
  */
 suspend fun getFirmwareHistoryString(model: String, region: String): String? {
-    val origUrl = "https://www.sammobile.com/firmwares/database/${model}/${region}"
+    val origUrl = "https://www.odinrom.com/samsung/${model}-${region}/"
     val client = HttpClient {
         followRedirects = true
         expectSuccess = false
