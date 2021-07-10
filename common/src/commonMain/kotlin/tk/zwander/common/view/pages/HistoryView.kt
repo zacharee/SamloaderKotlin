@@ -92,7 +92,13 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                                           historyString
                                       )
 
-                                      model.changelogs = ChangelogHandler.getChangelogs(model.model, model.region)
+                                      model.changelogs = try {
+                                          ChangelogHandler.getChangelogs(model.model, model.region)
+                                      } catch (e: Exception) {
+                                          println("Error retrieving changelogs")
+                                          e.printStackTrace()
+                                          null
+                                      }
                                       model.historyItems = parsed
                                       model.endJob("")
                                   } catch (e: Exception) {

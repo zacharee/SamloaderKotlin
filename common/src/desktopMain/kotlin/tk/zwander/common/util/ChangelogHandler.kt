@@ -31,16 +31,18 @@ actual object PlatformChangelogHandler {
             val row = divs[i].children()
             val log = divs[i + 1]
 
-            val build = row[0].text().split(":")[1].trim()
-            val androidVer = row[1].text().split(":")[1].trim()
-            val relDate = row[2].text().split(":")[1].trim()
-            val secPatch = row[3].text().split(":")[1].trim()
+            val build = row.find { it.text().contains("Build Number", true) }?.text()?.split(":")?.get(1)?.trim()
+            val androidVer = row.find { it.text().contains("Android Version") }?.text()?.split(":")?.get(1)?.trim()
+            val relDate = row.find { it.text().contains("Release Date") }?.text()?.split(":")?.get(1)?.trim()
+            val secPatch = row.find { it.text().contains("Security Patch") }?.text()?.split(":")?.get(1)?.trim()
 
             val logText = log.children()[0].childNodes().joinToString(separator = "", transform = { it.outerHtml() })
 
-            changelogs[build] = Changelog(
-                build, androidVer, relDate, secPatch, logText
-            )
+            if (build != null) {
+                changelogs[build] = Changelog(
+                    build, androidVer, relDate, secPatch, logText
+                )
+            }
         }
 
         return changelogs

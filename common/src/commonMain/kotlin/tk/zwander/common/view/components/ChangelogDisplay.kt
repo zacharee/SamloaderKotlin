@@ -18,22 +18,28 @@ fun ChangelogDisplay(
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            fontWeight = FontWeight.Bold,
-            text = "Security: ${changelog.secPatch}",
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (changelog.secPatch != null) {
+            Text(
+                fontWeight = FontWeight.Bold,
+                text = "Security: ${changelog.secPatch}",
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
+        }
 
-        Text(
-            fontWeight = FontWeight.Bold,
-            text = "Release: ${changelog.relDate}",
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (changelog.relDate != null) {
+            Text(
+                fontWeight = FontWeight.Bold,
+                text = "Release: ${changelog.relDate}",
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(8.dp))
+        }
 
-        Text(changelog.notes.parseHtml())
+        if (changelog.notes != null) {
+            Text(changelog.notes.parseHtml())
+        }
     }
 }
