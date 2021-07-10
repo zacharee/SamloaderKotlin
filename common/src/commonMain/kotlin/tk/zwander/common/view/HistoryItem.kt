@@ -31,6 +31,7 @@ import tk.zwander.common.view.components.ExpandButton
  */
 @Composable
 fun HistoryItem(
+    index: Int,
     info: HistoryInfo,
     changelog: Changelog?,
     onDownload: (fw: String) -> Unit,
@@ -50,21 +51,10 @@ fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = info.date.format("MMM dd, yyyy"),
+                        text = "${index + 1}. Android ${info.androidVersion}",
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.align(Alignment.Bottom),
+                        modifier = Modifier.align(Alignment.CenterVertically),
                         fontSize = 20.sp,
-                        lineHeight = 20.sp
-                    )
-
-                    Spacer(Modifier.width(8.dp))
-
-                    Text(
-                        text = "Android ${info.androidVersion}",
-                        fontSize = 16.sp,
-                        modifier = Modifier.align(Alignment.Bottom)
-                            .offset(y = (-1).dp),
-                        color = MaterialTheme.typography.body1.color,
                         lineHeight = 20.sp
                     )
 
@@ -91,6 +81,19 @@ fun HistoryItem(
                     ) {
                         Icon(vectorResource("decrypt.xml"), "Decrypt")
                     }
+                }
+
+                Spacer(Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Build Date: ${info.date.format("MMM dd, yyyy")}",
+                        modifier = Modifier.align(Alignment.Bottom),
+                        fontSize = 16.sp,
+                        lineHeight = 16.sp
+                    )
                 }
 
                 Spacer(Modifier.height(8.dp))

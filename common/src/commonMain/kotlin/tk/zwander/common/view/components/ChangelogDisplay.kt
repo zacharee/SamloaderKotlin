@@ -26,6 +26,14 @@ fun ChangelogDisplay(
 
         Spacer(Modifier.height(8.dp))
 
+        Text(
+            fontWeight = FontWeight.Bold,
+            text = "Release: ${changelog.relDate}",
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(Modifier.height(8.dp))
+
         Text(changelog.notes.parseHtml())
     }
 }

@@ -165,8 +165,9 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                             modifier = Modifier.fillMaxWidth(),
                             maxColumnWidth = 400.dp
                         ) {
-                            (model.historyItems).forEach { historyInfo ->
+                            (model.historyItems).forEachIndexed { index, historyInfo ->
                                 HistoryItem(
+                                    index,
                                     historyInfo,
                                     model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
                                     { onDownload(model.model, model.region, it) },
