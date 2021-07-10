@@ -1,4 +1,4 @@
-package tk.zwander.common.view
+package tk.zwander.common.view.components
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors

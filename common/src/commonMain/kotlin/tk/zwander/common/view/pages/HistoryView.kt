@@ -25,9 +25,9 @@ import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.vectorResource
-import tk.zwander.common.view.HistoryItem
-import tk.zwander.common.view.HybridButton
-import tk.zwander.common.view.MRFLayout
+import tk.zwander.common.view.components.HistoryItem
+import tk.zwander.common.view.components.HybridButton
+import tk.zwander.common.view.components.MRFLayout
 import tk.zwander.common.view.components.StaggeredVerticalGrid
 
 /**

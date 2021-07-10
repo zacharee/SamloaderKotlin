@@ -1,4 +1,4 @@
-package tk.zwander.common.view
+package tk.zwander.common.view.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator

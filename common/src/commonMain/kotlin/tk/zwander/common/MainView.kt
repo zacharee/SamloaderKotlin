@@ -13,7 +13,10 @@ import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
-import tk.zwander.common.view.*
+import tk.zwander.common.view.components.CustomMaterialTheme
+import tk.zwander.common.view.components.FooterView
+import tk.zwander.common.view.components.Page
+import tk.zwander.common.view.components.TabView
 import tk.zwander.common.view.pages.DecryptView
 import tk.zwander.common.view.pages.DownloadView
 import tk.zwander.common.view.pages.HistoryView
