@@ -32,9 +32,9 @@ actual object PlatformChangelogHandler {
             val log = divs[i + 1]
 
             val build = row.find { it.text().contains("Build Number", true) }?.text()?.split(":")?.get(1)?.trim()
-            val androidVer = row.find { it.text().contains("Android Version") }?.text()?.split(":")?.get(1)?.trim()
-            val relDate = row.find { it.text().contains("Release Date") }?.text()?.split(":")?.get(1)?.trim()
-            val secPatch = row.find { it.text().contains("Security Patch") }?.text()?.split(":")?.get(1)?.trim()
+            val androidVer = row.find { it.text().contains("Android Version", true) }?.text()?.split(":")?.get(1)?.trim()
+            val relDate = row.find { it.text().contains("Release Date", true) }?.text()?.split(":")?.get(1)?.trim()
+            val secPatch = row.find { it.text().contains("Security Patch", true) }?.text()?.split(":")?.get(1)?.trim()
 
             val logText = log.children()[0].childNodes().joinToString(separator = "", transform = { it.outerHtml() })
 
