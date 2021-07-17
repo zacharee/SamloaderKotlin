@@ -1,3 +1,26 @@
+# 0.5.1
+- Update dependencies.
+- Move from SamMobile to OdinRom for history tab.
+- Add release date to changelogs for history items.
+- Update appearance of some UI elements.
+
+# 0.5.0
+- Add changelog for current firmware and for items in history tab.
+- Use staggered grid for history tab (may cause performance issues).
+
+# 0.4.1
+- Remove dependence on Bintray.
+- Add back history tab without download buttons.
+- Fix a grid issue in history tab.
+- Code cleanup.
+- Fix crash on Android <8.0.
+
+# 0.4.0
+- Update dependencies.
+- Remove manual firmware downloads.
+- Remove history tab.
+- Clean up code.
+
 # 0.3.2
 - Backend changes for better organization.
 - Make notification show progress on Android.
