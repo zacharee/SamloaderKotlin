@@ -8,7 +8,7 @@ actual object PlatformChangelogHandler {
     actual suspend fun parseDocUrl(body: String): String {
         val doc = Jsoup.parse(body)
         val selector = doc.selectFirst("#sel_lang_hidden")
-        val engOption = selector.children().find { it.attr("value") == "EN" }!!
+        val engOption = selector.children().run { find { it.attr("value") == "EN" } ?: first() }
 
         return engOption.text()
     }
@@ -27,16 +27,41 @@ actual object PlatformChangelogHandler {
             val row = divs[i].children()
             val log = divs[i + 1]
 
-            val build = row[0].text().split(":")[1].trim()
-            val androidVer = row[1].text().split(":")[1].trim()
-            val relDate = row[2].text().split(":")[1].trim()
-            val secPatch = row[3].text().split(":")[1].trim()
+            //This is kind of messy, but Samsung doesn't have a proper API for retrieving
+            //version info. Some firmware entries don't have a security patch field, so
+            //this handles that case. Some entries are in other languages, so using text
+            //searching doesn't work well. It's possible some entries are missing other
+            //fields, but there aren't any examples of that yet.
+            val (build, androidVer, relDate, secPatch, _) = when {
+                row.count() == 4 -> {
+                    Changelog(
+                        row[0].text().split(":")[1].trim(),
+                        row[1].text().split(":")[1].trim(),
+                        row[2].text().split(":")[1].trim(),
+                        row[3].text().split(":")[1].trim(),
+                        null
+                    )
+                }
+                row.count() == 3 -> {
+                    Changelog(
+                        row[0].text().split(":")[1].trim(),
+                        row[1].text().split(":")[1].trim(),
+                        row[2].text().split(":")[1].trim(),
+                        null, null
+                    )
+                }
+                else -> {
+                    Changelog(null, null, null, null, null)
+                }
+            }
 
             val logText = log.children()[0].childNodes().joinToString(separator = "", transform = { it.outerHtml() })
 
-            changelogs[build] = Changelog(
-                build, androidVer, relDate, secPatch, logText
-            )
+            if (build != null) {
+                changelogs[build] = Changelog(
+                    build, androidVer, relDate, secPatch, logText
+                )
+            }
         }
 
         return changelogs
