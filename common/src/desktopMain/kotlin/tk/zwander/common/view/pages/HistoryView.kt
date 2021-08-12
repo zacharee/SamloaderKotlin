@@ -10,7 +10,7 @@ actual object PlatformHistoryView {
         val doc = Jsoup.parse(body)
 
         val table = doc.selectFirst("#flist")
-        val rows = table.children()[0].children().run { subList(1, size) }
+        val rows = table!!.children()[0].children().run { subList(1, size) }
 
         return rows.map {
             val cols = it.select("td")
