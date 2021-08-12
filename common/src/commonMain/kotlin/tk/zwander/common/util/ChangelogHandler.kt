@@ -29,14 +29,22 @@ object ChangelogHandler {
             followRedirects = true
         }
 
-        val outerResponse = client.get<HttpResponse> {
-            url(outerUrl)
+        val outerResponse = try {
+            client.get<HttpResponse> {
+                url(outerUrl)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
         }
 
         val iframeUrl = if (outerResponse.status.isSuccess()) {
             PlatformChangelogHandler.parseDocUrl(outerResponse.readText())
                 .replace("../../", "$DOMAIN_URL/")
-        } else return null
+        } else {
+            println("No changelogs found for $device $region")
+            return null
+        }
 
         val iframeResponse = client.get<HttpResponse> {
             url(iframeUrl)
@@ -46,7 +54,10 @@ object ChangelogHandler {
             Changelogs(device, region, PlatformChangelogHandler.parseChangelogs(
                 iframeResponse.readText()
             ))
-        } else null
+        } else {
+            println("Unable to load changelogs for $device $region")
+            null
+        }
     }
 
     private fun generateUrlForDeviceAndRegion(device: String, region: String): String {
