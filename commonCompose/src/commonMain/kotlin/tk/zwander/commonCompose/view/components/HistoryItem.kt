@@ -1,27 +1,16 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.InlineTextContent
-import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.Placeholder
-import androidx.compose.ui.text.PlaceholderVerticalAlign
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
-import tk.zwander.commonCompose.util.parseHtml
-import tk.zwander.common.util.vectorResource
-import tk.zwander.commonCompose.view.components.ChangelogDisplay
-import tk.zwander.commonCompose.view.components.ExpandButton
+import tk.zwander.commonCompose.util.vectorResource
 
 /**
  * An item in the firmware history list.

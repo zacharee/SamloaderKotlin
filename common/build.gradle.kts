@@ -47,7 +47,6 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.2.1")
 //                api("org.jetbrains.kotlinx:kotlinx-io:0.1.16")
                 api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
-                api("org.jetbrains.kotlin:kotlin-stdlib:1.5.30-RC")
 
                 api("com.soywiz.korlibs.krypto:krypto:2.3.3")
                 api("com.soywiz.korlibs.korio:korio:2.3.3")
@@ -62,11 +61,6 @@ kotlin {
 
         named("desktopMain") {
             dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material)
-                api(compose.ui)
-
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
                 api("org.jsoup:jsoup:1.14.1")
                 api("io.ktor:ktor-client-cio:1.6.2")
@@ -75,11 +69,6 @@ kotlin {
 
         named("androidMain") {
             dependencies {
-                api(compose.runtime)
-                api(compose.foundation)
-                api(compose.material)
-                api(compose.ui)
-
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
                 api("org.jsoup:jsoup:1.14.1")
@@ -94,7 +83,6 @@ kotlin {
         named("jsMain") {
             dependencies {
                 api(compose.web.core)
-                api(compose.runtime)
 
                 api("io.ktor:ktor-client-js:1.6.2")
 

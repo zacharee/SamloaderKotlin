@@ -13,16 +13,14 @@
           </option>
           <option name="pluginClasspaths">
             <array>
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.0-alpha3/e3ed8808649d4f4549ade7f623c6e4552012fd04/compiler-1.0.0-alpha3.jar" />
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.5.30-RC/4e442ad9669888a21d6183eae7fcc38ff0bcd2f1/kotlin-scripting-jvm-1.5.30-RC.jar" />
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.5.30-RC/1d9632b4924b755f281f630cf2b54cb15bc3d80/kotlin-scripting-common-1.5.30-RC.jar" />
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.5.0/d8cebccdcddd029022aa8646a5a953ff88b13ac8/kotlinx-coroutines-core-jvm-1.5.0.jar" />
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.5.0/65fbc439df2e4aad1f3769762d54534f1b564090/kotlin-stdlib-jdk8-1.5.0.jar" />
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.5.0/f61904618ea7be07a66e0545ffe8dc2c70a19b77/kotlin-stdlib-jdk7-1.5.0.jar" />
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.5.30-RC/dd23741884d3d030f21cc9db12936a2690b322e0/kotlin-stdlib-1.5.30-RC.jar" />
+              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.0-alpha4-build318/60bf9c08206affeb257f7bdfcd9b1392be0ad2b/compiler-1.0.0-alpha4-build318.jar" />
+              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.5.21/8143908a15163e634fecb87013ed4a139170b032/kotlin-scripting-jvm-1.5.21.jar" />
+              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.5.21/5d271f9e7e7191902f8c0d45c600f5b57a284036/kotlin-scripting-common-1.5.21.jar" />
+              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.3.8/f62be6d4cbf27781c2969867b4ed952f38378492/kotlinx-coroutines-core-1.3.8.jar" />
+              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.5.21/2f537cad7e9eeb9da73738c8812e1e4cf9b62e4e/kotlin-stdlib-1.5.21.jar" />
               <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" />
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.5.30-RC/a85b7cb33ad571a90ba625845a9a554dae22ee33/kotlin-stdlib-common-1.5.30-RC.jar" />
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.5.30-RC/2b713d878d0123f4c2e306ac835b653de2486fb5/kotlin-script-runtime-1.5.30-RC.jar" />
+              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.5.21/cc8bf3586fd2ebcf234058b9440bb406e62dfacb/kotlin-stdlib-common-1.5.21.jar" />
+              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.5.21/96d49e89873fde985750af354b6eabb60cfa999b/kotlin-script-runtime-1.5.21.jar" />
             </array>
           </option>
           <option name="multiPlatform" value="true" />

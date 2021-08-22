@@ -24,7 +24,7 @@ import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
-import tk.zwander.common.util.vectorResource
+import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout

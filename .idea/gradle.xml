@@ -18,7 +18,6 @@
             <option value="$PROJECT_DIR$/desktop" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="testRunner" value="GRADLE" />
@@ -34,7 +33,6 @@
             <option value="$PROJECT_DIR$/desktop" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
