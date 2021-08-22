@@ -2,7 +2,6 @@ package tk.zwander.common.model
 
 import androidx.compose.runtime.*
 import tk.zwander.common.data.changelog.Changelog
-import tk.zwander.common.view.pages.PlatformDownloadView
 
 /**
  * The model for the Downloader view.

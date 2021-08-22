@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
@@ -16,9 +15,8 @@ import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformUriFile
 import tk.zwander.common.util.*
-import tk.zwander.common.view.pages.PlatformDecryptView
-import tk.zwander.common.view.pages.PlatformDownloadView
-import java.util.concurrent.atomic.AtomicInteger
+import tk.zwander.commonCompose.view.pages.PlatformDecryptView
+import tk.zwander.commonCompose.view.pages.PlatformDownloadView
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.max

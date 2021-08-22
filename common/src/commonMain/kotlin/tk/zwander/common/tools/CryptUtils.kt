@@ -9,9 +9,9 @@ import com.soywiz.krypto.AES
 import com.soywiz.krypto.MD5
 import com.soywiz.krypto.Padding
 import com.soywiz.krypto.encoding.Base64
+import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
-import kotlinx.io.core.toByteArray
 import tk.zwander.common.util.Averager
 import kotlin.time.*
 

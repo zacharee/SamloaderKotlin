@@ -11,12 +11,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.*
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
-import tk.zwander.common.MainView
+import tk.zwander.commonCompose.MainView
 import tk.zwander.common.data.*
-import tk.zwander.common.view.*
 import kotlin.time.ExperimentalTime
 
 /**
