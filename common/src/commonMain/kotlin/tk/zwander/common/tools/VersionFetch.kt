@@ -4,6 +4,7 @@ import com.soywiz.korio.net.http.Http
 import com.soywiz.korio.net.http.HttpClient
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.stream.readAll
+import tk.zwander.common.util.generateProperUrl
 
 /**
  * Handle fetching the latest version for a given model and region.
@@ -15,11 +16,11 @@ object VersionFetch {
      * @param region the device region.
      * @return a Pair(FirmwareString, AndroidVersion).
      */
-    suspend fun getLatestVersion(model: String, region: String): Pair<String, String> {
+    suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = false): Pair<String, String> {
         val client = HttpClient()
         val response = client.request(
             Http.Method.GET,
-            "https://fota-cloud-dn.ospserver.net/firmware/${region}/${model}/version.xml"
+            generateProperUrl(useProxy, "fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml"),
         )
 
         val responseString = response.content.readAll().decodeToString()

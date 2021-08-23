@@ -3,6 +3,7 @@ package tk.zwander.common.util
 import com.soywiz.korio.toList
 import io.ktor.util.*
 import org.w3c.dom.Element
+import org.w3c.dom.HTMLHRElement
 import org.w3c.dom.get
 import org.w3c.dom.parsing.DOMParser
 import tk.zwander.common.data.changelog.Changelog
@@ -11,7 +12,7 @@ actual object PlatformChangelogHandler {
     actual suspend fun parseDocUrl(body: String): String {
         val doc = DOMParser().parseFromString(body, "text/html")
         val selector = doc.getElementById("sel_lang_hidden")
-        val engOption = selector!!.children.toList().run { find { it?.attributes?.get("value")?.value == "EN" } ?: first() }
+        val engOption = selector?.children?.toList()?.run { find { it?.attributes?.get("value")?.value == "EN" } ?: first() }
 
         return engOption?.textContent!!
     }
@@ -22,8 +23,9 @@ actual object PlatformChangelogHandler {
         val container = doc.getElementsByClassName("container")[0]
 
         val divs = container!!.children.toList().toMutableList().apply {
-            removeAll { it?.tagName == "hr" }
+            removeAll { it is HTMLHRElement }
         }
+        println(divs)
         val changelogs = LinkedHashMap<String, Changelog>()
 
         for (i in 3 until divs.size step 2) {
@@ -58,7 +60,7 @@ actual object PlatformChangelogHandler {
                 }
             }
 
-            val logText = log!!.children.item(0)!!.textContent
+            val logText = log!!.textContent
 
             if (build != null) {
                 changelogs[build] = Changelog(

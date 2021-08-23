@@ -133,6 +133,7 @@ object CryptUtils {
      */
     suspend fun getV4Key(version: String, model: String, region: String): ByteArray {
         val client = FusClient()
+
         val request = Request.createBinaryInform(version, model, region, client.nonce)
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 

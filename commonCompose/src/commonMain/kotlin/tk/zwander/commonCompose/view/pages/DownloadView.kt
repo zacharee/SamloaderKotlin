@@ -75,6 +75,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                         PlatformDownloadView.onStart()
                         try {
                             model.statusText = "Downloading"
+
                             val (path, fileName, size, crc32) = Request.getBinaryFile(client, model.fw, model.model, model.region)
                             val request = Request.createBinaryInit(fileName, client.nonce)
 

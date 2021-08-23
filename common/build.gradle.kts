@@ -83,6 +83,7 @@ kotlin {
         named("jsMain") {
             dependencies {
                 api(compose.web.core)
+                api(compose.web.widgets)
 
                 api("io.ktor:ktor-client-js:1.6.2")
 
@@ -91,6 +92,8 @@ kotlin {
                 api("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.0-pre.233-kotlin-1.5.21")
                 api(npm("react", "17.0.2"))
                 api(npm("react-dom", "17.0.2"))
+                api(npm("react-bootstrap", "2.0.0-beta.5"))
+                api(npm("bootstrap", "5.1.0"))
             }
         }
     }
