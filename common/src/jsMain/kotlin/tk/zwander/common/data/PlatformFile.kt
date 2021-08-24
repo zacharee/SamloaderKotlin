@@ -39,12 +39,12 @@ actual open class PlatformFile : File {
     override suspend fun getCanonicalFile(): IPlatformFile = getAbsoluteFile()
     override suspend fun getCanRead(): Boolean = true
     override suspend fun getCanWrite(): Boolean = true
-    override suspend fun getExists(): Boolean = runBlocking { wrappedFile.exists() }!!
-    override suspend fun isDirectory(): Boolean = runBlocking { wrappedFile.isDirectory() }!!
-    override suspend fun isFile(): Boolean = runBlocking { wrappedFile.isFile() }!!
+    override suspend fun getExists(): Boolean = wrappedFile.exists()
+    override suspend fun isDirectory(): Boolean = wrappedFile.isDirectory()
+    override suspend fun isFile(): Boolean = wrappedFile.isFile()
     override suspend fun isHidden(): Boolean = false
-    override suspend fun getLastModified(): Long = runBlocking { wrappedFile.stat().modifiedTime.unixMillisLong }!!
-    override suspend fun getLength(): Long = runBlocking { wrappedFile.size() }!!
+    override suspend fun getLastModified(): Long = wrappedFile.stat().modifiedTime.unixMillisLong
+    override suspend fun getLength(): Long = wrappedFile.size()
     override suspend fun getTotalSpace(): Long = throw IllegalStateException("Not implemented!")
     override suspend fun getFreeSpace(): Long = throw IllegalStateException("Not implemented!")
     override suspend fun getUsableSpace(): Long = throw IllegalStateException("Not implemented!")

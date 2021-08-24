@@ -1,9 +1,11 @@
 import androidx.compose.runtime.Composable
+import com.soywiz.korio.async.async
 import com.soywiz.korio.async.launch
 import io.ktor.utils.io.core.internal.*
 import kotlinx.browser.window
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
 import org.w3c.dom.HTMLElement
@@ -15,7 +17,9 @@ import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.tools.*
+import tk.zwander.common.util.Averager
 import tk.zwander.common.util.ChangelogHandler
+import kotlin.math.roundToInt
 
 val downloadModel = DownloadModel()
 val decryptModel = DecryptModel()
@@ -70,7 +74,7 @@ fun main() {
 
             Button(
                 attrs = {
-                    onClick { downloadModel.job = downloadModel.scope.launch { doCheck() } }
+                    onClick { downloadModel.job = downloadModel.scope.async { doCheck() } }
                 }
             ) {
                 Text("Retrieve")
@@ -80,7 +84,7 @@ fun main() {
                 && downloadModel.job == null) {
                 Button(
                     attrs = {
-                        onClick { downloadModel.job = downloadModel.scope.launch { doDownload() } }
+                        onClick { downloadModel.job = downloadModel.scope.async { doDownload() } }
                     }
                 ) {
                     Text("Download")
@@ -88,7 +92,15 @@ fun main() {
             }
 
             Text("Status: ${downloadModel.statusText}")
-            Text("Progress: ${downloadModel.progress}")
+
+            val currentMB = (downloadModel.progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
+            val totalMB = (downloadModel.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
+
+            val speedKBps = downloadModel.speed / 1024.0
+            val shouldUseMB = speedKBps >= 1 * 1024
+            val finalSpeed = "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
+
+            Text("Progress: $currentMB / $totalMB MiB,,, $finalSpeed ${if (shouldUseMB) "MiB/s" else "KiB/s"}")
         }
     }
 }
@@ -116,17 +128,51 @@ suspend fun doDownload() {
         val (path, fileName, size, crc32) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
         val request = Request.createBinaryInit(fileName, client.nonce)
 
+        println("binary init before")
+
         client.makeReq(FusClient.Request.BINARY_INIT, request)
+
+        println("binary init after")
 
         val fullFileName = fileName.replace(".zip",
             "_${downloadModel.fw.replace("/", "_")}_${downloadModel.region}.zip")
 
+        println("savefile before")
+
         val saveFile = PlatformFile("${fullFileName}.enc")
+
+        println("savefile after ${saveFile.getLength()}")
+
+        println("downloadfile before")
+
+        val averager = Averager()
+        var prevSent = 0L
+        var prevCallTime = Clock.System.now().toEpochMilliseconds()
 
         val (response, md5) = client.downloadFile(
             path + fileName,
-            saveFile.getLength()
-        )
+            saveFile.getLength(),
+            true
+        ) { bytesSentTotal, contentLength ->
+            val newCallTime = Clock.System.now().toEpochMilliseconds()
+            val nano = (newCallTime - prevCallTime) * 1000 * 1000
+
+            averager.update(nano, bytesSentTotal - prevSent)
+
+            val (totalTime, totalRead, _) = averager.sum()
+
+            val bps = (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
+
+            println("download progress $bytesSentTotal $contentLength $bps")
+
+            downloadModel.progress = bytesSentTotal to contentLength
+            downloadModel.speed = bps
+
+            prevCallTime = newCallTime
+            prevSent = bytesSentTotal
+        }
+
+        println("downloadfile after")
 
         Downloader.download(
             response,
@@ -134,9 +180,13 @@ suspend fun doDownload() {
             saveFile.openOutputStream(true),
             saveFile.getLength()
         ) { current, max, bps ->
+            println("download progress $current $max $bps")
+
             downloadModel.progress = current to max
             downloadModel.speed = bps
         }
+
+        println("download after")
 
         downloadModel.speed = 0L
 
