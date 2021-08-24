@@ -1,3 +1,10 @@
+buildscript {
+    dependencies {
+        classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.16.2")
+    }
+}
+apply(plugin = "kotlinx-atomicfu")
+
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
@@ -54,6 +61,7 @@ kotlin {
                 api("co.touchlab:stately-common:1.1.4")
                 api("co.touchlab:stately-isolate:1.1.4-a1")
                 api("io.ktor:ktor-client-core:1.6.2")
+                api("io.ktor:ktor-client-auth:1.6.2")
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.10.0")
             }

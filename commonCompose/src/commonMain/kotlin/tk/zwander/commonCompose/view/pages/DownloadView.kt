@@ -88,14 +88,14 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                 if (info != null) {
                                     val (response, md5) = client.downloadFile(
                                         path + fileName,
-                                        info.downloadFile.length
+                                        info.downloadFile.getLength()
                                     )
 
                                     Downloader.download(
                                         response,
                                         size,
                                         info.downloadFile.openOutputStream(true),
-                                        info.downloadFile.length
+                                        info.downloadFile.getLength()
                                     ) { current, max, bps ->
                                         model.progress = current to max
                                         model.speed = bps

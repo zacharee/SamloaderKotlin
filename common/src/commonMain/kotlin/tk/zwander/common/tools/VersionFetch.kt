@@ -20,7 +20,7 @@ object VersionFetch {
         val client = HttpClient()
         val response = client.request(
             Http.Method.GET,
-            generateProperUrl(useProxy, "fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml"),
+            generateProperUrl(useProxy, "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml"),
         )
 
         val responseString = response.content.readAll().decodeToString()

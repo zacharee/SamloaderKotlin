@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
+import kotlinx.coroutines.CoroutineScope
 import tk.zwander.common.util.inputAsync
 import tk.zwander.common.util.flushingAsync
 import java.io.FileInputStream
@@ -37,137 +38,117 @@ actual open class PlatformFile : File {
         return this.wrappedFile.hashCode()
     }
 
-    override val name: String
-        get() = this.wrappedFile.name
-    override val parent: String?
-        get() = this.wrappedFile.parent
-    override val parentFile: File?
-        get() = this.wrappedFile.parentFile?.absolutePath?.let { File(it) }
-    override val path: String
-        get() = this.wrappedFile.path
-    override val isAbsolute: Boolean
-        get() = this.wrappedFile.isAbsolute
-    override val absolutePath: String
-        get() = this.wrappedFile.absolutePath
-    override val absoluteFile: File
-        get() = File(this.wrappedFile.absoluteFile.absolutePath)
-    override val canonicalPath: String
-        get() = this.wrappedFile.canonicalPath
-    override val canonicalFile: File
-        get() = File(this.wrappedFile.canonicalFile.absolutePath)
-    override val canRead: Boolean
-        get() = this.wrappedFile.canRead
-    override val canWrite: Boolean
-        get() = this.wrappedFile.canWrite
-    override val exists: Boolean
-        get() = this.wrappedFile.exists
-    override val isDirectory: Boolean
-        get() = this.wrappedFile.isDirectory
-    override val isFile: Boolean
-        get() = this.wrappedFile.isFile
-    override val isHidden: Boolean
-        get() = this.wrappedFile.isHidden
-    override val lastModified: Long
-        get() = this.wrappedFile.lastModified
-    override val length: Long
-        get() = this.wrappedFile.length
-    override val totalSpace: Long
-        get() = this.wrappedFile.totalSpace
-    override val freeSpace: Long
-        get() = this.wrappedFile.freeSpace
-    override val usableSpace: Long
-        get() = this.wrappedFile.usableSpace
+    override fun getName(): String = this.wrappedFile.getName()
+    override suspend fun getParent(): String? = this.wrappedFile.getParent()
+    override suspend fun getParentFile(): File? = this.wrappedFile.getParentFile()?.getAbsolutePath()?.let { File(it) }
+    override fun getPath(): String = this.wrappedFile.getPath()
+    override suspend fun isAbsolute(): Boolean = this.wrappedFile.isAbsolute()
+    override fun getAbsolutePath(): String = this.wrappedFile.getAbsolutePath()
+    override fun getAbsoluteFile(): File = File(this.wrappedFile.getAbsoluteFile().getAbsolutePath())
+    override suspend fun getCanonicalPath(): String = this.wrappedFile.getCanonicalPath()
+    override suspend fun getCanonicalFile(): File = File(this.wrappedFile.getCanonicalFile().getAbsolutePath())
+    override suspend fun getCanRead(): Boolean = this.wrappedFile.getCanRead()
+    override suspend fun getCanWrite(): Boolean = this.wrappedFile.getCanWrite()
+    override suspend fun getExists(): Boolean = this.wrappedFile.getExists()
+    override suspend fun isDirectory(): Boolean = this.wrappedFile.isDirectory()
+    override suspend fun isFile(): Boolean = this.wrappedFile.isFile()
+    override suspend fun isHidden(): Boolean = this.wrappedFile.isHidden()
+    override suspend fun getLastModified(): Long = this.wrappedFile.getLastModified()
+    override suspend fun getLength(): Long = this.wrappedFile.getLength()
+    override suspend fun getTotalSpace(): Long = this.wrappedFile.getTotalSpace()
+    override suspend fun getFreeSpace(): Long = this.wrappedFile.getFreeSpace()
+    override suspend fun getUsableSpace(): Long = this.wrappedFile.getUsableSpace()
 
-    override fun createNewFile(): Boolean {
+    override suspend fun createNewFile(): Boolean {
         return this.wrappedFile.createNewFile()
     }
 
-    override fun delete(): Boolean {
+    override suspend fun delete(): Boolean {
         return this.wrappedFile.delete()
     }
 
-    override fun deleteOnExit() {
+    override suspend fun deleteOnExit() {
         this.wrappedFile.deleteOnExit()
     }
 
-    override fun list(): Array<String>? {
+    override suspend fun list(): Array<String>? {
         return this.wrappedFile.list()
     }
 
-    override fun list(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<String>? {
-        return this.wrappedFile.list { dir, name -> filter(File(dir.absolutePath), name) }
+    override suspend fun list(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<String>? {
+        return this.wrappedFile.list { dir, name -> filter(File(dir.getAbsolutePath()), name) }
     }
 
-    override fun listFiles(): Array<IPlatformFile>? {
-        return this.wrappedFile.listFiles()?.map { File(it.absolutePath) }
+    override suspend fun listFiles(): Array<IPlatformFile>? {
+        return this.wrappedFile.listFiles()?.map { File(it.getAbsolutePath()) }
             ?.toTypedArray()
     }
 
-    override fun listFiles(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<IPlatformFile>? {
-        return this.wrappedFile.listFiles { dir, name -> filter(File(dir.absolutePath), name) }
-            ?.map { File(it.absolutePath) }
+    override suspend fun listFiles(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<IPlatformFile>? {
+        return this.wrappedFile.listFiles { dir, name -> filter(File(dir.getAbsolutePath()), name) }
+            ?.map { File(it.getAbsolutePath()) }
             ?.toTypedArray()
     }
 
-    override fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile>? {
-        return this.wrappedFile.listFiles { pathname -> filter(File(pathname.absolutePath)) }
-            ?.map { File(it.absolutePath) }
+    override suspend fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile>? {
+        return this.wrappedFile.listFiles { pathname -> filter(File(pathname.getAbsolutePath())) }
+            ?.map { File(it.getAbsolutePath()) }
             ?.toTypedArray()
     }
 
-    override fun mkdir(): Boolean {
+    override suspend fun mkdir(): Boolean {
         return this.wrappedFile.mkdir()
     }
 
-    override fun mkdirs(): Boolean {
+    override suspend fun mkdirs(): Boolean {
         return this.wrappedFile.mkdirs()
     }
 
-    override fun renameTo(dest: File): Boolean {
+    override suspend fun renameTo(dest: File): Boolean {
         return this.wrappedFile.renameTo(dest)
     }
 
-    override fun setLastModified(time: Long): Boolean {
+    override suspend fun setLastModified(time: Long): Boolean {
         return this.wrappedFile.setLastModified(time)
     }
 
-    override fun setReadOnly(): Boolean {
+    override suspend fun setReadOnly(): Boolean {
         return this.wrappedFile.setReadOnly()
     }
 
-    override fun setWritable(writable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setWritable(writable: Boolean, ownerOnly: Boolean): Boolean {
         return this.wrappedFile.setWritable(writable, ownerOnly)
     }
 
-    override fun setWritable(writable: Boolean): Boolean {
+    override suspend fun setWritable(writable: Boolean): Boolean {
         return this.wrappedFile.setWritable(writable)
     }
 
-    override fun setReadable(readable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setReadable(readable: Boolean, ownerOnly: Boolean): Boolean {
         return this.wrappedFile.setReadable(readable, ownerOnly)
     }
 
-    override fun setReadable(readable: Boolean): Boolean {
+    override suspend fun setReadable(readable: Boolean): Boolean {
         return this.wrappedFile.setReadable(readable)
     }
 
-    override fun setExecutable(executable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setExecutable(executable: Boolean, ownerOnly: Boolean): Boolean {
         return this.wrappedFile.setExecutable(executable, ownerOnly)
     }
 
-    override fun setExecutable(executable: Boolean): Boolean {
+    override suspend fun setExecutable(executable: Boolean): Boolean {
         return this.wrappedFile.setExecutable(executable)
     }
 
-    override fun canExecute(): Boolean {
+    override suspend fun canExecute(): Boolean {
         return this.wrappedFile.canExecute()
     }
 
-    override fun openOutputStream(append: Boolean): AsyncOutputStream {
+    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream {
         return wrappedFile.openOutputStream(append)
     }
 
-    override fun openInputStream(): AsyncInputStream {
+    override suspend fun openInputStream(): AsyncInputStream {
         return wrappedFile.openInputStream()
     }
 
@@ -192,145 +173,125 @@ class PlatformFileFile : PlatformFile {
     }
 
     constructor(parent: File, child: String) : super(parent, child) {
-        wrappedFile = java.io.File(java.io.File(parent.absolutePath), child)
+        wrappedFile = java.io.File(java.io.File(parent.getAbsolutePath()), child)
     }
 
-    override val name: String
-        get() = wrappedFile.name
-    override val parent: String?
-        get() = wrappedFile.parent
-    override val parentFile: File?
-        get() = wrappedFile.parentFile?.absolutePath?.let { File(it) }
-    override val path: String
-        get() = wrappedFile.path
-    override val isAbsolute: Boolean
-        get() = wrappedFile.isAbsolute
-    override val absolutePath: String
-        get() = wrappedFile.absolutePath
-    override val absoluteFile: File
-        get() = File(wrappedFile.absoluteFile.absolutePath)
-    override val canonicalPath: String
-        get() = wrappedFile.canonicalPath
-    override val canonicalFile: File
-        get() = File(wrappedFile.canonicalFile.absolutePath)
-    override val canRead: Boolean
-        get() = wrappedFile.canRead()
-    override val canWrite: Boolean
-        get() = wrappedFile.canWrite()
-    override val exists: Boolean
-        get() = wrappedFile.exists()
-    override val isDirectory: Boolean
-        get() = wrappedFile.isDirectory
-    override val isFile: Boolean
-        get() = wrappedFile.isFile
-    override val isHidden: Boolean
-        get() = wrappedFile.isHidden
-    override val lastModified: Long
-        get() = wrappedFile.lastModified()
-    override val length: Long
-        get() = wrappedFile.length()
-    override val totalSpace: Long
-        get() = wrappedFile.totalSpace
-    override val freeSpace: Long
-        get() = wrappedFile.freeSpace
-    override val usableSpace: Long
-        get() = wrappedFile.usableSpace
+    override fun getName(): String = wrappedFile.name
+    override suspend fun getParent(): String? = wrappedFile.parent
+    override suspend fun getParentFile(): File? = wrappedFile.parentFile?.absolutePath?.let { File(it) }
+    override fun getPath(): String = wrappedFile.path
+    override suspend fun isAbsolute(): Boolean = wrappedFile.isAbsolute
+    override fun getAbsolutePath(): String = wrappedFile.absolutePath
+    override fun getAbsoluteFile(): File = File(wrappedFile.absoluteFile.absolutePath)
+    override suspend fun getCanonicalPath(): String = wrappedFile.canonicalPath
+    override suspend fun getCanonicalFile(): File = File(wrappedFile.canonicalFile.absolutePath)
+    override suspend fun getCanRead(): Boolean = wrappedFile.canRead()
+    override suspend fun getCanWrite(): Boolean = wrappedFile.canWrite()
+    override suspend fun getExists(): Boolean = wrappedFile.exists()
+    override suspend fun isDirectory(): Boolean = wrappedFile.isDirectory
+    override suspend fun isFile(): Boolean = wrappedFile.isFile
+    override suspend fun isHidden(): Boolean = wrappedFile.isHidden
+    override suspend fun getLastModified(): Long = wrappedFile.lastModified()
+    override suspend fun getLength(): Long = wrappedFile.length()
+    override suspend fun getTotalSpace(): Long = wrappedFile.totalSpace
+    override suspend fun getFreeSpace(): Long = wrappedFile.freeSpace
+    override suspend fun getUsableSpace(): Long = wrappedFile.usableSpace
 
-    override fun createNewFile(): Boolean {
+    override suspend fun createNewFile(): Boolean {
         return wrappedFile.createNewFile()
     }
 
-    override fun delete(): Boolean {
+    override suspend fun delete(): Boolean {
         return wrappedFile.delete()
     }
 
-    override fun deleteOnExit() {
+    override suspend fun deleteOnExit() {
         wrappedFile.deleteOnExit()
     }
 
-    override fun list(): Array<String>? {
+    override suspend fun list(): Array<String>? {
         return wrappedFile.list()
     }
 
-    override fun list(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<String>? {
+    override suspend fun list(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<String>? {
         return wrappedFile.list { dir, name -> filter(File(dir.absolutePath), name) }
     }
 
-    override fun listFiles(): Array<IPlatformFile>? {
+    override suspend fun listFiles(): Array<IPlatformFile>? {
         return wrappedFile.listFiles()?.map { File(it.absolutePath) }
             ?.toTypedArray()
     }
 
-    override fun listFiles(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<IPlatformFile>? {
+    override suspend fun listFiles(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<IPlatformFile>? {
         return wrappedFile.listFiles { dir, name -> filter(File(dir.absolutePath), name) }
             ?.map { File(it.absolutePath) }
             ?.toTypedArray()
     }
 
-    override fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile>? {
+    override suspend fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile>? {
         return wrappedFile.listFiles { pathname -> filter(File(pathname.absolutePath)) }
             ?.map { File(it.absolutePath) }
             ?.toTypedArray()
     }
 
-    override fun mkdir(): Boolean {
+    override suspend fun mkdir(): Boolean {
         return wrappedFile.mkdir()
     }
 
-    override fun mkdirs(): Boolean {
+    override suspend fun mkdirs(): Boolean {
         return wrappedFile.mkdirs()
     }
 
-    override fun renameTo(dest: File): Boolean {
-        return wrappedFile.renameTo(java.io.File(dest.absolutePath))
+    override suspend fun renameTo(dest: File): Boolean {
+        return wrappedFile.renameTo(java.io.File(dest.getAbsolutePath()))
     }
 
-    override fun setLastModified(time: Long): Boolean {
+    override suspend fun setLastModified(time: Long): Boolean {
         return wrappedFile.setLastModified(time)
     }
 
-    override fun setReadOnly(): Boolean {
+    override suspend fun setReadOnly(): Boolean {
         return wrappedFile.setReadOnly()
     }
 
-    override fun setWritable(writable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setWritable(writable: Boolean, ownerOnly: Boolean): Boolean {
         return wrappedFile.setWritable(writable, ownerOnly)
     }
 
-    override fun setWritable(writable: Boolean): Boolean {
+    override suspend fun setWritable(writable: Boolean): Boolean {
         return wrappedFile.setWritable(writable)
     }
 
-    override fun setReadable(readable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setReadable(readable: Boolean, ownerOnly: Boolean): Boolean {
         return wrappedFile.setReadable(readable, ownerOnly)
     }
 
-    override fun setReadable(readable: Boolean): Boolean {
+    override suspend fun setReadable(readable: Boolean): Boolean {
         return wrappedFile.setReadable(readable)
     }
 
-    override fun setExecutable(executable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setExecutable(executable: Boolean, ownerOnly: Boolean): Boolean {
         return wrappedFile.setExecutable(executable, ownerOnly)
     }
 
-    override fun setExecutable(executable: Boolean): Boolean {
+    override suspend fun setExecutable(executable: Boolean): Boolean {
         return wrappedFile.setExecutable(executable)
     }
 
-    override fun canExecute(): Boolean {
+    override suspend fun canExecute(): Boolean {
         return wrappedFile.canExecute()
     }
 
-    override fun openOutputStream(append: Boolean): AsyncOutputStream {
+    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream {
         return FileOutputStream(wrappedFile, append).flushingAsync()
     }
 
-    override fun openInputStream(): AsyncInputStream {
+    override suspend fun openInputStream(): AsyncInputStream {
         return FileInputStream(wrappedFile).inputAsync()
     }
 
     override fun compareTo(other: IPlatformFile): Int {
-        return wrappedFile.compareTo(java.io.File(other.absolutePath))
+        return wrappedFile.compareTo(java.io.File(other.getAbsolutePath()))
     }
 
     override fun hashCode(): Int {
@@ -339,7 +300,7 @@ class PlatformFileFile : PlatformFile {
 
     override fun equals(other: Any?): Boolean {
         return other is PlatformFileFile
-                && other.absolutePath == absolutePath
+                && other.getAbsolutePath() == getAbsolutePath()
     }
 }
 
@@ -364,140 +325,120 @@ class PlatformUriFile : IPlatformFile {
         wrappedFile = if (isTree) DocumentFile.fromTreeUri(context, uri)!! else DocumentFile.fromSingleUri(context, uri)!!
     }
 
-    override val name: String
-        get() = wrappedFile.name!!
-    override val parent: String
-        get() = wrappedFile.parentFile!!.uri.toString()
-    override val parentFile: IPlatformFile
-        get() = PlatformUriFile(context, wrappedFile.parentFile!!)
-    override val path: String
-        get() = wrappedFile.uri.toString()
-    override val isAbsolute: Boolean
-        get() = false
-    override val absolutePath: String
-        get() = path
-    override val absoluteFile: IPlatformFile
-        get() = this
-    override val canonicalPath: String
-        get() = throw IllegalAccessException("Not Supported")
-    override val canonicalFile: File
-        get() = throw IllegalAccessException("Not Supported")
-    override val canRead: Boolean
-        get() = wrappedFile.canRead()
-    override val canWrite: Boolean
-        get() = wrappedFile.canWrite()
-    override val exists: Boolean
-        get() = wrappedFile.exists()
-    override val isDirectory: Boolean
-        get() = wrappedFile.isDirectory
-    override val isFile: Boolean
-        get() = wrappedFile.isFile
-    override val isHidden: Boolean
-        get() = false
-    override val lastModified: Long
-        get() = wrappedFile.lastModified()
-    override val length: Long
-        get() = wrappedFile.length()
-    override val totalSpace: Long
-        get() = throw IllegalAccessException("Not Supported")
-    override val freeSpace: Long
-        get() = throw IllegalAccessException("Not Supported")
-    override val usableSpace: Long
-        get() = throw IllegalAccessException("Not Supported")
+    override fun getName(): String = wrappedFile.name!!
+    override suspend fun getParent(): String = wrappedFile.parentFile!!.uri.toString()
+    override suspend fun getParentFile(): IPlatformFile = PlatformUriFile(context, wrappedFile.parentFile!!)
+    override fun getPath(): String = wrappedFile.uri.toString()
+    override suspend fun isAbsolute(): Boolean = false
+    override fun getAbsolutePath(): String = getPath()
+    override fun getAbsoluteFile(): IPlatformFile = this
+    override suspend fun getCanonicalPath(): String = throw IllegalAccessException("Not Supported")
+    override suspend fun getCanonicalFile(): File = throw IllegalAccessException("Not Supported")
+    override suspend fun getCanRead(): Boolean = wrappedFile.canRead()
+    override suspend fun getCanWrite(): Boolean = wrappedFile.canWrite()
+    override suspend fun getExists(): Boolean = wrappedFile.exists()
+    override suspend fun isDirectory(): Boolean = wrappedFile.isDirectory
+    override suspend fun isFile(): Boolean = wrappedFile.isFile
+    override suspend fun isHidden(): Boolean = false
+    override suspend fun getLastModified(): Long = wrappedFile.lastModified()
+    override suspend fun getLength(): Long = wrappedFile.length()
+    override suspend fun getTotalSpace(): Long = throw IllegalAccessException("Not Supported")
+    override suspend fun getFreeSpace(): Long = throw IllegalAccessException("Not Supported")
+    override suspend fun getUsableSpace(): Long = throw IllegalAccessException("Not Supported")
 
-    override fun createNewFile(): Boolean {
+    override suspend fun createNewFile(): Boolean {
         //DocumentFile creates itself.
         return true
     }
 
-    override fun delete(): Boolean {
+    override suspend fun delete(): Boolean {
         return wrappedFile.delete()
     }
 
-    override fun deleteOnExit() {
+    override suspend fun deleteOnExit() {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun list(): Array<String> {
+    override suspend fun list(): Array<String> {
         return wrappedFile.listFiles().map { it.name!! }.toTypedArray()
     }
 
-    override fun list(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<String> {
+    override suspend fun list(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<String> {
         return wrappedFile.listFiles().filter { filter(PlatformUriFile(context, it.parentFile!!), it.name!!) }
             .map { it.name!! }
             .toTypedArray()
     }
 
-    override fun listFiles(): Array<IPlatformFile> {
+    override suspend fun listFiles(): Array<IPlatformFile> {
         return wrappedFile.listFiles().map { PlatformUriFile(context, it) }
             .toTypedArray()
     }
 
-    override fun listFiles(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<IPlatformFile> {
+    override suspend fun listFiles(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<IPlatformFile> {
         return wrappedFile.listFiles().filter { filter(PlatformUriFile(context, it.parentFile!!), it.name!!) }
             .map { PlatformUriFile(context, it) }
             .toTypedArray()
     }
 
-    override fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile> {
+    override suspend fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile> {
         return wrappedFile.listFiles().filter { filter(PlatformUriFile(context, it)) }
             .map { PlatformUriFile(context, it) }
             .toTypedArray()
     }
 
-    override fun mkdir(): Boolean {
+    override suspend fun mkdir(): Boolean {
         return true
     }
 
-    override fun mkdirs(): Boolean {
+    override suspend fun mkdirs(): Boolean {
         return true
     }
 
-    override fun renameTo(dest: File): Boolean {
-        return wrappedFile.renameTo(dest.name)
+    override suspend fun renameTo(dest: File): Boolean {
+        return wrappedFile.renameTo(dest.getName())
     }
 
-    override fun setLastModified(time: Long): Boolean {
+    override suspend fun setLastModified(time: Long): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun setReadOnly(): Boolean {
+    override suspend fun setReadOnly(): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun setWritable(writable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setWritable(writable: Boolean, ownerOnly: Boolean): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun setWritable(writable: Boolean): Boolean {
+    override suspend fun setWritable(writable: Boolean): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun setReadable(readable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setReadable(readable: Boolean, ownerOnly: Boolean): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun setReadable(readable: Boolean): Boolean {
+    override suspend fun setReadable(readable: Boolean): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun setExecutable(executable: Boolean, ownerOnly: Boolean): Boolean {
+    override suspend fun setExecutable(executable: Boolean, ownerOnly: Boolean): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun setExecutable(executable: Boolean): Boolean {
+    override suspend fun setExecutable(executable: Boolean): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun canExecute(): Boolean {
+    override suspend fun canExecute(): Boolean {
         throw IllegalAccessException("Not Supported")
     }
 
-    override fun openOutputStream(append: Boolean): AsyncOutputStream {
+    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream {
         return context.contentResolver.openOutputStream(wrappedFile.uri, "w${if (append) "a" else ""}")!!.flushingAsync()
     }
 
-    override fun openInputStream(): AsyncInputStream {
+    override suspend fun openInputStream(): AsyncInputStream {
         return context.contentResolver.openInputStream(wrappedFile.uri)!!.inputAsync()
     }
 

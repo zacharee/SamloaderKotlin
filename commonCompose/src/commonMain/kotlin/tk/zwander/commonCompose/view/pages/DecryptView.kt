@@ -65,14 +65,14 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                         val inputFile = info.encFile
                         val outputFile = info.decFile
 
-                        val key = if (inputFile.name.endsWith(".enc2")) CryptUtils.getV2Key(
+                        val key = if (inputFile.getName().endsWith(".enc2")) CryptUtils.getV2Key(
                             model.fw,
                             model.model,
                             model.region
                         ) else
                             CryptUtils.getV4Key(model.fw, model.model, model.region)
 
-                        CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.length) { current, max, bps ->
+                        CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
                             model.progress = current to max
                             model.speed = bps
                             PlatformDecryptView.onProgress("Decrypting", current, max)
@@ -94,7 +94,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                     model.scope.launch {
                         PlatformDecryptView.getInput { info ->
                             if (info != null) {
-                                if (!info.encFile.name.endsWith(".enc2") && !info.encFile.name.endsWith(
+                                if (!info.encFile.getName().endsWith(".enc2") && !info.encFile.getName().endsWith(
                                         ".enc4"
                                     )
                                 ) {
@@ -139,7 +139,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
             modifier = Modifier.fillMaxWidth()
         ) {
             OutlinedTextField(
-                value = model.fileToDecrypt?.encFile?.absolutePath ?: "",
+                value = model.fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
                 onValueChange = {},
                 label = { Text("File") },
                 modifier = Modifier.weight(1f),
