@@ -69,8 +69,9 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                             model.fw,
                             model.model,
                             model.region
-                        ) else
-                            CryptUtils.getV4Key(model.fw, model.model, model.region)
+                        ) else {
+                            CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+                        }
 
                         CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
                             model.progress = current to max

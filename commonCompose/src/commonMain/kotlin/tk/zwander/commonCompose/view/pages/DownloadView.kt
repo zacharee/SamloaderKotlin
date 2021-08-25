@@ -76,7 +76,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                         try {
                             model.statusText = "Downloading"
 
-                            val (path, fileName, size, crc32) = Request.getBinaryFile(client, model.fw, model.model, model.region)
+                            val (path, fileName, size, crc32, v4Key) = Request.getBinaryFile(client, model.fw, model.model, model.region)
                             val request = Request.createBinaryInit(fileName, client.nonce)
 
                             client.makeReq(FusClient.Request.BINARY_INIT, request)
@@ -154,8 +154,9 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                             model.fw,
                                             model.model,
                                             model.region
-                                        ) else
-                                            CryptUtils.getV4Key(model.fw, model.model, model.region)
+                                        ) else {
+                                            v4Key ?: CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+                                        }
 
                                     CryptUtils.decryptProgress(
                                         info.downloadFile.openInputStream(),

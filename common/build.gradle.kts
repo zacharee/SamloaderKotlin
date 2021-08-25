@@ -102,6 +102,7 @@ kotlin {
                 api(npm("react-dom", "17.0.2"))
                 api(npm("react-bootstrap", "2.0.0-beta.5"))
                 api(npm("bootstrap", "5.1.0"))
+                api(npm("jquery", "3.6.0"))
             }
         }
     }

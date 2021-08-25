@@ -2,6 +2,8 @@ package tk.zwander.common.tools
 
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.serialization.xml.buildXml
+import com.soywiz.krypto.MD5
+import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.data.BinaryFileInfo
 
@@ -145,7 +147,7 @@ object Request {
                 }
             }
         }
-        
+
         return xml.outerXml
     }
 
@@ -162,18 +164,18 @@ object Request {
 
         val request = createBinaryInform(fw, model, region, client.nonce)
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
-        
+
         val responseXml = Xml(response)
-        
+
         val status = responseXml.child("FUSBody")
             ?.child("Results")
             ?.child("Status")
             ?.text?.toInt()!!
-        
+
         if (status != 200) {
             throw Exception("Bad return status: $status")
         }
-        
+
         val size = responseXml.child("FUSBody")
             ?.child("Put")
             ?.child("BINARY_BYTE_SIZE")
@@ -198,6 +200,26 @@ object Request {
             ?.child("Data")
             ?.text?.toLong()
 
-        return BinaryFileInfo(path, fileName, size, crc32)
+        val v4Key = try {
+            val fwVer = responseXml.child("FUSBody")
+                ?.child("Results")
+                ?.child("LATEST_FW_VERSION")
+                ?.child("Data")
+                ?.text!!
+
+            val logicVal = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("LOGIC_VALUE_FACTORY")
+                ?.child("Data")
+                ?.text!!
+
+            val decKey = getLogicCheck(fwVer, logicVal)
+
+            MD5.digest(decKey.toByteArray()).bytes
+        } catch (e: Exception) {
+            null
+        }
+
+        return BinaryFileInfo(path, fileName, size, crc32, v4Key)
     }
 }

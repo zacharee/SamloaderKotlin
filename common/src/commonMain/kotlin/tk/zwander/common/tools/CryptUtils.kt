@@ -126,34 +126,42 @@ object CryptUtils {
 
     /**
      * Retrieve the decryption key for a .enc4 firmware file.
+     * @param client the [FusClient] instance to use.
      * @param version the firmware string corresponding to the file.
      * @param model the device model corresponding to the file.
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV4Key(version: String, model: String, region: String): ByteArray {
-        val client = FusClient()
-
+    suspend fun getV4Key(client: FusClient, version: String, model: String, region: String, tries: Int = 0): ByteArray {
         val request = Request.createBinaryInform(version, model, region, client.nonce)
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
         val responseXml = Xml(response)
 
-        val fwVer = responseXml.child("FUSBody")
-            ?.child("Results")
-            ?.child("LATEST_FW_VERSION")
-            ?.child("Data")
-            ?.text!!
+        return try {
+            val fwVer = responseXml.child("FUSBody")
+                ?.child("Results")
+                ?.child("LATEST_FW_VERSION")
+                ?.child("Data")
+                ?.text!!
 
-        val logicVal = responseXml.child("FUSBody")
-            ?.child("Put")
-            ?.child("LOGIC_VALUE_FACTORY")
-            ?.child("Data")
-            ?.text!!
+            val logicVal = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("LOGIC_VALUE_FACTORY")
+                ?.child("Data")
+                ?.text!!
 
-        val decKey = Request.getLogicCheck(fwVer, logicVal)
+            val decKey = Request.getLogicCheck(fwVer, logicVal)
 
-        return MD5.digest(decKey.toByteArray()).bytes
+            return MD5.digest(decKey.toByteArray()).bytes
+        } catch (e: Exception) {
+            if (tries > 4) {
+                throw e
+            } else {
+                client.makeReq(FusClient.Request.GENERATE_NONCE)
+                getV4Key(client, version, model, region, tries + 1)
+            }
+        }
     }
 
     /**
@@ -178,7 +186,9 @@ object CryptUtils {
      */
     suspend fun decryptProgress(inf: AsyncInputStream, outf: AsyncOutputStream, key: ByteArray, length: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
         coroutineScope {
+            println("starting decrypt")
             withContext(Dispatchers.Default) {
+                println("in decrypt context $isActive")
                 val buffer = ByteArray(0x300000)
 
                 var len: Int

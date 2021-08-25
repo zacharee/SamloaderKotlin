@@ -4,6 +4,7 @@ import com.soywiz.korio.async.launch
 import com.soywiz.korio.async.runBlockingNoJs
 import com.soywiz.korio.net.http.Http
 import com.soywiz.korio.stream.AsyncInputStream
+import com.soywiz.korio.stream.openAsync
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.features.*
@@ -82,12 +83,6 @@ class FusClient(
             auth = CryptUtils.getAuth(nonce)
         }
 
-        println(client.cookies(response.request.url.host).joinToString(",") { "${it.name} : ${it.value}" })
-
-        println(response.headers.flattenEntries().joinToString(" , ") { "${it.first} : ${it.second}" })
-
-        println(response.getCookies().joinToString(" , ") { "${it.name} : ${it.value}" })
-
         if (response.headers["Set-Cookie"] != null || response.headers["set-cookie"] != null) {
             sessId = response.headers.entries().find { it.value.any { it.contains("JSESSIONID=") } }
                 ?.value?.find {
@@ -109,47 +104,51 @@ class FusClient(
      * @param fileName the name of the file to download.
      * @param start an optional offset. Used for resuming downloads.
      */
-    suspend fun downloadFile(fileName: String, start: Long = 0, useKtor: Boolean = false, onDownloadCallback: ((Long, Long) -> Unit)? = null): Pair<AsyncInputStream, String?> {
+    suspend fun downloadFile(fileName: String, start: Long = 0): Pair<AsyncInputStream, String?> {
         val authV =
             "FUS nonce=\"${encNonce}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
         val url = generateProperUrl(useProxy, "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do")
 
-        return if (useKtor) {
-            val response = client.request<HttpResponse>() {
-                url(URLBuilder(url).apply {
-                    parameters.append("file", fileName)
-                    parameters.urlEncodingOption = UrlEncodingOption.NO_ENCODING
-                }.build())
-                method = HttpMethod.Get
-                headers {
-                    append("Authorization", authV)
-                    append("User-Agent", "Kies2.0_FUS")
+        val client = com.soywiz.korio.net.http.HttpClient()
 
-                    if (start > 0) {
-                        append("Range", "bytes=$start-")
-                    }
-                }
-                onDownload { bytesSentTotal, contentLength -> onDownloadCallback?.let { it(bytesSentTotal, contentLength) } }
+        val response = client.request(
+            Http.Method.GET,
+            "$url?file=${fileName}",
+            headers = Http.Headers(
+                "Authorization" to authV,
+                "User-Agent" to "Kies2.0_FUS",
+            ).run {
+                if (start > 0) {
+                    this.plus(Http.Headers("Range" to "bytes=$start-"))
+                } else this
             }
+        )
 
-            response.content.async to response.headers["Content-MD5"]
-        } else {
-            val client = com.soywiz.korio.net.http.HttpClient()
+        return response.content to response.headers["Content-MD5"]
+    }
 
-            val response = client.request(
-                Http.Method.GET,
-                "$url?file=${fileName}",
-                headers = Http.Headers(
-                    "Authorization" to authV,
-                    "User-Agent" to "Kies2.0_FUS",
-                ).run {
-                    if (start > 0) {
-                        this.plus(Http.Headers("Range" to "bytes=$start-"))
-                    } else this
+    suspend fun downloadFileWithKtor(fileName: String, start: Long = 0, onDownloadCallback: ((Long, Long) -> Unit)): Pair<ByteArray, String?> {
+        val authV =
+            "FUS nonce=\"${encNonce}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
+        val url = generateProperUrl(useProxy, "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do")
+
+        val response = client.request<HttpResponse>() {
+            url(URLBuilder(url).apply {
+                parameters.append("file", fileName)
+                parameters.urlEncodingOption = UrlEncodingOption.NO_ENCODING
+            }.build())
+            method = HttpMethod.Get
+            headers {
+                append("Authorization", authV)
+                append("User-Agent", "Kies2.0_FUS")
+
+                if (start > 0) {
+                    append("Range", "bytes=$start-")
                 }
-            )
-
-            response.content to response.headers["Content-MD5"]
+            }
+            onDownload { bytesSentTotal, contentLength -> onDownloadCallback.let { it(bytesSentTotal, contentLength) } }
         }
+
+        return response.receive<ByteArray>() to response.headers["Content-MD5"]
     }
 }

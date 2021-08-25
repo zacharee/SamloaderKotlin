@@ -2,6 +2,8 @@ package tk.zwander.common.data
 
 import com.soywiz.korio.file.*
 import com.soywiz.korio.file.std.applicationDataVfs
+import com.soywiz.korio.file.std.tempVfs
+import com.soywiz.korio.jsLocalStorageVfs
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
 import kotlinx.coroutines.CoroutineScope
@@ -11,15 +13,15 @@ actual open class PlatformFile : File {
     private val wrappedFile: VfsFile
 
     actual constructor(pathName: String) {
-        wrappedFile = VfsFile(applicationDataVfs.vfs, pathName)
+        wrappedFile = VfsFile(jsLocalStorageVfs, pathName)
     }
 
     actual constructor(parent: String, child: String) {
-        wrappedFile = VfsFile(applicationDataVfs.vfs, parent.pathInfo.combine(child.pathInfo).fullPath)
+        wrappedFile = VfsFile(jsLocalStorageVfs, parent.pathInfo.combine(child.pathInfo).fullPath)
     }
 
     actual constructor(parent: File, child: String) {
-        wrappedFile = VfsFile(applicationDataVfs.vfs, parent.getAbsolutePath().pathInfo.combine(child.pathInfo).fullPath)
+        wrappedFile = VfsFile(jsLocalStorageVfs, parent.getAbsolutePath().pathInfo.combine(child.pathInfo).fullPath)
     }
 
     constructor(parent: VfsFile, child: String) : this(parent.absolutePath, child)
@@ -132,7 +134,7 @@ actual open class PlatformFile : File {
     }
 
     override suspend fun openOutputStream(append: Boolean): AsyncOutputStream {
-        return wrappedFile.open(if (append) VfsOpenMode.APPEND else VfsOpenMode.CREATE_NEW)
+        return wrappedFile.open(if (append && getExists()) VfsOpenMode.APPEND else VfsOpenMode.CREATE)
     }
 
     override suspend fun openInputStream(): AsyncInputStream {
