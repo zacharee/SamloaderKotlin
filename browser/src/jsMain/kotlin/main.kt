@@ -1,9 +1,11 @@
 import androidx.compose.runtime.Composable
+import com.soywiz.kmem.Int8Buffer
 import com.soywiz.kmem.asInt8Buffer
 import com.soywiz.kmem.toInt53
 import com.soywiz.korio.async.async
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.file.openAsync
+import io.ktor.client.fetch.*
 import io.ktor.utils.io.core.internal.*
 import kotlinx.browser.document
 import kotlinx.browser.window
@@ -13,6 +15,7 @@ import kotlinx.datetime.Clock
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
 import org.khronos.webgl.ArrayBuffer
+import org.khronos.webgl.Uint8Array
 import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLElement
 import org.w3c.files.Blob
@@ -26,6 +29,7 @@ import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.tools.*
+import tk.zwander.common.tools.Request
 import tk.zwander.common.util.*
 import kotlin.math.roundToInt
 
@@ -136,8 +140,6 @@ suspend fun doDownload() {
         val (path, fileName, size, crc32, v4Key) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
         val request = Request.createBinaryInit(fileName, client.nonce)
 
-        println("File size should be $size")
-
         client.makeReq(FusClient.Request.BINARY_INIT, request)
 
         val fullFileName = fileName.replace(".zip",
@@ -162,8 +164,6 @@ suspend fun doDownload() {
         xhr.onload = { event ->
             val blob = xhr.response as Blob
             val md5 = xhr.getResponseHeader("Content-MD5")
-
-            println("File size ended up ${blob.size}")
 
             downloadModel.speed = 0L
 
@@ -212,13 +212,11 @@ suspend fun doDownload() {
                         v4Key ?: CryptUtils.getV4Key(client, downloadModel.fw, downloadModel.model, downloadModel.region)
                     }
 
-                println("Got decrypt key: $key")
-
-                val decryptBuffer = ArrayBuffer(size.toInt53())
+                val decryptBuffer = createWriteStream(fullFileName.replace(".enc4", "").replace(".enc4", ""), size)
 
                 CryptUtils.decryptProgress(
                     blob.openAsync(),
-                    decryptBuffer.asInt8Buffer().outputStream,
+                    decryptBuffer.getWriter().openAsync { Uint8Array(it.toTypedArray()) },
                     key,
                     size
                 ) { current, max, bps ->
@@ -226,21 +224,7 @@ suspend fun doDownload() {
                     downloadModel.speed = bps
                 }
 
-                println("Decrypt size ${blob.size}")
-
                 downloadModel.endJob("Done")
-
-                val decryptFile = Blob(arrayOf(decryptBuffer))
-
-                val windowUrl = window.asDynamic().URL
-                val dlUrl = windowUrl.createObjectURL(decryptFile)
-
-                val anchor = document.createElement("a") as HTMLAnchorElement
-                anchor.href = dlUrl
-                anchor.download = fullFileName.replace(".enc4", "").replace(".enc4", "")
-                anchor.click()
-                anchor.parentNode?.removeChild(anchor)
-                windowUrl.revokeObjectURL(dlUrl)
             }
 
             Unit

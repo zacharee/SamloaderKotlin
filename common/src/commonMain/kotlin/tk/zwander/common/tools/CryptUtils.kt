@@ -184,12 +184,10 @@ object CryptUtils {
      * @param length the size of the encrypted file.
      * @param progressCallback a callback to keep track of the progress.
      */
-    suspend fun decryptProgress(inf: AsyncInputStream, outf: AsyncOutputStream, key: ByteArray, length: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
+    suspend fun decryptProgress(inf: AsyncInputStream, outf: AsyncOutputStream, key: ByteArray, length: Long, chunkSize: Int = 0x300000, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
         coroutineScope {
-            println("starting decrypt")
             withContext(Dispatchers.Default) {
-                println("in decrypt context $isActive")
-                val buffer = ByteArray(0x300000)
+                val buffer = ByteArray(chunkSize)
 
                 var len: Int
                 var count = 0L

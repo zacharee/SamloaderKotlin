@@ -103,6 +103,7 @@ kotlin {
                 api(npm("react-bootstrap", "2.0.0-beta.5"))
                 api(npm("bootstrap", "5.1.0"))
                 api(npm("jquery", "3.6.0"))
+                api(npm("streamsaver", "2.0.5"))
             }
         }
     }

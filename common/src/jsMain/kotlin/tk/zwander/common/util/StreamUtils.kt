@@ -1,27 +1,18 @@
 package tk.zwander.common.util
 
+import com.soywiz.kmem.Int53
 import com.soywiz.kmem.Int8Buffer
 import com.soywiz.korio.stream.AsyncOutputStream
+import io.ktor.client.fetch.*
 import kotlinx.atomicfu.AtomicInt
 import kotlinx.atomicfu.atomic
+import kotlinx.coroutines.await
 import org.khronos.webgl.ArrayBuffer
-import org.khronos.webgl.BufferDataSource
-import org.khronos.webgl.Int32Array
+import org.khronos.webgl.Uint8Array
 
-val Int32Array.outputStream: AsyncOutputStream
-    get() = object : AsyncOutputStream {
-        val currentOffset: AtomicInt = atomic(0)
-
-        override suspend fun close() {}
-
-        override suspend fun write(buffer: ByteArray, offset: Int, len: Int) {
-            println("length $length offset ${currentOffset.value}")
-
-            set(buffer.slice(offset until offset + len).map { it.toInt() }.toTypedArray(), currentOffset.value)
-
-            currentOffset += len
-        }
-    }
+fun newArrayBuffer(size: dynamic): ArrayBuffer {
+    return js("new ArrayBuffer(size);") as ArrayBuffer
+}
 
 val Int8Buffer.outputStream: AsyncOutputStream
     get() = object : AsyncOutputStream {
@@ -35,3 +26,23 @@ val Int8Buffer.outputStream: AsyncOutputStream
             currentOffset += len
         }
     }
+
+fun createWriteStream(fileName: String, fileSize: Long): WritableStream<Uint8Array> {
+    return js("""
+        var streamSaver = require('streamsaver');
+        
+        streamSaver.createWriteStream(fileName, { size: fileSize });
+    """)
+}
+
+fun <W> WritableStreamDefaultWriter<W>.openAsync(transform: (chunk: ByteArray) -> W): AsyncOutputStream {
+    return object : AsyncOutputStream {
+        override suspend fun close() {
+            this@openAsync.close().await()
+        }
+
+        override suspend fun write(buffer: ByteArray, offset: Int, len: Int) {
+            this@openAsync.write(transform(buffer.sliceArray(offset until offset + len)))
+        }
+    }
+}
