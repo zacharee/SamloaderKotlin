@@ -60,8 +60,8 @@ kotlin {
                 api("com.soywiz.korlibs.klock:klock:2.3.3")
                 api("co.touchlab:stately-common:1.1.4")
                 api("co.touchlab:stately-isolate:1.1.4-a1")
-                api("io.ktor:ktor-client-core:1.6.2")
-                api("io.ktor:ktor-client-auth:1.6.2")
+                api("io.ktor:ktor-client-core:1.6.3")
+                api("io.ktor:ktor-client-auth:1.6.3")
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.10.0")
             }
@@ -71,7 +71,7 @@ kotlin {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1")
                 api("org.jsoup:jsoup:1.14.1")
-                api("io.ktor:ktor-client-cio:1.6.2")
+                api("io.ktor:ktor-client-cio:1.6.3")
             }
         }
 
@@ -84,7 +84,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.4.0-alpha03")
                 api("androidx.core:core-ktx:1.6.0")
                 api("androidx.documentfile:documentfile:1.0.1")
-                api("io.ktor:ktor-client-cio:1.6.2")
+                api("io.ktor:ktor-client-cio:1.6.3")
             }
         }
 
@@ -93,11 +93,11 @@ kotlin {
                 api(compose.web.core)
                 api(compose.web.widgets)
 
-                api("io.ktor:ktor-client-js:1.6.2")
+                api("io.ktor:ktor-client-js:1.6.3")
 
-                api("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.233-kotlin-1.5.21")
-                api("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.233-kotlin-1.5.21")
-                api("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.0-pre.233-kotlin-1.5.21")
+                api("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.237-kotlin-1.5.30")
+                api("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.237-kotlin-1.5.30")
+                api("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.0-pre.237-kotlin-1.5.30")
                 api(npm("react", "17.0.2"))
                 api(npm("react-dom", "17.0.2"))
                 api(npm("react-bootstrap", "2.0.0-beta.5"))

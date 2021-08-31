@@ -14,6 +14,7 @@
             android:theme="@style/Theme.SamloaderKotlin"
             android:name=".App">
         <activity android:name=".MainActivity"
+                  android:exported="true"
                 android:configChanges="orientation|uiMode|screenLayout|density|screenSize|smallestScreenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
