@@ -1,22 +1,15 @@
 import androidx.compose.runtime.Composable
-import com.soywiz.kmem.Int8Buffer
-import com.soywiz.kmem.asInt8Buffer
-import com.soywiz.kmem.toInt53
 import com.soywiz.korio.async.async
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.file.openAsync
-import io.ktor.client.fetch.*
 import io.ktor.utils.io.core.internal.*
-import kotlinx.browser.document
-import kotlinx.browser.window
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
+import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
-import org.khronos.webgl.ArrayBuffer
 import org.khronos.webgl.Uint8Array
-import org.w3c.dom.HTMLAnchorElement
 import org.w3c.dom.HTMLElement
 import org.w3c.files.Blob
 import org.w3c.xhr.BLOB
@@ -73,46 +66,79 @@ fun main() {
         """)
 
     renderComposable(rootElementId = "root") {
-        Div {
-            TextInput(downloadModel.model) {
-                onChange { downloadModel.model = it.value }
-            }
+        Div(
+            attrs = {
+                classes("main")
+                style {
+                    property("margin-left", "auto")
+                    property("margin-right", "auto")
 
-            TextInput(downloadModel.region) {
-                onChange { downloadModel.region = it.value }
-            }
+                    maxWidth(90.vw)
 
-            Text(downloadModel.fw)
-
-            Button(
-                attrs = {
-                    onClick { downloadModel.job = downloadModel.scope.async { doCheck() } }
+                    backgroundColor(rgb(0x44, 0x44, 0x44))
                 }
-            ) {
-                Text("Retrieve")
             }
-
-            if (downloadModel.fw.isNotBlank() && downloadModel.model.isNotBlank() && downloadModel.region.isNotBlank()
-                && downloadModel.job == null) {
-                Button(
-                    attrs = {
-                        onClick { downloadModel.job = downloadModel.scope.async { doDownload() } }
+        ) {
+            Container {
+                Row {
+                    Column {
+                        TextInput(downloadModel.model) {
+                            onChange { downloadModel.model = it.value }
+                        }
                     }
-                ) {
-                    Text("Download")
+
+                    Column {
+                        TextInput(downloadModel.region) {
+                            onChange { downloadModel.region = it.value }
+                        }
+                    }
+                }
+                Row {
+                    Text(downloadModel.fw)
+                }
+                Row {
+                    Column {
+                        Button(
+                            attrs = {
+                                onClick { downloadModel.job = downloadModel.scope.async { doCheck() } }
+                            }
+                        ) {
+                            Text("Retrieve")
+                        }
+                    }
+
+                    if (downloadModel.fw.isNotBlank() && downloadModel.model.isNotBlank() && downloadModel.region.isNotBlank()
+                        && downloadModel.job == null) {
+                        Column {
+                            Button(
+                                attrs = {
+                                    onClick { downloadModel.job = downloadModel.scope.async { doDownload() } }
+                                }
+                            ) {
+                                Text("Download")
+                            }
+                        }
+                    }
+                }
+                Row {
+                    Text("Status: ${downloadModel.statusText}")
+                }
+                Row {
+                    val currentMB = (downloadModel.progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
+                    val totalMB = (downloadModel.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
+
+                    val speedKBps = downloadModel.speed / 1024.0
+                    val shouldUseMB = speedKBps >= 1 * 1024
+                    val finalSpeed = "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
+
+                    Column {
+                        Text("Progress: $currentMB / $totalMB MiB")
+                    }
+                    Column {
+                        Text("Speed: $finalSpeed ${if (shouldUseMB) "MiB/s" else "KiB/s"}")
+                    }
                 }
             }
-
-            Text("Status: ${downloadModel.statusText}")
-
-            val currentMB = (downloadModel.progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
-            val totalMB = (downloadModel.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
-
-            val speedKBps = downloadModel.speed / 1024.0
-            val shouldUseMB = speedKBps >= 1 * 1024
-            val finalSpeed = "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
-
-            Text("Progress: $currentMB / $totalMB MiB,,, $finalSpeed ${if (shouldUseMB) "MiB/s" else "KiB/s"}")
         }
     }
 }
