@@ -164,7 +164,7 @@ suspend fun doCheck() {
 suspend fun doDownload() {
     try {
         val (path, fileName, size, crc32, v4Key) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
-        val request = Request.createBinaryInit(fileName, client.nonce)
+        val request = Request.createBinaryInit(fileName, client.getNonce())
 
         client.makeReq(FusClient.Request.BINARY_INIT, request)
 
@@ -177,9 +177,8 @@ suspend fun doDownload() {
 
         downloadModel.statusText = "Downloading"
 
-        val authV =
-            "FUS nonce=\"${client.encNonce}\", signature=\"${client.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
-        val url = generateProperUrl(client.useProxy, "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do?file=${path + fileName}")
+        val authV = client.getAuthV()
+        val url = client.getDownloadUrl(path + fileName)
 
         val xhr = XMLHttpRequest()
         xhr.open("GET", url)

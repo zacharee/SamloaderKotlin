@@ -3,6 +3,7 @@ package tk.zwander.common.tools
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.async.runBlockingNoJs
 import com.soywiz.korio.net.http.Http
+import com.soywiz.korio.net.http.HttpClient
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.openAsync
 import io.ktor.client.*
@@ -27,8 +28,8 @@ import kotlin.time.ExperimentalTime
 @DangerousInternalIoApi
 @OptIn(ExperimentalTime::class)
 class FusClient(
-    var auth: String = "",
-    var sessId: String = "",
+    private var auth: String = "",
+    private var sessId: String = "",
     val useProxy: Boolean = false
 ) {
     enum class Request(val value: String) {
@@ -37,8 +38,47 @@ class FusClient(
         BINARY_INIT("NF_DownloadBinaryInitForMass.do")
     }
 
-    var encNonce = ""
-    var nonce = ""
+    private var encNonce = ""
+    private var nonce = ""
+
+    suspend fun getAuth(): String {
+        if (auth.isBlank()) {
+            generateNonce()
+        }
+
+        return auth
+    }
+
+    suspend fun getEncNonce(): String {
+        if (encNonce.isBlank()) {
+            generateNonce()
+        }
+
+        return encNonce
+    }
+
+    suspend fun getNonce(): String {
+        if (nonce.isBlank()) {
+            generateNonce()
+        }
+
+        return nonce
+    }
+
+    suspend fun generateNonce() {
+        println("Generating nonce.")
+        makeReq(Request.GENERATE_NONCE)
+        println("Nonce: $nonce")
+        println("Auth: $auth")
+    }
+
+    fun getAuthV(): String {
+        return "FUS nonce=\"$encNonce\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
+    }
+
+    fun getDownloadUrl(path: String): String {
+        return generateProperUrl(useProxy, "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do?file=${path}")
+    }
 
     /**
      * Make a request to Samsung, automatically inserting authorization data.
@@ -49,13 +89,10 @@ class FusClient(
     @OptIn(InternalAPI::class)
     suspend fun makeReq(request: Request, data: String = ""): String {
         if (nonce.isBlank() && request != Request.GENERATE_NONCE) {
-            //We need a nonce first.
-            println("Generating nonce.")
-            makeReq(Request.GENERATE_NONCE)
-            println("Nonce: $nonce")
+            generateNonce()
         }
 
-        val authV = "FUS nonce=\"\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
+        val authV = getAuthV()
 
         val response = client.request<HttpResponse>(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net:443/${request.value}")) {
             method = HttpMethod.Post
@@ -81,9 +118,9 @@ class FusClient(
                 }
                 ?.replace("JSESSIONID=", "")
                 ?.replace(Regex(";.*$"), "") ?: sessId
-        }
 
-        response.setCookie()
+            println("Got session ID: $sessId")
+        }
 
         client.close()
 
@@ -96,15 +133,14 @@ class FusClient(
      * @param start an optional offset. Used for resuming downloads.
      */
     suspend fun downloadFile(fileName: String, start: Long = 0): Pair<AsyncInputStream, String?> {
-        val authV =
-            "FUS nonce=\"${encNonce}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
-        val url = generateProperUrl(useProxy, "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do")
+        val authV = getAuthV()
+        val url = getDownloadUrl(fileName)
 
-        val client = com.soywiz.korio.net.http.HttpClient()
+        val client = HttpClient()
 
         val response = client.request(
             Http.Method.GET,
-            "$url?file=${fileName}",
+            url,
             headers = Http.Headers(
                 "Authorization" to authV,
                 "User-Agent" to "Kies2.0_FUS",
@@ -116,30 +152,5 @@ class FusClient(
         )
 
         return response.content to response.headers["Content-MD5"]
-    }
-
-    suspend fun downloadFileWithKtor(fileName: String, start: Long = 0, onDownloadCallback: ((Long, Long) -> Unit)): Pair<ByteArray, String?> {
-        val authV =
-            "FUS nonce=\"${encNonce}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
-        val url = generateProperUrl(useProxy, "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do")
-
-        val response = client.request<HttpResponse>() {
-            url(URLBuilder(url).apply {
-                parameters.append("file", fileName)
-                parameters.urlEncodingOption = UrlEncodingOption.NO_ENCODING
-            }.build())
-            method = HttpMethod.Get
-            headers {
-                append("Authorization", authV)
-                append("User-Agent", "Kies2.0_FUS")
-
-                if (start > 0) {
-                    append("Range", "bytes=$start-")
-                }
-            }
-            onDownload { bytesSentTotal, contentLength -> onDownloadCallback.let { it(bytesSentTotal, contentLength) } }
-        }
-
-        return response.receive<ByteArray>() to response.headers["Content-MD5"]
     }
 }

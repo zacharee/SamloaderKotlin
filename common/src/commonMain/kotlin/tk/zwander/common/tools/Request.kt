@@ -160,10 +160,12 @@ object Request {
      * @return a BinaryFileInfo instance representing the file.
      */
     suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): BinaryFileInfo {
-        val request = createBinaryInform(fw, model, region, client.nonce)
+        val request = createBinaryInform(fw, model, region, client.getNonce())
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
         val responseXml = Xml(response)
+
+        println(response)
 
         val status = responseXml.child("FUSBody")
             ?.child("Results")
