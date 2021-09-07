@@ -1,4 +1,4 @@
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import com.soywiz.korio.async.async
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.file.openAsync
@@ -6,6 +6,9 @@ import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
+import org.jetbrains.compose.web.attributes.disabled
+import org.jetbrains.compose.web.attributes.placeholder
+import org.jetbrains.compose.web.attributes.readOnly
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
@@ -66,39 +69,42 @@ fun main() {
         """)
 
     renderComposable(rootElementId = "root") {
+        val xhr = remember { XMLHttpRequest() }
+
+        Style(AppStyle)
         Div(
             attrs = {
-                classes("main")
-                style {
-                    property("margin-left", "auto")
-                    property("margin-right", "auto")
-
-                    maxWidth(90.vw)
-
-                    backgroundColor(rgb(0x44, 0x44, 0x44))
-                }
+                classes(AppStyle.main)
             }
         ) {
             Container {
                 Row {
                     Column {
-                        TextInput(downloadModel.model) {
-                            onChange { downloadModel.model = it.value }
+                        BootstrapTextInput(downloadModel.model) {
+                            placeholder("Model (e.g. SM-N986U1)")
+                            onInput { downloadModel.model = it.value.uppercase() }
                         }
                     }
 
                     Column {
-                        TextInput(downloadModel.region) {
-                            onChange { downloadModel.region = it.value }
+                        BootstrapTextInput(downloadModel.region) {
+                            placeholder("Region (e.g. XAA)")
+                            onInput { downloadModel.region = it.value.uppercase() }
                         }
                     }
                 }
                 Row {
-                    Text(downloadModel.fw)
+                    Column {
+                        BootstrapTextInput(downloadModel.fw) {
+                            readOnly()
+                            placeholder("Firmware")
+                            onInput { downloadModel.fw = it.value }
+                        }
+                    }
                 }
                 Row {
                     Column {
-                        Button(
+                        BootstrapButton(
                             attrs = {
                                 onClick { downloadModel.job = downloadModel.scope.async { doCheck() } }
                             }
@@ -110,12 +116,27 @@ fun main() {
                     if (downloadModel.fw.isNotBlank() && downloadModel.model.isNotBlank() && downloadModel.region.isNotBlank()
                         && downloadModel.job == null) {
                         Column {
-                            Button(
+                            BootstrapButton(
                                 attrs = {
-                                    onClick { downloadModel.job = downloadModel.scope.async { doDownload() } }
+                                    onClick { downloadModel.job = downloadModel.scope.async { doDownload(xhr) } }
                                 }
                             ) {
                                 Text("Download")
+                            }
+                        }
+                    }
+
+                    if (downloadModel.job != null) {
+                        Column {
+                            BootstrapButton(
+                                attrs = {
+                                    onClick {
+                                        xhr.abort()
+                                        downloadModel.endJob("Canceled")
+                                    }
+                                }
+                            ) {
+                                Text("Cancel")
                             }
                         }
                     }
@@ -161,7 +182,7 @@ suspend fun doCheck() {
 }
 
 @OptIn(DangerousInternalIoApi::class, kotlin.time.ExperimentalTime::class)
-suspend fun doDownload() {
+suspend fun doDownload(xhr: XMLHttpRequest) {
     try {
         val (path, fileName, size, crc32, v4Key) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
         val request = Request.createBinaryInit(fileName, client.getNonce())
@@ -180,7 +201,6 @@ suspend fun doDownload() {
         val authV = client.getAuthV()
         val url = client.getDownloadUrl(path + fileName)
 
-        val xhr = XMLHttpRequest()
         xhr.open("GET", url)
         xhr.setRequestHeader("Authorization", authV)
         xhr.setRequestHeader("User-Agent", "Kies2.0_FUS")
@@ -275,17 +295,6 @@ suspend fun doDownload() {
         }
 
         xhr.send()
-
-//
-//        val blob = Blob(arrayOf(decryptFile))
-//        val link = document.createElement("a")
-//
-//        link.setAttribute("href", URL.createObjectURL(blob))
-//        link.setAttribute("download", fullFileName.replace(".enc2", "").replace(".enc4", ""))
-//
-//        (link as HTMLLinkElement).click()
-//
-//        downloadModel.endJob("Done")
     } catch (e: Exception) {
         e.printStackTrace()
         downloadModel.endJob(e.message ?: "Error")

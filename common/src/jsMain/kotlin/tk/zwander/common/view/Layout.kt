@@ -1,5 +1,7 @@
 import androidx.compose.runtime.Composable
-import org.jetbrains.compose.web.dom.Div
+import org.jetbrains.compose.web.attributes.builders.InputAttrsBuilder
+import org.jetbrains.compose.web.dom.*
+import org.w3c.dom.HTMLButtonElement
 
 @Composable
 fun Container(content: @Composable()() -> Unit) {
@@ -47,4 +49,32 @@ fun Column(
     ) {
         content()
     }
+}
+
+@Composable
+fun BootstrapTextInput(
+    value: String = "", attrs: InputAttrsBuilder<String>.() -> Unit = {}
+) {
+    TextInput(
+        value = value,
+        attrs = {
+            attrs()
+            classes("form-control")
+        }
+    )
+}
+
+@Composable
+fun BootstrapButton(
+    attrs: AttrBuilderContext<HTMLButtonElement>? = null,
+    type: String = "primary",
+    content: ContentBuilder<HTMLButtonElement>? = null,
+) {
+    Button(
+        attrs = {
+            attrs?.invoke(this)
+            classes("btn", "btn-$type")
+        },
+        content = content
+    )
 }
