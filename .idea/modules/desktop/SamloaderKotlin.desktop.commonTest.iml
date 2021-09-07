@@ -16,7 +16,7 @@
           </option>
           <option name="pluginClasspaths">
             <array>
-              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.0-alpha4-build321/45c8eeceab8ca006d1e6d8be4342b1fadbd13b1d/compiler-1.0.0-alpha4-build321.jar" />
+              <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.0-alpha4-build331/398d62fbb838b829da306bb54c300d2a1bdaf5b5/compiler-1.0.0-alpha4-build331.jar" />
               <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.5.30/5012215b272c8a86cb452f07e41a7d96cec1a967/kotlin-scripting-jvm-1.5.30.jar" />
               <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.5.30/f8206da8223a577331f54ad8771a7290eb6e8b0a/kotlin-scripting-common-1.5.30.jar" />
               <option value="$MODULE_DIR$/../../../../../.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.5.0/d8cebccdcddd029022aa8646a5a953ff88b13ac8/kotlinx-coroutines-core-jvm-1.5.0.jar" />
