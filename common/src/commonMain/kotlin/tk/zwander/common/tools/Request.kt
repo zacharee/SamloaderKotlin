@@ -160,8 +160,6 @@ object Request {
      * @return a BinaryFileInfo instance representing the file.
      */
     suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): BinaryFileInfo {
-        println(client.nonce)
-
         val request = createBinaryInform(fw, model, region, client.nonce)
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
@@ -173,7 +171,7 @@ object Request {
             ?.text?.toInt()!!
 
         if (status != 200) {
-            throw Exception("Bad return status: $status")
+            throw Exception("Bad return status: $status", Exception(response))
         }
 
         val size = responseXml.child("FUSBody")

@@ -14,20 +14,11 @@ import io.ktor.client.features.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.request.request
 import io.ktor.client.statement.*
-import io.ktor.client.utils.*
 import io.ktor.http.*
 import io.ktor.util.*
-import io.ktor.util.date.*
-import io.ktor.utils.io.*
 import io.ktor.utils.io.core.internal.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import tk.zwander.common.util.async
 import tk.zwander.common.util.client
 import tk.zwander.common.util.generateProperUrl
-import tk.zwander.common.util.getCookies
-import kotlin.math.min
 import kotlin.time.ExperimentalTime
 
 /**
