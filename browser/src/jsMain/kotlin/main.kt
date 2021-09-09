@@ -77,22 +77,29 @@ fun main() {
                 classes(AppStyle.main)
             }
         ) {
-            Container {
+            Container(type = "fluid") {
                 Row {
-                    Column {
-                        BootstrapTextInput(downloadModel.model) {
+                    Column(xs = 12, md = 6) {
+                        BootstrapTextInput(
+                            value = downloadModel.model,
+                        ) {
                             placeholder("Model (e.g. SM-N986U1)")
                             onInput { downloadModel.model = it.value.uppercase() }
                         }
                     }
 
-                    Column {
-                        BootstrapTextInput(downloadModel.region) {
+                    Column(xs = 12, md = 6) {
+                        BootstrapTextInput(
+                            value = downloadModel.region
+                        ) {
                             placeholder("Region (e.g. XAA)")
                             onInput { downloadModel.region = it.value.uppercase() }
                         }
                     }
                 }
+
+                Spacer(height = 1.em)
+
                 Row {
                     Column {
                         BootstrapTextInput(downloadModel.fw) {
@@ -102,6 +109,9 @@ fun main() {
                         }
                     }
                 }
+
+                Spacer(height = 1.em)
+
                 Row {
                     Column {
                         BootstrapButton(
@@ -141,9 +151,15 @@ fun main() {
                         }
                     }
                 }
+
+                Spacer(1.em)
+
                 Row {
                     Text("Status: ${downloadModel.statusText}")
                 }
+
+                Spacer(1.em)
+
                 Row {
                     val currentMB = (downloadModel.progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
                     val totalMB = (downloadModel.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0

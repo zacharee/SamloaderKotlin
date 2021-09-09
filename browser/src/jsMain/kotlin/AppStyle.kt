@@ -2,7 +2,7 @@ import org.jetbrains.compose.web.css.*
 
 object AppStyle : StyleSheet() {
     init {
-        ".form-control[readonly]" style {
+        ".form-control, .form-control:focus, .form-control[readonly]" style {
             property("background-color", "#222")
         }
 
