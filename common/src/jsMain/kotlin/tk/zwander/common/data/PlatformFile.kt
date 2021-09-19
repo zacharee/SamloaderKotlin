@@ -1,27 +1,23 @@
 package tk.zwander.common.data
 
 import com.soywiz.korio.file.*
-import com.soywiz.korio.file.std.applicationDataVfs
-import com.soywiz.korio.file.std.tempVfs
-import com.soywiz.korio.jsLocalStorageVfs
+import com.soywiz.korio.jsRuntime
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
-import kotlinx.coroutines.CoroutineScope
-import tk.zwander.common.util.runBlocking
 
 actual open class PlatformFile : File {
     private val wrappedFile: VfsFile
 
     actual constructor(pathName: String) {
-        wrappedFile = VfsFile(jsLocalStorageVfs, pathName)
+        wrappedFile = VfsFile(jsRuntime.localStorage().vfs, pathName)
     }
 
     actual constructor(parent: String, child: String) {
-        wrappedFile = VfsFile(jsLocalStorageVfs, parent.pathInfo.combine(child.pathInfo).fullPath)
+        wrappedFile = VfsFile(jsRuntime.localStorage().vfs, parent.pathInfo.combine(child.pathInfo).fullPath)
     }
 
     actual constructor(parent: File, child: String) {
-        wrappedFile = VfsFile(jsLocalStorageVfs, parent.getAbsolutePath().pathInfo.combine(child.pathInfo).fullPath)
+        wrappedFile = VfsFile(jsRuntime.localStorage().vfs, parent.getAbsolutePath().pathInfo.combine(child.pathInfo).fullPath)
     }
 
     constructor(parent: VfsFile, child: String) : this(parent.absolutePath, child)
