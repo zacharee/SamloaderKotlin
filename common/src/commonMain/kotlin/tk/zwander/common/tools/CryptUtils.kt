@@ -9,9 +9,9 @@ import com.soywiz.krypto.AES
 import com.soywiz.krypto.MD5
 import com.soywiz.krypto.Padding
 import com.soywiz.krypto.encoding.Base64
+import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
-import kotlinx.io.core.toByteArray
 import tk.zwander.common.util.Averager
 import kotlin.time.*
 
@@ -126,33 +126,42 @@ object CryptUtils {
 
     /**
      * Retrieve the decryption key for a .enc4 firmware file.
+     * @param client the [FusClient] instance to use.
      * @param version the firmware string corresponding to the file.
      * @param model the device model corresponding to the file.
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV4Key(version: String, model: String, region: String): ByteArray {
-        val client = FusClient()
-        val request = Request.createBinaryInform(version, model, region, client.nonce)
+    suspend fun getV4Key(client: FusClient, version: String, model: String, region: String, tries: Int = 0): ByteArray {
+        val request = Request.createBinaryInform(version, model, region, client.getNonce())
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
         val responseXml = Xml(response)
 
-        val fwVer = responseXml.child("FUSBody")
-            ?.child("Results")
-            ?.child("LATEST_FW_VERSION")
-            ?.child("Data")
-            ?.text!!
+        return try {
+            val fwVer = responseXml.child("FUSBody")
+                ?.child("Results")
+                ?.child("LATEST_FW_VERSION")
+                ?.child("Data")
+                ?.text!!
 
-        val logicVal = responseXml.child("FUSBody")
-            ?.child("Put")
-            ?.child("LOGIC_VALUE_FACTORY")
-            ?.child("Data")
-            ?.text!!
+            val logicVal = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("LOGIC_VALUE_FACTORY")
+                ?.child("Data")
+                ?.text!!
 
-        val decKey = Request.getLogicCheck(fwVer, logicVal)
+            val decKey = Request.getLogicCheck(fwVer, logicVal)
 
-        return MD5.digest(decKey.toByteArray()).bytes
+            return MD5.digest(decKey.toByteArray()).bytes
+        } catch (e: Exception) {
+            if (tries > 4) {
+                throw e
+            } else {
+                client.makeReq(FusClient.Request.GENERATE_NONCE)
+                getV4Key(client, version, model, region, tries + 1)
+            }
+        }
     }
 
     /**
@@ -175,10 +184,10 @@ object CryptUtils {
      * @param length the size of the encrypted file.
      * @param progressCallback a callback to keep track of the progress.
      */
-    suspend fun decryptProgress(inf: AsyncInputStream, outf: AsyncOutputStream, key: ByteArray, length: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
+    suspend fun decryptProgress(inf: AsyncInputStream, outf: AsyncOutputStream, key: ByteArray, length: Long, chunkSize: Int = 0x300000, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
         coroutineScope {
             withContext(Dispatchers.Default) {
-                val buffer = ByteArray(0x300000)
+                val buffer = ByteArray(chunkSize)
 
                 var len: Int
                 var count = 0L

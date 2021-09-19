@@ -1,7 +1,6 @@
 package tk.zwander.common.util
 
 import com.soywiz.korio.lang.format
-import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -15,20 +14,16 @@ expect object PlatformChangelogHandler {
 }
 
 object ChangelogHandler {
-    private const val DOMAIN_URL = "https://doc.samsungmobile.com"
+    private const val DOMAIN_URL = "https://doc.samsungmobile.com:443"
     private const val BASE_URL = "$DOMAIN_URL/%s/%s/doc.html"
 
-    suspend fun getChangelog(device: String, region: String, firmware: String): Changelog? {
-        return getChangelogs(device, region)?.changelogs?.get(firmware)
+    suspend fun getChangelog(device: String, region: String, firmware: String, useProxy: Boolean = false): Changelog? {
+        return getChangelogs(device, region, useProxy)?.changelogs?.get(firmware)
     }
 
     @OptIn(InternalAPI::class)
-    suspend fun getChangelogs(device: String, region: String): Changelogs? {
-        val outerUrl = generateUrlForDeviceAndRegion(device, region)
-        val client = HttpClient {
-            followRedirects = true
-        }
-
+    suspend fun getChangelogs(device: String, region: String, useProxy: Boolean = false): Changelogs? {
+        val outerUrl = generateUrlForDeviceAndRegion(device, region, useProxy)
         val outerResponse = try {
             client.get<HttpResponse> {
                 url(outerUrl)
@@ -40,7 +35,7 @@ object ChangelogHandler {
 
         val iframeUrl = if (outerResponse.status.isSuccess()) {
             PlatformChangelogHandler.parseDocUrl(outerResponse.readText())
-                .replace("../../", "$DOMAIN_URL/")
+                .replace("../../", generateProperUrl(useProxy, "$DOMAIN_URL/"))
         } else {
             println("No changelogs found for $device $region")
             return null
@@ -60,7 +55,7 @@ object ChangelogHandler {
         }
     }
 
-    private fun generateUrlForDeviceAndRegion(device: String, region: String): String {
-        return BASE_URL.format(device, region)
+    private fun generateUrlForDeviceAndRegion(device: String, region: String, useProxy: Boolean): String {
+        return generateProperUrl(useProxy, BASE_URL.format(device, region))
     }
 }

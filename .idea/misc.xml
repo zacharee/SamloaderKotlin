@@ -15,4 +15,7 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_15" default="true" project-jdk-name="15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
+  <component name="SuppressResolveModulePerSourceSetNotification">
+    <option name="suppressed" value="true" />
+  </component>
 </project>

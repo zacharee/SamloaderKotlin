@@ -2,7 +2,7 @@ import androidx.compose.ui.graphics.asPainter
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import io.ktor.utils.io.core.internal.*
-import tk.zwander.common.MainView
+import tk.zwander.commonCompose.MainView
 import javax.swing.UIManager
 import kotlin.time.ExperimentalTime
 

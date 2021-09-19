@@ -11,5 +11,6 @@ pluginManagement {
 rootProject.name = "SamloaderKotlin"
 include(":android")
 include(":desktop")
+include(":browser")
 include(":common")
-
+include(":commonCompose")

@@ -1,14 +1,25 @@
 package tk.zwander.common.tools
 
+import com.soywiz.korio.async.launch
 import com.soywiz.korio.async.runBlockingNoJs
 import com.soywiz.korio.net.http.Http
+import com.soywiz.korio.net.http.HttpClient
 import com.soywiz.korio.stream.AsyncInputStream
+import com.soywiz.korio.stream.openAsync
 import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.features.*
+import io.ktor.client.features.auth.*
+import io.ktor.client.features.auth.providers.*
+import io.ktor.client.features.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.request.request
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.util.*
 import io.ktor.utils.io.core.internal.*
+import tk.zwander.common.util.client
+import tk.zwander.common.util.generateProperUrl
 import kotlin.time.ExperimentalTime
 
 /**
@@ -17,8 +28,9 @@ import kotlin.time.ExperimentalTime
 @DangerousInternalIoApi
 @OptIn(ExperimentalTime::class)
 class FusClient(
-    var auth: String = "",
-    var sessId: String = ""
+    private var auth: String = "",
+    private var sessId: String = "",
+    val useProxy: Boolean = false
 ) {
     enum class Request(val value: String) {
         GENERATE_NONCE("NF_DownloadGenerateNonce.do"),
@@ -26,14 +38,46 @@ class FusClient(
         BINARY_INIT("NF_DownloadBinaryInitForMass.do")
     }
 
-    var encNonce = ""
-    var nonce = ""
+    private var encNonce = ""
+    private var nonce = ""
 
-    init {
-        runBlockingNoJs {
-            //We need a nonce first of all.
-            makeReq(Request.GENERATE_NONCE)
+    suspend fun getAuth(): String {
+        if (auth.isBlank()) {
+            generateNonce()
         }
+
+        return auth
+    }
+
+    suspend fun getEncNonce(): String {
+        if (encNonce.isBlank()) {
+            generateNonce()
+        }
+
+        return encNonce
+    }
+
+    suspend fun getNonce(): String {
+        if (nonce.isBlank()) {
+            generateNonce()
+        }
+
+        return nonce
+    }
+
+    suspend fun generateNonce() {
+        println("Generating nonce.")
+        makeReq(Request.GENERATE_NONCE)
+        println("Nonce: $nonce")
+        println("Auth: $auth")
+    }
+
+    fun getAuthV(): String {
+        return "FUS nonce=\"$encNonce\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
+    }
+
+    fun getDownloadUrl(path: String): String {
+        return generateProperUrl(useProxy, "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do?file=${path}")
     }
 
     /**
@@ -42,13 +86,15 @@ class FusClient(
      * @param data any body data that needs to go into the request.
      * @return the response body data, as text. Usually XML.
      */
+    @OptIn(InternalAPI::class)
     suspend fun makeReq(request: Request, data: String = ""): String {
-        val authV = "FUS nonce=\"\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
+        if (nonce.isBlank() && request != Request.GENERATE_NONCE) {
+            generateNonce()
+        }
 
-        val client = HttpClient()
+        val authV = getAuthV()
 
-        val response = client.request<HttpResponse>(HttpRequestBuilder().apply {
-            url("https://neofussvr.sslcs.cdngc.net/${request.value}")
+        val response = client.request<HttpResponse>(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net:443/${request.value}")) {
             method = HttpMethod.Post
             headers {
                 append("Authorization", authV)
@@ -57,21 +103,23 @@ class FusClient(
                 append("Set-Cookie", "JSESSIONID=${sessId}")
             }
             body = data
-        })
+        }
 
-        if (response.headers["NONCE"] != null) {
-            encNonce = response.headers["NONCE"] ?: ""
+        if (response.headers["NONCE"] != null || response.headers["nonce"] != null) {
+            encNonce = response.headers["NONCE"] ?: response.headers["nonce"] ?: ""
             nonce = CryptUtils.decryptNonce(encNonce)
             auth = CryptUtils.getAuth(nonce)
         }
 
-        if (response.headers["Set-Cookie"] != null) {
+        if (response.headers["Set-Cookie"] != null || response.headers["set-cookie"] != null) {
             sessId = response.headers.entries().find { it.value.any { it.contains("JSESSIONID=") } }
                 ?.value?.find {
                     it.contains("JSESSIONID=")
                 }
                 ?.replace("JSESSIONID=", "")
                 ?.replace(Regex(";.*$"), "") ?: sessId
+
+            println("Got session ID: $sessId")
         }
 
         client.close()
@@ -85,17 +133,17 @@ class FusClient(
      * @param start an optional offset. Used for resuming downloads.
      */
     suspend fun downloadFile(fileName: String, start: Long = 0): Pair<AsyncInputStream, String?> {
-        val authV =
-            "FUS nonce=\"${encNonce}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
+        val authV = getAuthV()
+        val url = getDownloadUrl(fileName)
 
-        val client = com.soywiz.korio.net.http.HttpClient()
+        val client = HttpClient()
 
         val response = client.request(
             Http.Method.GET,
-            "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do?file=${fileName}",
+            url,
             headers = Http.Headers(
                 "Authorization" to authV,
-                "User-Agent" to "Kies2.0_FUS"
+                "User-Agent" to "Kies2.0_FUS",
             ).run {
                 if (start > 0) {
                     this.plus(Http.Headers("Range" to "bytes=$start-"))
