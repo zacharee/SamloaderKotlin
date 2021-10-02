@@ -204,7 +204,7 @@ object CryptUtils {
 
                             outf.write(decBlock, 0, decBlock.size)
                         }
-                    }.toLongNanoseconds()
+                    }.inWholeNanoseconds
 
                     if (len <= 0) break
 
@@ -257,7 +257,7 @@ object CryptUtils {
                         if (len > 0) {
                             crcVal = CRC32.update(crcVal, buffer, 0, len)
                         }
-                    }.toLongNanoseconds()
+                    }.inWholeNanoseconds
 
                     if (len <= 0) break
 

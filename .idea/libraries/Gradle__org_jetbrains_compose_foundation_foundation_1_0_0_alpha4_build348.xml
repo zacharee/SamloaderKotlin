@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.foundation:foundation:1.0.0-alpha4-build348">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation/1.0.0-alpha4-build348/5bde56db4dbd561ca63bc1b7eb3c4a1b293981e5/foundation-metadata-1.0.0-alpha4-build348.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation/1.0.0-alpha4-build348/249df2833d6c79a30b41214e70918df4f87087b5/foundation-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

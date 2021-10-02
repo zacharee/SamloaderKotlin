@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.material:material-icons-core-android-debug:1.0.0-alpha4-build348@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/62ba7bc2e5f9d707effc3319df6cc7e3/transformed/material-icons-core-debug/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/62ba7bc2e5f9d707effc3319df6cc7e3/transformed/material-icons-core-debug/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/62ba7bc2e5f9d707effc3319df6cc7e3/transformed/material-icons-core-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.material/material-icons-core-android-debug/1.0.0-alpha4-build348/7774a9d28eb70f62c1de03e71ea79e84c7ea9689/material-icons-core-android-debug-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

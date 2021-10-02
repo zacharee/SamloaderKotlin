@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.krypto:krypto-android:2.4.2@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/7daebd80f7ae8aa44ca8977784a59043/transformed/krypto-debug/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/7daebd80f7ae8aa44ca8977784a59043/transformed/krypto-debug/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/7daebd80f7ae8aa44ca8977784a59043/transformed/krypto-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-android/2.4.2/44bd7766c7aaf9862f217f3f22b303789ce22ca3/krypto-android-2.4.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-android/2.4.2/284abd8a1e15714b1bd533a0c33a25cbf5ee45c5/krypto-android-2.4.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

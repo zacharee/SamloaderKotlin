@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.kmem:kmem-js:klib:2.4.2" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem-js/2.4.2/e899a06bb62ffe8a127afcf7783e78a4d7ee71c5/kmem-js-2.4.2.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem-js/2.4.2/79860782488f46ffe9e990b567f9ada26e2ce085/kmem-js-2.4.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

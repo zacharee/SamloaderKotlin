@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.runtime:runtime-android-debug:1.0.0-alpha4-build348@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/b419981cd9d97bfc4b7b250c4562640c/transformed/runtime-debug/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/b419981cd9d97bfc4b7b250c4562640c/transformed/runtime-debug/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/b419981cd9d97bfc4b7b250c4562640c/transformed/runtime-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-android-debug/1.0.0-alpha4-build348/c91f73491d349e8ab0f74326f3913bc696147d57/runtime-android-debug-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

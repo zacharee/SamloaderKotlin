@@ -19,7 +19,7 @@ kotlin.sourceSets.all {
 }
 
 kotlin {
-    android() {
+    android {
         compilations.forEach {
             it.kotlinOptions {
                 freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
@@ -59,13 +59,36 @@ kotlin {
 }
 
 android {
-    compileSdk = 30
-
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file(rootProject.)
+            storePassword = rootProject.
+            keyAlias = rootProject.
+            keyPassword = rootProject.
+        }
+    }
+    compileSdk = 31
     defaultConfig {
-        minSdk = 24
-        targetSdk = 29
+        minSdk = 30
+        targetSdk = 31
+        versionCode = rootProject.
+        versionName = rootProject.
+        versionNameSuffix = rootProject.
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].resources.srcDir("src/commonMain/resources")
+    compileOptions {
+        sourceCompatibility = rootProject.
+        targetCompatibility = rootProject.
+    }
+    buildToolsVersion = "31.0.0"
+    ndkVersion = "23.0.7599858"
+    buildTypes {
+        getByName("release") {
+            versionNameSuffix = rootProject.
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
 }

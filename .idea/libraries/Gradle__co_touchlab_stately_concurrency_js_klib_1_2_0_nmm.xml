@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: co.touchlab:stately-concurrency-js:klib:1.2.0-nmm" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/co.touchlab/stately-concurrency-js/1.2.0-nmm/bf2c58cced475d8b6ed5d8329cfdad095218dbd4/stately-concurrency-jsir-1.2.0-nmm.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/co.touchlab/stately-concurrency-js/1.2.0-nmm/570e95ea256043e761f0b314e85b9d88546ed4c1/stately-concurrency-js-1.2.0-nmm-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

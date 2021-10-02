@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.runtime:runtime-js:klib:1.0.0-alpha4-build348" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-js/1.0.0-alpha4-build348/196040e71f7981316d47e762dcf75924c3b5974a/runtime-js-1.0.0-alpha4-build348.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-js/1.0.0-alpha4-build348/75f9e4763c6d10d02f559000770cda324ff39c4d/runtime-js-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

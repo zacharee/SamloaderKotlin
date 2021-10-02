@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":common:androidTestFixtures" external.linked.project.path="$MODULE_DIR$/../../../common" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="tk.zwander" external.system.module.type="sourceSet" external.system.module.version="0.5.2" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="4" platform="Common (experimental) " allPlatforms="JS []/JVM [1.8]" useProjectSettings="false" isTestModule="false" externalProjectId=":common" pureKotlinSourceFolders="C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\androidDebug\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\androidDebug\androidDebug;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\debug\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\debug\java;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\androidDebugAndroidTest\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\androidDebugAndroidTest\androidDebugAndroidTest;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\androidDebugUnitTest\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\androidDebugUnitTest\androidDebugUnitTest;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\androidRelease\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\androidRelease\androidRelease;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\release\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\release\java;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\androidReleaseUnitTest\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\androidReleaseUnitTest\androidReleaseUnitTest;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\desktopMain\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\desktopMain\desktopMain;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\desktopTest\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\desktopTest\desktopTest;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\jsMain\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\jsMain\jsMain;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\externals\SamloaderKotlin-common\src;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\src\jsTest\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\common\build\generated\source\buildConfig\jsTest\jsTest">
+        <newMppModelJpsModuleKind>SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
+        <compilerSettings>
+          <option name="additionalArguments" value="-Xuse-experimental=kotlin.RequiresOptIn" />
+        </compilerSettings>
+        <compilerArguments>
+          <option name="languageVersion" value="1.4" />
+          <option name="apiVersion" value="1.4" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+          <option name="pluginClasspaths">
+            <array>
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.0-alpha4-build348/398d62fbb838b829da306bb54c300d2a1bdaf5b5/compiler-1.0.0-alpha4-build348.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.5.30/5012215b272c8a86cb452f07e41a7d96cec1a967/kotlin-scripting-jvm-1.5.30.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.5.30/f8206da8223a577331f54ad8771a7290eb6e8b0a/kotlin-scripting-common-1.5.30.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.5.0/d8cebccdcddd029022aa8646a5a953ff88b13ac8/kotlinx-coroutines-core-jvm-1.5.0.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.5.0/65fbc439df2e4aad1f3769762d54534f1b564090/kotlin-stdlib-jdk8-1.5.0.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.5.0/f61904618ea7be07a66e0545ffe8dc2c70a19b77/kotlin-stdlib-jdk7-1.5.0.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.5.30/d68efdea04955974ac1020f8f66ef8176bfbce1f/kotlin-stdlib-1.5.30.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.5.30/649ffab7767038323fec0cc41e2d7b0a8f65a378/kotlin-stdlib-common-1.5.30.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.5.30/10697ab20bfd2f1b23baa91306950c36c4e89a8d/kotlin-script-runtime-1.5.30.jar" />
+            </array>
+          </option>
+          <option name="multiPlatform" value="true" />
+        </compilerArguments>
+      </configuration>
+    </facet>
+    <facet type="android" name="Android">
+      <configuration>
+        <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
+        <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
+        <afterSyncTasks>
+          <task>generateDebugSources</task>
+        </afterSyncTasks>
+        <option name="ALLOW_USER_CONFIGURATION" value="false" />
+        <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/androidMain/AndroidManifest.xml" />
+        <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../common/src/main/res;file://$MODULE_DIR$/../../../common/src/androidMain/res;file://$MODULE_DIR$/../../../common/src/debug/res;file://$MODULE_DIR$/../../../common/src/androidDebug/res;file://$MODULE_DIR$/../../../common/build/generated/res/rs/debug;file://$MODULE_DIR$/../../../common/build/generated/res/resValues/debug" />
+        <option name="TEST_RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../common/src/androidTest/res;file://$MODULE_DIR$/../../../common/src/androidAndroidTest/res;file://$MODULE_DIR$/../../../common/src/androidTestDebug/res;file://$MODULE_DIR$/../../../common/src/androidAndroidTestDebug/res;file://$MODULE_DIR$/../../../common/build/generated/res/rs/androidTest/debug;file://$MODULE_DIR$/../../../common/build/generated/res/resValues/androidTest/debug" />
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
+        <option name="PROJECT_TYPE" value="1" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../common/build/generated/source/buildConfig/androidTestFixtures/androidTestFixtures" />
+    <content url="file://$MODULE_DIR$/../../../common/src/androidTestFixtures/kotlin" />
+    <content url="file://$MODULE_DIR$/../../../common/src/androidTestFixtures/resources" />
+    <content url="file://$MODULE_DIR$/../../../common/src/testFixtures/java" />
+    <content url="file://$MODULE_DIR$/../../../common/src/testFixtures/kotlin" />
+    <content url="file://$MODULE_DIR$/../../../common/src/testFixtures/resources" />
+    <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.0-alpha4-build348" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.korio:korio:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-auth:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime:0.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.krypto:krypto:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klock:klock:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-common:1.2.0-nmm" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate:1.2.0-nmm" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.country:fluid-country:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kds:kds:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kmem:kmem:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klogger:klogger:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.locale:fluid-locale:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-utils:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-io:1.6.3" level="project" />
+  </component>
+</module>

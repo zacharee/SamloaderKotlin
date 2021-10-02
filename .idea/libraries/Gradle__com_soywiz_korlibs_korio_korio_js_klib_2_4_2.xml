@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.korio:korio-js:klib:2.4.2" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio-js/2.4.2/ea3ef27fac32325c1038c9410d0612c42460b29a/korio-js-2.4.2.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio-js/2.4.2/d309480934b9901d722e9f0c841e48911888a075/korio-js-2.4.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

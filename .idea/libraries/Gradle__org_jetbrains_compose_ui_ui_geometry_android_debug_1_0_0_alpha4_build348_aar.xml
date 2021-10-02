@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.ui:ui-geometry-android-debug:1.0.0-alpha4-build348@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/28f7899d5174ef41bc55b6517f460b21/transformed/ui-geometry-debug/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/28f7899d5174ef41bc55b6517f460b21/transformed/ui-geometry-debug/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/28f7899d5174ef41bc55b6517f460b21/transformed/ui-geometry-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-geometry-android-debug/1.0.0-alpha4-build348/389389aa35610c32d528376604e4631677cb106/ui-geometry-android-debug-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

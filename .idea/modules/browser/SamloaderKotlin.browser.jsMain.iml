@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":browser:jsMain" external.linked.project.path="$MODULE_DIR$/../../../browser" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="tk.zwander" external.system.module.type="sourceSet" external.system.module.version="0.5.2" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="4" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="false" externalProjectId=":browser" pureKotlinSourceFolders="C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\browser\src\jsMain\kotlin;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\browser\build\externals\SamloaderKotlin-browser\src;C:\Users\brind\StudioProjects\SamloaderKotlin\SamSung-Fiirmware\browser\src\jsTest\kotlin">
+        <dependsOnModuleNames>:browser:commonMain</dependsOnModuleNames>
+        <sourceSets>
+          <sourceSet>SamloaderKotlin.browser.commonMain</sourceSet>
+        </sourceSets>
+        <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
+        <productionOutputPath>$MODULE_DIR$/../../../browser/build/classes/kotlin/js/main</productionOutputPath>
+        <compilerSettings>
+          <option name="additionalArguments" value="-Xir-module-name=tk.zwander:browser -Xir-only -Xir-per-module-output-name=SamloaderKotlin-browser -Xir-produce-klib-dir" />
+        </compilerSettings>
+        <compilerArguments>
+          <option name="outputFile" value="$MODULE_DIR$/../../../browser/build/classes/kotlin/js/main" />
+          <option name="noStdlib" value="true" />
+          <option name="sourceMap" value="true" />
+          <option name="sourceMapEmbedSources" value="never" />
+          <option name="metaInfo" value="true" />
+          <option name="target" value="v5" />
+          <option name="moduleKind" value="umd" />
+          <option name="main" value="call" />
+          <option name="languageVersion" value="1.5" />
+          <option name="apiVersion" value="1.5" />
+          <option name="pluginOptions">
+            <array>
+              <option value="plugin:androidx.compose.compiler.plugins.kotlin:generateDecoys=true" />
+            </array>
+          </option>
+          <option name="pluginClasspaths">
+            <array>
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.0-alpha4-build348/398d62fbb838b829da306bb54c300d2a1bdaf5b5/compiler-1.0.0-alpha4-build348.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.5.30/5012215b272c8a86cb452f07e41a7d96cec1a967/kotlin-scripting-jvm-1.5.30.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.5.30/f8206da8223a577331f54ad8771a7290eb6e8b0a/kotlin-scripting-common-1.5.30.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.5.0/d8cebccdcddd029022aa8646a5a953ff88b13ac8/kotlinx-coroutines-core-jvm-1.5.0.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.5.0/65fbc439df2e4aad1f3769762d54534f1b564090/kotlin-stdlib-jdk8-1.5.0.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.5.0/f61904618ea7be07a66e0545ffe8dc2c70a19b77/kotlin-stdlib-jdk7-1.5.0.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.5.30/d68efdea04955974ac1020f8f66ef8176bfbce1f/kotlin-stdlib-1.5.30.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.5.30/649ffab7767038323fec0cc41e2d7b0a8f65a378/kotlin-stdlib-common-1.5.30.jar" />
+              <option value="$MODULE_DIR$/../../../../caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.5.30/10697ab20bfd2f1b23baa91306950c36c4e89a8d/kotlin-script-runtime-1.5.30.jar" />
+            </array>
+          </option>
+          <option name="multiPlatform" value="true" />
+          <option name="errors">
+            <ArgumentParseErrors />
+          </option>
+        </compilerArguments>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../../browser/build/classes/kotlin/js/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../browser/build/externals/SamloaderKotlin-browser/src" />
+    <content url="file://$MODULE_DIR$/../../../browser/src/jsMain/kotlin">
+      <sourceFolder url="file://$MODULE_DIR$/../../../browser/src/jsMain/kotlin" type="kotlin-source" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../browser/src/jsMain/resources">
+      <sourceFolder url="file://$MODULE_DIR$/../../../browser/src/jsMain/resources" type="kotlin-resource" />
+    </content>
+    <orderEntry type="jdk" jdkName="Kotlin SDK" jdkType="KotlinSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="SamloaderKotlin.browser.commonMain" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../build/js/node_modules/react/index.js" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../build/js/node_modules/react-dom/index.js" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../build/js/node_modules/react-bootstrap/cjs/index.js" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../build/js/node_modules/bootstrap/dist/js/bootstrap.js" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../build/js/node_modules/jquery/dist/jquery.js" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../../build/js/node_modules/streamsaver/StreamSaver.js" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module" module-name="SamloaderKotlin.common.jsMain" />
+    <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-js:1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-js:klib:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin-wrappers:kotlin-styled:klib:5.3.1-pre.246-kotlin-1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin-wrappers:kotlin-react-dom:klib:17.0.2-pre.246-kotlin-1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin-wrappers:kotlin-react:klib:17.0.2-pre.246-kotlin-1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin-wrappers:kotlin-extensions:klib:1.0.1-pre.246-kotlin-1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-html-js:klib:0.7.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin-wrappers:kotlin-csstype:klib:3.0.9-pre.246-kotlin-1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.web:web-widgets-js:klib:1.0.0-alpha4-build348" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.web:web-core-js:klib:1.0.0-alpha4-build348" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-js:klib:1.0.0-alpha4-build348" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.korio:korio-js:klib:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-auth-js:klib:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core-js:klib:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-js:klib:1.5.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-js:klib:0.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-js:klib:3.0.0-alpha.9" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.krypto:krypto-js:klib:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klock:klock-js:klib:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate-js:klib:1.2.0-nmm" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-common-js:klib:1.2.0-nmm" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n-js:klib:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.country:fluid-country-js:klib:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin-wrappers:kotlin-css-js:klib:1.0.0-pre.246-kotlin-1.5.30" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-js:klib:0.16.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.web:internal-web-core-runtime-js:klib:1.0.0-alpha4-build348" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kds:kds-js:klib:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kmem:kmem-js:klib:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klogger:klogger-js:klib:2.4.2" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio-js:klib:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-js:klib:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-js:klib:1.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-concurrency-js:klib:1.2.0-nmm" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.currency:fluid-currency-js:klib:0.10.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.locale:fluid-locale-js:klib:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n-data-identifiers-js:klib:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n-data-regions-js:klib:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-utils-js:klib:1.6.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-io-js:klib:1.6.3" level="project" />
+  </component>
+</module>
