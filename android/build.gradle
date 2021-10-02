@@ -16,23 +16,33 @@ dependencies {
     implementation(project(":commonCompose"))
 
     implementation('org.jetbrains.kotlin:kotlin-stdlib:1.5.30')
-    implementation('androidx.fragment:fragment-ktx:1.4.0-alpha09')
-    implementation('androidx.activity:activity-compose:1.4.0-alpha02')
+    implementation('androidx.fragment:fragment-ktx:1.4.0-alpha10')
+    implementation('androidx.activity:activity-compose:1.4.0-beta01')
     implementation("androidx.documentfile:documentfile:1.1.0-alpha01")
     implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt')
     implementation('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2-native-mt')
 }
 
 android {
-    buildToolsVersion "30.0.3"
-    compileSdkVersion 31
+    signingConfigs {
+        debug {
+            storeFile file(versionCode)
+            keyAlias versionName
+            keyPassword versionName
+            storePassword versionName
+        }
+    }
+    buildToolsVersion '31.0.0'
+    compileSdk 31
 
     defaultConfig {
         applicationId = "tk.zwander.samsungfirmwaredownloader"
-        minSdkVersion 24
-        targetSdkVersion 31
-        versionCode = Integer.parseInt(project.properties['versionCode'])
-        versionName = project.properties['versionName']
+        minSdk 30
+        targetSdk 31
+        versionCode versionCode
+        versionName = versionName
+        signingConfig signingConfigs.debug
+        applicationIdSuffix versionCode
     }
 
     buildFeatures {
@@ -43,6 +53,9 @@ android {
         release {
             minifyEnabled = false
             shrinkResources = false
+            applicationIdSuffix versionCode
+            versionNameSuffix versionName
+            signingConfig signingConfigs.debug
         }
         debug {
             minifyEnabled = false
@@ -51,8 +64,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility versionCode
+        targetCompatibility versionCode
     }
 
     kotlinOptions {
@@ -61,6 +74,11 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+    ndkVersion '23.0.7599858'
+    dependenciesInfo {
+        includeInApk true
+        includeInBundle true
     }
 
 //    composeOptions {

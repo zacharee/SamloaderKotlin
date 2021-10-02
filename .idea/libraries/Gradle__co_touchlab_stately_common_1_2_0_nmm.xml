@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: co.touchlab:stately-common:1.2.0-nmm" type="kotlin.common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/co.touchlab/stately-common/1.2.0-nmm/731f82266b8282e14f4ea381db87b1bfd3b91693/stately-common-1.2.0-nmm.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/co.touchlab/stately-common/1.2.0-nmm/3a10c255ea3dd87c7541644492bda9e6c0223667/stately-common-1.2.0-nmm-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

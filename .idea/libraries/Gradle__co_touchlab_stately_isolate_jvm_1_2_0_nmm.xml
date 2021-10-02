@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: co.touchlab:stately-isolate-jvm:1.2.0-nmm">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/co.touchlab/stately-isolate-jvm/1.2.0-nmm/7eda9be4a9851b639dbb3918f28918db374cc5ff/stately-isolate-jvm-1.2.0-nmm.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/co.touchlab/stately-isolate-jvm/1.2.0-nmm/ae53bfecb74c6025373e53ec4f68cc5a0164987e/stately-isolate-jvm-1.2.0-nmm-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

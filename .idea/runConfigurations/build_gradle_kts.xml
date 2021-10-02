@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="build.gradle.kts" type="KotlinStandaloneScriptRunConfigurationType" singleton="false" nameIsGenerated="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="Android API 31 Platform" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <module name="SamloaderKotlin" />
+    <option name="PASS_PARENT_ENVS" value="false" />
+    <option name="PROGRAM_PARAMETERS" value="$AffectedModuleNames$" />
+    <option name="REDIRECT_INPUT" value="true" />
+    <option name="INPUT_FILE" value="$ProjectFileDir$" />
+    <option name="VM_PARAMETERS" value="$JDKPath$" />
+    <option name="filePath" value="$PROJECT_DIR$/common/build.gradle.kts" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

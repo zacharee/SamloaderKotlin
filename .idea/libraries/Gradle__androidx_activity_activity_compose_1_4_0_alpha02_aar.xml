@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.activity:activity-compose:1.4.0-alpha02@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/8f9cb9588838635d682f9d883f850b69/transformed/activity-compose-1.4.0-alpha02/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/8f9cb9588838635d682f9d883f850b69/transformed/activity-compose-1.4.0-alpha02/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/8f9cb9588838635d682f9d883f850b69/transformed/activity-compose-1.4.0-alpha02/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/androidx.activity/activity-compose/1.4.0-alpha02/1c7254d3de5b5c2734601aa4b3d52509984b3f75/activity-compose-1.4.0-alpha02-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

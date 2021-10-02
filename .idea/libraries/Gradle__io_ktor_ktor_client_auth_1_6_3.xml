@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.ktor:ktor-client-auth:1.6.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.ktor/ktor-client-auth/1.6.3/8ee6c9ebbebfa35c042976c2a8e807b0bcce4e46/ktor-client-auth-1.6.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.ktor/ktor-client-auth/1.6.3/caffc2ac135a393172040967273fcc4b4e174f23/ktor-client-auth-1.6.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

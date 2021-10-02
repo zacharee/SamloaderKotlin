@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.ktor:ktor-utils-js:klib:1.6.3" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.ktor/ktor-utils-js/1.6.3/eb4ef36a3d8d47967b4552126903a7d5458b7ea1/ktor-utils-jsir-1.6.3.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.ktor/ktor-utils-js/1.6.3/507ef1c9fd434a70abbdfc797e33a1f9000fe808/ktor-utils-js-1.6.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

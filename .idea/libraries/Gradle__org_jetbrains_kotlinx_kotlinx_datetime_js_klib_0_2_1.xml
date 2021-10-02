@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-js:klib:0.2.1" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-datetime-js/0.2.1/595a81c4c91734874199158352d2dbae42ea2b93/kotlinx-datetime-jsir-0.2.1.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-datetime-js/0.2.1/4d2a302421de6afd1a086bd075f7e84b7b45bafa/kotlinx-datetime-js-0.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.material:material-android-debug:1.0.0-alpha4-build348@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/1f6a4c784d4b9855d75f56955fc602f0/transformed/material-debug/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/1f6a4c784d4b9855d75f56955fc602f0/transformed/material-debug/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/1f6a4c784d4b9855d75f56955fc602f0/transformed/material-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.material/material-android-debug/1.0.0-alpha4-build348/d85d5dfb88ad5c54258ae907a170315f0efe32e4/material-android-debug-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

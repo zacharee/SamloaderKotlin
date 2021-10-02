@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.squareup.okio:okio:3.0.0-alpha.9">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.squareup.okio/okio/3.0.0-alpha.9/b1d6cc65ba9a6570fa636011f4c06839b0ca3cab/okio-jvm-3.0.0-alpha.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.squareup.okio/okio/3.0.0-alpha.9/53fba5d4b9726c489babcdb750a3b0446b11d01e/okio-3.0.0-alpha.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

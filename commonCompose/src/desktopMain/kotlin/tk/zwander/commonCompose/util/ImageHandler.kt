@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorXmlResource
+import androidx.compose.ui.res.painterResource
 import org.jetbrains.skija.Image
 
 fun loadResource(path: String): ByteArray {
@@ -20,5 +20,5 @@ actual fun imageResource(path: String): ImageBitmap {
 
 @Composable
 actual fun vectorResource(path: String): ImageVector {
-    return vectorXmlResource(path)
+    return painterResource(path)
 }

@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.activity:activity:1.4.0-alpha02@aar">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/405b87e1068c9c20d9534136341f0943/transformed/activity-1.4.0-alpha02/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/405b87e1068c9c20d9534136341f0943/transformed/activity-1.4.0-alpha02/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/405b87e1068c9c20d9534136341f0943/transformed/activity-1.4.0-alpha02/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/405b87e1068c9c20d9534136341f0943/transformed/activity-1.4.0-alpha02/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/androidx.activity/activity/1.4.0-alpha02/e7bdc65d2845c7fe3d141439e70bf3685ed25793/activity-1.4.0-alpha02-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.klogger:klogger-jvm:2.4.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-jvm/2.4.2/a42fe1137976e3e0abcb2ceb47fbca567f80057d/klogger-jvm-2.4.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-jvm/2.4.2/6bd88c90570b10767f0694f6b819c7d55168c42d/klogger-jvm-2.4.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.fluidsonic.currency:fluid-currency-js:klib:0.10.1" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.fluidsonic.currency/fluid-currency-js/0.10.1/827f379c3cfad44d577643872c6f9ad59ee2417d/fluid-currency-jsir-0.10.1.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/io.fluidsonic.currency/fluid-currency-js/0.10.1/634f771b00340d5b641b250da334959067e15a3d/fluid-currency-js-0.10.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

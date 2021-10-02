@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.krypto:krypto-jvm:2.4.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-jvm/2.4.2/1857c2d43f3baec1c2e72d79a9307ec036fd2ead/krypto-jvm-2.4.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-jvm/2.4.2/661dba6b0a6cc0096b5e10c6e88804cfdfd0055a/krypto-jvm-2.4.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

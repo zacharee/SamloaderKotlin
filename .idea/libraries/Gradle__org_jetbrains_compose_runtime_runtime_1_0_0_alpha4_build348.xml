@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.0-alpha4-build348">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime/1.0.0-alpha4-build348/9f7f0b72a52614a02ff030ad0787ef25678c5b72/runtime-metadata-1.0.0-alpha4-build348.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime/1.0.0-alpha4-build348/c4f27f882f8bb410d2ef8ce162d9ef640a3fbef/runtime-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

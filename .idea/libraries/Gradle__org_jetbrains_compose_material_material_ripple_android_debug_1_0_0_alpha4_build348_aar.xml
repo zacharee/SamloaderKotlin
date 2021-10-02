@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.material:material-ripple-android-debug:1.0.0-alpha4-build348@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/a630885a49dad7622049ff1550966e9c/transformed/material-ripple-debug/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/a630885a49dad7622049ff1550966e9c/transformed/material-ripple-debug/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/a630885a49dad7622049ff1550966e9c/transformed/material-ripple-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.material/material-ripple-android-debug/1.0.0-alpha4-build348/a86049b3cf74739f3dafaeb09fdb55eb19bd76f3/material-ripple-android-debug-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

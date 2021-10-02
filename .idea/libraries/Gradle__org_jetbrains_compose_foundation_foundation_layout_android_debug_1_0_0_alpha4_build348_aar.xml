@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.foundation:foundation-layout-android-debug:1.0.0-alpha4-build348@aar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../caches/transforms-3/f31247e96b7f403726c95e34883a6ebd/transformed/foundation-layout-debug/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/f31247e96b7f403726c95e34883a6ebd/transformed/foundation-layout-debug/res" />
+      <root url="file://$PROJECT_DIR$/../caches/transforms-3/f31247e96b7f403726c95e34883a6ebd/transformed/foundation-layout-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-layout-android-debug/1.0.0-alpha4-build348/3b470462a536228eeaf4d9f396204584db394ce6/foundation-layout-android-debug-1.0.0-alpha4-build348-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
