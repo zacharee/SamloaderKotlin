@@ -297,7 +297,7 @@ class DownloaderService : Service() {
                 PendingIntent.getActivity(
                     this, 101,
                     Intent(this, MainActivity::class.java),
-                    PendingIntent.FLAG_UPDATE_CURRENT
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
                 )
             )
             .apply {
