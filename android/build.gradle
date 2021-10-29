@@ -16,8 +16,8 @@ dependencies {
     implementation(project(":commonCompose"))
 
     implementation('org.jetbrains.kotlin:kotlin-stdlib:1.5.31')
-    implementation('androidx.fragment:fragment-ktx:1.4.0-alpha10')
-    implementation('androidx.activity:activity-compose:1.4.0-rc01')
+    implementation('androidx.fragment:fragment-ktx:1.4.0-beta01')
+    implementation('androidx.activity:activity-compose:1.4.0')
     implementation("androidx.documentfile:documentfile:1.1.0-alpha01")
     implementation('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2')
     implementation('org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2')
@@ -68,9 +68,9 @@ android {
 //    }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "6.7.1"
-}
+//task wrapper(type: Wrapper) {
+//    gradleVersion = "6.7.1"
+//}
 
 task prepareKotlinBuildScriptModel {
 

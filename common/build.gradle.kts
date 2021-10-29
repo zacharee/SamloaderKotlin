@@ -1,9 +1,8 @@
 buildscript {
     dependencies {
-        classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.16.2")
+        classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.16.3")
     }
 }
-apply(plugin = "kotlinx-atomicfu")
 
 plugins {
     id("com.android.library")
@@ -81,8 +80,8 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
                 api("org.jsoup:jsoup:1.14.3")
 
-                api("androidx.appcompat:appcompat:1.4.0-beta01")
-                api("androidx.core:core-ktx:1.7.0-rc01")
+                api("androidx.appcompat:appcompat:1.4.0-rc01")
+                api("androidx.core:core-ktx:1.7.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:1.6.4")
             }
@@ -126,3 +125,5 @@ buildConfig {
     buildConfigField("String", "versionName", "\"${project.properties["versionName"]}\"")
     buildConfigField("String", "versionCode", "\"${project.properties["versionCode"]}\"")
 }
+
+apply(plugin = "kotlinx-atomicfu")
