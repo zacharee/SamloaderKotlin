@@ -46,46 +46,8 @@ fun main() {
             MainView()
         }
 
-        if (aboutState) {
-            Window(
-                onCloseRequest = {
-                    aboutState = false
-                },
-                title = "Samsung Firmware Downloader",
-                icon = getImage("icon.png").toPainter(),
-                state = WindowState(
-                    placement = WindowPlacement.Floating,
-                    position = WindowPosition(Alignment.Center),
-                    size = DpSize(500.dp, 300.dp)
-                ),
-                resizable = false,
-                alwaysOnTop = true
-            ) {
-                CustomMaterialTheme {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxSize()
-                        ) {
-                            Image(
-                                bitmap = imageResource("icon.png"),
-                                contentDescription = null,
-                                modifier = Modifier.align(Alignment.CenterHorizontally)
-                            )
-
-                            Text(
-                                text = "Samsung Firmware Downloader",
-                                modifier = Modifier.align(Alignment.CenterHorizontally)
-                            )
-
-                            Spacer(modifier = Modifier.weight(1f))
-
-                            FooterView()
-                        }
-                    }
-                }
-            }
-        }
+        AboutDialog(
+            aboutState
+        ) { aboutState = false }
     }
 }
