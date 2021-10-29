@@ -1,4 +1,4 @@
-import androidx.compose.ui.graphics.asPainter
+import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import io.ktor.utils.io.core.internal.*
@@ -12,7 +12,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "Samsung Firmware Downloader",
-        icon = getImage("icon.png").asPainter(),
+        icon = getImage("icon.png").toPainter(),
     ) {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
