@@ -8,14 +8,20 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @OptIn(DangerousInternalIoApi::class)
-fun main() = application {
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "Samsung Firmware Downloader",
-        icon = getImage("icon.png").toPainter(),
-    ) {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+fun main() {
+    System.setProperty("apple.laf.useScreenMenuBar", "true");
+    System.setProperty("apple.awt.application.appearance", "system")
+    System.setProperty("apple.awt.application.name", "Samsung Firmware Downloader");
 
-        MainView()
+    application {
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = "Samsung Firmware Downloader",
+            icon = getImage("icon.png").toPainter()
+        ) {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+
+            MainView()
+        }
     }
 }
