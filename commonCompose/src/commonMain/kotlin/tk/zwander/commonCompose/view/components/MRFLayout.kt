@@ -15,7 +15,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
 import tk.zwander.common.model.DownloadModel
-import tk.zwander.commonCompose.util.DPScale
 
 /**
  * A common container for the model, region, and firmware text inputs used in [DownloadView] and [DecryptView]
@@ -28,6 +27,7 @@ import tk.zwander.commonCompose.util.DPScale
 @Composable
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
     val fontScale = LocalDensity.current.fontScale
+    val density = LocalDensity.current.density
     val size = remember { mutableStateOf(0.dp) }
 
     BoxWithConstraints(
@@ -70,7 +70,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
             )
         }
 
-        if (size.value / fontScale * DPScale.dpScale >= 800.dp) {
+        if (size.value / (fontScale * density) >= 400.dp) {
             Row {
                 Box(
                     modifier = Modifier.weight(0.6f, true)

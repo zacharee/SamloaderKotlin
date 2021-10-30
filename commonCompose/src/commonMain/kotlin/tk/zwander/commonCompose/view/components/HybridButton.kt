@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import tk.zwander.commonCompose.util.DPScale
 
 /**
  * A special Button that shows as a text button if there's enough room
@@ -30,10 +29,10 @@ fun HybridButton(
     parentSize: Dp
 ) {
     val fontScale = LocalDensity.current.fontScale
-    val dpScale = DPScale.dpScale
+    val density = LocalDensity.current.density
 
     BoxWithConstraints {
-        if (parentSize / fontScale * dpScale >= 800.dp) {
+        if (parentSize / (fontScale * density) >= 400.dp) {
             OutlinedButton(modifier = modifier, onClick = onClick, enabled = enabled) {
                 Text(text)
             }

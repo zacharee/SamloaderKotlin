@@ -18,7 +18,6 @@
             <option value="$PROJECT_DIR$/desktop" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="delegatedBuild" value="true" />
@@ -35,7 +34,6 @@
             <option value="$PROJECT_DIR$/desktop" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
