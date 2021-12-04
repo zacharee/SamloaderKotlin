@@ -64,7 +64,7 @@ compose.desktop {
             }
 
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
-            packageName = "Samsung Firmware Downloader"
+            packageName = "Bifrost"
         }
     }
 }

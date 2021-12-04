@@ -24,7 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\temp\ic_android_black_24dp.xml" />
+                                                <entry key="imagePath" value="/private/var/folders/f4/s9wzz22s1gbbz7t3d8q1dc_r0000gn/T/ic_android_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -67,7 +67,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="imagePath" value="E:\IntelliJProjects\SamloaderKotlin\icon_background.png" />
+                                                <entry key="imagePath" value="$PROJECT_DIR$/BifrostBackground.png" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -78,7 +78,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="imagePath" value="C:\temp\ic_android_black_24dp.xml" />
+                                                <entry key="imagePath" value="/private/var/folders/f4/s9wzz22s1gbbz7t3d8q1dc_r0000gn/T/ic_android_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -90,7 +90,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="E:\IntelliJProjects\SamloaderKotlin\icon_foreground.png" />
+                                                <entry key="imagePath" value="$PROJECT_DIR$/BifrostForeground.png" />
                                                 <entry key="scalingPercent" value="55" />
                                               </map>
                                             </option>
@@ -135,7 +135,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\temp\ic_android_black_24dp.xml" />
+                                                <entry key="imagePath" value="/private/var/folders/f4/s9wzz22s1gbbz7t3d8q1dc_r0000gn/T/ic_android_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -179,7 +179,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\temp\ic_android_black_24dp.xml" />
+                                                <entry key="imagePath" value="/private/var/folders/f4/s9wzz22s1gbbz7t3d8q1dc_r0000gn/T/ic_android_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -243,7 +243,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="imagePath" value="C:\temp\ic_android_black_24dp.xml" />
+                                                <entry key="imagePath" value="/private/var/folders/f4/s9wzz22s1gbbz7t3d8q1dc_r0000gn/T/ic_android_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>

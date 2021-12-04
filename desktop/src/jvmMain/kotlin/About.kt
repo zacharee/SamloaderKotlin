@@ -14,6 +14,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
+import tk.zwander.common.data.appName
 import tk.zwander.commonCompose.util.imageResource
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.FooterView
@@ -26,7 +27,7 @@ fun AboutDialog(
     if (visible) {
         Window(
             onCloseRequest = onDismiss,
-            title = "Samsung Firmware Downloader",
+            title = appName,
             icon = getImage("icon.png").toPainter(),
             state = WindowState(
                 placement = WindowPlacement.Floating,
@@ -50,7 +51,7 @@ fun AboutDialog(
                         )
 
                         Text(
-                            text = "Samsung Firmware Downloader",
+                            text = appName,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
 
