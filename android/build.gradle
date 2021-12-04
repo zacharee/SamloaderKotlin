@@ -15,7 +15,6 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":commonCompose"))
 
-    implementation('org.jetbrains.kotlin:kotlin-stdlib:1.5.31')
     implementation('androidx.fragment:fragment-ktx:1.4.0')
     implementation('androidx.activity:activity-compose:1.4.0')
     implementation("androidx.documentfile:documentfile:1.1.0-alpha01")

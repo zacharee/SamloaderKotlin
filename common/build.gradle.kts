@@ -63,6 +63,7 @@ kotlin {
                 api("io.ktor:ktor-client-auth:1.6.6")
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.10.0")
+                api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
             }
         }
 
