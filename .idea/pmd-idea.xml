@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PMD-IDEA">
+    <option name="pmdVersion" value="6.38.0" />
+    <option name="jdkVersion" value="15" />
+  </component>
+</project>
