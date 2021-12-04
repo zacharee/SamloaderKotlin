@@ -22,9 +22,11 @@ import tk.zwander.commonCompose.util.vectorResource
  * The footer shown on all pages.
  */
 @Composable
-fun FooterView() {
+fun FooterView(
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
             .padding(8.dp)
     ) {
         Column {
