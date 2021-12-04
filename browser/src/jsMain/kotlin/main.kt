@@ -20,6 +20,7 @@ import org.w3c.xhr.XMLHttpRequest
 import org.w3c.xhr.XMLHttpRequestResponseType
 import react.RBuilder
 import react.dom.render
+import react.dom.svg.Additive
 import react.dom.unmountComponentAtNode
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
@@ -181,11 +182,10 @@ fun main() {
 }
 
 suspend fun doCheck() {
-    val (fw, os) = try {
-        VersionFetch.getLatestVersion(downloadModel.model, downloadModel.region, true)
-    } catch (e: Exception) {
-        downloadModel.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${e.message}")
-        "" to ""
+    val (fw, os, error, output) = VersionFetch.getLatestVersion(downloadModel.model, downloadModel.region, true)
+
+    if (error != null) {
+        downloadModel.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${error.message}\n\n$output")
         return
     }
 
@@ -199,14 +199,21 @@ suspend fun doCheck() {
 
 @OptIn(DangerousInternalIoApi::class, kotlin.time.ExperimentalTime::class)
 suspend fun doDownload(xhr: XMLHttpRequest) {
-    try {
-        val (path, fileName, size, crc32, v4Key) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
+    val (info, error, output) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
+
+    if (error != null) {
+        error.printStackTrace()
+        downloadModel.endJob("${error.message ?: "Error"}\n\n${output}")
+    } else {
+        val (path, fileName, size, crc32, v4Key) = info!!
         val request = Request.createBinaryInit(fileName, client.getNonce())
 
         client.makeReq(FusClient.Request.BINARY_INIT, request)
 
-        val fullFileName = fileName.replace(".zip",
-            "_${downloadModel.fw.replace("/", "_")}_${downloadModel.region}.zip")
+        val fullFileName = fileName.replace(
+            ".zip",
+            "_${downloadModel.fw.replace("/", "_")}_${downloadModel.region}.zip"
+        )
 
         val averager = Averager()
         var prevSent = 0L
@@ -311,8 +318,5 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
         }
 
         xhr.send()
-    } catch (e: Exception) {
-        e.printStackTrace()
-        downloadModel.endJob(e.message ?: "Error")
     }
 }

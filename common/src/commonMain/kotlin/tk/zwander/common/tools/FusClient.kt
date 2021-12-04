@@ -118,8 +118,6 @@ class FusClient(
                 }
                 ?.replace("JSESSIONID=", "")
                 ?.replace(Regex(";.*$"), "") ?: sessId
-
-            println("Got session ID: $sessId")
         }
 
         client.close()

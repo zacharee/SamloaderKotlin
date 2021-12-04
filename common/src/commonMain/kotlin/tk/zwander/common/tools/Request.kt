@@ -6,6 +6,7 @@ import com.soywiz.krypto.MD5
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.data.BinaryFileInfo
+import tk.zwander.common.data.FetchResult
 
 /**
  * Handle some requests to Samsung's servers.
@@ -159,67 +160,77 @@ object Request {
      * @param region the device region.
      * @return a BinaryFileInfo instance representing the file.
      */
-    suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): BinaryFileInfo {
+    suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): FetchResult.GetBinaryFileResult {
         val request = createBinaryInform(fw, model, region, client.getNonce())
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
         val responseXml = Xml(response)
 
-        println(response)
-
-        val status = responseXml.child("FUSBody")
-            ?.child("Results")
-            ?.child("Status")
-            ?.text?.toInt()!!
-
-        if (status != 200) {
-            throw Exception("Bad return status: $status", Exception(response))
-        }
-
-        val size = responseXml.child("FUSBody")
-            ?.child("Put")
-            ?.child("BINARY_BYTE_SIZE")
-            ?.child("Data")
-            ?.text?.toLong()!!
-
-        val fileName = responseXml.child("FUSBody")
-            ?.child("Put")
-            ?.child("BINARY_NAME")
-            ?.child("Data")
-            ?.text!!
-
-        val path = responseXml.child("FUSBody")
-            ?.child("Put")
-            ?.child("MODEL_PATH")
-            ?.child("Data")
-            ?.text!!
-
-        val crc32 = responseXml.child("FUSBody")
-            ?.child("Put")
-            ?.child("BINARY_CRC")
-            ?.child("Data")
-            ?.text?.toLong()
-
-        val v4Key = try {
-            val fwVer = responseXml.child("FUSBody")
+        try {
+            val status = responseXml.child("FUSBody")
                 ?.child("Results")
-                ?.child("LATEST_FW_VERSION")
-                ?.child("Data")
-                ?.text!!
+                ?.child("Status")
+                ?.text?.toInt()!!
 
-            val logicVal = responseXml.child("FUSBody")
+            if (status != 200) {
+                return FetchResult.GetBinaryFileResult(
+                    error = Exception("Bad return status: $status", Exception(response)),
+                    rawOutput = responseXml.toString()
+                )
+            }
+
+            val size = responseXml.child("FUSBody")
                 ?.child("Put")
-                ?.child("LOGIC_VALUE_FACTORY")
+                ?.child("BINARY_BYTE_SIZE")
+                ?.child("Data")
+                ?.text?.toLong()!!
+
+            val fileName = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("BINARY_NAME")
                 ?.child("Data")
                 ?.text!!
 
-            val decKey = getLogicCheck(fwVer, logicVal)
+            val path = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("MODEL_PATH")
+                ?.child("Data")
+                ?.text!!
 
-            MD5.digest(decKey.toByteArray()).bytes
+            val crc32 = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("BINARY_CRC")
+                ?.child("Data")
+                ?.text?.toLong()
+
+            val v4Key = try {
+                val fwVer = responseXml.child("FUSBody")
+                    ?.child("Results")
+                    ?.child("LATEST_FW_VERSION")
+                    ?.child("Data")
+                    ?.text!!
+
+                val logicVal = responseXml.child("FUSBody")
+                    ?.child("Put")
+                    ?.child("LOGIC_VALUE_FACTORY")
+                    ?.child("Data")
+                    ?.text!!
+
+                val decKey = getLogicCheck(fwVer, logicVal)
+
+                MD5.digest(decKey.toByteArray()).bytes
+            } catch (e: Exception) {
+                null
+            }
+
+            return FetchResult.GetBinaryFileResult(
+                info = BinaryFileInfo(path, fileName, size, crc32, v4Key)
+            )
         } catch (e: Exception) {
-            null
+            return FetchResult.GetBinaryFileResult(
+                error = e,
+                rawOutput = responseXml.toString()
+            )
         }
-
-        return BinaryFileInfo(path, fileName, size, crc32, v4Key)
     }
 }

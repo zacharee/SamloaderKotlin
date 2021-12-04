@@ -4,6 +4,7 @@ import com.soywiz.korio.net.http.Http
 import com.soywiz.korio.net.http.HttpClient
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.stream.readAll
+import tk.zwander.common.data.FetchResult
 import tk.zwander.common.util.generateProperUrl
 
 /**
@@ -16,7 +17,7 @@ object VersionFetch {
      * @param region the device region.
      * @return a Pair(FirmwareString, AndroidVersion).
      */
-    suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = false): Pair<String, String> {
+    suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = false): FetchResult.VersionFetchResult {
         val client = HttpClient()
         val response = client.request(
             Http.Method.GET,
@@ -26,26 +27,42 @@ object VersionFetch {
         val responseString = response.content.readAll().decodeToString()
         val responseXml = Xml(responseString)
 
+        println(responseXml)
+
         if (responseXml.name == "Error") {
             val code = responseXml.child("Code")!!.text
             val message = responseXml.child("Message")!!.text
 
-            throw IllegalStateException("Code: ${code}, Message: $message")
+            return FetchResult.VersionFetchResult(
+                error = IllegalStateException("Code: ${code}, Message: $message"),
+                rawOutput = responseXml.toString()
+            )
         }
 
-        val latest = responseXml.child("firmware")
-            ?.child("version")
-            ?.child("latest")!!
+        try {
+            val latest = responseXml.child("firmware")
+                ?.child("version")
+                ?.child("latest")!!
 
-        val vc = latest.text.split("/").toMutableList()
+            val vc = latest.text.split("/").toMutableList()
 
-        if (vc.size == 3) {
-            vc.add(vc[0])
+            if (vc.size == 3) {
+                vc.add(vc[0])
+            }
+            if (vc[2] == "") {
+                vc[2] = vc[0]
+            }
+
+            return FetchResult.VersionFetchResult(
+                versionCode = vc.joinToString("/"),
+                androidVersion = latest.attribute("o") ?: "",
+                rawOutput = responseXml.toString()
+            )
+        } catch (e: Exception) {
+            return FetchResult.VersionFetchResult(
+                error = e,
+                rawOutput = responseXml.toString()
+            )
         }
-        if (vc[2] == "") {
-            vc[2] = vc[0]
-        }
-
-        return vc.joinToString("/") to (latest.attribute("o") ?: "")
     }
 }

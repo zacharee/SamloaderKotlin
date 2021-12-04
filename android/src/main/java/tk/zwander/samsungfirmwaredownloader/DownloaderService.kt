@@ -81,7 +81,7 @@ class DownloaderService : Service() {
                             PendingIntent.getActivity(
                                 this, 101,
                                 Intent(this, MainActivity::class.java),
-                                PendingIntent.FLAG_UPDATE_CURRENT
+                                PendingIntent.FLAG_UPDATE_CURRENT or (1 shl 25)
                             )
                         )
                         .build()
@@ -117,10 +117,10 @@ class DownloaderService : Service() {
         }
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //Retrieve the callback.
         activityCallback = IMainActivity.Stub.asInterface(
-            intent.getBinder(EXTRA_ACTIVITY_CALLBACK)
+            intent?.getBinder(EXTRA_ACTIVITY_CALLBACK)
         )
 
         return super.onStartCommand(intent, flags, startId)

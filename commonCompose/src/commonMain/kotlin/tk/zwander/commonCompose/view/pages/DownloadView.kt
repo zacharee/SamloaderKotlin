@@ -18,6 +18,7 @@ import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
+import tk.zwander.commonCompose.downloadModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
@@ -73,10 +74,15 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 onClick = {
                     model.job = model.scope.launch(Dispatchers.Main) {
                         PlatformDownloadView.onStart()
-                        try {
-                            model.statusText = "Downloading"
+                        model.statusText = "Downloading"
 
-                            val (path, fileName, size, crc32, v4Key) = Request.getBinaryFile(client, model.fw, model.model, model.region)
+                        val (info, error, output) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
+
+                        if (error != null) {
+                            error.printStackTrace()
+                            downloadModel.endJob("${error.message ?: "Error"}\n\n${output}")
+                        } else {
+                            val (path, fileName, size, crc32, v4Key) = info!!
                             val request = Request.createBinaryInit(fileName, client.getNonce())
 
                             client.makeReq(FusClient.Request.BINARY_INIT, request)
@@ -175,11 +181,6 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                     model.endJob("")
                                 }
                             }
-                        } catch (e: Exception) {
-                            if (e !is CancellationException) {
-                                e.printStackTrace()
-                                model.endJob("Error: ${e.message}")
-                            }
                         }
 
                         PlatformDownloadView.onFinish()
@@ -197,11 +198,10 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             HybridButton(
                 onClick = {
                     model.job = model.scope.launch {
-                        val (fw, os) = try {
-                            VersionFetch.getLatestVersion(model.model, model.region)
-                        } catch (e: Exception) {
-                            model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${e.message}")
-                            "" to ""
+                        val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model, model.region)
+
+                        if (error != null) {
+                            model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${error.message}\n\n$output")
                             return@launch
                         }
 
