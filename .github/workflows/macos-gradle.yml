@@ -43,20 +43,20 @@ jobs:
       with:
         p12-file-base64: ${{ secrets.MACOS_CERTIFICATE }}
         p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+        keychain-name: build.keychain
+        keychain-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
     - name: Sign Executable
       continue-on-error: true
       env:
         MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
         MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
         WORKSPACE: ${{ github.workspace }}
-        KEYCHAIN_NAME: ${{ steps.importcerts.outputs.keychain_name }}
-        KEYCHAIN_PASS: ${{ steps.importcerts.output.keychain_password }}
       run: >
         echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12 ;
-        security default-keychain -s $KEYCHAIN_NAME ;
-        security unlock-keychain -p $KEYCHAIN_PASS $KEYCHAIN_NAME ;
-        security import certificate.p12 -k $KEYCHAIN_NAME -P $KEYCHAIN_PASS -T /usr/bin/codesign ;
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASS $KEYCHAIN_NAME ;
+        security default-keychain -s build.keychain ;
+        security unlock-keychain -p $MACOS_CERTIFICATE_PWD build.keychain ;
+        security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign ;
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD build.keychain ;
         security find-identity ;
         /usr/bin/codesign -fs "Zachary Wander Codesign 2" "$(ls $WORKSPACE//desktop/build/compose/binaries/main/dmg/Bifrost-*.dmg)"
     - name: Create Release ZIP
