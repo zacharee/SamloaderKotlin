@@ -1,5 +1,6 @@
 package tk.zwander.commonCompose.view.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -117,7 +118,9 @@ fun HistoryItem(
                                 "Changelog"
                             ) { changelogExpanded = it }
 
-                            if (changelogExpanded) {
+                            AnimatedVisibility(
+                                visible = changelogExpanded
+                            ) {
                                 Spacer(Modifier.height(8.dp))
 
                                 ChangelogDisplay(changelog)

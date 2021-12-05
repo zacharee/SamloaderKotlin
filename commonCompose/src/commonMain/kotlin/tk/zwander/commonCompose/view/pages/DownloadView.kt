@@ -1,5 +1,8 @@
 package tk.zwander.commonCompose.view.pages
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
@@ -274,33 +277,53 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
         MRFLayout(model, canChangeOption, model.manual && canChangeOption)
 
-        if (!model.manual && model.osCode.isNotEmpty()) {
-            Spacer(Modifier.height(4.dp))
+        AnimatedVisibility(
+            visible = !model.manual && model.osCode.isNotEmpty(),
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Column {
+                Spacer(Modifier.height(4.dp))
 
-            Text(
-                text = "OS Version: ${model.osCode}"
-            )
-        }
-
-        if (model.progress.first > 0 || model.progress.second > 0 || model.statusText.isNotBlank()) {
-            Spacer(Modifier.height(16.dp))
-
-            ProgressInfo(model)
-        }
-
-        if (model.changelog != null && !model.manual && model.job == null && model.fw.isNotBlank()) {
-            Spacer(Modifier.height(8.dp))
-
-            ExpandButton(
-                model.changelogExpanded,
-                "Changelog"
-            ) { model.changelogExpanded = it }
-
-            Spacer(Modifier.height(8.dp))
-
-            if (model.changelogExpanded) {
-                ChangelogDisplay(model.changelog!!)
+                Text(
+                    text = "OS Version: ${model.osCode}"
+                )
             }
+        }
+
+        AnimatedVisibility(
+            visible = model.progress.first > 0 || model.progress.second > 0 || model.statusText.isNotBlank(),
+        ) {
+            Column {
+                Spacer(Modifier.height(16.dp))
+
+                ProgressInfo(model)
+            }
+        }
+
+        val changelogCondition = model.changelog != null && !model.manual && model.job == null && model.fw.isNotBlank()
+
+        AnimatedVisibility(
+            visible = changelogCondition,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            Column {
+                Spacer(Modifier.height(8.dp))
+
+                ExpandButton(
+                    model.changelogExpanded,
+                    "Changelog"
+                ) { model.changelogExpanded = it }
+
+                Spacer(Modifier.height(8.dp))
+            }
+        }
+
+        AnimatedVisibility(
+            visible = model.changelogExpanded && changelogCondition,
+        ) {
+            ChangelogDisplay(model.changelog!!)
         }
     }
 }

@@ -1,5 +1,6 @@
 package tk.zwander.commonCompose.view.components
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.Icon
@@ -33,8 +34,13 @@ fun ExpandButton(
                 placeholderVerticalAlign = PlaceholderVerticalAlign.Center
             )
         ) {
-            Icon(if (expanded) Icons.Filled.KeyboardArrowUp else
-                Icons.Filled.KeyboardArrowDown, "")
+            Crossfade(expanded) {
+                if (it) {
+                    Icon(Icons.Filled.KeyboardArrowUp, "")
+                } else {
+                    Icon(Icons.Filled.KeyboardArrowDown, "")
+                }
+            }
         }
     )
 

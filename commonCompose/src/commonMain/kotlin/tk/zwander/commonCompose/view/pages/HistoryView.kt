@@ -1,5 +1,8 @@
 package tk.zwander.commonCompose.view.pages
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -157,14 +160,18 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
 
         Spacer(Modifier.height(8.dp))
 
-        Box {
+        Column {
             if (model.statusText.isNotBlank()) {
                 Text(
                     text = model.statusText,
                 )
             }
 
-            if (model.historyItems.isNotEmpty()) {
+            AnimatedVisibility(
+                visible = model.historyItems.isNotEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 LazyColumn {
                     item {
                         StaggeredVerticalGrid(

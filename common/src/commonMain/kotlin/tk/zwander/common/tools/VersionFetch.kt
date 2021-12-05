@@ -27,8 +27,6 @@ object VersionFetch {
         val responseString = response.content.readAll().decodeToString()
         val responseXml = Xml(responseString)
 
-        println(responseXml)
-
         if (responseXml.name == "Error") {
             val code = responseXml.child("Code")!!.text
             val message = responseXml.child("Message")!!.text
