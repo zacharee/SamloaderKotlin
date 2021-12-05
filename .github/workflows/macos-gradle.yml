@@ -43,7 +43,7 @@ jobs:
         MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
         MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
         WORKSPACE: ${{ github.workspace }}
-        DMG: ls ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/Samsung\ Firmware\ Downloader-*.dmg
+        DMG: ls ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/Bifrost-*.dmg
       run:
         security create-keychain -p $MACOS_CERTIFICATE_PWD build.keychain security default-keychain -s build.keychain
     - name: Sign Executable
@@ -59,22 +59,22 @@ jobs:
         security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign ;
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD build.keychain ;
         security find-identity ;
-        /usr/bin/codesign -fs "Zachary Wander Codesign 2" "$(ls $WORKSPACE//desktop/build/compose/binaries/main/dmg/Samsung\ Firmware\ Downloader-*.dmg)"
+        /usr/bin/codesign -fs "Zachary Wander Codesign 2" "$(ls $WORKSPACE//desktop/build/compose/binaries/main/dmg/Bifrost-*.dmg)"
     - name: Create Release ZIP
       uses: papeloto/action-zip@v1
       with:
-        dest: 'Samsung_Firmware_Downloader_macOS.zip'
+        dest: 'Bifrost_macOS.zip'
         files: desktop/build/compose/binaries/main/dmg/
     - name: Upload DMG
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: Samsung Firmware Downloader
-        path: ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/Samsung Firmware Downloader-*.dmg
+        name: Bifrost
+        path: ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/Bifrost-*.dmg
     - name: Upload Release ZIP
       uses: ncipollo/release-action@v1
       with:
-        artifacts: 'Samsung_Firmware_Downloader_macOS.zip'
+        artifacts: 'Bifrost_macOS.zip'
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
         replacesArtifacts: false

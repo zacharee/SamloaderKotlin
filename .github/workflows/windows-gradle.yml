@@ -41,18 +41,18 @@ jobs:
     - name: Create Release ZIP
       uses: papeloto/action-zip@v1
       with:
-        dest: 'Samsung_Firmware_Downloader_Windows.zip'
+        dest: 'Bifrost_Windows.zip'
         files: desktop\build\compose\binaries\main\app\
     - name: Upload Windows Executable
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
-        name: Samsung Firmware Downloader
-        path: ${{ github.workspace }}\desktop\build\compose\binaries\main\app\Samsung Firmware Downloader\
+        name: Bifrost
+        path: ${{ github.workspace }}\desktop\build\compose\binaries\main\app\Bifrost\
     - name: Upload Release ZIP
       uses: ncipollo/release-action@v1
       with:
-        artifacts: 'Samsung_Firmware_Downloader_Windows.zip'
+        artifacts: 'Bifrost_Windows.zip'
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
         replacesArtifacts: false
