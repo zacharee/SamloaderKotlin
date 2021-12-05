@@ -81,6 +81,10 @@ Alternatively, if the above doesn't work, you can try running the following in a
 
 Once that command is executed, the app should run.
 
+It's also possible that the DMG itself will refuse to open. If that happens, the same `xattr` command, but run on the DMG, should work:
+
+`sudo xattr -cr ~/Downloads/Bifrost-<VERSION>.dmg`.
+
 ## Android
 
 1. Download the release APK to your phone.
