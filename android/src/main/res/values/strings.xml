@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Samsung Firmware Downloader</string>
+    <string name="app_name">Bifrost</string>
 
     <string name="notification_progress_channel_name">Progress</string>
     <string name="notification_progress_text">Working…</string>
