@@ -1,6 +1,7 @@
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -167,6 +168,7 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                 )
             }
 
+            @OptIn(ExperimentalAnimationApi::class)
             AnimatedVisibility(
                 visible = model.historyItems.isNotEmpty(),
                 enter = fadeIn(),

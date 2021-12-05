@@ -1,6 +1,7 @@
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ScrollState
@@ -54,6 +55,7 @@ expect object PlatformDownloadView {
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
+@OptIn(ExperimentalAnimationApi::class)
 fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
     val canCheckVersion = !model.manual && model.model.isNotBlank()
             && model.region.isNotBlank() && model.job == null

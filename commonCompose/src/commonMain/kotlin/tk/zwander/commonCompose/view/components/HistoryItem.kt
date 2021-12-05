@@ -1,6 +1,7 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -118,6 +119,7 @@ fun HistoryItem(
                                 "Changelog"
                             ) { changelogExpanded = it }
 
+                            @OptIn(ExperimentalAnimationApi::class)
                             AnimatedVisibility(
                                 visible = changelogExpanded
                             ) {
