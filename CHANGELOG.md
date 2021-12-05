@@ -1,3 +1,7 @@
+# 1.0.1
+- Fix macOS package name.
+- Update file names.
+
 # 1.0.0
 - Rename to Bifrost.
 - Update icon and colors.
