@@ -37,14 +37,14 @@ jobs:
         path: ${{ github.workspace }}/desktop/build/compose/logs/
     - name: Check Output Exists
       run: ls -laR ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/
-#    - name: Import Certs
-#      uses: figleafteam/import-codesign-certs@v2
-#      id: importcerts
-#      with:
-#        p12-file-base64: ${{ secrets.MACOS_CERTIFICATE }}
-#        p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-#        keychain-name: build
-#        keychain-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+    - name: Import Certs
+      uses: figleafteam/import-codesign-certs@v2
+      id: importcerts
+      with:
+        p12-file-base64: ${{ secrets.MACOS_CERTIFICATE }}
+        p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+        keychain-name: build
+        keychain-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
     - name: Sign Executable
       continue-on-error: true
       env:
