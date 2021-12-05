@@ -3,16 +3,16 @@ Manual firmware downloads and downloading from the firmware history feature have
 
 If you know a workaround, please follow up on [this issue](https://github.com/zacharee/SamloaderKotlin/issues/10).
 
-# Samsung Firmware Downloader
+# Bifrost - Samsung Firmware Downloader
 This is yet another firmware downloader for Samsung devices, but it has some special features.
 
-For one, it's cross-platform. Samsung Firmware Downloader runs on Windows, Linux, macOS, and even Android! 
+For one, it's cross-platform. Bifrost runs on Windows, Linux, macOS, and even Android! 
 
-Samsung Firmware Downloader is also a graphical program, with a shared UI across all supported platforms.
+Bifrost is also a graphical program, with a shared UI across all supported platforms.
 
-Most of the functionality in Samsung Firmware Downloader is based on [Samloader](https://github.com/nlscc/samloader). The Python code has been converted to Kotlin and tweaked to take advantage of some of Kotlin's features.
+Most of the functionality in Bifrost is based on [Samloader](https://github.com/nlscc/samloader). The Python code has been converted to Kotlin and tweaked to take advantage of some of Kotlin's features.
 
-Samsung Firmware Downloader uses Jetpack Compose, JetBrains Compose for Desktop, and Kotlin Multiplatform to create a shared codebase for all supported platforms.
+Bifrost uses Jetpack Compose, JetBrains Compose for Desktop, and Kotlin Multiplatform to create a shared codebase for all supported platforms.
 
 # Download
 Binaries are available for 64-bit versions Windows, Linux, macOS, and Android. JetBrains Compose can't currently build for 32-bit operating systems.
@@ -57,27 +57,27 @@ Run the `package` Gradle task.
 
 ## Windows
 
-1. Extract the release ZIP for Windows and go through the folders until you find "Samsung Firmware Downloader.exe".
+1. Extract the release ZIP for Windows and go through the folders until you find "Bifrost.exe".
 2. Launch the EXE. If it fails, launch as Administrator.
 
 ## Linux
 
-1. Extract the release ZIP for Linux and go through the folders until you find the "Samsung Firmware Downloader".
+1. Extract the release ZIP for Linux and go through the folders until you find "Bifrost".
 2. Open a terminal in this location.
-3. Enter `chmod +x Samsung\ Firmware\ Downloader`.
-4. Enter `./Samsung\ Firmware\ Downloader`.
+3. Enter `chmod +x Bifrost`.
+4. Enter `./Bifrost`.
 
 ## macOS
 
 1. Extract the release ZIP and open the DMG.
-2. Move "Samsung Firmware Downloader.app" to the Applications folder.
+2. Move "Bifrost.app" to the Applications folder.
 3. Launch the app.
 
 There may be a security error when launching the app. If there is, follow the steps outlined [here](https://github.com/hashicorp/terraform/issues/23033#issuecomment-542302933).
 
 Alternatively, if the above doesn't work, you can try running the following in a Terminal (requires root permissions):
 
-`sudo xattr -cr /Applications/Samsung\ Firmware\ Downloader.app`.
+`sudo xattr -cr /Applications/Bifrost.app`.
 
 Once that command is executed, the app should run.
 
@@ -91,10 +91,16 @@ Once that command is executed, the app should run.
 ## Desktop:
 
 ![Blank Desktop Downloader](/screenshots/DesktopDownloadViewBlank.png)
-![Blank Desktop Decrypter](/screenshots/DesktopDecryptViewBlank.png)
+![Blank Desktop Decrypter](/screenshots/DesktopDecrypterViewBlank.png)
+![Blank Desktop History](/screenshots/DesktopHistoryViewBlank.png)
 ![Desktop Download Progress](/screenshots/DesktopDownloadViewProgress.png)
+![Desktop Decrypter Progress](/screenshots/DesktopDecrypterViewProgress.png)
+![Desktop History Populated](/screenshots/DesktopHistoryViewPopulated.png)
 
 ## Mobile:
-![Blank Android Downloader](/screenshots/AndroidDownloadViewBlank.jpg)
-![Blank Android Decrypter](/screenshots/AndroidDecryptViewBlank.jpg)
-![Android Download Progress](/screenshots/AndroidDownloadViewProgress.jpg)
+![Blank Android Downloader](/screenshots/AndroidDownloaderBlank.png)
+![Blank Android Decrypter](/screenshots/AndroidDecrypterBlank.png)
+![Blank Android History](/screenshots/AndroidHistoryBlank.png)
+![Android Download Progress](/screenshots/AndroidDownloaderProgress.png)
+![Android Decrypter Progress](/screenshots/AndroidDecrypterProgress.png)
+![Android History Populated](/screenshots/AndroidHistoryPopulated.png)
