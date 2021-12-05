@@ -1,3 +1,25 @@
+# 1.0.0
+- Rename to Bifrost.
+- Update icon and colors.
+- Fix up about dialog for macOS.
+
+# 0.5.3
+- Update the Windowing API.
+- Update Kotlin to 1.5.31.
+- Update Compose to 1.0.0.
+- Fix some crashes on Android 12.
+- Remove reliance on manual DPScale.
+- Fix dark mode for macOS.
+- Add an about dialog for macOS.
+- Fix History View.
+- Code cleanup.
+- Create an experimental browser version (likely never will be live).
+
+# 0.5.2
+- Update dependencies.
+- Fix some crashes.
+- Properly handle changelogs in other languages.
+
 # 0.5.1
 - Update dependencies.
 - Move from SamMobile to OdinRom for history tab.
