@@ -55,8 +55,8 @@ jobs:
         echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12 ;
         security default-keychain -s $KEYCHAIN_NAME ;
         security unlock-keychain -p $KEYCHAIN_PASS $KEYCHAIN_NAME ;
-        security import certificate.p12 -k $KEYCHAIN_NAME -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign ;
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD $KEYCHAIN_NAME ;
+        security import certificate.p12 -k $KEYCHAIN_NAME -P $KEYCHAIN_PASS -T /usr/bin/codesign ;
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $KEYCHAIN_PASS $KEYCHAIN_NAME ;
         security find-identity ;
         /usr/bin/codesign -fs "Zachary Wander Codesign 2" "$(ls $WORKSPACE//desktop/build/compose/binaries/main/dmg/Bifrost-*.dmg)"
     - name: Create Release ZIP
