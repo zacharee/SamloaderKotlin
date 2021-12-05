@@ -37,6 +37,10 @@ jobs:
         path: ${{ github.workspace }}/desktop/build/compose/logs/
     - name: Check Output Exists
       run: ls -laR ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/
+    - name: Make Sure Keychain Doesn\'t Exist
+      continue-on-error: true
+      run:
+        security delete-keychain build.keychain
     - name: Unlock Keychain
       continue-on-error: true
       env:
