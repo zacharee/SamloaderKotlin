@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="desktop-jvm-1.0.2">
+    <output-path>$PROJECT_DIR$/desktop/build/libs</output-path>
+    <root id="archive" name="desktop-jvm-1.0.2.jar">
+      <element id="module-output" name="SamloaderKotlin.desktop.jvmMain" />
+    </root>
+  </artifact>
+</component>
