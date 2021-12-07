@@ -18,8 +18,12 @@ fun main() {
     application {
         var aboutState by remember { mutableStateOf(false) }
 
-        Desktop.getDesktop().setAboutHandler {
-            aboutState = true
+        Desktop.getDesktop().apply {
+            if (isSupported(Desktop.Action.APP_ABOUT)) {
+                setAboutHandler {
+                    aboutState = true
+                }
+            }
         }
 
         Window(
