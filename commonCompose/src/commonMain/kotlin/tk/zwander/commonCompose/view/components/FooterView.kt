@@ -6,7 +6,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -25,112 +25,135 @@ import tk.zwander.commonCompose.util.vectorResource
 fun FooterView(
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth()
-            .padding(8.dp)
-    ) {
-        Column {
-            val copyrightAnnotated = buildAnnotatedString {
-                pushStyle(
-                    SpanStyle(
-                        color = LocalContentColor.current,
-                        fontSize = 16.sp
-                    )
-                )
-                append("v${GradleConfig.versionName} \u00A9 ")
-                pushStyle(
-                    SpanStyle(
-                        color = MaterialTheme.colors.primary,
-                        textDecoration = TextDecoration.Underline
-                    )
-                )
-                pushStringAnnotation("WebsiteLink", "https://zwander.dev")
-                append("Zachary Wander")
-                pop()
-            }
-
-            val samloaderAnnotated = buildAnnotatedString {
-                pushStyle(
-                    SpanStyle(
-                        color = LocalContentColor.current,
-                        fontSize = 16.sp
-                    )
-                )
-                append("Based on ")
-                pushStyle(
-                    SpanStyle(
-                        color = MaterialTheme.colors.primary,
-                        textDecoration = TextDecoration.Underline
-                    )
-                )
-                pushStringAnnotation("SamloaderLink", "https://github.com/nlscc/samloader")
-                append("Samloader")
-                pop()
-            }
-
-            ClickableText(
-                text = copyrightAnnotated,
-                onClick = {
-                    copyrightAnnotated.getStringAnnotations("WebsiteLink", it, it)
-                        .firstOrNull()?.let { item ->
-                            UrlHandler.launchUrl(item.item)
-                        }
-                }
-            )
-            Spacer(Modifier.height(4.dp))
-            ClickableText(
-                text = samloaderAnnotated,
-                onClick = {
-                    samloaderAnnotated.getStringAnnotations("SamloaderLink", it, it)
-                        .firstOrNull()?.let { item ->
-                            UrlHandler.launchUrl(item.item)
-                        }
-                }
-            )
-        }
-
-        Spacer(Modifier.weight(1f))
+    Box {
+        var showingSupportersDialog by remember { mutableStateOf(false) }
 
         Row(
-            modifier = Modifier.align(Alignment.Bottom)
+            modifier = modifier.fillMaxWidth()
+                .padding(8.dp)
         ) {
+            Column {
+                val copyrightAnnotated = buildAnnotatedString {
+                    pushStyle(
+                        SpanStyle(
+                            color = LocalContentColor.current,
+                            fontSize = 16.sp
+                        )
+                    )
+                    append("v${GradleConfig.versionName} \u00A9 ")
+                    pushStyle(
+                        SpanStyle(
+                            color = MaterialTheme.colors.primary,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    )
+                    pushStringAnnotation("WebsiteLink", "https://zwander.dev")
+                    append("Zachary Wander")
+                    pop()
+                }
+
+                val samloaderAnnotated = buildAnnotatedString {
+                    pushStyle(
+                        SpanStyle(
+                            color = LocalContentColor.current,
+                            fontSize = 16.sp
+                        )
+                    )
+                    append("Based on ")
+                    pushStyle(
+                        SpanStyle(
+                            color = MaterialTheme.colors.primary,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    )
+                    pushStringAnnotation("SamloaderLink", "https://github.com/nlscc/samloader")
+                    append("Samloader")
+                    pop()
+                }
+
+                ClickableText(
+                    text = copyrightAnnotated,
+                    onClick = {
+                        copyrightAnnotated.getStringAnnotations("WebsiteLink", it, it)
+                            .firstOrNull()?.let { item ->
+                                UrlHandler.launchUrl(item.item)
+                            }
+                    }
+                )
+                Spacer(Modifier.height(4.dp))
+                ClickableText(
+                    text = samloaderAnnotated,
+                    onClick = {
+                        samloaderAnnotated.getStringAnnotations("SamloaderLink", it, it)
+                            .firstOrNull()?.let { item ->
+                                UrlHandler.launchUrl(item.item)
+                            }
+                    }
+                )
+            }
+
             Spacer(Modifier.weight(1f))
 
-            IconButton(
-                onClick = {
-                    UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
+            Row(
+                modifier = Modifier.align(Alignment.Bottom)
+            ) {
+                Spacer(Modifier.weight(1f))
+
+                IconButton(
+                    onClick = {
+                        showingSupportersDialog = true
+                    }
+                ) {
+                    Icon(
+                        vectorResource("heart.xml"), "Supporters",
+                        modifier = Modifier.padding(8.dp)
+                    )
                 }
-            ) {
-                Icon(
-                    vectorResource("github.xml"), "GitHub",
-                    modifier = Modifier.padding(8.dp)
-                )
+
+                Spacer(Modifier.width(8.dp))
+
+                IconButton(
+                    onClick = {
+                        UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
+                    }
+                ) {
+                    Icon(
+                        vectorResource("github.xml"), "GitHub",
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+
+                Spacer(Modifier.width(8.dp))
+
+                IconButton(
+                    onClick = {
+                        UrlHandler.launchUrl("https://twitter.com/wander1236")
+                    },
+                ) {
+                    Icon(
+                        vectorResource("twitter.xml"), "Twitter",
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+
+                Spacer(Modifier.width(8.dp))
+
+                IconButton(
+                    onClick = {
+                        UrlHandler.launchUrl("https://patreon.com/zacharywander")
+                    },
+                ) {
+                    Icon(
+                        vectorResource("patreon.xml"), "Patreon",
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
             }
+        }
 
-            Spacer(Modifier.width(8.dp))
-
-            IconButton(
-                onClick = {
-                    UrlHandler.launchUrl("https://twitter.com/wander1236")
-                },
-            ) {
-                Icon(
-                    vectorResource("twitter.xml"), "Twitter",
-                    modifier = Modifier.padding(8.dp)
-                )
-            }
-
-            Spacer(Modifier.width(8.dp))
-
-            IconButton(
-                onClick = {
-                    UrlHandler.launchUrl("https://patreon.com/zacharywander")
-                },
-            ) {
-                Icon(
-                    vectorResource("patreon.xml"), "Patreon",
-                    modifier = Modifier.padding(8.dp)
-                )
+        if (showingSupportersDialog) {
+            PatreonSupportersDialog {
+                showingSupportersDialog = false
             }
         }
     }

@@ -22,7 +22,7 @@ fun CustomMaterialTheme(block: @Composable()() -> Unit) {
             primaryVariant = Color(primaryVariant.toLong(16)),
             secondary = Color(secondary.toLong(16)),
             secondaryVariant = Color(secondaryVariant.toLong(16)),
-            background = Color(background.toLong(16))
+            background = Color(background.toLong(16)),
         ),
         shapes = Shapes(
             small = RoundedCornerShape(8.dp),

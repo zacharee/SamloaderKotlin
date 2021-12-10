@@ -9,6 +9,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("com.github.gmazzo.buildconfig") version "3.0.3"
+    kotlin("plugin.serialization") version "1.5.31"
 }
 
 group = "tk.zwander"
@@ -59,11 +60,14 @@ kotlin {
                 api("com.soywiz.korlibs.klock:klock:2.4.8")
                 api("co.touchlab:stately-common:1.2.0-nmm")
                 api("co.touchlab:stately-isolate:1.2.0-nmm")
-                api("io.ktor:ktor-client-core:1.6.6")
-                api("io.ktor:ktor-client-auth:1.6.6")
+                api("io.ktor:ktor-client-core:1.6.5")
+                api("io.ktor:ktor-client-auth:1.6.5")
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.10.0")
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
+                api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31")
+                api("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
             }
         }
 
@@ -71,7 +75,7 @@ kotlin {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 api("org.jsoup:jsoup:1.14.3")
-                api("io.ktor:ktor-client-cio:1.6.6")
+                api("io.ktor:ktor-client-cio:1.6.5")
             }
         }
 
@@ -84,7 +88,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.4.0")
                 api("androidx.core:core-ktx:1.7.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
-                api("io.ktor:ktor-client-cio:1.6.6")
+                api("io.ktor:ktor-client-cio:1.6.5")
             }
         }
 
@@ -92,7 +96,7 @@ kotlin {
             dependencies {
                 api(compose.web.core)
 
-                api("io.ktor:ktor-client-js:1.6.6")
+                api("io.ktor:ktor-client-js:1.6.5")
 
                 api("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.258-kotlin-1.5.31")
                 api("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.258-kotlin-1.5.31")
