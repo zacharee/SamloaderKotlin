@@ -81,7 +81,7 @@ fun main() {
                             }
                         )
 
-//                        Divider()
+                        Separator()
 
                         Item(
                             text = "GitHub",
