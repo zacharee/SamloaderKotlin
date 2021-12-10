@@ -1,3 +1,12 @@
+# 1.0.3
+- Implement some menu bar items for macOS.
+- Add a Patreon Supporters dialog.
+- Fix an issue where making HTTP requests would indefinitely hang.
+- Clean up code.
+
+# 1.0.2
+- Fix a crash on Linux and Windows caused by the About dialog.
+
 # 1.0.1
 - Fix macOS package name.
 - Update file names.
