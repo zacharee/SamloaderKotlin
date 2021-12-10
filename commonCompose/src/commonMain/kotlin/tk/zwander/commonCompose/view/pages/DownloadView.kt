@@ -49,6 +49,137 @@ expect object PlatformDownloadView {
     fun onProgress(status: String, current: Long, max: Long)
 }
 
+@OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
+private suspend fun onDownload(model: DownloadModel, client: FusClient) {
+    PlatformDownloadView.onStart()
+    model.statusText = "Downloading"
+
+    val (info, error, output) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
+
+    if (error != null) {
+        error.printStackTrace()
+        downloadModel.endJob("${error.message ?: "Error"}\n\n${output}")
+    } else {
+        val (path, fileName, size, crc32, v4Key) = info!!
+        val request = Request.createBinaryInit(fileName, client.getNonce())
+
+        client.makeReq(FusClient.Request.BINARY_INIT, request)
+
+        val fullFileName = fileName.replace(".zip",
+            "_${model.fw.replace("/", "_")}_${model.region}.zip")
+
+        PlatformDownloadView.getInput(fullFileName) { info ->
+            if (info != null) {
+                val (response, md5) = client.downloadFile(
+                    path + fileName,
+                    info.downloadFile.getLength()
+                )
+
+                Downloader.download(
+                    response,
+                    size,
+                    info.downloadFile.openOutputStream(true),
+                    info.downloadFile.getLength()
+                ) { current, max, bps ->
+                    model.progress = current to max
+                    model.speed = bps
+
+                    PlatformDownloadView.onProgress("Downloading", current, max)
+                }
+
+                model.speed = 0L
+
+                if (crc32 != null) {
+                    model.statusText = "Checking CRC"
+                    val result = CryptUtils.checkCrc32(
+                        info.downloadFile.openInputStream(),
+                        size,
+                        crc32
+                    ) { current, max, bps ->
+                        model.progress = current to max
+                        model.speed = bps
+
+                        PlatformDownloadView.onProgress(
+                            "Checking CRC32",
+                            current,
+                            max
+                        )
+                    }
+
+                    if (!result) {
+                        model.endJob("CRC check failed. Please delete the file and download again.")
+                        return@getInput
+                    }
+                }
+
+                if (md5 != null) {
+                    model.statusText = "Checking MD5"
+                    model.progress = 1L to 2L
+
+                    PlatformDownloadView.onProgress("Checking MD5", 0, 1)
+
+                    val result = withContext(Dispatchers.Default) {
+                        CryptUtils.checkMD5(
+                            md5,
+                            info.downloadFile.openInputStream()
+                        )
+                    }
+
+                    if (!result) {
+                        model.endJob("MD5 check failed. Please delete the file and download again.")
+                        return@getInput
+                    }
+                }
+
+                model.statusText = "Decrypting Firmware"
+
+                val key =
+                    if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
+                        model.fw,
+                        model.model,
+                        model.region
+                    ) else {
+                        v4Key ?: CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+                    }
+
+                CryptUtils.decryptProgress(
+                    info.downloadFile.openInputStream(),
+                    info.decryptFile.openOutputStream(),
+                    key,
+                    size
+                ) { current, max, bps ->
+                    model.progress = current to max
+                    model.speed = bps
+
+                    PlatformDownloadView.onProgress("Decrypting", current, max)
+                }
+
+                model.endJob("Done")
+            } else {
+                model.endJob("")
+            }
+        }
+    }
+
+    PlatformDownloadView.onFinish()
+}
+
+private suspend fun onFetch(model: DownloadModel) {
+    val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model, model.region)
+
+    if (error != null) {
+        model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${error.message}\n\n$output")
+        return
+    }
+
+    model.changelog = ChangelogHandler.getChangelog(model.model, model.region, fw.split("/")[0])
+
+    model.fw = fw
+    model.osCode = os
+
+    model.endJob("")
+}
+
 /**
  * The Downloader View.
  * @param model the Download model.
@@ -80,117 +211,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             HybridButton(
                 onClick = {
                     model.job = model.scope.launch {
-                        PlatformDownloadView.onStart()
-                        model.statusText = "Downloading"
-
-                        val (info, error, output) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
-
-                        if (error != null) {
-                            error.printStackTrace()
-                            downloadModel.endJob("${error.message ?: "Error"}\n\n${output}")
-                        } else {
-                            val (path, fileName, size, crc32, v4Key) = info!!
-                            val request = Request.createBinaryInit(fileName, client.getNonce())
-
-                            client.makeReq(FusClient.Request.BINARY_INIT, request)
-
-                            val fullFileName = fileName.replace(".zip",
-                                "_${model.fw.replace("/", "_")}_${model.region}.zip")
-
-                            PlatformDownloadView.getInput(fullFileName) { info ->
-                                if (info != null) {
-                                    val (response, md5) = client.downloadFile(
-                                        path + fileName,
-                                        info.downloadFile.getLength()
-                                    )
-
-                                    Downloader.download(
-                                        response,
-                                        size,
-                                        info.downloadFile.openOutputStream(true),
-                                        info.downloadFile.getLength()
-                                    ) { current, max, bps ->
-                                        model.progress = current to max
-                                        model.speed = bps
-
-                                        PlatformDownloadView.onProgress("Downloading", current, max)
-                                    }
-
-                                    model.speed = 0L
-
-                                    if (crc32 != null) {
-                                        model.statusText = "Checking CRC"
-                                        val result = CryptUtils.checkCrc32(
-                                            info.downloadFile.openInputStream(),
-                                            size,
-                                            crc32
-                                        ) { current, max, bps ->
-                                            model.progress = current to max
-                                            model.speed = bps
-
-                                            PlatformDownloadView.onProgress(
-                                                "Checking CRC32",
-                                                current,
-                                                max
-                                            )
-                                        }
-
-                                        if (!result) {
-                                            model.endJob("CRC check failed. Please delete the file and download again.")
-                                            return@getInput
-                                        }
-                                    }
-
-                                    if (md5 != null) {
-                                        model.statusText = "Checking MD5"
-                                        model.progress = 1L to 2L
-
-                                        PlatformDownloadView.onProgress("Checking MD5", 0, 1)
-
-                                        val result = withContext(Dispatchers.Default) {
-                                            CryptUtils.checkMD5(
-                                                md5,
-                                                info.downloadFile.openInputStream()
-                                            )
-                                        }
-
-                                        if (!result) {
-                                            model.endJob("MD5 check failed. Please delete the file and download again.")
-                                            return@getInput
-                                        }
-                                    }
-
-                                    model.statusText = "Decrypting Firmware"
-
-                                    val key =
-                                        if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
-                                            model.fw,
-                                            model.model,
-                                            model.region
-                                        ) else {
-                                            v4Key ?: CryptUtils.getV4Key(client, model.fw, model.model, model.region)
-                                        }
-
-                                    CryptUtils.decryptProgress(
-                                        info.downloadFile.openInputStream(),
-                                        info.decryptFile.openOutputStream(),
-                                        key,
-                                        size
-                                    ) { current, max, bps ->
-                                        model.progress = current to max
-                                        model.speed = bps
-
-                                        PlatformDownloadView.onProgress("Decrypting", current, max)
-                                    }
-
-                                    model.endJob("Done")
-                                } else {
-                                    model.endJob("")
-                                }
-                            }
-                        }
-
-                        PlatformDownloadView.onFinish()
+                        onDownload(model, client)
                     }
                 },
                 enabled = canDownload,
@@ -205,19 +226,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             HybridButton(
                 onClick = {
                     model.job = model.scope.launch {
-                        val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model, model.region)
-
-                        if (error != null) {
-                            model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${error.message}\n\n$output")
-                            return@launch
-                        }
-
-                        model.changelog = ChangelogHandler.getChangelog(model.model, model.region, fw.split("/")[0])
-
-                        model.fw = fw
-                        model.osCode = os
-
-                        model.endJob("")
+                        onFetch(model)
                     }
                 },
                 enabled = canCheckVersion,

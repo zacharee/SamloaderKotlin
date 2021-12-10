@@ -41,6 +41,33 @@ expect object PlatformHistoryView {
     suspend fun parseHistory(body: String): List<HistoryInfo>
 }
 
+private suspend fun onFetch(model: HistoryModel) {
+    val historyString = getFirmwareHistoryString(model.model, model.region)
+
+    if (historyString == null) {
+        model.endJob("Unable to retrieve firmware history. Make sure the model and region are correct.")
+    } else {
+        try {
+            val parsed = PlatformHistoryView.parseHistory(
+                historyString
+            )
+
+            model.changelogs = try {
+                ChangelogHandler.getChangelogs(model.model, model.region)
+            } catch (e: Exception) {
+                println("Error retrieving changelogs")
+                e.printStackTrace()
+                null
+            }
+            model.historyItems = parsed
+            model.endJob("")
+        } catch (e: Exception) {
+            e.printStackTrace()
+            model.endJob("Error retrieving firmware history. Make sure the model and region are correct.\nError: ${e.message}")
+        }
+    }
+}
+
 /**
  * The History View.
  * @param model the History model.
@@ -89,30 +116,7 @@ fun HistoryView(
                     model.historyItems = listOf()
 
                     model.job = model.scope.launch {
-                        val historyString = getFirmwareHistoryString(model.model, model.region)
-
-                        if (historyString == null) {
-                            model.endJob("Unable to retrieve firmware history. Make sure the model and region are correct.")
-                        } else {
-                            try {
-                                val parsed = PlatformHistoryView.parseHistory(
-                                    historyString
-                                )
-
-                                model.changelogs = try {
-                                    ChangelogHandler.getChangelogs(model.model, model.region)
-                                } catch (e: Exception) {
-                                    println("Error retrieving changelogs")
-                                    e.printStackTrace()
-                                    null
-                                }
-                                model.historyItems = parsed
-                                model.endJob("")
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                                model.endJob("Error retrieving firmware history. Make sure the model and region are correct.\nError: ${e.message}")
-                            }
-                        }
+                        onFetch(model)
                     }
                 },
                 enabled = canCheckHistory,

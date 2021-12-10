@@ -34,6 +34,49 @@ expect object PlatformDecryptView {
     fun onProgress(status: String, current: Long, max: Long)
 }
 
+@OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
+private suspend fun onDecrypt(model: DecryptModel) {
+    PlatformDecryptView.onStart()
+    val info = model.fileToDecrypt!!
+    val inputFile = info.encFile
+    val outputFile = info.decFile
+
+    val key = if (inputFile.getName().endsWith(".enc2")) CryptUtils.getV2Key(
+        model.fw,
+        model.model,
+        model.region
+    ) else {
+        CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+    }
+
+    CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
+        model.progress = current to max
+        model.speed = bps
+        PlatformDecryptView.onProgress("Decrypting", current, max)
+    }
+
+    PlatformDecryptView.onFinish()
+    model.endJob("Done")
+}
+
+private suspend fun onOpenFile(model: DecryptModel) {
+    PlatformDecryptView.getInput { info ->
+        if (info != null) {
+            if (!info.encFile.getName().endsWith(".enc2") && !info.encFile.getName().endsWith(
+                    ".enc4"
+                )
+            ) {
+                model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
+            } else {
+                model.endJob("")
+                model.fileToDecrypt = info
+            }
+        } else {
+            model.endJob("")
+        }
+    }
+}
+
 /**
  * The Decrypter View.
  * @param model the model for this View.
@@ -60,27 +103,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
             HybridButton(
                 onClick = {
                     model.job = model.scope.launch {
-                        PlatformDecryptView.onStart()
-                        val info = model.fileToDecrypt!!
-                        val inputFile = info.encFile
-                        val outputFile = info.decFile
-
-                        val key = if (inputFile.getName().endsWith(".enc2")) CryptUtils.getV2Key(
-                            model.fw,
-                            model.model,
-                            model.region
-                        ) else {
-                            CryptUtils.getV4Key(client, model.fw, model.model, model.region)
-                        }
-
-                        CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
-                            model.progress = current to max
-                            model.speed = bps
-                            PlatformDecryptView.onProgress("Decrypting", current, max)
-                        }
-
-                        PlatformDecryptView.onFinish()
-                        model.endJob("Done")
+                        onDecrypt(model)
                     }
                 },
                 enabled = canDecrypt,
@@ -93,21 +116,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
             HybridButton(
                 onClick = {
                     model.scope.launch {
-                        PlatformDecryptView.getInput { info ->
-                            if (info != null) {
-                                if (!info.encFile.getName().endsWith(".enc2") && !info.encFile.getName().endsWith(
-                                        ".enc4"
-                                    )
-                                ) {
-                                    model.endJob("Please select an encrypted firmware file ending in enc2 or enc4.")
-                                } else {
-                                    model.endJob("")
-                                    model.fileToDecrypt = info
-                                }
-                            } else {
-                                model.endJob("")
-                            }
-                        }
+                        onOpenFile(model)
                     }
                 },
                 enabled = canChangeOption,
