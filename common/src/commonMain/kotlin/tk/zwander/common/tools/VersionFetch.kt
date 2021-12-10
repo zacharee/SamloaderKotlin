@@ -1,10 +1,11 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.net.http.Http
-import com.soywiz.korio.net.http.HttpClient
 import com.soywiz.korio.serialization.xml.Xml
-import com.soywiz.korio.stream.readAll
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.utils.io.core.*
 import tk.zwander.common.data.FetchResult
+import tk.zwander.common.util.client
 import tk.zwander.common.util.generateProperUrl
 
 /**
@@ -18,14 +19,15 @@ object VersionFetch {
      * @return a Pair(FirmwareString, AndroidVersion).
      */
     suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = false): FetchResult.VersionFetchResult {
-        val client = HttpClient()
-        val response = client.request(
-            Http.Method.GET,
-            generateProperUrl(useProxy, "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml"),
-        )
+        val response = client.use {
+            it.get<String>(
+                urlString = generateProperUrl(useProxy, "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml")
+            ) {
+                userAgent("Kies2.0_FUS")
+            }
+        }
 
-        val responseString = response.content.readAll().decodeToString()
-        val responseXml = Xml(responseString)
+        val responseXml = Xml(response)
 
         if (responseXml.name == "Error") {
             val code = responseXml.child("Code")!!.text

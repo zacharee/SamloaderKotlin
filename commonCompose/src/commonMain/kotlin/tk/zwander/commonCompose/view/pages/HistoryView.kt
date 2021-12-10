@@ -49,7 +49,11 @@ expect object PlatformHistoryView {
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String, fw: String) -> Unit, onDecrypt: (model: String, region: String, fw: String) -> Unit) {
+fun HistoryView(
+    model: HistoryModel,
+    onDownload: (model: String, region: String, fw: String) -> Unit,
+    onDecrypt: (model: String, region: String, fw: String) -> Unit
+) {
     val canCheckHistory = model.model.isNotBlank()
             && model.region.isNotBlank() && model.job == null
 
@@ -85,33 +89,31 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
                     model.historyItems = listOf()
 
                     model.job = model.scope.launch {
-                          withContext(Dispatchers.Main) {
-                              val historyString = getFirmwareHistoryString(model.model, model.region)
+                        val historyString = getFirmwareHistoryString(model.model, model.region)
 
-                              if (historyString == null) {
-                                  model.endJob("Unable to retrieve firmware history. Make sure the model and region are correct.")
-                              } else {
-                                  try {
-                                      val parsed = PlatformHistoryView.parseHistory(
-                                          historyString
-                                      )
+                        if (historyString == null) {
+                            model.endJob("Unable to retrieve firmware history. Make sure the model and region are correct.")
+                        } else {
+                            try {
+                                val parsed = PlatformHistoryView.parseHistory(
+                                    historyString
+                                )
 
-                                      model.changelogs = try {
-                                          ChangelogHandler.getChangelogs(model.model, model.region)
-                                      } catch (e: Exception) {
-                                          println("Error retrieving changelogs")
-                                          e.printStackTrace()
-                                          null
-                                      }
-                                      model.historyItems = parsed
-                                      model.endJob("")
-                                  } catch (e: Exception) {
-                                      e.printStackTrace()
-                                      model.endJob("Error retrieving firmware history. Make sure the model and region are correct.\nError: ${e.message}")
-                                  }
-                              }
-                          }
-                      }
+                                model.changelogs = try {
+                                    ChangelogHandler.getChangelogs(model.model, model.region)
+                                } catch (e: Exception) {
+                                    println("Error retrieving changelogs")
+                                    e.printStackTrace()
+                                    null
+                                }
+                                model.historyItems = parsed
+                                model.endJob("")
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                model.endJob("Error retrieving firmware history. Make sure the model and region are correct.\nError: ${e.message}")
+                            }
+                        }
+                    }
                 },
                 enabled = canCheckHistory,
                 text = "Check History",
@@ -134,7 +136,7 @@ fun HistoryView(model: HistoryModel, onDownload: (model: String, region: String,
 
             HybridButton(
                 onClick = {
-                      model.endJob("")
+                    model.endJob("")
                 },
                 enabled = model.job != null,
                 text = "Cancel",

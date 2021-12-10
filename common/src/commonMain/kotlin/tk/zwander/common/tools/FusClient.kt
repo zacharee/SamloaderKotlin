@@ -1,22 +1,14 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.async.launch
-import com.soywiz.korio.async.runBlockingNoJs
 import com.soywiz.korio.net.http.Http
 import com.soywiz.korio.net.http.HttpClient
 import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.openAsync
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.features.*
-import io.ktor.client.features.auth.*
-import io.ktor.client.features.auth.providers.*
-import io.ktor.client.features.cookies.*
 import io.ktor.client.request.*
 import io.ktor.client.request.request
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
+import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.util.client
 import tk.zwander.common.util.generateProperUrl
@@ -94,15 +86,17 @@ class FusClient(
 
         val authV = getAuthV()
 
-        val response = client.request<HttpResponse>(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net:443/${request.value}")) {
-            method = HttpMethod.Post
-            headers {
-                append("Authorization", authV)
-                append("User-Agent", "Kies2.0_FUS")
-                append("Cookie", "JSESSIONID=${sessId}")
-                append("Set-Cookie", "JSESSIONID=${sessId}")
+        val response = client.use {
+            it.request<HttpResponse>(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net:443/${request.value}")) {
+                method = HttpMethod.Post
+                headers {
+                    append("Authorization", authV)
+                    append("User-Agent", "Kies2.0_FUS")
+                    append("Cookie", "JSESSIONID=${sessId}")
+                    append("Set-Cookie", "JSESSIONID=${sessId}")
+                }
+                body = data
             }
-            body = data
         }
 
         if (response.headers["NONCE"] != null || response.headers["nonce"] != null) {
@@ -119,8 +113,6 @@ class FusClient(
                 ?.replace("JSESSIONID=", "")
                 ?.replace(Regex(";.*$"), "") ?: sessId
         }
-
-        client.close()
 
         return response.readText()
     }

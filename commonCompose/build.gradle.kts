@@ -42,7 +42,6 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.ui)
-                api("com.github.zacharee:PatreonSupportersRetrieval:6a923f211c")
             }
         }
 

@@ -52,7 +52,6 @@ kotlin {
 
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
-//                api("org.jetbrains.kotlinx:kotlinx-io:0.1.16")
                 api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
                 api("com.soywiz.korlibs.krypto:krypto:2.4.8")
@@ -64,16 +63,15 @@ kotlin {
                 api("io.ktor:ktor-client-auth:1.6.5")
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.10.0")
-                api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
-                api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31")
-                api("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
+//                api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
+//                api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31")
+//                api("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
             }
         }
 
         named("desktopMain") {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 api("org.jsoup:jsoup:1.14.3")
                 api("io.ktor:ktor-client-cio:1.6.5")
             }
@@ -81,7 +79,6 @@ kotlin {
 
         named("androidMain") {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
                 api("org.jsoup:jsoup:1.14.3")
 

@@ -2,8 +2,6 @@ package tk.zwander.common.util
 
 import co.touchlab.stately.isolate.IsolateState
 import com.soywiz.klock.DateTime
-import io.ktor.util.date.*
-import kotlinx.datetime.Clock
 
 class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1_000_000_000) {
     data class ChunkData(

@@ -3,8 +3,10 @@ package tk.zwander.common.util
 import com.soywiz.korio.lang.format
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.client.statement.readText
 import io.ktor.http.*
 import io.ktor.util.*
+import io.ktor.utils.io.core.*
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.data.changelog.Changelogs
 
@@ -25,8 +27,10 @@ object ChangelogHandler {
     suspend fun getChangelogs(device: String, region: String, useProxy: Boolean = false): Changelogs? {
         val outerUrl = generateUrlForDeviceAndRegion(device, region, useProxy)
         val outerResponse = try {
-            client.get<HttpResponse> {
-                url(outerUrl)
+            client.use {
+                it.get<HttpResponse> {
+                    url(outerUrl)
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -41,8 +45,10 @@ object ChangelogHandler {
             return null
         }
 
-        val iframeResponse = client.get<HttpResponse> {
-            url(iframeUrl)
+        val iframeResponse = client.use {
+            it.get<HttpResponse> {
+                url(iframeUrl)
+            }
         }
 
         return if (iframeResponse.status.isSuccess()) {

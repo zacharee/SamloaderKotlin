@@ -59,7 +59,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
         ) {
             HybridButton(
                 onClick = {
-                    model.job = model.scope.launch(Dispatchers.Main) {
+                    model.job = model.scope.launch {
                         PlatformDecryptView.onStart()
                         val info = model.fileToDecrypt!!
                         val inputFile = info.encFile
