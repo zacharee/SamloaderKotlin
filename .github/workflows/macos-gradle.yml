@@ -33,9 +33,9 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-macos
+        key: ${{ runner.os }}-gradle-macos-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-macos
+          ${{ runner.os }}-gradle-macos-
     - name: Build with Gradle
       run: |
         ./gradlew packageDmg

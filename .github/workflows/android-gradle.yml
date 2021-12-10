@@ -33,9 +33,9 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-android
+        key: ${{ runner.os }}-gradle-android-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-android
+          ${{ runner.os }}-gradle-android-
     - name: Build with Gradle
       run: |
         ./gradlew :android:packageRelease

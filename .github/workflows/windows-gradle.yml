@@ -33,9 +33,9 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-windows
+        key: ${{ runner.os }}-gradle-windows-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
-          ${{ runner.os }}-gradle-windows
+          ${{ runner.os }}-gradle-windows-
     - name: Build with Gradle
       run: |
         ./gradlew createDistributable
