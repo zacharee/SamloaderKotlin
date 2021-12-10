@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -28,6 +27,15 @@ jobs:
         view_top: 1
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Cache Gradle
+      uses: actions/cache@v2
+      with:
+        path: |
+          %AppData%/.gradle/caches
+          %AppData%/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-windows-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-windows-
     - name: Build with Gradle
       run: ./gradlew createDistributable
     - name: Upload Logs
