@@ -31,13 +31,15 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
-          %AppData%/.gradle/caches
-          %AppData%/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-windows-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-windows
         restore-keys: |
-          ${{ runner.os }}-gradle-windows-
+          ${{ runner.os }}-gradle-windows
     - name: Build with Gradle
-      run: ./gradlew createDistributable
+      run: |
+        ./gradlew createDistributable
+        ./gradlew --stop
     - name: Upload Logs
       if: ${{ always() }}
       uses: actions/upload-artifact@v2

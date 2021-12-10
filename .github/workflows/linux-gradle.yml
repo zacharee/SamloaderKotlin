@@ -33,11 +33,13 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-linux-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: ${{ runner.os }}-gradle-linux
         restore-keys: |
-          ${{ runner.os }}-gradle-linux-
+          ${{ runner.os }}-gradle-linux
     - name: Build with Gradle
-      run: ./gradlew createDistributable
+      run: |
+        ./gradlew createDistributable
+        ./gradlew --stop
     - name: Upload Logs
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
