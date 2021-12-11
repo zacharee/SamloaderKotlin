@@ -17,7 +17,7 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 @OptIn(DangerousInternalIoApi::class, ExperimentalComposeUiApi::class)
 fun main() {
-    System.setProperty("apple.laf.useScreenMenuBar", "true");
+    System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", appName)
 

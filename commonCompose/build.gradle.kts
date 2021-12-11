@@ -19,7 +19,7 @@ kotlin.sourceSets.all {
 }
 
 kotlin {
-    android() {
+    android {
         compilations.forEach {
             it.kotlinOptions {
                 freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"

@@ -15,9 +15,7 @@ open external class IDBFactory {
     open fun databases(): List<Map<String, String>>
 }
 
-open external class IDBOpenDBRequest : IDBRequest {
-
-}
+open external class IDBOpenDBRequest : IDBRequest
 
 open external class IDBRequest : EventTarget {
     open val error: Exception
