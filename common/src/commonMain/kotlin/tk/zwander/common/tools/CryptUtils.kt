@@ -107,7 +107,7 @@ object CryptUtils {
      * @return an auth token based on the nonce.
      */
     fun getAuth(nonce: String): String {
-        val keyData = nonce.map { (it.toInt() % 16).toByte() }.toByteArray()
+        val keyData = nonce.map { (it.code % 16).toByte() }.toByteArray()
         val fKey = getFKey(keyData)
 
         return Base64.encode(aesEncrypt(nonce.toByteArray(), fKey))
@@ -204,7 +204,7 @@ object CryptUtils {
 
                             outf.write(decBlock, 0, decBlock.size)
                         }
-                    }.toLongNanoseconds()
+                    }.inWholeNanoseconds
 
                     if (len <= 0) break
 
@@ -257,7 +257,7 @@ object CryptUtils {
                         if (len > 0) {
                             crcVal = CRC32.update(crcVal, buffer, 0, len)
                         }
-                    }.toLongNanoseconds()
+                    }.inWholeNanoseconds
 
                     if (len <= 0) break
 

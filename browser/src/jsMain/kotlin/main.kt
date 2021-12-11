@@ -229,7 +229,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
         xhr.setRequestHeader("User-Agent", "Kies2.0_FUS")
         xhr.responseType = XMLHttpRequestResponseType.BLOB
 
-        xhr.onload = { event ->
+        xhr.onload = { _ ->
             val blob = xhr.response as Blob
             val md5 = xhr.getResponseHeader("Content-MD5")
 

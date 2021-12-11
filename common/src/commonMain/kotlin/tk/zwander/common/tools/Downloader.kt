@@ -47,7 +47,7 @@ object Downloader {
                             if (len > 0) {
                                 output.write(read, 0, len)
                             }
-                        }.toLongNanoseconds()
+                        }.inWholeNanoseconds
 
                         if (len <= 0) break
 

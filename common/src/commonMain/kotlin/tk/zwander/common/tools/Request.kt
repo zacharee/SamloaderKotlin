@@ -24,7 +24,7 @@ object Request {
             throw IllegalArgumentException("Input is too short")
         }
 
-        return nonce.map { input[it.toInt() and 0xf] }.joinToString("")
+        return nonce.map { input[it.code and 0xf] }.joinToString("")
     }
 
     /**

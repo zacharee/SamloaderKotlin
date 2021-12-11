@@ -35,7 +35,7 @@ kotlin {
     }
 
     sourceSets {
-        named("commonMain") {
+        val commonMain by getting {
             dependencies {
                 api(project(":common"))
                 api(compose.runtime)
@@ -45,13 +45,13 @@ kotlin {
             }
         }
 
-        named("androidMain") {
+        val androidMain by getting {
             dependencies {
                 api(project(":common"))
             }
         }
 
-        named("desktopMain") {
+        val desktopMain by getting {
             dependencies {
                 api(project(":common"))
             }

@@ -50,6 +50,7 @@ kotlin {
             dependencies {
                 api(compose.runtime)
 
+                api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
                 api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
@@ -63,7 +64,6 @@ kotlin {
                 api("io.ktor:ktor-client-auth:1.6.5")
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.10.0")
-//                api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31")
 //                api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31")
 //                api("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")

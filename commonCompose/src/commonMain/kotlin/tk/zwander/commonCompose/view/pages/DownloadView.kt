@@ -68,18 +68,18 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
         val fullFileName = fileName.replace(".zip",
             "_${model.fw.replace("/", "_")}_${model.region}.zip")
 
-        PlatformDownloadView.getInput(fullFileName) { info ->
-            if (info != null) {
+        PlatformDownloadView.getInput(fullFileName) { inputInfo ->
+            if (inputInfo != null) {
                 val (response, md5) = client.downloadFile(
                     path + fileName,
-                    info.downloadFile.getLength()
+                    inputInfo.downloadFile.getLength()
                 )
 
                 Downloader.download(
                     response,
                     size,
-                    info.downloadFile.openOutputStream(true),
-                    info.downloadFile.getLength()
+                    inputInfo.downloadFile.openOutputStream(true),
+                    inputInfo.downloadFile.getLength()
                 ) { current, max, bps ->
                     model.progress = current to max
                     model.speed = bps
@@ -92,7 +92,7 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                 if (crc32 != null) {
                     model.statusText = "Checking CRC"
                     val result = CryptUtils.checkCrc32(
-                        info.downloadFile.openInputStream(),
+                        inputInfo.downloadFile.openInputStream(),
                         size,
                         crc32
                     ) { current, max, bps ->
@@ -121,7 +121,7 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     val result = withContext(Dispatchers.Default) {
                         CryptUtils.checkMD5(
                             md5,
-                            info.downloadFile.openInputStream()
+                            inputInfo.downloadFile.openInputStream()
                         )
                     }
 
@@ -143,8 +143,8 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     }
 
                 CryptUtils.decryptProgress(
-                    info.downloadFile.openInputStream(),
-                    info.decryptFile.openOutputStream(),
+                    inputInfo.downloadFile.openInputStream(),
+                    inputInfo.decryptFile.openOutputStream(),
                     key,
                     size
                 ) { current, max, bps ->

@@ -38,7 +38,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
             OutlinedTextField(
                 value = model.model,
                 onValueChange = {
-                    model.model = it.toUpperCase().trim()
+                    model.model = it.uppercase().trim()
                     if ((model is DownloadModel && !model.manual)) {
                         model.fw = ""
                         model.osCode = ""
@@ -56,7 +56,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
             OutlinedTextField(
                 value = model.region,
                 onValueChange = {
-                    model.region = it.toUpperCase().trim()
+                    model.region = it.uppercase().trim()
                     if ((model is DownloadModel && !model.manual)) {
                         model.fw = ""
                         model.osCode = ""
@@ -102,7 +102,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
 
         OutlinedTextField(
             value = model.fw,
-            onValueChange = { model.fw = it.toUpperCase().trim() },
+            onValueChange = { model.fw = it.uppercase().trim() },
             label = { Text("Firmware (PDA/CSC/CP/AP)") },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmware,

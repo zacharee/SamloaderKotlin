@@ -27,12 +27,13 @@ val Int8Buffer.outputStream: AsyncOutputStream
         }
     }
 
+@Suppress("UNUSED_PARAMETER", "UNCHECKED_CAST_TO_EXTERNAL_INTERFACE")
 fun createWriteStream(fileName: String, fileSize: Long): WritableStream<Uint8Array> {
     return js("""
         var streamSaver = require('streamsaver');
         
         streamSaver.createWriteStream(fileName, { size: fileSize });
-    """)
+    """) as WritableStream<Uint8Array>
 }
 
 fun <W> WritableStreamDefaultWriter<W>.openAsync(transform: (chunk: ByteArray) -> W): AsyncOutputStream {
