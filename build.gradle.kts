@@ -1,4 +1,13 @@
+val versionCode by extra(16)
+val versionName by extra("1.0.3")
+
+val compileSdk by extra(31)
+val targetSdk by extra(31)
+val minSdk by extra(24)
+
 buildscript {
+    val kotlinVersion by rootProject.extra("1.5.31")
+
     repositories {
         google()
         mavenCentral()
@@ -12,18 +21,12 @@ buildscript {
     }
     dependencies {
         classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.android.tools.build:gradle:7.2.0-alpha05")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
     }
 }
-
-val versionCode by extra(16)
-val versionName by extra("1.0.3")
-
-val compileSdk by extra(31)
-val targetSdk by extra(31)
-val minSdk by extra(24)
 
 group = "tk.zwander"
 version = versionName

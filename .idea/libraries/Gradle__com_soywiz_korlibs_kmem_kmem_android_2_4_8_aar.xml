@@ -3,9 +3,10 @@
     <CLASSES>
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/15b9d804212c551995befd759a3aba09/transformed/kmem-debug/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a96927266616b7a83b7b7f10a6233bad/transformed/kmem-debug/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/29847807ffb03c159b70283fb89ee9f0/transformed/kmem-debug/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/29847807ffb03c159b70283fb89ee9f0/transformed/kmem-debug/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/29847807ffb03c159b70283fb89ee9f0/transformed/kmem-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e672f87c98d1f04bc6d4426d305e0e37/transformed/kmem-debug/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e672f87c98d1f04bc6d4426d305e0e37/transformed/kmem-debug/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e672f87c98d1f04bc6d4426d305e0e37/transformed/kmem-debug/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem-android/2.4.8/cc78ee0a50d576395e031bea9e7548c89f9cab61/kmem-android-2.4.8-javadoc.jar!/" />
