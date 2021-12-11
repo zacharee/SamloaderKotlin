@@ -4,23 +4,29 @@ buildscript {
         mavenCentral()
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
         maven {
-            url "https://jitpack.io"
+            url = uri("https://jitpack.io")
         }
         maven {
             url = uri("https://plugins.gradle.org/m2/")
         }
     }
     dependencies {
-        classpath 'org.jetbrains.compose:compose-gradle-plugin:1.0.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
-        //Above 7.1.0-alpha12 breaks syncing on macOS
-        classpath 'com.android.tools.build:gradle:7.2.0-alpha05'
-        classpath 'com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0'
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
+        classpath("com.android.tools.build:gradle:7.2.0-alpha05")
+        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
     }
 }
 
+val versionCode by extra(16)
+val versionName by extra("1.0.3")
+
+val compileSdk by extra(31)
+val targetSdk by extra(31)
+val minSdk by extra(24)
+
 group = "tk.zwander"
-version = properties['versionName']
+version = versionName
 
 allprojects {
     repositories {
@@ -29,7 +35,7 @@ allprojects {
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap/") }
         maven {
-            url "https://jitpack.io"
+            url = uri("https://jitpack.io")
         }
         maven {
             url = uri("https://plugins.gradle.org/m2/")

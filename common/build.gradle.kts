@@ -24,7 +24,7 @@ plugins {
 }
 
 group = "tk.zwander"
-version = project.properties["versionName"].toString()
+version = rootProject.extra["versionName"].toString()
 
 kotlin.sourceSets.all {
     languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
@@ -115,11 +115,15 @@ kotlin {
 }
 
 android {
-    compileSdk = 31
+    val compileSdk: Int by rootProject.extra
+    this.compileSdk = compileSdk
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 31
+        val minSdk: Int by rootProject.extra
+        val targetSdk: Int by rootProject.extra
+
+        this.minSdk = minSdk
+        this.targetSdk = targetSdk
     }
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -132,8 +136,8 @@ buildkonfig {
     exposeObjectWithName = objectName
 
     defaultConfigs {
-        buildConfigField(STRING, "versionName", "${project.properties["versionName"]}")
-        buildConfigField(STRING, "versionCode", "${project.properties["versionCode"]}")
+        buildConfigField(STRING, "versionName", "${rootProject.extra["versionName"]}")
+        buildConfigField(STRING, "versionCode", "${rootProject.extra["versionCode"]}")
     }
 }
 

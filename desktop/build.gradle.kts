@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "tk.zwander"
-version = project.properties["versionName"].toString()
+version = rootProject.extra["versionName"].toString()
 
 kotlin {
     jvm {
@@ -52,14 +52,14 @@ compose.desktop {
             macOS {
                 bundleID = "tk.zwander.samsungfirmwaredownloader"
                 iconFile.set(project.file("src/jvmMain/resources/icon.icns"))
-                packageVersion = "1." + project.properties["versionCode"]
+                packageVersion = "1." + rootProject.extra["versionCode"]
                 targetFormats(TargetFormat.Dmg)
                 packageName = "Bifrost"
             }
 
             linux {
                 iconFile.set(project.file("src/jvmMain/resources/icon.png"))
-                packageVersion = project.properties["versionCode"].toString()
+                packageVersion = rootProject.extra["versionCode"].toString()
                 targetFormats(TargetFormat.Deb, TargetFormat.AppImage)
             }
 

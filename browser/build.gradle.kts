@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "tk.zwander"
-version = project.properties["versionName"].toString()
+version = rootProject.extra["versionName"].toString()
 
 kotlin {
     js(IR) {
