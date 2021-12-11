@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: io.fluidsonic.locale:fluid-locale-jvm:0.10.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.locale/fluid-locale-jvm/0.10.0/8dc345626e329a9dc22769055c969ad2ead1cb02/fluid-locale-jvm-0.10.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.locale/fluid-locale-jvm/0.10.0/15838ac75419de8ee4d6d748dbcc3be599945b92/fluid-locale-jvm-0.10.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.locale/fluid-locale-jvm/0.10.0/1de9bc6b6a9dcd17ec41f5e30e19fdb7872c3b48/fluid-locale-jvm-0.10.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

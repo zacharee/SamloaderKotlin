@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.runtime:runtime-desktop:1.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-desktop/1.0.0/938c6f67363ebfbe63308271ef863d8a23e98f18/runtime-desktop-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-desktop/1.0.0/33e8165679a98f8845d343d54aae582aaa7969d5/runtime-desktop-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.krypto:krypto-js:klib:2.4.8" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-js/2.4.8/c280022a73b6fcf02e62c47a209447c1f3fbaec6/krypto-js-2.4.8.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-js/2.4.8/571b7b3c78773fe3e8404758dac50dda41b93f3e/krypto-js-2.4.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

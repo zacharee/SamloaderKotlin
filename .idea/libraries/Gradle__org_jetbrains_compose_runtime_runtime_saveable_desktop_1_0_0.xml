@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.runtime:runtime-saveable-desktop:1.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-saveable-desktop/1.0.0/22c59b9a8aaadbe46234bad251cfe174d1aa6a87/runtime-saveable-desktop-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-saveable-desktop/1.0.0/95c42e95f0f859d1209ebd43eab04ffda1b0727c/runtime-saveable-desktop-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

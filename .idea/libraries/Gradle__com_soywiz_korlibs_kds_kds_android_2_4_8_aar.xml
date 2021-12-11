@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.kds:kds-android:2.4.8@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/27ca008a639b4d3059975c99e9dc7f65/transformed/kds-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1f5927835ba2d9cda007cd9b0379397f/transformed/kds-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1f5927835ba2d9cda007cd9b0379397f/transformed/kds-debug/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/1f5927835ba2d9cda007cd9b0379397f/transformed/kds-debug/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds-android/2.4.8/587ce8ae1f780f77d18d87c028c4330554dc05fe/kds-android-2.4.8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds-android/2.4.8/66783783399c0037dbde5cd6b02b1719d7217a38/kds-android-2.4.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

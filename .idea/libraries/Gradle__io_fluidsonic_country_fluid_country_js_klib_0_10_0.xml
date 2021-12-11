@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.fluidsonic.country:fluid-country-js:klib:0.10.0" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-js/0.10.0/5a8f3579cd0794a70db90e917f445c21e8e45a1a/fluid-country-jsir-0.10.0.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-js/0.10.0/3e0113e7767b633e245b42cf5374c75f0d6ad49c/fluid-country-js-0.10.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

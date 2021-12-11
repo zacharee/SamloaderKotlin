@@ -2,7 +2,6 @@ plugins {
     id("com.android.library")
     kotlin("multiplatform")
     id("org.jetbrains.compose")
-    id("com.github.gmazzo.buildconfig") version "3.0.3"
 }
 
 group = "tk.zwander"
@@ -70,3 +69,4 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].resources.srcDir("src/commonMain/resources")
 }
+

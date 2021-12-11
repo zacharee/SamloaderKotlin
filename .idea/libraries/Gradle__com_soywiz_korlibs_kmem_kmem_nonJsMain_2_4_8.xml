@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.kmem:kmem:nonJsMain:2.4.8" type="kotlin.common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/desktop.SamloaderKotlin/jvmMain/implementation/com.soywiz.korlibs.kmem-kmem/com.soywiz.korlibs.kmem-kmem-nonJsMain.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem/2.4.8/d1db171966df86e758bdc51efaf4797bce6654fd/kmem-2.4.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

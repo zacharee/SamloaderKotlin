@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.klogger:klogger-android:2.4.8@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/67d1a8a8edc8b4b1efebbf8a687deb2d/transformed/klogger-debug/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/64f25dc43d9b7779c7e4809fdaa5fa26/transformed/klogger-debug/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/64f25dc43d9b7779c7e4809fdaa5fa26/transformed/klogger-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/64f25dc43d9b7779c7e4809fdaa5fa26/transformed/klogger-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-android/2.4.8/f145cb26f43602be381ad38b33b34cbe3b8da38c/klogger-android-2.4.8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-android/2.4.8/d2f32654ed0b507cc1a897ca1ce6810fb40c0ea2/klogger-android-2.4.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

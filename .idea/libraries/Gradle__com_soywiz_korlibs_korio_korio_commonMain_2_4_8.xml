@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.4.8" type="kotlin.common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/desktop.SamloaderKotlin/jvmMain/implementation/com.soywiz.korlibs.korio-korio/com.soywiz.korlibs.korio-korio-commonMain.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio/2.4.8/afa2b1c3dd1f1517286f3e8572d20703419e0ffa/korio-2.4.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

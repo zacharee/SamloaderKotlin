@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.fluidsonic.i18n:fluid-i18n-js:klib:0.10.0" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.i18n/fluid-i18n-js/0.10.0/830f689c3513c3c6133f8330a508b23fc99d1d4e/fluid-i18n-jsir-0.10.0.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.i18n/fluid-i18n-js/0.10.0/8b7f2cd1b34eefe4bf98b964458c4f539ebb8b1d/fluid-i18n-js-0.10.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

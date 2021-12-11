@@ -1,25 +1,30 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+
 buildscript {
     dependencies {
         classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.16.3")
     }
 }
 
+repositories {
+    google()
+    mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven {
+        url = uri("https://plugins.gradle.org/m2/")
+    }
+}
+
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
+    id("com.codingfeline.buildkonfig")
     id("org.jetbrains.compose")
-    id("com.github.gmazzo.buildconfig") version "3.0.3"
     kotlin("plugin.serialization") version "1.5.31"
 }
 
 group = "tk.zwander"
 version = project.properties["versionName"].toString()
-
-repositories {
-    google()
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-}
 
 kotlin.sourceSets.all {
     languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
@@ -121,10 +126,15 @@ android {
     sourceSets["main"].resources.srcDir("src/commonMain/resources")
 }
 
-buildConfig {
-    className("GradleConfig")
-    buildConfigField("String", "versionName", "\"${project.properties["versionName"]}\"")
-    buildConfigField("String", "versionCode", "\"${project.properties["versionCode"]}\"")
+buildkonfig {
+    packageName = "tk.zwander.common"
+    objectName = "GradleConfig"
+    exposeObjectWithName = objectName
+
+    defaultConfigs {
+        buildConfigField(STRING, "versionName", "${project.properties["versionName"]}")
+        buildConfigField(STRING, "versionCode", "${project.properties["versionCode"]}")
+    }
 }
 
 apply(plugin = "kotlinx-atomicfu")

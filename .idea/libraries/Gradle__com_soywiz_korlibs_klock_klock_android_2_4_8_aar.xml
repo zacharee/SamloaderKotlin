@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.klock:klock-android:2.4.8@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/02d2f4633c33d8e8ec516d1514d2a052/transformed/klock-debug/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/717007d81ad198f1f3a3038214bfb715/transformed/klock-debug/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/717007d81ad198f1f3a3038214bfb715/transformed/klock-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/717007d81ad198f1f3a3038214bfb715/transformed/klock-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klock/klock-android/2.4.8/27cae6edce284d4177645af5d9d4aefa8ecddb75/klock-android-2.4.8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klock/klock-android/2.4.8/cb276b2431359cbfedb34aa03b89d965813283d/klock-android-2.4.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="common-jvm-1.0">
-    <output-path>E:\IntelliJProjects\SamloaderKotlin\common\build\libs</output-path>
-    <root id="archive" name="common-jvm-1.0.jar" />
-  </artifact>
-</component>

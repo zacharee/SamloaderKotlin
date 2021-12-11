@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime/1.0.0/3a6b6c071cf93fa5a9df7958a496be073f17491e/runtime-metadata-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime/1.0.0/45c1c828f4b9e39ad624454e7071bf93c41db291/runtime-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

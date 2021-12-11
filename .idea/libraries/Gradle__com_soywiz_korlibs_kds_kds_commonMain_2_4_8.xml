@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.4.8" type="kotlin.common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/desktop.SamloaderKotlin/jvmMain/implementation/com.soywiz.korlibs.kds-kds/com.soywiz.korlibs.kds-kds-commonMain.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds/2.4.8/6db4b310d3ff48ca2af64be7aa55d623a59bf8eb/kds-2.4.8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

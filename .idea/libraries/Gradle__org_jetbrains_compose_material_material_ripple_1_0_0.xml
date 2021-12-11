@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-ripple/1.0.0/d6608078992a1f98747f1f59a319e68177309bde/material-ripple-metadata-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-ripple/1.0.0/f1eee33bdf12374ca9eddc060a1f2fe0977a39ae/material-ripple-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

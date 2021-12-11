@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.kotlinx:kotlinx-html-js:klib:0.7.3" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-html-js/0.7.3/32f189139d9200d2c7c8c0b050e907788113609/kotlinx-html-jsir-0.7.3.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-html-js/0.7.3/fc3bc71d1c037b715689112c95c44b96bb2409ea/kotlinx-html-js-0.7.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

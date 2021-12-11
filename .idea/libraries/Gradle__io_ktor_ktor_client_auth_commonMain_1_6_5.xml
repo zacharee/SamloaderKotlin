@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.ktor:ktor-client-auth:commonMain:1.6.5" type="kotlin.common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/desktop.SamloaderKotlin/jvmMain/implementation/io.ktor-ktor-client-auth/io.ktor-ktor-client-auth-commonMain.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth/1.6.5/eb3ecbdd0d37c11bf4de3a0226755b7b8b7d0445/ktor-client-auth-1.6.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
