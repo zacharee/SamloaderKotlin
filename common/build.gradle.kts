@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.utils.getKotlinPluginVersion
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 buildscript {
@@ -29,7 +28,7 @@ group = "tk.zwander"
 version = rootProject.extra["versionName"].toString()
 
 kotlin.sourceSets.all {
-    languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
+    languageSettings.optIn("kotlin.RequiresOptIn")
 }
 
 kotlin {
@@ -41,7 +40,7 @@ kotlin {
     android {
         compilations.forEach {
             it.kotlinOptions {
-                freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+                freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
             }
         }
     }
@@ -53,6 +52,9 @@ kotlin {
     }
 
     sourceSets {
+        val korlibsVersion = "2.4.8"
+        val ktorVersion = "1.6.5"
+
         named("commonMain") {
             dependencies {
                 api(compose.runtime)
@@ -62,13 +64,13 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
                 api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
-                api("com.soywiz.korlibs.krypto:krypto:2.4.8")
-                api("com.soywiz.korlibs.korio:korio:2.4.8")
-                api("com.soywiz.korlibs.klock:klock:2.4.8")
+                api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
+                api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
+                api("com.soywiz.korlibs.klock:klock:$korlibsVersion")
                 api("co.touchlab:stately-common:1.2.0-nmm")
                 api("co.touchlab:stately-isolate:1.2.0-nmm")
-                api("io.ktor:ktor-client-core:1.6.5")
-                api("io.ktor:ktor-client-auth:1.6.5")
+                api("io.ktor:ktor-client-core:$ktorVersion")
+                api("io.ktor:ktor-client-auth:$ktorVersion")
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.10.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
@@ -78,7 +80,7 @@ kotlin {
         named("desktopMain") {
             dependencies {
                 api("org.jsoup:jsoup:1.14.3")
-                api("io.ktor:ktor-client-cio:1.6.5")
+                api("io.ktor:ktor-client-cio:$ktorVersion")
             }
         }
 
@@ -90,7 +92,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.4.0")
                 api("androidx.core:core-ktx:1.7.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
-                api("io.ktor:ktor-client-cio:1.6.5")
+                api("io.ktor:ktor-client-cio:$ktorVersion")
             }
         }
 
@@ -98,14 +100,8 @@ kotlin {
             dependencies {
                 api(compose.web.core)
 
-                api("io.ktor:ktor-client-js:1.6.5")
+                api("io.ktor:ktor-client-js:$ktorVersion")
 
-                api("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.258-kotlin-1.5.31")
-                api("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.258-kotlin-1.5.31")
-                api("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.1-pre.258-kotlin-1.5.31")
-                api(npm("react", "17.0.2"))
-                api(npm("react-dom", "17.0.2"))
-                api(npm("react-bootstrap", "2.0.0-beta.5"))
                 api(npm("bootstrap", "5.1.0"))
                 api(npm("jquery", "3.6.0"))
                 api(npm("streamsaver", "2.0.5"))
