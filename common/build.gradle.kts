@@ -24,7 +24,7 @@ plugins {
 
 apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
-group = "tk.zwander"
+group = rootProject.extra["groupName"].toString()
 version = rootProject.extra["versionName"].toString()
 
 kotlin.sourceSets.all {

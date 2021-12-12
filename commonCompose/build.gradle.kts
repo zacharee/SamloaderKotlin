@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "tk.zwander"
+group = rootProject.extra["groupName"].toString()
 version = rootProject.extra["versionName"].toString()
 
 repositories {

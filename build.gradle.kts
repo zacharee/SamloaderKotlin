@@ -5,6 +5,7 @@ val compileSdk by extra(31)
 val targetSdk by extra(31)
 val minSdk by extra(24)
 
+val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
@@ -31,7 +32,7 @@ buildscript {
     }
 }
 
-group = "tk.zwander"
+group = groupName
 version = versionName
 
 allprojects {
