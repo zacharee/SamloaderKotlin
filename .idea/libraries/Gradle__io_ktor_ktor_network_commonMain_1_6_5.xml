@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.ktor:ktor-network:commonMain:1.6.5" type="kotlin.common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/desktopMain/api/io.ktor-ktor-network/io.ktor-ktor-network-commonMain.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-network/1.6.5/46eb0ecba02e30e9f628f0fae8a9ab8cfe891364/ktor-network-1.6.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

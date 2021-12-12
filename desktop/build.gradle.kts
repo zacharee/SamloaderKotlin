@@ -18,7 +18,6 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-//                implementation(project(":common"))
                 implementation(project(":commonCompose"))
 
                 implementation(compose.desktop.currentOs)
@@ -36,6 +35,9 @@ tasks.withType<org.gradle.jvm.tasks.Jar> {
 }
 
 compose.desktop {
+    val packageName: String by rootProject.extra
+    val appName: String by rootProject.extra
+
     application {
         mainClass = "MainKt"
         nativeDistributions {
@@ -50,11 +52,11 @@ compose.desktop {
             }
 
             macOS {
-                bundleID = "tk.zwander.samsungfirmwaredownloader"
+                bundleID = packageName
                 iconFile.set(project.file("src/jvmMain/resources/icon.icns"))
                 packageVersion = "1." + rootProject.extra["versionCode"]
                 targetFormats(TargetFormat.Dmg)
-                packageName = "Bifrost"
+                this.packageName = appName
             }
 
             linux {
@@ -64,7 +66,7 @@ compose.desktop {
             }
 
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
-            packageName = "Bifrost"
+            this.packageName = appName
         }
     }
 }

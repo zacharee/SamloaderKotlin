@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import tk.zwander.common.data.appName
+import tk.zwander.common.GradleConfig
 import tk.zwander.commonCompose.util.imageResource
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.FooterView
@@ -29,7 +29,7 @@ fun AboutDialog(
     if (visible) {
         Window(
             onCloseRequest = onDismiss,
-            title = appName,
+            title = GradleConfig.appName,
             icon = getImage("icon.png").toPainter(),
             state = WindowState(
                 placement = WindowPlacement.Floating,
@@ -60,7 +60,7 @@ fun AboutDialog(
                                 )
 
                                 Text(
-                                    text = appName,
+                                    text = GradleConfig.appName,
                                     modifier = Modifier.align(Alignment.CenterHorizontally)
                                 )
 

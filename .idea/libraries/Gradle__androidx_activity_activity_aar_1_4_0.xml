@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.activity:activity:aar:1.4.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.activity/activity/1.4.0/594c8d63c2970468b18fb3bd1ca44fdbf66895e4/activity-1.4.0.aar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.activity/activity/1.4.0/a4f631154eaacd9b2391773c349a58000639ac7d/activity-1.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

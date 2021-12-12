@@ -7,7 +7,7 @@ import androidx.compose.ui.window.*
 import io.ktor.utils.io.core.internal.*
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
-import tk.zwander.common.data.appName
+import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.MainView
 import java.awt.Desktop
@@ -19,7 +19,7 @@ import kotlin.time.ExperimentalTime
 fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
-    System.setProperty("apple.awt.application.name", appName)
+    System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
     application {
         var aboutState by remember { mutableStateOf(false) }

@@ -13,18 +13,17 @@ repositories {
 
 dependencies {
     implementation(project(":commonCompose"))
-
-    implementation("androidx.fragment:fragment-ktx:1.4.0")
-    implementation("androidx.activity:activity-compose:1.4.0")
-    implementation("androidx.documentfile:documentfile:1.1.0-alpha01")
 }
 
 android {
     val compileSdk: Int by rootProject.extra
+    val packageName: String by rootProject.extra
+
     this.compileSdk = compileSdk
 
     defaultConfig {
-        applicationId = "tk.zwander.samsungfirmwaredownloader"
+        applicationId = packageName
+
         val minSdk: Int by rootProject.extra
         val targetSdk: Int by rootProject.extra
         val versionCode: Int by rootProject.extra
@@ -36,6 +35,8 @@ android {
         this.versionCode = versionCode
         this.versionName = versionName
     }
+
+    namespace = packageName
 
     buildFeatures {
         compose = true
@@ -65,11 +66,3 @@ android {
         abortOnError = false
     }
 }
-
-//task wrapper(type: Wrapper) {
-//    gradleVersion = "6.7.1"
-//}
-
-//task prepareKotlinBuildScriptModel {
-//
-//}

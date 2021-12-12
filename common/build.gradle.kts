@@ -74,7 +74,7 @@ kotlin {
                 api("io.ktor:ktor-client-auth:$ktorVersion")
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.10.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
             }
         }
 
@@ -91,6 +91,8 @@ kotlin {
                 api("org.jsoup:jsoup:$jsoupVersion")
 
                 api("androidx.appcompat:appcompat:1.4.0")
+                api("androidx.fragment:fragment-ktx:1.4.0")
+                api("androidx.activity:activity-compose:1.4.0")
                 api("androidx.core:core-ktx:1.7.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
@@ -135,6 +137,7 @@ buildkonfig {
     defaultConfigs {
         buildConfigField(STRING, "versionName", "${rootProject.extra["versionName"]}")
         buildConfigField(STRING, "versionCode", "${rootProject.extra["versionCode"]}")
+        buildConfigField(STRING, "appName", "${rootProject.extra["appName"]}")
     }
 }
 

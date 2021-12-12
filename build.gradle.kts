@@ -5,6 +5,9 @@ val compileSdk by extra(31)
 val targetSdk by extra(31)
 val minSdk by extra(24)
 
+val packageName by extra("tk.zwander.samsungfirmwaredownloader")
+val appName by extra("Bifrost")
+
 buildscript {
     val kotlinVersion by rootProject.extra("1.5.31")
 

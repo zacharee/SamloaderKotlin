@@ -90,6 +90,7 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.5.31" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.3.1" level="project" />
     <orderEntry type="library" name="Gradle: co.touchlab:stately-common-jvm:1.2.0-nmm" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate-jvm:1.2.0-nmm" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.kds:kds:nonJsMain:2.4.8">
         <CLASSES>
@@ -101,7 +102,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate-jvm:1.2.0-nmm" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.kmem:kmem:nonJsMain:2.4.8">
         <CLASSES>
@@ -118,14 +118,14 @@
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kds:kds-jvm:2.4.8" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kmem:kmem-jvm:2.4.8" level="project" />
-    <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls:commonMain:1.6.5" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klogger:klogger-jvm:2.4.8" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls:commonMain:1.6.5" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio-jvm:1.6.5" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls-jvm:1.6.5" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:1.6.5" level="project" />
-    <orderEntry type="library" name="Gradle: io.ktor:ktor-network:commonMain:1.6.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: co.touchlab:stately-concurrency-jvm:1.2.0-nmm" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.locale:fluid-locale-jvm:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-network:commonMain:1.6.5" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.3.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: io.fluidsonic.currency:fluid-currency-jvm:0.10.1" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-network-jvm:1.6.5" level="project" />
