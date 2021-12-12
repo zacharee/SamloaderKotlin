@@ -42,6 +42,28 @@
     <orderEntry type="jdk" jdkName="Android API 31 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SamloaderKotlin.common.main" />
+    <orderEntry type="module-library">
+      <library name="Gradle: com.github.zacharee:snapper:f81f5ba180">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.zacharee/snapper/f81f5ba180/6ad11d467c4835a41c01f34c89c8b9612c0035da/snapper-f81f5ba180.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: com.github.zacharee.snapper:snapper-desktop:f81f5ba180">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.zacharee.snapper/snapper-desktop/f81f5ba180/5bdd937cd97ee92da98c19563fd604db15f09cda/snapper-desktop-f81f5ba180.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.zacharee.snapper/snapper-desktop/f81f5ba180/54a0d290b05ae153d654bb3fc710016c4f3e1ea0/snapper-desktop-f81f5ba180-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.zacharee.snapper/snapper-desktop/f81f5ba180/3b20edbd58cb4d77ca5034ffd469e0159022f445/snapper-desktop-f81f5ba180-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-client-cio-jvm:1.6.5">
@@ -390,18 +412,21 @@
     <orderEntry type="library" name="Gradle: androidx.compose.material:material:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.material:material-ripple:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation:1.1.0-beta02@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.compose.animation:animation:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.animation:animation:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.material:material-icons-core:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation-layout:1.1.0-beta02@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling:1.1.0-beta02@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling-data:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.ui:ui:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.runtime:runtime-saveable:1.1.0-beta02@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling-preview:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.runtime:runtime:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.fragment:fragment-ktx:1.4.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.activity:activity-ktx:1.4.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.korio:korio-android:2.4.8@aar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-runtime-ktx:2.3.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.compose.animation:animation-core:1.0.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.animation:animation-core:1.1.0-beta02@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.krypto:krypto-android:2.4.8@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klock:klock-android:2.4.8@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kds:kds-android:2.4.8@aar" level="project" />

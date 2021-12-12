@@ -41,6 +41,7 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.ui)
+                api("com.github.zacharee:snapper:f81f5ba180")
             }
         }
 

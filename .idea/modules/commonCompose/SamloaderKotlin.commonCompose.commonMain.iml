@@ -28,6 +28,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" />
+    <orderEntry type="library" name="Gradle: com.github.zacharee:snapper:f81f5ba180" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31" level="project" />
     <orderEntry type="library" name="Gradle: androidx.activity:activity-compose:aar:1.4.0" level="project" />
@@ -96,7 +97,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.compose.runtime:runtime:aar:1.1.0-beta02" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.zacharee.snapper:snapper-desktop:f81f5ba180" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-client-auth:commonMain:1.6.5">
         <CLASSES>
@@ -108,7 +109,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation:aar:1.1.0-beta02" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.runtime:runtime:aar:1.1.0-beta02" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-client-core:commonMain:1.6.5">
         <CLASSES>
@@ -120,7 +121,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.compose.material:material:aar:1.1.0-beta02" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation:aar:1.1.0-beta02" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:commonMain:1.5.2">
         <CLASSES>
@@ -132,7 +133,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.compose.ui:ui:aar:1.1.0-beta02" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.material:material:aar:1.1.0-beta02" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime:commonMain:0.3.1">
         <CLASSES>
@@ -144,8 +145,8 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Gradle: androidx.compose.ui:ui:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.9" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: co.touchlab:stately-isolate:commonMain:1.2.0-nmm">
         <CLASSES>
@@ -157,8 +158,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.5.31" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.compose.runtime:runtime-saveable:aar:1.1.0-beta02" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: co.touchlab:stately-common:commonMain:1.2.0-nmm">
         <CLASSES>
@@ -170,7 +170,8 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.activity:activity-ktx:aar:1.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.5.31" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.runtime:runtime-saveable:aar:1.1.0-beta02" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.fluidsonic.i18n:fluid-i18n:commonMain:0.10.0">
         <CLASSES>
@@ -182,7 +183,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-ktx:aar:2.3.1" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.activity:activity-ktx:aar:1.4.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.fluidsonic.country:fluid-country:commonMain:0.10.0">
         <CLASSES>
@@ -194,7 +195,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.fragment:fragment:aar:1.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-ktx:aar:2.3.1" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:commonMain:1.3.1">
         <CLASSES>
@@ -206,6 +207,8 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Gradle: androidx.fragment:fragment:aar:1.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.zacharee.snapper:snapper:f81f5ba180" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: androidx.collection:collection-ktx:1.1.0">
         <CLASSES>
@@ -217,22 +220,23 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core-ktx:aar:2.3.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate-ktx:aar:1.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-cio-jvm:1.6.5" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-auth-jvm:1.6.5" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core-jvm:1.6.5" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:3.0.0-alpha.9" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n-jvm:0.10.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.4.8">
         <CLASSES>
@@ -266,7 +270,8 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n-jvm:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.fluidsonic.country:fluid-country-jvm:0.10.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.activity:activity:aar:1.4.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.kmem:kmem:commonMain:2.4.8">
         <CLASSES>
@@ -300,8 +305,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: io.fluidsonic.country:fluid-country-jvm:0.10.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.activity:activity:aar:1.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat-resources:aar:1.4.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.klogger:klogger:commonMain:2.4.8">
         <CLASSES>
@@ -313,8 +317,8 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat-resources:aar:1.4.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.drawerlayout:drawerlayout:aar:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.core:core:aar:1.7.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-http-cio:commonMain:1.6.5">
         <CLASSES>
@@ -326,7 +330,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.core:core:aar:1.7.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.cursoradapter:cursoradapter:aar:1.0.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-http:commonMain:1.6.5">
         <CLASSES>
@@ -338,7 +342,8 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.cursoradapter:cursoradapter:aar:1.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.emoji2:emoji2-views-helper:aar:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate:aar:1.1.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core:commonMain:1.3.1">
         <CLASSES>
@@ -347,19 +352,6 @@
         <JAVADOC />
         <SOURCES>
           <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-core/1.3.1/95a888eac5351a4441c318363128144e9d6e446d/kotlinx-serialization-core-1.3.1-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.emoji2:emoji2-views-helper:aar:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate:aar:1.1.0" level="project" />
-    <orderEntry type="module-library">
-      <library name="Gradle: io.fluidsonic.locale:fluid-locale:commonMain:0.10.0">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/commonCompose.SamloaderKotlin/commonMain/api/io.fluidsonic.locale-fluid-locale/io.fluidsonic.locale-fluid-locale-commonMain.klib!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.locale/fluid-locale/0.10.0/c340c60a8c9b05dc56aad84f447d9ae1446f4d0d/fluid-locale-0.10.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -375,9 +367,22 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.emoji2:emoji2:aar:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.0" level="project" />
+    <orderEntry type="module-library">
+      <library name="Gradle: io.fluidsonic.locale:fluid-locale:commonMain:0.10.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/commonCompose.SamloaderKotlin/commonMain/api/io.fluidsonic.locale-fluid-locale/io.fluidsonic.locale-fluid-locale-commonMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.locale/fluid-locale/0.10.0/c340c60a8c9b05dc56aad84f447d9ae1446f4d0d/fluid-locale-0.10.0-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-tooling:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.3.1" level="project" />
     <orderEntry type="library" name="Gradle: co.touchlab:stately-common-jvm:1.2.0-nmm" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate-jvm:1.2.0-nmm" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-utils:commonMain:1.6.5">
         <CLASSES>
@@ -389,7 +394,11 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate-jvm:1.2.0-nmm" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.3.1" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.animation:animation:aar:1.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.resourceinspection:resourceinspection-annotation:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-tooling-preview:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.material:material-ripple:aar:1.1.0-beta02" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-io:commonMain:1.6.5">
         <CLASSES>
@@ -401,15 +410,12 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.3.1" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.compose.animation:animation:aar:1.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.resourceinspection:resourceinspection-annotation:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.compose.material:material-ripple:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.material:material-icons-core:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.lifecycle:lifecycle-runtime:aar:2.4.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.animation:animation-core:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-text:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-graphics:aar:1.1.0-beta02" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.compose.animation:animation:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-unit:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.compose.foundation:foundation-layout:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-geometry:aar:1.1.0-beta02" level="project" />
@@ -420,6 +426,7 @@
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:aar:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.viewpager:viewpager:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.loader:loader:aar:1.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.compose.animation:animation-core:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-savedstate:aar:2.3.1" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: androidx.collection:collection:1.1.0">
@@ -443,6 +450,7 @@
     <orderEntry type="library" name="Gradle: androidx.vectordrawable:vectordrawable:aar:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.customview:customview:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.versionedparcelable:versionedparcelable:aar:1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation-layout:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata:aar:2.0.0" level="project" />
     <orderEntry type="module-library">
@@ -458,10 +466,10 @@
     </orderEntry>
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.tracing:tracing:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio-jvm:1.6.5" level="project" />
-    <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls-jvm:1.6.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.lifecycle:lifecycle-process:aar:2.4.0" level="project" />
-    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:1.6.5" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls-jvm:1.6.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.startup:startup-runtime:aar:1.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:1.6.5" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.locale:fluid-locale-jvm:0.10.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: androidx.arch.core:core-common:2.1.0">
@@ -476,8 +484,6 @@
     </orderEntry>
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.concurrent:concurrent-futures:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:aar:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.3.1" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:aar:2.0.0" level="project" />
     <orderEntry type="module-library" scope="RUNTIME">
       <library name="Gradle: androidx.lifecycle:lifecycle-common:2.4.0">
         <CLASSES>
@@ -489,7 +495,11 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.3.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.arch.core:core-runtime:aar:2.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling-data:aar:1.1.0-beta02" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling-preview:aar:1.1.0-beta02" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:aar:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-network-jvm:1.6.5" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-utils-jvm:1.6.5" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-io-jvm:1.6.5" level="project" />

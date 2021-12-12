@@ -167,7 +167,9 @@ fun HistoryView(
 
         Spacer(Modifier.height(8.dp))
 
-        Column {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
             if (model.statusText.isNotBlank()) {
                 Text(
                     text = model.statusText,
