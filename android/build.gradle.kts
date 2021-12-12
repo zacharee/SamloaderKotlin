@@ -54,12 +54,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        val javaVersionEnum: JavaVersion by rootProject.extra
+        sourceCompatibility = javaVersionEnum
+        targetCompatibility = javaVersionEnum
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = rootProject.extra["javaVersionEnum"].toString()
     }
 
     lint {

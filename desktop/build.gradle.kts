@@ -12,7 +12,7 @@ version = rootProject.extra["versionName"].toString()
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
         }
     }
     sourceSets {
@@ -27,7 +27,7 @@ kotlin {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
 }
 
 tasks.withType<org.gradle.jvm.tasks.Jar> {
