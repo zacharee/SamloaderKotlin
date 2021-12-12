@@ -54,6 +54,7 @@ kotlin {
     sourceSets {
         val korlibsVersion = "2.4.8"
         val ktorVersion = "1.6.5"
+        val jsoupVersion = "1.14.3"
 
         named("commonMain") {
             dependencies {
@@ -79,7 +80,7 @@ kotlin {
 
         named("desktopMain") {
             dependencies {
-                api("org.jsoup:jsoup:1.14.3")
+                api("org.jsoup:jsoup:$jsoupVersion")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
             }
         }
@@ -87,7 +88,7 @@ kotlin {
         named("androidMain") {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
-                api("org.jsoup:jsoup:1.14.3")
+                api("org.jsoup:jsoup:$jsoupVersion")
 
                 api("androidx.appcompat:appcompat:1.4.0")
                 api("androidx.core:core-ktx:1.7.0")
