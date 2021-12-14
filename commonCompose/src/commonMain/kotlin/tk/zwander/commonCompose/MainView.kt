@@ -14,6 +14,7 @@ import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
+import tk.zwander.commonCompose.util.currentPageEnum
 import tk.zwander.commonCompose.util.pager.ExperimentalPagerApi
 import tk.zwander.commonCompose.util.pager.HorizontalPager
 import tk.zwander.commonCompose.util.pager.rememberPagerState
@@ -41,52 +42,6 @@ val historyModel = HistoryModel()
 fun MainView() {
     val scrollState = rememberScrollState(0)
 
-    @Composable
-    fun contents(
-        page: Page,
-        showAll: Boolean = false,
-        onPageChange: (Page) -> Unit
-    ) {
-        val historyDownloadCallback = { model: String, region: String, fw: String ->
-            downloadModel.manual = true
-            downloadModel.osCode = ""
-            downloadModel.model = model
-            downloadModel.region = region
-            downloadModel.fw = fw
-
-            onPageChange(Page.DOWNLOADER)
-        }
-
-        val historyDecryptCallback = { model: String, region: String, fw: String ->
-            decryptModel.fileToDecrypt = null
-            decryptModel.model = model
-            decryptModel.region = region
-            decryptModel.fw = fw
-
-            onPageChange(Page.DECRYPTER)
-        }
-
-        if (!showAll) {
-            when (page) {
-                Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
-                Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
-                Page.HISTORY -> HistoryView(
-                    historyModel, historyDownloadCallback,
-                    historyDecryptCallback
-                )
-            }
-        } else {
-            DownloadView(downloadModel, scrollState)
-
-            DecryptView(decryptModel, scrollState)
-
-            HistoryView(
-                historyModel, historyDownloadCallback,
-                historyDecryptCallback
-            )
-        }
-    }
-
     CustomMaterialTheme {
         Surface {
             Column(
@@ -95,19 +50,11 @@ fun MainView() {
                 val pagerState = rememberPagerState(Page.DOWNLOADER.index)
                 val scope = rememberCoroutineScope()
 
-                val currentPage by derivedStateOf {
-                    Page.values()[pagerState.currentPage]
-                }
-
-                fun currentPage(page: Page) {
-                    pagerState.currentPage = page.index
-                }
-
                 TabView(
                     pagerState = pagerState,
-                    selectedPage = currentPage,
+                    selectedPage = pagerState.currentPageEnum,
                     onPageSelected = {
-                        currentPage(it)
+                        pagerState.currentPageEnum = it
                         scope.launch {
                             pagerState.animateScrollToPage(it.index)
                         }
@@ -126,10 +73,32 @@ fun MainView() {
                         state = pagerState,
                         itemSpacing = 8.dp,
                     ) { p ->
-                        contents(
-                            page = Page.values()[p]
-                        ) {
-                            currentPage(it)
+                        val historyDownloadCallback = { model: String, region: String, fw: String ->
+                            downloadModel.manual = true
+                            downloadModel.osCode = ""
+                            downloadModel.model = model
+                            downloadModel.region = region
+                            downloadModel.fw = fw
+
+                            pagerState.currentPageEnum = Page.DOWNLOADER
+                        }
+
+                        val historyDecryptCallback = { model: String, region: String, fw: String ->
+                            decryptModel.fileToDecrypt = null
+                            decryptModel.model = model
+                            decryptModel.region = region
+                            decryptModel.fw = fw
+
+                            pagerState.currentPageEnum = Page.DECRYPTER
+                        }
+
+                        when (Page.values()[p]) {
+                            Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
+                            Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
+                            Page.HISTORY -> HistoryView(
+                                historyModel, historyDownloadCallback,
+                                historyDecryptCallback
+                            )
                         }
                     }
                 }
