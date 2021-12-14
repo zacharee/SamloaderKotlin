@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.compose.ui:ui-graphics:aar:1.1.0-beta04">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-graphics/1.1.0-beta04/29c6ae611a2e1f8d5f3800efc90e0d68e07599be/ui-graphics-1.1.0-beta04.aar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-graphics/1.1.0-beta04/8190b117a6fbc2fbaf9fa31d28b8adb01768f56f/ui-graphics-1.1.0-beta04-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

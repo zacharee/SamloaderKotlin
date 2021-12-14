@@ -12,8 +12,8 @@
         <compilerSettings />
         <compilerArguments>
           <option name="jvmTarget" value="11" />
-          <option name="languageVersion" value="1.5" />
-          <option name="apiVersion" value="1.5" />
+          <option name="languageVersion" value="1.6" />
+          <option name="apiVersion" value="1.6" />
           <option name="pluginOptions">
             <array />
           </option>
@@ -31,16 +31,15 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.commonMain" scope="TEST" />
     <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" scope="TEST" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.zacharee:snapper:f81f5ba180" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material:1.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.5.31" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.foundation:foundation:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material:1.0.1-rc2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.foundation:foundation:1.0.1-rc2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui:1.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.5.31" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui:1.0.1-rc2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.4.8">
         <CLASSES>
@@ -89,30 +88,30 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: io.ktor:ktor-client-auth:commonMain:1.6.5">
+      <library name="Gradle: io.ktor:ktor-client-auth:commonMain:1.6.7">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/commonCompose.SamloaderKotlin/commonMain/api/io.ktor-ktor-client-auth/io.ktor-ktor-client-auth-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth/1.6.5/eb3ecbdd0d37c11bf4de3a0226755b7b8b7d0445/ktor-client-auth-1.6.5-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth/1.6.7/1bde65f800281b13a9145928f94c9547f319a8f1/ktor-client-auth-1.6.7-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: io.ktor:ktor-client-core:commonMain:1.6.5">
+      <library name="Gradle: io.ktor:ktor-client-core:commonMain:1.6.7">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/commonCompose.SamloaderKotlin/commonMain/api/io.ktor-ktor-client-core/io.ktor-ktor-client-core-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core/1.6.5/b6c35a6b9bc30ae137845e1ebab40e3a2714f9de/ktor-client-core-1.6.5-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core/1.6.7/cd8dbd3a519cb324c192480a419b3fb9da72d4b2/ktor-client-core-1.6.7-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.1-rc2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:commonMain:1.5.2">
         <CLASSES>
@@ -124,7 +123,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime:commonMain:0.3.1">
         <CLASSES>
@@ -137,7 +136,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: co.touchlab:stately-isolate:commonMain:1.2.0-nmm">
         <CLASSES>
@@ -149,7 +148,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: co.touchlab:stately-common:commonMain:1.2.0-nmm">
         <CLASSES>
@@ -161,7 +160,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.fluidsonic.i18n:fluid-i18n:commonMain:0.10.0">
         <CLASSES>
@@ -173,7 +172,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.fluidsonic.country:fluid-country:commonMain:0.10.0">
         <CLASSES>
@@ -185,7 +184,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.1-rc2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:commonMain:1.3.1">
         <CLASSES>
@@ -198,7 +197,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-tooling:1.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.1-rc2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-tooling-preview:1.0.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.4.8">
@@ -277,25 +276,26 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10" level="project" />
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: io.ktor:ktor-http-cio:commonMain:1.6.5">
+      <library name="Gradle: io.ktor:ktor-http-cio:commonMain:1.6.7">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/commonCompose.SamloaderKotlin/commonMain/api/io.ktor-ktor-http-cio/io.ktor-ktor-http-cio-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-cio/1.6.5/646a7f02221ead54fc8aae927e9f1b5085c62f8a/ktor-http-cio-1.6.5-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-cio/1.6.7/1c4851934fbfafc38d7d44100e34d598a27dce4e/ktor-http-cio-1.6.7-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: io.ktor:ktor-http:commonMain:1.6.5">
+      <library name="Gradle: io.ktor:ktor-http:commonMain:1.6.7">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/commonCompose.SamloaderKotlin/commonMain/api/io.ktor-ktor-http/io.ktor-ktor-http-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http/1.6.5/e447e2ecdf4b1f338681a270901219f2fb6de2b4/ktor-http-1.6.5-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http/1.6.7/f8d13144078daf322dc8e40aafacca0e9f8203d7/ktor-http-1.6.7-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -322,24 +322,24 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: io.ktor:ktor-utils:commonMain:1.6.5">
+      <library name="Gradle: io.ktor:ktor-utils:commonMain:1.6.7">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/commonCompose.SamloaderKotlin/commonMain/api/io.ktor-ktor-utils/io.ktor-ktor-utils-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils/1.6.5/674ea4b9fdf3e2f63d9b402eb105a41ef7a5afb7/ktor-utils-1.6.5-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils/1.6.7/2c8488a61b53394911c95353fdc6889898f13f66/ktor-utils-1.6.7-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
-      <library name="Gradle: io.ktor:ktor-io:commonMain:1.6.5">
+      <library name="Gradle: io.ktor:ktor-io:commonMain:1.6.7">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/commonCompose.SamloaderKotlin/commonMain/api/io.ktor-ktor-io/io.ktor-ktor-io-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io/1.6.5/3d5d42ca27798b579f95e354d5d59c90839a0516/ktor-io-1.6.5-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io/1.6.7/74e7b4c59e5e01f2bfd132ee0264005a6c3c3097/ktor-io-1.6.7-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

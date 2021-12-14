@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.web:web-core-js:klib:1.0.1-rc2" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.web/web-core-js/1.0.1-rc2/b00dbb3445199460a833e2613d990f2bcf44a2bc/web-core-js-1.0.1-rc2.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.web/web-core-js/1.0.1-rc2/a7558b9e286abf1be460a2ae13c69238ed24d2e9/web-core-js-1.0.1-rc2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

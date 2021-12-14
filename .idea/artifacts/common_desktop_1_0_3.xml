@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="common-desktop-1.0.3">
     <output-path>$PROJECT_DIR$/common/build/libs</output-path>
-    <root id="archive" name="common-desktop-1.0.3.jar">
-      <element id="module-output" name="SamloaderKotlin.common.desktopMain" />
-    </root>
+    <root id="archive" name="common-desktop-1.0.3.jar" />
   </artifact>
 </component>

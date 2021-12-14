@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.1-rc2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-layout/1.0.1-rc2/fe749ed9c3f9eae0d494ce948f1fbfaebe778b63/foundation-layout-metadata-1.0.1-rc2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-layout/1.0.1-rc2/8ab97bd99af814866f393c672571030bc2d5e1c4/foundation-layout-1.0.1-rc2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

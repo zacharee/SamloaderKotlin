@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.web:internal-web-core-runtime-js:klib:1.0.1-rc2" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.web/internal-web-core-runtime-js/1.0.1-rc2/1ea64970d75e707a1f1bf9b441c9d53782960d46/internal-web-core-runtime-js-1.0.1-rc2.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.web/internal-web-core-runtime-js/1.0.1-rc2/10b940d5c03bb3f7d1bfb7c3009157382fe85f92/internal-web-core-runtime-js-1.0.1-rc2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

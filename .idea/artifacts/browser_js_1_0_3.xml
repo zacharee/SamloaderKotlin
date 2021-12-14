@@ -1,8 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="browser-js-1.0.3">
     <output-path>$PROJECT_DIR$/browser/build/libs</output-path>
-    <root id="archive" name="browser-js-1.0.3.jar">
-      <element id="module-output" name="SamloaderKotlin.browser.jsMain" />
-    </root>
+    <root id="archive" name="browser-js-1.0.3.jar" />
   </artifact>
 </component>

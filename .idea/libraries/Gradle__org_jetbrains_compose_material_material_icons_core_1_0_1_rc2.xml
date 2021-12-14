@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.1-rc2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-icons-core/1.0.1-rc2/c8473198010755105271d173dcdf272bdf23e8d4/material-icons-core-metadata-1.0.1-rc2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-icons-core/1.0.1-rc2/beb83c1af0f3c5dc70a57d7bde17052dcfedeff6/material-icons-core-1.0.1-rc2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

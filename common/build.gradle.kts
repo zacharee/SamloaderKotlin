@@ -53,7 +53,7 @@ kotlin {
 
     sourceSets {
         val korlibsVersion = "2.4.8"
-        val ktorVersion = "1.6.5"
+        val ktorVersion = "1.6.7"
         val jsoupVersion = "1.14.3"
 
         named("commonMain") {
