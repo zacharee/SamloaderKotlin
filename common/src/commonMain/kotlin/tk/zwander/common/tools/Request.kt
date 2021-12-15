@@ -191,6 +191,31 @@ object Request {
                 ?.child("Data")
                 ?.text!!
 
+            val dataFile = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("DEVICE_USER_DATA_FILE")
+                ?.child("Data")
+                ?.text
+
+            val cscFie = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("DEVICE_CSC_HOME_FILE")
+                ?.text
+
+            dataFile?.let { f ->
+                val split = f.split("_")
+                val version = split[2]
+
+                val servedCsc = cscFie!!.split("_")[4]
+                val served = "$version/$servedCsc/$version/$version"
+
+                if (served != fw) {
+                    return FetchResult.GetBinaryFileResult(
+                        error = Exception("You requested $fw but Samsung is attempting to serve $served instead. Aborting!")
+                    )
+                }
+            }
+
             val path = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("MODEL_PATH")

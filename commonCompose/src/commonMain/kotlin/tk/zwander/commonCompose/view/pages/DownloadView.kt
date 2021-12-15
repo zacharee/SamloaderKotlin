@@ -5,32 +5,38 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.async.launchImmediately
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
+import tk.zwander.common.GradleConfig
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
+import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.downloadModel
 import tk.zwander.commonCompose.util.vectorResource
-import tk.zwander.commonCompose.view.components.HybridButton
-import tk.zwander.commonCompose.view.components.MRFLayout
-import tk.zwander.commonCompose.view.components.ProgressInfo
-import tk.zwander.commonCompose.view.components.ChangelogDisplay
-import tk.zwander.commonCompose.view.components.ExpandButton
+import tk.zwander.commonCompose.view.components.*
 import kotlin.time.ExperimentalTime
 
 /**
@@ -43,7 +49,11 @@ val client = FusClient()
  * Delegate retrieving the download location to the platform.
  */
 expect object PlatformDownloadView {
-    suspend fun getInput(fileName: String, callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit)
+    suspend fun getInput(
+        fileName: String,
+        callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit
+    )
+
     fun onStart()
     fun onFinish()
     fun onProgress(status: String, current: Long, max: Long)
@@ -54,7 +64,12 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
     PlatformDownloadView.onStart()
     model.statusText = "Downloading"
 
-    val (info, error, output) = Request.getBinaryFile(client, downloadModel.fw, downloadModel.model, downloadModel.region)
+    val (info, error, output) = Request.getBinaryFile(
+        client,
+        downloadModel.fw,
+        downloadModel.model,
+        downloadModel.region
+    )
 
     if (error != null) {
         error.printStackTrace()
@@ -65,8 +80,10 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
 
         client.makeReq(FusClient.Request.BINARY_INIT, request)
 
-        val fullFileName = fileName.replace(".zip",
-            "_${model.fw.replace("/", "_")}_${model.region}.zip")
+        val fullFileName = fileName.replace(
+            ".zip",
+            "_${model.fw.replace("/", "_")}_${model.region}.zip"
+        )
 
         PlatformDownloadView.getInput(fullFileName) { inputInfo ->
             if (inputInfo != null) {
@@ -253,40 +270,138 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
         Spacer(Modifier.height(8.dp))
 
-//        val boxSource = remember { MutableInteractionSource() }
-//
-//        Row(
-//            modifier = Modifier.align(Alignment.End)
-//                .clickable(
-//                    interactionSource = boxSource,
-//                    indication = null
-//                ) {
-//                    model.manual = !model.manual
-//                }
-//                .padding(4.dp)
-//        ) {
-//            Text(
-//                text = "Manual",
-//                modifier = Modifier.align(Alignment.CenterVertically)
-//            )
-//
-//            Spacer(Modifier.width(8.dp))
-//
-//            Checkbox(
-//                checked = model.manual,
-//                onCheckedChange = {
-//                    model.manual = it
-//                },
-//                modifier = Modifier.align(Alignment.CenterVertically),
-//                enabled = canChangeOption,
-//                colors = CheckboxDefaults.colors(
-//                    checkedColor = MaterialTheme.colors.primary,
-//                ),
-//                interactionSource = boxSource
-//            )
-//        }
-//
-//        Spacer(Modifier.height(8.dp))
+        val boxSource = remember { MutableInteractionSource() }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                modifier = Modifier.clickable(
+                    interactionSource = boxSource,
+                    indication = null
+                ) {
+                    model.manual = !model.manual
+                }
+                    .padding(4.dp)
+            ) {
+                Checkbox(
+                    checked = model.manual,
+                    onCheckedChange = {
+                        model.manual = it
+                    },
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    enabled = canChangeOption,
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = MaterialTheme.colors.primary,
+                    ),
+                    interactionSource = boxSource
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+
+                Text(
+                    text = "Manual",
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+
+            AnimatedVisibility(
+                visible = model.manual,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                var showingRequestWarningDialog by remember { mutableStateOf(false) }
+
+                val textStyle =
+                    LocalTextStyle.current.copy(LocalContentColor.current.copy(alpha = LocalContentAlpha.current))
+
+                Row {
+                    Spacer(Modifier.width(32.dp))
+
+                    Text(
+                        text = "Warning! Samsung may not supply the requested firmware!",
+                        color = MaterialTheme.colors.error
+                    )
+
+                    Spacer(Modifier.width(8.dp))
+
+                    ClickableText(
+                        text = buildAnnotatedString {
+                            pushStyle(
+                                SpanStyle(
+                                    textDecoration = TextDecoration.Underline
+                                )
+                            )
+                            append("More info")
+                        },
+                        onClick = {
+                            showingRequestWarningDialog = true
+                        },
+                        style = textStyle
+                    )
+                }
+
+                if (showingRequestWarningDialog) {
+                    AlertDialogDef(
+                        title = {
+                            Text(
+                                text = "More Info",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        },
+                        text = {
+                            val info = buildAnnotatedString {
+                                append("For most devices, Samsung will only supply the latest firmware. ")
+                                append("Even if you request a different version, Samsung's servers will return the latest firmware file. ")
+                                append("To avoid potentially flashing the wrong firmware, ${GradleConfig.appName} will check to see if Samsung is supplying the requested firmware before attempting to download. ")
+                                append("If the requested and served versions do not match, ${GradleConfig.appName} will abort the download. ")
+
+                                append("For more information on this, check out ")
+                                pushStringAnnotation(
+                                    "IssueLink",
+                                    "https://github.com/zacharee/SamloaderKotlin/issues/10"
+                                )
+                                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                                append("this issue")
+                                pop()
+                                pop()
+                                append(" on GitHub.")
+                            }
+
+                            val scroll = rememberScrollState()
+
+                            ClickableText(
+                                text = info,
+                                onClick = {
+                                    info.getStringAnnotations("IssueLink", it, it)
+                                        .firstOrNull()?.let { item ->
+                                            UrlHandler.launchUrl(item.item)
+                                        }
+                                },
+                                style = textStyle,
+                                modifier = Modifier.verticalScroll(scroll)
+                            )
+                        },
+                        buttons = {
+                            TextButton(
+                                onClick = {
+                                    showingRequestWarningDialog = false
+                                }
+                            ) {
+                                Text("OK")
+                            }
+                        },
+                        onDismissRequest = {
+                            showingRequestWarningDialog = false
+                        }
+                    )
+                }
+            }
+        }
+
+        Spacer(Modifier.height(8.dp))
 
         MRFLayout(model, canChangeOption, model.manual && canChangeOption)
 
@@ -314,7 +429,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
             }
         }
 
-        val changelogCondition = model.changelog != null && !model.manual && model.job == null && model.fw.isNotBlank()
+        val changelogCondition =
+            model.changelog != null && !model.manual && model.job == null && model.fw.isNotBlank()
 
         AnimatedVisibility(
             visible = changelogCondition,

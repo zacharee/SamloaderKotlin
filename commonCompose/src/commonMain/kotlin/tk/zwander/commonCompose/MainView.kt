@@ -50,14 +50,18 @@ fun MainView() {
                 val pagerState = rememberPagerState(Page.DOWNLOADER.index)
                 val scope = rememberCoroutineScope()
 
+                fun updateCurrentPage(page: Page) {
+                    pagerState.currentPageEnum = page
+                    scope.launch {
+                        pagerState.animateScrollToPage(page.index)
+                    }
+                }
+
                 TabView(
                     pagerState = pagerState,
                     selectedPage = pagerState.currentPageEnum,
                     onPageSelected = {
-                        pagerState.currentPageEnum = it
-                        scope.launch {
-                            pagerState.animateScrollToPage(it.index)
-                        }
+                        updateCurrentPage(it)
                     }
                 )
 
@@ -80,7 +84,7 @@ fun MainView() {
                             downloadModel.region = region
                             downloadModel.fw = fw
 
-                            pagerState.currentPageEnum = Page.DOWNLOADER
+                            updateCurrentPage(Page.DOWNLOADER)
                         }
 
                         val historyDecryptCallback = { model: String, region: String, fw: String ->
@@ -89,7 +93,7 @@ fun MainView() {
                             decryptModel.region = region
                             decryptModel.fw = fw
 
-                            pagerState.currentPageEnum = Page.DECRYPTER
+                            updateCurrentPage(Page.DECRYPTER)
                         }
 
                         when (Page.values()[p]) {
