@@ -5,9 +5,10 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7424083cad851135a7597f22c234ad98/transformed/krypto-debug/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b6ff8e634f355535580e4c1d7b096f96/transformed/krypto-debug/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6b68ad3a6bf7122a5f6ebf854bec62b1/transformed/krypto-debug/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/e672a66d286c2e8b6cecc97ee256a5ef/transformed/krypto-debug/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e672a66d286c2e8b6cecc97ee256a5ef/transformed/krypto-debug/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e672a66d286c2e8b6cecc97ee256a5ef/transformed/krypto-debug/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/bb4df5a2d47e9ad2caa54596afafd1bf/transformed/krypto-debug/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/bb4df5a2d47e9ad2caa54596afafd1bf/transformed/krypto-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/bb4df5a2d47e9ad2caa54596afafd1bf/transformed/krypto-debug/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-android/2.4.8/5ca48058cd54607e32e961ccd3f1aea0ca5fa6e5/krypto-android-2.4.8-javadoc.jar!/" />

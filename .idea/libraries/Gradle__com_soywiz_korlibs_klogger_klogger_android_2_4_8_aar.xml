@@ -5,9 +5,10 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/64f25dc43d9b7779c7e4809fdaa5fa26/transformed/klogger-debug/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/1114291e302d0214b7abcc9387c1da43/transformed/klogger-debug/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/b925cd390bad11450ba9e950ae07265b/transformed/klogger-debug/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/a7429f22cc895a50950e7b1a65d75446/transformed/klogger-debug/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a7429f22cc895a50950e7b1a65d75446/transformed/klogger-debug/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a7429f22cc895a50950e7b1a65d75446/transformed/klogger-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3c7280b8bc6ebf07f510b50fa32ee915/transformed/klogger-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3c7280b8bc6ebf07f510b50fa32ee915/transformed/klogger-debug/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3c7280b8bc6ebf07f510b50fa32ee915/transformed/klogger-debug/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-android/2.4.8/f145cb26f43602be381ad38b33b34cbe3b8da38c/klogger-android-2.4.8-javadoc.jar!/" />

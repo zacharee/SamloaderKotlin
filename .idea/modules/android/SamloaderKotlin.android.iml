@@ -5,7 +5,7 @@
       <configuration>
         <option name="GRADLE_PROJECT_PATH" value=":android" />
         <option name="LAST_SUCCESSFUL_SYNC_AGP_VERSION" value="7.2.0-alpha05" />
-        <option name="LAST_KNOWN_AGP_VERSION" value="7.2.0-alpha05" />
+        <option name="LAST_KNOWN_AGP_VERSION" value="7.2.0-alpha06" />
       </configuration>
     </facet>
     <facet type="android" name="Android">

@@ -417,4 +417,5 @@
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: androidx.annotation:annotation-experimental:1.1.0@aar" level="project" />
   </component>
+  <component name="TestModuleProperties" production-module="SamloaderKotlin.common.main" />
 </module>

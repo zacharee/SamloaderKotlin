@@ -209,17 +209,7 @@
     </orderEntry>
     <orderEntry type="library" name="Gradle: androidx.fragment:fragment:aar:1.4.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.zacharee.snapper:snapper:f81f5ba180" level="project" />
-    <orderEntry type="module-library">
-      <library name="Gradle: androidx.collection:collection-ktx:1.1.0">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.collection/collection-ktx/1.1.0/f807b2f366f7b75142a67d2f3c10031065b5168/collection-ktx-1.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.collection/collection-ktx/1.1.0/dd245d312c270a48386e9435e385480743578e9b/collection-ktx-1.1.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Gradle: androidx.collection:collection-ktx:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core-ktx:aar:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.1-rc2" level="project" />
     <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate-ktx:aar:1.1.0" level="project" />
@@ -356,17 +346,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Gradle: androidx.annotation:annotation:1.3.0">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.3.0/21f49f5f9b85fc49de712539f79123119740595/annotation-1.3.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.annotation/annotation/1.3.0/661529c7dfdacef81b03e6dd27e5daa73793a9b2/annotation-1.3.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.3.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.emoji2:emoji2:aar:1.0.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.fluidsonic.locale:fluid-locale:commonMain:0.10.0">
@@ -426,17 +406,7 @@
     <orderEntry type="library" name="Gradle: androidx.viewpager:viewpager:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.loader:loader:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-savedstate:aar:2.3.1" level="project" />
-    <orderEntry type="module-library">
-      <library name="Gradle: androidx.collection:collection:1.1.0">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.collection/collection/1.1.0/1f27220b47669781457de0d600849a5de0e89909/collection-1.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.collection/collection/1.1.0/bae67b0019fbb38498198fcc2d0282a340b71c5b/collection-1.1.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:aar:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation-experimental:aar:1.1.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.autofill:autofill:aar:1.0.0" level="project" />
@@ -451,17 +421,7 @@
     <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation-layout:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata:aar:2.0.0" level="project" />
-    <orderEntry type="module-library">
-      <library name="Gradle: androidx.lifecycle:lifecycle-common:2.3.1">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.3.1/fc466261d52f4433863642fb40d12441ae274a98/lifecycle-common-2.3.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.3.1/36a4f870521a07778cf045be0274793c6298ec6/lifecycle-common-2.3.1-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.3.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.tracing:tracing:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio-jvm:1.6.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.lifecycle:lifecycle-process:aar:2.4.0" level="project" />
@@ -469,30 +429,10 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.startup:startup-runtime:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:1.6.7" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.locale:fluid-locale-jvm:0.10.0" level="project" />
-    <orderEntry type="module-library">
-      <library name="Gradle: androidx.arch.core:core-common:2.1.0">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.1.0/b3152fc64428c9354344bd89848ecddc09b6f07e/core-common-2.1.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.1.0/80ac2d7c8e6400ce2fbc663cd1a7e1cbef38c4b8/core-common-2.1.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.concurrent:concurrent-futures:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:aar:1.0.0" level="project" />
-    <orderEntry type="module-library" scope="RUNTIME">
-      <library name="Gradle: androidx.lifecycle:lifecycle-common:2.4.0">
-        <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.4.0/1fdb7349701e9cf2f0a69fc10642b6fef6bb3e12/lifecycle-common-2.4.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common/2.4.0/29609e3d01eaafd06c688c5366154174cf686c12/lifecycle-common-2.4.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.lifecycle:lifecycle-common:2.4.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.3.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.arch.core:core-runtime:aar:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling-data:aar:1.1.0-beta02" level="project" />
