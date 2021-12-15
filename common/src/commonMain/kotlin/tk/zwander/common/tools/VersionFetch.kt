@@ -19,49 +19,55 @@ object VersionFetch {
      * @return a Pair(FirmwareString, AndroidVersion).
      */
     suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = false): FetchResult.VersionFetchResult {
-        val response = client.use {
-            it.get<String>(
-                urlString = generateProperUrl(useProxy, "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml")
-            ) {
-                userAgent("Kies2.0_FUS")
-            }
-        }
-
-        val responseXml = Xml(response)
-
-        if (responseXml.name == "Error") {
-            val code = responseXml.child("Code")!!.text
-            val message = responseXml.child("Message")!!.text
-
-            return FetchResult.VersionFetchResult(
-                error = IllegalStateException("Code: ${code}, Message: $message"),
-                rawOutput = responseXml.toString()
-            )
-        }
-
         try {
-            val latest = responseXml.child("firmware")
-                ?.child("version")
-                ?.child("latest")!!
-
-            val vc = latest.text.split("/").toMutableList()
-
-            if (vc.size == 3) {
-                vc.add(vc[0])
-            }
-            if (vc[2] == "") {
-                vc[2] = vc[0]
+            val response = client.use {
+                it.get<String>(
+                    urlString = generateProperUrl(useProxy, "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml")
+                ) {
+                    userAgent("Kies2.0_FUS")
+                }
             }
 
-            return FetchResult.VersionFetchResult(
-                versionCode = vc.joinToString("/"),
-                androidVersion = latest.attribute("o") ?: "",
-                rawOutput = responseXml.toString()
-            )
+            val responseXml = Xml(response)
+
+            if (responseXml.name == "Error") {
+                val code = responseXml.child("Code")!!.text
+                val message = responseXml.child("Message")!!.text
+
+                return FetchResult.VersionFetchResult(
+                    error = IllegalStateException("Code: ${code}, Message: $message"),
+                    rawOutput = responseXml.toString()
+                )
+            }
+
+            try {
+                val latest = responseXml.child("firmware")
+                    ?.child("version")
+                    ?.child("latest")!!
+
+                val vc = latest.text.split("/").toMutableList()
+
+                if (vc.size == 3) {
+                    vc.add(vc[0])
+                }
+                if (vc[2] == "") {
+                    vc[2] = vc[0]
+                }
+
+                return FetchResult.VersionFetchResult(
+                    versionCode = vc.joinToString("/"),
+                    androidVersion = latest.attribute("o") ?: "",
+                    rawOutput = responseXml.toString()
+                )
+            } catch (e: Exception) {
+                return FetchResult.VersionFetchResult(
+                    error = e,
+                    rawOutput = responseXml.toString()
+                )
+            }
         } catch (e: Exception) {
             return FetchResult.VersionFetchResult(
-                error = e,
-                rawOutput = responseXml.toString()
+                error = e
             )
         }
     }
