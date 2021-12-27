@@ -166,6 +166,8 @@ object Request {
 
         val responseXml = Xml(response)
 
+        println(responseXml)
+
         try {
             val status = responseXml.child("FUSBody")
                 ?.child("Results")
@@ -174,7 +176,14 @@ object Request {
 
             if (status != 200) {
                 return FetchResult.GetBinaryFileResult(
-                    error = Exception("Bad return status: $status", Exception(response)),
+                    error = Exception("Bad return status: $status"),
+                    rawOutput = responseXml.toString()
+                )
+            }
+
+            val noBinaryError = {
+                FetchResult.GetBinaryFileResult(
+                    error = Exception("No binary file found for $model, $region! Please try a different CSC."),
                     rawOutput = responseXml.toString()
                 )
             }
@@ -183,31 +192,69 @@ object Request {
                 ?.child("Put")
                 ?.child("BINARY_BYTE_SIZE")
                 ?.child("Data")
-                ?.text?.toLong()!!
+                ?.text.run {
+                    if (isNullOrBlank()) {
+                        return noBinaryError()
+                    } else {
+                        toLong()
+                    }
+                }
 
             val fileName = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("BINARY_NAME")
                 ?.child("Data")
-                ?.text!!
+                ?.text ?: return noBinaryError()
 
-            val dataFile = responseXml.child("FUSBody")
+            val (dataFile, dataIndex) = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("DEVICE_USER_DATA_FILE")
                 ?.child("Data")
-                ?.text
+                ?.text.run {
+                    if (isNullOrBlank()) {
+                        responseXml.child("FUSBody")
+                            ?.child("Put")
+                            ?.child("DEVICE_BOOT_FILE")
+                            ?.child("Data")
+                            ?.text to 1
+                    } else {
+                        this to 2
+                    }
+                }
 
-            val cscFie = responseXml.child("FUSBody")
+            val (cscFile, cscIndex) = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("DEVICE_CSC_HOME_FILE")
-                ?.text
+                ?.text.run {
+                    if (isNullOrBlank()) {
+                        responseXml.child("FUSBody")
+                            ?.child("Put")
+                            ?.child("DEVICE_CSC_FILE")
+                            ?.child("Data")
+                            ?.text to 2
+                    } else {
+                        this to 4
+                    }
+                }
+
+            val (cpFile, cpIndex) = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("DEVICE_PHONE_FONT_FILE")
+                ?.text to 1
+
+            val (pdaFile, pdaIndex) = responseXml.child("FUSBody")
+                ?.child("Put")
+                ?.child("DEVICE_PDA_CODE1_FILE")
+                ?.text to 1
 
             dataFile?.let { f ->
                 val split = f.split("_")
-                val version = split[2]
+                val version = split[dataIndex]
 
-                val servedCsc = cscFie!!.split("_")[4]
-                val served = "$version/$servedCsc/$version/$version"
+                val servedCsc = cscFile!!.split("_")[cscIndex]
+                val servedCp = cpFile?.split("_")?.getOrNull(cpIndex)
+                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex)
+                val served = "$version/$servedCsc/${servedCp ?: version}/${servedPda ?: version}"
 
                 if (served != fw) {
                     return FetchResult.GetBinaryFileResult(
