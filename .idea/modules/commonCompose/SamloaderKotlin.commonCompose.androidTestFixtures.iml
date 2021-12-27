@@ -27,10 +27,10 @@
     <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.commonMain" />
     <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" />
     <orderEntry type="library" name="Gradle: com.github.zacharee:snapper:f81f5ba180" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.4.8">
@@ -178,15 +178,15 @@
     </orderEntry>
     <orderEntry type="library" name="Gradle: com.github.zacharee.snapper:snapper:f81f5ba180" level="project" />
     <orderEntry type="library" name="Gradle: com.github.zacharee.snapper:snapper-desktop:f81f5ba180" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
     <orderEntry type="module-library">
@@ -312,7 +312,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-tooling:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-utils:commonMain:1.6.7">

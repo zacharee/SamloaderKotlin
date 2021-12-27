@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.desktop:desktop:1.0.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.desktop/desktop/1.0.1/5b8f86fea035328fc9e8c660773037a3401ce25f/desktop-metadata-1.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.desktop/desktop/1.0.1/524acd0302128074ccfdc50d088b5bad13b5eb5c/desktop-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

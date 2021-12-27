@@ -29,13 +29,13 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" />
     <orderEntry type="library" name="Gradle: com.github.zacharee:snapper:f81f5ba180" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: androidx.activity:activity-compose:aar:1.4.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.fragment:fragment-ktx:aar:1.4.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.1" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2">
         <CLASSES>
@@ -211,21 +211,21 @@
     <orderEntry type="library" name="Gradle: com.github.zacharee.snapper:snapper:f81f5ba180" level="project" />
     <orderEntry type="library" name="Gradle: androidx.collection:collection-ktx:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core-ktx:aar:2.3.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate-ktx:aar:1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-cio-jvm:1.6.7" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-auth-jvm:1.6.7" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core-jvm:1.6.7" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:3.0.0-alpha.9" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.1-rc2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n-jvm:0.10.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.4.8">
@@ -360,7 +360,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-tooling:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.1-rc2" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.3.1" level="project" />
     <orderEntry type="library" name="Gradle: co.touchlab:stately-common-jvm:1.2.0-nmm" level="project" />
     <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate-jvm:1.2.0-nmm" level="project" />

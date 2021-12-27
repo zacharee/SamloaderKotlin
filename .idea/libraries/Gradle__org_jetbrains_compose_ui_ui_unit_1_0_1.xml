@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-unit/1.0.1/598daf2d829928a503f1f732d15e0b0b1f31e425/ui-unit-metadata-1.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-unit/1.0.1/fc5910536ecd538c1ab2dfd0ec10096ab8f6a449/ui-unit-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

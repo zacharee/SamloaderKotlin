@@ -1,5 +1,6 @@
 package tk.zwander.commonCompose
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Surface
@@ -9,6 +10,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.soywiz.korio.async.launch
+import com.soywiz.korio.util.OS
 import dev.chrisbanes.snapper.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.model.DecryptModel
@@ -47,7 +49,7 @@ fun MainView() {
             Column(
                 modifier = Modifier.fillMaxSize()
             ) {
-                val pagerState = rememberPagerState(Page.DOWNLOADER.index)
+                val pagerState = rememberPagerState(Page.DOWNLOADER.index, !OS.isJvm)
                 val scope = rememberCoroutineScope()
 
                 fun updateCurrentPage(page: Page) {
@@ -72,37 +74,54 @@ fun MainView() {
                         .widthIn(max = 1200.dp)
                         .align(Alignment.CenterHorizontally)
                 ) {
-                    HorizontalPager(
-                        count = 3,
-                        state = pagerState,
-                        itemSpacing = 8.dp,
-                    ) { p ->
-                        val historyDownloadCallback = { model: String, region: String, fw: String ->
-                            downloadModel.manual = true
-                            downloadModel.osCode = ""
-                            downloadModel.model = model
-                            downloadModel.region = region
-                            downloadModel.fw = fw
+                    val historyDownloadCallback = { model: String, region: String, fw: String ->
+                        downloadModel.manual = true
+                        downloadModel.osCode = ""
+                        downloadModel.model = model
+                        downloadModel.region = region
+                        downloadModel.fw = fw
 
-                            updateCurrentPage(Page.DOWNLOADER)
+                        updateCurrentPage(Page.DOWNLOADER)
+                    }
+
+                    val historyDecryptCallback = { model: String, region: String, fw: String ->
+                        decryptModel.fileToDecrypt = null
+                        decryptModel.model = model
+                        decryptModel.region = region
+                        decryptModel.fw = fw
+
+                        updateCurrentPage(Page.DECRYPTER)
+                    }
+
+                    if (OS.isJvm) {
+                        pagerState.overridePageCount = 3
+
+                        Crossfade(
+                            targetState = pagerState.currentPageEnum
+                        ) {
+                            when (it) {
+                                Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
+                                Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
+                                Page.HISTORY -> HistoryView(
+                                    historyModel, historyDownloadCallback,
+                                    historyDecryptCallback
+                                )
+                            }
                         }
-
-                        val historyDecryptCallback = { model: String, region: String, fw: String ->
-                            decryptModel.fileToDecrypt = null
-                            decryptModel.model = model
-                            decryptModel.region = region
-                            decryptModel.fw = fw
-
-                            updateCurrentPage(Page.DECRYPTER)
-                        }
-
-                        when (Page.values()[p]) {
-                            Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
-                            Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
-                            Page.HISTORY -> HistoryView(
-                                historyModel, historyDownloadCallback,
-                                historyDecryptCallback
-                            )
+                    } else {
+                        HorizontalPager(
+                            count = 3,
+                            state = pagerState,
+                            itemSpacing = 8.dp,
+                        ) { p ->
+                            when (Page.values()[p]) {
+                                Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
+                                Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
+                                Page.HISTORY -> HistoryView(
+                                    historyModel, historyDownloadCallback,
+                                    historyDecryptCallback
+                                )
+                            }
                         }
                     }
                 }

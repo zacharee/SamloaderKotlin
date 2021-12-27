@@ -6,9 +6,10 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/e8713e6c3c287c9db0b0fa3667f57fca/transformed/klock-debug/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/0e31763d1203cb2129557dcf649fc163/transformed/klock-debug/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a5c9e5e2fd6ae54702dffd1a36c77a53/transformed/klock-debug/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/6899055ac69a7270b2621e9718edba63/transformed/klock-debug/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6899055ac69a7270b2621e9718edba63/transformed/klock-debug/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6899055ac69a7270b2621e9718edba63/transformed/klock-debug/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/509de442bd445106c3a993c9d412eef3/transformed/klock-debug/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/509de442bd445106c3a993c9d412eef3/transformed/klock-debug/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/509de442bd445106c3a993c9d412eef3/transformed/klock-debug/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klock/klock-android/2.4.8/27cae6edce284d4177645af5d9d4aefa8ecddb75/klock-android-2.4.8-javadoc.jar!/" />

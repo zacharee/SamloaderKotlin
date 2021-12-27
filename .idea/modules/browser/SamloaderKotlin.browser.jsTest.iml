@@ -34,7 +34,7 @@
           </option>
           <option name="pluginClasspaths">
             <array>
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.1-rc2/4690b3304ce2f28a31a69df55754d2a5b073222/compiler-1.0.1-rc2.jar" />
+              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.1/4690b3304ce2f28a31a69df55754d2a5b073222/compiler-1.0.1.jar" />
               <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.6.10/dbe683647dcb04cda92fe4423acb741a2f144a69/kotlin-scripting-jvm-1.6.10.jar" />
               <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.6.10/b3b71fd93878f2b4f19d099ac6430c67549a1c77/kotlin-scripting-common-1.6.10.jar" />
               <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.6.10/b8af3fe6f1ca88526914929add63cf5e7c5049af/kotlin-stdlib-1.6.10.jar" />
@@ -102,8 +102,8 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-js:1.6.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-js:klib:1.6.7" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.web:web-core-js:klib:1.0.1-rc2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-js:klib:1.0.1-rc2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.web:web-core-js:klib:1.0.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-js:klib:1.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.korio:korio-js:klib:2.4.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-auth-js:klib:1.6.7" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-core-js:klib:1.6.7" level="project" />
@@ -121,7 +121,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:atomicfu-js:klib:0.16.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.web:internal-web-core-runtime-js:klib:1.0.1-rc2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.web:internal-web-core-runtime-js:klib:1.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.kds:kds-js:klib:2.4.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.kmem:kmem-js:klib:2.4.8" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.klogger:klogger-js:klib:2.4.8" level="project" />

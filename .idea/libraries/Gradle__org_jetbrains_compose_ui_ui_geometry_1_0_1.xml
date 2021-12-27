@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-geometry/1.0.1/ea88b614c2b7b74663796cfa5870d7d7cac008f5/ui-geometry-metadata-1.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-geometry/1.0.1/83148a8b0ed78cc90ff7e2053ef53c3f6c56239c/ui-geometry-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
