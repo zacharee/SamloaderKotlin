@@ -5,12 +5,12 @@ import org.jsoup.Jsoup
 import tk.zwander.common.data.changelog.Changelog
 
 actual object PlatformChangelogHandler {
-    actual suspend fun parseDocUrl(body: String): String {
+    actual suspend fun parseDocUrl(body: String): String? {
         val doc = Jsoup.parse(body)
         val selector = doc.selectFirst("#sel_lang_hidden")
-        val engOption = selector!!.children().run { find { it.attr("value") == "EN" } ?: first() }
+        val engOption = selector?.children()?.run { find { it.attr("value") == "EN" } ?: first() }
 
-        return engOption!!.text()
+        return engOption?.text()
     }
 
     @OptIn(InternalAPI::class)

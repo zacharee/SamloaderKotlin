@@ -11,7 +11,7 @@ import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.data.changelog.Changelogs
 
 expect object PlatformChangelogHandler {
-    suspend fun parseDocUrl(body: String): String
+    suspend fun parseDocUrl(body: String): String?
     suspend fun parseChangelogs(body: String): Map<String, Changelog>
 }
 
@@ -39,7 +39,7 @@ object ChangelogHandler {
 
         val iframeUrl = if (outerResponse.status.isSuccess()) {
             PlatformChangelogHandler.parseDocUrl(outerResponse.readText())
-                .replace("../../", generateProperUrl(useProxy, "$DOMAIN_URL/"))
+                ?.replace("../../", generateProperUrl(useProxy, "$DOMAIN_URL/"))
         } else {
             println("No changelogs found for $device $region")
             return null
@@ -47,7 +47,7 @@ object ChangelogHandler {
 
         val iframeResponse = client.use {
             it.get<HttpResponse> {
-                url(iframeUrl)
+                url(iframeUrl ?: return null)
             }
         }
 

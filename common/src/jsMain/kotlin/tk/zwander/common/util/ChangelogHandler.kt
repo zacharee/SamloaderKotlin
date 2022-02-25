@@ -9,12 +9,12 @@ import org.w3c.dom.parsing.DOMParser
 import tk.zwander.common.data.changelog.Changelog
 
 actual object PlatformChangelogHandler {
-    actual suspend fun parseDocUrl(body: String): String {
+    actual suspend fun parseDocUrl(body: String): String? {
         val doc = DOMParser().parseFromString(body, "text/html")
         val selector = doc.getElementById("sel_lang_hidden")
         val engOption = selector?.children?.toList()?.run { find { it?.attributes?.get("value")?.value == "EN" } ?: first() }
 
-        return engOption?.textContent!!
+        return engOption?.textContent
     }
 
     @OptIn(InternalAPI::class)
