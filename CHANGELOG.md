@@ -1,3 +1,13 @@
+# 1.0.4
+- Code cleanup.
+- Implement horizontal pager on Android for swiping between views.
+- Update Compose and Kotlin.
+- Re-enable manual firmware input:
+  - There's now a warning when enabled.
+  - Bifrost will verify that the requested firmware matches the served firmware.
+- Implement some better errors.
+- Fix a crash caused by 403 return statuses.
+
 # 1.0.3
 - Implement some menu bar items for macOS.
 - Add a Patreon Supporters dialog.
