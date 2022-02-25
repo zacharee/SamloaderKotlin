@@ -1,9 +1,6 @@
 package tk.zwander.commonCompose.view.pages
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.*
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -273,7 +270,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
         val boxSource = remember { MutableInteractionSource() }
 
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.animateContentSize()
         ) {
             Row(
                 modifier = Modifier.clickable(
@@ -319,26 +317,28 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 Row {
                     Spacer(Modifier.width(32.dp))
 
-                    Text(
-                        text = "Warning! Samsung may not supply the requested firmware!",
-                        color = MaterialTheme.colors.error
-                    )
-
-                    Spacer(Modifier.width(8.dp))
+                    val info = buildAnnotatedString {
+                        pushStyle(SpanStyle(color = MaterialTheme.colors.error))
+                        append("Warning! Samsung may not supply the requested firmware!")
+                        pushStringAnnotation(
+                            "MoreInfo",
+                            "MoreInfo"
+                        )
+                        pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                        append("More info")
+                        pop()
+                        pop()
+                    }
 
                     ClickableText(
-                        text = buildAnnotatedString {
-                            pushStyle(
-                                SpanStyle(
-                                    textDecoration = TextDecoration.Underline
-                                )
-                            )
-                            append("More info")
-                        },
+                        text = info,
                         onClick = {
-                            showingRequestWarningDialog = true
+                            info.getStringAnnotations("MoreInfo", it, it)
+                                .firstOrNull()?.let {
+                                    showingRequestWarningDialog = true
+                                }
                         },
-                        style = textStyle
+                        style = textStyle,
                     )
                 }
 

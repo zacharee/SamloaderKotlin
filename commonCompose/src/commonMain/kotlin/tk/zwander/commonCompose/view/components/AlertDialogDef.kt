@@ -1,7 +1,9 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.contentColorFor
@@ -53,9 +55,7 @@ fun AlertDialogContents(
             }
 
             text?.let {
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
+                Column {
                     it()
                 }
 
