@@ -11,7 +11,7 @@
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>
-          <externalSystemTestTask>jsBrowserTest|:browser:jsTest|js</externalSystemTestTask>
+          <externalSystemTestTask>jsBrowserTest|:browser|js</externalSystemTestTask>
         </externalSystemTestTasks>
         <compilerSettings>
           <option name="additionalArguments" value="-Xir-module-name=tk.zwander:browser_test -Xir-only -Xir-per-module-output-name=SamloaderKotlin-browser-test -Xir-produce-klib-dir" />

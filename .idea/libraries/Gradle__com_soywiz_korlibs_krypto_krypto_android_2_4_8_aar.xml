@@ -10,6 +10,8 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cfffa45e99f4235fa8a62335905fe3db/transformed/krypto-debug/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cfffa45e99f4235fa8a62335905fe3db/transformed/krypto-debug/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cfffa45e99f4235fa8a62335905fe3db/transformed/krypto-debug/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/43b17a6469b05d481fcebe3ede00e766/transformed/krypto-debug/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/43b17a6469b05d481fcebe3ede00e766/transformed/krypto-debug/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-android/2.4.8/5ca48058cd54607e32e961ccd3f1aea0ca5fa6e5/krypto-android-2.4.8-javadoc.jar!/" />

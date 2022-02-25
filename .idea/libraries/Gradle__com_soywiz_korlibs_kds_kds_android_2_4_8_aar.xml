@@ -10,6 +10,8 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/388770bc914755b1f4f0ff3010e11ff0/transformed/kds-debug/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/388770bc914755b1f4f0ff3010e11ff0/transformed/kds-debug/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/388770bc914755b1f4f0ff3010e11ff0/transformed/kds-debug/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8cd4a96516ff075daf413f3e9de6fb01/transformed/kds-debug/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8cd4a96516ff075daf413f3e9de6fb01/transformed/kds-debug/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds-android/2.4.8/587ce8ae1f780f77d18d87c028c4330554dc05fe/kds-android-2.4.8-javadoc.jar!/" />

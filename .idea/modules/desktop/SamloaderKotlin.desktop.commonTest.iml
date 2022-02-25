@@ -5,7 +5,7 @@
       <configuration version="4" platform="JVM 11" allPlatforms="JVM [11]" useProjectSettings="false" isTestModule="true" externalProjectId=":desktop" isHmppProject="true" pureKotlinSourceFolders="$MODULE_DIR$/../../../desktop/src/jvmMain/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/desktop/src/jvmTest/kotlin">
         <newMppModelJpsModuleKind>SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>
-          <externalSystemTestTask>jvmTest|:desktop:jvmTest|jvm</externalSystemTestTask>
+          <externalSystemTestTask>jvmTest|:desktop|jvm</externalSystemTestTask>
         </externalSystemTestTasks>
         <compilerSettings />
         <compilerArguments>

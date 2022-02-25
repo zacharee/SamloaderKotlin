@@ -87,11 +87,11 @@ kotlin {
 
         named("androidMain") {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
-                api("androidx.appcompat:appcompat:1.4.0")
-                api("androidx.fragment:fragment-ktx:1.4.0")
+                api("androidx.appcompat:appcompat:1.4.1")
+                api("androidx.fragment:fragment-ktx:1.4.1")
                 api("androidx.activity:activity-compose:1.4.0")
                 api("androidx.core:core-ktx:1.7.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")

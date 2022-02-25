@@ -11,7 +11,7 @@
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>
-          <externalSystemTestTask>jvmTest|:desktop:jvmTest|jvm</externalSystemTestTask>
+          <externalSystemTestTask>jvmTest|:desktop|jvm</externalSystemTestTask>
         </externalSystemTestTasks>
         <compilerSettings>
           <option name="additionalArguments" value="-Xallow-no-source-files -Xuse-ir" />

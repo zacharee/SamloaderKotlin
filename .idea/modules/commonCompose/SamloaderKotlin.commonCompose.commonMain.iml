@@ -33,24 +33,24 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: androidx.activity:activity-compose:aar:1.4.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation:1.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.fragment:fragment-ktx:aar:1.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.fragment:fragment-ktx:aar:1.4.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.1" level="project" />
     <orderEntry type="module-library">
-      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0">
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.5.2/d246a704a55b7bddb79407cce4348890eaa341d9/kotlinx-coroutines-android-1.5.2.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.6.0/453fa53456bbaea50e51bd92d7f16f7bf6fcc58e/kotlinx-coroutines-android-1.6.0.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.5.2/5d4d72958ed30395cd1def0c31e0b2d432034895/kotlinx-coroutines-android-1.5.2-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.6.0/b8f4c9a09f0300321ad90859ddac0460a72d7ef/kotlinx-coroutines-android-1.6.0-javadoc.jar!/" />
         </JAVADOC>
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.5.2/363aa80c0a981d7bcb39bb904145de5b40b862f0/kotlinx-coroutines-android-1.5.2-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-android/1.6.0/5cff4fc6720af136bcd22ea8e3d6422097cb51e6/kotlinx-coroutines-android-1.6.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.14.3" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:aar:1.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:aar:1.4.1" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.4.8">
         <CLASSES>
@@ -195,7 +195,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-ktx:aar:2.3.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-cio-jvm:1.6.7" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:commonMain:1.3.1">
         <CLASSES>
@@ -207,22 +207,34 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.fragment:fragment:aar:1.4.0" level="project" />
     <orderEntry type="library" name="Gradle: com.github.zacharee.snapper:snapper:f81f5ba180" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.collection:collection-ktx:1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core-ktx:aar:2.3.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate-ktx:aar:1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-cio-jvm:1.6.7" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-auth-jvm:1.6.7" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core-jvm:1.6.7" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-ripple:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.0.1" level="project" />
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0">
+        <CLASSES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.0/f3b8fd26c2e76d2f18cbc36aacb6e349fcb9fd5f/kotlinx-coroutines-core-jvm-1.6.0.jar!/" />
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.0/cc50826a455f3b4e5f1f2fce5f6b2118f53dd869/kotlinx-coroutines-core-jvm-1.6.0-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.0/9f54cd61cb3434898d895a336190e0107d4d1840/kotlinx-coroutines-core-jvm-1.6.0-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-ktx:aar:2.3.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation-core:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.fragment:fragment:aar:1.4.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-text:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.collection:collection-ktx:1.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.animation:animation:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core-ktx:aar:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate-ktx:aar:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.0.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio:3.0.0-alpha.9" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.0.1" level="project" />
@@ -295,7 +307,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat-resources:aar:1.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat-resources:aar:1.4.1" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.klogger:klogger:commonMain:2.4.8">
         <CLASSES>
@@ -402,16 +414,16 @@
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-runtime-ktx:aar:2.3.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.compose.ui:ui-util:aar:1.1.0-beta04" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.32" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:aar:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.viewpager:viewpager:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.loader:loader:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel-savedstate:aar:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.autofill:autofill:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:aar:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.annotation:annotation-experimental:aar:1.1.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.autofill:autofill:aar:1.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.profileinstaller:profileinstaller:aar:1.1.0-beta04" level="project" />
-    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.32" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.lifecycle:lifecycle-common-java8:2.4.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-runtime:aar:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.vectordrawable:vectordrawable-animated:aar:1.1.0" level="project" />
@@ -420,14 +432,14 @@
     <orderEntry type="library" name="Gradle: androidx.versionedparcelable:versionedparcelable:aar:1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.ui:ui-tooling:aar:1.1.0-beta02" level="project" />
     <orderEntry type="library" name="Gradle: androidx.compose.foundation:foundation-layout:aar:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata:aar:2.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.3.1" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.tracing:tracing:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio-jvm:1.6.7" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.lifecycle:lifecycle-process:aar:2.4.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls-jvm:1.6.7" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.startup:startup-runtime:aar:1.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.tracing:tracing:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:1.6.7" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata:aar:2.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.lifecycle:lifecycle-process:aar:2.4.0" level="project" />
+    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.3.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.startup:startup-runtime:aar:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.locale:fluid-locale-jvm:0.10.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: androidx.concurrent:concurrent-futures:1.0.0" level="project" />

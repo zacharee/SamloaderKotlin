@@ -10,6 +10,8 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/3086c178bbbd6ff940ba0428fce65037/transformed/korio-debug/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3086c178bbbd6ff940ba0428fce65037/transformed/korio-debug/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/3086c178bbbd6ff940ba0428fce65037/transformed/korio-debug/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cd83aaf2d305a589b35b2c33ad0b932f/transformed/korio-debug/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cd83aaf2d305a589b35b2c33ad0b932f/transformed/korio-debug/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio-android/2.4.8/3d3efdfc265c67057f06e579e0b521043a90b038/korio-android-2.4.8-javadoc.jar!/" />

@@ -5,9 +5,9 @@
       <configuration version="4" platform="JVM 11" allPlatforms="JVM [11]" useProjectSettings="false" isTestModule="true" externalProjectId=":commonCompose" isHmppProject="true" pureKotlinSourceFolders="$MODULE_DIR$/../../../commonCompose/src/androidDebug/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/debug/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/debug/java;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/androidDebugAndroidTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/androidDebugUnitTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/androidRelease/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/release/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/release/java;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/androidReleaseUnitTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/desktopMain/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/commonCompose/src/desktopTest/kotlin">
         <newMppModelJpsModuleKind>SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>
-          <externalSystemTestTask>testDebugUnitTest|:commonCompose:androidDebugUnitTest|android</externalSystemTestTask>
-          <externalSystemTestTask>testReleaseUnitTest|:commonCompose:androidReleaseUnitTest|android</externalSystemTestTask>
-          <externalSystemTestTask>desktopTest|:commonCompose:desktopTest|desktop</externalSystemTestTask>
+          <externalSystemTestTask>testDebugUnitTest|:commonCompose|android</externalSystemTestTask>
+          <externalSystemTestTask>testReleaseUnitTest|:commonCompose|android</externalSystemTestTask>
+          <externalSystemTestTask>desktopTest|:commonCompose|desktop</externalSystemTestTask>
         </externalSystemTestTasks>
         <compilerSettings />
         <compilerArguments>

@@ -11,7 +11,7 @@
         </sourceSets>
         <newMppModelJpsModuleKind>COMPILATION_AND_SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>
-          <externalSystemTestTask>desktopTest|:common:desktopTest|desktop</externalSystemTestTask>
+          <externalSystemTestTask>desktopTest|:common|desktop</externalSystemTestTask>
         </externalSystemTestTasks>
         <compilerSettings>
           <option name="additionalArguments" value="-Xallow-no-source-files -Xuse-ir -opt-in kotlin.RequiresOptIn" />

@@ -5,10 +5,10 @@
       <configuration version="4" platform="Common (experimental) " allPlatforms="JS []/JVM [11]" useProjectSettings="false" isTestModule="true" externalProjectId=":common" isHmppProject="true" pureKotlinSourceFolders="$MODULE_DIR$/../../../common/src/androidDebug/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/debug/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/debug/java;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/androidDebugAndroidTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/androidDebugUnitTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/androidRelease/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/release/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/release/java;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/androidReleaseUnitTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/desktopMain/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/desktopTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/jsMain/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/build/externals/SamloaderKotlin-common/src;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/jsTest/kotlin">
         <newMppModelJpsModuleKind>SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>
-          <externalSystemTestTask>testDebugUnitTest|:common:androidDebugUnitTest|android</externalSystemTestTask>
-          <externalSystemTestTask>testReleaseUnitTest|:common:androidReleaseUnitTest|android</externalSystemTestTask>
-          <externalSystemTestTask>desktopTest|:common:desktopTest|desktop</externalSystemTestTask>
-          <externalSystemTestTask>jsBrowserTest|:common:jsTest|js</externalSystemTestTask>
+          <externalSystemTestTask>testDebugUnitTest|:common|android</externalSystemTestTask>
+          <externalSystemTestTask>testReleaseUnitTest|:common|android</externalSystemTestTask>
+          <externalSystemTestTask>desktopTest|:common|desktop</externalSystemTestTask>
+          <externalSystemTestTask>jsBrowserTest|:common|js</externalSystemTestTask>
         </externalSystemTestTasks>
         <compilerSettings>
           <option name="additionalArguments" value="-opt-in kotlin.RequiresOptIn" />

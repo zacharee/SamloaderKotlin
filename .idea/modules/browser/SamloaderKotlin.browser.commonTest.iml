@@ -5,7 +5,7 @@
       <configuration version="4" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="true" externalProjectId=":browser" isHmppProject="true" pureKotlinSourceFolders="$MODULE_DIR$/../../../browser/src/jsMain/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/browser/build/externals/SamloaderKotlin-browser/src;/Users/zachary/IdeaProjects/SamloaderKotlin/browser/src/jsTest/kotlin">
         <newMppModelJpsModuleKind>SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <externalSystemTestTasks>
-          <externalSystemTestTask>jsBrowserTest|:browser:jsTest|js</externalSystemTestTask>
+          <externalSystemTestTask>jsBrowserTest|:browser|js</externalSystemTestTask>
         </externalSystemTestTasks>
         <compilerSettings />
         <compilerArguments>
