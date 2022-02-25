@@ -319,7 +319,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                     val info = buildAnnotatedString {
                         pushStyle(SpanStyle(color = MaterialTheme.colors.error))
-                        append("Warning! Samsung may not supply the requested firmware!")
+                        append("Warning! Samsung may not supply the requested firmware! ")
                         pushStringAnnotation(
                             "MoreInfo",
                             "MoreInfo"
