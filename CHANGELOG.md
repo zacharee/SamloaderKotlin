@@ -7,6 +7,7 @@
   - Bifrost will verify that the requested firmware matches the served firmware.
 - Implement some better errors.
 - Fix a crash caused by 403 return statuses.
+- Fix a crash when the Samsung docs URL is null.
 
 # 1.0.3
 - Implement some menu bar items for macOS.
