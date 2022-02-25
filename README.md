@@ -19,6 +19,17 @@ Binaries are available for 64-bit versions Windows, Linux, macOS, and Android. J
 
 Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) page for the downloads.
 
+# Troubleshooting
+
+## Bifrost is returning error 400/401 when downloading
+These errors are on Samsung's end. If you can, try using a different region/CSC.
+
+## Bifrost is returning error 403 when checking for updates
+These errors are on Samsung's end. Samsung may no longer be serving firmware for your device or may not have started serving firmware yet. Try a different region/CSC if possible.
+
+## Download speeds are slow
+Samsung's servers sometimes throttle downloads to about 3MiB/s. For older devices, you may see even slower speeds. Different regions/CSCs may have faster downloads.
+
 # Building
 Building this project should be fairly easy.
 
