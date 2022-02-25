@@ -9,4 +9,6 @@ expect fun HttpResponse.getCookies(): List<Cookie>
 
 @OptIn(InternalAPI::class)
 val client: HttpClient
-    get() = HttpClient()
+    get() = HttpClient {
+        this.expectSuccess = false
+    }
