@@ -166,8 +166,6 @@ object Request {
 
         val responseXml = Xml(response)
 
-        println(responseXml)
-
         try {
             val status = responseXml.child("FUSBody")
                 ?.child("Results")
@@ -206,7 +204,16 @@ object Request {
                 ?.child("Data")
                 ?.text ?: return noBinaryError()
 
-            val (dataFile, dataIndex) = responseXml.child("FUSBody")
+            fun getIndex(file: String?): Int? {
+                if (file.isNullOrBlank()) return null
+
+                val fileSplit = file.split("_")
+                val modelSuffix = model.split("-")[1]
+
+                return fileSplit.indexOfFirst { it.startsWith(modelSuffix) }
+            }
+
+            val dataFile = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("DEVICE_USER_DATA_FILE")
                 ?.child("Data")
@@ -216,13 +223,15 @@ object Request {
                             ?.child("Put")
                             ?.child("DEVICE_BOOT_FILE")
                             ?.child("Data")
-                            ?.text to 1
+                            ?.text
                     } else {
-                        this to 2
+                        this
                     }
                 }
 
-            val (cscFile, cscIndex) = responseXml.child("FUSBody")
+            val dataIndex = getIndex(dataFile)
+
+            val cscFile = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("DEVICE_CSC_HOME_FILE")
                 ?.text.run {
@@ -231,29 +240,35 @@ object Request {
                             ?.child("Put")
                             ?.child("DEVICE_CSC_FILE")
                             ?.child("Data")
-                            ?.text to 2
+                            ?.text
                     } else {
-                        this to 4
+                        this
                     }
                 }
 
-            val (cpFile, cpIndex) = responseXml.child("FUSBody")
+            val cscIndex = getIndex(cscFile)
+
+            val cpFile = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("DEVICE_PHONE_FONT_FILE")
-                ?.text to 1
+                ?.text
 
-            val (pdaFile, pdaIndex) = responseXml.child("FUSBody")
+            val cpIndex = getIndex(cpFile)
+
+            val pdaFile = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("DEVICE_PDA_CODE1_FILE")
-                ?.text to 1
+                ?.text
+
+            val pdaIndex = getIndex(pdaFile)
 
             dataFile?.let { f ->
                 val split = f.split("_")
-                val version = split[dataIndex]
+                val version = split[dataIndex!!]
 
-                val servedCsc = cscFile!!.split("_")[cscIndex]
-                val servedCp = cpFile?.split("_")?.getOrNull(cpIndex)
-                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex)
+                val servedCsc = cscFile!!.split("_")[cscIndex!!]
+                val servedCp = cpFile?.split("_")?.getOrNull(cpIndex!!)
+                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex!!)
                 val served = "$version/$servedCsc/${servedCp ?: version}/${servedPda ?: version}"
 
                 if (served != fw) {

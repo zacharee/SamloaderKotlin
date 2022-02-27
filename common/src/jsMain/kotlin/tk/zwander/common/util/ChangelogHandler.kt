@@ -25,7 +25,6 @@ actual object PlatformChangelogHandler {
         val divs = container!!.children.toList().toMutableList().apply {
             removeAll { it is HTMLHRElement }
         }
-        println(divs)
         val changelogs = LinkedHashMap<String, Changelog>()
 
         for (i in 3 until divs.size step 2) {
