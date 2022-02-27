@@ -1,3 +1,6 @@
+# 1.0.5
+- Make version comparison more reliable for manual mode.
+
 # 1.0.4
 - Code cleanup.
 - Implement horizontal pager on Android for swiping between views.

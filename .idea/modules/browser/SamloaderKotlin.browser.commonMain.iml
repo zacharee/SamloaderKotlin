@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":browser:commonMain" external.linked.project.path="$MODULE_DIR$/../../../browser" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="tk.zwander" external.system.module.type="sourceSet" external.system.module.version="1.0.4" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":browser:commonMain" external.linked.project.path="$MODULE_DIR$/../../../browser" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="tk.zwander" external.system.module.type="sourceSet" external.system.module.version="1.0.5" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
       <configuration version="4" platform="JavaScript " allPlatforms="JS []" useProjectSettings="false" isTestModule="false" externalProjectId=":browser" isHmppProject="true" pureKotlinSourceFolders="$MODULE_DIR$/../../../browser/src/jsMain/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/browser/build/externals/SamloaderKotlin-browser/src;/Users/zachary/IdeaProjects/SamloaderKotlin/browser/src/jsTest/kotlin">
