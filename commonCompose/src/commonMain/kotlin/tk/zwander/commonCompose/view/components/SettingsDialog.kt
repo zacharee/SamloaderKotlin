@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.russhwolf.settings.Settings
+import com.soywiz.korio.util.OS
 
 @Composable
 fun SettingsDialog(
@@ -39,18 +40,20 @@ fun SettingsDialog(
             Column(
                 modifier = Modifier.padding(8.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Use native file picker")
-                    Spacer(Modifier.weight(1f))
-                    Switch(
-                        checked = checked,
-                        onCheckedChange = {
-                            checked = it
-                            settings.putBoolean("useNativeFileDialog", it)
-                        }
-                    )
+                if (OS.isJvm && !OS.isAndroid) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Use native file picker")
+                        Spacer(Modifier.weight(1f))
+                        Switch(
+                            checked = checked,
+                            onCheckedChange = {
+                                checked = it
+                                settings.putBoolean("useNativeFileDialog", it)
+                            }
+                        )
+                    }
                 }
             }
         }

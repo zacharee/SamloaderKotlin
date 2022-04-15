@@ -1,6 +1,7 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -95,73 +96,74 @@ fun FooterView(
 
             Spacer(Modifier.weight(1f))
 
-            Row(
-                modifier = Modifier.align(Alignment.Bottom)
+            LazyRow(
+                modifier = Modifier.align(Alignment.Bottom),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Spacer(Modifier.weight(1f))
-
-                IconButton(
-                    onClick = {
-                        showingSupportersDialog = true
+                item {
+                    IconButton(
+                        onClick = {
+                            showingSupportersDialog = true
+                        }
+                    ) {
+                        Icon(
+                            vectorResource("heart.xml"), "Supporters",
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
-                ) {
-                    Icon(
-                        vectorResource("heart.xml"), "Supporters",
-                        modifier = Modifier.padding(8.dp)
-                    )
                 }
 
-                Spacer(Modifier.width(8.dp))
-
-                IconButton(
-                    onClick = {
-                        UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
+                item {
+                    IconButton(
+                        onClick = {
+                            UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
+                        }
+                    ) {
+                        Icon(
+                            vectorResource("github.xml"), "GitHub",
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
-                ) {
-                    Icon(
-                        vectorResource("github.xml"), "GitHub",
-                        modifier = Modifier.padding(8.dp)
-                    )
                 }
 
-                Spacer(Modifier.width(8.dp))
-
-                IconButton(
-                    onClick = {
-                        UrlHandler.launchUrl("https://twitter.com/wander1236")
-                    },
-                ) {
-                    Icon(
-                        vectorResource("twitter.xml"), "Twitter",
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
-
-                Spacer(Modifier.width(8.dp))
-
-                IconButton(
-                    onClick = {
-                        UrlHandler.launchUrl("https://patreon.com/zacharywander")
-                    },
-                ) {
-                    Icon(
-                        vectorResource("patreon.xml"), "Patreon",
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
-
-                Spacer(Modifier.width(8.dp))
-
-                IconButton(
-                    onClick = {
-                        showingSettings = true
+                item {
+                    IconButton(
+                        onClick = {
+                            UrlHandler.launchUrl("https://twitter.com/wander1236")
+                        },
+                    ) {
+                        Icon(
+                            vectorResource("twitter.xml"), "Twitter",
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
-                ) {
-                    Icon(
-                        imageVector = vectorResource("settings.xml"),
-                        contentDescription = "Settings",
-                        modifier = Modifier.padding(8.dp)
-                    )
+                }
+
+                item {
+                    IconButton(
+                        onClick = {
+                            UrlHandler.launchUrl("https://patreon.com/zacharywander")
+                        },
+                    ) {
+                        Icon(
+                            vectorResource("patreon.xml"), "Patreon",
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                }
+
+                item {
+                    IconButton(
+                        onClick = {
+                            showingSettings = true
+                        }
+                    ) {
+                        Icon(
+                            imageVector = vectorResource("settings.xml"),
+                            contentDescription = "Settings",
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
                 }
             }
         }
