@@ -38,7 +38,6 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
                 api("com.github.zacharee:snapper:f81f5ba180")
-                api("com.github.Tlaster.KFilePicker:KFilePicker:1.0.4")
             }
         }
 

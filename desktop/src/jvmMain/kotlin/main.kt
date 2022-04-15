@@ -4,12 +4,12 @@ import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.*
-import moe.tlaster.kfilepicker.FilePicker
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.MainView
+import tk.zwander.commonCompose.view.pages.PlatformDownloadView
 import java.awt.Desktop
 import javax.swing.*
 import kotlin.time.ExperimentalTime
@@ -41,7 +41,7 @@ fun main() {
             icon = getImage("icon.png").toPainter(),
             state = mainWindowState
         ) {
-            FilePicker.init(window)
+            PlatformDownloadView.setWindow(window)
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
             if (hostOs == OS.MacOS) {
