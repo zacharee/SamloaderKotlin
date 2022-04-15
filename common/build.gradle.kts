@@ -82,6 +82,7 @@ kotlin {
             dependencies {
                 api("org.jsoup:jsoup:$jsoupVersion")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
+                api("com.formdev:flatlaf:2.1")
             }
         }
 

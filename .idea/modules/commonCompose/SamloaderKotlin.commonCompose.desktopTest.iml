@@ -18,7 +18,7 @@
         </compilerSettings>
         <compilerArguments>
           <option name="destination" value="$MODULE_DIR$/../../../commonCompose/build/classes/kotlin/desktop/test" />
-          <option name="classpath" value="$MODULE_DIR$/../../../commonCompose/build/classes/kotlin/desktop/main;E:/IntelliJProjects/SamloaderKotlin/common/build/libs/common-desktop-1.0.5.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.github.zacharee/snapper/f81f5ba180/6ad11d467c4835a41c01f34c89c8b9612c0035da/snapper-f81f5ba180.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.github.zacharee.snapper/snapper-desktop/f81f5ba180/5bdd937cd97ee92da98c19563fd604db15f09cda/snapper-desktop-f81f5ba180.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-desktop/1.2.0-alpha01-dev620/79af66576b11b91987bb9b2fd513840171a1504f/material-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-ripple-desktop/1.2.0-alpha01-dev620/b1945e6d710004e301f8c52b9fac0c0dea7e0fb6/material-ripple-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-desktop/1.2.0-alpha01-dev620/c64d6c9f5f569703b92f4c49d74ccec4f96c9d47/foundation-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.animation/animation-desktop/1.2.0-alpha01-dev620/9fa66a4f39cf38dcc0e003b4e498fa7e0f6c9473/animation-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-icons-core-desktop/1.2.0-alpha01-dev620/ee1048fa74e691b85ba0a216a8ba5ec0e71850ce/material-icons-core-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-tooling-desktop/1.0.0/9e97afdaf75a5977505b923b96ab905ae3413d48/ui-tooling-desktop-1.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-layout-desktop/1.2.0-alpha01-dev620/b48253dfbf051280c258d1aed4ce6166f875e92f/foundation-layout-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-desktop/1.2.0-alpha01-dev620/13eaf15e13c94d69aab9faa4db0b20693ba6cf7f/ui-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-saveable-desktop/1.2.0-alpha01-dev620/ecd40a4bee2fcbee869521d89fa8137a5ad30be9/runtime-saveable-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-tooling-preview-desktop/1.0.0/4676c56ea7defd68facfab054079ac1e76aba57f/ui-tooling-preview-desktop-1.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/3.0.0-alpha.9/b1d6cc65ba9a6570fa636011f4c06839b0ca3cab/okio-jvm-3.0.0-alpha.9.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio-jvm/2.7.0/6afaee97d39b2e9b28728e92ba9149e39e0cc0fc/korio-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-jvm/2.7.0/a5ed9199214bc34c930112d52d923be22cffb8f/krypto-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klock/klock-jvm/2.7.0/b5321bbd285652a659d8bfda6edd10d06b3bc3e0/klock-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth-jvm/2.0.0/b4514c4739ba3dcff8389ba1951ddb2285cfbf4a/ktor-client-auth-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-cio-jvm/2.0.0/1e1f5ec921edeb49bb8fc6c8b7c33f9f7f2f279a/ktor-client-cio-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core-jvm/2.0.0/163a99720f07857c5c9c9970fa575b632a116075/ktor-client-core-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.fluidsonic.i18n/fluid-i18n-jvm/0.10.0/5ae670cb5f7ebfd0a9b7d18b34c3fd34a22d103d/fluid-i18n-jvm-0.10.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-jvm/0.11.0/86a2c0178bf999cfa29971571a666b0891d4c517/fluid-country-jvm-0.11.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-text-desktop/1.2.0-alpha01-dev620/1d1d3bd984e4c7631727073970255249b32e8634/ui-text-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-graphics-desktop/1.2.0-alpha01-dev620/3178db193fc539c389eb9759441ce8287d3de8e5/ui-graphics-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt/0.7.9/bee810b01ab26ce13515d1677c7657f3b85a5636/skiko-awt-0.7.9.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-events-jvm/2.0.0/8c3b149807a1d3f70af3cbdc294cb848d36e8981/ktor-events-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-websocket-serialization-jvm/2.0.0/4ea19180060cfdc0f2a6779b02fc0df3a92ecf28/ktor-websocket-serialization-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-cio-jvm/2.0.0/2400f7d08625f52ea9459e93fe08593dd18b1e08/ktor-http-cio-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-serialization-jvm/2.0.0/48cf1d7dcfcaa6b769ded9ce685d4bd7918534df/ktor-serialization-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-websockets-jvm/2.0.0/6680b1cc5850bf677bf99714188049046a243cb7/ktor-websockets-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-jvm/2.0.0/197125a38b090e57e9fd0a9f277a6c510f4c759d/ktor-http-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-network-tls-jvm/2.0.0/2307dbeef782ceb5e9045a101a40585c87dc539b/ktor-network-tls-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-network-jvm/2.0.0/90cffed080726ade71231684e60f1b7d03ed4e00/ktor-network-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils-jvm/2.0.0/a7aaec019c9332c7685d69704c2993536088c5c6/ktor-utils-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io-jvm/2.0.0/1fc34e07e20556c47aa3f0070a2e4eb05b719f41/ktor-io-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-jdk8/1.6.0/49fdbe0570870f025f293c25f5e58fdf5be8dafb/kotlinx-coroutines-jdk8-1.6.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-desktop/1.2.0-alpha01-dev620/1919d7a55a1a062b6a246cff591fde745372bc99/runtime-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.animation/animation-core-desktop/1.2.0-alpha01-dev620/e0eba9e7a67e516a2abced2a00be1db84df062c9/animation-core-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.0/f3b8fd26c2e76d2f18cbc36aacb6e349fcb9fd5f/kotlinx-coroutines-core-jvm-1.6.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-swing/1.6.0/5b22cc9df8a195119eb0f0b3309adadab422550a/kotlinx-coroutines-swing-1.6.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds-jvm/2.7.0/ca99ed93c1f1c8f799c76dd0c1e0f05a099e8aed/kds-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem-jvm/2.7.0/6d49cf7485ade46ebe0ec67e5d42cc1366135a2b/kmem-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-jvm/2.7.0/dd45bdeab97754a9b6aa654d9812e39bae7e7feb/klogger-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.fluidsonic.locale/fluid-locale-jvm/0.10.0/8dc345626e329a9dc22769055c969ad2ead1cb02/fluid-locale-jvm-0.10.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.6.20/dab8089bca6ac0e394c37281ea8cff2f99acd421/kotlin-stdlib-jdk8-1.6.20.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.14.3/c43a81e18e6d0eb71951aa031d55d5c293c531a6/jsoup-1.14.3.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-datetime-jvm/0.3.2/3996d021ef470dc9dcdb48c4a24640f72586661/kotlinx-datetime-jvm-0.3.2.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm/1.3.2/83bf06c9ec6f37fbc0664f66cb220f18e845c1a6/kotlinx-serialization-json-jvm-1.3.2.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.6.20/f8629f336bad4001c89e9cffa5ef3d4b5d0f5e22/kotlin-stdlib-jdk7-1.6.20.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-core-jvm/1.3.2/e25f48b4e070f969aa7ac3374d467f9c7f088766/kotlinx-serialization-core-jvm-1.3.2.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.6.20/6cedc143badbb4f1c6b7f5a340b04edff1743208/kotlin-stdlib-1.6.20.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-common-jvm/1.2.1/60c181d9aad34f3dd73415912722550bf03c389b/stately-common-jvm-1.2.1.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-isolate-jvm/1.2.1/92a4412bb7ac8ca5c3e49153605ef67edfef6495/stately-isolate-jvm-1.2.1.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-unit-desktop/1.2.0-alpha01-dev620/f704f697ea02a6fa1605d8a1b4126aab769c2c30/ui-unit-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.36/6c62681a2f655b49963a5983b8b0950a6120ae14/slf4j-api-1.7.36.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-geometry-desktop/1.2.0-alpha01-dev620/70ba1a798a3a6544829983a5c4cce9d6f9e8e39a/ui-geometry-desktop-1.2.0-alpha01-dev620.jar" />
+          <option name="classpath" value="$MODULE_DIR$/../../../commonCompose/build/classes/kotlin/desktop/main;E:/IntelliJProjects/SamloaderKotlin/common/build/libs/common-desktop-1.0.5.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.github.zacharee/snapper/f81f5ba180/6ad11d467c4835a41c01f34c89c8b9612c0035da/snapper-f81f5ba180.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.github.zacharee.snapper/snapper-desktop/f81f5ba180/5bdd937cd97ee92da98c19563fd604db15f09cda/snapper-desktop-f81f5ba180.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-desktop/1.2.0-alpha01-dev620/79af66576b11b91987bb9b2fd513840171a1504f/material-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-ripple-desktop/1.2.0-alpha01-dev620/b1945e6d710004e301f8c52b9fac0c0dea7e0fb6/material-ripple-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-desktop/1.2.0-alpha01-dev620/c64d6c9f5f569703b92f4c49d74ccec4f96c9d47/foundation-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.animation/animation-desktop/1.2.0-alpha01-dev620/9fa66a4f39cf38dcc0e003b4e498fa7e0f6c9473/animation-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-icons-core-desktop/1.2.0-alpha01-dev620/ee1048fa74e691b85ba0a216a8ba5ec0e71850ce/material-icons-core-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-tooling-desktop/1.0.0/9e97afdaf75a5977505b923b96ab905ae3413d48/ui-tooling-desktop-1.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-layout-desktop/1.2.0-alpha01-dev620/b48253dfbf051280c258d1aed4ce6166f875e92f/foundation-layout-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-desktop/1.2.0-alpha01-dev620/13eaf15e13c94d69aab9faa4db0b20693ba6cf7f/ui-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-saveable-desktop/1.2.0-alpha01-dev620/ecd40a4bee2fcbee869521d89fa8137a5ad30be9/runtime-saveable-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-tooling-preview-desktop/1.0.0/4676c56ea7defd68facfab054079ac1e76aba57f/ui-tooling-preview-desktop-1.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/3.0.0-alpha.9/b1d6cc65ba9a6570fa636011f4c06839b0ca3cab/okio-jvm-3.0.0-alpha.9.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio-jvm/2.7.0/6afaee97d39b2e9b28728e92ba9149e39e0cc0fc/korio-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-jvm/2.7.0/a5ed9199214bc34c930112d52d923be22cffb8f/krypto-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klock/klock-jvm/2.7.0/b5321bbd285652a659d8bfda6edd10d06b3bc3e0/klock-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth-jvm/2.0.0/b4514c4739ba3dcff8389ba1951ddb2285cfbf4a/ktor-client-auth-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-cio-jvm/2.0.0/1e1f5ec921edeb49bb8fc6c8b7c33f9f7f2f279a/ktor-client-cio-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core-jvm/2.0.0/163a99720f07857c5c9c9970fa575b632a116075/ktor-client-core-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.fluidsonic.i18n/fluid-i18n-jvm/0.10.0/5ae670cb5f7ebfd0a9b7d18b34c3fd34a22d103d/fluid-i18n-jvm-0.10.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-jvm/0.11.0/86a2c0178bf999cfa29971571a666b0891d4c517/fluid-country-jvm-0.11.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-text-desktop/1.2.0-alpha01-dev620/1d1d3bd984e4c7631727073970255249b32e8634/ui-text-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-graphics-desktop/1.2.0-alpha01-dev620/3178db193fc539c389eb9759441ce8287d3de8e5/ui-graphics-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt/0.7.9/bee810b01ab26ce13515d1677c7657f3b85a5636/skiko-awt-0.7.9.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-events-jvm/2.0.0/8c3b149807a1d3f70af3cbdc294cb848d36e8981/ktor-events-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-websocket-serialization-jvm/2.0.0/4ea19180060cfdc0f2a6779b02fc0df3a92ecf28/ktor-websocket-serialization-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-cio-jvm/2.0.0/2400f7d08625f52ea9459e93fe08593dd18b1e08/ktor-http-cio-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-serialization-jvm/2.0.0/48cf1d7dcfcaa6b769ded9ce685d4bd7918534df/ktor-serialization-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-websockets-jvm/2.0.0/6680b1cc5850bf677bf99714188049046a243cb7/ktor-websockets-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-jvm/2.0.0/197125a38b090e57e9fd0a9f277a6c510f4c759d/ktor-http-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-network-tls-jvm/2.0.0/2307dbeef782ceb5e9045a101a40585c87dc539b/ktor-network-tls-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-network-jvm/2.0.0/90cffed080726ade71231684e60f1b7d03ed4e00/ktor-network-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils-jvm/2.0.0/a7aaec019c9332c7685d69704c2993536088c5c6/ktor-utils-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io-jvm/2.0.0/1fc34e07e20556c47aa3f0070a2e4eb05b719f41/ktor-io-jvm-2.0.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-jdk8/1.6.0/49fdbe0570870f025f293c25f5e58fdf5be8dafb/kotlinx-coroutines-jdk8-1.6.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-desktop/1.2.0-alpha01-dev620/1919d7a55a1a062b6a246cff591fde745372bc99/runtime-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.animation/animation-core-desktop/1.2.0-alpha01-dev620/e0eba9e7a67e516a2abced2a00be1db84df062c9/animation-core-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.0/f3b8fd26c2e76d2f18cbc36aacb6e349fcb9fd5f/kotlinx-coroutines-core-jvm-1.6.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-swing/1.6.0/5b22cc9df8a195119eb0f0b3309adadab422550a/kotlinx-coroutines-swing-1.6.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds-jvm/2.7.0/ca99ed93c1f1c8f799c76dd0c1e0f05a099e8aed/kds-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem-jvm/2.7.0/6d49cf7485ade46ebe0ec67e5d42cc1366135a2b/kmem-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-jvm/2.7.0/dd45bdeab97754a9b6aa654d9812e39bae7e7feb/klogger-jvm-2.7.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/io.fluidsonic.locale/fluid-locale-jvm/0.10.0/8dc345626e329a9dc22769055c969ad2ead1cb02/fluid-locale-jvm-0.10.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.6.20/dab8089bca6ac0e394c37281ea8cff2f99acd421/kotlin-stdlib-jdk8-1.6.20.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.14.3/c43a81e18e6d0eb71951aa031d55d5c293c531a6/jsoup-1.14.3.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/com.formdev/flatlaf/2.1/d425a89164bb82e1967f84b6fd3eff5ff9f60ecd/flatlaf-2.1.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-datetime-jvm/0.3.2/3996d021ef470dc9dcdb48c4a24640f72586661/kotlinx-datetime-jvm-0.3.2.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm/1.3.2/83bf06c9ec6f37fbc0664f66cb220f18e845c1a6/kotlinx-serialization-json-jvm-1.3.2.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.6.20/f8629f336bad4001c89e9cffa5ef3d4b5d0f5e22/kotlin-stdlib-jdk7-1.6.20.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-core-jvm/1.3.2/e25f48b4e070f969aa7ac3374d467f9c7f088766/kotlinx-serialization-core-jvm-1.3.2.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.6.20/6cedc143badbb4f1c6b7f5a340b04edff1743208/kotlin-stdlib-1.6.20.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-common-jvm/1.2.1/60c181d9aad34f3dd73415912722550bf03c389b/stately-common-jvm-1.2.1.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-isolate-jvm/1.2.1/92a4412bb7ac8ca5c3e49153605ef67edfef6495/stately-isolate-jvm-1.2.1.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-unit-desktop/1.2.0-alpha01-dev620/f704f697ea02a6fa1605d8a1b4126aab769c2c30/ui-unit-desktop-1.2.0-alpha01-dev620.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.36/6c62681a2f655b49963a5983b8b0950a6120ae14/slf4j-api-1.7.36.jar;C:/Users/Zacha/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-geometry-desktop/1.2.0-alpha01-dev620/70ba1a798a3a6544829983a5c4cce9d6f9e8e39a/ui-geometry-desktop-1.2.0-alpha01-dev620.jar" />
           <option name="noStdlib" value="true" />
           <option name="moduleName" value="commonCompose" />
           <option name="jvmTarget" value="11" />
@@ -71,9 +71,9 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.20" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jsoup:jsoup:1.14.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.github.zacharee.snapper:snapper-desktop:f81f5ba180" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.formdev:flatlaf:2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime:1.2.0-alpha01-dev620" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.zacharee.snapper:snapper-desktop:f81f5ba180" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.7.0">
@@ -97,7 +97,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.foundation:foundation-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.krypto:krypto:commonMain:2.7.0">
         <CLASSES>
@@ -109,7 +109,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.foundation:foundation-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.klock:klock:commonMain:2.7.0">
         <CLASSES>
@@ -121,7 +121,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-client-auth:commonMain:2.0.0">
         <CLASSES>
@@ -133,7 +133,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.20" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-client-core:commonMain:2.0.0">
         <CLASSES>
@@ -145,8 +145,8 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.20" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.20" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio:3.0.0-alpha.9" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:commonMain:1.6.0">
         <CLASSES>
@@ -169,7 +169,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.korio:korio-jvm:2.7.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio:3.0.0-alpha.9" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime:commonMain:0.3.2">
         <CLASSES>
@@ -181,7 +181,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.krypto:krypto-jvm:2.7.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.korio:korio-jvm:2.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.9" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: co.touchlab:stately-isolate:commonMain:1.2.1">
@@ -194,7 +194,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.klock:klock-jvm:2.7.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.krypto:krypto-jvm:2.7.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: co.touchlab:stately-common:commonMain:1.2.1">
         <CLASSES>
@@ -206,7 +206,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-auth-jvm:2.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.klock:klock-jvm:2.7.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.fluidsonic.i18n:fluid-i18n:commonMain:0.10.0">
         <CLASSES>
@@ -218,7 +218,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-cio-jvm:2.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-auth-jvm:2.0.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.fluidsonic.country:fluid-country:commonMain:0.11.0">
         <CLASSES>
@@ -230,8 +230,8 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-cio-jvm:2.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-client-core-jvm:2.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.fluidsonic.i18n:fluid-i18n-jvm:0.10.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:commonMain:1.3.2">
         <CLASSES>
@@ -244,31 +244,31 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="TEST" name="Gradle: com.github.zacharee.snapper:snapper:f81f5ba180" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.fluidsonic.i18n:fluid-i18n-jvm:0.10.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.fluidsonic.country:fluid-country-jvm:0.11.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-ripple:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.3.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: co.touchlab:stately-common-jvm:1.2.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-icons-core:1.2.0-alpha01-dev620" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: co.touchlab:stately-isolate-jvm:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation-core:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: co.touchlab:stately-isolate-jvm:1.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-text:1.2.0-alpha01-dev620" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.3.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation:1.2.0-alpha01-dev620" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.3.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable:1.2.0-alpha01-dev620" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.2.0-alpha01-dev620" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.2.0-alpha01-dev620" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.slf4j:slf4j-api:1.7.36" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.slf4j:slf4j-api:1.7.36" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-tooling-desktop:1.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-ripple-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.6.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-icons-core-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-ripple-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.6.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.7.0">
         <CLASSES>
@@ -291,8 +291,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.github.aakira:napier-jvm:1.4.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-text-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.material:material-icons-core-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.kmem:kmem:commonMain:2.7.0">
         <CLASSES>
@@ -315,7 +314,8 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation-core-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.github.aakira:napier-jvm:1.4.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-text-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.klogger:klogger:commonMain:2.7.0">
         <CLASSES>
@@ -327,7 +327,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation-core-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-events:commonMain:2.0.0">
         <CLASSES>
@@ -339,7 +339,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.animation:animation-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-websocket-serialization:commonMain:2.0.0">
         <CLASSES>
@@ -351,7 +351,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-graphics-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime-saveable-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-http:commonMain:2.0.0">
         <CLASSES>
@@ -363,8 +363,7 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.skiko:skiko-awt:0.7.9" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-unit-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-graphics-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core:commonMain:1.3.2">
         <CLASSES>
@@ -376,6 +375,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.skiko:skiko-awt:0.7.9" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.fluidsonic.locale:fluid-locale:commonMain:0.10.0">
         <CLASSES>
@@ -387,14 +387,14 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-unit-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-geometry-desktop:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-tooling:1.0.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.compose.ui:ui-util-desktop:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.kds:kds-jvm:2.7.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-tooling:1.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.kmem:kmem-jvm:2.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.kmem:kmem-jvm:2.7.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.klogger:klogger-jvm:2.7.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-http-cio-jvm:2.0.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-utils:commonMain:2.0.0">
         <CLASSES>
@@ -406,6 +406,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-http-cio-jvm:2.0.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-serialization:commonMain:2.0.0">
         <CLASSES>
@@ -418,9 +419,7 @@
       </library>
     </orderEntry>
     <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-websockets-jvm:2.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-network-tls-jvm:2.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-tooling-preview:1.0.0" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-events-jvm:2.0.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-io:commonMain:2.0.0">
         <CLASSES>
@@ -432,7 +431,8 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-websocket-serialization-jvm:2.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-network-tls-jvm:2.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-events-jvm:2.0.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-websockets:commonMain:2.0.0">
         <CLASSES>
@@ -444,6 +444,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-websocket-serialization-jvm:2.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.ktor:ktor-http-jvm:2.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.fluidsonic.locale:fluid-locale-jvm:0.10.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.3.2" level="project" />

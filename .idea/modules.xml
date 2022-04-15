@@ -43,6 +43,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.commonTest.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.commonTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.jvmMain.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.jvmMain.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.jvmTest.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.jvmTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.main.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.test.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/SamloaderKotlin.desktop.test.iml" />
     </modules>
   </component>
 </project>

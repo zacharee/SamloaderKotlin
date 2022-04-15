@@ -4,11 +4,13 @@ import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.*
+import com.formdev.flatlaf.FlatDarkLaf
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.MainView
+import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.view.pages.PlatformDownloadView
 import java.awt.Desktop
 import javax.swing.*
@@ -41,8 +43,8 @@ fun main() {
             icon = getImage("icon.png").toPainter(),
             state = mainWindowState
         ) {
-            PlatformDownloadView.setWindow(window)
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+            UIManager.setLookAndFeel(FlatDarkLaf())
+            FilePicker.init(window)
 
             if (hostOs == OS.MacOS) {
                 MenuBar {
