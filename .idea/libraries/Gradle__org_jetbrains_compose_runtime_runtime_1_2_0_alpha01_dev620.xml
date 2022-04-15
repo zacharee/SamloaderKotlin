@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.runtime:runtime:1.2.0-alpha01-dev620">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime/1.2.0-alpha01-dev620/6a2df47700d82946ed49f8794654664596efb2b1/runtime-metadata-1.2.0-alpha01-dev620.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime/1.2.0-alpha01-dev620/8f09ec812eb118cf9bd1c00839c6bdc3d2d00fc/runtime-1.2.0-alpha01-dev620-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

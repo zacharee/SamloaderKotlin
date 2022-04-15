@@ -7,6 +7,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4cd787dcf243c2087a88cca23b24b077/transformed/activity-compose-1.4.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4cd787dcf243c2087a88cca23b24b077/transformed/activity-compose-1.4.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4cd787dcf243c2087a88cca23b24b077/transformed/activity-compose-1.4.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2dac6bfba624ab8e23f240bee1fef336/transformed/activity-compose-1.4.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/2dac6bfba624ab8e23f240bee1fef336/transformed/activity-compose-1.4.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/2dac6bfba624ab8e23f240bee1fef336/transformed/activity-compose-1.4.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

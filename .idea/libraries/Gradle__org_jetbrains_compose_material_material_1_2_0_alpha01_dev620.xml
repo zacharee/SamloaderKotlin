@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.material:material:1.2.0-alpha01-dev620">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material/1.2.0-alpha01-dev620/212e0bb5b206ffa0aecdd2146b23cf68942e3f8f/material-metadata-1.2.0-alpha01-dev620.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.material/material/1.2.0-alpha01-dev620/92e4d9e980283659085e5149ad1142351525925e/material-1.2.0-alpha01-dev620-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

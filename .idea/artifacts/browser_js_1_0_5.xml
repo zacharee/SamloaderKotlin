@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="browser-js-1.0.5">
+    <output-path>$PROJECT_DIR$/browser/build/libs</output-path>
+    <root id="archive" name="browser-js-1.0.5.jar" />
+  </artifact>
+</component>

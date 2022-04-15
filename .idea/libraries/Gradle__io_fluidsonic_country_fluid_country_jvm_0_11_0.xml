@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: io.fluidsonic.country:fluid-country-jvm:0.11.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-jvm/0.11.0/86a2c0178bf999cfa29971571a666b0891d4c517/fluid-country-jvm-0.11.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-jvm/0.11.0/6191274e1e8a4bd7aa994791a6c9829dba8020/fluid-country-jvm-0.11.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-jvm/0.11.0/87ae7b08fda7b8c9b1e5d11d23baf29ad7c8360b/fluid-country-jvm-0.11.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

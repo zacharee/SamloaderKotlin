@@ -2,34 +2,38 @@
 <module external.linked.project.id=":common:androidTestFixturesDebug" external.linked.project.path="$MODULE_DIR$/../../../common" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="tk.zwander" external.system.module.type="sourceSet" external.system.module.version="1.0.5" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="kotlin-language" name="Kotlin">
-      <configuration version="4" platform="Common (experimental) " allPlatforms="JS []/JVM [1.8]" useProjectSettings="false" isTestModule="false" externalProjectId=":common" isHmppProject="true" pureKotlinSourceFolders="$MODULE_DIR$/../../../common/src/androidDebug/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/debug/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/debug/java;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/androidDebugAndroidTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/androidDebugUnitTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/androidRelease/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/release/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/release/java;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/androidReleaseUnitTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/desktopMain/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/desktopTest/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/jsMain/kotlin;/Users/zachary/IdeaProjects/SamloaderKotlin/common/build/externals/SamloaderKotlin-common/src;/Users/zachary/IdeaProjects/SamloaderKotlin/common/src/jsTest/kotlin">
+      <configuration version="5" platform="Common (experimental) " allPlatforms="JS []/JVM [1.8]" useProjectSettings="false" isTestModule="false" externalProjectId=":common" isHmppProject="true">
         <newMppModelJpsModuleKind>SOURCE_SET_HOLDER</newMppModelJpsModuleKind>
         <compilerSettings>
           <option name="additionalArguments" value="-opt-in kotlin.RequiresOptIn" />
         </compilerSettings>
         <compilerArguments>
-          <option name="languageVersion" value="1.6" />
-          <option name="apiVersion" value="1.6" />
-          <option name="pluginOptions">
-            <array />
-          </option>
-          <option name="pluginClasspaths">
-            <array>
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.0.1/4690b3304ce2f28a31a69df55754d2a5b073222/compiler-1.0.1.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-api/1.6.10/2c8ba59185f5857a29833856d5e03e03755731a7/kotlin-gradle-plugin-api-1.6.10.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.6.10/dbe683647dcb04cda92fe4423acb741a2f144a69/kotlin-scripting-jvm-1.6.10.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.6.10/b3b71fd93878f2b4f19d099ac6430c67549a1c77/kotlin-scripting-common-1.6.10.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.6.10/b8af3fe6f1ca88526914929add63cf5e7c5049af/kotlin-stdlib-1.6.10.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-native-utils/1.6.10/dd39b79ad4d789c066cc5a62d8dde7a21f1d3ef8/kotlin-native-utils-1.6.10.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-project-model/1.6.10/1c821660ccd0c89a669fd6cd7cda70afe388c2e5/kotlin-project-model-1.6.10.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.6.10/c118700e3a33c8a0d9adc920e9dec0831171925/kotlin-stdlib-common-1.6.10.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-util-io/1.6.10/e8557b2856d4fa4d49f0a5af9b5cbf85a009ca7c/kotlin-util-io-1.6.10.jar" />
-              <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.6.10/d0a7ff2e2500ef497ed0214ae40ad3c8387a6164/kotlin-script-runtime-1.6.10.jar" />
-              <option value="$KOTLIN_BUNDLED$/lib/kotlinx-serialization-compiler-plugin.jar" />
-            </array>
-          </option>
-          <option name="multiPlatform" value="true" />
+          <flagArguments>
+            <flagArg name="multiPlatform" arg="true" />
+          </flagArguments>
+          <stringArguments>
+            <stringArg name="apiVersion" arg="1.6" />
+            <stringArg name="languageVersion" arg="1.6" />
+          </stringArguments>
+          <arrayArguments>
+            <arrayArg name="pluginClasspaths">
+              <args>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.compiler/compiler/1.2.0-alpha01-dev620/4d306d86116d0fc03bb8c8b33f2d8991a34a323a/compiler-1.2.0-alpha01-dev620.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-api/1.6.10/2c8ba59185f5857a29833856d5e03e03755731a7/kotlin-gradle-plugin-api-1.6.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/1.6.10/dbe683647dcb04cda92fe4423acb741a2f144a69/kotlin-scripting-jvm-1.6.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/1.6.10/b3b71fd93878f2b4f19d099ac6430c67549a1c77/kotlin-scripting-common-1.6.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.6.10/b8af3fe6f1ca88526914929add63cf5e7c5049af/kotlin-stdlib-1.6.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-native-utils/1.6.10/dd39b79ad4d789c066cc5a62d8dde7a21f1d3ef8/kotlin-native-utils-1.6.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-project-model/1.6.10/1c821660ccd0c89a669fd6cd7cda70afe388c2e5/kotlin-project-model-1.6.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.6.10/c118700e3a33c8a0d9adc920e9dec0831171925/kotlin-stdlib-common-1.6.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-util-io/1.6.10/e8557b2856d4fa4d49f0a5af9b5cbf85a009ca7c/kotlin-util-io-1.6.10.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.6.10/d0a7ff2e2500ef497ed0214ae40ad3c8387a6164/kotlin-script-runtime-1.6.10.jar</arg>
+                <arg>$KOTLIN_BUNDLED$/lib/kotlinx-serialization-compiler-plugin.jar</arg>
+              </args>
+            </arrayArg>
+            <arrayArg name="pluginOptions" />
+          </arrayArguments>
         </compilerArguments>
       </configuration>
     </facet>
@@ -41,105 +45,105 @@
     <orderEntry type="jdk" jdkName="Kotlin SDK" jdkType="KotlinSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="module-library">
-      <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.4.8">
+      <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.7.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.korio-korio/com.soywiz.korlibs.korio-korio-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio/2.4.8/afa2b1c3dd1f1517286f3e8572d20703419e0ffa/korio-2.4.8-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio/2.7.0/ab033d71e64c8cd34d76bebf3a7bd68c322a6a8f/korio-2.7.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: com.soywiz.korlibs.krypto:krypto:commonMain:2.4.8">
+      <library name="Gradle: com.soywiz.korlibs.krypto:krypto:commonMain:2.7.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.krypto-krypto/com.soywiz.korlibs.krypto-krypto-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto/2.4.8/143476c73416cd2921140a9199064f5281d2f48/krypto-2.4.8-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto/2.7.0/d33cc2aaae26c83009a4230d326230c9cbd87909/krypto-2.7.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: com.soywiz.korlibs.klock:klock:commonMain:2.4.8">
+      <library name="Gradle: com.soywiz.korlibs.klock:klock:commonMain:2.7.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.klock-klock/com.soywiz.korlibs.klock-klock-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klock/klock/2.4.8/627fbdef50a24bc2c18a2d57885a3faa0d538c6b/klock-2.4.8-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klock/klock/2.7.0/a8ef7f16c259ae871f7f7d720734e9b2cc74d4fb/klock-2.7.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
     <orderEntry type="module-library">
-      <library name="Gradle: io.ktor:ktor-client-auth:commonMain:1.6.7">
+      <library name="Gradle: io.ktor:ktor-client-auth:commonMain:2.0.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-client-auth/io.ktor-ktor-client-auth-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth/1.6.7/1bde65f800281b13a9145928f94c9547f319a8f1/ktor-client-auth-1.6.7-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth/2.0.0/6004c9d142df5c5c83767177008ccaa295ca4c50/ktor-client-auth-2.0.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: io.ktor:ktor-client-core:commonMain:1.6.7">
+      <library name="Gradle: io.ktor:ktor-client-core:commonMain:2.0.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-client-core/io.ktor-ktor-client-core-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core/1.6.7/cd8dbd3a519cb324c192480a419b3fb9da72d4b2/ktor-client-core-1.6.7-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core/2.0.0/1614c6e145429531c3d1cfe160b0a6bb00edc8ab/ktor-client-core-2.0.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:commonMain:1.5.2">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:commonMain:1.6.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/org.jetbrains.kotlinx-kotlinx-coroutines-core/org.jetbrains.kotlinx-kotlinx-coroutines-core-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.5.2/eec85c0ad7175c570935d37cfe8a749c57991a53/kotlinx-coroutines-core-1.5.2-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.6.0/327ad3b2d2ffb2152dd25e945a8f6fd9dc72a7d0/kotlinx-coroutines-core-1.6.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime:commonMain:0.3.1">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime:commonMain:0.3.2">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/org.jetbrains.kotlinx-kotlinx-datetime/org.jetbrains.kotlinx-kotlinx-datetime-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-datetime/0.3.1/e1612faa385b90ecfb319ce74668f812c4d63de3/kotlinx-datetime-0.3.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-datetime/0.3.2/369d037ba8a21c4cc18e34748a03b926a2840c44/kotlinx-datetime-0.3.2-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.9" level="project" />
     <orderEntry type="module-library">
-      <library name="Gradle: co.touchlab:stately-isolate:commonMain:1.2.0-nmm">
+      <library name="Gradle: co.touchlab:stately-isolate:commonMain:1.2.1">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/co.touchlab-stately-isolate/co.touchlab-stately-isolate-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-isolate/1.2.0-nmm/d76c597c05e21ae6bcfaf45f095a78e5c2ccdb00/stately-isolate-1.2.0-nmm-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-isolate/1.2.1/b71227a89bfc1f509017bb48bc857e6e9dbc0f91/stately-isolate-1.2.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: co.touchlab:stately-common:commonMain:1.2.0-nmm">
+      <library name="Gradle: co.touchlab:stately-common:commonMain:1.2.1">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/co.touchlab-stately-common/co.touchlab-stately-common-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-common/1.2.0-nmm/3a10c255ea3dd87c7541644492bda9e6c0223667/stately-common-1.2.0-nmm-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-common/1.2.1/29fcd3b3ba8c8d41784b27f6bfb14da2edba6e1e/stately-common-1.2.1-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -155,115 +159,104 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: io.fluidsonic.country:fluid-country:commonMain:0.10.0">
+      <library name="Gradle: io.fluidsonic.country:fluid-country:commonMain:0.11.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.fluidsonic.country-fluid-country/io.fluidsonic.country-fluid-country-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country/0.10.0/d3bbfcced55e6778a153d29d82b04be1a34620c8/fluid-country-0.10.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country/0.11.0/325b3980ce5e97c010963829391cdedf0aa5992d/fluid-country-0.11.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:commonMain:1.3.1">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:commonMain:1.3.2">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/org.jetbrains.kotlinx-kotlinx-serialization-json/org.jetbrains.kotlinx-kotlinx-serialization-json-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-json/1.3.1/ccc0688e2726b7d6c06f4e0df2e8681bfe3eb762/kotlinx-serialization-json-1.3.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-json/1.3.2/bed7bbbc2e4044eec68534f7dadc10988330b054/kotlinx-serialization-json-1.3.2-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.4.8">
+      <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.7.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.kds-kds/com.soywiz.korlibs.kds-kds-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds/2.4.8/6db4b310d3ff48ca2af64be7aa55d623a59bf8eb/kds-2.4.8-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds/2.7.0/12aac9f113b11b3e44e3984dfabd5651f6b346fe/kds-2.7.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: com.soywiz.korlibs.kds:kds:nonNativeCommonMain:2.4.8">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.kds-kds/com.soywiz.korlibs.kds-kds-nonNativeCommonMain.klib!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds/2.4.8/6db4b310d3ff48ca2af64be7aa55d623a59bf8eb/kds-2.4.8-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Gradle: com.soywiz.korlibs.kmem:kmem:commonMain:2.4.8">
+      <library name="Gradle: com.soywiz.korlibs.kmem:kmem:commonMain:2.7.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.kmem-kmem/com.soywiz.korlibs.kmem-kmem-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem/2.4.8/d1db171966df86e758bdc51efaf4797bce6654fd/kmem-2.4.8-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem/2.7.0/dc36dffaadf22f351e413ef7f9fee952aef3a68d/kmem-2.7.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: com.soywiz.korlibs.kmem:kmem:nonNativeCommonMain:2.4.8">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.kmem-kmem/com.soywiz.korlibs.kmem-kmem-nonNativeCommonMain.klib!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem/2.4.8/d1db171966df86e758bdc51efaf4797bce6654fd/kmem-2.4.8-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Gradle: com.soywiz.korlibs.klogger:klogger:commonMain:2.4.8">
+      <library name="Gradle: com.soywiz.korlibs.klogger:klogger:commonMain:2.7.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.klogger-klogger/com.soywiz.korlibs.klogger-klogger-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger/2.4.8/3b397995349f8bfad52c32e514aa85cb87e72146/klogger-2.4.8-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger/2.7.0/d37d6aa679399fb5ffd4833319e5ca568826f532/klogger-2.7.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.20" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
     <orderEntry type="module-library">
-      <library name="Gradle: io.ktor:ktor-http-cio:commonMain:1.6.7">
+      <library name="Gradle: io.ktor:ktor-events:commonMain:2.0.0">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-http-cio/io.ktor-ktor-http-cio-commonMain.klib!/" />
+          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-events/io.ktor-ktor-events-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-cio/1.6.7/1c4851934fbfafc38d7d44100e34d598a27dce4e/ktor-http-cio-1.6.7-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-events/2.0.0/5cdb658cf5daa90cec29168d3274103a412dff6e/ktor-events-2.0.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: io.ktor:ktor-http:commonMain:1.6.7">
+      <library name="Gradle: io.ktor:ktor-websocket-serialization:commonMain:2.0.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-websocket-serialization/io.ktor-ktor-websocket-serialization-commonMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-websocket-serialization/2.0.0/39646e8d90422382d1fff4c80d25dc9707908667/ktor-websocket-serialization-2.0.0-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: io.ktor:ktor-http:commonMain:2.0.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-http/io.ktor-ktor-http-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http/1.6.7/f8d13144078daf322dc8e40aafacca0e9f8203d7/ktor-http-1.6.7-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-http/2.0.0/57a1f58f2a7bdced5565d13f95d741be9a7bef2d/ktor-http-2.0.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core:commonMain:1.3.1">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core:commonMain:1.3.2">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/org.jetbrains.kotlinx-kotlinx-serialization-core/org.jetbrains.kotlinx-kotlinx-serialization-core-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-core/1.3.1/95a888eac5351a4441c318363128144e9d6e446d/kotlinx-serialization-core-1.3.1-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-core/1.3.2/a010a52b2f658f4d3f82301432993c170f1eb475/kotlinx-serialization-core-1.3.2-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -280,24 +273,46 @@
     </orderEntry>
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="module-library">
-      <library name="Gradle: io.ktor:ktor-utils:commonMain:1.6.7">
+      <library name="Gradle: io.ktor:ktor-utils:commonMain:2.0.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-utils/io.ktor-ktor-utils-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils/1.6.7/2c8488a61b53394911c95353fdc6889898f13f66/ktor-utils-1.6.7-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils/2.0.0/6df1f2aa740648f1a7374a0b8a1399d142c9e4c4/ktor-utils-2.0.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library name="Gradle: io.ktor:ktor-io:commonMain:1.6.7">
+      <library name="Gradle: io.ktor:ktor-serialization:commonMain:2.0.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-serialization/io.ktor-ktor-serialization-commonMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-serialization/2.0.0/1c796379983b56a9db8ee59bf531839d233fa3d4/ktor-serialization-2.0.0-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: io.ktor:ktor-io:commonMain:2.0.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-io/io.ktor-ktor-io-commonMain.klib!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io/1.6.7/74e7b4c59e5e01f2bfd132ee0264005a6c3c3097/ktor-io-1.6.7-sources.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io/2.0.0/fb99a4b07b60f403b352c57789aef2a94955ba6b/ktor-io-2.0.0-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: io.ktor:ktor-websockets:commonMain:2.0.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/io.ktor-ktor-websockets/io.ktor-ktor-websockets-commonMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-websockets/2.0.0/d89fd3612bf87644dc6febe436d743021cbafeaa/ktor-websockets-2.0.0-sources.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>

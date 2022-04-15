@@ -4,8 +4,8 @@
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
         <option name="GRADLE_PROJECT_PATH" value=":commonCompose" />
-        <option name="LAST_SUCCESSFUL_SYNC_AGP_VERSION" value="7.3.0-alpha03" />
-        <option name="LAST_KNOWN_AGP_VERSION" value="7.3.0-alpha03" />
+        <option name="LAST_SUCCESSFUL_SYNC_AGP_VERSION" value="7.3.0-alpha08" />
+        <option name="LAST_KNOWN_AGP_VERSION" value="7.3.0-alpha08" />
       </configuration>
     </facet>
     <facet type="kotlin-language" name="Kotlin">
@@ -67,48 +67,6 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../commonCompose">
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidAndroidTest/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidAndroidTest/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidAndroidTestDebug/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidAndroidTestDebug/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidDebug/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidDebug/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidDebugAndroidTest/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidDebugAndroidTest/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidDebugUnitTest/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidDebugUnitTest/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidMain/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidMain/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidRelease/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidRelease/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidReleaseUnitTest/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidReleaseUnitTest/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidTest/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidTest/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidTest/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidTestDebug/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidTestDebug/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidTestDebug/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidTestRelease/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/androidTestRelease/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/debug/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/debug/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/debug/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/main/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/release/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/release/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/release/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/test/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/test/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/testDebug/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/testDebug/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/testDebug/resources" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/testRelease/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/testRelease/kotlin" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../commonCompose/src/testRelease/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../../../commonCompose/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../commonCompose/build" />
     </content>
@@ -119,11 +77,12 @@
     <orderEntry type="module" module-name="SamloaderKotlin.common.androidTestFixturesDebug" />
     <orderEntry type="module" module-name="SamloaderKotlin.common.androidTestFixturesRelease" />
     <orderEntry type="module" module-name="SamloaderKotlin.common.commonMain" />
+    <orderEntry type="module" module-name="SamloaderKotlin.common.main" />
     <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.androidAndroidTestRelease" scope="TEST" />
     <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.androidTestFixtures" scope="TEST" />
     <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.androidTestFixturesDebug" scope="TEST" />
     <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.androidTestFixturesRelease" scope="TEST" />
-    <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.commonMain" />
-    <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.commonTest" scope="TEST" production-on-test="" />
+    <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.commonMain" scope="TEST" />
+    <orderEntry type="module" module-name="SamloaderKotlin.commonCompose.main" scope="TEST" />
   </component>
 </module>
