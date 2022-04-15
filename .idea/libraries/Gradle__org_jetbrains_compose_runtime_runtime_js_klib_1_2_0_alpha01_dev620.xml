@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains.compose.runtime:runtime-js:klib:1.2.0-alpha01-dev620" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-js/1.2.0-alpha01-dev620/e47e4bed46f86765fbe41b4c25bd38a2215b1fdf/runtime-js-1.2.0-alpha01-dev620.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-js/1.2.0-alpha01-dev620/fb334da6ef7fd1455583d11904b094a5a31027d7/runtime-js-1.2.0-alpha01-dev620-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -78,7 +78,6 @@ class FusClient(
      * @param data any body data that needs to go into the request.
      * @return the response body data, as text. Usually XML.
      */
-    @OptIn(InternalAPI::class)
     suspend fun makeReq(request: Request, data: String = ""): String {
         if (nonce.isBlank() && request != Request.GENERATE_NONCE) {
             generateNonce()
@@ -87,7 +86,7 @@ class FusClient(
         val authV = getAuthV()
 
         val response = client.use {
-            it.request<HttpResponse>(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net:443/${request.value}")) {
+            it.request(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net:443/${request.value}")) {
                 method = HttpMethod.Post
                 headers {
                     append("Authorization", authV)
@@ -95,7 +94,7 @@ class FusClient(
                     append("Cookie", "JSESSIONID=${sessId}")
                     append("Set-Cookie", "JSESSIONID=${sessId}")
                 }
-                body = data
+                setBody(data)
             }
         }
 
@@ -114,7 +113,7 @@ class FusClient(
                 ?.replace(Regex(";.*$"), "") ?: sessId
         }
 
-        return response.readText()
+        return response.bodyAsText()
     }
 
     /**

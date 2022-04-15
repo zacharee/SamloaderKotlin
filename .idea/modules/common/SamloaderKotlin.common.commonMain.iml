@@ -40,7 +40,9 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../common/build/buildkonfig/commonMain" />
+    <content url="file://$MODULE_DIR$/../../../common/build/buildkonfig/commonMain">
+      <sourceFolder url="file://$MODULE_DIR$/../../../common/build/buildkonfig/commonMain" type="kotlin-source" />
+    </content>
     <content url="file://$MODULE_DIR$/../../../common/src/commonMain/kotlin">
       <sourceFolder url="file://$MODULE_DIR$/../../../common/src/commonMain/kotlin" type="kotlin-source" />
     </content>

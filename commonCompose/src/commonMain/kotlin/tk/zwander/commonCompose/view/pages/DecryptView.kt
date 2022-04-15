@@ -13,7 +13,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.model.DecryptModel
@@ -34,6 +33,7 @@ expect object PlatformDecryptView {
     fun onProgress(status: String, current: Long, max: Long)
 }
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
 private suspend fun onDecrypt(model: DecryptModel) {
     PlatformDecryptView.onStart()

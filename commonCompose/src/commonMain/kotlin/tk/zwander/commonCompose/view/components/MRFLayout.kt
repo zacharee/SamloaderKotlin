@@ -1,6 +1,5 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
@@ -23,7 +22,6 @@ import tk.zwander.common.model.DownloadModel
  * @param canChangeFirmware whether the firmware field should be editable.
  * @param showFirmware whether to show the firmware field.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
     val fontScale = LocalDensity.current.fontScale

@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.klogger:klogger-android:2.7.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/8d7b453ed52fd9dbb3d8beeb549f53c3/transformed/klogger-debug/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/8d7b453ed52fd9dbb3d8beeb549f53c3/transformed/klogger-debug/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-android/2.7.0/248e4d52bc970322830d3a2b45ccb2fae6238753/klogger-android-2.7.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-android/2.7.0/58e5c94d35fef32f4c98564e9b8f0794f5f2c510/klogger-android-2.7.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

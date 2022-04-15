@@ -1,11 +1,8 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.commonCompose.util.parseHtml
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ChangelogDisplay(
     changelog: Changelog

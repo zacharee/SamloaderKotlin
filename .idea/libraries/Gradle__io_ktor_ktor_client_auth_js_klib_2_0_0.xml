@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: io.ktor:ktor-client-auth-js:klib:2.0.0" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth-js/2.0.0/ea7d99c5a9454eea6cc1f9b63ffd11d7a37b0bc1/ktor-client-auth-jsir-2.0.0.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-auth-js/2.0.0/292b74abaf882c000b43e77b352b3562b73b523/ktor-client-auth-js-2.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

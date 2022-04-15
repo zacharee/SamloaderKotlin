@@ -23,12 +23,11 @@ object ChangelogHandler {
         return getChangelogs(device, region, useProxy)?.changelogs?.get(firmware)
     }
 
-    @OptIn(InternalAPI::class)
     suspend fun getChangelogs(device: String, region: String, useProxy: Boolean = false): Changelogs? {
         val outerUrl = generateUrlForDeviceAndRegion(device, region, useProxy)
         val outerResponse = try {
             client.use {
-                it.get<HttpResponse> {
+                it.get {
                     url(outerUrl)
                 }
             }
@@ -38,7 +37,7 @@ object ChangelogHandler {
         }
 
         val iframeUrl = if (outerResponse.status.isSuccess()) {
-            PlatformChangelogHandler.parseDocUrl(outerResponse.readText())
+            PlatformChangelogHandler.parseDocUrl(outerResponse.bodyAsText())
                 ?.replace("../../", generateProperUrl(useProxy, "$DOMAIN_URL/"))
         } else {
             println("No changelogs found for $device $region")
@@ -46,14 +45,14 @@ object ChangelogHandler {
         }
 
         val iframeResponse = client.use {
-            it.get<HttpResponse> {
+            it.get {
                 url(iframeUrl ?: return null)
             }
         }
 
         return if (iframeResponse.status.isSuccess()) {
             Changelogs(device, region, PlatformChangelogHandler.parseChangelogs(
-                iframeResponse.readText()
+                iframeResponse.bodyAsText()
             ))
         } else {
             println("Unable to load changelogs for $device $region")

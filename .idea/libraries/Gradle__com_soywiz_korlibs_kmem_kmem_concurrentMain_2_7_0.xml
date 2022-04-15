@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.soywiz.korlibs.kmem:kmem:concurrentMain:2.7.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/desktop.SamloaderKotlin/jvmMain/implementation/com.soywiz.korlibs.kmem-kmem/com.soywiz.korlibs.kmem-kmem-concurrentMain.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem/2.7.0/dc36dffaadf22f351e413ef7f9fee952aef3a68d/kmem-2.7.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,10 +1,8 @@
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
@@ -21,8 +19,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.util.ChangelogHandler
@@ -74,7 +70,6 @@ private suspend fun onFetch(model: HistoryModel) {
  * @param onDownload a callback for when the user hits the "Download" button on an item.
  * @param onDecrypt a callback for when the user hits the "Decrypt" button on an item.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryView(
     model: HistoryModel,
@@ -176,7 +171,6 @@ fun HistoryView(
                 )
             }
 
-            @OptIn(ExperimentalAnimationApi::class)
             AnimatedVisibility(
                 visible = model.historyItems.isNotEmpty(),
                 enter = fadeIn(),

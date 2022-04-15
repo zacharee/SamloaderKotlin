@@ -1,7 +1,6 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
@@ -23,7 +22,6 @@ fun ProgressInfo(model: BaseModel) {
     ) {
         val hasProgress = model.progress.first > 0 && model.progress.second > 0
 
-        @OptIn(ExperimentalAnimationApi::class)
         AnimatedVisibility(
             visible = hasProgress
         ) {

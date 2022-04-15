@@ -1,3 +1,5 @@
+@file:Suppress("OPT_IN_IS_NOT_ENABLED")
+
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.*
@@ -12,9 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +22,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
-import com.soywiz.korio.async.launchImmediately
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.GradleConfig
@@ -202,7 +201,6 @@ private suspend fun onFetch(model: DownloadModel) {
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-@OptIn(ExperimentalAnimationApi::class)
 fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
     val canCheckVersion = !model.manual && model.model.isNotBlank()
             && model.region.isNotBlank() && model.job == null

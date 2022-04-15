@@ -36,9 +36,8 @@ val historyModel = HistoryModel()
 /**
  * The main UI view.
  */
-@OptIn(DangerousInternalIoApi::class, ExperimentalPagerApi::class, ExperimentalSnapperApi::class,
-    ExperimentalComposeUiApi::class
-)
+@Suppress("OPT_IN_IS_NOT_ENABLED")
+@OptIn(DangerousInternalIoApi::class, ExperimentalPagerApi::class)
 @ExperimentalTime
 @Composable
 fun MainView() {

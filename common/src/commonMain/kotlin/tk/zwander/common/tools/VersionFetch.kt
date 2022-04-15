@@ -2,6 +2,7 @@ package tk.zwander.common.tools
 
 import com.soywiz.korio.serialization.xml.Xml
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.core.*
 import tk.zwander.common.data.FetchResult
@@ -21,14 +22,14 @@ object VersionFetch {
     suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = false): FetchResult.VersionFetchResult {
         try {
             val response = client.use {
-                it.get<String>(
+                it.get(
                     urlString = generateProperUrl(useProxy, "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml")
                 ) {
                     userAgent("Kies2.0_FUS")
                 }
             }
 
-            val responseXml = Xml(response)
+            val responseXml = Xml(response.bodyAsText())
 
             if (responseXml.name == "Error") {
                 val code = responseXml.child("Code")!!.text
