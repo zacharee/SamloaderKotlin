@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.startup:startup-runtime:aar:1.1.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.startup/startup-runtime/1.1.0/81bcda4796c33c557622c22b8570c32fa72dad78/startup-runtime-1.1.0.aar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.startup/startup-runtime/1.1.0/4c05087ef4fd7e8d60dde42edf0225195d3a12fd/startup-runtime-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

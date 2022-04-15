@@ -63,6 +63,8 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/667fdb64e62f03692fa93ff958aaf5b7/transformed/klock-debug-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.i18n/fluid-i18n-jvm/0.10.0/5ae670cb5f7ebfd0a9b7d18b34c3fd34a22d103d/fluid-i18n-jvm-0.10.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-jvm/0.11.0/86a2c0178bf999cfa29971571a666b0891d4c517/fluid-country-jvm-0.11.0.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/9107727256cc17466e58060d454af137/transformed/multiplatform-settings-no-arg-debug-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/3629565d11b529932d1f27ab1f0811ed/transformed/multiplatform-settings-debug-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/5dc33e0ebd036e1ae5b29e2c85fb4fe8/transformed/kds-debug-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/574300be3cab9ff88b7b5c6d2faa110d/transformed/kmem-debug-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/274ca6f187164ed563c337de5d0a2563/transformed/klogger-debug-api.jar</arg>
@@ -637,5 +639,7 @@
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kds:kds-android:2.7.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kmem:kmem-android:2.7.0@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klogger:klogger-android:2.7.0@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.russhwolf:multiplatform-settings-android-debug:0.8.1@aar" level="project" />
+    <orderEntry type="library" name="Gradle: com.russhwolf:multiplatform-settings-no-arg-android-debug:0.8.1@aar" level="project" />
   </component>
 </module>

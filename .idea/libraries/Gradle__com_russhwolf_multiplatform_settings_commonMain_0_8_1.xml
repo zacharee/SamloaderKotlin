@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.russhwolf:multiplatform-settings:commonMain:0.8.1" type="kotlin.common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/desktop.SamloaderKotlin/jvmMain/implementation/com.russhwolf-multiplatform-settings/com.russhwolf-multiplatform-settings-commonMain.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.russhwolf/multiplatform-settings/0.8.1/cc674780c2f0d82e6568b697efc724aaab9f0b5f/multiplatform-settings-0.8.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

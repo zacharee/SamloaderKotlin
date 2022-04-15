@@ -28,6 +28,8 @@
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core-jvm/2.0.0/163a99720f07857c5c9c9970fa575b632a116075/ktor-client-core-jvm-2.0.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.i18n/fluid-i18n-jvm/0.10.0/5ae670cb5f7ebfd0a9b7d18b34c3fd34a22d103d/fluid-i18n-jvm-0.10.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-jvm/0.11.0/86a2c0178bf999cfa29971571a666b0891d4c517/fluid-country-jvm-0.11.0.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.russhwolf/multiplatform-settings-no-arg-jvm/0.8.1/f09234f689f2a5db719d59b61e70da0fb35d0228/multiplatform-settings-no-arg-jvm-0.8.1.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.russhwolf/multiplatform-settings-jvm/0.8.1/857860862a3c0b47c5ce3c684621d4e7a63876d8/multiplatform-settings-jvm-0.8.1.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds-jvm/2.7.0/ca99ed93c1f1c8f799c76dd0c1e0f05a099e8aed/kds-jvm-2.7.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem-jvm/2.7.0/6d49cf7485ade46ebe0ec67e5d42cc1366135a2b/kmem-jvm-2.7.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-jvm/2.7.0/dd45bdeab97754a9b6aa654d9812e39bae7e7feb/klogger-jvm-2.7.0.jar</arg>
@@ -48,6 +50,7 @@
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.0/f3b8fd26c2e76d2f18cbc36aacb6e349fcb9fd5f/kotlinx-coroutines-core-jvm-1.6.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.14.3/c43a81e18e6d0eb71951aa031d55d5c293c531a6/jsoup-1.14.3.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.formdev/flatlaf/2.1/d425a89164bb82e1967f84b6fd3eff5ff9f60ecd/flatlaf-2.1.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.github.vincenzopalazzo/material-ui-swing/1.1.2/7ade5ca9d9ebfe6195c06e1a2419391ae59bc7e6/material-ui-swing-1.1.2.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-datetime-jvm/0.3.2/3996d021ef470dc9dcdb48c4a24640f72586661/kotlinx-datetime-jvm-0.3.2.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm/1.3.2/83bf06c9ec6f37fbc0664f66cb220f18e845c1a6/kotlinx-serialization-json-jvm-1.3.2.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.6.20/f8629f336bad4001c89e9cffa5ef3d4b5d0f5e22/kotlin-stdlib-jdk7-1.6.20.jar</arg>
@@ -113,14 +116,14 @@
     </orderEntry>
     <orderEntry type="library" name="Gradle: org.jsoup:jsoup:1.14.3" level="project" />
     <orderEntry type="library" name="Gradle: com.formdev:flatlaf:2.1" level="project" />
+    <orderEntry type="library" name="Gradle: io.github.vincenzopalazzo:material-ui-swing:1.1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime-desktop:1.2.0-alpha01-dev620" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:3.0.0-alpha.9" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio:3.0.0-alpha.9" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.korio:korio-jvm:2.7.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.krypto:krypto-jvm:2.7.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-cio:jvmAndNixMain:2.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.soywiz.korlibs.krypto:krypto-jvm:2.7.0" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klock:klock-jvm:2.7.0" level="project" />
-    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-auth-jvm:2.0.0" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core:concurrentMain:1.6.0">
         <CLASSES>
@@ -132,11 +135,14 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-cio-jvm:2.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-auth-jvm:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.9" level="project" />
+    <orderEntry type="library" name="Gradle: io.ktor:ktor-client-cio-jvm:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-client-core-jvm:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n-jvm:0.10.0" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.country:fluid-country-jvm:0.11.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.russhwolf:multiplatform-settings-no-arg-jvm:0.8.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.russhwolf:multiplatform-settings-jvm:0.8.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.20" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.20" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0" level="project" />
@@ -167,32 +173,37 @@
     </orderEntry>
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.3.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.swinglabs:swingx:1.6.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.jiconfont:jiconfont-swing:1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.36" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kds:kds-jvm:2.7.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio:commonMain:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.kmem:kmem-jvm:2.7.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-slf4j:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: com.soywiz.korlibs.klogger:klogger-jvm:2.7.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls:jvmAndNixMain:2.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.jhlabs:filters:2.0.235" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-cio-jvm:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: co.touchlab:stately-concurrency-jvm:1.2.1" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-websockets-jvm:2.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.swinglabs:swing-worker:1.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: com.github.jiconfont:jiconfont:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-network-tls-jvm:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-events-jvm:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-websocket-serialization-jvm:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-http-jvm:2.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: co.touchlab:stately-concurrency-jvm:1.2.1" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.locale:fluid-locale-jvm:0.10.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-network:jvmAndNixMain:2.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.3.2" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-network-jvm:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.fluidsonic.currency:fluid-currency-jvm:0.10.1" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-utils-jvm:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.fluidsonic.i18n:fluid-i18n-data-identifiers-jvm:0.10.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-serialization-jvm:2.0.0" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.fluidsonic.i18n:fluid-i18n-data-regions-jvm:0.10.0" level="project" />
     <orderEntry type="library" name="Gradle: io.ktor:ktor-io-jvm:2.0.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.fluidsonic.currency:fluid-currency-jvm:0.10.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.fluidsonic.i18n:fluid-i18n-data-identifiers-jvm:0.10.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: io.fluidsonic.i18n:fluid-i18n-data-regions-jvm:0.10.0" level="project" />
   </component>
 </module>

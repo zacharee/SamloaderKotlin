@@ -186,6 +186,28 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
+      <library name="Gradle: com.russhwolf:multiplatform-settings-no-arg:commonMain:0.8.1">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.russhwolf-multiplatform-settings-no-arg/com.russhwolf-multiplatform-settings-no-arg-commonMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.russhwolf/multiplatform-settings-no-arg/0.8.1/4e61393548b387cb7f84886f089751d7bc26e153/multiplatform-settings-no-arg-0.8.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library name="Gradle: com.russhwolf:multiplatform-settings:commonMain:0.8.1">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.russhwolf-multiplatform-settings/com.russhwolf-multiplatform-settings-commonMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.russhwolf/multiplatform-settings/0.8.1/cc674780c2f0d82e6568b697efc724aaab9f0b5f/multiplatform-settings-0.8.1-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.7.0">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../../../.gradle/kotlin/sourceSetMetadata/common.SamloaderKotlin/commonMain/api/com.soywiz.korlibs.kds-kds/com.soywiz.korlibs.kds-kds-commonMain.klib!/" />

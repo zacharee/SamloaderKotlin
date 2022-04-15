@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.russhwolf:multiplatform-settings-js:klib:0.8.1" type="kotlin.js">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.russhwolf/multiplatform-settings-js/0.8.1/fe7a52ec2a44882ed908e3ff5015c019f3bfbd1f/multiplatform-settings-jsir-0.8.1.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.russhwolf/multiplatform-settings-js/0.8.1/f39b0de176599306bf6742a788bbb15c6d22db01/multiplatform-settings-js-0.8.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

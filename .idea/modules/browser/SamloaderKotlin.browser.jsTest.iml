@@ -120,6 +120,8 @@
     <orderEntry type="library" scope="TEST" name="Gradle: io.fluidsonic.i18n:fluid-i18n-js:klib:0.10.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: io.fluidsonic.country:fluid-country-js:klib:0.11.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-js:klib:1.3.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.russhwolf:multiplatform-settings-no-arg-js:klib:0.8.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.russhwolf:multiplatform-settings-js:klib:0.8.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:atomicfu-js:klib:0.17.0" level="project" />

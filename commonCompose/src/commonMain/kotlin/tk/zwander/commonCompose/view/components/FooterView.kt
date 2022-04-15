@@ -27,6 +27,7 @@ fun FooterView(
 ) {
     Box {
         var showingSupportersDialog by remember { mutableStateOf(false) }
+        var showingSettings by remember { mutableStateOf(false) }
 
         Row(
             modifier = modifier.fillMaxWidth()
@@ -148,12 +149,32 @@ fun FooterView(
                         modifier = Modifier.padding(8.dp)
                     )
                 }
+
+                Spacer(Modifier.width(8.dp))
+
+                IconButton(
+                    onClick = {
+                        showingSettings = true
+                    }
+                ) {
+                    Icon(
+                        imageVector = vectorResource("settings.xml"),
+                        contentDescription = "Settings",
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
             }
         }
 
         if (showingSupportersDialog) {
             PatreonSupportersDialog {
                 showingSupportersDialog = false
+            }
+        }
+
+        if (showingSettings) {
+            SettingsDialog {
+                showingSettings = false
             }
         }
     }

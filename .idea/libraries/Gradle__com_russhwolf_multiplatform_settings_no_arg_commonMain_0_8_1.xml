@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.russhwolf:multiplatform-settings-no-arg:commonMain:0.8.1" type="kotlin.common">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/desktop.SamloaderKotlin/jvmMain/implementation/com.russhwolf-multiplatform-settings-no-arg/com.russhwolf-multiplatform-settings-no-arg-commonMain.klib!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.russhwolf/multiplatform-settings-no-arg/0.8.1/4e61393548b387cb7f84886f089751d7bc26e153/multiplatform-settings-no-arg-0.8.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -11,7 +11,6 @@ import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
-import tk.zwander.commonCompose.view.pages.PlatformDownloadView
 import java.awt.Desktop
 import javax.swing.*
 import kotlin.time.ExperimentalTime
