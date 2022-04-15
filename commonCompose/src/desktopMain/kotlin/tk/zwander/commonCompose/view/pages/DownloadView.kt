@@ -1,20 +1,25 @@
 package tk.zwander.commonCompose.view.pages
 
+import androidx.compose.ui.awt.ComposeWindow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformFile
+import java.awt.Dialog
 import java.awt.FileDialog
-import java.awt.Frame
 import java.io.File
+import javax.swing.FocusManager
+
+var composeWindow: ComposeWindow? = null
 
 actual object PlatformDownloadView {
     actual suspend fun getInput(
         fileName: String,
         callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit
     ) {
+
         coroutineScope {
-            val dialog = FileDialog(Frame())
+            val dialog = FileDialog(Dialog(FocusManager.getCurrentManager().focusedWindow))
             dialog.mode = FileDialog.SAVE
             dialog.file = fileName
             dialog.isVisible = true
