@@ -25,7 +25,12 @@ Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) p
 These errors are on Samsung's end. If you can, try using a different region/CSC.
 
 ## Bifrost is returning error 403 when checking for updates
-These errors are on Samsung's end. Samsung may no longer be serving firmware for your device or may not have started serving firmware yet. Try a different region/CSC if possible.
+These errors are on Samsung's end. Samsung may no longer be serving firmware for your device or may not have started serving firmware yet. Try a different region/CSC if possible and check to make sure your model number is correct.
+
+## Bifrost opens to a blank screen on Windows
+On certain GPUs, Jetpack Compose/Skia has trouble rendering. Try running the program as an administrator.
+
+If you have switchable graphics, try using a different GPU.
 
 ## Download speeds are slow
 Samsung's servers sometimes throttle downloads to about 3MiB/s. For older devices, you may see even slower speeds. Different regions/CSCs may have faster downloads.
