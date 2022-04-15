@@ -1,6 +1,5 @@
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
@@ -10,7 +9,6 @@ import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.MainView
-import tk.zwander.commonCompose.view.pages.composeWindow
 import java.awt.Desktop
 import javax.swing.*
 import kotlin.time.ExperimentalTime
@@ -37,16 +35,11 @@ fun main() {
         }
 
         Window(
-            onCloseRequest = {
-                composeWindow = null
-                exitApplication()
-            },
+            onCloseRequest = ::exitApplication,
             title = "Bifrost",
             icon = getImage("icon.png").toPainter(),
             state = mainWindowState
         ) {
-            composeWindow = window
-
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
             if (hostOs == OS.MacOS) {

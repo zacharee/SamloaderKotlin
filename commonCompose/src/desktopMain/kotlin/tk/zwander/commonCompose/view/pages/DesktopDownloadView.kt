@@ -1,6 +1,5 @@
 package tk.zwander.commonCompose.view.pages
 
-import androidx.compose.ui.awt.ComposeWindow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DownloadFileInfo
@@ -9,8 +8,6 @@ import java.awt.Dialog
 import java.awt.FileDialog
 import java.io.File
 import javax.swing.FocusManager
-
-var composeWindow: ComposeWindow? = null
 
 actual object PlatformDownloadView {
     actual suspend fun getInput(
