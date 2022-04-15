@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.soywiz.korlibs.krypto:krypto-js:klib:2.7.0">
+  <library name="Gradle: com.soywiz.korlibs.krypto:krypto-js:klib:2.7.0" type="kotlin.js">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.krypto/krypto-js/2.7.0/1dfa6ab2a99374299646aaa3c7fb773ab7d47347/krypto-js-2.7.0.klib!/" />
     </CLASSES>

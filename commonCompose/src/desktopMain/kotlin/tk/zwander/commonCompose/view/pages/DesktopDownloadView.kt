@@ -2,31 +2,25 @@ package tk.zwander.commonCompose.view.pages
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
+import moe.tlaster.kfilepicker.FilePicker
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformFile
-import java.awt.Dialog
-import java.awt.FileDialog
 import java.io.File
-import javax.swing.FocusManager
 
 actual object PlatformDownloadView {
     actual suspend fun getInput(
         fileName: String,
         callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit
     ) {
-
         coroutineScope {
-            val dialog = FileDialog(Dialog(FocusManager.getCurrentManager().focusedWindow))
-            dialog.mode = FileDialog.SAVE
-            dialog.file = fileName
-            dialog.isVisible = true
+            val file = FilePicker.createFile(fileName)
 
-            if (dialog.file == null) {
+            if (file == null) {
                 callback(null)
             } else {
-                val outputFile = File(dialog.directory, dialog.file)
+                val outputFile = File(file.path)
                 val decFile =
-                    File(dialog.directory, fileName.replace(".enc2", "").replace(".enc4", ""))
+                    File(file.path.replace(file.name, ""), fileName.replace(".enc2", "").replace(".enc4", ""))
 
                 callback(
                     DownloadFileInfo(

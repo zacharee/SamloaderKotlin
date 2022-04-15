@@ -71,6 +71,7 @@
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/fe336422cef84004fee1c4d45f623844/transformed/animation-core-1.1.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.0/f3b8fd26c2e76d2f18cbc36aacb6e349fcb9fd5f/kotlinx-coroutines-core-jvm-1.6.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/16fa4e1009c02efb874b511a97c405a5/transformed/fragment-ktx-1.4.1-api.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/transforms-3/d9b5cd303601ff0c8fe5cb96d180a6e1/transformed/KFilePicker-android-debug-1.0.4-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/9ad334e1a6cc8889d902d5b1e7f5420f/transformed/activity-ktx-1.4.0-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/78aa6e692769d6c373edd66e29b8014b/transformed/lifecycle-viewmodel-ktx-2.3.1-api.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/transforms-3/3687bbc1448419d477cefec299325edb/transformed/lifecycle-runtime-ktx-2.3.1-api.jar</arg>
@@ -637,6 +638,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.kds:kds-android:2.7.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.kmem:kmem-android:2.7.0@aar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.soywiz.korlibs.klogger:klogger-android:2.7.0@aar" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.Tlaster.KFilePicker:KFilePicker-android-debug:1.0.4@aar" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="SamloaderKotlin.commonCompose.main" />
 </module>

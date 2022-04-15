@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.Tlaster.KFilePicker:KFilePicker-android-debug:1.0.4@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/f3a3de1dd94ee065e8c4750c32c11377/transformed/KFilePicker-android-debug-1.0.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/f3a3de1dd94ee065e8c4750c32c11377/transformed/KFilePicker-android-debug-1.0.4/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tlaster.KFilePicker/KFilePicker-android-debug/1.0.4/719c054bb85e7feff250efd41342b1da75eb98ca/KFilePicker-android-debug-1.0.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

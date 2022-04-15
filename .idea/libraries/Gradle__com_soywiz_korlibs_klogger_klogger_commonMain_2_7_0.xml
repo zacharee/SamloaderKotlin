@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.soywiz.korlibs.klogger:klogger:commonMain:2.7.0">
+  <library name="Gradle: com.soywiz.korlibs.klogger:klogger:commonMain:2.7.0" type="kotlin.common">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/.gradle/kotlin/sourceSetMetadata/desktop.SamloaderKotlin/jvmMain/implementation/com.soywiz.korlibs.klogger-klogger/com.soywiz.korlibs.klogger-klogger-commonMain.klib!/" />
     </CLASSES>

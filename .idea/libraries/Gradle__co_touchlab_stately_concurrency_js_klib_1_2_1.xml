@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: co.touchlab:stately-concurrency-js:klib:1.2.1">
+  <library name="Gradle: co.touchlab:stately-concurrency-js:klib:1.2.1" type="kotlin.js">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/co.touchlab/stately-concurrency-js/1.2.1/ffa92dc683db7c4253b2cf671b9489c4f10756ac/stately-concurrency-jsir-1.2.1.klib!/" />
     </CLASSES>

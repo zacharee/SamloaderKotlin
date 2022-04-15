@@ -39,6 +39,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.runtime:runtime:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.Tlaster.KFilePicker:KFilePicker:1.0.4" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.7.0">
         <CLASSES>
@@ -209,6 +210,7 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-tooling:1.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.foundation:foundation-layout:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.compose.ui:ui-tooling-preview:1.0.0" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.20" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.7.0">
         <CLASSES>
@@ -264,7 +266,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.20" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: io.ktor:ktor-events:commonMain:2.0.0">
         <CLASSES>

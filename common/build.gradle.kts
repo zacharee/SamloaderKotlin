@@ -75,6 +75,7 @@ kotlin {
                 api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
                 api("io.fluidsonic.country:fluid-country:0.11.0")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+                api("com.github.Tlaster.KFilePicker:KFilePicker:1.0.4")
             }
         }
 

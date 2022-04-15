@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
+import moe.tlaster.kfilepicker.FilePicker
 import tk.zwander.commonCompose.MainView
 import tk.zwander.common.data.*
 import kotlin.time.ExperimentalTime
@@ -67,6 +68,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FilePicker.init(activityResultRegistry, this, contentResolver)
 
         //Start the DownloaderService.
         DownloaderService.start(this, object : IMainActivity.Stub() {

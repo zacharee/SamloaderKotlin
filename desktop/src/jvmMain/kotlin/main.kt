@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.*
+import moe.tlaster.kfilepicker.FilePicker
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
@@ -40,6 +41,7 @@ fun main() {
             icon = getImage("icon.png").toPainter(),
             state = mainWindowState
         ) {
+            FilePicker.init(window)
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
 
             if (hostOs == OS.MacOS) {

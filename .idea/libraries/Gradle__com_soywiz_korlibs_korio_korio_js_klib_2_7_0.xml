@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="Gradle: com.soywiz.korlibs.korio:korio-js:klib:2.7.0">
+  <library name="Gradle: com.soywiz.korlibs.korio:korio-js:klib:2.7.0" type="kotlin.js">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.korio/korio-js/2.7.0/340ad79654389e8b138bf63bb6bfefe2ba7bd7ad/korio-js-2.7.0.klib!/" />
     </CLASSES>

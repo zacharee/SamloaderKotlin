@@ -28,6 +28,7 @@
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core-jvm/2.0.0/163a99720f07857c5c9c9970fa575b632a116075/ktor-client-core-jvm-2.0.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.i18n/fluid-i18n-jvm/0.10.0/5ae670cb5f7ebfd0a9b7d18b34c3fd34a22d103d/fluid-i18n-jvm-0.10.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.fluidsonic.country/fluid-country-jvm/0.11.0/86a2c0178bf999cfa29971571a666b0891d4c517/fluid-country-jvm-0.11.0.jar</arg>
+                <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Tlaster.KFilePicker/KFilePicker-desktop/1.0.4/94aee8aa9caed36395bbcda7ef16cd0df771a93/KFilePicker-desktop-1.0.4.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kds/kds-jvm/2.7.0/ca99ed93c1f1c8f799c76dd0c1e0f05a099e8aed/kds-jvm-2.7.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.kmem/kmem-jvm/2.7.0/6d49cf7485ade46ebe0ec67e5d42cc1366135a2b/kmem-jvm-2.7.0.jar</arg>
                 <arg>$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz.korlibs.klogger/klogger-jvm/2.7.0/dd45bdeab97754a9b6aa654d9812e39bae7e7feb/klogger-jvm-2.7.0.jar</arg>
@@ -135,9 +136,11 @@
     <orderEntry type="library" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.9" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.i18n:fluid-i18n-jvm:0.10.0" level="project" />
     <orderEntry type="library" name="Gradle: io.fluidsonic.country:fluid-country-jvm:0.11.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.Tlaster.KFilePicker:KFilePicker-desktop:1.0.4" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.20" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.20" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.Tlaster.KFilePicker:KFilePicker:1.0.4" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.3.2" level="project" />
     <orderEntry type="library" name="Gradle: co.touchlab:stately-common-jvm:1.2.1" level="project" />
     <orderEntry type="library" name="Gradle: co.touchlab:stately-isolate-jvm:1.2.1" level="project" />

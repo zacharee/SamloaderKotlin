@@ -185,6 +185,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="Gradle: com.github.Tlaster.KFilePicker:KFilePicker:1.0.4" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="Gradle: com.soywiz.korlibs.kds:kds:commonMain:2.7.0">
         <CLASSES>

@@ -31,6 +31,7 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.foundation:foundation:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.runtime:runtime:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.Tlaster.KFilePicker:KFilePicker:1.0.4" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: com.soywiz.korlibs.korio:korio:commonMain:2.7.0">
@@ -198,6 +199,7 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-graphics:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-unit:1.2.0-alpha01-dev620" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.compose.ui:ui-geometry:1.2.0-alpha01-dev620" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.20" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.6.10" level="project" />
     <orderEntry type="module-library">
@@ -255,7 +257,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.6.20" level="project" />
     <orderEntry type="module-library">
       <library name="Gradle: io.ktor:ktor-events:commonMain:2.0.0">
         <CLASSES>
