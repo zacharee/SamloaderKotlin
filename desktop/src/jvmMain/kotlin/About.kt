@@ -19,6 +19,7 @@ import tk.zwander.commonCompose.util.imageResource
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.FooterView
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AboutDialog(
