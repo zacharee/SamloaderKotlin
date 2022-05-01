@@ -61,7 +61,7 @@ kotlin {
                 api(compose.runtime)
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
@@ -91,7 +91,7 @@ kotlin {
 
         named("androidMain") {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
                 api("androidx.appcompat:appcompat:1.4.1")
