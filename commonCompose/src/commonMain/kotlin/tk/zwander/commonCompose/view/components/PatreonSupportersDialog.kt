@@ -6,6 +6,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.soywiz.korio.async.launch
+import tk.zwander.common.res.Strings
 import tk.zwander.common.util.PatreonSupportersParser
 import tk.zwander.common.util.SupporterInfo
 
@@ -29,11 +30,11 @@ fun PatreonSupportersDialog(
             TextButton(
                 onClick = onDismissRequest
             ) {
-                Text(text = "OK")
+                Text(text = Strings.ok)
             }
         },
         title = {
-            Text(text = "Patreon Supporters")
+            Text(text = Strings.patreonSupporters)
         },
         text = {
             PatreonSupportersList(

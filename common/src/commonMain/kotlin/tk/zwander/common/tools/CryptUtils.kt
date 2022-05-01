@@ -303,14 +303,10 @@ object CryptUtils {
      */
     suspend fun checkMD5(md5: String, updateFile: AsyncInputStream?): Boolean {
         if (md5.isBlank() || updateFile == null) {
-//            Napier.e("MD5 string empty or updateFile null", tag = "SamsungFirmwareDownloader")
             return false
         }
-        val calculatedDigest = calculateMD5(updateFile)
-        if (calculatedDigest == null) {
-//            Napier.e("calculatedDigest null", tag = "SamsungFirmwareDownloader")
-            return false
-        }
+
+        val calculatedDigest = calculateMD5(updateFile) ?: return false
         return calculatedDigest.equals(md5, ignoreCase = true)
             .also { updateFile.close() }
     }
@@ -336,7 +332,6 @@ object CryptUtils {
             try {
                 updateFile.close()
             } catch (e: Exception) {
-//                Napier.e("Exception on closing MD5 input stream", tag = "SamsungFirmwareDownloader")
                 e.printStackTrace()
             }
         }

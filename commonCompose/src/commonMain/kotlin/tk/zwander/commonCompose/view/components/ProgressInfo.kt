@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
+import tk.zwander.common.res.Strings
 import kotlin.math.roundToInt
 
 /**
@@ -44,7 +45,7 @@ fun ProgressInfo(model: BaseModel) {
                     val totalMB = (model.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
 
                     Text(
-                        text = "$currentMB / $totalMB MiB",
+                        text = Strings.mib.format(currentMB, totalMB),
                     )
 
                     Spacer(Modifier.height(8.dp))
@@ -55,19 +56,19 @@ fun ProgressInfo(model: BaseModel) {
                         "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
 
                     Text(
-                        text = "$finalSpeed ${if (shouldUseMB) "MiB/s" else "KiB/s"}",
+                        text = "$finalSpeed ${if (shouldUseMB) Strings.mibs else Strings.kibs}",
                     )
 
                     Spacer(Modifier.height(8.dp))
 
                     Text(
-                        text = "${
+                        text = Strings.percent.format(
                             try {
                                 (model.progress.first.toFloat() / model.progress.second * 100 * 100.0).roundToInt() / 100.0
                             } catch (e: IllegalArgumentException) {
                                 0
                             }
-                        }%",
+                        ),
                     )
                 }
 

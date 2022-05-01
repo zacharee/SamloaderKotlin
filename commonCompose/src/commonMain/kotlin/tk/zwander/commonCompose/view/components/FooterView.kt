@@ -15,7 +15,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.soywiz.korio.lang.format
 import tk.zwander.common.GradleConfig
+import tk.zwander.common.res.Strings
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.util.vectorResource
 
@@ -42,7 +44,7 @@ fun FooterView(
                             fontSize = 16.sp
                         )
                     )
-                    append("v${GradleConfig.versionName} \u00A9 ")
+                    append(Strings.version.format("${GradleConfig.versionName} © "))
                     pushStyle(
                         SpanStyle(
                             color = MaterialTheme.colors.primary,
@@ -50,7 +52,7 @@ fun FooterView(
                         )
                     )
                     pushStringAnnotation("WebsiteLink", "https://zwander.dev")
-                    append("Zachary Wander")
+                    append(Strings.zacharyWander)
                     pop()
                 }
 
@@ -61,7 +63,7 @@ fun FooterView(
                             fontSize = 16.sp
                         )
                     )
-                    append("Based on ")
+                    append(Strings.basedOn)
                     pushStyle(
                         SpanStyle(
                             color = MaterialTheme.colors.primary,
@@ -69,7 +71,7 @@ fun FooterView(
                         )
                     )
                     pushStringAnnotation("SamloaderLink", "https://github.com/nlscc/samloader")
-                    append("Samloader")
+                    append(Strings.samloader)
                     pop()
                 }
 
@@ -107,7 +109,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            vectorResource("heart.xml"), "Supporters",
+                            vectorResource("heart.xml"), Strings.supporters,
                             modifier = Modifier.padding(8.dp)
                         )
                     }
@@ -120,7 +122,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            vectorResource("github.xml"), "GitHub",
+                            vectorResource("github.xml"), Strings.github,
                             modifier = Modifier.padding(8.dp)
                         )
                     }
@@ -133,7 +135,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            vectorResource("twitter.xml"), "Twitter",
+                            vectorResource("twitter.xml"), Strings.twitter,
                             modifier = Modifier.padding(8.dp)
                         )
                     }
@@ -146,7 +148,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            vectorResource("patreon.xml"), "Patreon",
+                            vectorResource("patreon.xml"), Strings.patreon,
                             modifier = Modifier.padding(8.dp)
                         )
                     }
@@ -160,7 +162,7 @@ fun FooterView(
                     ) {
                         Icon(
                             imageVector = vectorResource("settings.xml"),
-                            contentDescription = "Settings",
+                            contentDescription = Strings.settings,
                             modifier = Modifier.padding(8.dp)
                         )
                     }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.russhwolf.settings.Settings
 import com.soywiz.korio.util.OS
+import tk.zwander.common.res.Strings
 
 @Composable
 fun SettingsDialog(
@@ -30,11 +31,11 @@ fun SettingsDialog(
             TextButton(
                 onClick = onDismissRequest
             ) {
-                Text(text = "OK")
+                Text(text = Strings.ok)
             }
         },
         title = {
-            Text("Settings")
+            Text(Strings.settings)
         },
         text = {
             Column(
@@ -44,7 +45,7 @@ fun SettingsDialog(
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Use native file picker")
+                        Text(Strings.useNativeFilePicker)
                         Spacer(Modifier.weight(1f))
                         Switch(
                             checked = checked,

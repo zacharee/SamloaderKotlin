@@ -1,5 +1,6 @@
 package tk.zwander.common.tools
 
+import com.soywiz.korio.lang.format
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.serialization.xml.buildXml
 import com.soywiz.krypto.MD5
@@ -7,6 +8,7 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
+import tk.zwander.common.res.Strings
 
 /**
  * Handle some requests to Samsung's servers.
@@ -174,14 +176,14 @@ object Request {
 
             if (status != 200) {
                 return FetchResult.GetBinaryFileResult(
-                    error = Exception("Bad return status: $status"),
+                    error = Exception(Strings.badReturnStatus.format(status)),
                     rawOutput = responseXml.toString()
                 )
             }
 
             val noBinaryError = {
                 FetchResult.GetBinaryFileResult(
-                    error = Exception("No binary file found for $model, $region! Please try a different CSC."),
+                    error = Exception(Strings.noBinaryFile.format(model, region)),
                     rawOutput = responseXml.toString()
                 )
             }
@@ -273,7 +275,7 @@ object Request {
 
                 if (served != fw) {
                     return FetchResult.GetBinaryFileResult(
-                        error = Exception("You requested $fw but Samsung is attempting to serve $served instead. Aborting!")
+                        error = Exception(Strings.versionMismatch.format(fw, served))
                     )
                 }
             }

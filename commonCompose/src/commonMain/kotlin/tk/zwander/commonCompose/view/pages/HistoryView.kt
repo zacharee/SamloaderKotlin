@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.model.HistoryModel
+import tk.zwander.common.res.Strings
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
@@ -41,7 +42,7 @@ private suspend fun onFetch(model: HistoryModel) {
     val historyString = getFirmwareHistoryString(model.model, model.region)
 
     if (historyString == null) {
-        model.endJob("Unable to retrieve firmware history. Make sure the model and region are correct.")
+        model.endJob(Strings.historyError)
     } else {
         try {
             val parsed = PlatformHistoryView.parseHistory(
@@ -59,7 +60,7 @@ private suspend fun onFetch(model: HistoryModel) {
             model.endJob("")
         } catch (e: Exception) {
             e.printStackTrace()
-            model.endJob("Error retrieving firmware history. Make sure the model and region are correct.\nError: ${e.message}")
+            model.endJob(Strings.historyErrorFormat.format(e.message))
         }
     }
 }
@@ -86,7 +87,7 @@ fun HistoryView(
                 fontSize = 16.sp
             )
         )
-        append("Source: ")
+        append(Strings.source)
         pushStyle(
             SpanStyle(
                 color = MaterialTheme.colors.primary,
@@ -94,7 +95,7 @@ fun HistoryView(
             )
         )
         pushStringAnnotation("OdinRomLink", "https://odinrom.com")
-        append("OdinRom")
+        append(Strings.odinRom)
         pop()
     }
 
@@ -115,8 +116,8 @@ fun HistoryView(
                     }
                 },
                 enabled = canCheckHistory,
-                text = "Check History",
-                description = "Check History",
+                text = Strings.checkHistory,
+                description = Strings.checkHistory,
                 vectorIcon = vectorResource("refresh.xml"),
                 parentSize = rowSize.value
             )
@@ -138,8 +139,8 @@ fun HistoryView(
                     model.endJob("")
                 },
                 enabled = model.job != null,
-                text = "Cancel",
-                description = "Cancel",
+                text = Strings.cancel,
+                description = Strings.cancel,
                 vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )

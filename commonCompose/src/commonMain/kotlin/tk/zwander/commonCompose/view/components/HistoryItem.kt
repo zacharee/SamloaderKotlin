@@ -9,8 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.soywiz.korio.lang.format
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
+import tk.zwander.common.res.Strings
 import tk.zwander.commonCompose.util.vectorResource
 
 /**
@@ -41,7 +43,7 @@ fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${index + 1}. Android ${info.androidVersion}",
+                        text = "${index + 1}. ${Strings.android.format(info.androidVersion)}",
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.CenterVertically),
                         fontSize = 20.sp,
@@ -57,7 +59,7 @@ fun HistoryItem(
                         modifier = Modifier.align(Alignment.Bottom)
                             .size(32.dp)
                     ) {
-                        Icon(vectorResource("download.xml"), "Download")
+                        Icon(vectorResource("download.xml"), Strings.download)
                     }
 
                     Spacer(Modifier.width(8.dp))
@@ -69,7 +71,7 @@ fun HistoryItem(
                         modifier = Modifier.align(Alignment.Bottom)
                             .size(32.dp)
                     ) {
-                        Icon(vectorResource("decrypt.xml"), "Decrypt")
+                        Icon(vectorResource("decrypt.xml"), Strings.decrypt)
                     }
                 }
 
@@ -79,7 +81,7 @@ fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "Build Date: ${info.date.format("MMM dd, yyyy")}",
+                        text = Strings.buildDate.format(info.date.format("MMM dd, yyyy")),
                         modifier = Modifier.align(Alignment.Bottom),
                         fontSize = 16.sp,
                         lineHeight = 16.sp
@@ -97,7 +99,7 @@ fun HistoryItem(
                         readOnly = true,
                         modifier = Modifier.weight(1f)
                             .align(Alignment.CenterVertically),
-                        label = { Text("Firmware") },
+                        label = { Text(Strings.firmware) },
                         singleLine = true
                     )
                 }
@@ -115,7 +117,7 @@ fun HistoryItem(
                         Column {
                             ExpandButton(
                                 changelogExpanded,
-                                "Changelog"
+                                Strings.changelog
                             ) { changelogExpanded = it }
 
                             AnimatedVisibility(

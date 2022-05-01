@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.soywiz.korio.util.OS
+import tk.zwander.common.res.Strings
 import tk.zwander.commonCompose.util.pager.PagerState
 import tk.zwander.commonCompose.util.pager.pagerTabIndicatorOffset
 
@@ -44,21 +45,21 @@ fun TabView(
     ) {
         Tab(
             selected = selectedPage == Page.DOWNLOADER,
-            text = { Text("Downloader") },
+            text = { Text(Strings.downloader) },
             onClick = {
                 onPageSelected(Page.DOWNLOADER)
             }
         )
         Tab(
             selected = selectedPage == Page.DECRYPTER,
-            text = { Text("Decrypter") },
+            text = { Text(Strings.decrypter) },
             onClick = {
                 onPageSelected(Page.DECRYPTER)
             }
         )
         Tab(
             selected = selectedPage == Page.HISTORY,
-            text = { Text("History") },
+            text = { Text(Strings.history) },
             onClick = {
                 onPageSelected(Page.HISTORY)
             }
