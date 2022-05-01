@@ -1,3 +1,9 @@
+# 1.0.7
+- Update dependencies.
+- Extract strings to variables.
+- Fix an error when verifying served firmware.
+- Fix broken Windows icon.
+
 # 1.0.6
 - Update dependencies.
 - Clean up code.
