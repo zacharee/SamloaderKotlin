@@ -267,8 +267,8 @@ object Request {
                 val version = split[dataIndex!!]
 
                 val servedCsc = cscFile!!.split("_")[cscIndex!!]
-                val servedCp = cpFile?.split("_")?.getOrNull(cpIndex!!)
-                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex!!)
+                val servedCp = cpFile?.split("_")?.getOrNull(cpIndex ?: -1)
+                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex ?: -1)
                 val served = "$version/$servedCsc/${servedCp ?: version}/${servedPda ?: version}"
 
                 if (served != fw) {
