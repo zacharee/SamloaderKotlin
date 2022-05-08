@@ -6,12 +6,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.util.OS
-import dev.chrisbanes.snapper.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
@@ -40,17 +38,16 @@ val historyModel = HistoryModel()
 @OptIn(DangerousInternalIoApi::class, ExperimentalPagerApi::class)
 @ExperimentalTime
 @Composable
-fun MainView() {
+fun MainView(modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState(0)
+    val pagerState = rememberPagerState(Page.DOWNLOADER.index, !OS.isJvm)
+    val scope = rememberCoroutineScope()
 
     CustomMaterialTheme {
         Surface {
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = modifier.fillMaxSize()
             ) {
-                val pagerState = rememberPagerState(Page.DOWNLOADER.index, !OS.isJvm)
-                val scope = rememberCoroutineScope()
-
                 fun updateCurrentPage(page: Page) {
                     pagerState.currentPageEnum = page
                     scope.launch {

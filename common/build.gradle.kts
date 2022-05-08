@@ -100,6 +100,8 @@ kotlin {
                 api("androidx.core:core-ktx:1.7.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
+                // Keep this as 0.24.6 until JB Compose gets the built in framework
+                api("com.google.accompanist:accompanist-insets-ui:0.24.6-alpha")
             }
         }
 

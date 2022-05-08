@@ -11,6 +11,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.ui.Modifier
+import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.insets.imePadding
 import kotlinx.coroutines.*
 import tk.zwander.commonCompose.MainView
 import tk.zwander.common.data.*
@@ -91,7 +95,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
         //Set the Compose content.
         setContent {
-            MainView()
+            ProvideWindowInsets {
+                MainView(
+                    Modifier.imePadding()
+                )
+            }
         }
     }
 
