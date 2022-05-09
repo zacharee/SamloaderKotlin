@@ -25,7 +25,7 @@ object Strings {
     const val openFileDesc = "Open File to Decrypt"
     const val cancel = "Cancel"
     const val file = "File"
-    const val downloading = "Downoading"
+    const val downloading = "Downloading"
     const val error = "Error"
     const val checkingCRC = "Checking CRC"
     const val checkingMD5 = "Checking MD5"
