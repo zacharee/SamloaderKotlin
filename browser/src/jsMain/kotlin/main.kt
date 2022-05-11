@@ -7,22 +7,16 @@ import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.attributes.placeholder
 import org.jetbrains.compose.web.attributes.readOnly
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
 import org.khronos.webgl.Uint8Array
-import org.w3c.dom.HTMLElement
 import org.w3c.files.Blob
 import org.w3c.xhr.BLOB
 import org.w3c.xhr.XMLHttpRequest
 import org.w3c.xhr.XMLHttpRequestResponseType
-import react.RBuilder
-import react.dom.render
-import react.dom.svg.Additive
-import react.dom.unmountComponentAtNode
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
@@ -35,28 +29,6 @@ import kotlin.math.roundToInt
 val downloadModel = DownloadModel()
 val decryptModel = DecryptModel()
 val historyModel = HistoryModel()
-
-/**
- * @param key - when UseReactEffect is invoked with a new [key], compose forces react to render with a new content.
- * @param content - the builder for the content managed by React
- */
-@Composable
-private fun ElementScope<HTMLElement>.UseReactEffect(
-    key: Any?,
-    content: RBuilder.() -> Unit
-) {
-    DomSideEffect(key = key) { htmlElement ->
-        render(htmlElement) {
-            content()
-        }
-    }
-
-    DisposableRefEffect { htmlElement ->
-        onDispose {
-            unmountComponentAtNode(htmlElement)
-        }
-    }
-}
 
 @OptIn(DangerousInternalIoApi::class)
 val client = FusClient(useProxy = true)

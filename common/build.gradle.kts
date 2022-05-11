@@ -115,6 +115,13 @@ kotlin {
                 api(npm("bootstrap", "5.1.0"))
                 api(npm("jquery", "3.6.0"))
                 api(npm("streamsaver", "2.0.5"))
+
+//                implementation(npm("react", "18.1.0"))
+//                implementation(npm("react-dom", "18.1.0"))
+
+//                api("org.jetbrains.kotlin-wrappers:kotlin-react:18.1.0-pre.336")
+//                api("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.1.0-pre.336")
+//                api("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.5-pre.336")
             }
         }
     }
