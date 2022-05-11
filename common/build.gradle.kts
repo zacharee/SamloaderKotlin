@@ -61,7 +61,7 @@ kotlin {
                 api(compose.runtime)
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
@@ -91,7 +91,7 @@ kotlin {
 
         named("androidMain") {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
                 api("androidx.appcompat:appcompat:1.4.1")
@@ -100,8 +100,9 @@ kotlin {
                 api("androidx.core:core-ktx:1.7.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
-                // Keep this as 0.24.6 until JB Compose gets the built in framework
-                api("com.google.accompanist:accompanist-insets-ui:0.24.6-alpha")
+
+                // Remove this once JB Compose gets the updated version.
+                api("androidx.compose.foundation:foundation-layout:1.2.0-beta01")
             }
         }
 
