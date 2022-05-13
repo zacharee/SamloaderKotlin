@@ -1,6 +1,5 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.lang.format
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.serialization.xml.buildXml
 import com.soywiz.krypto.MD5
@@ -8,7 +7,7 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
-import tk.zwander.common.res.Strings
+import tk.zwander.samloaderkotlin.strings
 
 /**
  * Handle some requests to Samsung's servers.
@@ -176,14 +175,14 @@ object Request {
 
             if (status != 200) {
                 return FetchResult.GetBinaryFileResult(
-                    error = Exception(Strings.badReturnStatus.format(status)),
+                    error = Exception(strings.badReturnStatus(status)),
                     rawOutput = responseXml.toString()
                 )
             }
 
             val noBinaryError = {
                 FetchResult.GetBinaryFileResult(
-                    error = Exception(Strings.noBinaryFile.format(model, region)),
+                    error = Exception(strings.noBinaryFile(model, region)),
                     rawOutput = responseXml.toString()
                 )
             }
@@ -275,7 +274,7 @@ object Request {
 
                 if (served != fw) {
                     return FetchResult.GetBinaryFileResult(
-                        error = Exception(Strings.versionMismatch.format(fw, served))
+                        error = Exception(strings.versionMismatch(fw, served))
                     )
                 }
             }

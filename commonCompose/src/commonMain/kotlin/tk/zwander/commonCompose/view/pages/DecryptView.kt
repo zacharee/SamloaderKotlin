@@ -16,12 +16,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.model.DecryptModel
-import tk.zwander.common.res.Strings
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
+import tk.zwander.samloaderkotlin.strings
 import kotlin.time.ExperimentalTime
 
 /**
@@ -53,11 +53,11 @@ private suspend fun onDecrypt(model: DecryptModel) {
     CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
         model.progress = current to max
         model.speed = bps
-        PlatformDecryptView.onProgress(Strings.decrypting, current, max)
+        PlatformDecryptView.onProgress(strings.decrypting(), current, max)
     }
 
     PlatformDecryptView.onFinish()
-    model.endJob(Strings.done)
+    model.endJob(strings.done())
 }
 
 private suspend fun onOpenFile(model: DecryptModel) {
@@ -67,7 +67,7 @@ private suspend fun onOpenFile(model: DecryptModel) {
                     ".enc4"
                 )
             ) {
-                model.endJob(Strings.selectEncrypted)
+                model.endJob(strings.selectEncrypted())
             } else {
                 model.endJob("")
                 model.fileToDecrypt = info
@@ -108,8 +108,8 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                     }
                 },
                 enabled = canDecrypt,
-                text = Strings.decrypt,
-                description = Strings.decryptFirmware,
+                text = strings.decrypt(),
+                description = strings.decryptFirmware(),
                 vectorIcon = vectorResource("decrypt.xml"),
                 parentSize = rowSize.value
             )
@@ -121,8 +121,8 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                     }
                 },
                 enabled = canChangeOption,
-                text = Strings.openFile,
-                description = Strings.openFileDesc,
+                text = strings.openFile(),
+                description = strings.openFileDesc(),
                 vectorIcon = vectorResource("open.xml"),
                 parentSize = rowSize.value
             )
@@ -133,8 +133,8 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                     model.endJob("")
                 },
                 enabled = model.job != null,
-                text = Strings.cancel,
-                description = Strings.cancel,
+                text = strings.cancel(),
+                description = strings.cancel(),
                 vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )
@@ -152,7 +152,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
             OutlinedTextField(
                 value = model.fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
                 onValueChange = {},
-                label = { Text(Strings.file) },
+                label = { Text(strings.file()) },
                 modifier = Modifier.weight(1f),
                 readOnly = true,
                 singleLine = true,

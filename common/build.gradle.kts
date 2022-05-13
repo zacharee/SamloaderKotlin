@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 buildscript {
@@ -20,6 +21,7 @@ plugins {
     kotlin("multiplatform")
     id("com.codingfeline.buildkonfig")
     id("org.jetbrains.compose")
+    id("de.comahe.i18n4k") version "0.4.0"
 }
 
 apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
@@ -77,6 +79,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
                 api("com.russhwolf:multiplatform-settings:0.8.1")
                 api("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
+                api("de.comahe.i18n4k:i18n4k-core:0.4.0")
             }
         }
 
@@ -86,6 +89,7 @@ kotlin {
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("com.formdev:flatlaf:2.1")
                 api("io.github.vincenzopalazzo:material-ui-swing:1.1.2")
+                api("de.comahe.i18n4k:i18n4k-core-jvm:0.4.0")
             }
         }
 
@@ -100,6 +104,7 @@ kotlin {
                 api("androidx.core:core-ktx:1.7.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
+                api("de.comahe.i18n4k:i18n4k-core-jvm:0.4.0")
 
                 // Remove this once JB Compose gets the updated version.
                 api("androidx.compose.foundation:foundation-layout:1.2.0-beta01")
@@ -111,6 +116,7 @@ kotlin {
                 api(compose.web.core)
 
                 api("io.ktor:ktor-client-js:$ktorVersion")
+                api("de.comahe.i18n4k:i18n4k-core-js:0.4.0")
 
                 api(npm("bootstrap", "5.1.0"))
                 api(npm("jquery", "3.6.0"))
@@ -153,6 +159,16 @@ buildkonfig {
         buildConfigField(STRING, "versionCode", "${rootProject.extra["versionCode"]}")
         buildConfigField(STRING, "appName", "${rootProject.extra["appName"]}")
     }
+}
+
+i18n4k {
+    sourceCodeLocales = listOf("en")
+}
+
+tasks.named("desktopProcessResources").dependsOn(tasks.named("generateI18n4kFiles"))
+
+tasks.withType<Copy> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 apply(plugin = "kotlinx-atomicfu")

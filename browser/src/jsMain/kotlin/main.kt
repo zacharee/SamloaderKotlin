@@ -2,7 +2,6 @@ import androidx.compose.runtime.*
 import com.soywiz.korio.async.async
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.file.openAsync
-import com.soywiz.korio.lang.format
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,10 +19,10 @@ import org.w3c.xhr.XMLHttpRequestResponseType
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
-import tk.zwander.common.res.Strings
 import tk.zwander.common.tools.*
 import tk.zwander.common.tools.Request
 import tk.zwander.common.util.*
+import tk.zwander.samloaderkotlin.strings
 import kotlin.math.roundToInt
 
 val downloadModel = DownloadModel()
@@ -58,7 +57,7 @@ fun main() {
                         BootstrapTextInput(
                             value = downloadModel.model,
                         ) {
-                            placeholder(Strings.modelHint)
+                            placeholder(strings.modelHint())
                             onInput { downloadModel.model = it.value.uppercase() }
                         }
                     }
@@ -67,7 +66,7 @@ fun main() {
                         BootstrapTextInput(
                             value = downloadModel.region
                         ) {
-                            placeholder(Strings.regionHint)
+                            placeholder(strings.regionHint())
                             onInput { downloadModel.region = it.value.uppercase() }
                         }
                     }
@@ -79,7 +78,7 @@ fun main() {
                     Column {
                         BootstrapTextInput(downloadModel.fw) {
                             readOnly()
-                            placeholder(Strings.firmware)
+                            placeholder(strings.firmware())
                             onInput { downloadModel.fw = it.value }
                         }
                     }
@@ -94,7 +93,7 @@ fun main() {
                                 onClick { downloadModel.job = downloadModel.scope.async { doCheck() } }
                             }
                         ) {
-                            Text(Strings.retrieve)
+                            Text(strings.retrieve())
                         }
                     }
 
@@ -106,7 +105,7 @@ fun main() {
                                     onClick { downloadModel.job = downloadModel.scope.async { doDownload(xhr) } }
                                 }
                             ) {
-                                Text(Strings.download)
+                                Text(strings.download())
                             }
                         }
                     }
@@ -117,11 +116,11 @@ fun main() {
                                 attrs = {
                                     onClick {
                                         xhr.abort()
-                                        downloadModel.endJob(Strings.canceled)
+                                        downloadModel.endJob(strings.canceled())
                                     }
                                 }
                             ) {
-                                Text(Strings.cancel)
+                                Text(strings.cancel())
                             }
                         }
                     }
@@ -130,7 +129,7 @@ fun main() {
                 Spacer(1.em)
 
                 Row {
-                    Text(Strings.statusFormat.format(downloadModel.statusText))
+                    Text(strings.statusFormat(downloadModel.statusText))
                 }
 
                 Spacer(1.em)
@@ -144,10 +143,10 @@ fun main() {
                     val finalSpeed = "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
 
                     Column {
-                        Text(Strings.mib.format(currentMB, totalMB))
+                        Text(strings.mib(currentMB, totalMB))
                     }
                     Column {
-                        Text("$finalSpeed ${if (shouldUseMB) Strings.mibs else Strings.kibs}")
+                        Text("$finalSpeed ${if (shouldUseMB) strings.mibs() else strings.kibs()}")
                     }
                 }
             }
@@ -159,7 +158,7 @@ suspend fun doCheck() {
     val (fw, os, error, output) = VersionFetch.getLatestVersion(downloadModel.model, downloadModel.region, true)
 
     if (error != null) {
-        downloadModel.endJob(Strings.firmwareCheckError.format(error.message ?: "", output))
+        downloadModel.endJob(strings.firmwareCheckError(error.message ?: "", output))
         return
     }
 
@@ -177,7 +176,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
 
     if (error != null) {
         error.printStackTrace()
-        downloadModel.endJob("${error.message ?: Strings.error}\n\n${output}")
+        downloadModel.endJob("${error.message ?: strings.error()}\n\n${output}")
     } else {
         val (path, fileName, size, crc32, v4Key) = info!!
         val request = Request.createBinaryInit(fileName, client.getNonce())
@@ -193,7 +192,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
         var prevSent = 0L
         var prevCallTime = Clock.System.now().toEpochMilliseconds()
 
-        downloadModel.statusText = Strings.downloading
+        downloadModel.statusText = strings.downloading()
 
         val authV = client.getAuthV()
         val url = client.getDownloadUrl(path + fileName)
@@ -211,7 +210,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
 
             downloadModel.scope.launch {
                 if (crc32 != null) {
-                    downloadModel.statusText = Strings.checkingCRC
+                    downloadModel.statusText = strings.checkingCRC()
                     val result = CryptUtils.checkCrc32(
                         blob.openAsync(),
                         size,
@@ -222,13 +221,13 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
                     }
 
                     if (!result) {
-                        downloadModel.endJob(Strings.crcCheckFailed)
+                        downloadModel.endJob(strings.crcCheckFailed())
                         return@launch
                     }
                 }
 
                 if (md5 != null) {
-                    downloadModel.statusText = Strings.checkingMD5
+                    downloadModel.statusText = strings.checkingMD5()
                     downloadModel.progress = 1L to 2L
 
                     val result = withContext(Dispatchers.Default) {
@@ -239,11 +238,11 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
                     }
 
                     if (!result) {
-                        downloadModel.endJob(Strings.md5CheckFailed)
+                        downloadModel.endJob(strings.md5CheckFailed())
                     }
                 }
 
-                downloadModel.statusText = Strings.decrypting
+                downloadModel.statusText = strings.decrypting()
 
                 val key =
                     if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
@@ -266,7 +265,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
                     downloadModel.speed = bps
                 }
 
-                downloadModel.endJob(Strings.done)
+                downloadModel.endJob(strings.done())
             }
 
             Unit

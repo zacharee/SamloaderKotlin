@@ -9,11 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.soywiz.korio.lang.format
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
-import tk.zwander.common.res.Strings
 import tk.zwander.commonCompose.util.vectorResource
+import tk.zwander.samloaderkotlin.strings
 
 /**
  * An item in the firmware history list.
@@ -43,7 +42,7 @@ fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${index + 1}. ${Strings.android.format(info.androidVersion)}",
+                        text = "${index + 1}. ${strings.android(info.androidVersion)}",
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.CenterVertically),
                         fontSize = 20.sp,
@@ -59,7 +58,7 @@ fun HistoryItem(
                         modifier = Modifier.align(Alignment.Bottom)
                             .size(32.dp)
                     ) {
-                        Icon(vectorResource("download.xml"), Strings.download)
+                        Icon(vectorResource("download.xml"), strings.download())
                     }
 
                     Spacer(Modifier.width(8.dp))
@@ -71,7 +70,7 @@ fun HistoryItem(
                         modifier = Modifier.align(Alignment.Bottom)
                             .size(32.dp)
                     ) {
-                        Icon(vectorResource("decrypt.xml"), Strings.decrypt)
+                        Icon(vectorResource("decrypt.xml"), strings.decrypt())
                     }
                 }
 
@@ -81,7 +80,7 @@ fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = Strings.buildDate.format(info.date.format("MMM dd, yyyy")),
+                        text = strings.buildDate(info.date.format("MMM dd, yyyy")),
                         modifier = Modifier.align(Alignment.Bottom),
                         fontSize = 16.sp,
                         lineHeight = 16.sp
@@ -99,7 +98,7 @@ fun HistoryItem(
                         readOnly = true,
                         modifier = Modifier.weight(1f)
                             .align(Alignment.CenterVertically),
-                        label = { Text(Strings.firmware) },
+                        label = { Text(strings.firmware()) },
                         singleLine = true
                     )
                 }
@@ -117,7 +116,7 @@ fun HistoryItem(
                         Column {
                             ExpandButton(
                                 changelogExpanded,
-                                Strings.changelog
+                                strings.changelog()
                             ) { changelogExpanded = it }
 
                             AnimatedVisibility(

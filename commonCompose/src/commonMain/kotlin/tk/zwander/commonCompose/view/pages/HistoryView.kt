@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.model.HistoryModel
-import tk.zwander.common.res.Strings
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
@@ -30,6 +29,7 @@ import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.StaggeredVerticalGrid
+import tk.zwander.samloaderkotlin.strings
 
 /**
  * Delegate HTML parsing to the platform until there's an MPP library.
@@ -42,7 +42,7 @@ private suspend fun onFetch(model: HistoryModel) {
     val historyString = getFirmwareHistoryString(model.model, model.region)
 
     if (historyString == null) {
-        model.endJob(Strings.historyError)
+        model.endJob(strings.historyError())
     } else {
         try {
             val parsed = PlatformHistoryView.parseHistory(
@@ -60,7 +60,7 @@ private suspend fun onFetch(model: HistoryModel) {
             model.endJob("")
         } catch (e: Exception) {
             e.printStackTrace()
-            model.endJob(Strings.historyErrorFormat.format(e.message))
+            model.endJob(strings.historyErrorFormat(e.message.toString()))
         }
     }
 }
@@ -87,7 +87,8 @@ fun HistoryView(
                 fontSize = 16.sp
             )
         )
-        append(Strings.source)
+        append(strings.source())
+        append(" ")
         pushStyle(
             SpanStyle(
                 color = MaterialTheme.colors.primary,
@@ -95,7 +96,7 @@ fun HistoryView(
             )
         )
         pushStringAnnotation("OdinRomLink", "https://odinrom.com")
-        append(Strings.odinRom)
+        append(strings.odinRom())
         pop()
     }
 
@@ -116,8 +117,8 @@ fun HistoryView(
                     }
                 },
                 enabled = canCheckHistory,
-                text = Strings.checkHistory,
-                description = Strings.checkHistory,
+                text = strings.checkHistory(),
+                description = strings.checkHistory(),
                 vectorIcon = vectorResource("refresh.xml"),
                 parentSize = rowSize.value
             )
@@ -139,8 +140,8 @@ fun HistoryView(
                     model.endJob("")
                 },
                 enabled = model.job != null,
-                text = Strings.cancel,
-                description = Strings.cancel,
+                text = strings.cancel(),
+                description = strings.cancel(),
                 vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )

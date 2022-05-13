@@ -14,7 +14,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
 import tk.zwander.common.model.DownloadModel
-import tk.zwander.common.res.Strings
+import tk.zwander.samloaderkotlin.strings
 
 /**
  * A common container for the model, region, and firmware text inputs used in [DownloadView] and [DecryptView]
@@ -44,7 +44,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(Strings.modelHint) },
+                label = { Text(strings.modelHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true
@@ -62,7 +62,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(Strings.regionHint) },
+                label = { Text(strings.regionHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true
@@ -102,7 +102,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
         OutlinedTextField(
             value = model.fw,
             onValueChange = { model.fw = it.uppercase().trim() },
-            label = { Text(Strings.firmwareHint) },
+            label = { Text(strings.firmwareHint()) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmware,
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),

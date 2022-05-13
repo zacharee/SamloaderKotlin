@@ -5,15 +5,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.soywiz.korio.util.OS
-import tk.zwander.common.res.Strings
 import tk.zwander.commonCompose.util.pager.PagerState
 import tk.zwander.commonCompose.util.pager.pagerTabIndicatorOffset
+import tk.zwander.samloaderkotlin.strings
 
 /**
  * Represents the available pages.
@@ -45,21 +43,21 @@ fun TabView(
     ) {
         Tab(
             selected = selectedPage == Page.DOWNLOADER,
-            text = { Text(Strings.downloader) },
+            text = { Text(strings.downloader()) },
             onClick = {
                 onPageSelected(Page.DOWNLOADER)
             }
         )
         Tab(
             selected = selectedPage == Page.DECRYPTER,
-            text = { Text(Strings.decrypter) },
+            text = { Text(strings.decrypter()) },
             onClick = {
                 onPageSelected(Page.DECRYPTER)
             }
         )
         Tab(
             selected = selectedPage == Page.HISTORY,
-            text = { Text(Strings.history) },
+            text = { Text(strings.history()) },
             onClick = {
                 onPageSelected(Page.HISTORY)
             }

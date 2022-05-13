@@ -26,13 +26,13 @@ import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
-import tk.zwander.common.res.Strings
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.downloadModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.*
+import tk.zwander.samloaderkotlin.strings
 import kotlin.time.ExperimentalTime
 
 /**
@@ -58,7 +58,7 @@ expect object PlatformDownloadView {
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
 private suspend fun onDownload(model: DownloadModel, client: FusClient) {
     PlatformDownloadView.onStart()
-    model.statusText = Strings.downloading
+    model.statusText = strings.downloading()
 
     val (info, error, output) = Request.getBinaryFile(
         client,
@@ -69,7 +69,7 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
 
     if (error != null) {
         error.printStackTrace()
-        downloadModel.endJob("${error.message ?: Strings.error}\n\n${output}")
+        downloadModel.endJob("${error.message ?: strings.error()}\n\n${output}")
     } else {
         val (path, fileName, size, crc32, v4Key) = info!!
         val request = Request.createBinaryInit(fileName, client.getNonce())
@@ -97,13 +97,13 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     model.progress = current to max
                     model.speed = bps
 
-                    PlatformDownloadView.onProgress(Strings.downloading, current, max)
+                    PlatformDownloadView.onProgress(strings.downloading(), current, max)
                 }
 
                 model.speed = 0L
 
                 if (crc32 != null) {
-                    model.statusText = Strings.checkingCRC
+                    model.statusText = strings.checkingCRC()
                     val result = CryptUtils.checkCrc32(
                         inputInfo.downloadFile.openInputStream(),
                         size,
@@ -113,23 +113,23 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                         model.speed = bps
 
                         PlatformDownloadView.onProgress(
-                            Strings.checkingCRC,
+                            strings.checkingCRC(),
                             current,
                             max
                         )
                     }
 
                     if (!result) {
-                        model.endJob(Strings.crcCheckFailed)
+                        model.endJob(strings.crcCheckFailed())
                         return@getInput
                     }
                 }
 
                 if (md5 != null) {
-                    model.statusText = Strings.checkingMD5
+                    model.statusText = strings.checkingMD5()
                     model.progress = 1L to 2L
 
-                    PlatformDownloadView.onProgress(Strings.checkingMD5, 0, 1)
+                    PlatformDownloadView.onProgress(strings.checkingMD5(), 0, 1)
 
                     val result = withContext(Dispatchers.Default) {
                         CryptUtils.checkMD5(
@@ -139,12 +139,12 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     }
 
                     if (!result) {
-                        model.endJob(Strings.md5CheckFailed)
+                        model.endJob(strings.md5CheckFailed())
                         return@getInput
                     }
                 }
 
-                model.statusText = Strings.decrypting
+                model.statusText = strings.decrypting()
 
                 val key =
                     if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
@@ -164,10 +164,10 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     model.progress = current to max
                     model.speed = bps
 
-                    PlatformDownloadView.onProgress(Strings.decrypting, current, max)
+                    PlatformDownloadView.onProgress(strings.decrypting(), current, max)
                 }
 
-                model.endJob(Strings.done   )
+                model.endJob(strings.done())
             } else {
                 model.endJob("")
             }
@@ -181,7 +181,7 @@ private suspend fun onFetch(model: DownloadModel) {
     val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model, model.region)
 
     if (error != null) {
-        model.endJob(Strings.firmwareCheckError.format(error.message, output))
+        model.endJob(strings.firmwareCheckError(error.message.toString(), output))
         return
     }
 
@@ -228,8 +228,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 },
                 enabled = canDownload,
                 vectorIcon = vectorResource("download.xml"),
-                text = Strings.download,
-                description = Strings.downloadFirmware,
+                text = strings.download(),
+                description = strings.downloadFirmware(),
                 parentSize = rowSize.value
             )
 
@@ -242,9 +242,9 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     }
                 },
                 enabled = canCheckVersion,
-                text = Strings.checkForUpdates,
+                text = strings.checkForUpdates(),
                 vectorIcon = vectorResource("refresh.xml"),
-                description = Strings.checkForUpdatesDesc,
+                description = strings.checkForUpdatesDesc(),
                 parentSize = rowSize.value
             )
 
@@ -256,8 +256,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     model.endJob("")
                 },
                 enabled = model.job != null,
-                text = Strings.cancel,
-                description = Strings.cancel,
+                text = strings.cancel(),
+                description = strings.cancel(),
                 vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )
@@ -297,7 +297,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
 
                 Text(
-                    text = Strings.manual,
+                    text = strings.manual(),
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
             }
@@ -317,13 +317,13 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                     val info = buildAnnotatedString {
                         pushStyle(SpanStyle(color = MaterialTheme.colors.error))
-                        append("${Strings.manualWarning} ")
+                        append("${strings.manualWarning()} ")
                         pushStringAnnotation(
                             "MoreInfo",
                             "MoreInfo"
                         )
                         pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                        append(Strings.moreInfo)
+                        append(strings.moreInfo())
                         pop()
                         pop()
                     }
@@ -344,23 +344,25 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     AlertDialogDef(
                         title = {
                             Text(
-                                text = Strings.moreInfo,
+                                text = strings.moreInfo(),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         },
                         text = {
                             val info = buildAnnotatedString {
-                                append(Strings.manualWarningDetails)
+                                append(strings.manualWarningDetails())
+                                append(" ")
                                 pushStringAnnotation(
                                     "IssueLink",
                                     "https://github.com/zacharee/SamloaderKotlin/issues/10"
                                 )
                                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                                append(Strings.manualWarningDetails2)
+                                append(strings.manualWarningDetails2())
                                 pop()
                                 pop()
-                                append(Strings.manualWarningDetails3)
+                                append(" ")
+                                append(strings.manualWarningDetails3())
                             }
 
                             val scroll = rememberScrollState()
@@ -383,7 +385,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                     showingRequestWarningDialog = false
                                 }
                             ) {
-                                Text(Strings.ok)
+                                Text(strings.ok())
                             }
                         },
                         onDismissRequest = {
@@ -407,7 +409,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 Spacer(Modifier.height(4.dp))
 
                 Text(
-                    text = Strings.osVersion.format(model.osCode)
+                    text = strings.osVersion(model.osCode)
                 )
             }
         }
@@ -435,7 +437,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                 ExpandButton(
                     model.changelogExpanded,
-                    Strings.changelog
+                    strings.changelog()
                 ) { model.changelogExpanded = it }
 
                 Spacer(Modifier.height(8.dp))
