@@ -2,3 +2,8 @@
 /.gradle/
 /build/
 /local.properties
+/android/release/
+/android/local.properties
+/common/build/
+/commonCompose/build/
+/desktop/build/
