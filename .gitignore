@@ -7,3 +7,5 @@
 /common/build/
 /commonCompose/build/
 /desktop/build/
+/.idea/artifacts/
+/.idea/libraries/
