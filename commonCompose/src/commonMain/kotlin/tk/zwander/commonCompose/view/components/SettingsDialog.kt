@@ -17,12 +17,11 @@ import tk.zwander.samloaderkotlin.strings
 
 @Composable
 fun SettingsDialog(
+    options: List<Pair<String, String>>,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
     val settings = remember { Settings() }
-
-    var checked by remember { mutableStateOf(settings.getBoolean("useNativeFileDialog", false)) }
 
     AlertDialogDef(
         modifier = modifier,
@@ -41,17 +40,19 @@ fun SettingsDialog(
             Column(
                 modifier = Modifier.padding(8.dp)
             ) {
-                if (OS.isJvm && !OS.isAndroid) {
+                options.forEach { opt ->
+                    var checked by remember { mutableStateOf(settings.getBoolean(opt.second, false)) }
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(strings.useNativeFilePicker())
+                        Text(opt.first)
                         Spacer(Modifier.weight(1f))
                         Switch(
                             checked = checked,
                             onCheckedChange = {
                                 checked = it
-                                settings.putBoolean("useNativeFileDialog", it)
+                                settings.putBoolean(opt.second, it)
                             }
                         )
                     }

@@ -15,10 +15,17 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.soywiz.korio.util.OS
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.samloaderkotlin.strings
+
+val options = arrayListOf<Pair<String, String>>().apply {
+    if (OS.isJvm && !OS.isAndroid) {
+        add(strings.useNativeFilePicker() to "useNativeFileDialog")
+    }
+}
 
 /**
  * The footer shown on all pages.
@@ -154,17 +161,19 @@ fun FooterView(
                     }
                 }
 
-                item {
-                    IconButton(
-                        onClick = {
-                            showingSettings = true
+                if (options.isNotEmpty()) {
+                    item {
+                        IconButton(
+                            onClick = {
+                                showingSettings = true
+                            }
+                        ) {
+                            Icon(
+                                imageVector = vectorResource("settings.xml"),
+                                contentDescription = strings.settings(),
+                                modifier = Modifier.padding(8.dp)
+                            )
                         }
-                    ) {
-                        Icon(
-                            imageVector = vectorResource("settings.xml"),
-                            contentDescription = strings.settings(),
-                            modifier = Modifier.padding(8.dp)
-                        )
                     }
                 }
             }
@@ -177,7 +186,7 @@ fun FooterView(
         }
 
         if (showingSettings) {
-            SettingsDialog {
+            SettingsDialog(options) {
                 showingSettings = false
             }
         }
