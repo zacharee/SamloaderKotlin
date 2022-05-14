@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.PlatformFile
+import tk.zwander.commonCompose.util.FilePicker
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
@@ -11,17 +12,13 @@ import java.io.File
 actual object PlatformDecryptView {
     actual suspend fun getInput(callback: suspend CoroutineScope.(DecryptFileInfo?) -> Unit) {
         coroutineScope {
-            val dialog = FileDialog(Frame())
-            dialog.mode = FileDialog.LOAD
-            dialog.isVisible = true
+            val file = FilePicker.pickFile()
 
-            if (dialog.file != null) {
-                val input = File(dialog.directory, dialog.file)
-
+            if (file != null) {
                 callback(
                     DecryptFileInfo(
-                        PlatformFile(input),
-                        PlatformFile(input.parentFile, input.nameWithoutExtension)
+                        file,
+                        PlatformFile(file.getParent(), File(file.getAbsolutePath()).nameWithoutExtension)
                     )
                 )
             } else {

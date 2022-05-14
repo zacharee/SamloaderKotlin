@@ -1,6 +1,5 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -20,6 +19,7 @@ import tk.zwander.commonCompose.util.imageResource
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.FooterView
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AboutDialog(

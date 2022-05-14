@@ -25,7 +25,12 @@ Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) p
 These errors are on Samsung's end. If you can, try using a different region/CSC.
 
 ## Bifrost is returning error 403 when checking for updates
-These errors are on Samsung's end. Samsung may no longer be serving firmware for your device or may not have started serving firmware yet. Try a different region/CSC if possible.
+These errors are on Samsung's end. Samsung may no longer be serving firmware for your device or may not have started serving firmware yet. Try a different region/CSC if possible and check to make sure your model number is correct.
+
+## Bifrost opens to a blank screen on Windows
+On certain GPUs, Jetpack Compose/Skia has trouble rendering. Try running the program as an administrator.
+
+If you have switchable graphics, try using a different GPU.
 
 ## Download speeds are slow
 Samsung's servers sometimes throttle downloads to about 3MiB/s. For older devices, you may see even slower speeds. Different regions/CSCs may have faster downloads.
@@ -100,6 +105,21 @@ It's also possible that the DMG itself will refuse to open. If that happens, the
 
 1. Download the release APK to your phone.
 2. Install and run it.
+
+# Translating
+
+Bifrost supports basic text localization. To translate Bifrost into another language:
+
+1. Fork the repository.
+2. Go to [common/src/commonMain/i18n/tk/zwander/samloaderkotlin](/common/src/commonMain/i18n/tk/zwander/samloaderkotlin).
+3. Create a file following following the template `strings_COUNTRY_CODE.properties` (e.g., `strings_fr.properties`).
+4. Copy the contents of `strings_en.properties` into your new file.
+5. Translate the values (everything to the right of the `=` signs).
+6. Create a PR with your translations.
+
+Note: Pay special attention to formatting arguments. Numbers inside curly brackets (e.g., `{0}`, `{1}`) should be kept as-is as they will be replaced with text during the application's runtime.
+
+Note: Make sure to keep any other formatting characters as-is (e.g., `\n` should stay as `\n` and `%%` should stay as `%%`).
 
 # Screenshots
 

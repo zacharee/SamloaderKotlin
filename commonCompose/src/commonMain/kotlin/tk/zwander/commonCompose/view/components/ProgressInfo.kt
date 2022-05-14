@@ -1,7 +1,6 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
@@ -10,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
+import tk.zwander.samloaderkotlin.strings
 import kotlin.math.roundToInt
 
 /**
@@ -23,7 +23,6 @@ fun ProgressInfo(model: BaseModel) {
     ) {
         val hasProgress = model.progress.first > 0 && model.progress.second > 0
 
-        @OptIn(ExperimentalAnimationApi::class)
         AnimatedVisibility(
             visible = hasProgress
         ) {
@@ -46,7 +45,7 @@ fun ProgressInfo(model: BaseModel) {
                     val totalMB = (model.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
 
                     Text(
-                        text = "$currentMB / $totalMB MiB",
+                        text = strings.mib(currentMB, totalMB),
                     )
 
                     Spacer(Modifier.height(8.dp))
@@ -57,19 +56,19 @@ fun ProgressInfo(model: BaseModel) {
                         "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
 
                     Text(
-                        text = "$finalSpeed ${if (shouldUseMB) "MiB/s" else "KiB/s"}",
+                        text = "$finalSpeed ${if (shouldUseMB) strings.mibs() else strings.kibs()}",
                     )
 
                     Spacer(Modifier.height(8.dp))
 
                     Text(
-                        text = "${
+                        text = strings.percent(
                             try {
                                 (model.progress.first.toFloat() / model.progress.second * 100 * 100.0).roundToInt() / 100.0
                             } catch (e: IllegalArgumentException) {
                                 0
                             }
-                        }%",
+                        ),
                     )
                 }
 

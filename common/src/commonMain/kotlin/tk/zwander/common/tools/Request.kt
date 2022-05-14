@@ -7,6 +7,7 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
+import tk.zwander.samloaderkotlin.strings
 
 /**
  * Handle some requests to Samsung's servers.
@@ -174,14 +175,14 @@ object Request {
 
             if (status != 200) {
                 return FetchResult.GetBinaryFileResult(
-                    error = Exception("Bad return status: $status"),
+                    error = Exception(strings.badReturnStatus(status)),
                     rawOutput = responseXml.toString()
                 )
             }
 
             val noBinaryError = {
                 FetchResult.GetBinaryFileResult(
-                    error = Exception("No binary file found for $model, $region! Please try a different CSC."),
+                    error = Exception(strings.noBinaryFile(model, region)),
                     rawOutput = responseXml.toString()
                 )
             }
@@ -267,13 +268,13 @@ object Request {
                 val version = split[dataIndex!!]
 
                 val servedCsc = cscFile!!.split("_")[cscIndex!!]
-                val servedCp = cpFile?.split("_")?.getOrNull(cpIndex!!)
-                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex!!)
+                val servedCp = cpFile?.split("_")?.getOrNull(cpIndex ?: -1)
+                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex ?: -1)
                 val served = "$version/$servedCsc/${servedCp ?: version}/${servedPda ?: version}"
 
                 if (served != fw) {
                     return FetchResult.GetBinaryFileResult(
-                        error = Exception("You requested $fw but Samsung is attempting to serve $served instead. Aborting!")
+                        error = Exception(strings.versionMismatch(fw, served))
                     )
                 }
             }

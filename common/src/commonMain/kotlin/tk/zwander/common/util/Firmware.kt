@@ -27,10 +27,10 @@ suspend fun getFirmwareHistoryString(model: String, region: String): String? {
         expectSuccess = false
     }
 
-    val response = client.get<HttpResponse> {
+    val response = client.get {
         userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36")
         url(origUrl)
     }
 
-    return if (response.status.isSuccess()) response.readText() else null
+    return if (response.status.isSuccess()) response.bodyAsText() else null
 }

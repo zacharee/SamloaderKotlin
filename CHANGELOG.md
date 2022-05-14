@@ -1,3 +1,16 @@
+# 1.0.7
+- Update dependencies.
+- Extract strings to variables.
+- Fix an error when verifying served firmware.
+- Fix broken Windows icon.
+
+# 1.0.6
+- Update dependencies.
+- Clean up code.
+- Work around an issue with blank file pickers by using JFileChooser by default.
+- Add a new setting to switch back to using FileDialog.
+- Update build to JDK 18.
+
 # 1.0.5
 - Make version comparison more reliable for manual mode.
 

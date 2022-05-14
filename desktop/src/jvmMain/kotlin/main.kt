@@ -1,27 +1,23 @@
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
-import androidx.compose.ui.input.mouse.mouseScrollFilter
-import androidx.compose.ui.input.pointer.PointerEvent
-import androidx.compose.ui.input.pointer.PointerEventType
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.window.*
-import io.ktor.utils.io.core.internal.*
-import kotlinx.coroutines.awaitCancellation
+import com.formdev.flatlaf.FlatDarkLaf
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.MainView
+import tk.zwander.commonCompose.util.FilePicker
 import java.awt.Desktop
 import javax.swing.*
 import kotlin.time.ExperimentalTime
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @ExperimentalTime
-@OptIn(DangerousInternalIoApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
@@ -46,7 +42,8 @@ fun main() {
             icon = getImage("icon.png").toPainter(),
             state = mainWindowState
         ) {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
+            UIManager.setLookAndFeel(FlatDarkLaf())
+            FilePicker.init(window)
 
             if (hostOs == OS.MacOS) {
                 MenuBar {

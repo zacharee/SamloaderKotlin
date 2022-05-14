@@ -1,10 +1,8 @@
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
@@ -21,8 +19,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.util.ChangelogHandler
@@ -33,6 +29,7 @@ import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.StaggeredVerticalGrid
+import tk.zwander.samloaderkotlin.strings
 
 /**
  * Delegate HTML parsing to the platform until there's an MPP library.
@@ -45,7 +42,7 @@ private suspend fun onFetch(model: HistoryModel) {
     val historyString = getFirmwareHistoryString(model.model, model.region)
 
     if (historyString == null) {
-        model.endJob("Unable to retrieve firmware history. Make sure the model and region are correct.")
+        model.endJob(strings.historyError())
     } else {
         try {
             val parsed = PlatformHistoryView.parseHistory(
@@ -63,7 +60,7 @@ private suspend fun onFetch(model: HistoryModel) {
             model.endJob("")
         } catch (e: Exception) {
             e.printStackTrace()
-            model.endJob("Error retrieving firmware history. Make sure the model and region are correct.\nError: ${e.message}")
+            model.endJob(strings.historyErrorFormat(e.message.toString()))
         }
     }
 }
@@ -74,7 +71,6 @@ private suspend fun onFetch(model: HistoryModel) {
  * @param onDownload a callback for when the user hits the "Download" button on an item.
  * @param onDecrypt a callback for when the user hits the "Decrypt" button on an item.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryView(
     model: HistoryModel,
@@ -91,7 +87,8 @@ fun HistoryView(
                 fontSize = 16.sp
             )
         )
-        append("Source: ")
+        append(strings.source())
+        append(" ")
         pushStyle(
             SpanStyle(
                 color = MaterialTheme.colors.primary,
@@ -99,7 +96,7 @@ fun HistoryView(
             )
         )
         pushStringAnnotation("OdinRomLink", "https://odinrom.com")
-        append("OdinRom")
+        append(strings.odinRom())
         pop()
     }
 
@@ -120,8 +117,8 @@ fun HistoryView(
                     }
                 },
                 enabled = canCheckHistory,
-                text = "Check History",
-                description = "Check History",
+                text = strings.checkHistory(),
+                description = strings.checkHistory(),
                 vectorIcon = vectorResource("refresh.xml"),
                 parentSize = rowSize.value
             )
@@ -143,8 +140,8 @@ fun HistoryView(
                     model.endJob("")
                 },
                 enabled = model.job != null,
-                text = "Cancel",
-                description = "Cancel",
+                text = strings.cancel(),
+                description = strings.cancel(),
                 vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )
@@ -176,7 +173,6 @@ fun HistoryView(
                 )
             }
 
-            @OptIn(ExperimentalAnimationApi::class)
             AnimatedVisibility(
                 visible = model.historyItems.isNotEmpty(),
                 enter = fadeIn(),

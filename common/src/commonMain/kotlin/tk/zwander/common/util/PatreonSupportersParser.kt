@@ -1,5 +1,6 @@
 package tk.zwander.common.util
 
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.utils.io.core.*
@@ -32,12 +33,12 @@ class PatreonSupportersParser private constructor() {
         withContext(Dispatchers.Default) {
             try {
                 val statement = client.use {
-                    it.get<HttpStatement> {
+                    it.get {
                         url("https://raw.githubusercontent.com/zacharee/PatreonSupportersRetrieval/master/app/src/main/assets/supporters.json")
                     }
                 }
 
-                supportersString.append(statement.execute().readText())
+                supportersString.append(statement.bodyAsText())
             } catch (e: Exception) {
                 e.printStackTrace()
             }

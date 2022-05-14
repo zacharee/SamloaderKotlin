@@ -6,55 +6,28 @@ import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.attributes.placeholder
 import org.jetbrains.compose.web.attributes.readOnly
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
 import org.khronos.webgl.Uint8Array
-import org.w3c.dom.HTMLElement
 import org.w3c.files.Blob
 import org.w3c.xhr.BLOB
 import org.w3c.xhr.XMLHttpRequest
 import org.w3c.xhr.XMLHttpRequestResponseType
-import react.RBuilder
-import react.dom.render
-import react.dom.svg.Additive
-import react.dom.unmountComponentAtNode
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.tools.Request
 import tk.zwander.common.util.*
+import tk.zwander.samloaderkotlin.strings
 import kotlin.math.roundToInt
 
 val downloadModel = DownloadModel()
 val decryptModel = DecryptModel()
 val historyModel = HistoryModel()
-
-/**
- * @param key - when UseReactEffect is invoked with a new [key], compose forces react to render with a new content.
- * @param content - the builder for the content managed by React
- */
-@Composable
-private fun ElementScope<HTMLElement>.UseReactEffect(
-    key: Any?,
-    content: RBuilder.() -> Unit
-) {
-    DomSideEffect(key = key) { htmlElement ->
-        render(htmlElement) {
-            content()
-        }
-    }
-
-    DisposableRefEffect { htmlElement ->
-        onDispose {
-            unmountComponentAtNode(htmlElement)
-        }
-    }
-}
 
 @OptIn(DangerousInternalIoApi::class)
 val client = FusClient(useProxy = true)
@@ -84,7 +57,7 @@ fun main() {
                         BootstrapTextInput(
                             value = downloadModel.model,
                         ) {
-                            placeholder("Model (e.g. SM-N986U1)")
+                            placeholder(strings.modelHint())
                             onInput { downloadModel.model = it.value.uppercase() }
                         }
                     }
@@ -93,7 +66,7 @@ fun main() {
                         BootstrapTextInput(
                             value = downloadModel.region
                         ) {
-                            placeholder("Region (e.g. XAA)")
+                            placeholder(strings.regionHint())
                             onInput { downloadModel.region = it.value.uppercase() }
                         }
                     }
@@ -105,7 +78,7 @@ fun main() {
                     Column {
                         BootstrapTextInput(downloadModel.fw) {
                             readOnly()
-                            placeholder("Firmware")
+                            placeholder(strings.firmware())
                             onInput { downloadModel.fw = it.value }
                         }
                     }
@@ -120,7 +93,7 @@ fun main() {
                                 onClick { downloadModel.job = downloadModel.scope.async { doCheck() } }
                             }
                         ) {
-                            Text("Retrieve")
+                            Text(strings.retrieve())
                         }
                     }
 
@@ -132,7 +105,7 @@ fun main() {
                                     onClick { downloadModel.job = downloadModel.scope.async { doDownload(xhr) } }
                                 }
                             ) {
-                                Text("Download")
+                                Text(strings.download())
                             }
                         }
                     }
@@ -143,11 +116,11 @@ fun main() {
                                 attrs = {
                                     onClick {
                                         xhr.abort()
-                                        downloadModel.endJob("Canceled")
+                                        downloadModel.endJob(strings.canceled())
                                     }
                                 }
                             ) {
-                                Text("Cancel")
+                                Text(strings.cancel())
                             }
                         }
                     }
@@ -156,7 +129,7 @@ fun main() {
                 Spacer(1.em)
 
                 Row {
-                    Text("Status: ${downloadModel.statusText}")
+                    Text(strings.statusFormat(downloadModel.statusText))
                 }
 
                 Spacer(1.em)
@@ -170,10 +143,10 @@ fun main() {
                     val finalSpeed = "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
 
                     Column {
-                        Text("Progress: $currentMB / $totalMB MiB")
+                        Text(strings.mib(currentMB, totalMB))
                     }
                     Column {
-                        Text("Speed: $finalSpeed ${if (shouldUseMB) "MiB/s" else "KiB/s"}")
+                        Text("$finalSpeed ${if (shouldUseMB) strings.mibs() else strings.kibs()}")
                     }
                 }
             }
@@ -185,7 +158,7 @@ suspend fun doCheck() {
     val (fw, os, error, output) = VersionFetch.getLatestVersion(downloadModel.model, downloadModel.region, true)
 
     if (error != null) {
-        downloadModel.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${error.message}\n\n$output")
+        downloadModel.endJob(strings.firmwareCheckError(error.message ?: "", output))
         return
     }
 
@@ -203,7 +176,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
 
     if (error != null) {
         error.printStackTrace()
-        downloadModel.endJob("${error.message ?: "Error"}\n\n${output}")
+        downloadModel.endJob("${error.message ?: strings.error()}\n\n${output}")
     } else {
         val (path, fileName, size, crc32, v4Key) = info!!
         val request = Request.createBinaryInit(fileName, client.getNonce())
@@ -219,7 +192,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
         var prevSent = 0L
         var prevCallTime = Clock.System.now().toEpochMilliseconds()
 
-        downloadModel.statusText = "Downloading"
+        downloadModel.statusText = strings.downloading()
 
         val authV = client.getAuthV()
         val url = client.getDownloadUrl(path + fileName)
@@ -237,7 +210,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
 
             downloadModel.scope.launch {
                 if (crc32 != null) {
-                    downloadModel.statusText = "Checking CRC"
+                    downloadModel.statusText = strings.checkingCRC()
                     val result = CryptUtils.checkCrc32(
                         blob.openAsync(),
                         size,
@@ -248,13 +221,13 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
                     }
 
                     if (!result) {
-                        downloadModel.endJob("CRC check failed. Please delete the file and download again.")
+                        downloadModel.endJob(strings.crcCheckFailed())
                         return@launch
                     }
                 }
 
                 if (md5 != null) {
-                    downloadModel.statusText = "Checking MD5"
+                    downloadModel.statusText = strings.checkingMD5()
                     downloadModel.progress = 1L to 2L
 
                     val result = withContext(Dispatchers.Default) {
@@ -265,11 +238,11 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
                     }
 
                     if (!result) {
-                        downloadModel.endJob("MD5 check failed. Please delete the file and download again.")
+                        downloadModel.endJob(strings.md5CheckFailed())
                     }
                 }
 
-                downloadModel.statusText = "Decrypting Firmware"
+                downloadModel.statusText = strings.decrypting()
 
                 val key =
                     if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
@@ -292,7 +265,7 @@ suspend fun doDownload(xhr: XMLHttpRequest) {
                     downloadModel.speed = bps
                 }
 
-                downloadModel.endJob("Done")
+                downloadModel.endJob(strings.done())
             }
 
             Unit

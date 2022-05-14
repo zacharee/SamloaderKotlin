@@ -14,10 +14,6 @@ repositories {
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
-kotlin.sourceSets.all {
-    languageSettings.useExperimentalAnnotation("kotlin.RequiresOptIn")
-}
-
 kotlin {
     android {
         compilations.forEach {

@@ -59,6 +59,7 @@ import kotlinx.coroutines.flow.filter
  */
 internal const val DebugLog = false
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @RequiresOptIn(message = "Accompanist Pager is experimental. The API may be changed in the future.")
 @Retention(AnnotationRetention.BINARY)
 annotation class ExperimentalPagerApi
@@ -130,6 +131,7 @@ object PagerDefaults {
  * @param content a block which describes the content. Inside this block you can reference
  * [PagerScope.currentPage] and other properties in [PagerScope].
  */
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @OptIn(ExperimentalSnapperApi::class)
 @ExperimentalPagerApi
 @Composable
@@ -182,6 +184,7 @@ fun HorizontalPager(
  * @param content a block which describes the content. Inside this block you can reference
  * [PagerScope.currentPage] and other properties in [PagerScope].
  */
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @OptIn(ExperimentalSnapperApi::class)
 @ExperimentalPagerApi
 @Composable
@@ -215,6 +218,7 @@ fun VerticalPager(
     )
 }
 
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 @ExperimentalPagerApi
 @Composable
 internal fun Pager(

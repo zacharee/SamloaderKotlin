@@ -1,6 +1,5 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
@@ -15,6 +14,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.model.BaseModel
 import tk.zwander.common.model.DownloadModel
+import tk.zwander.samloaderkotlin.strings
 
 /**
  * A common container for the model, region, and firmware text inputs used in [DownloadView] and [DecryptView]
@@ -23,7 +23,6 @@ import tk.zwander.common.model.DownloadModel
  * @param canChangeFirmware whether the firmware field should be editable.
  * @param showFirmware whether to show the firmware field.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
     val fontScale = LocalDensity.current.fontScale
@@ -45,7 +44,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Model (e.g. SM-N986U1)") },
+                label = { Text(strings.modelHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true
@@ -63,7 +62,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text("Region (e.g. XAA)") },
+                label = { Text(strings.regionHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true
@@ -103,7 +102,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
         OutlinedTextField(
             value = model.fw,
             onValueChange = { model.fw = it.uppercase().trim() },
-            label = { Text("Firmware (PDA/CSC/CP/AP)") },
+            label = { Text(strings.firmwareHint()) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmware,
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),

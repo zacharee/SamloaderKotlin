@@ -1,3 +1,5 @@
+@file:Suppress("OPT_IN_IS_NOT_ENABLED")
+
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.*
@@ -12,9 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -22,10 +22,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
-import com.soywiz.korio.async.launchImmediately
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
-import tk.zwander.common.GradleConfig
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
@@ -34,6 +32,7 @@ import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.downloadModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.*
+import tk.zwander.samloaderkotlin.strings
 import kotlin.time.ExperimentalTime
 
 /**
@@ -59,7 +58,7 @@ expect object PlatformDownloadView {
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
 private suspend fun onDownload(model: DownloadModel, client: FusClient) {
     PlatformDownloadView.onStart()
-    model.statusText = "Downloading"
+    model.statusText = strings.downloading()
 
     val (info, error, output) = Request.getBinaryFile(
         client,
@@ -70,7 +69,7 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
 
     if (error != null) {
         error.printStackTrace()
-        downloadModel.endJob("${error.message ?: "Error"}\n\n${output}")
+        downloadModel.endJob("${error.message ?: strings.error()}\n\n${output}")
     } else {
         val (path, fileName, size, crc32, v4Key) = info!!
         val request = Request.createBinaryInit(fileName, client.getNonce())
@@ -98,13 +97,13 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     model.progress = current to max
                     model.speed = bps
 
-                    PlatformDownloadView.onProgress("Downloading", current, max)
+                    PlatformDownloadView.onProgress(strings.downloading(), current, max)
                 }
 
                 model.speed = 0L
 
                 if (crc32 != null) {
-                    model.statusText = "Checking CRC"
+                    model.statusText = strings.checkingCRC()
                     val result = CryptUtils.checkCrc32(
                         inputInfo.downloadFile.openInputStream(),
                         size,
@@ -114,23 +113,23 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                         model.speed = bps
 
                         PlatformDownloadView.onProgress(
-                            "Checking CRC32",
+                            strings.checkingCRC(),
                             current,
                             max
                         )
                     }
 
                     if (!result) {
-                        model.endJob("CRC check failed. Please delete the file and download again.")
+                        model.endJob(strings.crcCheckFailed())
                         return@getInput
                     }
                 }
 
                 if (md5 != null) {
-                    model.statusText = "Checking MD5"
+                    model.statusText = strings.checkingMD5()
                     model.progress = 1L to 2L
 
-                    PlatformDownloadView.onProgress("Checking MD5", 0, 1)
+                    PlatformDownloadView.onProgress(strings.checkingMD5(), 0, 1)
 
                     val result = withContext(Dispatchers.Default) {
                         CryptUtils.checkMD5(
@@ -140,12 +139,12 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     }
 
                     if (!result) {
-                        model.endJob("MD5 check failed. Please delete the file and download again.")
+                        model.endJob(strings.md5CheckFailed())
                         return@getInput
                     }
                 }
 
-                model.statusText = "Decrypting Firmware"
+                model.statusText = strings.decrypting()
 
                 val key =
                     if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
@@ -165,10 +164,10 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     model.progress = current to max
                     model.speed = bps
 
-                    PlatformDownloadView.onProgress("Decrypting", current, max)
+                    PlatformDownloadView.onProgress(strings.decrypting(), current, max)
                 }
 
-                model.endJob("Done")
+                model.endJob(strings.done())
             } else {
                 model.endJob("")
             }
@@ -182,7 +181,7 @@ private suspend fun onFetch(model: DownloadModel) {
     val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model, model.region)
 
     if (error != null) {
-        model.endJob("Error checking for firmware. Make sure the model and region are correct.\nMore info: ${error.message}\n\n$output")
+        model.endJob(strings.firmwareCheckError(error.message.toString(), output))
         return
     }
 
@@ -202,7 +201,6 @@ private suspend fun onFetch(model: DownloadModel) {
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-@OptIn(ExperimentalAnimationApi::class)
 fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
     val canCheckVersion = !model.manual && model.model.isNotBlank()
             && model.region.isNotBlank() && model.job == null
@@ -230,8 +228,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 },
                 enabled = canDownload,
                 vectorIcon = vectorResource("download.xml"),
-                text = "Download",
-                description = "Download Firmware",
+                text = strings.download(),
+                description = strings.downloadFirmware(),
                 parentSize = rowSize.value
             )
 
@@ -244,9 +242,9 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     }
                 },
                 enabled = canCheckVersion,
-                text = "Check for Updates",
+                text = strings.checkForUpdates(),
                 vectorIcon = vectorResource("refresh.xml"),
-                description = "Check for Firmware Updates",
+                description = strings.checkForUpdatesDesc(),
                 parentSize = rowSize.value
             )
 
@@ -258,8 +256,8 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     model.endJob("")
                 },
                 enabled = model.job != null,
-                text = "Cancel",
-                description = "Cancel",
+                text = strings.cancel(),
+                description = strings.cancel(),
                 vectorIcon = vectorResource("cancel.xml"),
                 parentSize = rowSize.value
             )
@@ -299,7 +297,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
 
                 Text(
-                    text = "Manual",
+                    text = strings.manual(),
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
             }
@@ -319,13 +317,13 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                     val info = buildAnnotatedString {
                         pushStyle(SpanStyle(color = MaterialTheme.colors.error))
-                        append("Warning! Samsung may not supply the requested firmware! ")
+                        append("${strings.manualWarning()} ")
                         pushStringAnnotation(
                             "MoreInfo",
                             "MoreInfo"
                         )
                         pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                        append("More info")
+                        append(strings.moreInfo())
                         pop()
                         pop()
                     }
@@ -346,28 +344,25 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     AlertDialogDef(
                         title = {
                             Text(
-                                text = "More Info",
+                                text = strings.moreInfo(),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         },
                         text = {
                             val info = buildAnnotatedString {
-                                append("For most devices, Samsung will only supply the latest firmware. ")
-                                append("Even if you request a different version, Samsung's servers will return the latest firmware file. ")
-                                append("To avoid potentially flashing the wrong firmware, ${GradleConfig.appName} will check to see if Samsung is supplying the requested firmware before attempting to download. ")
-                                append("If the requested and served versions do not match, ${GradleConfig.appName} will abort the download. ")
-
-                                append("For more information on this, check out ")
+                                append(strings.manualWarningDetails())
+                                append(" ")
                                 pushStringAnnotation(
                                     "IssueLink",
                                     "https://github.com/zacharee/SamloaderKotlin/issues/10"
                                 )
                                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                                append("this issue")
+                                append(strings.manualWarningDetails2())
                                 pop()
                                 pop()
-                                append(" on GitHub.")
+                                append(" ")
+                                append(strings.manualWarningDetails3())
                             }
 
                             val scroll = rememberScrollState()
@@ -390,7 +385,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                                     showingRequestWarningDialog = false
                                 }
                             ) {
-                                Text("OK")
+                                Text(strings.ok())
                             }
                         },
                         onDismissRequest = {
@@ -414,7 +409,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                 Spacer(Modifier.height(4.dp))
 
                 Text(
-                    text = "OS Version: ${model.osCode}"
+                    text = strings.osVersion(model.osCode)
                 )
             }
         }
@@ -442,7 +437,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
                 ExpandButton(
                     model.changelogExpanded,
-                    "Changelog"
+                    strings.changelog()
                 ) { model.changelogExpanded = it }
 
                 Spacer(Modifier.height(8.dp))
