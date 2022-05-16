@@ -1,3 +1,11 @@
+# ???
+- Update dependencies.
+- Resize content for on-screen keyboard on Android.
+- Make JS version build again.
+- Implement a localization framework.
+- Add Russian translation.
+- Only show Settings gear if settings are available.
+
 # 1.0.7
 - Update dependencies.
 - Extract strings to variables.
