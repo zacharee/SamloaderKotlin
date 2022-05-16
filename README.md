@@ -121,6 +121,10 @@ Note: Pay special attention to formatting arguments. Numbers inside curly bracke
 
 Note: Make sure to keep any other formatting characters as-is (e.g., `\n` should stay as `\n` and `%%` should stay as `%%`).
 
+## Translators:
+
+- Russian: [Leo17032009](https://github.com/Leo17032009)
+
 # Screenshots
 
 ## Desktop:
