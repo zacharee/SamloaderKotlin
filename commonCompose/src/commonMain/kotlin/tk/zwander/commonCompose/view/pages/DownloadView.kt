@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
+import tk.zwander.common.GradleConfig
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.tools.*
@@ -351,7 +352,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                         },
                         text = {
                             val info = buildAnnotatedString {
-                                append(strings.manualWarningDetails())
+                                append(strings.manualWarningDetails(GradleConfig.appName, GradleConfig.appName))
                                 append(" ")
                                 pushStringAnnotation(
                                     "IssueLink",
