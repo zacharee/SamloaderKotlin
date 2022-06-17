@@ -1,8 +1,8 @@
 val versionCode by extra(21)
 val versionName by extra("1.0.8")
 
-val compileSdk by extra(31)
-val targetSdk by extra(31)
+val compileSdk by extra(32)
+val targetSdk by extra(32)
 val minSdk by extra(24)
 
 val javaVersionEnum by extra(JavaVersion.VERSION_11)
