@@ -23,6 +23,11 @@ fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
+    // Some GPUs don't like Direct3D
+    if (com.soywiz.korio.util.OS.isWindows) {
+        System.setProperty("skiko.renderApi", "OPENGL")
+    }
+
     application {
         var aboutState by remember { mutableStateOf(false) }
         var showingSupportersWindow by remember { mutableStateOf(false) }
