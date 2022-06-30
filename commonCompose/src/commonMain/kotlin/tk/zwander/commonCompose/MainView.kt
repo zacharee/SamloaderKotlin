@@ -15,7 +15,6 @@ import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.commonCompose.util.currentPageEnum
-import tk.zwander.commonCompose.util.pager.ExperimentalPagerApi
 import tk.zwander.commonCompose.util.pager.HorizontalPager
 import tk.zwander.commonCompose.util.pager.rememberPagerState
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
@@ -35,7 +34,7 @@ val historyModel = HistoryModel()
  * The main UI view.
  */
 @Suppress("OPT_IN_IS_NOT_ENABLED")
-@OptIn(DangerousInternalIoApi::class, ExperimentalPagerApi::class)
+@OptIn(DangerousInternalIoApi::class)
 @ExperimentalTime
 @Composable
 fun MainView(modifier: Modifier = Modifier) {
@@ -89,7 +88,7 @@ fun MainView(modifier: Modifier = Modifier) {
                         updateCurrentPage(Page.DECRYPTER)
                     }
 
-                    if (OS.isJvm) {
+                    if (!OS.isAndroid) {
                         pagerState.overridePageCount = 3
 
                         Crossfade(
@@ -108,9 +107,8 @@ fun MainView(modifier: Modifier = Modifier) {
                         HorizontalPager(
                             count = 3,
                             state = pagerState,
-                            itemSpacing = 8.dp,
                         ) { p ->
-                            when (Page.values()[p]) {
+                            when (p) {
                                 Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
                                 Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
                                 Page.HISTORY -> HistoryView(

@@ -2,6 +2,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.application")
     id("kotlin-android")
+    id("org.jetbrains.kotlin.android")
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -13,6 +14,7 @@ repositories {
 
 dependencies {
     implementation(project(":commonCompose"))
+    implementation("androidx.core:core-ktx:+")
 }
 
 android {

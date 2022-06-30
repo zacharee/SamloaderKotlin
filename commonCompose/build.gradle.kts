@@ -29,6 +29,10 @@ kotlin {
         }
     }
 
+    macosX64 {}
+
+    macosArm64 {}
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -37,13 +41,14 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.ui)
-                api("com.github.zacharee:snapper:f81f5ba180")
+//                api("com.github.zacharee:snapper:7b28eb9986")
             }
         }
 
         val androidMain by getting {
             dependencies {
                 api(project(":common"))
+                api("com.google.accompanist:accompanist-pager:0.24.12-rc")
             }
         }
 
@@ -52,8 +57,42 @@ kotlin {
                 api(project(":common"))
             }
         }
+
+        val macosMain by creating {
+            dependsOn(commonMain)
+        }
+
+        val macosArm64Main by getting {
+            dependsOn(macosMain)
+        }
+
+        val macosX64Main by getting {
+            dependsOn(desktopMain)
+        }
     }
 }
+
+//compose.experimental {
+//    uikit.application {
+//        bundleIdPrefix = "dev.zwander"
+//        projectName = "Bifrost"
+//        deployConfigurations {
+//            simulator("IPhone8") {
+//                //Usage: ./gradlew iosDeployIPhone8Debug
+//                device = org.jetbrains.compose.experimental.dsl.IOSDevices.IPHONE_8
+//            }
+//            simulator("IPad") {
+//                //Usage: ./gradlew iosDeployIPadDebug
+//                device = org.jetbrains.compose.experimental.dsl.IOSDevices.IPAD_MINI_6th_Gen
+//            }
+//            connectedDevice("Device") {
+//                //First need specify your teamId here, or in local.properties (compose.ios.teamId=***)
+//                //teamId="***"
+//                //Usage: ./gradlew iosDeployDeviceRelease
+//            }
+//        }
+//    }
+//}
 
 android {
     val compileSdk: Int by rootProject.extra

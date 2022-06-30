@@ -39,6 +39,9 @@ kotlin {
         binaries.executable()
     }
 
+    macosX64 {}
+    macosArm64 {}
+
     android {
         compilations.forEach {
             it.kotlinOptions {
@@ -63,9 +66,9 @@ kotlin {
                 api(compose.runtime)
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
-                api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
+//                api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
                 api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                 api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
@@ -74,7 +77,7 @@ kotlin {
                 api("co.touchlab:stately-isolate:1.2.1")
                 api("io.ktor:ktor-client-core:$ktorVersion")
                 api("io.ktor:ktor-client-auth:$ktorVersion")
-                api("io.fluidsonic.i18n:fluid-i18n:0.10.0")
+                api("io.fluidsonic.i18n:fluid-i18n:0.11.0")
                 api("io.fluidsonic.country:fluid-country:0.11.0")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
                 api("com.russhwolf:multiplatform-settings:0.8.1")
@@ -95,19 +98,19 @@ kotlin {
 
         named("androidMain") {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
                 api("androidx.appcompat:appcompat:1.4.2")
-                api("androidx.fragment:fragment-ktx:1.4.1")
-                api("androidx.activity:activity-compose:1.4.0")
+                api("androidx.fragment:fragment-ktx:1.5.0")
+                api("androidx.activity:activity-compose:1.5.0")
                 api("androidx.core:core-ktx:1.8.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:0.4.0")
 
                 // Remove this once JB Compose gets the updated version.
-                api("androidx.compose.foundation:foundation-layout:1.2.0-rc01")
+                api("androidx.compose.foundation:foundation-layout:1.3.0-alpha01")
             }
         }
 
@@ -129,6 +132,22 @@ kotlin {
 //                api("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.1.0-pre.336")
 //                api("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.5-pre.336")
             }
+        }
+
+        val macosMain by creating {
+            dependsOn(named("commonMain").get())
+
+            dependencies {
+                api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
+            }
+        }
+
+        val macosArm64Main by getting {
+            dependsOn(macosMain)
+        }
+
+        val macosX64Main by getting {
+            dependsOn(macosMain)
         }
     }
 }
