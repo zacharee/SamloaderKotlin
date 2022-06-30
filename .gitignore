@@ -9,3 +9,5 @@
 /desktop/build/
 /.idea/artifacts/
 /.idea/libraries/
+**/build/
+/.idea/
