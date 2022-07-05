@@ -5,10 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -27,11 +24,9 @@ import tk.zwander.samloaderkotlin.strings
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
     val fontScale = LocalDensity.current.fontScale
     val density = LocalDensity.current.density
-    val size = remember { mutableStateOf(0.dp) }
 
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
-            .onSizeChanged { size.value = it.width.dp }
     ) {
         val modelField = @Composable() {
             OutlinedTextField(
@@ -69,7 +64,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
             )
         }
 
-        if (size.value / (fontScale * density) >= 400.dp) {
+        if (constraints.maxWidth / (fontScale * density) >= 400) {
             Row {
                 Box(
                     modifier = Modifier.weight(0.6f, true)

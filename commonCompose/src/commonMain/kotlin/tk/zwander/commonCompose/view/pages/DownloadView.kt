@@ -14,7 +14,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -213,55 +212,57 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
 
     Column(
         modifier = Modifier.fillMaxSize()
-            .verticalScroll(scrollState)
+            .verticalScroll(scrollState),
     ) {
-        val rowSize = remember { mutableStateOf(0.dp) }
-
-        Row(
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-                .onSizeChanged { rowSize.value = it.width.dp },
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            HybridButton(
-                onClick = {
-                    model.job = model.scope.launch {
-                        onDownload(model, client)
-                    }
-                },
-                enabled = canDownload,
-                vectorIcon = vectorResource("download.xml"),
-                text = strings.download(),
-                description = strings.downloadFirmware(),
-                parentSize = rowSize.value
-            )
+            val constraints = constraints
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                HybridButton(
+                    onClick = {
+                        model.job = model.scope.launch {
+                            onDownload(model, client)
+                        }
+                    },
+                    enabled = canDownload,
+                    vectorIcon = vectorResource("download.xml"),
+                    text = strings.download(),
+                    description = strings.downloadFirmware(),
+                    parentSize = constraints.maxWidth
+                )
 
-            Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(8.dp))
 
-            HybridButton(
-                onClick = {
-                    model.job = model.scope.launch {
-                        onFetch(model)
-                    }
-                },
-                enabled = canCheckVersion,
-                text = strings.checkForUpdates(),
-                vectorIcon = vectorResource("refresh.xml"),
-                description = strings.checkForUpdatesDesc(),
-                parentSize = rowSize.value
-            )
+                HybridButton(
+                    onClick = {
+                        model.job = model.scope.launch {
+                            onFetch(model)
+                        }
+                    },
+                    enabled = canCheckVersion,
+                    text = strings.checkForUpdates(),
+                    vectorIcon = vectorResource("refresh.xml"),
+                    description = strings.checkForUpdatesDesc(),
+                    parentSize = constraints.maxWidth
+                )
 
-            Spacer(Modifier.weight(1f))
+                Spacer(Modifier.weight(1f))
 
-            HybridButton(
-                onClick = {
-                    PlatformDownloadView.onFinish()
-                    model.endJob("")
-                },
-                enabled = model.job != null,
-                text = strings.cancel(),
-                description = strings.cancel(),
-                vectorIcon = vectorResource("cancel.xml"),
-                parentSize = rowSize.value
-            )
+                HybridButton(
+                    onClick = {
+                        PlatformDownloadView.onFinish()
+                        model.endJob("")
+                    },
+                    enabled = model.job != null,
+                    text = strings.cancel(),
+                    description = strings.cancel(),
+                    vectorIcon = vectorResource("cancel.xml"),
+                    parentSize = constraints.maxWidth
+                )
+            }
         }
 
         Spacer(Modifier.height(8.dp))

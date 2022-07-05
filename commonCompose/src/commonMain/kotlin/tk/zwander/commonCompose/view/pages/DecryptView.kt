@@ -6,10 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
@@ -96,48 +93,52 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
         modifier = Modifier.fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-        val rowSize = remember { mutableStateOf(0.dp) }
-        Row(
+        BoxWithConstraints(
             modifier = Modifier.fillMaxWidth()
-                .onSizeChanged { rowSize.value = it.width.dp }
         ) {
-            HybridButton(
-                onClick = {
-                    model.job = model.scope.launch {
-                        onDecrypt(model)
-                    }
-                },
-                enabled = canDecrypt,
-                text = strings.decrypt(),
-                description = strings.decryptFirmware(),
-                vectorIcon = vectorResource("decrypt.xml"),
-                parentSize = rowSize.value
-            )
-            Spacer(Modifier.width(8.dp))
-            HybridButton(
-                onClick = {
-                    model.scope.launch {
-                        onOpenFile(model)
-                    }
-                },
-                enabled = canChangeOption,
-                text = strings.openFile(),
-                description = strings.openFileDesc(),
-                vectorIcon = vectorResource("open.xml"),
-                parentSize = rowSize.value
-            )
-            Spacer(Modifier.weight(1f))
-            HybridButton(
-                onClick = {
-                    PlatformDecryptView.onFinish()
-                    model.endJob("")
-                },
-                enabled = model.job != null,
-                text = strings.cancel(),
-                description = strings.cancel(),
-                vectorIcon = vectorResource("cancel.xml"),
-                parentSize = rowSize.value
-            )
+            val constraints = constraints
+
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                HybridButton(
+                    onClick = {
+                        model.job = model.scope.launch {
+                            onDecrypt(model)
+                        }
+                    },
+                    enabled = canDecrypt,
+                    text = strings.decrypt(),
+                    description = strings.decryptFirmware(),
+                    vectorIcon = vectorResource("decrypt.xml"),
+                    parentSize = constraints.maxWidth
+                )
+                Spacer(Modifier.width(8.dp))
+                HybridButton(
+                    onClick = {
+                        model.scope.launch {
+                            onOpenFile(model)
+                        }
+                    },
+                    enabled = canChangeOption,
+                    text = strings.openFile(),
+                    description = strings.openFileDesc(),
+                    vectorIcon = vectorResource("open.xml"),
+                    parentSize = constraints.maxWidth
+                )
+                Spacer(Modifier.weight(1f))
+                HybridButton(
+                    onClick = {
+                        PlatformDecryptView.onFinish()
+                        model.endJob("")
+                    },
+                    enabled = model.job != null,
+                    text = strings.cancel(),
+                    description = strings.cancel(),
+                    vectorIcon = vectorResource("cancel.xml"),
+                    parentSize = constraints.maxWidth
+                )
+            }
         }
 
         Spacer(Modifier.height(8.dp))

@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 
 /**
  * A special Button that shows as a text button if there's enough room
@@ -26,13 +24,13 @@ fun HybridButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: () -> Unit,
-    parentSize: Dp
+    parentSize: Int
 ) {
     val fontScale = LocalDensity.current.fontScale
     val density = LocalDensity.current.density
 
     BoxWithConstraints {
-        if (parentSize / (fontScale * density) >= 400.dp) {
+        if (parentSize / (fontScale * density) >= 400) {
             OutlinedButton(modifier = modifier, onClick = onClick, enabled = enabled) {
                 Text(text)
             }

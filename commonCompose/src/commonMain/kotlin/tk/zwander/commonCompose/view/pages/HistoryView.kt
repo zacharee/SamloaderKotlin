@@ -8,11 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
@@ -103,48 +100,52 @@ fun HistoryView(
     Column(
         Modifier.fillMaxWidth()
     ) {
-        val rowSize = remember { mutableStateOf(0.dp) }
-        Row(
+        BoxWithConstraints(
             modifier = Modifier.fillMaxWidth()
-                .onSizeChanged { rowSize.value = it.width.dp }
         ) {
-            HybridButton(
-                onClick = {
-                    model.historyItems = listOf()
+            val constraints = constraints
 
-                    model.job = model.scope.launch {
-                        onFetch(model)
-                    }
-                },
-                enabled = canCheckHistory,
-                text = strings.checkHistory(),
-                description = strings.checkHistory(),
-                vectorIcon = vectorResource("refresh.xml"),
-                parentSize = rowSize.value
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                HybridButton(
+                    onClick = {
+                        model.historyItems = listOf()
 
-            if (model.job != null) {
-                Spacer(Modifier.width(8.dp))
+                        model.job = model.scope.launch {
+                            onFetch(model)
+                        }
+                    },
+                    enabled = canCheckHistory,
+                    text = strings.checkHistory(),
+                    description = strings.checkHistory(),
+                    vectorIcon = vectorResource("refresh.xml"),
+                    parentSize = constraints.maxWidth
+                )
 
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp)
-                        .align(Alignment.CenterVertically),
-                    strokeWidth = 2.dp
+                if (model.job != null) {
+                    Spacer(Modifier.width(8.dp))
+
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp)
+                            .align(Alignment.CenterVertically),
+                        strokeWidth = 2.dp
+                    )
+                }
+
+                Spacer(Modifier.weight(1f))
+
+                HybridButton(
+                    onClick = {
+                        model.endJob("")
+                    },
+                    enabled = model.job != null,
+                    text = strings.cancel(),
+                    description = strings.cancel(),
+                    vectorIcon = vectorResource("cancel.xml"),
+                    parentSize = constraints.maxWidth
                 )
             }
-
-            Spacer(Modifier.weight(1f))
-
-            HybridButton(
-                onClick = {
-                    model.endJob("")
-                },
-                enabled = model.job != null,
-                text = strings.cancel(),
-                description = strings.cancel(),
-                vectorIcon = vectorResource("cancel.xml"),
-                parentSize = rowSize.value
-            )
         }
 
         Spacer(Modifier.height(8.dp))
