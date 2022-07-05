@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.util.OS
 import io.ktor.utils.io.core.internal.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.newFixedThreadPoolContext
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
@@ -26,7 +28,10 @@ import tk.zwander.commonCompose.view.pages.DownloadView
 import tk.zwander.commonCompose.view.pages.HistoryView
 import kotlin.time.ExperimentalTime
 
-val downloadModel = DownloadModel()
+val downloadModel = DownloadModel().apply {
+    @Suppress("OPT_IN_USAGE")
+    scope = CoroutineScope(newFixedThreadPoolContext(5, "Background"))
+}
 val decryptModel = DecryptModel()
 val historyModel = HistoryModel()
 
