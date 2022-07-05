@@ -26,10 +26,16 @@ import kotlin.time.ExperimentalTime
 
 val downloadModel = DownloadModel().apply {
     @Suppress("OPT_IN_USAGE")
-    scope = CoroutineScope(newFixedThreadPoolContext(5, "Background"))
+    scope = CoroutineScope(newFixedThreadPoolContext(5, "BackgroundDownload"))
 }
-val decryptModel = DecryptModel()
-val historyModel = HistoryModel()
+val decryptModel = DecryptModel().apply {
+    @Suppress("OPT_IN_USAGE")
+    scope = CoroutineScope(newFixedThreadPoolContext(5, "BackgroundDecrypt"))
+}
+val historyModel = HistoryModel().apply {
+    @Suppress("OPT_IN_USAGE")
+    scope = CoroutineScope(newFixedThreadPoolContext(5, "BackgroundHistory"))
+}
 
 /**
  * The main UI view.
