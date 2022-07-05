@@ -3,8 +3,11 @@ package tk.zwander.common.util
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.client.utils.*
+import io.ktor.util.*
 import io.ktor.utils.io.core.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
@@ -18,6 +21,7 @@ data class SupporterInfo(
 
 class PatreonSupportersParser private constructor() {
     companion object {
+        @Suppress("VARIABLE_IN_SINGLETON_WITHOUT_THREAD_LOCAL")
         private var instance: PatreonSupportersParser? = null
 
         fun getInstance(): PatreonSupportersParser {
@@ -27,10 +31,11 @@ class PatreonSupportersParser private constructor() {
         }
     }
 
+    @OptIn(InternalAPI::class)
     suspend fun parseSupporters(): List<SupporterInfo> {
         val supportersString = StringBuilder()
 
-        withContext(Dispatchers.Default) {
+        withContext(Dispatchers.clientDispatcher(5, "Supporters")) {
             try {
                 val statement = client.use {
                     it.get {
