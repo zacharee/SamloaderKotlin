@@ -2,15 +2,11 @@ package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import tk.zwander.commonCompose.util.pager.PagerState
-import tk.zwander.commonCompose.util.pager.pagerTabIndicatorOffset
 import tk.zwander.samloaderkotlin.strings
 
 /**
@@ -27,17 +23,17 @@ enum class Page(val index: Int) {
  */
 @Composable
 fun TabView(
-    pagerState: PagerState,
     selectedPage: Page,
     onPageSelected: (Page) -> Unit,
+    indicator: @Composable() ((List<TabPosition>) -> Unit)?
 ) {
     TabRow(
         modifier = Modifier.fillMaxWidth()
             .height(48.dp),
         selectedTabIndex = selectedPage.index,
-        indicator = { tabPositions ->
+        indicator = indicator ?: { tabPositions ->
             TabRowDefaults.Indicator(
-                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+                Modifier.tabIndicatorOffset(tabPositions[selectedPage.index])
             )
         }
     ) {

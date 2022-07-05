@@ -50,6 +50,7 @@ kotlin {
             dependencies {
                 api(project(":common"))
                 api("com.google.accompanist:accompanist-pager:0.24.12-rc")
+                api("com.google.accompanist:accompanist-pager-indicators:0.24.11-rc")
             }
         }
 

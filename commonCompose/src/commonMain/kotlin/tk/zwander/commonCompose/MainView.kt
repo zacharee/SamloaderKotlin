@@ -1,24 +1,20 @@
 package tk.zwander.commonCompose
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Surface
+import androidx.compose.material.TabPosition
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.soywiz.korio.async.launch
-import com.soywiz.korio.util.OS
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.newFixedThreadPoolContext
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
-import tk.zwander.commonCompose.util.currentPageEnum
 import tk.zwander.commonCompose.util.pager.HorizontalPager
-import tk.zwander.commonCompose.util.pager.rememberPagerState
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.commonCompose.view.components.Page
@@ -44,27 +40,21 @@ val historyModel = HistoryModel()
 @Composable
 fun MainView(modifier: Modifier = Modifier) {
     val scrollState = rememberScrollState(0)
-    val pagerState = rememberPagerState(Page.DOWNLOADER.index, !OS.isJvm)
-    val scope = rememberCoroutineScope()
+    var currentPage by remember { mutableStateOf(Page.DOWNLOADER) }
+    var indicator by remember { mutableStateOf<(@Composable() (List<TabPosition>) -> Unit)?>(null) }
 
     CustomMaterialTheme {
         Surface {
             Column(
                 modifier = modifier.fillMaxSize()
             ) {
-                fun updateCurrentPage(page: Page) {
-                    pagerState.currentPageEnum = page
-                    scope.launch {
-                        pagerState.animateScrollToPage(page.index)
-                    }
-                }
 
                 TabView(
-                    pagerState = pagerState,
-                    selectedPage = pagerState.currentPageEnum,
+                    selectedPage = currentPage,
                     onPageSelected = {
-                        updateCurrentPage(it)
-                    }
+                        currentPage = it
+                    },
+                    indicator = indicator
                 )
 
                 Column(
@@ -81,7 +71,7 @@ fun MainView(modifier: Modifier = Modifier) {
                         downloadModel.region = region
                         downloadModel.fw = fw
 
-                        updateCurrentPage(Page.DOWNLOADER)
+                        currentPage = Page.DOWNLOADER
                     }
 
                     val historyDecryptCallback = { model: String, region: String, fw: String ->
@@ -90,15 +80,14 @@ fun MainView(modifier: Modifier = Modifier) {
                         decryptModel.region = region
                         decryptModel.fw = fw
 
-                        updateCurrentPage(Page.DECRYPTER)
+                        currentPage = Page.DECRYPTER
                     }
 
-                    if (!OS.isAndroid) {
-                        pagerState.overridePageCount = 3
-
-                        Crossfade(
-                            targetState = pagerState.currentPageEnum
-                        ) {
+                    indicator = HorizontalPager(
+                        count = 3,
+                        currentPage = currentPage.index,
+                        onPageChanged = { currentPage = Page.values()[it] },
+                        eval = {
                             when (it) {
                                 Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
                                 Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
@@ -108,21 +97,7 @@ fun MainView(modifier: Modifier = Modifier) {
                                 )
                             }
                         }
-                    } else {
-                        HorizontalPager(
-                            count = 3,
-                            state = pagerState,
-                        ) { p ->
-                            when (p) {
-                                Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
-                                Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
-                                Page.HISTORY -> HistoryView(
-                                    historyModel, historyDownloadCallback,
-                                    historyDecryptCallback
-                                )
-                            }
-                        }
-                    }
+                    )
                 }
 
                 FooterView()
