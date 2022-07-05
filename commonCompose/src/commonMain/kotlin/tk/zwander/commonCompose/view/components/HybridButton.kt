@@ -1,5 +1,7 @@
 package tk.zwander.commonCompose.view.components
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -29,28 +31,34 @@ fun HybridButton(
     val fontScale = LocalDensity.current.fontScale
     val density = LocalDensity.current.density
 
-    BoxWithConstraints {
-        if (parentSize / (fontScale * density) >= 400) {
-            OutlinedButton(modifier = modifier, onClick = onClick, enabled = enabled) {
-                Text(text)
-            }
-        } else {
-            IconButton(modifier = modifier, onClick = onClick, enabled = enabled) {
-                when {
-                    icon != null -> {
-                        Icon(
-                            bitmap = icon,
-                            contentDescription = description,
-                        )
-                    }
-                    vectorIcon != null -> {
-                        Icon(
-                            imageVector = vectorIcon,
-                            contentDescription = description,
-                        )
-                    }
-                    else -> {
-                        throw IllegalArgumentException("Either icon or vectorIcon must not be null.")
+    BoxWithConstraints(
+        modifier = Modifier.animateContentSize()
+    ) {
+        Crossfade(
+            targetState = parentSize / (fontScale * density) >= 400
+        ) {
+            if (it) {
+                OutlinedButton(modifier = modifier, onClick = onClick, enabled = enabled) {
+                    Text(text)
+                }
+            } else {
+                IconButton(modifier = modifier, onClick = onClick, enabled = enabled) {
+                    when {
+                        icon != null -> {
+                            Icon(
+                                bitmap = icon,
+                                contentDescription = description,
+                            )
+                        }
+                        vectorIcon != null -> {
+                            Icon(
+                                imageVector = vectorIcon,
+                                contentDescription = description,
+                            )
+                        }
+                        else -> {
+                            throw IllegalArgumentException("Either icon or vectorIcon must not be null.")
+                        }
                     }
                 }
             }

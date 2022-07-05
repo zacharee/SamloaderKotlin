@@ -1,10 +1,12 @@
 package tk.zwander.commonCompose.view.components
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -64,7 +66,13 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
             )
         }
 
-        if (constraints.maxWidth / (fontScale * density) >= 400) {
+        val constraint = constraints.maxWidth / (fontScale * density) >= 400
+
+        AnimatedVisibility(
+            visible = constraint,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
             Row {
                 Box(
                     modifier = Modifier.weight(0.6f, true)
@@ -80,7 +88,13 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                     regionField()
                 }
             }
-        } else {
+        }
+
+        AnimatedVisibility(
+            visible = !constraint,
+            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top)
+        ) {
             Column {
                 modelField()
 
