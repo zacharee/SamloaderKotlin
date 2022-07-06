@@ -15,6 +15,11 @@ repositories {
 }
 
 kotlin {
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
+
     android {
         compilations.forEach {
             it.kotlinOptions {
@@ -42,7 +47,6 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
-//                api("com.github.zacharee:snapper:7b28eb9986")
             }
         }
 
@@ -70,6 +74,10 @@ kotlin {
 
         val macosX64Main by getting {
             dependsOn(macosMain)
+        }
+
+        val jsMain by getting {
+            dependsOn(commonMain)
         }
     }
 }
@@ -110,5 +118,9 @@ android {
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].resources.srcDir("src/commonMain/resources")
+}
+
+compose.experimental {
+    web.application {}
 }
 

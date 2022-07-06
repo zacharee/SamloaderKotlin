@@ -8,9 +8,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.ktor.client.utils.*
+import io.ktor.util.*
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.Dispatchers
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
@@ -24,17 +26,17 @@ import tk.zwander.commonCompose.view.pages.DownloadView
 import tk.zwander.commonCompose.view.pages.HistoryView
 import kotlin.time.ExperimentalTime
 
+@OptIn(InternalAPI::class)
 val downloadModel = DownloadModel().apply {
-    @Suppress("OPT_IN_USAGE")
-    scope = CoroutineScope(newFixedThreadPoolContext(5, "BackgroundDownload"))
+    scope = CoroutineScope(Dispatchers.clientDispatcher(5, "BackgroundDownload"))
 }
+@OptIn(InternalAPI::class)
 val decryptModel = DecryptModel().apply {
-    @Suppress("OPT_IN_USAGE")
-    scope = CoroutineScope(newFixedThreadPoolContext(5, "BackgroundDecrypt"))
+    scope = CoroutineScope(Dispatchers.clientDispatcher(5, "BackgroundDecrypt"))
 }
+@OptIn(InternalAPI::class)
 val historyModel = HistoryModel().apply {
-    @Suppress("OPT_IN_USAGE")
-    scope = CoroutineScope(newFixedThreadPoolContext(5, "BackgroundHistory"))
+    scope = CoroutineScope(Dispatchers.clientDispatcher(5, "BackgroundHistory"))
 }
 
 /**

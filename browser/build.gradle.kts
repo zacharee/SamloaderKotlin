@@ -1,5 +1,3 @@
-import org.jetbrains.compose.compose
-
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
@@ -7,6 +5,8 @@ plugins {
 
 group = rootProject.extra["groupName"].toString()
 version = rootProject.extra["versionName"].toString()
+
+val resourcesDir = "$buildDir/resources/"
 
 kotlin {
     js(IR) {
@@ -17,11 +17,22 @@ kotlin {
     sourceSets {
         named("jsMain") {
             dependencies {
-                implementation(project(":common"))
-                implementation(compose.ui)
-                implementation(compose.foundation)
-                implementation(compose.material)
+                implementation(project(":commonCompose"))
+
+                resources.srcDirs("$rootDir/common/src/commonMain/resources")
             }
         }
+    }
+}
+
+compose.experimental {
+    web.application {}
+}
+
+afterEvaluate {
+    rootProject.extensions.configure<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension> {
+        versions.webpackDevServer.version = "4.0.0"
+        versions.webpackCli.version = "4.9.0"
+        nodeVersion = "16.0.0"
     }
 }

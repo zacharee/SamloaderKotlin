@@ -1,29 +1,43 @@
-import androidx.compose.runtime.*
-import com.soywiz.korio.async.async
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
+
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.InputModeManager
+import androidx.compose.ui.platform.*
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.window.Window
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.file.openAsync
 import io.ktor.utils.io.core.internal.*
+import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import org.jetbrains.compose.web.attributes.placeholder
-import org.jetbrains.compose.web.attributes.readOnly
-import org.jetbrains.compose.web.css.*
-import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
+import org.jetbrains.compose.web.renderComposableInBody
+import org.jetbrains.skiko.wasm.onWasmReady
 import org.khronos.webgl.Uint8Array
+import org.w3c.dom.HTMLCanvasElement
 import org.w3c.files.Blob
 import org.w3c.xhr.BLOB
 import org.w3c.xhr.XMLHttpRequest
 import org.w3c.xhr.XMLHttpRequestResponseType
+import tk.zwander.common.GradleConfig
 import tk.zwander.common.model.DecryptModel
 import tk.zwander.common.model.DownloadModel
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.tools.Request
 import tk.zwander.common.util.*
+import tk.zwander.commonCompose.MainView
 import tk.zwander.samloaderkotlin.strings
-import kotlin.math.roundToInt
+import kotlin.time.ExperimentalTime
+import androidx.compose.ui.native.ComposeLayer
+import androidx.compose.ui.window.ComposeWindow
+import tk.zwander.samloaderkotlin.resources.SharedRes
 
 val downloadModel = DownloadModel()
 val decryptModel = DecryptModel()
@@ -32,6 +46,25 @@ val historyModel = HistoryModel()
 @OptIn(DangerousInternalIoApi::class)
 val client = FusClient(useProxy = true)
 
+val canvas = document.getElementById("ComposeTarget") as HTMLCanvasElement
+
+fun canvasResize(width: Int = window.innerWidth, height: Int = window.innerHeight) {
+    canvas.setAttribute("width", "$width")
+    canvas.setAttribute("height", "$height")
+}
+
+fun composableResize(layer: ComposeLayer) {
+    val scale = layer.layer.contentScale
+    canvasResize()
+    layer.layer.attachTo(canvas)
+    layer.layer.needRedraw()
+    layer.setSize(
+        (canvas.width / scale).toInt(),
+        (canvas.height / scale).toInt()
+    )
+}
+
+@OptIn(ExperimentalTime::class)
 fun main() {
     initLocale()
 
@@ -44,116 +77,142 @@ fun main() {
             };
         """)
 
-    renderComposable(rootElementId = "root") {
-        val xhr = remember { XMLHttpRequest() }
+    onWasmReady {
+        canvasResize()
+        ComposeWindow().apply {
+            setTitle(GradleConfig.appName)
 
-        Style(AppStyle)
-        Div(
-            attrs = {
-                classes(AppStyle.main)
-            }
-        ) {
-            Container(type = "fluid") {
-                Row {
-                    Column(xs = 12, md = 6) {
-                        BootstrapTextInput(
-                            value = downloadModel.model,
-                        ) {
-                            placeholder(strings.modelHint())
-                            onInput { downloadModel.model = it.value.uppercase() }
-                        }
-                    }
-
-                    Column(xs = 12, md = 6) {
-                        BootstrapTextInput(
-                            value = downloadModel.region
-                        ) {
-                            placeholder(strings.regionHint())
-                            onInput { downloadModel.region = it.value.uppercase() }
-                        }
-                    }
-                }
-
-                Spacer(height = 1.em)
-
-                Row {
-                    Column {
-                        BootstrapTextInput(downloadModel.fw) {
-                            readOnly()
-                            placeholder(strings.firmware())
-                            onInput { downloadModel.fw = it.value }
-                        }
-                    }
-                }
-
-                Spacer(height = 1.em)
-
-                Row {
-                    Column {
-                        BootstrapButton(
-                            attrs = {
-                                onClick { downloadModel.job = downloadModel.scope.async { doCheck() } }
-                            }
-                        ) {
-                            Text(strings.retrieve())
-                        }
-                    }
-
-                    if (downloadModel.fw.isNotBlank() && downloadModel.model.isNotBlank() && downloadModel.region.isNotBlank()
-                        && downloadModel.job == null) {
-                        Column {
-                            BootstrapButton(
-                                attrs = {
-                                    onClick { downloadModel.job = downloadModel.scope.async { doDownload(xhr) } }
-                                }
-                            ) {
-                                Text(strings.download())
-                            }
-                        }
-                    }
-
-                    if (downloadModel.job != null) {
-                        Column {
-                            BootstrapButton(
-                                attrs = {
-                                    onClick {
-                                        xhr.abort()
-                                        downloadModel.endJob(strings.canceled())
-                                    }
-                                }
-                            ) {
-                                Text(strings.cancel())
-                            }
-                        }
-                    }
-                }
-
-                Spacer(1.em)
-
-                Row {
-                    Text(strings.statusFormat(downloadModel.statusText))
-                }
-
-                Spacer(1.em)
-
-                Row {
-                    val currentMB = (downloadModel.progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
-                    val totalMB = (downloadModel.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
-
-                    val speedKBps = downloadModel.speed / 1024.0
-                    val shouldUseMB = speedKBps >= 1 * 1024
-                    val finalSpeed = "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
-
-                    Column {
-                        Text(strings.mib(currentMB, totalMB))
-                    }
-                    Column {
-                        Text("$finalSpeed ${if (shouldUseMB) strings.mibs() else strings.kibs()}")
-                    }
-                }
+            setContent {
+                window.addEventListener("resize", {
+                    composableResize(layer = layer)
+                })
+                MainView(Modifier.fillMaxSize())
             }
         }
     }
+
+//    renderComposable(rootElementId = "root") {
+//        val density = Density(1f, 1f)
+//
+//        CompositionLocalProvider(
+//            LocalDensity provides density,
+//            LocalLayoutDirection provides LayoutDirection.Ltr,
+//            LocalViewConfiguration provides JsViewConfiguration(density),
+//            LocalInputModeManager provides InputModeManager
+//        ) {
+//            CustomMaterialTheme {
+//                MainView()
+//            }
+//        }
+//        val xhr = remember { XMLHttpRequest() }
+//
+//        Style(AppStyle)
+//        Div(
+//            attrs = {
+//                classes(AppStyle.main)
+//            }
+//        ) {
+//            Container(type = "fluid") {
+//                Row {
+//                    Column(xs = 12, md = 6) {
+//                        BootstrapTextInput(
+//                            value = downloadModel.model,
+//                        ) {
+//                            placeholder(strings.modelHint())
+//                            onInput { downloadModel.model = it.value.uppercase() }
+//                        }
+//                    }
+//
+//                    Column(xs = 12, md = 6) {
+//                        BootstrapTextInput(
+//                            value = downloadModel.region
+//                        ) {
+//                            placeholder(strings.regionHint())
+//                            onInput { downloadModel.region = it.value.uppercase() }
+//                        }
+//                    }
+//                }
+//
+//                Spacer(height = 1.em)
+//
+//                Row {
+//                    Column {
+//                        BootstrapTextInput(downloadModel.fw) {
+//                            readOnly()
+//                            placeholder(strings.firmware())
+//                            onInput { downloadModel.fw = it.value }
+//                        }
+//                    }
+//                }
+//
+//                Spacer(height = 1.em)
+//
+//                Row {
+//                    Column {
+//                        BootstrapButton(
+//                            attrs = {
+//                                onClick { downloadModel.job = downloadModel.scope.async { doCheck() } }
+//                            }
+//                        ) {
+//                            Text(strings.retrieve())
+//                        }
+//                    }
+//
+//                    if (downloadModel.fw.isNotBlank() && downloadModel.model.isNotBlank() && downloadModel.region.isNotBlank()
+//                        && downloadModel.job == null) {
+//                        Column {
+//                            BootstrapButton(
+//                                attrs = {
+//                                    onClick { downloadModel.job = downloadModel.scope.async { doDownload(xhr) } }
+//                                }
+//                            ) {
+//                                Text(strings.download())
+//                            }
+//                        }
+//                    }
+//
+//                    if (downloadModel.job != null) {
+//                        Column {
+//                            BootstrapButton(
+//                                attrs = {
+//                                    onClick {
+//                                        xhr.abort()
+//                                        downloadModel.endJob(strings.canceled())
+//                                    }
+//                                }
+//                            ) {
+//                                Text(strings.cancel())
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                Spacer(1.em)
+//
+//                Row {
+//                    Text(strings.statusFormat(downloadModel.statusText))
+//                }
+//
+//                Spacer(1.em)
+//
+//                Row {
+//                    val currentMB = (downloadModel.progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
+//                    val totalMB = (downloadModel.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0
+//
+//                    val speedKBps = downloadModel.speed / 1024.0
+//                    val shouldUseMB = speedKBps >= 1 * 1024
+//                    val finalSpeed = "${((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0}"
+//
+//                    Column {
+//                        Text(strings.mib(currentMB, totalMB))
+//                    }
+//                    Column {
+//                        Text("$finalSpeed ${if (shouldUseMB) strings.mibs() else strings.kibs()}")
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
 
 suspend fun doCheck() {

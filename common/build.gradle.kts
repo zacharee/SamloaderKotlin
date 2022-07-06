@@ -190,4 +190,8 @@ tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
+compose.experimental {
+    web.application {}
+}
+
 apply(plugin = "kotlinx-atomicfu")

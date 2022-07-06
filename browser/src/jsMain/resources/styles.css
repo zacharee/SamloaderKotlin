@@ -1,0 +1,16 @@
+#root {
+    width: 100%;
+    height: 100vh;
+}
+
+#root > .compose-web-column > div {
+    position: relative;
+}
+
+html, body {
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Arial, sans-serif;
+    color: #3e4349;
+}

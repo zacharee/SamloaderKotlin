@@ -1,12 +1,10 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.data.*
