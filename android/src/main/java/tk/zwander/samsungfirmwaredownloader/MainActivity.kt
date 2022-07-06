@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.*
 import tk.zwander.commonCompose.MainView
 import tk.zwander.common.data.*
+import tk.zwander.common.util.initLocale
 import kotlin.time.ExperimentalTime
 
 /**
@@ -67,6 +68,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initLocale()
 
         //Start the DownloaderService.
         DownloaderService.start(this, object : IMainActivity.Stub() {

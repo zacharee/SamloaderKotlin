@@ -23,7 +23,7 @@ kotlin {
         }
     }
 
-    jvm("desktop") {
+    jvm("jvm") {
         compilations.all {
             kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
         }
@@ -54,7 +54,7 @@ kotlin {
             }
         }
 
-        val desktopMain by getting {
+        val jvmMain by getting {
             dependencies {
                 api(project(":common"))
             }

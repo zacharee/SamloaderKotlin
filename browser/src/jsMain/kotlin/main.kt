@@ -33,6 +33,8 @@ val historyModel = HistoryModel()
 val client = FusClient(useProxy = true)
 
 fun main() {
+    initLocale()
+
     js("""
             window.originalFetch = window.fetch;
             window.fetch = function (resource, init) {

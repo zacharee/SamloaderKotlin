@@ -9,6 +9,7 @@ import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
+import tk.zwander.common.util.initLocale
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.samloaderkotlin.strings
@@ -20,6 +21,8 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
+    initLocale()
+
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", GradleConfig.appName)

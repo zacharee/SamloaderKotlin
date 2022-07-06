@@ -50,7 +50,7 @@ kotlin {
         }
     }
 
-    jvm("desktop") {
+    jvm("jvm") {
         compilations.all {
             kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
         }
@@ -86,7 +86,7 @@ kotlin {
             }
         }
 
-        named("desktopMain") {
+        named("jvmMain") {
             dependencies {
                 api("org.jsoup:jsoup:$jsoupVersion")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
@@ -184,7 +184,7 @@ i18n4k {
     sourceCodeLocales = listOf("en", "ru_RU", "th_TH")
 }
 
-tasks.named("desktopProcessResources").dependsOn(tasks.named("generateI18n4kFiles"))
+tasks.named("jvmProcessResources").dependsOn(tasks.named("generateI18n4kFiles"))
 
 tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
