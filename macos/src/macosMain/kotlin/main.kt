@@ -5,7 +5,7 @@ import tk.zwander.commonCompose.MainView
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
-fun main() {
+fun main(args: Array<String>) {
     NSApplication.sharedApplication()
     Window("Test") {
         MainView()
