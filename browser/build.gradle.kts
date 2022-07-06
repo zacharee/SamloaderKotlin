@@ -1,5 +1,4 @@
 import org.jetbrains.compose.compose
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("multiplatform")
@@ -19,6 +18,9 @@ kotlin {
         named("jsMain") {
             dependencies {
                 implementation(project(":common"))
+                implementation(compose.ui)
+                implementation(compose.foundation)
+                implementation(compose.material)
             }
         }
     }
