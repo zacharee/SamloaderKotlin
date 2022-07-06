@@ -10,8 +10,8 @@ actual fun HorizontalPager(
     count: Int,
     currentPage: Int,
     onPageChanged: (Int) -> Unit,
-    eval: @Composable() (Page) -> Unit,
-): (@Composable() (List<TabPosition>) -> Unit)? {
+    eval: @Composable (Page) -> Unit,
+): (@Composable (List<TabPosition>) -> Unit)? {
     Crossfade(
         targetState = currentPage
     ) {

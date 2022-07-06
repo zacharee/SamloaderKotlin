@@ -9,10 +9,10 @@ import androidx.compose.ui.window.Window
 @Composable
 actual fun CAlertDialog(
     onDismissRequest: () -> Unit,
-    buttons: @Composable() () -> Unit,
+    buttons: @Composable () -> Unit,
     modifier: Modifier,
-    title: (@Composable() () -> Unit)?,
-    text: (@Composable() () -> Unit)?,
+    title: (@Composable () -> Unit)?,
+    text: (@Composable () -> Unit)?,
     shape: Shape,
     backgroundColor: Color,
     contentColor: Color

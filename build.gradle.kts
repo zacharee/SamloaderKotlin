@@ -12,7 +12,7 @@ val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
 buildscript {
-    val kotlinVersion by rootProject.extra("1.6.21")
+    val kotlinVersion by rootProject.extra("1.7.0")
 
     repositories {
         google()
@@ -26,8 +26,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev731")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev741")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.android.tools.build:gradle:7.2.0")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
