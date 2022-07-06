@@ -16,6 +16,7 @@ import tk.zwander.common.util.PatreonSupportersParser
 import tk.zwander.common.util.SupporterInfo
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.PatreonSupportersList
+import tk.zwander.samloaderkotlin.strings
 
 @Composable
 fun PatreonSupportersWindow(
@@ -32,7 +33,7 @@ fun PatreonSupportersWindow(
 
         Window(
             onCloseRequest = onDismiss,
-            title = "Patreon Supporters",
+            title = strings.patreonSupporters(),
             icon = getImage("icon.png").toPainter(),
             state = WindowState(
                 placement = WindowPlacement.Floating,

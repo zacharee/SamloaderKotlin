@@ -11,6 +11,7 @@ import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
+import tk.zwander.samloaderkotlin.strings
 import java.awt.Desktop
 import javax.swing.*
 import kotlin.time.ExperimentalTime
@@ -53,10 +54,10 @@ fun main() {
             if (hostOs == OS.MacOS) {
                 MenuBar {
                     Menu(
-                        text = "Window"
+                        text = strings.window()
                     ) {
                         Item(
-                            text = "Minimize",
+                            text = strings.minimize(),
                             onClick = {
                                 mainWindowState.isMinimized = true
                             },
@@ -64,14 +65,14 @@ fun main() {
                         )
 
                         Item(
-                            text = "Zoom",
+                            text = strings.zoom(),
                             onClick = {
                                 mainWindowState.placement = WindowPlacement.Maximized
                             }
                         )
 
                         Item(
-                            text = "Close",
+                            text = strings.close(),
                             onClick = {
                                 exitApplication()
                             },
@@ -80,40 +81,31 @@ fun main() {
                     }
 
                     Menu(
-                        text = "Help"
+                        text = strings.help()
                     ) {
                         Item(
-                            text = "Check for Updates...",
-                            onClick = {
-
-                            }
-                        )
-
-                        Separator()
-
-                        Item(
-                            text = "GitHub",
+                            text = strings.github(),
                             onClick = {
                                 UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
                             }
                         )
 
                         Item(
-                            text = "Twitter",
+                            text = strings.twitter(),
                             onClick = {
                                 UrlHandler.launchUrl("https://twitter.com/wander1236")
                             }
                         )
 
                         Item(
-                            text = "Patreon",
+                            text = strings.patreon(),
                             onClick = {
                                 UrlHandler.launchUrl("https://patreon.com/zacharywander")
                             }
                         )
 
                         Item(
-                            text = "Supporters",
+                            text = strings.supporters(),
                             onClick = {
                                 showingSupportersWindow = true
                             }
