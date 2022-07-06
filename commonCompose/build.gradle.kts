@@ -69,7 +69,7 @@ kotlin {
         }
 
         val macosX64Main by getting {
-            dependsOn(desktopMain)
+            dependsOn(macosMain)
         }
     }
 }
