@@ -54,3 +54,12 @@ compose.desktop.nativeApplication {
         packageVersion = "1." + rootProject.extra["versionCode"]
     }
 }
+
+kotlin {
+    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
+        binaries.all {
+            // TODO: the current compose binary surprises LLVM, so disable checks for now.
+            freeCompilerArgs += "-Xdisable-phases=VerifyBitcode"
+        }
+    }
+}
