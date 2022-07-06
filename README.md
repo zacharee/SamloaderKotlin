@@ -108,18 +108,11 @@ It's also possible that the DMG itself will refuse to open. If that happens, the
 
 # Translating
 
-Bifrost supports basic text localization. To translate Bifrost into another language:
-
-1. Fork the repository.
-2. Go to [common/src/commonMain/i18n/tk/zwander/samloaderkotlin](/common/src/commonMain/i18n/tk/zwander/samloaderkotlin).
-3. Create a file following following the template `strings_COUNTRY_CODE.properties` (e.g., `strings_fr.properties`).
-4. Copy the contents of `strings_en.properties` into your new file.
-5. Translate the values (everything to the right of the `=` signs).
-6. Open [common/build.gradle.kts](/common/build.gradle.kts) and scroll down until you find the `i18n4k` block.
-7. Add your two-letter locale to the `sourceCodeLocales` list (i.e., `sourceCodeLocales = listOf("en", "ru", "YOUR_LOCALE")`).
-8. Create a PR with your translations.
+Bifrost supports basic text localization. You can help translate here: https://crowdin.com/project/bifrost-kotlin.
 
 Note: Pay special attention to formatting arguments. Numbers inside curly brackets (e.g., `{0}`, `{1}`) should be kept as-is as they will be replaced with text during the application's runtime.
+
+If your translation includes single quotes ('), use two single quotes in a row ('', not ") instead.
 
 Note: Make sure to keep any other formatting characters as-is (e.g., `\n` should stay as `\n` and `%%` should stay as `%%`).
 
