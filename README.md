@@ -112,8 +112,6 @@ Bifrost supports basic text localization. You can help translate here: https://c
 
 Note: Pay special attention to formatting arguments. Numbers inside curly brackets (e.g., `{0}`, `{1}`) should be kept as-is as they will be replaced with text during the application's runtime.
 
-If your translation includes single quotes ('), use two single quotes in a row ('', not ") instead.
-
 Note: Make sure to keep any other formatting characters as-is (e.g., `\n` should stay as `\n` and `%%` should stay as `%%`).
 
 ## Translators:
