@@ -181,7 +181,7 @@ buildkonfig {
 }
 
 i18n4k {
-    sourceCodeLocales = listOf("en", "ru", "th")
+    sourceCodeLocales = listOf("en", "ru_RU", "th_TH")
 }
 
 tasks.named("desktopProcessResources").dependsOn(tasks.named("generateI18n4kFiles"))
