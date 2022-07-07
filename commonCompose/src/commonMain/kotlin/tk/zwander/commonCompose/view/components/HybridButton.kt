@@ -3,6 +3,7 @@ package tk.zwander.commonCompose.view.components
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedButton
@@ -10,8 +11,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 
 /**
  * A special Button that shows as a text button if there's enough room
@@ -20,7 +23,7 @@ import androidx.compose.ui.platform.LocalDensity
 @Composable
 fun HybridButton(
     icon: ImageBitmap? = null,
-    vectorIcon: ImageVector? = null,
+    vectorIcon: Painter? = null,
     description: String?,
     text: String,
     modifier: Modifier = Modifier,
@@ -52,8 +55,9 @@ fun HybridButton(
                         }
                         vectorIcon != null -> {
                             Icon(
-                                imageVector = vectorIcon,
+                                painter = vectorIcon,
                                 contentDescription = description,
+                                modifier = Modifier.size(24.dp)
                             )
                         }
                         else -> {

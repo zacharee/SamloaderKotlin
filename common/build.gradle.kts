@@ -22,6 +22,7 @@ plugins {
     id("com.codingfeline.buildkonfig")
     id("org.jetbrains.compose")
     id("de.comahe.i18n4k") version "0.4.0"
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
@@ -61,7 +62,7 @@ kotlin {
         val ktorVersion = "2.0.3"
         val jsoupVersion = "1.14.3"
 
-        named("commonMain") {
+        val commonMain by getting {
             dependencies {
                 api(compose.runtime)
 
@@ -83,10 +84,13 @@ kotlin {
                 api("com.russhwolf:multiplatform-settings:0.8.1")
                 api("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
                 api("de.comahe.i18n4k:i18n4k-core:0.4.0")
+                api("dev.icerock.moko:resources:0.20.1")
             }
         }
 
-        named("jvmMain") {
+        val jvmMain by getting {
+            dependsOn(commonMain)
+
             dependencies {
                 api("org.jsoup:jsoup:$jsoupVersion")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
@@ -96,7 +100,9 @@ kotlin {
             }
         }
 
-        named("androidMain") {
+        val androidMain by getting {
+            dependsOn(commonMain)
+
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
                 api("org.jsoup:jsoup:$jsoupVersion")
@@ -111,10 +117,13 @@ kotlin {
 
                 // Remove this once JB Compose gets the updated version.
                 api("androidx.compose.foundation:foundation-layout:1.3.0-alpha01")
+                api("com.caverock:androidsvg-aar:1.4")
             }
         }
 
-        named("jsMain") {
+        val jsMain by getting {
+            dependsOn(commonMain)
+
             dependencies {
                 api(compose.web.core)
 
@@ -135,7 +144,7 @@ kotlin {
         }
 
         val macosMain by creating {
-            dependsOn(named("commonMain").get())
+            dependsOn(commonMain)
 
             dependencies {
                 api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
@@ -165,7 +174,6 @@ android {
     }
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].resources.srcDir("src/commonMain/resources")
 }
 
 buildkonfig {
@@ -178,6 +186,10 @@ buildkonfig {
         buildConfigField(STRING, "versionCode", "${rootProject.extra["versionCode"]}")
         buildConfigField(STRING, "appName", "${rootProject.extra["appName"]}")
     }
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.resources" // required
 }
 
 i18n4k {

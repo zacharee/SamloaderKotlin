@@ -26,6 +26,7 @@ import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.StaggeredVerticalGrid
+import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 
 /**
@@ -119,7 +120,7 @@ fun HistoryView(
                     enabled = canCheckHistory,
                     text = strings.checkHistory(),
                     description = strings.checkHistory(),
-                    vectorIcon = vectorResource("refresh.xml"),
+                    vectorIcon = vectorResource(MR.assets.refresh),
                     parentSize = constraints.maxWidth
                 )
 
@@ -142,7 +143,7 @@ fun HistoryView(
                     enabled = model.job != null,
                     text = strings.cancel(),
                     description = strings.cancel(),
-                    vectorIcon = vectorResource("cancel.xml"),
+                    vectorIcon = vectorResource(MR.assets.cancel),
                     parentSize = constraints.maxWidth
                 )
             }

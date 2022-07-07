@@ -1,8 +1,13 @@
 package tk.zwander.commonCompose.util.jetbrains
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.*
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -126,6 +131,7 @@ private fun Element.parseElementBrush(): Brush? =
         ?.parseGradient()
 
 private fun Element.parseGradient(): Brush? {
+
     return when (attributeOrNull(ANDROID_NS, "type")) {
         "linear" -> parseLinearGradient()
         "radial" -> parseRadialGradient()

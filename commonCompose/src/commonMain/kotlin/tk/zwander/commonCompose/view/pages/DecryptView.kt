@@ -18,6 +18,7 @@ import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
+import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 import kotlin.time.ExperimentalTime
 
@@ -110,7 +111,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                     enabled = canDecrypt,
                     text = strings.decrypt(),
                     description = strings.decryptFirmware(),
-                    vectorIcon = vectorResource("decrypt.xml"),
+                    vectorIcon = vectorResource(MR.assets.lock_open_outline),
                     parentSize = constraints.maxWidth
                 )
                 Spacer(Modifier.width(8.dp))
@@ -123,7 +124,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                     enabled = canChangeOption,
                     text = strings.openFile(),
                     description = strings.openFileDesc(),
-                    vectorIcon = vectorResource("open.xml"),
+                    vectorIcon = vectorResource(MR.assets.open_in_new),
                     parentSize = constraints.maxWidth
                 )
                 Spacer(Modifier.weight(1f))
@@ -135,7 +136,7 @@ fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
                     enabled = model.job != null,
                     text = strings.cancel(),
                     description = strings.cancel(),
-                    vectorIcon = vectorResource("cancel.xml"),
+                    vectorIcon = vectorResource(MR.assets.cancel),
                     parentSize = constraints.maxWidth
                 )
             }

@@ -19,6 +19,7 @@ import com.soywiz.korio.util.OS
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.util.vectorResource
+import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 
 val options = arrayListOf<Pair<String, String>>().apply {
@@ -116,8 +117,8 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            vectorResource("heart.xml"), strings.supporters(),
-                            modifier = Modifier.padding(8.dp)
+                            vectorResource(MR.assets.heart), strings.supporters(),
+                            modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
                 }
@@ -129,8 +130,8 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            vectorResource("github.xml"), strings.github(),
-                            modifier = Modifier.padding(8.dp)
+                            vectorResource(MR.assets.github), strings.github(),
+                            modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
                 }
@@ -142,8 +143,8 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            vectorResource("twitter.xml"), strings.twitter(),
-                            modifier = Modifier.padding(8.dp)
+                            vectorResource(MR.assets.twitter), strings.twitter(),
+                            modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
                 }
@@ -155,8 +156,8 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            vectorResource("patreon.xml"), strings.patreon(),
-                            modifier = Modifier.padding(8.dp)
+                            vectorResource(MR.assets.patreon), strings.patreon(),
+                            modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
                 }
@@ -169,9 +170,9 @@ fun FooterView(
                             }
                         ) {
                             Icon(
-                                imageVector = vectorResource("settings.xml"),
+                                painter = vectorResource(MR.assets.cog),
                                 contentDescription = strings.settings(),
-                                modifier = Modifier.padding(8.dp)
+                                modifier = Modifier.padding(8.dp).size(24.dp)
                             )
                         }
                     }

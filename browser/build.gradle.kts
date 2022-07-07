@@ -18,8 +18,6 @@ kotlin {
         named("jsMain") {
             dependencies {
                 implementation(project(":commonCompose"))
-
-                resources.srcDirs("$rootDir/common/src/commonMain/resources")
             }
         }
     }

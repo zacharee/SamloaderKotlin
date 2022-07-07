@@ -37,7 +37,6 @@ import tk.zwander.samloaderkotlin.strings
 import kotlin.time.ExperimentalTime
 import androidx.compose.ui.native.ComposeLayer
 import androidx.compose.ui.window.ComposeWindow
-import tk.zwander.samloaderkotlin.resources.SharedRes
 
 val downloadModel = DownloadModel()
 val decryptModel = DecryptModel()
@@ -66,8 +65,6 @@ fun composableResize(layer: ComposeLayer) {
 
 @OptIn(ExperimentalTime::class)
 fun main() {
-    initLocale()
-
     js("""
             window.originalFetch = window.fetch;
             window.fetch = function (resource, init) {

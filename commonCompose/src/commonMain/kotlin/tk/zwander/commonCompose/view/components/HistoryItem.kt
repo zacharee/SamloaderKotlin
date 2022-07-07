@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.commonCompose.util.vectorResource
+import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 
 /**
@@ -58,7 +59,11 @@ fun HistoryItem(
                         modifier = Modifier.align(Alignment.Bottom)
                             .size(32.dp)
                     ) {
-                        Icon(vectorResource("download.xml"), strings.download())
+                        Icon(
+                            vectorResource(MR.assets.download),
+                            strings.download(),
+                            Modifier.size(24.dp)
+                        )
                     }
 
                     Spacer(Modifier.width(8.dp))
@@ -70,7 +75,11 @@ fun HistoryItem(
                         modifier = Modifier.align(Alignment.Bottom)
                             .size(32.dp)
                     ) {
-                        Icon(vectorResource("decrypt.xml"), strings.decrypt())
+                        Icon(
+                            vectorResource(MR.assets.lock_open_outline),
+                            strings.decrypt(),
+                            Modifier.size(24.dp)
+                        )
                     }
                 }
 

@@ -32,6 +32,7 @@ import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.downloadModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.*
+import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 import kotlin.time.ExperimentalTime
 
@@ -228,7 +229,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                         }
                     },
                     enabled = canDownload,
-                    vectorIcon = vectorResource("download.xml"),
+                    vectorIcon = vectorResource(MR.assets.download),
                     text = strings.download(),
                     description = strings.downloadFirmware(),
                     parentSize = constraints.maxWidth
@@ -244,7 +245,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     },
                     enabled = canCheckVersion,
                     text = strings.checkForUpdates(),
-                    vectorIcon = vectorResource("refresh.xml"),
+                    vectorIcon = vectorResource(MR.assets.refresh),
                     description = strings.checkForUpdatesDesc(),
                     parentSize = constraints.maxWidth
                 )
@@ -259,7 +260,7 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     enabled = model.job != null,
                     text = strings.cancel(),
                     description = strings.cancel(),
-                    vectorIcon = vectorResource("cancel.xml"),
+                    vectorIcon = vectorResource(MR.assets.cancel),
                     parentSize = constraints.maxWidth
                 )
             }

@@ -2,25 +2,19 @@ package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.AssetResource
+import kotlinx.cinterop.ObjCObjectVar
+import kotlinx.cinterop.alloc
+import kotlinx.cinterop.memScoped
 import org.jetbrains.skia.Image
-
-fun loadResource(path: String): ByteArray {
-//    val resource = Thread.currentThread().contextClassLoader.getResource(path)
-//    requireNotNull(resource) { "Resource $path not found" }
-//    return resource.readBytes()
-    return ByteArray(0)
-}
+import platform.Foundation.NSError
 
 @Composable
-actual fun imageResource(path: String): ImageBitmap {
-    return Image.makeFromEncoded(loadResource(path)).toComposeImageBitmap()
-}
-
-@Composable
-actual fun vectorResource(path: String): ImageVector {
-    return ImageVector.Builder(defaultHeight = 0.dp, defaultWidth = 0.dp, viewportHeight = 0f, viewportWidth = 0f).build()
-//    return loadXmlImageVector(InputSource(loadResource(path).inputStream()), Density(1.0f))
+actual fun vectorResource(resource: AssetResource): Painter {
+    return loadSvgPainter(resource.readText().encodeToByteArray(), LocalDensity.current)
 }

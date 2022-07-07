@@ -14,7 +14,6 @@ repositories {
 
 dependencies {
     implementation(project(":commonCompose"))
-    implementation("androidx.core:core-ktx:+")
 }
 
 android {

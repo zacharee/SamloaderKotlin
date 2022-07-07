@@ -50,7 +50,13 @@ kotlin {
             }
         }
 
+        val skiaMain by creating {
+            dependsOn(commonMain)
+        }
+
         val androidMain by getting {
+            dependsOn(commonMain)
+
             dependencies {
                 api(project(":common"))
                 api("com.google.accompanist:accompanist-pager:0.24.12-rc")
@@ -59,13 +65,15 @@ kotlin {
         }
 
         val jvmMain by getting {
+            dependsOn(skiaMain)
+
             dependencies {
                 api(project(":common"))
             }
         }
 
         val macosMain by creating {
-            dependsOn(commonMain)
+            dependsOn(skiaMain)
         }
 
         val macosArm64Main by getting {
@@ -77,7 +85,7 @@ kotlin {
         }
 
         val jsMain by getting {
-            dependsOn(commonMain)
+            dependsOn(skiaMain)
         }
     }
 }
@@ -117,7 +125,6 @@ android {
     }
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].resources.srcDir("src/commonMain/resources")
 }
 
 compose.experimental {
