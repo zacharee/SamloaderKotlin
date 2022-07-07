@@ -3,7 +3,6 @@
 package tk.zwander.commonCompose.util
 
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
@@ -14,7 +13,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import com.caverock.androidsvg.PreserveAspectRatio
 import com.caverock.androidsvg.SVG
-import org.jetbrains.skia.svg.SVGDOM
 import kotlin.math.ceil
 
 actual fun loadSvgPainter(
