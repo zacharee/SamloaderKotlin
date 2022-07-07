@@ -1,10 +1,9 @@
 package tk.zwander.commonCompose.util
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.Density
 import dev.icerock.moko.resources.AssetResource
 
 /**
@@ -12,4 +11,15 @@ import dev.icerock.moko.resources.AssetResource
  */
 
 @Composable
-expect fun vectorResource(resource: AssetResource): Painter
+fun vectorResource(resource: AssetResource): Painter {
+    var painter by remember(resource) { mutableStateOf<Painter?>(null) }
+
+    vectorResource(resource) {
+        painter = it
+    }
+
+    return painter ?: ColorPainter(Color.Transparent)
+}
+
+@Composable
+expect fun vectorResource(resource: AssetResource, result: (Painter) -> Unit)

@@ -15,6 +15,6 @@ import org.jetbrains.skia.Image
 import platform.Foundation.NSError
 
 @Composable
-actual fun vectorResource(resource: AssetResource): Painter {
-    return loadSvgPainter(resource.readText().encodeToByteArray(), LocalDensity.current)
+actual fun vectorResource(resource: AssetResource, result: (Painter) -> Unit) {
+    result(loadSvgPainter(resource.readText().encodeToByteArray(), LocalDensity.current))
 }

@@ -7,9 +7,9 @@ import androidx.compose.ui.platform.LocalDensity
 import dev.icerock.moko.resources.AssetResource
 
 @Composable
-actual fun vectorResource(resource: AssetResource): Painter {
+actual fun vectorResource(resource: AssetResource, result: (Painter) -> Unit) {
     val context = LocalContext.current
     val density = LocalDensity.current
 
-    return loadSvgPainter(context.assets.open(resource.path).readBytes(), density)
+    result(loadSvgPainter(context.assets.open(resource.path).readBytes(), density))
 }

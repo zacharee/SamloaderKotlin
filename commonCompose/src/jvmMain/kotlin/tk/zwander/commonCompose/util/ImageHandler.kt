@@ -25,6 +25,6 @@ fun imageResource(path: String): ImageBitmap {
 }
 
 @Composable
-actual fun vectorResource(resource: AssetResource): Painter {
-    return loadSvgPainter(loadResource(resource.filePath), LocalDensity.current)
+actual fun vectorResource(resource: AssetResource, result: (Painter) -> Unit) {
+    result(loadSvgPainter(loadResource(resource.filePath), LocalDensity.current))
 }
