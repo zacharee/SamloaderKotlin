@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.window.Window
 
 @Composable
 actual fun CAlertDialog(
@@ -16,5 +17,11 @@ actual fun CAlertDialog(
     backgroundColor: Color,
     contentColor: Color
 ) {
-
+    Window {
+        AlertDialogContents(
+            buttons, modifier,
+            title, text, shape,
+            backgroundColor, contentColor
+        )
+    }
 }

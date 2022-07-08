@@ -22,7 +22,7 @@ import kotlin.time.ExperimentalTime
 class FusClient(
     private var auth: String = "",
     private var sessId: String = "",
-    val useProxy: Boolean = false
+    val useProxy: Boolean = tk.zwander.common.util.useProxy
 ) {
     enum class Request(val value: String) {
         GENERATE_NONCE("NF_DownloadGenerateNonce.do"),

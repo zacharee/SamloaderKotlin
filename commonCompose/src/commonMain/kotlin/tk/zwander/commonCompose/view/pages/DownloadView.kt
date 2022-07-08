@@ -1,5 +1,3 @@
-@file:Suppress("OPT_IN_IS_NOT_ENABLED")
-
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.*

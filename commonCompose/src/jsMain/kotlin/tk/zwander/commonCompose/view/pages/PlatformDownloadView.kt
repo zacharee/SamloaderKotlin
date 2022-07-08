@@ -1,7 +1,19 @@
 package tk.zwander.commonCompose.view.pages
 
+import com.soywiz.klogger.Console.appendReset
+import com.soywiz.klogger.Console.red
+import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.await
+import kotlinx.coroutines.coroutineScope
+import org.w3c.dom.Window
 import tk.zwander.common.data.DownloadFileInfo
+import tk.zwander.common.data.PlatformFile
+import tk.zwander.common.util.fileHandling.CreateWritableOptions
+import tk.zwander.common.util.fileHandling.GetHandleOptions
+import tk.zwander.common.util.fileHandling.showDirectoryPicker
+import tk.zwander.common.util.fileHandling.toVfsFile
+import kotlin.js.Promise
 
 /**
  * Delegate retrieving the download location to the platform.
@@ -11,15 +23,40 @@ actual object PlatformDownloadView {
         fileName: String,
         callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit
     ) {
+        val decName = fileName.replace(".enc2", "").replace(".enc4", "")
+
+        val dirHandle = window.showDirectoryPicker().await()
+        val encHandle = dirHandle.getFileHandle(
+            fileName,
+            object : GetHandleOptions {
+                override val create: Boolean
+                    get() = true
+            }
+        ).await()
+        val decHandle = dirHandle.getFileHandle(
+            decName,
+            object : GetHandleOptions {
+                override val create: Boolean
+                    get() = true
+            }
+        ).await()
+
+        val encFile = encHandle.toVfsFile()
+        val decFile = decHandle.toVfsFile()
+
+       coroutineScope {
+           callback(
+               DownloadFileInfo(
+                   downloadFile = PlatformFile(encFile),
+                   decryptFile = PlatformFile(decFile)
+               )
+           )
+       }
     }
 
-    actual fun onStart() {
-    }
+    actual fun onStart() {}
 
-    actual fun onFinish() {
-    }
+    actual fun onFinish() {}
 
-    actual fun onProgress(status: String, current: Long, max: Long) {
-    }
-
+    actual fun onProgress(status: String, current: Long, max: Long) {}
 }

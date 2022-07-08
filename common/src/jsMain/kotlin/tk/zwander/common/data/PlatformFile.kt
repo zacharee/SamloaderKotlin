@@ -4,6 +4,7 @@ import com.soywiz.korio.file.*
 import com.soywiz.korio.jsRuntime
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
+import tk.zwander.common.util.fileHandling.FileSystemFileHandle
 
 actual open class PlatformFile : File {
     private val wrappedFile: VfsFile
@@ -23,6 +24,7 @@ actual open class PlatformFile : File {
     constructor(parent: VfsFile, child: String) : this(parent.absolutePath, child)
 
     constructor(file: VfsFile) {
+        val handle: FileSystemFileHandle
         wrappedFile = file
     }
 

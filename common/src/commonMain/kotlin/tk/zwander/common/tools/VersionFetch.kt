@@ -19,7 +19,7 @@ object VersionFetch {
      * @param region the device region.
      * @return a Pair(FirmwareString, AndroidVersion).
      */
-    suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = false): FetchResult.VersionFetchResult {
+    suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = tk.zwander.common.util.useProxy): FetchResult.VersionFetchResult {
         try {
             val response = client.use {
                 it.get(

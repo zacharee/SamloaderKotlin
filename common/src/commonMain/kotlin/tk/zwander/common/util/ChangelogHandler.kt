@@ -19,11 +19,11 @@ object ChangelogHandler {
     private const val DOMAIN_URL = "https://doc.samsungmobile.com:443"
     private const val BASE_URL = "$DOMAIN_URL/%s/%s/doc.html"
 
-    suspend fun getChangelog(device: String, region: String, firmware: String, useProxy: Boolean = false): Changelog? {
+    suspend fun getChangelog(device: String, region: String, firmware: String, useProxy: Boolean = tk.zwander.common.util.useProxy): Changelog? {
         return getChangelogs(device, region, useProxy)?.changelogs?.get(firmware)
     }
 
-    suspend fun getChangelogs(device: String, region: String, useProxy: Boolean = false): Changelogs? {
+    suspend fun getChangelogs(device: String, region: String, useProxy: Boolean = tk.zwander.common.util.useProxy): Changelogs? {
         val outerUrl = generateUrlForDeviceAndRegion(device, region, useProxy)
         val outerResponse = try {
             client.use {
