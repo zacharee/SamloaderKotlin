@@ -1,3 +1,14 @@
+# 1.0.9
+- Update dependencies.
+- Update to Kotlin 1.7.0.
+- Add Thai translation.
+- Fix issues with operations getting stuck/hanging.
+- Add some more animations.
+- Add some missing strings to resource files.
+- Create initial (non-functional) Compose versions for web and macOS native.
+- Make image resources properly cross-platform.
+- Fix build for Android and JVM.
+
 # 1.0.8
 - Update dependencies.
 - Resize content for on-screen keyboard on Android.
