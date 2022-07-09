@@ -1,6 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -62,4 +63,8 @@ kotlin {
             freeCompilerArgs += "-Xdisable-phases=VerifyBitcode"
         }
     }
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.resources.macos" // required
 }
