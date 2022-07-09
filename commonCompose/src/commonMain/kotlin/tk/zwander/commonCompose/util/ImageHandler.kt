@@ -14,7 +14,7 @@ import dev.icerock.moko.resources.AssetResource
 fun vectorResource(resource: AssetResource): Painter {
     var painter by remember(resource) { mutableStateOf<Painter?>(null) }
 
-    vectorResource(resource) {
+    vectorResourceImpl(resource) {
         painter = it
     }
 
@@ -22,4 +22,4 @@ fun vectorResource(resource: AssetResource): Painter {
 }
 
 @Composable
-expect fun vectorResource(resource: AssetResource, result: (Painter) -> Unit)
+expect fun vectorResourceImpl(resource: AssetResource, result: (Painter) -> Unit)

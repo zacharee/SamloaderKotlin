@@ -16,7 +16,7 @@ import tk.zwander.common.util.runBlocking
  */
 
 @Composable
-actual fun vectorResource(resource: AssetResource, result: (Painter) -> Unit) {
+actual fun vectorResourceImpl(resource: AssetResource, result: (Painter) -> Unit) {
     val density = LocalDensity.current
 
     LaunchedEffect(resource) {

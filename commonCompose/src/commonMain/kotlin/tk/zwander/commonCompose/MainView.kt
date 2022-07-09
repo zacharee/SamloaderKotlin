@@ -72,40 +72,40 @@ fun MainView(modifier: Modifier = Modifier) {
                         .widthIn(max = 1200.dp)
                         .align(Alignment.CenterHorizontally)
                 ) {
-//                    val historyDownloadCallback = { model: String, region: String, fw: String ->
-//                        downloadModel.manual = true
-//                        downloadModel.osCode = ""
-//                        downloadModel.model = model
-//                        downloadModel.region = region
-//                        downloadModel.fw = fw
-//
-//                        currentPage = Page.DOWNLOADER
-//                    }
-//
-//                    val historyDecryptCallback = { model: String, region: String, fw: String ->
-//                        decryptModel.fileToDecrypt = null
-//                        decryptModel.model = model
-//                        decryptModel.region = region
-//                        decryptModel.fw = fw
-//
-//                        currentPage = Page.DECRYPTER
-//                    }
-//
-//                    indicator = HorizontalPager(
-//                        count = 3,
-//                        currentPage = currentPage.index,
-//                        onPageChanged = { currentPage = Page.values()[it] },
-//                        eval = {
-//                            when (it) {
-//                                Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
-//                                Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
-//                                Page.HISTORY -> HistoryView(
-//                                    historyModel, historyDownloadCallback,
-//                                    historyDecryptCallback
-//                                )
-//                            }
-//                        }
-//                    )
+                    val historyDownloadCallback = { model: String, region: String, fw: String ->
+                        downloadModel.manual = true
+                        downloadModel.osCode = ""
+                        downloadModel.model = model
+                        downloadModel.region = region
+                        downloadModel.fw = fw
+
+                        currentPage = Page.DOWNLOADER
+                    }
+
+                    val historyDecryptCallback = { model: String, region: String, fw: String ->
+                        decryptModel.fileToDecrypt = null
+                        decryptModel.model = model
+                        decryptModel.region = region
+                        decryptModel.fw = fw
+
+                        currentPage = Page.DECRYPTER
+                    }
+
+                    indicator = HorizontalPager(
+                        count = 3,
+                        currentPage = currentPage.index,
+                        onPageChanged = { currentPage = Page.values()[it] },
+                        eval = {
+                            when (it) {
+                                Page.DOWNLOADER -> DownloadView(downloadModel, scrollState)
+                                Page.DECRYPTER -> DecryptView(decryptModel, scrollState)
+                                Page.HISTORY -> HistoryView(
+                                    historyModel, historyDownloadCallback,
+                                    historyDecryptCallback
+                                )
+                            }
+                        }
+                    )
                 }
 
                 FooterView()
