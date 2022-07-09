@@ -1,3 +1,5 @@
+@file:JvmName("ImageHandlerAndroid")
+
 package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable
