@@ -1,18 +1,18 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.net.http.Http
-import com.soywiz.korio.net.http.HttpClient
 import com.soywiz.korio.stream.AsyncInputStream
 import io.ktor.client.request.*
 import io.ktor.client.request.request
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.util.*
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.util.client
 import tk.zwander.common.util.generateProperUrl
 import kotlin.time.ExperimentalTime
+
+@OptIn(DangerousInternalIoApi::class)
+expect suspend fun doDownloadFile(client: FusClient, fileName: String, start: Long = 0): Pair<AsyncInputStream, String?>
 
 /**
  * Manage communications with Samsung's server.
@@ -122,24 +122,6 @@ class FusClient(
      * @param start an optional offset. Used for resuming downloads.
      */
     suspend fun downloadFile(fileName: String, start: Long = 0): Pair<AsyncInputStream, String?> {
-        val authV = getAuthV()
-        val url = getDownloadUrl(fileName)
-
-        val client = HttpClient()
-
-        val response = client.request(
-            Http.Method.GET,
-            url,
-            headers = Http.Headers(
-                "Authorization" to authV,
-                "User-Agent" to "Kies2.0_FUS",
-            ).run {
-                if (start > 0) {
-                    this.plus(Http.Headers("Range" to "bytes=$start-"))
-                } else this
-            }
-        )
-
-        return response.content to response.headers["Content-MD5"]
+        return doDownloadFile(this, fileName, start)
     }
 }

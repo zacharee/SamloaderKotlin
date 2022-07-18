@@ -88,8 +88,12 @@ kotlin {
             }
         }
 
-        val jvmMain by getting {
+        val nonWebMain by creating {
             dependsOn(commonMain)
+        }
+
+        val jvmMain by getting {
+            dependsOn(nonWebMain)
 
             dependencies {
                 api("org.jsoup:jsoup:$jsoupVersion")
@@ -101,7 +105,7 @@ kotlin {
         }
 
         val androidMain by getting {
-            dependsOn(commonMain)
+            dependsOn(nonWebMain)
 
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
@@ -144,7 +148,7 @@ kotlin {
         }
 
         val macosMain by creating {
-            dependsOn(commonMain)
+            dependsOn(nonWebMain)
 
             dependencies {
                 api("com.soywiz.korlibs.korio:korio:$korlibsVersion")

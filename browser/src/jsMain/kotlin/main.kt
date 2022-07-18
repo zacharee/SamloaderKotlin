@@ -16,8 +16,6 @@ import kotlinx.browser.window
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import org.jetbrains.compose.web.renderComposable
-import org.jetbrains.compose.web.renderComposableInBody
 import org.jetbrains.skiko.wasm.onWasmReady
 import org.khronos.webgl.Uint8Array
 import org.w3c.dom.HTMLCanvasElement

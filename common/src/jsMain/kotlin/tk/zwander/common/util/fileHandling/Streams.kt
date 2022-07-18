@@ -29,14 +29,25 @@ suspend fun FileSystemFileHandle.toVfsFile(): VfsFile {
 }
 
 fun WritableStream.toAsync(): AsyncOutputStream {
-    return object : AsyncOutputStream {
-        override suspend fun close() {
-            this@toAsync.close()
+    val writer = getWriter()
+
+    return try {
+        object : AsyncOutputStream {
+            override suspend fun close() {
+                if (!locked) {
+                    this@toAsync.close()
+                }
+            }
+
+            override suspend fun write(buffer: ByteArray, offset: Int, len: Int) {
+                writer.write(buffer.sliceArray(offset until offset + len))
+            }
+        }
+    } catch (e: Throwable) {
+        if (!writer.closed) {
+            writer.close()
         }
 
-        override suspend fun write(buffer: ByteArray, offset: Int, len: Int) {
-            this@toAsync.getWriter().write(buffer.sliceArray(offset until offset + len))
-        }
-
+        throw e
     }
 }
