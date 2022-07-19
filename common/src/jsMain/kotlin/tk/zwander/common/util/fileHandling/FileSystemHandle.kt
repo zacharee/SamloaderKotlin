@@ -65,7 +65,7 @@ external interface WritableStream {
 }
 
 external interface WritableStreamDefaultWriter {
-    val closed: Boolean
+    val closed: Promise<Unit>
     val desiredSize: Long
     val ready: Promise<Unit>
 
