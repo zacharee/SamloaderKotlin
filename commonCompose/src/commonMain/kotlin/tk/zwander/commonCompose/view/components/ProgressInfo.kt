@@ -22,6 +22,7 @@ import tk.zwander.commonCompose.flow.FlowRow
 import tk.zwander.commonCompose.flow.MainAxisAlignment
 import tk.zwander.commonCompose.flow.SizeMode
 import tk.zwander.samloaderkotlin.strings
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 /**
@@ -45,8 +46,10 @@ fun ProgressInfo(model: BaseModel) {
             Column {
                 Spacer(Modifier.size(8.dp))
 
+                val newProgress = (model.progress.first.toFloat() / model.progress.second)
+
                 val animatedProgress by animateFloatAsState(
-                    targetValue = (model.progress.first.toFloat() / model.progress.second),
+                    targetValue = ceil(newProgress * 100f) / 100f, // Get rid of some precision to reduce lag.
                     animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
                 )
 

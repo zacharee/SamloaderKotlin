@@ -126,7 +126,6 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
 
                 if (md5 != null) {
                     model.statusText = strings.checkingMD5()
-                    model.progress = 1L to 2L
 
                     PlatformDownloadView.onProgress(strings.checkingMD5(), 0, 1)
 
@@ -144,6 +143,7 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                 }
 
                 model.statusText = strings.decrypting()
+                model.speed = 0L
 
                 val key =
                     if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
