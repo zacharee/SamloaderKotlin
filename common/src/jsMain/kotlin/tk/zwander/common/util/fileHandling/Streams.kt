@@ -30,19 +30,20 @@ suspend fun FileSystemFileHandle.toVfsFile(): VfsFile {
 
 fun WritableStream.toAsync(): AsyncOutputStream {
     val writer = getWriter()
-
-    return try {
-        object : AsyncOutputStream {
-            override suspend fun close() {
-                if (!locked) {
-                    this@toAsync.close()
-                }
-            }
-
-            override suspend fun write(buffer: ByteArray, offset: Int, len: Int) {
-                writer.write(buffer.sliceArray(offset until offset + len))
+    val stream = object : AsyncOutputStream {
+        override suspend fun close() {
+            if (!locked) {
+                writer.close()
             }
         }
+
+        override suspend fun write(buffer: ByteArray, offset: Int, len: Int) {
+            writer.write(buffer.sliceArray(offset until offset + len))
+        }
+    }
+
+    return try {
+        stream
     } catch (e: Throwable) {
         if (!writer.closed) {
             writer.close()
