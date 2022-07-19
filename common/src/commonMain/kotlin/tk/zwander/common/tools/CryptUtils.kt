@@ -185,47 +185,45 @@ object CryptUtils {
      * @param progressCallback a callback to keep track of the progress.
      */
     suspend fun decryptProgress(inf: AsyncInputStream, outf: AsyncOutputStream, key: ByteArray, length: Long, chunkSize: Int = 0x300000, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
-        coroutineScope {
-            withContext(Dispatchers.Default) {
-                val buffer = ByteArray(chunkSize)
+        withContext(Dispatchers.Default) {
+            val buffer = ByteArray(chunkSize)
 
-                var len: Int
-                var count = 0L
+            var len: Int
+            var count = 0L
 
-                val averager = Averager()
+            val averager = Averager()
 
-                while (this.isActive) {
-                    val nano = measureTime {
-                        len = inf.read(buffer, 0, buffer.size)
-                        count += len
+            while (this.isActive) {
+                val nano = measureTime {
+                    len = inf.read(buffer, 0, buffer.size)
+                    count += len
 
-                        if (len > 0) {
-                            val decBlock = AES.decryptAesEcb(buffer.sliceArray(0 until len), key, Padding.NoPadding)
+                    if (len > 0) {
+                        val decBlock = AES.decryptAesEcb(buffer.sliceArray(0 until len), key, Padding.NoPadding)
 
-                            outf.write(decBlock, 0, decBlock.size)
-                        }
-                    }.inWholeNanoseconds
-
-                    if (len <= 0) break
-
-                    val lenF = len
-                    val totalLenF = count
-
-                    async {
-                        averager.update(nano, lenF.toLong())
-                        val (totalTime, totalRead, _) = averager.sum()
-
-                        progressCallback(
-                            totalLenF,
-                            length,
-                            (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
-                        )
+                        outf.write(decBlock, 0, decBlock.size)
                     }
-                }
+                }.inWholeNanoseconds
 
-                inf.close()
-                outf.close()
+                if (len <= 0) break
+
+                val lenF = len
+                val totalLenF = count
+
+                async {
+                    averager.update(nano, lenF.toLong())
+                    val (totalTime, totalRead, _) = averager.sum()
+
+                    progressCallback(
+                        totalLenF,
+                        length,
+                        (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
+                    )
+                }
             }
+
+            inf.close()
+            outf.close()
         }
     }
 
