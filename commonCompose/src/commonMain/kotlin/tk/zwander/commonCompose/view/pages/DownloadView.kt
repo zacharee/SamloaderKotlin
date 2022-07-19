@@ -99,9 +99,8 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     PlatformDownloadView.onProgress(strings.downloading(), current, max)
                 }
 
-                model.speed = 0L
-
                 if (crc32 != null) {
+                    model.speed = 0L
                     model.statusText = strings.checkingCRC()
                     val result = CryptUtils.checkCrc32(
                         inputInfo.downloadFile.openInputStream(),
@@ -125,6 +124,7 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                 }
 
                 if (md5 != null) {
+                    model.speed = 0L
                     model.statusText = strings.checkingMD5()
 
                     PlatformDownloadView.onProgress(strings.checkingMD5(), 0, 1)
@@ -142,8 +142,8 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
                     }
                 }
 
-                model.statusText = strings.decrypting()
                 model.speed = 0L
+                model.statusText = strings.decrypting()
 
                 val key =
                     if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
