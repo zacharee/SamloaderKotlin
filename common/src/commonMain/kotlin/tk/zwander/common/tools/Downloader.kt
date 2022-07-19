@@ -29,16 +29,12 @@ object Downloader {
 
             val read = ByteArray(chunkSize)
 
-            if (outputSize >= size) {
-                return@withContext
-            }
+            if (outputSize < size) {
+                var len: Int
+                var totalLen = 0L
 
-            var len: Int
-            var totalLen = 0L
+                val averager = Averager()
 
-            val averager = Averager()
-
-            try {
                 while (isActive) {
                     val nano = measureTime {
                         len = response.read(read, 0, chunkSize)
@@ -67,10 +63,10 @@ object Downloader {
                         }
                     }
                 }
-            } finally {
-                response.close()
-                output.close()
             }
+
+            response.close()
+            output.close()
         }
     }
 }
