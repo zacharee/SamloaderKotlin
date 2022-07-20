@@ -16,11 +16,15 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
+import com.soywiz.korio.lang.substr
+import com.soywiz.korio.serialization.xml.Xml
+import com.soywiz.korio.serialization.xml.firstDescendant
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.model.HistoryModel
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
+import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
@@ -36,16 +40,89 @@ expect object PlatformHistoryView {
     suspend fun parseHistory(body: String): List<HistoryInfo>
 }
 
+private fun parseHistoryXml(xml: String): List<HistoryInfo> {
+    val doc = Xml(xml)
+
+    val latest = doc.firstDescendant("firmware")?.firstDescendant("version")?.firstDescendant("latest")
+    val historical = doc.firstDescendant("firmware")?.firstDescendant("version")?.firstDescendant("upgrade")
+        ?.get("value")
+
+    val items = arrayListOf<HistoryInfo>()
+
+    fun parseFirmware(string: String): String {
+        val firmwareParts = string.split("/").filterNot { it.isBlank() }.toMutableList()
+
+        if (firmwareParts.size == 2) {
+            firmwareParts.add(firmwareParts[0])
+            firmwareParts.add(firmwareParts[0])
+        }
+
+        if (firmwareParts.size == 3) {
+            firmwareParts.add(firmwareParts[0])
+        }
+
+        return firmwareParts.joinToString("/")
+    }
+
+    latest?.apply {
+        val androidVersion = latest.attribute("o")
+
+        items.add(
+            HistoryInfo(
+                date = null,
+                androidVersion = androidVersion,
+                firmwareString = parseFirmware(latest.text)
+            )
+        )
+    }
+
+    historical?.apply {
+        items.addAll(
+            mapNotNull {
+                val firmware = parseFirmware(it.text)
+
+                if (firmware.isNotBlank()) {
+                    HistoryInfo(
+                        date = null,
+                        androidVersion = null,
+                        firmwareString = firmware
+                    )
+                } else {
+                    null
+                }
+            }.sortedByDescending {
+                it.firmwareString.let { f ->
+                    f.substr(f.lastIndex - 3)
+                }
+            }
+        )
+    }
+
+    return items
+}
+
 private suspend fun onFetch(model: HistoryModel) {
     val historyString = getFirmwareHistoryString(model.model, model.region)
+    val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model, model.region)
 
-    if (historyString == null) {
+    if (historyString == null && historyStringXml == null) {
         model.endJob(strings.historyError())
     } else {
         try {
-            val parsed = PlatformHistoryView.parseHistory(
-                historyString
-            )
+            val parsed = when {
+                historyString != null -> {
+                    PlatformHistoryView.parseHistory(historyString)
+                }
+
+                historyStringXml != null -> {
+                    parseHistoryXml(historyStringXml)
+                }
+
+                else -> {
+                    model.endJob(strings.historyError())
+                    return
+                }
+            }
 
             model.changelogs = try {
                 ChangelogHandler.getChangelogs(model.model, model.region)

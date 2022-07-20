@@ -4,6 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import io.ktor.utils.io.core.*
 
 /**
  * Make a firmware string given the PDA and CSC versions.
@@ -36,4 +37,14 @@ suspend fun getFirmwareHistoryString(model: String, region: String): String? {
     }
 
     return if (response.status.isSuccess()) response.bodyAsText() else null
+}
+
+suspend fun getFirmwareHistoryStringFromSamsung(model: String, region: String): String? {
+    return client.use {
+        it.get(
+            urlString = generateProperUrl(useProxy, "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml")
+        ) {
+            userAgent("Kies2.0_FUS")
+        }
+    }.run { if (status.isSuccess()) bodyAsText() else null }
 }

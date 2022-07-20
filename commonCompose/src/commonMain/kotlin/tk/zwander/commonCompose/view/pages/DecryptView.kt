@@ -32,7 +32,6 @@ expect object PlatformDecryptView {
     fun onProgress(status: String, current: Long, max: Long)
 }
 
-@Suppress("OPT_IN_IS_NOT_ENABLED")
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
 private suspend fun onDecrypt(model: DecryptModel) {
     PlatformDecryptView.onStart()

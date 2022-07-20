@@ -43,7 +43,9 @@ fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${index + 1}. ${strings.android(info.androidVersion)}",
+                        text = "${index + 1}. ${strings.android(info.androidVersion 
+                            ?: changelog?.androidVer?.let { Regex("[0-9]+").find(it)?.value } 
+                            ?: strings.unknown())}",
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.CenterVertically),
                         fontSize = 20.sp,
@@ -89,7 +91,7 @@ fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = strings.buildDate(info.date.format("MMM dd, yyyy")),
+                        text = strings.buildDate(info.date?.format("MMM dd, yyyy") ?: strings.unknown()),
                         modifier = Modifier.align(Alignment.Bottom),
                         fontSize = 16.sp,
                         lineHeight = 16.sp
