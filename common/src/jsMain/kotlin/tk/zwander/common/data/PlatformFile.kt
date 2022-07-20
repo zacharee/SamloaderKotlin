@@ -24,7 +24,6 @@ actual open class PlatformFile : File {
     constructor(parent: VfsFile, child: String) : this(parent.absolutePath, child)
 
     constructor(file: VfsFile) {
-        val handle: FileSystemFileHandle
         wrappedFile = file
     }
 

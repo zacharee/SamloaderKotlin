@@ -45,7 +45,12 @@ private suspend fun onDecrypt(model: DecryptModel) {
         model.model,
         model.region
     ) else {
-        CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+        try {
+            CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+        } catch (e: Throwable) {
+            model.endJob(strings.decryptError(e.message.toString()))
+            return
+        }
     }
 
     CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->

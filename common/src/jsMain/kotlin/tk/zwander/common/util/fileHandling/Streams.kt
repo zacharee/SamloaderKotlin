@@ -45,7 +45,6 @@ suspend fun WritableStream.toAsync(): AsyncOutputStream {
     val stream = object : AsyncOutputStream {
         override suspend fun close() {
             writer.close().await()
-            writer.releaseLock()
             writer.closed.await()
         }
 

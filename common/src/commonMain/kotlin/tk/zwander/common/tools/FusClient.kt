@@ -22,7 +22,7 @@ expect suspend fun doDownloadFile(client: FusClient, fileName: String, start: Lo
 class FusClient(
     private var auth: String = "",
     private var sessId: String = "",
-    val useProxy: Boolean = tk.zwander.common.util.useProxy
+    private val useProxy: Boolean = tk.zwander.common.util.useProxy
 ) {
     enum class Request(val value: String) {
         GENERATE_NONCE("NF_DownloadGenerateNonce.do"),

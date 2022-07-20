@@ -29,13 +29,13 @@ actual object PlatformHistoryView {
                 "yyyy-M-d"
             )
 
-            val parsed = formats.mapNotNull { format ->
+            val parsed = formats.firstNotNullOfOrNull { format ->
                 try {
                     DateFormat(format).tryParse(date)
                 } catch (e: Exception) {
                     null
                 }
-            }.firstOrNull()
+            }
 
             HistoryInfo(
                 parsed ?: throw IllegalArgumentException("Invalid date format $date"),

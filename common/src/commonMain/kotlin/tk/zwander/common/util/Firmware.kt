@@ -21,7 +21,10 @@ fun makeFirmwareString(pda: String, csc: String): String {
  * @param region the device region.
  */
 suspend fun getFirmwareHistoryString(model: String, region: String): String? {
-    val origUrl = "https://www.odinrom.com/samsung/${model}-${region}/"
+    val origUrl = generateProperUrl(
+        useProxy,
+        "https://www.odinrom.com/samsung/${model}-${region}/"
+    )
     val client = HttpClient {
         followRedirects = true
         expectSuccess = false

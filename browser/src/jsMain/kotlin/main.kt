@@ -11,8 +11,9 @@ import tk.zwander.commonCompose.MainView
 import kotlin.time.ExperimentalTime
 import androidx.compose.ui.native.ComposeLayer
 import androidx.compose.ui.window.ComposeWindow
+import org.w3c.dom.Element
 
-val canvas = document.getElementById("ComposeTarget") as HTMLCanvasElement
+var canvas = document.getElementById("ComposeTarget") as HTMLCanvasElement
 
 fun canvasResize(width: Int = window.innerWidth, height: Int = window.innerHeight) {
     canvas.setAttribute("width", "$width")
@@ -20,13 +21,17 @@ fun canvasResize(width: Int = window.innerWidth, height: Int = window.innerHeigh
 }
 
 fun composableResize(layer: ComposeLayer) {
+    val clone = canvas.cloneNode(false) as HTMLCanvasElement
+    canvas.replaceWith(clone)
+    canvas = clone
+
     val scale = layer.layer.contentScale
     canvasResize()
-    layer.layer.attachTo(canvas)
+    layer.layer.attachTo(clone)
     layer.layer.needRedraw()
     layer.setSize(
-        (canvas.width / scale).toInt(),
-        (canvas.height / scale).toInt()
+        (clone.width / scale).toInt(),
+        (clone.height / scale).toInt()
     )
 }
 
