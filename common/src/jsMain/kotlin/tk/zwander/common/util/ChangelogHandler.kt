@@ -17,7 +17,6 @@ actual object PlatformChangelogHandler {
         return engOption?.textContent
     }
 
-    @OptIn(InternalAPI::class)
     actual suspend fun parseChangelogs(body: String): Map<String, Changelog> {
         val doc = DOMParser().parseFromString(body, "text/html")
         val container = doc.getElementsByClassName("container")[0]

@@ -11,7 +11,6 @@ import tk.zwander.commonCompose.MainView
 import kotlin.time.ExperimentalTime
 import androidx.compose.ui.native.ComposeLayer
 import androidx.compose.ui.window.ComposeWindow
-import org.w3c.dom.Element
 
 var canvas = document.getElementById("ComposeTarget") as HTMLCanvasElement
 
