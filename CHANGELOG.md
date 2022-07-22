@@ -1,3 +1,6 @@
+# 1.0.11
+- Another fix for Windows resources.
+
 # 1.0.10
 - Temporarily remove translations until there's a better framework.
 - Update progress bar layout and add some more animations.
