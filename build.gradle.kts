@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val versionCode by extra(22)
 val versionName by extra("1.0.9")
 
@@ -27,9 +29,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev748")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev750")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.android.tools.build:gradle:7.2.0")
+        classpath("com.android.tools.build:gradle:7.2.1")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("dev.icerock.moko:resources-generator:0.20.1")
