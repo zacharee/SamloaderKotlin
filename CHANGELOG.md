@@ -1,3 +1,12 @@
+# 1.0.10
+- Temporarily remove translations until there's a better framework.
+- Update progress bar layout and add some more animations.
+- Implement functional browser version (still no plans to release it).
+- Improve file handle cleanup.
+- Add history fallback using Samsung's version.xml page.
+- Update dependencies.
+- Add temporary workaround for loading resources on Windows.
+
 # 1.0.9
 - Update dependencies.
 - Update to Kotlin 1.7.0.
