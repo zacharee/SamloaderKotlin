@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 val versionCode by extra(22)
 val versionName by extra("1.0.9")
 
