@@ -42,7 +42,6 @@ val historyModel = HistoryModel().apply {
 /**
  * The main UI view.
  */
-@Suppress("OPT_IN_IS_NOT_ENABLED")
 @OptIn(DangerousInternalIoApi::class)
 @ExperimentalTime
 @Composable

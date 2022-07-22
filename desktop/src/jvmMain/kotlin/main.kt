@@ -16,7 +16,6 @@ import java.awt.Desktop
 import javax.swing.*
 import kotlin.time.ExperimentalTime
 
-@Suppress("OPT_IN_IS_NOT_ENABLED")
 @ExperimentalTime
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {

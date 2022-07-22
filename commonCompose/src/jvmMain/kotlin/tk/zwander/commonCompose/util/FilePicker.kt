@@ -9,7 +9,6 @@ import java.io.File
 import javax.swing.JFileChooser
 
 object FilePicker {
-    @Suppress("OPT_IN_IS_NOT_ENABLED")
     @OptIn(ExperimentalSettingsImplementation::class)
     private val settings by lazy { Settings() }
     private val useNativeDialog: Boolean
