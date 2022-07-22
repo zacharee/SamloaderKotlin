@@ -40,6 +40,8 @@ compose.desktop {
     val appName: String by rootProject.extra
 
     application {
+        this.dependsOn(project(":common").tasks.named("generateMRjvmMain").get())
+
         mainClass = "MainKt"
         nativeDistributions {
             modules("jdk.crypto.ec")
