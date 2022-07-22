@@ -4,6 +4,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -69,4 +70,8 @@ compose.desktop {
             this.packageName = appName
         }
     }
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.desktop"
 }

@@ -28,5 +28,6 @@ fun imageResource(path: String): ImageBitmap {
 
 @Composable
 actual fun vectorResourceImpl(resource: AssetResource, result: (Painter) -> Unit) {
-    result(loadSvgPainter(loadResource(resource.filePath), LocalDensity.current))
+    // TODO: Remove this "\" --> "/" workaround once https://github.com/icerockdev/moko-resources/pull/371 is merged.
+    result(loadSvgPainter(loadResource(resource.filePath.replace("\\", "/")), LocalDensity.current))
 }

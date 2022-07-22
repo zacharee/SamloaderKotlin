@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -129,5 +130,9 @@ android {
 
 compose.experimental {
     web.application {}
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.compose"
 }
 
