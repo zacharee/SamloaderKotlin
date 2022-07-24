@@ -18,5 +18,5 @@ actual fun HorizontalPager(
         eval(Page.values()[it])
     }
 
-    return null
+    return {  }
 }
