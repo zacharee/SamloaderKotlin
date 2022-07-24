@@ -1,4 +1,4 @@
-package tk.zwander.commonCompose.util.pager
+package tk.zwander.commonCompose.view.pager
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.material.TabPosition
