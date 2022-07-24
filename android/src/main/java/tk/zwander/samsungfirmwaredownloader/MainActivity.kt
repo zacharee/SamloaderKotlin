@@ -61,7 +61,7 @@ class MainActivity : PreComposeActivity(), CoroutineScope by MainScope() {
         openCallback?.onOpen(it)
     }
 
-    private val openDecryptOutput = registerForActivityResult(ActivityResultContracts.CreateDocument()) {
+    private val openDecryptOutput = registerForActivityResult(ActivityResultContracts.CreateDocument("*/*")) {
         openCallback?.onOpen(it)
     }
 
