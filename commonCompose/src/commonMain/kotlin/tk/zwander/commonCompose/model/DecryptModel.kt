@@ -1,4 +1,4 @@
-package tk.zwander.common.model
+package tk.zwander.commonCompose.model
 
 import androidx.compose.runtime.*
 import tk.zwander.common.data.DecryptFileInfo

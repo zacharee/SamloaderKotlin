@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.soywiz.korio.lang.format
 import com.soywiz.korio.util.toStringDecimal
-import tk.zwander.common.model.BaseModel
+import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.flow.FlowMainAxisAlignment
 import tk.zwander.commonCompose.flow.FlowRow
 import tk.zwander.commonCompose.flow.MainAxisAlignment

@@ -1,5 +1,5 @@
-import androidx.compose.ui.window.Window
 import kotlinx.cinterop.staticCFunction
+import moe.tlaster.precompose.PreComposeWindow
 import platform.AppKit.NSApp
 import platform.AppKit.NSApplication
 import platform.objc.objc_setUncaughtExceptionHandler
@@ -19,7 +19,7 @@ fun main(args: Array<String>) {
     })
 
     NSApplication.sharedApplication()
-    Window(GradleConfig.appName) {
+    PreComposeWindow(GradleConfig.appName) {
         MainView()
     }
     NSApp?.run()

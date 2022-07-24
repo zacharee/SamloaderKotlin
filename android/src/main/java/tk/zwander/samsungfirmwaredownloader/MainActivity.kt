@@ -7,13 +7,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
-import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.ui.Modifier
 import kotlinx.coroutines.*
+import moe.tlaster.precompose.lifecycle.PreComposeActivity
+import moe.tlaster.precompose.lifecycle.setContent
 import tk.zwander.commonCompose.MainView
 import tk.zwander.common.data.*
 import kotlin.time.ExperimentalTime
@@ -22,7 +22,7 @@ import kotlin.time.ExperimentalTime
  * The Activity to show the downloader UI.
  */
 @ExperimentalTime
-class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
+class MainActivity : PreComposeActivity(), CoroutineScope by MainScope() {
     /**
      * Set whenever the DownloaderService needs to select a file or folder.
      * Called once the user makes a selection.
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope by MainScope() {
         })
 
         //Set up windowing stuff.
-        supportActionBar?.hide()
+        actionBar?.hide()
         window.statusBarColor = Color.parseColor("#${primary}")
         window.navigationBarColor = Color.parseColor("#${background}")
 

@@ -20,7 +20,7 @@ import com.soywiz.korio.lang.substr
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.serialization.xml.firstDescendant
 import tk.zwander.common.data.HistoryInfo
-import tk.zwander.common.model.HistoryModel
+import tk.zwander.commonCompose.model.HistoryModel
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString

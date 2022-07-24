@@ -13,9 +13,9 @@ import io.ktor.util.*
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import tk.zwander.common.model.DecryptModel
-import tk.zwander.common.model.DownloadModel
-import tk.zwander.common.model.HistoryModel
+import tk.zwander.commonCompose.model.DecryptModel
+import tk.zwander.commonCompose.model.DownloadModel
+import tk.zwander.commonCompose.model.HistoryModel
 import tk.zwander.commonCompose.util.pager.HorizontalPager
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.FooterView

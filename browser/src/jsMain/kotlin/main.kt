@@ -6,11 +6,10 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import org.jetbrains.skiko.wasm.onWasmReady
 import org.w3c.dom.HTMLCanvasElement
-import tk.zwander.common.GradleConfig
 import tk.zwander.commonCompose.MainView
 import kotlin.time.ExperimentalTime
 import androidx.compose.ui.native.ComposeLayer
-import androidx.compose.ui.window.ComposeWindow
+import moe.tlaster.precompose.preComposeWindow
 
 var canvas = document.getElementById("ComposeTarget") as HTMLCanvasElement
 
@@ -47,15 +46,11 @@ fun main() {
 
     onWasmReady {
         canvasResize()
-        ComposeWindow().apply {
-            setTitle(GradleConfig.appName)
-
-            setContent {
-                window.addEventListener("resize", {
-                    composableResize(layer = layer)
-                })
-                MainView(Modifier.fillMaxSize())
-            }
+        preComposeWindow(GradleConfig.appName) {
+            window.addEventListener("resize", {
+                composableResize(layer = layer)
+            })
+            MainView(Modifier.fillMaxSize())
         }
     }
 }

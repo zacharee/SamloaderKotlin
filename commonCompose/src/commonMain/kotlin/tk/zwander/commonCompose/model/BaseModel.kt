@@ -1,15 +1,16 @@
-package tk.zwander.common.model
+package tk.zwander.commonCompose.model
 
 import androidx.compose.runtime.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
+import moe.tlaster.precompose.viewmodel.ViewModel
 
 /**
  * A model class to hold information for the various views.
  */
-open class BaseModel {
+open class BaseModel : ViewModel() {
     /**
      * Device model.
      */

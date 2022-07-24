@@ -12,7 +12,7 @@ import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
-import tk.zwander.common.model.DecryptModel
+import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HybridButton

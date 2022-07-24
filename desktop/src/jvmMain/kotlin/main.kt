@@ -5,6 +5,7 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.*
 import com.formdev.flatlaf.FlatDarkLaf
+import moe.tlaster.precompose.PreComposeWindow
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
@@ -41,7 +42,7 @@ fun main() {
             }
         }
 
-        Window(
+        PreComposeWindow(
             onCloseRequest = ::exitApplication,
             title = "Bifrost",
             icon = getImage("icon.png").toPainter(),

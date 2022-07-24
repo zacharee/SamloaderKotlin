@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import tk.zwander.common.model.BaseModel
-import tk.zwander.common.model.DownloadModel
+import tk.zwander.commonCompose.model.BaseModel
+import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.samloaderkotlin.strings
 
 /**

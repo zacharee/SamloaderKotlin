@@ -56,5 +56,12 @@ allprojects {
         maven {
             url = uri("https://plugins.gradle.org/m2/")
         }
+        maven { url = uri("https://zwander.dev/maven") }
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs += listOf("-Xskip-prerelease-check")
+        }
     }
 }

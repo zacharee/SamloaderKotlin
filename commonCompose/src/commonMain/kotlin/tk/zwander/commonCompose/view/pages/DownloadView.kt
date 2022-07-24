@@ -23,7 +23,7 @@ import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.data.DownloadFileInfo
-import tk.zwander.common.model.DownloadModel
+import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler

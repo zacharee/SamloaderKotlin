@@ -48,6 +48,7 @@ kotlin {
                 api(compose.material)
                 api(compose.ui)
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+                api("moe.tlaster:precompose:1.4.0")
             }
         }
 
@@ -134,5 +135,11 @@ compose.experimental {
 
 multiplatformResources {
     multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.compose"
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs += listOf("-Xskip-prerelease-check")
+    }
 }
 
