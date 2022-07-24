@@ -39,7 +39,7 @@ class PatreonSupportersParser private constructor() {
             try {
                 val statement = client.use {
                     it.get {
-                        url("https://raw.githubusercontent.com/zacharee/PatreonSupportersRetrieval/master/app/src/main/assets/supporters.json")
+                        url(generateProperUrl(useProxy, "https://raw.githubusercontent.com/zacharee/PatreonSupportersRetrieval/master/app/src/main/assets/supporters.json"))
                     }
                 }
 

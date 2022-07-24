@@ -1,19 +1,18 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.soywiz.korio.async.launch
 import tk.zwander.common.util.PatreonSupportersParser
 import tk.zwander.common.util.SupporterInfo
 import tk.zwander.samloaderkotlin.strings
 
 @Composable
 fun PatreonSupportersDialog(
+    showing: Boolean,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
 ) {
@@ -25,6 +24,7 @@ fun PatreonSupportersDialog(
     }
 
     AlertDialogDef(
+        showing = showing,
         modifier = modifier,
         onDismissRequest = onDismissRequest,
         buttons = {

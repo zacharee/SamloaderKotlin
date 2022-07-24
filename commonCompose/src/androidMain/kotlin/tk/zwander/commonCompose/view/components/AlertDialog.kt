@@ -8,6 +8,7 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 actual fun CAlertDialog(
+    showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable() () -> Unit,
     modifier: Modifier,
@@ -17,11 +18,13 @@ actual fun CAlertDialog(
     backgroundColor: Color,
     contentColor: Color
 ) {
-    Dialog(
-        onDismissRequest = onDismissRequest,
-    ) {
-        AlertDialogContents(
-            buttons, modifier, title, text, shape, backgroundColor, contentColor
-        )
+    if (showing) {
+        Dialog(
+            onDismissRequest = onDismissRequest,
+        ) {
+            AlertDialogContents(
+                buttons, modifier, title, text, shape, backgroundColor, contentColor
+            )
+        }
     }
 }

@@ -17,6 +17,7 @@ import tk.zwander.samloaderkotlin.strings
 
 @Composable
 fun SettingsDialog(
+    showing: Boolean,
     options: List<Pair<String, String>>,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit
@@ -24,6 +25,7 @@ fun SettingsDialog(
     val settings = remember { Settings() }
 
     AlertDialogDef(
+        showing = showing,
         modifier = modifier,
         onDismissRequest = onDismissRequest,
         buttons = {

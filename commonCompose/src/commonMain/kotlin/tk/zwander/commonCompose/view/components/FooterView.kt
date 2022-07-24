@@ -180,16 +180,12 @@ fun FooterView(
             }
         }
 
-        if (showingSupportersDialog) {
-            PatreonSupportersDialog {
-                showingSupportersDialog = false
-            }
+        PatreonSupportersDialog(showingSupportersDialog) {
+            showingSupportersDialog = false
         }
 
-        if (showingSettings) {
-            SettingsDialog(options) {
-                showingSettings = false
-            }
+        SettingsDialog(showingSettings, options) {
+            showingSettings = false
         }
     }
 }

@@ -341,59 +341,58 @@ fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
                     )
                 }
 
-                if (showingRequestWarningDialog) {
-                    AlertDialogDef(
-                        title = {
-                            Text(
-                                text = strings.moreInfo(),
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold
+                AlertDialogDef(
+                    showing = showingRequestWarningDialog,
+                    title = {
+                        Text(
+                            text = strings.moreInfo(),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
+                    text = {
+                        val info = buildAnnotatedString {
+                            append(strings.manualWarningDetails(GradleConfig.appName, GradleConfig.appName))
+                            append(" ")
+                            pushStringAnnotation(
+                                "IssueLink",
+                                "https://github.com/zacharee/SamloaderKotlin/issues/10"
                             )
-                        },
-                        text = {
-                            val info = buildAnnotatedString {
-                                append(strings.manualWarningDetails(GradleConfig.appName, GradleConfig.appName))
-                                append(" ")
-                                pushStringAnnotation(
-                                    "IssueLink",
-                                    "https://github.com/zacharee/SamloaderKotlin/issues/10"
-                                )
-                                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                                append(strings.manualWarningDetails2())
-                                pop()
-                                pop()
-                                append(" ")
-                                append(strings.manualWarningDetails3())
-                            }
-
-                            val scroll = rememberScrollState()
-
-                            ClickableText(
-                                text = info,
-                                onClick = {
-                                    info.getStringAnnotations("IssueLink", it, it)
-                                        .firstOrNull()?.let { item ->
-                                            UrlHandler.launchUrl(item.item)
-                                        }
-                                },
-                                style = textStyle,
-                                modifier = Modifier.verticalScroll(scroll)
-                            )
-                        },
-                        buttons = {
-                            TextButton(
-                                onClick = {
-                                    showingRequestWarningDialog = false
-                                }
-                            ) {
-                                Text(strings.ok())
-                            }
-                        },
-                        onDismissRequest = {
-                            showingRequestWarningDialog = false
+                            pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                            append(strings.manualWarningDetails2())
+                            pop()
+                            pop()
+                            append(" ")
+                            append(strings.manualWarningDetails3())
                         }
-                    )
-                }
+
+                        val scroll = rememberScrollState()
+
+                        ClickableText(
+                            text = info,
+                            onClick = {
+                                info.getStringAnnotations("IssueLink", it, it)
+                                    .firstOrNull()?.let { item ->
+                                        UrlHandler.launchUrl(item.item)
+                                    }
+                            },
+                            style = textStyle,
+                            modifier = Modifier.verticalScroll(scroll)
+                        )
+                    },
+                    buttons = {
+                        TextButton(
+                            onClick = {
+                                showingRequestWarningDialog = false
+                            }
+                        ) {
+                            Text(strings.ok())
+                        }
+                    },
+                    onDismissRequest = {
+                        showingRequestWarningDialog = false
+                    }
+                )
             }
         }
 

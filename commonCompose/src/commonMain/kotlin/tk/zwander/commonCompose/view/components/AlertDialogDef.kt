@@ -11,11 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.data.surface
 
 @Composable
 fun AlertDialogDef(
+    showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable() () -> Unit,
     modifier: Modifier = Modifier,
@@ -25,7 +27,7 @@ fun AlertDialogDef(
     backgroundColor: Color = Color(surface.toLong(16)),
     contentColor: Color = contentColorFor(backgroundColor)
 ) {
-    CAlertDialog(onDismissRequest, buttons, modifier, title, text, shape, backgroundColor, contentColor)
+    CAlertDialog(showing, onDismissRequest, buttons, modifier, title, text, shape, backgroundColor, contentColor)
 }
 
 @Composable

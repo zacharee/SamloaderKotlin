@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Shape
 
 @Composable
 expect fun CAlertDialog(
+    showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable () -> Unit,
     modifier: Modifier,

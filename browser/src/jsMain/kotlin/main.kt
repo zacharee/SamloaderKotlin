@@ -10,6 +10,7 @@ import tk.zwander.commonCompose.MainView
 import kotlin.time.ExperimentalTime
 import androidx.compose.ui.native.ComposeLayer
 import moe.tlaster.precompose.preComposeWindow
+import tk.zwander.common.GradleConfig
 
 var canvas = document.getElementById("ComposeTarget") as HTMLCanvasElement
 
