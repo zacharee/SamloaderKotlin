@@ -6,13 +6,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusProperties
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import tk.zwander.commonCompose.model.BaseModel
@@ -27,11 +22,8 @@ import tk.zwander.samloaderkotlin.strings
  * @param canChangeFirmware whether the firmware field should be editable.
  * @param showFirmware whether to show the firmware field.
  */
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
-    val (m, r, f) = remember { FocusRequester.createRefs() }
-
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -45,11 +37,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                         model.osCode = ""
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
-                    .focusRequester(m)
-                    .focusProperties {
-                        next = r
-                    },
+                modifier = Modifier.fillMaxWidth(),
                 label = { Text(strings.modelHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
@@ -67,12 +55,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                         model.osCode = ""
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
-                    .focusRequester(r)
-                    .focusProperties {
-                        previous = m
-                        next = if (showFirmware) f else FocusRequester.Default
-                    },
+                modifier = Modifier.fillMaxWidth(),
                 label = { Text(strings.regionHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
@@ -126,11 +109,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
             value = model.fw,
             onValueChange = { model.fw = it.uppercase().trim() },
             label = { Text(strings.firmwareHint()) },
-            modifier = Modifier.fillMaxWidth()
-                .focusRequester(f)
-                .focusProperties {
-                    previous = r
-                },
+            modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmware,
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
             singleLine = true
