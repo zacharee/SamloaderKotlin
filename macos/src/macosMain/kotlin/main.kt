@@ -1,7 +1,9 @@
 import kotlinx.cinterop.staticCFunction
 import moe.tlaster.precompose.PreComposeWindow
-import platform.AppKit.NSApp
 import platform.AppKit.NSApplication
+import platform.AppKit.NSApplicationActivationPolicy
+import platform.AppKit.NSApplicationDelegateProtocol
+import platform.darwin.NSObject
 import platform.objc.objc_setUncaughtExceptionHandler
 import tk.zwander.common.GradleConfig
 import tk.zwander.commonCompose.MainView
@@ -18,9 +20,18 @@ fun main(args: Array<String>) {
         println("Error $it")
     })
 
-    NSApplication.sharedApplication()
+    val app = NSApplication.sharedApplication()
+    app.setActivationPolicy(NSApplicationActivationPolicy.NSApplicationActivationPolicyRegular)
+
+    app.delegate = object : NSObject(), NSApplicationDelegateProtocol {
+        override fun applicationShouldTerminateAfterLastWindowClosed(sender: NSApplication): Boolean {
+            return true
+        }
+    }
+
     PreComposeWindow(GradleConfig.appName) {
         MainView()
     }
-    NSApp?.run()
+
+    app.run()
 }

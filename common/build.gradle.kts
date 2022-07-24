@@ -23,6 +23,7 @@ plugins {
     id("org.jetbrains.compose")
     id("de.comahe.i18n4k")
     id("dev.icerock.mobile.multiplatform-resources")
+    kotlin("native.cocoapods")
 }
 
 apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
@@ -55,6 +56,19 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
         }
+    }
+
+    cocoapods {
+        summary = "IDK"
+        homepage = "https://zwander.dev"
+        osx.deploymentTarget = "12.0"
+
+        pod("HTMLReader")
+
+//        pod("HTMLKit") {
+//            version = "~> 4.2"
+//        }
+//        useLibraries()
     }
 
     sourceSets {
@@ -158,10 +172,16 @@ kotlin {
 
         val macosArm64Main by getting {
             dependsOn(macosMain)
+            dependencies {
+                api("org.jetbrains.skiko:skiko-macosarm64:0.7.26")
+            }
         }
 
         val macosX64Main by getting {
             dependsOn(macosMain)
+            dependencies {
+                api("org.jetbrains.skiko:skiko-macosx64:0.7.26")
+            }
         }
     }
 }
@@ -210,5 +230,25 @@ tasks.withType<Copy> {
 compose.experimental {
     web.application {}
 }
+
+//tasks.named<org.jetbrains.kotlin.gradle.tasks.DefFileTask>("generateDefHTMLKit").configure {
+//    doLast {
+//        outputFile.writeText("""
+//            language = Objective-C
+//            headers = HTMLKit.h
+//        """.trimIndent())
+//    }
+//}
+//
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.CInteropProcess>()
+//    .matching { it.name.contains("cinteropHTMLKit") }
+//    .configureEach {
+//        val dir = project.buildDir.resolve("cocoapods/synthetic/OSX/Pods/HTMLKit/Sources/include").absolutePath
+//        settings.compilerOpts.add("-I$dir")
+//    }
+//
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.CInteropProcess> {
+//    settings.compilerOpts("-DNS_FORMAT_ARGUMENT(A)=")
+//}
 
 apply(plugin = "kotlinx-atomicfu")
