@@ -152,6 +152,7 @@ kotlin {
 
             dependencies {
                 api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
+                api("io.ktor:ktor-client-darwin:$ktorVersion")
             }
         }
 
