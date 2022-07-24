@@ -13,6 +13,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
+import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.samloaderkotlin.strings
 
 /**
@@ -24,9 +25,6 @@ import tk.zwander.samloaderkotlin.strings
  */
 @Composable
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
-    val fontScale = LocalDensity.current.fontScale
-    val density = LocalDensity.current.density
-
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -66,7 +64,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
             )
         }
 
-        val constraint = constraints.maxWidth / (fontScale * density) >= 400
+        val constraint = rememberIsOverScaledThreshold(constraints.maxWidth)
 
         AnimatedVisibility(
             visible = constraint,

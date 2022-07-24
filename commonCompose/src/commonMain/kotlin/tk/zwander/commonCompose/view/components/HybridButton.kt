@@ -9,12 +9,14 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 
 /**
  * A special Button that shows as a text button if there's enough room
@@ -31,14 +33,11 @@ fun HybridButton(
     onClick: () -> Unit,
     parentSize: Int
 ) {
-    val fontScale = LocalDensity.current.fontScale
-    val density = LocalDensity.current.density
-
     BoxWithConstraints(
         modifier = Modifier.animateContentSize()
     ) {
         Crossfade(
-            targetState = parentSize / (fontScale * density) >= 400
+            targetState = rememberIsOverScaledThreshold(parentSize)
         ) {
             if (it) {
                 OutlinedButton(modifier = modifier, onClick = onClick, enabled = enabled) {
