@@ -1,6 +1,8 @@
 package tk.zwander.commonCompose.model
 
 import androidx.compose.runtime.*
+import io.ktor.client.utils.*
+import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -60,7 +62,8 @@ open class BaseModel : ViewModel() {
     /**
      * A coroutine scope.
      */
-    var scope = CoroutineScope(Dispatchers.Main)
+    @OptIn(InternalAPI::class)
+    var scope = CoroutineScope(Dispatchers.clientDispatcher(5, "Background${this::class.simpleName}"))
 
     /**
      * Called when a Job should be ended.

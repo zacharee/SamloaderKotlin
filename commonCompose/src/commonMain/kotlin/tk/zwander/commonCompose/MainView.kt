@@ -8,11 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ktor.client.utils.*
-import io.ktor.util.*
 import io.ktor.utils.io.core.internal.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.commonCompose.model.HistoryModel
@@ -26,18 +22,9 @@ import tk.zwander.commonCompose.view.pages.DownloadView
 import tk.zwander.commonCompose.view.pages.HistoryView
 import kotlin.time.ExperimentalTime
 
-@OptIn(InternalAPI::class)
-val downloadModel = DownloadModel().apply {
-    scope = CoroutineScope(Dispatchers.clientDispatcher(5, "BackgroundDownload"))
-}
-@OptIn(InternalAPI::class)
-val decryptModel = DecryptModel().apply {
-    scope = CoroutineScope(Dispatchers.clientDispatcher(5, "BackgroundDecrypt"))
-}
-@OptIn(InternalAPI::class)
-val historyModel = HistoryModel().apply {
-    scope = CoroutineScope(Dispatchers.clientDispatcher(5, "BackgroundHistory"))
-}
+val downloadModel = DownloadModel()
+val decryptModel = DecryptModel()
+val historyModel = HistoryModel()
 
 /**
  * The main UI view.
@@ -55,7 +42,6 @@ fun MainView(modifier: Modifier = Modifier) {
             Column(
                 modifier = modifier.fillMaxSize()
             ) {
-
                 TabView(
                     selectedPage = currentPage,
                     onPageSelected = {
