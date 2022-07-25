@@ -136,7 +136,7 @@ object TransitionParser {
         val keyPositions = keyframes.getArrayOrNull("KeyPositions")
         if (keyPositions != null) {
             for (i in 0 until keyPositions.size()) {
-                val keyPosition: CLElement = keyPositions.get(i)
+                val keyPosition = keyPositions.get(i)
                 if (keyPosition is CLObject) {
                     parseKeyPosition(keyPosition, transition)
                 }
@@ -145,7 +145,7 @@ object TransitionParser {
         val keyAttributes = keyframes.getArrayOrNull("KeyAttributes")
         if (keyAttributes != null) {
             for (i in 0 until keyAttributes.size()) {
-                val keyAttribute: CLElement = keyAttributes.get(i)
+                val keyAttribute = keyAttributes.get(i)
                 if (keyAttribute is CLObject) {
                     parseKeyAttribute(keyAttribute, transition)
                 }
@@ -154,7 +154,7 @@ object TransitionParser {
         val keyCycles = keyframes.getArrayOrNull("KeyCycles")
         if (keyCycles != null) {
             for (i in 0 until keyCycles.size()) {
-                val keyCycle: CLElement = keyCycles.get(i)
+                val keyCycle = keyCycles.get(i)
                 if (keyCycle is CLObject) {
                     parseKeyCycle(keyCycle, transition)
                 }

@@ -25,7 +25,7 @@ class CLArray(content: CharArray?) : CLContainer(content) {
             } else {
                 first = false
             }
-            content.append(mElements[i].toJSON())
+            content.append(mElements[i]?.toJSON())
         }
         return content.toString() + "]"
     }
@@ -45,7 +45,7 @@ class CLArray(content: CharArray?) : CLContainer(content) {
                     first = false
                 }
                 addIndent(json, indent + CLElement.Companion.sBaseIndent)
-                json.append(element.toFormattedJSON(indent + CLElement.Companion.sBaseIndent, forceIndent - 1))
+                json.append(element?.toFormattedJSON(indent + CLElement.Companion.sBaseIndent, forceIndent - 1))
             }
             json.append("\n")
             addIndent(json, indent)

@@ -273,7 +273,7 @@ object ConstraintSetParser {
                             )
                         }
                     } else if (element is CLNumber) {
-                        layoutVariables.put(elementName, element.getInt())
+                        layoutVariables.put(elementName, element.int)
                     }
                 }
             }
@@ -292,7 +292,7 @@ object ConstraintSetParser {
         for (elementName in elements) {
             val element: CLElement = json.get(elementName)!!
             if (element is CLNumber) {
-                layoutVariables.put(elementName, element.getInt())
+                layoutVariables.put(elementName, element.int)
             } else if (element is CLObject) {
                 val obj = element
                 var arrayIds: ArrayList<String>
@@ -314,7 +314,7 @@ object ConstraintSetParser {
                     }
                     layoutVariables.put(elementName, arrayIds)
                 } else if (obj.has("tag")) {
-                    arrayIds = state.getIdsForTag(obj.getString("tag"))
+                    arrayIds = state.getIdsForTag(obj.getString("tag"))!!
                     layoutVariables.put(elementName, arrayIds)
                 }
             }
@@ -329,7 +329,7 @@ object ConstraintSetParser {
      */
     @Throws(CLParsingException::class)
     fun parseDesignElementsJSON(
-        content: String, list: ArrayList<DesignElement?>
+        content: String, list: ArrayList<DesignElement>
     ) {
         val json: CLObject = CLParser.Companion.parse(content)
         var elements: ArrayList<String> = json.names() ?: return
@@ -381,7 +381,7 @@ object ConstraintSetParser {
         element: CLArray
     ) {
         for (i in 0 until element.size()) {
-            val helper: CLElement = element.get(i)
+            val helper = element.get(i)
             if (helper is CLArray) {
                 val array = helper
                 if (array.size() > 1) {
@@ -404,7 +404,7 @@ object ConstraintSetParser {
     ) {
         val elements: ArrayList<String> = json.names() ?: return
         for (elementName in elements) {
-            val element: CLElement = json.get(elementName!!)!!
+            val element = json.get(elementName)
             val arrayIds: ArrayList<String>? = layoutVariables.getList(elementName)
             if (arrayIds != null && element is CLObject) {
                 for (id in arrayIds) {
@@ -421,7 +421,7 @@ object ConstraintSetParser {
     ) {
         val chain: ChainReference? =
             if (orientation == ConstraintWidget.Companion.HORIZONTAL) state.horizontalChain() else state.verticalChain()
-        val refs: CLElement = helper.get(1)
+        val refs = helper.get(1)
         if (refs !is CLArray || refs.size() < 1) {
             return
         }
@@ -429,7 +429,7 @@ object ConstraintSetParser {
             chain?.add(refs.getString(i)!!)
         }
         if (helper.size() > 2) { // we have additional parameters
-            val params: CLElement = helper.get(2)
+            val params = helper.get(2)
             if (params !is CLObject) {
                 return
             }
@@ -437,14 +437,14 @@ object ConstraintSetParser {
             for (constraintName in constraints) {
                 when (constraintName) {
                     "style" -> {
-                        val styleObject: CLElement = params.get(constraintName)!!
+                        val styleObject = params.get(constraintName)
                         var styleValue: String?
                         if (styleObject is CLArray && styleObject.size() > 1) {
                             styleValue = styleObject.getString(0)
                             val biasValue: Float = styleObject.getFloat(1)
                             chain!!.bias(biasValue)
                         } else {
-                            styleValue = styleObject.content()
+                            styleValue = styleObject?.content()
                         }
                         when (styleValue) {
                             "packed" -> chain!!.style(State.Chain.PACKED)
@@ -507,11 +507,11 @@ object ConstraintSetParser {
                     }
                     var i = 0
                     while (i < refs.size()) {
-                        val chainElement: CLElement = refs.get(i)
+                        val chainElement = refs.get(i)
                         if (chainElement is CLArray) {
                             val array = chainElement
                             if (array.size() > 0) {
-                                val id: String = array.get(0).content()
+                                val id = array.get(0)?.content()
                                 var weight = Float.NaN
                                 var preMargin = Float.NaN
                                 var postMargin = Float.NaN
@@ -531,10 +531,10 @@ object ConstraintSetParser {
                                         postMargin = toPix(state, array.getFloat(3))
                                     }
                                 }
-                                chain!!.addChainElement(id, weight, preMargin, postMargin)
+                                chain!!.addChainElement(id!!, weight, preMargin, postMargin)
                             }
                         } else {
-                            chain.add(chainElement.content())
+                            chain.add(chainElement?.content()!!)
                         }
                         i++
                     }
@@ -573,7 +573,7 @@ object ConstraintSetParser {
         orientation: Int,
         state: State, helper: CLArray
     ) {
-        val params: CLElement = helper.get(1)
+        val params = helper.get(1)
         if (params !is CLObject) {
             return
         }
@@ -588,7 +588,7 @@ object ConstraintSetParser {
         guidelineId: String,
         params: CLObject
     ) {
-        val constraints: ArrayList<String> = params.names() ?: return
+        val constraints: ArrayList<String> = params.names()
         val reference = state.constraints(guidelineId)
         if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
             state.horizontalGuideline(guidelineId)
@@ -616,7 +616,7 @@ object ConstraintSetParser {
     @Throws(CLParsingException::class)
     fun parseBarrier(
         state: State,
-        elementName: String?, element: CLObject
+        elementName: String, element: CLObject
     ) {
         val reference = state.barrier(elementName, State.Direction.END)
         val constraints: ArrayList<String> = element.names() ?: return
@@ -645,7 +645,7 @@ object ConstraintSetParser {
                     if (list != null) {
                         var j = 0
                         while (j < list.size()) {
-                            val elementNameReference: String = list.get(j).content()
+                            val elementNameReference = list.get(j)?.content()!!
                             val elementReference = state.constraints(elementNameReference)
                             if (PARSER_DEBUG) {
                                 println(
@@ -938,7 +938,7 @@ object ConstraintSetParser {
                 if (target == "parent") state.constraints(State.Companion.PARENT) else state.constraints(target)
             when (constraintName) {
                 "circular" -> {
-                    val angle = layoutVariables[constraint.get(1)]
+                    val angle = layoutVariables[constraint.get(1)!!]
                     reference!!.circularConstraint(targetReference, angle, 0f)
                 }
 
@@ -974,20 +974,20 @@ object ConstraintSetParser {
 
                 "baseline" -> when (anchor) {
                     "baseline" -> {
-                        state.baselineNeededFor(reference!!.key)
-                        state.baselineNeededFor(targetReference!!.key)
+                        state.baselineNeededFor(reference!!.key!!)
+                        state.baselineNeededFor(targetReference!!.key!!)
                         reference.baselineToBaseline(targetReference)
                     }
 
                     "top" -> {
-                        state.baselineNeededFor(reference!!.key)
-                        state.baselineNeededFor(targetReference!!.key)
+                        state.baselineNeededFor(reference!!.key!!)
+                        state.baselineNeededFor(targetReference!!.key!!)
                         reference.baselineToTop(targetReference)
                     }
 
                     "bottom" -> {
-                        state.baselineNeededFor(reference!!.key)
-                        state.baselineNeededFor(targetReference!!.key)
+                        state.baselineNeededFor(reference!!.key!!)
+                        state.baselineNeededFor(targetReference!!.key!!)
                         reference.baselineToBottom(targetReference)
                     }
                 }
@@ -1004,8 +1004,8 @@ object ConstraintSetParser {
                     "top" -> reference!!.topToTop(targetReference)
                     "bottom" -> reference!!.bottomToBottom(targetReference)
                     "baseline" -> {
-                        state.baselineNeededFor(reference!!.key)
-                        state.baselineNeededFor(targetReference!!.key)
+                        state.baselineNeededFor(reference!!.key!!)
+                        state.baselineNeededFor(targetReference!!.key!!)
                         reference.baselineToBaseline(targetReference)
                     }
                 }

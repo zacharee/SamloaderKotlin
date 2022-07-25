@@ -16,7 +16,6 @@
 package androidx.constraintlayout.core
 
 import androidx.constraintlayout.core.widgets.*
-import androidx.constraintlayout.coreimport.*
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
@@ -81,7 +80,7 @@ class LinearSystem {
         fun getPivotCandidate(system: LinearSystem?, avoid: BooleanArray?): SolverVariable?
         fun clear()
         fun initFromRow(row: Row?)
-        fun addError(variable: SolverVariable?)
+        fun addError(variable: SolverVariable)
         fun updateFromSystem(system: LinearSystem?)
         val key: SolverVariable?
         val isEmpty: Boolean
@@ -911,7 +910,7 @@ class LinearSystem {
                         if (SKIP_COLUMNS) {
                             val size: Int = current.variables?.currentSize!!
                             for (j in 0 until size) {
-                                val candidate: SolverVariable = current.variables!!.getVariable(j)
+                                val candidate: SolverVariable = current.variables!!.getVariable(j)!!
                                 val a_j: Float = current.variables!!.get(candidate)
                                 if (a_j <= 0) {
                                     continue
@@ -965,7 +964,7 @@ class LinearSystem {
                     if (sMetrics != null) {
                         sMetrics!!.pivots++
                     }
-                    pivotEquation.pivot(cache.mIndexedVariables[pivotColumnIndex])
+                    pivotEquation.pivot(cache.mIndexedVariables[pivotColumnIndex]!!)
                     pivotEquation.key?.mDefinitionId = pivotRowIndex
                     pivotEquation.key?.updateReferencesWithNewDefinition(this, pivotEquation)
                     if (DEBUG) {
@@ -1472,14 +1471,14 @@ class LinearSystem {
         angle: Float,
         radius: Int
     ) {
-        val Al = createObjectVariable(widget.getAnchor(ConstraintAnchor.Type.LEFT))
-        val At = createObjectVariable(widget.getAnchor(ConstraintAnchor.Type.TOP))
-        val Ar = createObjectVariable(widget.getAnchor(ConstraintAnchor.Type.RIGHT))
-        val Ab = createObjectVariable(widget.getAnchor(ConstraintAnchor.Type.BOTTOM))
-        val Bl = createObjectVariable(target.getAnchor(ConstraintAnchor.Type.LEFT))
-        val Bt = createObjectVariable(target.getAnchor(ConstraintAnchor.Type.TOP))
-        val Br = createObjectVariable(target.getAnchor(ConstraintAnchor.Type.RIGHT))
-        val Bb = createObjectVariable(target.getAnchor(ConstraintAnchor.Type.BOTTOM))
+        val Al = createObjectVariable(widget.getAnchor(ConstraintAnchor.Type.LEFT))!!
+        val At = createObjectVariable(widget.getAnchor(ConstraintAnchor.Type.TOP))!!
+        val Ar = createObjectVariable(widget.getAnchor(ConstraintAnchor.Type.RIGHT))!!
+        val Ab = createObjectVariable(widget.getAnchor(ConstraintAnchor.Type.BOTTOM))!!
+        val Bl = createObjectVariable(target.getAnchor(ConstraintAnchor.Type.LEFT))!!
+        val Bt = createObjectVariable(target.getAnchor(ConstraintAnchor.Type.TOP))!!
+        val Br = createObjectVariable(target.getAnchor(ConstraintAnchor.Type.RIGHT))!!
+        val Bb = createObjectVariable(target.getAnchor(ConstraintAnchor.Type.BOTTOM))!!
         var row = createRow()
         var angleComponent: Float = (sin(angle.toDouble()) * radius).toFloat()
         row.createRowWithAngle(At, Ab, Bt, Bb, angleComponent)

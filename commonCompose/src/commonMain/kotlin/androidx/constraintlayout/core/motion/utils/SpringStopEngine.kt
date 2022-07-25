@@ -35,7 +35,7 @@ class SpringStopEngine : StopEngine {
     private var mMass = 0f
     private var mStopThreshold = 0f
     private var mBoundaryMode = 0
-    override fun debug(desc: String?, time: Float): String? {
+    override fun debug(desc: String, time: Float): String? {
         return null
     }
 

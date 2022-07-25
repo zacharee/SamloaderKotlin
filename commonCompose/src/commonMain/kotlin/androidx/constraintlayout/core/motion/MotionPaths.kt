@@ -818,7 +818,7 @@ class MotionPaths : Comparable<MotionPaths> {
      */
     fun applyParameters(c: MotionWidget) {
         val point = this
-        point.mKeyFrameEasing = Easing.Companion.getInterpolator(c.mMotion.mTransitionEasing!!)
+        point.mKeyFrameEasing = Easing.Companion.getInterpolator(c.mMotion.mTransitionEasing)
         point.mPathMotionArc = c.mMotion.mPathMotionArc
         point.mAnimateRelativeTo = c.mMotion.mAnimateRelativeTo
         point.mPathRotate = c.mMotion.mPathRotate

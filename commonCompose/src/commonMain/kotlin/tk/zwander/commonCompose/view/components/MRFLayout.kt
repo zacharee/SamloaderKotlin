@@ -17,10 +17,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintLayoutScope
-import androidx.constraintlayout.compose.ConstraintSet
-import androidx.constraintlayout.compose.layoutId
+import androidx.constraintlayout.compose.*
 import com.soywiz.kmem.toIntCeil
 import com.soywiz.kmem.toIntFloor
 import tk.zwander.commonCompose.flow.FlowRow
@@ -41,7 +38,44 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
     ) {
-        val modelField = @Composable() {
+        val constraint = rememberIsOverScaledThreshold(constraints.maxWidth)
+        val constraints = this.constraints
+
+        val set = ConstraintSet {
+            val modelRef = createRefFor("model")
+            val regionRef = createRefFor("region")
+
+            val horizontalRef = if (constraint) createHorizontalChain(modelRef, regionRef) else null
+
+            horizontalRef?.let {
+                constrain(horizontalRef) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+            }
+
+            constrain(modelRef) {
+                start.linkTo(parent.start)
+                end.linkTo(if (constraint) regionRef.start else parent.end)
+                top.linkTo(parent.top)
+                this.horizontalChainWeight = 0.6f
+                width = Dimension.fillToConstraints
+            }
+
+            constrain(regionRef) {
+                start.linkTo(if (constraint) modelRef.end else parent.start)
+                end.linkTo(parent.end)
+                top.linkTo(if (constraint) parent.top else modelRef.bottom)
+                this.horizontalChainWeight = 0.4f
+                width = Dimension.fillToConstraints
+            }
+        }
+
+        ConstraintLayout(
+            constraintSet = set,
+            animateChanges = true,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             OutlinedTextField(
                 value = model.model,
                 onValueChange = {
@@ -57,9 +91,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true
             )
-        }
 
-        val regionField = @Composable {
             OutlinedTextField(
                 value = model.region,
                 onValueChange = {
@@ -69,41 +101,12 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                         model.osCode = ""
                     }
                 },
-                modifier = Modifier.fillMaxWidth().layoutId("region"),
+                modifier = Modifier.layoutId("region"),
                 label = { Text(strings.regionHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true
             )
-        }
-
-        val constraint = rememberIsOverScaledThreshold(constraints.maxWidth)
-        val constraints = this.constraints
-
-        val set = ConstraintSet {
-            val modelRef = createRefFor("model")
-            val regionRef = createRefFor("region")
-
-            constrain(modelRef) {
-                start.linkTo(parent.start)
-                end.linkTo(if (constraint) regionRef.start else parent.end)
-                top.linkTo(parent.top)
-            }
-
-            constrain(regionRef) {
-                start.linkTo(if (constraint) modelRef.end else parent.start)
-                end.linkTo(parent.end)
-                top.linkTo(if (constraint) parent.top else modelRef.bottom)
-            }
-        }
-
-        ConstraintLayout(
-            constraintSet = set,
-            animateChanges = true
-        ) {
-            modelField()
-
-            regionField()
         }
 
 //        Column {

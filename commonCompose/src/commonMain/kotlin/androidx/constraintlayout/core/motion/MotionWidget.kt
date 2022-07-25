@@ -130,7 +130,7 @@ class MotionWidget : TypedValues {
         } else setValueMotion(id, value)
     }
 
-    override fun setValue(id: Int, value: String?): Boolean {
+    override fun setValue(id: Int, value: String): Boolean {
         if (id == MotionType.Companion.TYPE_ANIMATE_RELATIVE_TO) {
             mMotion.mAnimateRelativeTo = value
             return true
@@ -315,35 +315,35 @@ class MotionWidget : TypedValues {
     /**
      * @TODO: add description
      */
-    fun setCustomAttribute(name: String?, type: Int, value: Float) {
+    fun setCustomAttribute(name: String, type: Int, value: Float) {
         widgetFrame!!.setCustomAttribute(name, type, value)
     }
 
     /**
      * @TODO: add description
      */
-    fun setCustomAttribute(name: String?, type: Int, value: Int) {
+    fun setCustomAttribute(name: String, type: Int, value: Int) {
         widgetFrame!!.setCustomAttribute(name, type, value)
     }
 
     /**
      * @TODO: add description
      */
-    fun setCustomAttribute(name: String?, type: Int, value: Boolean) {
+    fun setCustomAttribute(name: String, type: Int, value: Boolean) {
         widgetFrame!!.setCustomAttribute(name, type, value)
     }
 
     /**
      * @TODO: add description
      */
-    fun setCustomAttribute(name: String?, type: Int, value: String?) {
+    fun setCustomAttribute(name: String, type: Int, value: String?) {
         widgetFrame!!.setCustomAttribute(name, type, value)
     }
 
     /**
      * @TODO: add description
      */
-    fun getCustomAttribute(name: String?): CustomVariable? {
+    fun getCustomAttribute(name: String): CustomVariable {
         return widgetFrame!!.getCustomAttribute(name)
     }
 

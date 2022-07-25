@@ -28,7 +28,7 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
             } else {
                 first = false
             }
-            json.append(element.toJSON())
+            json.append(element?.toJSON())
         }
         json.append(" }")
         return json.toString()
@@ -54,7 +54,7 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
             } else {
                 first = false
             }
-            json.append(element.toFormattedJSON(indent + CLElement.Companion.sBaseIndent, forceIndent - 1))
+            json.append(element?.toFormattedJSON(indent + CLElement.Companion.sBaseIndent, forceIndent - 1))
         }
         json.append("\n")
         addIndent(json, indent)

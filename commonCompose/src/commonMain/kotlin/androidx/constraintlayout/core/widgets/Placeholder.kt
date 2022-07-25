@@ -17,6 +17,8 @@ package androidx.constraintlayout.core.widgets
 
 import androidx.constraintlayout.core.LinearSystem
 import androidx.constraintlayout.core.widgets.analyzer.BasicMeasure
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Simple VirtualLayout that center the first referenced widget onto itself.
@@ -36,35 +38,35 @@ class Placeholder : VirtualLayout() {
         height += paddingTop + paddingBottom
         if (mWidgetsCount > 0) {
             // grab the first referenced widget size in case we are ourselves in wrap_content
-            width += mWidgets.get(0).getWidth()
-            height += mWidgets.get(0).getHeight()
+            width += mWidgets.get(0)!!.width
+            height += mWidgets.get(0)!!.height
         }
-        width = java.lang.Math.max(getMinWidth(), width)
-        height = java.lang.Math.max(getMinHeight(), height)
+        width = max(minWidth, width)
+        height = max(minHeight, height)
         var measuredWidth = 0
         var measuredHeight = 0
         if (widthMode == BasicMeasure.Companion.EXACTLY) {
             measuredWidth = widthSize
         } else if (widthMode == BasicMeasure.Companion.AT_MOST) {
-            measuredWidth = java.lang.Math.min(width, widthSize)
+            measuredWidth = min(width, widthSize)
         } else if (widthMode == BasicMeasure.Companion.UNSPECIFIED) {
             measuredWidth = width
         }
         if (heightMode == BasicMeasure.Companion.EXACTLY) {
             measuredHeight = heightSize
         } else if (heightMode == BasicMeasure.Companion.AT_MOST) {
-            measuredHeight = java.lang.Math.min(height, heightSize)
+            measuredHeight = min(height, heightSize)
         } else if (heightMode == BasicMeasure.Companion.UNSPECIFIED) {
             measuredHeight = height
         }
         setMeasure(measuredWidth, measuredHeight)
-        setWidth(measuredWidth)
-        setHeight(measuredHeight)
+        this.width = (measuredWidth)
+        this.height = (measuredHeight)
         needsCallbackFromSolver(mWidgetsCount > 0)
     }
 
-    override fun addToSolver(system: LinearSystem?, optimize: Boolean) {
-        super.addToSolver(system!!, optimize)
+    override fun addToSolver(system: LinearSystem, optimize: Boolean) {
+        super.addToSolver(system, optimize)
         if (mWidgetsCount > 0) {
             val widget: ConstraintWidget = mWidgets.get(0)!!
             widget.resetAllConstraints()

@@ -61,11 +61,11 @@ object Optimizer {
             == DimensionBehaviour.MATCH_PARENT
         ) {
             val left: Int = widget.mLeft!!.mMargin
-            val right: Int = container.getWidth() - widget.mRight!!.mMargin
-            widget.mLeft.mSolverVariable = system.createObjectVariable(widget.mLeft)
-            widget.mRight.mSolverVariable = system.createObjectVariable(widget.mRight)
-            system.addEquality(widget.mLeft.mSolverVariable, left)
-            system.addEquality(widget.mRight.mSolverVariable, right)
+            val right: Int = container.width - widget.mRight!!.mMargin
+            widget.mLeft.solverVariable = system.createObjectVariable(widget.mLeft)
+            widget.mRight.solverVariable = system.createObjectVariable(widget.mRight)
+            system.addEquality(widget.mLeft.solverVariable!!, left)
+            system.addEquality(widget.mRight.solverVariable!!, right)
             widget.mHorizontalResolution = ConstraintWidget.Companion.DIRECT
             widget.setHorizontalDimension(left, right)
         }
@@ -75,15 +75,15 @@ object Optimizer {
             == DimensionBehaviour.MATCH_PARENT
         ) {
             val top: Int = widget.mTop.mMargin
-            val bottom: Int = container.getHeight() - widget.mBottom.mMargin
-            widget.mTop.mSolverVariable = system.createObjectVariable(widget.mTop)
-            widget.mBottom.mSolverVariable = system.createObjectVariable(widget.mBottom)
-            system.addEquality(widget.mTop.mSolverVariable, top)
-            system.addEquality(widget.mBottom.mSolverVariable, bottom)
+            val bottom: Int = container.height - widget.mBottom.mMargin
+            widget.mTop.solverVariable = system.createObjectVariable(widget.mTop)
+            widget.mBottom.solverVariable = system.createObjectVariable(widget.mBottom)
+            system.addEquality(widget.mTop.solverVariable!!, top)
+            system.addEquality(widget.mBottom.solverVariable!!, bottom)
             if (widget.mBaselineDistance > 0 || widget.visibility == ConstraintWidget.Companion.GONE) {
-                widget.mBaseline.mSolverVariable = system.createObjectVariable(widget.mBaseline)
+                widget.mBaseline.solverVariable = system.createObjectVariable(widget.mBaseline)
                 system.addEquality(
-                    widget.mBaseline.mSolverVariable,
+                    widget.mBaseline.solverVariable!!,
                     top + widget.mBaselineDistance
                 )
             }

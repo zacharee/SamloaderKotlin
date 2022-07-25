@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.constraintlayout.coreimport
+package androidx.constraintlayout.core
 
 import androidx.constraintlayout.core.*
 import androidx.constraintlayout.core.ArrayRow.ArrayRowVariables
-
-androidx.constraintlayout.core.dsl.OnSwipe.Drag
 
 /**
  * Store a set of variables and their values in an array-based linked list coupled
@@ -44,9 +42,8 @@ class SolverVariableValues internal constructor(// our owner
         clear()
     }
 
-    override fun getCurrentSize(): Int {
-        return mCount
-    }
+    override val currentSize: Int
+        get() = mCount
 
     override fun getVariable(index: Int): SolverVariable? {
         val count = mCount
@@ -78,10 +75,10 @@ class SolverVariableValues internal constructor(// our owner
                 break
             }
         }
-        return 0
+        return 0f
     }
 
-    override fun contains(variable: SolverVariable?): Boolean {
+    override fun contains(variable: SolverVariable): Boolean {
         return indexOf(variable) != mNone
     }
 
@@ -113,7 +110,7 @@ class SolverVariableValues internal constructor(// our owner
         val index = indexOf(variable)
         return if (index != mNone) {
             mValues[index]
-        } else 0
+        } else 0f
     }
 
     override fun display() {
@@ -152,7 +149,7 @@ class SolverVariableValues internal constructor(// our owner
     }
 
     override fun clear() {
-        if (SolverVariableValues.Companion.DEBUG) {
+        if (DEBUG) {
             println("$this <clear>")
         }
         val count = mCount
@@ -173,11 +170,11 @@ class SolverVariableValues internal constructor(// our owner
 
     private fun increaseSize() {
         val size = mSize * 2
-        mVariables = java.util.Arrays.copyOf(mVariables, size)
-        mValues = java.util.Arrays.copyOf(mValues, size)
-        mPrevious = java.util.Arrays.copyOf(mPrevious, size)
-        mNext = java.util.Arrays.copyOf(mNext, size)
-        mNextKeys = java.util.Arrays.copyOf(mNextKeys, size)
+        mVariables = mVariables.copyOf(size)
+        mValues = mValues.copyOf(size)
+        mPrevious = mPrevious.copyOf(size)
+        mNext = mNext.copyOf(size)
+        mNextKeys = mNextKeys.copyOf(size)
         for (i in mSize until size) {
             mVariables[i] = mNone
             mNextKeys[i] = mNone
@@ -186,14 +183,14 @@ class SolverVariableValues internal constructor(// our owner
     }
 
     private fun addToHashMap(variable: SolverVariable, index: Int) {
-        if (SolverVariableValues.Companion.DEBUG) {
+        if (DEBUG) {
             println(this.hashCode().toString() + " hash add " + variable.id + " @ " + index)
         }
         val hash = variable.id % mHashSize
         var key = mKeys[hash]
         if (key == mNone) {
             mKeys[hash] = index
-            if (SolverVariableValues.Companion.DEBUG) {
+            if (DEBUG) {
                 println(
                     this.hashCode().toString() + " hash add "
                             + variable.id + " @ " + index + " directly on keys " + hash
@@ -204,7 +201,7 @@ class SolverVariableValues internal constructor(// our owner
                 key = mNextKeys[key]
             }
             mNextKeys[key] = index
-            if (SolverVariableValues.Companion.DEBUG) {
+            if (DEBUG) {
                 println(
                     this.hashCode().toString() + " hash add "
                             + variable.id + " @ " + index + " as nextkey of " + key
@@ -212,7 +209,7 @@ class SolverVariableValues internal constructor(// our owner
             }
         }
         mNextKeys[index] = mNone
-        if (SolverVariableValues.Companion.DEBUG) {
+        if (DEBUG) {
             displayHash()
         }
     }
@@ -237,13 +234,13 @@ class SolverVariableValues internal constructor(// our owner
     }
 
     private fun removeFromHashMap(variable: SolverVariable) {
-        if (SolverVariableValues.Companion.DEBUG) {
+        if (DEBUG) {
             println(this.hashCode().toString() + " hash remove " + variable.id)
         }
         val hash = variable.id % mHashSize
         var key = mKeys[hash]
         if (key == mNone) {
-            if (SolverVariableValues.Companion.DEBUG) {
+            if (DEBUG) {
                 displayHash()
             }
             return
@@ -263,7 +260,7 @@ class SolverVariableValues internal constructor(// our owner
                 mNextKeys[currentKey] = mNone
             }
         }
-        if (SolverVariableValues.Companion.DEBUG) {
+        if (DEBUG) {
             displayHash()
         }
     }
@@ -310,10 +307,10 @@ class SolverVariableValues internal constructor(// our owner
     }
 
     override fun put(variable: SolverVariable, value: Float) {
-        if (SolverVariableValues.Companion.DEBUG) {
+        if (DEBUG) {
             println(this.toString() + " <put> " + variable.id + " = " + value)
         }
-        if (value > -SolverVariableValues.Companion.sEpsilon && value < SolverVariableValues.Companion.sEpsilon) {
+        if (value > -sEpsilon && value < sEpsilon) {
             remove(variable, true)
             return
         }
@@ -355,12 +352,12 @@ class SolverVariableValues internal constructor(// our owner
     }
 
     override fun remove(v: SolverVariable, removeFromDefinition: Boolean): Float {
-        if (SolverVariableValues.Companion.DEBUG) {
+        if (DEBUG) {
             println(this.toString() + " <remove> " + v.id)
         }
         val index = indexOf(v)
         if (index == mNone) {
-            return 0
+            return 0f
         }
         removeFromHashMap(v)
         val value = mValues[index]
@@ -383,10 +380,10 @@ class SolverVariableValues internal constructor(// our owner
     }
 
     override fun add(v: SolverVariable, value: Float, removeFromDefinition: Boolean) {
-        if (SolverVariableValues.Companion.DEBUG) {
+        if (DEBUG) {
             println(this.toString() + " <add> " + v.id + " = " + value)
         }
-        if (value > -SolverVariableValues.Companion.sEpsilon && value < SolverVariableValues.Companion.sEpsilon) {
+        if (value > -sEpsilon && value < sEpsilon) {
             return
         }
         val index = indexOf(v)
@@ -394,7 +391,7 @@ class SolverVariableValues internal constructor(// our owner
             put(v, value)
         } else {
             mValues[index] += value
-            if (mValues[index] > -SolverVariableValues.Companion.sEpsilon && mValues[index] < SolverVariableValues.Companion.sEpsilon) {
+            if (mValues[index] > -sEpsilon && mValues[index] < sEpsilon) {
                 mValues[index] = 0f
                 remove(v, removeFromDefinition)
             }
@@ -402,15 +399,15 @@ class SolverVariableValues internal constructor(// our owner
     }
 
     override fun use(definition: ArrayRow, removeFromDefinition: Boolean): Float {
-        val value = get(definition.mVariable)
-        remove(definition.mVariable, removeFromDefinition)
+        val value = get(definition.key)
+        remove(definition.key!!, removeFromDefinition)
         if (false) {
-            val definitionVariables: ArrayRowVariables = definition.variables
+            val definitionVariables: ArrayRowVariables = definition.variables!!
             val definitionSize = definitionVariables.currentSize
             for (i in 0 until definitionSize) {
                 val definitionVariable = definitionVariables.getVariable(i)
                 val definitionValue = definitionVariables[definitionVariable]
-                add(definitionVariable, definitionValue * value, removeFromDefinition)
+                add(definitionVariable!!, definitionValue * value, removeFromDefinition)
             }
             return value
         }
@@ -421,7 +418,7 @@ class SolverVariableValues internal constructor(// our owner
             for (i in 0 until definitionSize) {
                 val definitionValue = localDef.mValues[j]
                 val definitionVariable = mCache.mIndexedVariables[localDef.mVariables[j]]
-                add(definitionVariable, definitionValue * value, removeFromDefinition)
+                add(definitionVariable!!, definitionValue * value, removeFromDefinition)
                 j = localDef.mNext[j]
                 if (j == mNone) {
                     break
@@ -434,7 +431,7 @@ class SolverVariableValues internal constructor(// our owner
                 if (localDef.mVariables[i] != mNone) {
                     val definitionValue = localDef.mValues[i]
                     val definitionVariable = mCache.mIndexedVariables[localDef.mVariables[i]]
-                    add(definitionVariable, definitionValue * value, removeFromDefinition)
+                    add(definitionVariable!!, definitionValue * value, removeFromDefinition)
                     j++
                 }
                 i++

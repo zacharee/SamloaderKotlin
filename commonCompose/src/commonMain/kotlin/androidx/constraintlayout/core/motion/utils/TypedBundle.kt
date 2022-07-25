@@ -107,7 +107,7 @@ class TypedBundle {
             values.setValue(mTypeFloat[i], mValueFloat[i])
         }
         for (i in 0 until mCountString) {
-            values.setValue(mTypeString[i], mValueString[i])
+            values.setValue(mTypeString[i], mValueString[i]!!)
         }
         for (i in 0 until mCountBoolean) {
             values.setValue(mTypeBoolean[i], mValueBoolean[i])

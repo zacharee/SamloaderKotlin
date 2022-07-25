@@ -18,7 +18,7 @@ package androidx.constraintlayout.core.widgets
 import androidx.constraintlayout.core.LinearSystem
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
 import androidx.constraintlayout.core.widgets.analyzer.Direct
-import androidx.constraintlayout.coreimport.SolverVariable
+import androidx.constraintlayout.core.SolverVariable
 
 /**
  * Chain management and constraints creation

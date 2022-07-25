@@ -16,7 +16,7 @@
 package androidx.constraintlayout.core.widgets
 
 import androidx.constraintlayout.core.LinearSystem
-import androidx.constraintlayout.coreimport.SolverVariable
+import androidx.constraintlayout.core.SolverVariable
 import kotlin.math.max
 import kotlin.math.min
 

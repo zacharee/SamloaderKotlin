@@ -18,7 +18,7 @@ package androidx.constraintlayout.core.widgets
 import androidx.constraintlayout.core.*
 import androidx.constraintlayout.core.widgets.analyzer.Grouping
 import androidx.constraintlayout.core.widgets.analyzer.WidgetGroup
-import androidx.constraintlayout.coreimport.SolverVariable
+import androidx.constraintlayout.core.SolverVariable
 import kotlin.jvm.JvmOverloads
 
 /**
@@ -271,11 +271,8 @@ class ConstraintAnchor
         }
         val target = anchor.type
         return if (target == type) {
-            if (type == Type.BASELINE
-                && (!anchor.owner.hasBaseline() || !owner.hasBaseline())
-            ) {
-                false
-            } else true
+            !(type == Type.BASELINE
+                    && (!anchor.owner.hasBaseline || !owner.hasBaseline))
         } else when (type) {
             Type.CENTER -> {
 

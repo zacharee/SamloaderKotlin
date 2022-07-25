@@ -15,10 +15,6 @@
  */
 package androidx.constraintlayout.core
 
-import androidx.constraintlayout.core.*
-import androidx.constraintlayout.coreimport.ArrayLinkedVariables
-import androidx.constraintlayout.coreimport.SolverVariable
-
 open class ArrayRow : LinearSystem.Row {
     override var key: SolverVariable? = null
     var mConstantValue = 0f
@@ -35,7 +31,7 @@ open class ArrayRow : LinearSystem.Row {
         /**
          * @TODO: add description
          */
-        fun getVariable(index: Int): SolverVariable
+        fun getVariable(index: Int): SolverVariable?
 
         /**
          * @TODO: add description
@@ -65,12 +61,12 @@ open class ArrayRow : LinearSystem.Row {
         /**
          * @TODO: add description
          */
-        operator fun contains(variable: SolverVariable?): Boolean
+        operator fun contains(variable: SolverVariable): Boolean
 
         /**
          * @TODO: add description
          */
-        fun put(variable: SolverVariable?, value: Float)
+        fun put(variable: SolverVariable, value: Float)
 
         /**
          * @TODO: add description
@@ -85,7 +81,7 @@ open class ArrayRow : LinearSystem.Row {
         /**
          * @TODO: add description
          */
-        fun remove(v: SolverVariable?, removeFromDefinition: Boolean): Float
+        fun remove(v: SolverVariable, removeFromDefinition: Boolean): Float
 
         /**
          * @TODO: add description
@@ -95,12 +91,12 @@ open class ArrayRow : LinearSystem.Row {
         /**
          * @TODO: add description
          */
-        fun add(v: SolverVariable?, value: Float, removeFromDefinition: Boolean)
+        fun add(v: SolverVariable, value: Float, removeFromDefinition: Boolean)
 
         /**
          * @TODO: add description
          */
-        fun use(definition: ArrayRow?, removeFromDefinition: Boolean): Float
+        fun use(definition: ArrayRow, removeFromDefinition: Boolean): Float
     }
 
     var mIsSimpleDefinition = false
@@ -184,7 +180,7 @@ open class ArrayRow : LinearSystem.Row {
         mIsSimpleDefinition = false
     }
 
-    fun hasVariable(v: SolverVariable?): Boolean {
+    fun hasVariable(v: SolverVariable): Boolean {
         return variables!!.contains(v)
     }
 
@@ -199,7 +195,7 @@ open class ArrayRow : LinearSystem.Row {
     /**
      * @TODO: add description
      */
-    fun createRowEquals(variable: SolverVariable?, value: Int): ArrayRow {
+    fun createRowEquals(variable: SolverVariable, value: Int): ArrayRow {
         if (value < 0) {
             mConstantValue = (-1 * value).toFloat()
             variables!!.put(variable, 1f)
@@ -214,8 +210,8 @@ open class ArrayRow : LinearSystem.Row {
      * @TODO: add description
      */
     fun createRowEquals(
-        variableA: SolverVariable?,
-        variableB: SolverVariable?,
+        variableA: SolverVariable,
+        variableB: SolverVariable,
         margin: Int
     ): ArrayRow {
         var inverse = false
@@ -240,7 +236,7 @@ open class ArrayRow : LinearSystem.Row {
     /**
      * @TODO: add description
      */
-    fun addSingleError(error: SolverVariable?, sign: Int): ArrayRow {
+    fun addSingleError(error: SolverVariable, sign: Int): ArrayRow {
         variables!!.put(error, sign.toFloat())
         return this
     }
@@ -249,8 +245,8 @@ open class ArrayRow : LinearSystem.Row {
      * @TODO: add description
      */
     fun createRowGreaterThan(
-        variableA: SolverVariable?,
-        variableB: SolverVariable?, slack: SolverVariable?,
+        variableA: SolverVariable,
+        variableB: SolverVariable, slack: SolverVariable,
         margin: Int
     ): ArrayRow {
         var inverse = false
@@ -277,7 +273,7 @@ open class ArrayRow : LinearSystem.Row {
     /**
      * @TODO: add description
      */
-    fun createRowGreaterThan(a: SolverVariable?, b: Int, slack: SolverVariable?): ArrayRow {
+    fun createRowGreaterThan(a: SolverVariable, b: Int, slack: SolverVariable?): ArrayRow {
         mConstantValue = b.toFloat()
         variables!!.put(a, -1f)
         return this
@@ -287,8 +283,8 @@ open class ArrayRow : LinearSystem.Row {
      * @TODO: add description
      */
     fun createRowLowerThan(
-        variableA: SolverVariable?, variableB: SolverVariable?,
-        slack: SolverVariable?, margin: Int
+        variableA: SolverVariable, variableB: SolverVariable,
+        slack: SolverVariable, margin: Int
     ): ArrayRow {
         var inverse = false
         if (margin != 0) {
@@ -317,10 +313,10 @@ open class ArrayRow : LinearSystem.Row {
     fun createRowEqualMatchDimensions(
         currentWeight: Float,
         totalWeights: Float, nextWeight: Float,
-        variableStartA: SolverVariable?,
-        variableEndA: SolverVariable?,
-        variableStartB: SolverVariable?,
-        variableEndB: SolverVariable?
+        variableStartA: SolverVariable,
+        variableEndA: SolverVariable,
+        variableStartB: SolverVariable,
+        variableEndB: SolverVariable
     ): ArrayRow {
         mConstantValue = 0f
         if (totalWeights == 0f || currentWeight == nextWeight) {
@@ -359,10 +355,10 @@ open class ArrayRow : LinearSystem.Row {
     fun createRowEqualDimension(
         currentWeight: Float,
         totalWeights: Float, nextWeight: Float,
-        variableStartA: SolverVariable?, marginStartA: Int,
-        variableEndA: SolverVariable?, marginEndA: Int,
-        variableStartB: SolverVariable?, marginStartB: Int,
-        variableEndB: SolverVariable?, marginEndB: Int
+        variableStartA: SolverVariable, marginStartA: Int,
+        variableEndA: SolverVariable, marginEndA: Int,
+        variableStartB: SolverVariable, marginStartB: Int,
+        variableEndB: SolverVariable, marginEndB: Int
     ): ArrayRow {
         if (totalWeights == 0f || currentWeight == nextWeight) {
             // endA - startA + marginStartA + marginEndA
@@ -396,9 +392,9 @@ open class ArrayRow : LinearSystem.Row {
     }
 
     fun createRowCentering(
-        variableA: SolverVariable?, variableB: SolverVariable,
+        variableA: SolverVariable, variableB: SolverVariable,
         marginA: Int, bias: Float, variableC: SolverVariable,
-        variableD: SolverVariable?, marginB: Int
+        variableD: SolverVariable, marginB: Int
     ): ArrayRow {
         if (variableB === variableC) {
             // centering on the same position
@@ -455,8 +451,8 @@ open class ArrayRow : LinearSystem.Row {
     }
 
     fun createRowDimensionPercent(
-        variableA: SolverVariable?,
-        variableC: SolverVariable?, percent: Float
+        variableA: SolverVariable,
+        variableC: SolverVariable, percent: Float
     ): ArrayRow {
         variables!!.put(variableA, -1f)
         variables!!.put(variableC, percent)
@@ -475,8 +471,8 @@ open class ArrayRow : LinearSystem.Row {
      * @return the row
      */
     fun createRowDimensionRatio(
-        variableA: SolverVariable?, variableB: SolverVariable?,
-        variableC: SolverVariable?, variableD: SolverVariable?,
+        variableA: SolverVariable, variableB: SolverVariable,
+        variableC: SolverVariable, variableD: SolverVariable,
         ratio: Float
     ): ArrayRow {
         // A = B + (C - D) * ratio
@@ -491,10 +487,10 @@ open class ArrayRow : LinearSystem.Row {
      * Create a constraint to express At + (Ab-At)/2 = Bt + (Bb-Bt)/2 - angle
      */
     fun createRowWithAngle(
-        at: SolverVariable?,
-        ab: SolverVariable?,
-        bt: SolverVariable?,
-        bb: SolverVariable?,
+        at: SolverVariable,
+        ab: SolverVariable,
+        bt: SolverVariable,
+        bb: SolverVariable,
         angleComponent: Float
     ): ArrayRow {
         variables!!.put(bt, 0.5f)
@@ -570,16 +566,16 @@ open class ArrayRow : LinearSystem.Row {
         for (i in 0 until currentSize) {
             val amount = variables!!.getVariableValue(i)
             val variable = variables!!.getVariable(i)
-            if (variable.mType == SolverVariable.Type.UNRESTRICTED) {
+            if (variable?.mType == SolverVariable.Type.UNRESTRICTED) {
                 if (unrestrictedCandidate == null) {
                     unrestrictedCandidate = variable
                     unrestrictedCandidateAmount = amount
-                    unrestrictedCandidateIsNew = isNew(variable, system)
+                    unrestrictedCandidateIsNew = isNew(variable!!, system)
                 } else if (unrestrictedCandidateAmount > amount) {
                     unrestrictedCandidate = variable
                     unrestrictedCandidateAmount = amount
-                    unrestrictedCandidateIsNew = isNew(variable, system)
-                } else if (!unrestrictedCandidateIsNew && isNew(variable, system)) {
+                    unrestrictedCandidateIsNew = isNew(variable!!, system)
+                } else if (!unrestrictedCandidateIsNew && isNew(variable!!, system)) {
                     unrestrictedCandidate = variable
                     unrestrictedCandidateAmount = amount
                     unrestrictedCandidateIsNew = true
@@ -589,12 +585,12 @@ open class ArrayRow : LinearSystem.Row {
                     if (restrictedCandidate == null) {
                         restrictedCandidate = variable
                         restrictedCandidateAmount = amount
-                        restrictedCandidateIsNew = isNew(variable, system)
+                        restrictedCandidateIsNew = isNew(variable!!, system)
                     } else if (restrictedCandidateAmount > amount) {
                         restrictedCandidate = variable
                         restrictedCandidateAmount = amount
-                        restrictedCandidateIsNew = isNew(variable, system)
-                    } else if (!restrictedCandidateIsNew && isNew(variable, system)) {
+                        restrictedCandidateIsNew = isNew(variable!!, system)
+                    } else if (!restrictedCandidateIsNew && isNew(variable!!, system)) {
                         restrictedCandidate = variable
                         restrictedCandidateAmount = amount
                         restrictedCandidateIsNew = true
@@ -632,10 +628,10 @@ open class ArrayRow : LinearSystem.Row {
         return variable.usageInRowCount <= 1
     }
 
-    fun pivot(v: SolverVariable?) {
+    fun pivot(v: SolverVariable) {
         if (key != null) {
             // first, move back the variable to its column
-            variables!!.put(key, -1f)
+            variables!!.put(key!!, -1f)
             key!!.mDefinitionId = -1
             key = null
         }
@@ -657,7 +653,7 @@ open class ArrayRow : LinearSystem.Row {
         definition: ArrayRow?,
         removeFromDefinition: Boolean
     ) {
-        val value = variables!!.use(definition, removeFromDefinition)
+        val value = variables!!.use(definition!!, removeFromDefinition)
         mConstantValue += definition!!.mConstantValue * value
         if (removeFromDefinition) {
             definition.key?.removeFromRow(this)
@@ -711,7 +707,7 @@ open class ArrayRow : LinearSystem.Row {
             variable.removeFromRow(this)
         }
         variables!!.add(
-            system.cache.mIndexedVariables.get(variable.mSynonym),
+            system.cache.mIndexedVariables.get(variable.mSynonym)!!,
             value, removeFromDefinition
         )
         if (LinearSystem.Companion.SIMPLIFY_SYNONYMS
@@ -735,9 +731,9 @@ open class ArrayRow : LinearSystem.Row {
                 // We can return the first negative candidate as in ArrayLinkedVariables
                 // they are already sorted by id
                 val v = variables!!.getVariable(i)
-                if (!(avoid != null && avoid[v.id] || v === exclude)) {
+                if (!(avoid != null && avoid[v!!.id] || v === exclude)) {
                     if (all) {
-                        if (v.mType == SolverVariable.Type.SLACK
+                        if (v!!.mType == SolverVariable.Type.SLACK
                             || v.mType == SolverVariable.Type.ERROR
                         ) {
                             if (currentValue < value) {
@@ -746,7 +742,7 @@ open class ArrayRow : LinearSystem.Row {
                             }
                         }
                     } else {
-                        if (v.mType == SolverVariable.Type.SLACK) {
+                        if (v!!.mType == SolverVariable.Type.SLACK) {
                             if (currentValue < valueSlack) {
                                 valueSlack = currentValue
                                 pivotSlack = v
@@ -792,14 +788,14 @@ open class ArrayRow : LinearSystem.Row {
             key = null
             variables!!.clear()
             for (i in 0 until copiedRow.variables!!.currentSize) {
-                val `var`: SolverVariable = copiedRow.variables!!.getVariable(i)
+                val `var`: SolverVariable = copiedRow.variables!!.getVariable(i)!!
                 val `val`: Float = copiedRow.variables!!.getVariableValue(i)
                 variables!!.add(`var`, `val`, true)
             }
         }
     }
 
-    override fun addError(variable: SolverVariable?) {
+    override fun addError(variable: SolverVariable) {
         var weight = 1f
         when (variable?.strength) {
             SolverVariable.STRENGTH_LOW -> {
@@ -829,7 +825,7 @@ open class ArrayRow : LinearSystem.Row {
         while (!done) {
             val currentSize = variables!!.currentSize
             for (i in 0 until currentSize) {
-                val variable = variables!!.getVariable(i)
+                val variable = variables!!.getVariable(i)!!
                 if (variable.mDefinitionId != -1 || variable.isFinalValue || variable.mIsSynonym) {
                     mVariablesToUpdate.add(variable)
                 }

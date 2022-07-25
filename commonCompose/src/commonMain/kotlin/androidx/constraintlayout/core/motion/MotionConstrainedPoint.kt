@@ -63,7 +63,7 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
     /**
      * Given the start and end points define Keys that need to be built
      */
-    fun different(points: MotionConstrainedPoint, keySet: HashSet<String?>) {
+    fun different(points: MotionConstrainedPoint, keySet: HashSet<String>) {
         if (diff(mAlpha, points.mAlpha)) {
             keySet.add(AttributesType.Companion.S_ALPHA)
         }

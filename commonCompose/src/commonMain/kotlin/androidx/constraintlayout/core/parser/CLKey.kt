@@ -21,7 +21,7 @@ class CLKey(content: CharArray?) : CLContainer(content) {
 
     override fun toJSON(): String {
         return if (mElements.size > 0) {
-            debugName + content() + ": " + mElements[0].toJSON()
+            debugName + content() + ": " + mElements[0]?.toJSON()
         } else debugName + content() + ": <> "
     }
 
@@ -37,13 +37,13 @@ class CLKey(content: CharArray?) : CLContainer(content) {
                 forceIndent = 3
             }
             if (forceIndent > 0) {
-                json.append(mElements[0].toFormattedJSON(indent, forceIndent - 1))
+                json.append(mElements[0]?.toFormattedJSON(indent, forceIndent - 1))
             } else {
-                val `val`: String = mElements[0].toJSON()
-                if (`val`.length + indent < CLElement.Companion.sMaxLine) {
+                val `val` = mElements[0]?.toJSON()
+                if (`val` != null && `val`.length + indent < CLElement.Companion.sMaxLine) {
                     json.append(`val`)
                 } else {
-                    json.append(mElements[0].toFormattedJSON(indent, forceIndent - 1))
+                    json.append(mElements[0]?.toFormattedJSON(indent, forceIndent - 1))
                 }
             }
             return json.toString()
@@ -54,7 +54,7 @@ class CLKey(content: CharArray?) : CLContainer(content) {
     /**
      * @TODO: add description
      */
-    fun set(value: CLElement) {
+    fun set(value: CLElement?) {
         if (mElements.size > 0) {
             mElements[0] = value
         } else {
@@ -94,7 +94,7 @@ class CLKey(content: CharArray?) : CLContainer(content) {
         /**
          * @TODO: add description
          */
-        fun allocate(name: String, value: CLElement): CLElement {
+        fun allocate(name: String, value: CLElement?): CLElement {
             val key = CLKey(name.toCharArray())
             key.start = (0)
             key.end = ((name.length - 1).toLong())

@@ -23,7 +23,7 @@ import kotlin.math.round
  * Defines non standard Attributes
  */
 class CustomVariable {
-    var name: String?
+    var name: String
     var type: Int
         private set
     var integerValue = Int.MIN_VALUE
@@ -49,13 +49,13 @@ class CustomVariable {
         booleanValue = c.booleanValue
     }
 
-    constructor(name: String?, type: Int, value: String?) {
+    constructor(name: String, type: Int, value: String?) {
         this.name = name
         this.type = type
         stringValue = value
     }
 
-    constructor(name: String?, type: Int, value: Int) {
+    constructor(name: String, type: Int, value: Int) {
         this.name = name
         this.type = type
         if (type == TypedValues.Custom.Companion.TYPE_FLOAT) { // catch int ment for float
@@ -65,13 +65,13 @@ class CustomVariable {
         }
     }
 
-    constructor(name: String?, type: Int, value: Float) {
+    constructor(name: String, type: Int, value: Float) {
         this.name = name
         this.type = type
         floatValue = value
     }
 
-    constructor(name: String?, type: Int, value: Boolean) {
+    constructor(name: String, type: Int, value: Boolean) {
         this.name = name
         this.type = type
         booleanValue = value
@@ -209,12 +209,12 @@ class CustomVariable {
         return false
     }
 
-    constructor(name: String?, attributeType: Int) {
+    constructor(name: String, attributeType: Int) {
         this.name = name
         type = attributeType
     }
 
-    constructor(name: String?, attributeType: Int, value: Any) {
+    constructor(name: String, attributeType: Int, value: Any) {
         this.name = name
         type = attributeType
         setValue(value)
@@ -265,7 +265,7 @@ class CustomVariable {
     fun setInterpolatedValue(view: MotionWidget, value: FloatArray) {
         when (type) {
             TypedValues.Custom.Companion.TYPE_INT -> view.setCustomAttribute(
-                name, type, value[0].toInt()
+                name!!, type, value[0].toInt()
             )
 
             TypedValues.Custom.Companion.TYPE_COLOR -> {

@@ -18,6 +18,9 @@ package androidx.constraintlayout.core.widgets
 import androidx.constraintlayout.core.LinearSystem
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
 import androidx.constraintlayout.core.widgets.analyzer.BasicMeasure
+import kotlin.math.ceil
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Implements the Flow virtual layout.
@@ -48,7 +51,7 @@ class Flow : VirtualLayout() {
     private var mAlignedBiggestElementsInRows: Array<ConstraintWidget?>? = null
     private var mAlignedBiggestElementsInCols: Array<ConstraintWidget?>? = null
     private var mAlignedDimensions: IntArray? = null
-    private var mDisplayedWidgets: Array<ConstraintWidget?>
+    private lateinit var mDisplayedWidgets: Array<ConstraintWidget?>
     private var mDisplayedWidgetsCount = 0
     override fun copy(src: ConstraintWidget, map: HashMap<ConstraintWidget?, ConstraintWidget?>) {
         super.copy(src, map)
@@ -179,7 +182,7 @@ class Flow : VirtualLayout() {
             } else if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP) {
                 return widget.width
             } else if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO) {
-                return (widget.height * widget.mDimensionRatio + 0.5f).toInt()
+                return (widget.height * widget.dimensionRatio + 0.5f).toInt()
             }
         }
         return widget.width
@@ -205,7 +208,7 @@ class Flow : VirtualLayout() {
             } else if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP) {
                 return widget.height
             } else if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO) {
-                return (widget.width * widget.mDimensionRatio + 0.5f).toInt()
+                return (widget.width * widget.dimensionRatio + 0.5f).toInt()
             }
         }
         return widget.height
@@ -307,8 +310,8 @@ class Flow : VirtualLayout() {
             measuredHeight = height
         }
         setMeasure(measuredWidth, measuredHeight)
-        setWidth(measuredWidth)
-        setHeight(measuredHeight)
+        width = (measuredWidth)
+        height = (measuredHeight)
         needsCallbackFromSolver(mWidgetsCount > 0)
     }
 
@@ -396,14 +399,14 @@ class Flow : VirtualLayout() {
         fun add(widget: ConstraintWidget?) {
             if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
                 var width = getWidgetWidth(widget, mMax)
-                if (widget.getHorizontalDimensionBehaviour()
+                if (widget?.horizontalDimensionBehaviour
                     == DimensionBehaviour.MATCH_CONSTRAINT
                 ) {
                     mNbMatchConstraintsWidgets++
                     width = 0
                 }
                 var gap = mHorizontalGap
-                if (widget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                if (widget?.visibility == ConstraintWidget.Companion.GONE) {
                     gap = 0
                 }
                 mWidth += width + gap
@@ -416,12 +419,12 @@ class Flow : VirtualLayout() {
             } else {
                 val width = getWidgetWidth(widget, mMax)
                 var height = getWidgetHeight(widget, mMax)
-                if (widget.getVerticalDimensionBehaviour() == DimensionBehaviour.MATCH_CONSTRAINT) {
+                if (widget?.verticalDimensionBehaviour == DimensionBehaviour.MATCH_CONSTRAINT) {
                     mNbMatchConstraintsWidgets++
                     height = 0
                 }
                 var gap = mVerticalGap
-                if (widget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                if (widget?.visibility == ConstraintWidget.Companion.GONE) {
                     gap = 0
                 }
                 mHeight += height + gap
@@ -467,7 +470,7 @@ class Flow : VirtualLayout() {
             }
             var previous: ConstraintWidget? = null
             if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
-                val verticalWidget: ConstraintWidget = mBiggest
+                val verticalWidget = mBiggest!!
                 verticalWidget.verticalChainStyle = mVerticalStyle
                 var padding = mPaddingTop
                 if (chainIndex > 0) {
@@ -478,11 +481,11 @@ class Flow : VirtualLayout() {
                     verticalWidget.mBottom.connect(mBottom, mPaddingBottom)
                 }
                 if (chainIndex > 0) {
-                    val bottom: ConstraintAnchor = mTop.mOwner.mBottom
-                    bottom.connect(verticalWidget.mTop, 0)
+                    val bottom = mTop?.owner?.mBottom
+                    bottom?.connect(verticalWidget.mTop, 0)
                 }
                 var baselineVerticalWidget: ConstraintWidget? = verticalWidget
-                if (mVerticalAlign == VERTICAL_ALIGN_BASELINE && !verticalWidget.hasBaseline()) {
+                if (mVerticalAlign == VERTICAL_ALIGN_BASELINE && !verticalWidget.hasBaseline) {
                     for (i in 0 until count) {
                         var index = i
                         if (isInRtl) {
@@ -492,7 +495,7 @@ class Flow : VirtualLayout() {
                             break
                         }
                         val widget = mDisplayedWidgets[mStartIndex + index]
-                        if (widget!!.hasBaseline()) {
+                        if (widget!!.hasBaseline) {
                             baselineVerticalWidget = widget
                             break
                         }
@@ -540,7 +543,7 @@ class Flow : VirtualLayout() {
                         }
                     }
                     if (widget !== verticalWidget) {
-                        if (mVerticalAlign == VERTICAL_ALIGN_BASELINE && baselineVerticalWidget!!.hasBaseline() && widget !== baselineVerticalWidget && widget.hasBaseline()) {
+                        if (mVerticalAlign == VERTICAL_ALIGN_BASELINE && baselineVerticalWidget!!.hasBaseline && widget !== baselineVerticalWidget && widget.hasBaseline) {
                             widget.mBaseline!!.connect(baselineVerticalWidget.mBaseline, 0)
                         } else {
                             when (mVerticalAlign) {
@@ -577,7 +580,7 @@ class Flow : VirtualLayout() {
                     previous = widget
                 }
             } else {
-                val horizontalWidget: ConstraintWidget = mBiggest
+                val horizontalWidget: ConstraintWidget = mBiggest!!
                 horizontalWidget.horizontalChainStyle = mHorizontalStyle
                 var padding = mPaddingLeft
                 if (chainIndex > 0) {
@@ -589,8 +592,8 @@ class Flow : VirtualLayout() {
                         horizontalWidget.mLeft!!.connect(mLeft, mPaddingRight)
                     }
                     if (chainIndex > 0) {
-                        val left: ConstraintAnchor = mRight.mOwner.mLeft
-                        left.connect(horizontalWidget.mRight, 0)
+                        val left = mRight?.owner?.mLeft
+                        left?.connect(horizontalWidget.mRight, 0)
                     }
                 } else {
                     horizontalWidget.mLeft!!.connect(mLeft, padding)
@@ -598,8 +601,8 @@ class Flow : VirtualLayout() {
                         horizontalWidget.mRight!!.connect(mRight, mPaddingRight)
                     }
                     if (chainIndex > 0) {
-                        val right: ConstraintAnchor = mLeft.mOwner.mRight
-                        right.connect(horizontalWidget.mLeft, 0)
+                        val right = mLeft?.owner?.mRight
+                        right?.connect(horizontalWidget.mLeft, 0)
                     }
                 }
                 for (i in 0 until count) {
@@ -729,9 +732,9 @@ class Flow : VirtualLayout() {
                 }
                 val widget = mDisplayedWidgets[mStartIndex + i]
                 if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
-                    val width = widget.getWidth()
+                    val width = widget!!.width
                     var gap = mHorizontalGap
-                    if (widget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                    if (widget?.visibility == ConstraintWidget.Companion.GONE) {
                         gap = 0
                     }
                     mWidth += width + gap
@@ -745,7 +748,7 @@ class Flow : VirtualLayout() {
                     val width = getWidgetWidth(widget, mMax)
                     val height = getWidgetHeight(widget, mMax)
                     var gap = mVerticalGap
-                    if (widget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                    if (widget?.visibility == ConstraintWidget.Companion.GONE) {
                         gap = 0
                     }
                     mHeight += height + gap
@@ -788,7 +791,7 @@ class Flow : VirtualLayout() {
             for (i in 0 until count) {
                 val widget = widgets[i]
                 val w = getWidgetWidth(widget, max)
-                if (widget.getHorizontalDimensionBehaviour()
+                if (widget?.horizontalDimensionBehaviour
                     == DimensionBehaviour.MATCH_CONSTRAINT
                 ) {
                     nbMatchConstraintsWidgets++
@@ -817,7 +820,7 @@ class Flow : VirtualLayout() {
             for (i in 0 until count) {
                 val widget = widgets[i]
                 val h = getWidgetHeight(widget, max)
-                if (widget.getVerticalDimensionBehaviour() == DimensionBehaviour.MATCH_CONSTRAINT) {
+                if (widget?.verticalDimensionBehaviour == DimensionBehaviour.MATCH_CONSTRAINT) {
                     nbMatchConstraintsWidgets++
                 }
                 var doWrap = ((height == max || height + mVerticalGap + h > max)
@@ -851,16 +854,16 @@ class Flow : VirtualLayout() {
         var paddingBottom = paddingBottom
         var maxWidth = 0
         var maxHeight = 0
-        val needInternalMeasure = (getHorizontalDimensionBehaviour() == DimensionBehaviour.WRAP_CONTENT
-                || getVerticalDimensionBehaviour() == DimensionBehaviour.WRAP_CONTENT)
+        val needInternalMeasure = (horizontalDimensionBehaviour == DimensionBehaviour.WRAP_CONTENT
+                || verticalDimensionBehaviour == DimensionBehaviour.WRAP_CONTENT)
         if (nbMatchConstraintsWidgets > 0 && needInternalMeasure) {
             // we have to remeasure them.
             for (i in 0 until listCount) {
                 val current: WidgetsList = mChainList.get(i)
                 if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-                    current.measureMatchConstraints(max - current.getWidth())
+                    current.measureMatchConstraints(max - current.width)
                 } else {
-                    current.measureMatchConstraints(max - current.getHeight())
+                    current.measureMatchConstraints(max - current.height)
                 }
             }
         }
@@ -873,7 +876,7 @@ class Flow : VirtualLayout() {
                     paddingBottom = 0
                 } else {
                     bottom = mBottom
-                    paddingBottom = getPaddingBottom()
+                    paddingBottom = this.paddingBottom
                 }
                 val currentBottom = current.mBiggest!!.mBottom
                 current.setup(
@@ -882,8 +885,8 @@ class Flow : VirtualLayout() {
                 )
                 top = currentBottom
                 paddingTop = 0
-                maxWidth = max(maxWidth, current.getWidth())
-                maxHeight += current.getHeight()
+                maxWidth = max(maxWidth, current.width)
+                maxHeight += current.height
                 if (i > 0) {
                     maxHeight += mVerticalGap
                 }
@@ -894,7 +897,7 @@ class Flow : VirtualLayout() {
                     paddingRight = 0
                 } else {
                     right = mRight
-                    paddingRight = getPaddingRight()
+                    paddingRight = this.paddingRight
                 }
                 val currentRight = current.mBiggest!!.mRight
                 current.setup(
@@ -903,8 +906,8 @@ class Flow : VirtualLayout() {
                 )
                 left = currentRight
                 paddingLeft = 0
-                maxWidth += current.getWidth()
-                maxHeight = max(maxHeight, current.getHeight())
+                maxWidth += current.width
+                maxHeight = max(maxHeight, current.height)
                 if (i > 0) {
                     maxWidth += mHorizontalGap
                 }
@@ -945,7 +948,7 @@ class Flow : VirtualLayout() {
                 col++
                 val widget = widgets[i]
                 val w = getWidgetWidth(widget, max)
-                if (widget.getHorizontalDimensionBehaviour()
+                if (widget?.horizontalDimensionBehaviour
                     == DimensionBehaviour.MATCH_CONSTRAINT
                 ) {
                     nbMatchConstraintsWidgets++
@@ -976,7 +979,7 @@ class Flow : VirtualLayout() {
             for (i in 0 until count) {
                 val widget = widgets[i]
                 val h = getWidgetHeight(widget, max)
-                if (widget.getVerticalDimensionBehaviour() == DimensionBehaviour.MATCH_CONSTRAINT) {
+                if (widget?.verticalDimensionBehaviour == DimensionBehaviour.MATCH_CONSTRAINT) {
                     nbMatchConstraintsWidgets++
                 }
                 var doWrap = ((height == max || height + mVerticalGap + h > max)
@@ -1011,16 +1014,16 @@ class Flow : VirtualLayout() {
         var paddingBottom = paddingBottom
         var maxWidth = 0
         var maxHeight = 0
-        val needInternalMeasure = (getHorizontalDimensionBehaviour() == DimensionBehaviour.WRAP_CONTENT
-                || getVerticalDimensionBehaviour() == DimensionBehaviour.WRAP_CONTENT)
+        val needInternalMeasure = (horizontalDimensionBehaviour == DimensionBehaviour.WRAP_CONTENT
+                || verticalDimensionBehaviour == DimensionBehaviour.WRAP_CONTENT)
         if (nbMatchConstraintsWidgets > 0 && needInternalMeasure) {
             // we have to remeasure them.
             for (i in 0 until listCount) {
                 val current: WidgetsList = mChainList.get(i)
                 if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-                    current.measureMatchConstraints(max - current.getWidth())
+                    current.measureMatchConstraints(max - current.width)
                 } else {
-                    current.measureMatchConstraints(max - current.getHeight())
+                    current.measureMatchConstraints(max - current.height)
                 }
             }
         }
@@ -1033,7 +1036,7 @@ class Flow : VirtualLayout() {
                     paddingBottom = 0
                 } else {
                     bottom = mBottom
-                    paddingBottom = getPaddingBottom()
+                    paddingBottom = this.paddingBottom
                 }
                 val currentBottom = current.mBiggest!!.mBottom
                 current.setup(
@@ -1042,8 +1045,8 @@ class Flow : VirtualLayout() {
                 )
                 top = currentBottom
                 paddingTop = 0
-                maxWidth = max(maxWidth, current.getWidth())
-                maxHeight += current.getHeight()
+                maxWidth = max(maxWidth, current.width)
+                maxHeight += current.height
                 if (i > 0) {
                     maxHeight += mVerticalGap
                 }
@@ -1054,7 +1057,7 @@ class Flow : VirtualLayout() {
                     paddingRight = 0
                 } else {
                     right = mRight
-                    paddingRight = getPaddingRight()
+                    paddingRight = this.paddingRight
                 }
                 val currentRight = current.mBiggest!!.mRight
                 current.setup(
@@ -1063,8 +1066,8 @@ class Flow : VirtualLayout() {
                 )
                 left = currentRight
                 paddingLeft = 0
-                maxWidth += current.getWidth()
-                maxHeight = max(maxHeight, current.getHeight())
+                maxWidth += current.width
+                maxHeight = max(maxHeight, current.height)
                 if (i > 0) {
                     maxWidth += mHorizontalGap
                 }
@@ -1110,8 +1113,8 @@ class Flow : VirtualLayout() {
             val widget = widgets[i]
             list.add(widget)
         }
-        measured[ConstraintWidget.Companion.HORIZONTAL] = list.getWidth()
-        measured[ConstraintWidget.Companion.VERTICAL] = list.getHeight()
+        measured[ConstraintWidget.Companion.HORIZONTAL] = list!!.width
+        measured[ConstraintWidget.Companion.VERTICAL] = list!!.height
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Measure Aligned
@@ -1190,14 +1193,14 @@ class Flow : VirtualLayout() {
             ) {
                 mAlignedBiggestElementsInCols = arrayOfNulls(cols)
             } else {
-                Arrays.fill(mAlignedBiggestElementsInCols, null)
+                mAlignedBiggestElementsInCols?.fill(null)
             }
             if (mAlignedBiggestElementsInRows == null
                 || mAlignedBiggestElementsInRows!!.size < rows
             ) {
                 mAlignedBiggestElementsInRows = arrayOfNulls(rows)
             } else {
-                Arrays.fill(mAlignedBiggestElementsInRows, null)
+                mAlignedBiggestElementsInRows?.fill(null)
             }
             for (i in 0 until cols) {
                 for (j in 0 until rows) {
@@ -1211,13 +1214,13 @@ class Flow : VirtualLayout() {
                     val widget = widgets[index] ?: continue
                     val w = getWidgetWidth(widget, max)
                     if (mAlignedBiggestElementsInCols!![i] == null
-                        || mAlignedBiggestElementsInCols!![i].getWidth() < w
+                        || mAlignedBiggestElementsInCols!![i]!!.width < w
                     ) {
                         mAlignedBiggestElementsInCols!![i] = widget
                     }
                     val h = getWidgetHeight(widget, max)
                     if (mAlignedBiggestElementsInRows!![j] == null
-                        || mAlignedBiggestElementsInRows!![j].getHeight() < h
+                        || mAlignedBiggestElementsInRows!![j]!!.height < h
                     ) {
                         mAlignedBiggestElementsInRows!![j] = widget
                     }
@@ -1361,9 +1364,9 @@ class Flow : VirtualLayout() {
      * @param system   the solver we want to add the widget to
      * @param optimize true if [Optimizer.OPTIMIZATION_GRAPH] is on
      */
-    override fun addToSolver(system: LinearSystem?, optimize: Boolean) {
-        super.addToSolver(system!!, optimize)
-        val isInRtl = getParent() != null && (getParent() as ConstraintWidgetContainer).isRtl
+    override fun addToSolver(system: LinearSystem, optimize: Boolean) {
+        super.addToSolver(system, optimize)
+        val isInRtl = parent != null && (parent as ConstraintWidgetContainer).isRtl
         when (mWrapMode) {
             WRAP_CHAIN -> {
                 val count: Int = mChainList.size

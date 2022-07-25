@@ -386,7 +386,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                             }
                             needSolverPass = true
                         }
-                        if (widget.hasBaseline()
+                        if (widget.hasBaseline
                             && preBaselineDistance != widget.baselineDistance
                         ) {
                             if (DEBUG) {

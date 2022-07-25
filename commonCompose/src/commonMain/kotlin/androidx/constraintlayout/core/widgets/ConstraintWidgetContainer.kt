@@ -20,8 +20,8 @@ import androidx.constraintlayout.core.widgets.*
 import androidx.constraintlayout.core.widgets.analyzer.*
 
 import androidx.constraintlayout.core.LinearSystem
-import androidx.constraintlayout.coreimport.Metrics
-import androidx.constraintlayout.coreimport.SolverVariable
+import androidx.constraintlayout.core.Metrics
+import androidx.constraintlayout.core.SolverVariable
 import kotlin.math.max
 
 /**

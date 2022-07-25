@@ -13,14 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.constraintlayout.coreimport
+package androidx.constraintlayout.core
 
-import androidx.constraintlayout.core.ArrayRow
-import androidx.constraintlayout.core.Cache
-
-androidx.constraintlayout.core.dsl.OnSwipe.Drag
-
-class GoalRow(cache: Cache?) : ArrayRow(cache) {
+class GoalRow(cache: Cache) : ArrayRow(cache) {
     override fun addError(error: SolverVariable) {
         super.addError(error)
         // error variables in the goal shouldn't be tracked (we only care if they are

@@ -180,7 +180,11 @@ open class Easing {
         /**
          * @TODO: add description
          */
-        fun getInterpolator(configString: String): Easing {
+        fun getInterpolator(configString: String?): Easing {
+            if (configString == null) {
+                return sDefault
+            }
+
             if (configString.startsWith("cubic")) {
                 return CubicEasing(configString)
             } else if (configString.startsWith("spline")) {

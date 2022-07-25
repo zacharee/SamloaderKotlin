@@ -24,12 +24,12 @@ interface CoreMotionScene {
      *
      * @param elementName the name of the element
      */
-    fun setTransitionContent(elementName: String?, toJSON: String?)
+    fun setTransitionContent(elementName: String, toJSON: String)
 
     /**
      * Get the ConstraintSet as a string
      */
-    fun getConstraintSet(ext: String?): String?
+    fun getConstraintSet(ext: String): String?
 
     /**
      * set the constraintSet json string
@@ -37,7 +37,7 @@ interface CoreMotionScene {
      * @param csName the name of the constraint set
      * @param toJSON the json string of the constraintset
      */
-    fun setConstraintSetContent(csName: String?, toJSON: String?)
+    fun setConstraintSetContent(csName: String, toJSON: String)
 
     /**
      * set the debug name for remote access

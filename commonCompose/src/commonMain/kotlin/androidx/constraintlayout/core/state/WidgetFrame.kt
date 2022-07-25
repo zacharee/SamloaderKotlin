@@ -289,7 +289,7 @@ class WidgetFrame {
         val obj = custom as CLObject
         val n: Int = obj.size()
         for (i in 0 until n) {
-            val tmp: CLElement = obj.get(i)
+            val tmp = obj.get(i)
             val k = tmp as CLKey
             val v = k.value
             val vStr: String = v!!.content()

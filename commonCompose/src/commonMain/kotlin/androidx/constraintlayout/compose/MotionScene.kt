@@ -71,7 +71,7 @@ internal class JSONMotionScene(content: String) : EditableJSONLayout(content),
         return constraintSetsContent.values.elementAtOrNull(index)
     }
 
-    override fun getTransition(name: String): String? {
+    override fun getTransition(name: String?): String? {
         return transitionsContent[name]
     }
 

@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.constraintlayout.coreimport
+package androidx.constraintlayout.core
 
 import androidx.constraintlayout.core.*
 import androidx.constraintlayout.core.ArrayRow.ArrayRowVariables
-
-androidx.constraintlayout.core.dsl.OnSwipe.Drag
 
 /**
  * Store a set of variables and their values in an array-based linked list.
@@ -59,7 +57,7 @@ class ArrayLinkedVariables internal constructor(// our owner
     private var mArrayValues = FloatArray(mRowSize)
 
     // mHead point to indexes in mArrayIndices
-    var head: Int = ArrayLinkedVariables.Companion.NONE
+    var head: Int = NONE
         private set
 
     // mLast point to indexes in mArrayIndices
@@ -79,7 +77,7 @@ class ArrayLinkedVariables internal constructor(// our owner
     // we can safely revert to linear traversal
     // finding an empty spot by checking the values of mArrayIndices
     // (i.e. finding an item containing NONE).
-    private var mLast: Int = ArrayLinkedVariables.Companion.NONE
+    private var mLast: Int = NONE
 
     // flag to keep trace if we did a full pass of the array or not, see above description
     private var mDidFillOnce = false
@@ -101,9 +99,9 @@ class ArrayLinkedVariables internal constructor(// our owner
      * @param cache    instances cache
      */
     init {
-        if (ArrayLinkedVariables.Companion.DEBUG) {
+        if (DEBUG) {
             for (i in mArrayIndices.indices) {
-                mArrayIndices[i] = ArrayLinkedVariables.Companion.NONE
+                mArrayIndices[i] = NONE
             }
         }
     }
@@ -120,11 +118,11 @@ class ArrayLinkedVariables internal constructor(// our owner
             return
         }
         // Special casing empty list...
-        if (head == ArrayLinkedVariables.Companion.NONE) {
+        if (head == NONE) {
             head = 0
             mArrayValues[head] = value
             mArrayIndices[head] = variable.id
-            mArrayNextIndices[head] = ArrayLinkedVariables.Companion.NONE
+            mArrayNextIndices[head] = NONE
             variable.usageInRowCount++
             variable.addToRow(mRow)
             mCurrentSize++
@@ -139,9 +137,9 @@ class ArrayLinkedVariables internal constructor(// our owner
             return
         }
         var current = head
-        var previous: Int = ArrayLinkedVariables.Companion.NONE
+        var previous: Int = NONE
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             if (mArrayIndices[current] == variable.id) {
                 mArrayValues[current] = value
                 return
@@ -160,7 +158,7 @@ class ArrayLinkedVariables internal constructor(// our owner
         if (mDidFillOnce) {
             // ... but if we traversed the array once, check the last index, which might have been
             // set by an element removed
-            availableIndice = if (mArrayIndices[mLast] == ArrayLinkedVariables.Companion.NONE) {
+            availableIndice = if (mArrayIndices[mLast] == NONE) {
                 mLast
             } else {
                 mArrayIndices.size
@@ -170,7 +168,7 @@ class ArrayLinkedVariables internal constructor(// our owner
             if (mCurrentSize < mArrayIndices.size) {
                 // find an available spot
                 for (i in mArrayIndices.indices) {
-                    if (mArrayIndices[i] == ArrayLinkedVariables.Companion.NONE) {
+                    if (mArrayIndices[i] == NONE) {
                         availableIndice = i
                         break
                     }
@@ -183,15 +181,15 @@ class ArrayLinkedVariables internal constructor(// our owner
             mRowSize *= 2
             mDidFillOnce = false
             mLast = availableIndice - 1
-            mArrayValues = java.util.Arrays.copyOf(mArrayValues, mRowSize)
-            mArrayIndices = java.util.Arrays.copyOf(mArrayIndices, mRowSize)
-            mArrayNextIndices = java.util.Arrays.copyOf(mArrayNextIndices, mRowSize)
+            mArrayValues = mArrayValues.copyOf(mRowSize)
+            mArrayIndices = mArrayIndices.copyOf(mRowSize)
+            mArrayNextIndices = mArrayNextIndices.copyOf(mRowSize)
         }
 
         // Finally, let's insert the element
         mArrayIndices[availableIndice] = variable.id
         mArrayValues[availableIndice] = value
-        if (previous != ArrayLinkedVariables.Companion.NONE) {
+        if (previous != NONE) {
             mArrayNextIndices[availableIndice] = mArrayNextIndices[previous]
             mArrayNextIndices[previous] = availableIndice
         } else {
@@ -224,15 +222,15 @@ class ArrayLinkedVariables internal constructor(// our owner
      * @param value    its value
      */
     override fun add(variable: SolverVariable, value: Float, removeFromDefinition: Boolean) {
-        if (value > -ArrayLinkedVariables.Companion.sEpsilon && value < ArrayLinkedVariables.Companion.sEpsilon) {
+        if (value > -sEpsilon && value < sEpsilon) {
             return
         }
         // Special casing empty list...
-        if (head == ArrayLinkedVariables.Companion.NONE) {
+        if (head == NONE) {
             head = 0
             mArrayValues[head] = value
             mArrayIndices[head] = variable.id
-            mArrayNextIndices[head] = ArrayLinkedVariables.Companion.NONE
+            mArrayNextIndices[head] = NONE
             variable.usageInRowCount++
             variable.addToRow(mRow)
             mCurrentSize++
@@ -247,13 +245,13 @@ class ArrayLinkedVariables internal constructor(// our owner
             return
         }
         var current = head
-        var previous: Int = ArrayLinkedVariables.Companion.NONE
+        var previous: Int = NONE
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             val idx = mArrayIndices[current]
             if (idx == variable.id) {
                 var v = mArrayValues[current] + value
-                if (v > -ArrayLinkedVariables.Companion.sEpsilon && v < ArrayLinkedVariables.Companion.sEpsilon) {
+                if (v > -sEpsilon && v < sEpsilon) {
                     v = 0f
                 }
                 mArrayValues[current] = v
@@ -290,7 +288,7 @@ class ArrayLinkedVariables internal constructor(// our owner
         if (mDidFillOnce) {
             // ... but if we traversed the array once, check the last index, which might have been
             // set by an element removed
-            availableIndice = if (mArrayIndices[mLast] == ArrayLinkedVariables.Companion.NONE) {
+            availableIndice = if (mArrayIndices[mLast] == NONE) {
                 mLast
             } else {
                 mArrayIndices.size
@@ -300,7 +298,7 @@ class ArrayLinkedVariables internal constructor(// our owner
             if (mCurrentSize < mArrayIndices.size) {
                 // find an available spot
                 for (i in mArrayIndices.indices) {
-                    if (mArrayIndices[i] == ArrayLinkedVariables.Companion.NONE) {
+                    if (mArrayIndices[i] == NONE) {
                         availableIndice = i
                         break
                     }
@@ -313,15 +311,15 @@ class ArrayLinkedVariables internal constructor(// our owner
             mRowSize *= 2
             mDidFillOnce = false
             mLast = availableIndice - 1
-            mArrayValues = java.util.Arrays.copyOf(mArrayValues, mRowSize)
-            mArrayIndices = java.util.Arrays.copyOf(mArrayIndices, mRowSize)
-            mArrayNextIndices = java.util.Arrays.copyOf(mArrayNextIndices, mRowSize)
+            mArrayValues = mArrayValues.copyOf(mRowSize)
+            mArrayIndices = mArrayIndices.copyOf(mRowSize)
+            mArrayNextIndices = mArrayNextIndices.copyOf(mRowSize)
         }
 
         // Finally, let's insert the element
         mArrayIndices[availableIndice] = variable.id
         mArrayValues[availableIndice] = value
-        if (previous != ArrayLinkedVariables.Companion.NONE) {
+        if (previous != NONE) {
             mArrayNextIndices[availableIndice] = mArrayNextIndices[previous]
             mArrayNextIndices[previous] = availableIndice
         } else {
@@ -347,14 +345,14 @@ class ArrayLinkedVariables internal constructor(// our owner
      * @param definition the row containing the definition
      */
     override fun use(definition: ArrayRow, removeFromDefinition: Boolean): Float {
-        val value = get(definition.mVariable)
-        remove(definition.mVariable, removeFromDefinition)
-        val definitionVariables: ArrayRowVariables = definition.variables
+        val value = get(definition.key)
+        remove(definition.key!!, removeFromDefinition)
+        val definitionVariables = definition.variables!!
         val definitionSize = definitionVariables.currentSize
         for (i in 0 until definitionSize) {
             val definitionVariable = definitionVariables.getVariable(i)
             val definitionValue = definitionVariables[definitionVariable]
-            add(definitionVariable, definitionValue * value, removeFromDefinition)
+            add(definitionVariable!!, definitionValue * value, removeFromDefinition)
         }
         return value
     }
@@ -369,13 +367,13 @@ class ArrayLinkedVariables internal constructor(// our owner
         if (mCandidate === variable) {
             mCandidate = null
         }
-        if (head == ArrayLinkedVariables.Companion.NONE) {
-            return 0
+        if (head == NONE) {
+            return 0f
         }
         var current = head
-        var previous: Int = ArrayLinkedVariables.Companion.NONE
+        var previous: Int = NONE
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             val idx = mArrayIndices[current]
             if (idx == variable.id) {
                 if (current == head) {
@@ -388,7 +386,7 @@ class ArrayLinkedVariables internal constructor(// our owner
                 }
                 variable.usageInRowCount--
                 mCurrentSize--
-                mArrayIndices[current] = ArrayLinkedVariables.Companion.NONE
+                mArrayIndices[current] = NONE
                 if (mDidFillOnce) {
                     // If we did a full pass already, remember that spot
                     mLast = current
@@ -399,7 +397,7 @@ class ArrayLinkedVariables internal constructor(// our owner
             current = mArrayNextIndices[current]
             counter++
         }
-        return 0
+        return 0f
     }
 
     /**
@@ -408,14 +406,14 @@ class ArrayLinkedVariables internal constructor(// our owner
     override fun clear() {
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             val variable = mCache.mIndexedVariables[mArrayIndices[current]]
             variable?.removeFromRow(mRow)
             current = mArrayNextIndices[current]
             counter++
         }
-        head = ArrayLinkedVariables.Companion.NONE
-        mLast = ArrayLinkedVariables.Companion.NONE
+        head = NONE
+        mLast = NONE
         mDidFillOnce = false
         mCurrentSize = 0
     }
@@ -427,12 +425,12 @@ class ArrayLinkedVariables internal constructor(// our owner
      * @return return true if we found the variable
      */
     override fun contains(variable: SolverVariable): Boolean {
-        if (head == ArrayLinkedVariables.Companion.NONE) {
+        if (head == NONE) {
             return false
         }
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             if (mArrayIndices[current] == variable.id) {
                 return true
             }
@@ -442,14 +440,14 @@ class ArrayLinkedVariables internal constructor(// our owner
         return false
     }
 
-    override fun indexOf(variable: SolverVariable): Int {
-        if (head == ArrayLinkedVariables.Companion.NONE) {
+    override fun indexOf(variable: SolverVariable?): Int {
+        if (head == NONE) {
             return -1
         }
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
-            if (mArrayIndices[current] == variable.id) {
+        while (current != NONE && counter < mCurrentSize) {
+            if (mArrayIndices[current] == variable?.id) {
                 return current
             }
             current = mArrayNextIndices[current]
@@ -466,7 +464,7 @@ class ArrayLinkedVariables internal constructor(// our owner
     fun hasAtLeastOnePositiveVariable(): Boolean {
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             if (mArrayValues[current] > 0) {
                 return true
             }
@@ -482,7 +480,7 @@ class ArrayLinkedVariables internal constructor(// our owner
     override fun invert() {
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             mArrayValues[current] *= -1f
             current = mArrayNextIndices[current]
             counter++
@@ -498,17 +496,15 @@ class ArrayLinkedVariables internal constructor(// our owner
     override fun divideByAmount(amount: Float) {
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             mArrayValues[current] /= amount
             current = mArrayNextIndices[current]
             counter++
         }
     }
 
-    override fun getCurrentSize(): Int {
-        return mCurrentSize
-    }
-
+    override val currentSize: Int
+        get() = mCurrentSize
     /**
      * get Id in mCache.mIndexedVariables given the index
      */
@@ -544,12 +540,12 @@ class ArrayLinkedVariables internal constructor(// our owner
                 var current = head
                 var counter = 0
                 var pivot: SolverVariable? = null
-                while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+                while (current != NONE && counter < mCurrentSize) {
                     if (mArrayValues[current] < 0) {
                         // We can return the first negative candidate as in ArrayLinkedVariables
                         // they are already sorted by id
                         val v = mCache.mIndexedVariables[mArrayIndices[current]]
-                        if (pivot == null || pivot.strength < v.strength) {
+                        if (pivot == null || pivot.strength < v!!.strength) {
                             pivot = v
                         }
                     }
@@ -570,7 +566,7 @@ class ArrayLinkedVariables internal constructor(// our owner
     override fun getVariable(index: Int): SolverVariable? {
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             if (counter == index) {
                 return mCache.mIndexedVariables[mArrayIndices[current]]
             }
@@ -589,14 +585,14 @@ class ArrayLinkedVariables internal constructor(// our owner
     override fun getVariableValue(index: Int): Float {
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             if (counter == index) {
                 return mArrayValues[current]
             }
             current = mArrayNextIndices[current]
             counter++
         }
-        return 0
+        return 0f
     }
 
     /**
@@ -605,17 +601,17 @@ class ArrayLinkedVariables internal constructor(// our owner
      * @param v the variable we are looking up
      * @return the value of the found variable, or 0 if not found
      */
-    override fun get(v: SolverVariable): Float {
+    override fun get(v: SolverVariable?): Float {
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
-            if (mArrayIndices[current] == v.id) {
+        while (current != NONE && counter < mCurrentSize) {
+            if (mArrayIndices[current] == v?.id) {
                 return mArrayValues[current]
             }
             current = mArrayNextIndices[current]
             counter++
         }
-        return 0
+        return 0f
     }
 
     /**
@@ -652,7 +648,7 @@ class ArrayLinkedVariables internal constructor(// our owner
         var result = ""
         var current = head
         var counter = 0
-        while (current != ArrayLinkedVariables.Companion.NONE && counter < mCurrentSize) {
+        while (current != NONE && counter < mCurrentSize) {
             result += " -> "
             result += mArrayValues[current].toString() + " : "
             result += mCache.mIndexedVariables[mArrayIndices[current]]

@@ -629,7 +629,7 @@ class Transition : TypedValues {
     /**
      * @TODO: add description
      */
-    fun addCustomFloat(state: Int, widgetId: String?, property: String?, value: Float) {
+    fun addCustomFloat(state: Int, widgetId: String?, property: String, value: Float) {
         val widgetState = getWidgetState(widgetId!!, null, state)
         val frame = widgetState.getFrame(state)
         frame.addCustomFloat(property, value)
@@ -638,7 +638,7 @@ class Transition : TypedValues {
     /**
      * @TODO: add description
      */
-    fun addCustomColor(state: Int, widgetId: String?, property: String?, color: Int) {
+    fun addCustomColor(state: Int, widgetId: String?, property: String, color: Int) {
         val widgetState = getWidgetState(widgetId!!, null, state)
         val frame = widgetState.getFrame(state)
         frame.addCustomColor(property, color)

@@ -16,7 +16,7 @@
 package androidx.constraintlayout.core.parser
 
 open class CLContainer(content: CharArray?) : CLElement(content) {
-    var mElements: ArrayList<CLElement> = ArrayList<CLElement>()
+    var mElements: ArrayList<CLElement?> = ArrayList()
 
     /**
      * @TODO: add description
@@ -280,7 +280,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
      * @TODO: add description
      */
     @Throws(CLParsingException::class)
-    operator fun get(index: Int): CLElement {
+    operator fun get(index: Int): CLElement? {
         if (index >= 0 && index < mElements.size) {
             return mElements.get(index)
         }

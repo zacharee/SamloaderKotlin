@@ -15,8 +15,6 @@
  */
 package androidx.constraintlayout.core
 
-import androidx.constraintlayout.coreimport.SolverVariable
-
 /**
  * Cache for common objects
  */

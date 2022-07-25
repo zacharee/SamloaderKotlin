@@ -1234,8 +1234,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                 val spline = mSpline!![i]
                 spline!!.getPos(position.toDouble(), mValuesBuff)
                 //interpolated here
-                mStartMotionPath.mCustomAttributes[mAttributeNames[i - 1]]
-                    .setInterpolatedValue(child, mValuesBuff)
+                mStartMotionPath.mCustomAttributes[mAttributeNames[i - 1]]?.setInterpolatedValue(child, mValuesBuff)
             }
             if (mStartPoint.mVisibilityMode == MotionWidget.Companion.VISIBILITY_MODE_NORMAL) {
                 if (position <= 0.0f) {
@@ -1582,11 +1581,11 @@ class Motion(view: MotionWidget?) : TypedValues {
         return false
     }
 
-    override fun setValue(id: Int, value: String?): Boolean {
+    override fun setValue(id: Int, value: String): Boolean {
         if (TypedValues.TransitionType.Companion.TYPE_INTERPOLATOR == id
             || MotionType.Companion.TYPE_QUANTIZE_INTERPOLATOR_TYPE == id
         ) {
-            mQuantizeMotionInterpolator = getInterpolator(SPLINE_STRING, value!!, 0)
+            mQuantizeMotionInterpolator = getInterpolator(SPLINE_STRING, value, 0)
             return true
         }
         if (MotionType.Companion.TYPE_ANIMATE_RELATIVE_TO == id) {

@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.constraintlayout.coreimport
+package androidx.constraintlayout.core
 
-import androidx.constraintlayout.core.ArrayRow
-import androidx.constraintlayout.core.LinearSystem
-
-androidx.constraintlayout.core.dsl.OnSwipe.Drag
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * Represents a given variable used in the [linear expression solver][LinearSystem].
@@ -37,9 +34,9 @@ class SolverVariable : Comparable<SolverVariable> {
     var strength = 0
     var computedValue = 0f
     var isFinalValue = false
-    var mStrengthVector = FloatArray(SolverVariable.Companion.MAX_STRENGTH)
-    var mGoalStrengthVector = FloatArray(SolverVariable.Companion.MAX_STRENGTH)
-    var mType: SolverVariable.Type
+    var mStrengthVector = FloatArray(MAX_STRENGTH)
+    var mGoalStrengthVector = FloatArray(MAX_STRENGTH)
+    var mType: Type
     var mClientEquations = arrayOfNulls<ArrayRow>(16)
     var mClientEquationsCount = 0
     var usageInRowCount = 0
@@ -83,20 +80,20 @@ class SolverVariable : Comparable<SolverVariable> {
      * @param name the variable name
      * @param type the type of the variable
      */
-    constructor(name: String?, type: SolverVariable.Type) {
+    constructor(name: String?, type: Type) {
         this.name = name
         mType = type
     }
 
-    constructor(type: SolverVariable.Type, prefix: String?) {
+    constructor(type: Type, prefix: String?) {
         mType = type
-        if (SolverVariable.Companion.INTERNAL_DEBUG) {
+        if (INTERNAL_DEBUG) {
             //mName = getUniqueName(type, prefix);
         }
     }
 
     fun clearStrengths() {
-        for (i in 0 until SolverVariable.Companion.MAX_STRENGTH) {
+        for (i in 0 until MAX_STRENGTH) {
             mStrengthVector[i] = 0f
         }
     }
@@ -131,15 +128,15 @@ class SolverVariable : Comparable<SolverVariable> {
         return representation
     }
 
-    var mInRows: java.util.HashSet<ArrayRow>? =
-        if (SolverVariable.Companion.VAR_USE_HASH) java.util.HashSet<ArrayRow>() else null
+    var mInRows: HashSet<ArrayRow>? =
+        if (VAR_USE_HASH) HashSet<ArrayRow>() else null
 
     /**
      * @TODO: add description
      */
     fun addToRow(row: ArrayRow) {
-        if (SolverVariable.Companion.VAR_USE_HASH) {
-            mInRows.add(row)
+        if (VAR_USE_HASH) {
+            mInRows?.add(row)
         } else {
             for (i in 0 until mClientEquationsCount) {
                 if (mClientEquations[i] === row) {
@@ -147,7 +144,7 @@ class SolverVariable : Comparable<SolverVariable> {
                 }
             }
             if (mClientEquationsCount >= mClientEquations.size) {
-                mClientEquations = java.util.Arrays.copyOf<ArrayRow>(mClientEquations, mClientEquations.size * 2)
+                mClientEquations = mClientEquations.copyOf(mClientEquations.size * 2)
             }
             mClientEquations[mClientEquationsCount] = row
             mClientEquationsCount++
@@ -158,8 +155,8 @@ class SolverVariable : Comparable<SolverVariable> {
      * @TODO: add description
      */
     fun removeFromRow(row: ArrayRow) {
-        if (SolverVariable.Companion.VAR_USE_HASH) {
-            mInRows.remove(row)
+        if (VAR_USE_HASH) {
+            mInRows?.remove(row)
         } else {
             val count = mClientEquationsCount
             for (i in 0 until count) {
@@ -178,11 +175,11 @@ class SolverVariable : Comparable<SolverVariable> {
      * @TODO: add description
      */
     fun updateReferencesWithNewDefinition(system: LinearSystem?, definition: ArrayRow?) {
-        if (SolverVariable.Companion.VAR_USE_HASH) {
-            for (row in mInRows) {
+        if (VAR_USE_HASH) {
+            for (row in mInRows!!) {
                 row.updateFromRow(system, definition, false)
             }
-            mInRows.clear()
+            mInRows?.clear()
         } else {
             val count = mClientEquationsCount
             for (i in 0 until count) {
@@ -196,7 +193,7 @@ class SolverVariable : Comparable<SolverVariable> {
      * @TODO: add description
      */
     fun setFinalValue(system: LinearSystem?, value: Float) {
-        if (SolverVariable.Companion.DO_NOT_USE && SolverVariable.Companion.INTERNAL_DEBUG) {
+        if (DO_NOT_USE && INTERNAL_DEBUG) {
             println("Set final value for $this of $value")
         }
         computedValue = value
@@ -216,7 +213,7 @@ class SolverVariable : Comparable<SolverVariable> {
      * @TODO: add description
      */
     fun setSynonym(system: LinearSystem, synonymVariable: SolverVariable, value: Float) {
-        if (SolverVariable.Companion.INTERNAL_DEBUG) {
+        if (INTERNAL_DEBUG) {
             println("Set synonym for $this = $synonymVariable + $value")
         }
         mIsSynonym = true
@@ -236,8 +233,8 @@ class SolverVariable : Comparable<SolverVariable> {
      */
     fun reset() {
         name = null
-        mType = SolverVariable.Type.UNKNOWN
-        strength = SolverVariable.Companion.STRENGTH_NONE
+        mType = Type.UNKNOWN
+        strength = STRENGTH_NONE
         id = -1
         mDefinitionId = -1
         computedValue = 0f
@@ -245,8 +242,8 @@ class SolverVariable : Comparable<SolverVariable> {
         mIsSynonym = false
         mSynonym = -1
         mSynonymDelta = 0f
-        if (SolverVariable.Companion.VAR_USE_HASH) {
-            mInRows.clear()
+        if (VAR_USE_HASH) {
+            mInRows?.clear()
         } else {
             val count = mClientEquationsCount
             for (i in 0 until count) {
@@ -256,16 +253,16 @@ class SolverVariable : Comparable<SolverVariable> {
         }
         usageInRowCount = 0
         inGoal = false
-        java.util.Arrays.fill(mGoalStrengthVector, 0f)
+        mGoalStrengthVector.fill(0f)
     }
 
     /**
      * @TODO: add description
      */
-    fun setType(type: SolverVariable.Type, prefix: String?) {
+    fun setType(type: Type, prefix: String?) {
         mType = type
-        if (SolverVariable.Companion.INTERNAL_DEBUG && name == null) {
-            name = SolverVariable.Companion.getUniqueName(type, prefix)
+        if (INTERNAL_DEBUG && name == null) {
+            name = getUniqueName(type, prefix)
         }
     }
 
@@ -278,7 +275,7 @@ class SolverVariable : Comparable<SolverVariable> {
      */
     override fun toString(): String {
         var result = ""
-        if (SolverVariable.Companion.INTERNAL_DEBUG) {
+        if (INTERNAL_DEBUG) {
             result += name + "(" + id + "):" + strength
             if (mIsSynonym) {
                 result += ":S($mSynonym)"
@@ -296,6 +293,7 @@ class SolverVariable : Comparable<SolverVariable> {
         return result
     }
 
+    @ThreadLocal
     companion object {
         private val INTERNAL_DEBUG: Boolean = LinearSystem.Companion.FULL_DEBUG
         private const val VAR_USE_HASH = false
@@ -309,30 +307,30 @@ class SolverVariable : Comparable<SolverVariable> {
         const val STRENGTH_BARRIER = 6
         const val STRENGTH_CENTERING = 7
         const val STRENGTH_FIXED = 8
-        private const val sUniqueSlackId = 1
-        private const val sUniqueErrorId = 1
-        private const val sUniqueUnrestrictedId = 1
-        private const val sUniqueConstantId = 1
-        private const val sUniqueId = 1
+        private var sUniqueSlackId = 1
+        private var sUniqueErrorId = 1
+        private var sUniqueUnrestrictedId = 1
+        private var sUniqueConstantId = 1
+        private var sUniqueId = 1
         const val MAX_STRENGTH = 9
         fun increaseErrorId() {
-            SolverVariable.Companion.sUniqueErrorId++
+            sUniqueErrorId++
         }
 
-        private fun getUniqueName(type: SolverVariable.Type, prefix: String?): String {
+        private fun getUniqueName(type: Type, prefix: String?): String {
             return if (prefix != null) {
-                prefix + SolverVariable.Companion.sUniqueErrorId
+                prefix + sUniqueErrorId
             } else when (type) {
-                SolverVariable.Type.UNRESTRICTED -> "U" + ++SolverVariable.Companion.sUniqueUnrestrictedId
-                SolverVariable.Type.CONSTANT -> "C" + ++SolverVariable.Companion.sUniqueConstantId
-                SolverVariable.Type.SLACK -> "S" + ++SolverVariable.Companion.sUniqueSlackId
-                SolverVariable.Type.ERROR -> {
-                    "e" + ++SolverVariable.Companion.sUniqueErrorId
+                Type.UNRESTRICTED -> "U" + ++sUniqueUnrestrictedId
+                Type.CONSTANT -> "C" + ++sUniqueConstantId
+                Type.SLACK -> "S" + ++sUniqueSlackId
+                Type.ERROR -> {
+                    "e" + ++sUniqueErrorId
                 }
 
-                SolverVariable.Type.UNKNOWN -> "V" + ++SolverVariable.Companion.sUniqueId
+                Type.UNKNOWN -> "V" + ++sUniqueId
             }
-            throw java.lang.AssertionError(type.name)
+            throw AssertionError(type.name)
         }
     }
 }

@@ -54,12 +54,13 @@ class CLNumber : CLElement {
             return intValue.toFloat() == value
         }
 
-    fun getInt(): Int {
-        if (mValue.isNaN()) {
-            mValue = content().toInt().toFloat()
+    override val int: Int
+        get() {
+            if (mValue.isNaN()) {
+                mValue = content().toInt().toFloat()
+            }
+            return mValue.toInt()
         }
-        return mValue.toInt()
-    }
 
     override val float: Float
         get() {

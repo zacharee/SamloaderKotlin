@@ -23,7 +23,7 @@ import androidx.constraintlayout.core.widgets.analyzer.HorizontalWidgetRun
 import androidx.constraintlayout.core.widgets.analyzer.VerticalWidgetRun
 import androidx.constraintlayout.core.widgets.analyzer.WidgetRun
 import androidx.constraintlayout.core.LinearSystem
-import androidx.constraintlayout.coreimport.SolverVariable
+import androidx.constraintlayout.core.SolverVariable
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.max
@@ -2900,8 +2900,8 @@ open class ConstraintWidget {
                     }
                     system.addConstraint(
                         system.createRow().createRowDimensionRatio(
-                            end,
-                            begin, percentEnd, percentBegin, matchPercentDimension
+                            end!!,
+                            begin!!, percentEnd!!, percentBegin!!, matchPercentDimension
                         )
                     )
                     if (parentWrapContent) {

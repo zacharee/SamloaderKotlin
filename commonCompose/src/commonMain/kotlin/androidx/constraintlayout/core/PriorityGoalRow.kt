@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.constraintlayout.coreimport
+package androidx.constraintlayout.core
 
-import androidx.constraintlayout.core.*
-
-androidx.constraintlayout.core.dsl.OnSwipe.Drag
+import kotlin.math.abs
 
 /**
  * Implements a row containing goals taking in account priorities.
@@ -38,10 +36,10 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
         fun addToGoal(other: SolverVariable, value: Float): Boolean {
             if (mVariable!!.inGoal) {
                 var empty = true
-                for (i in 0 until SolverVariable.Companion.MAX_STRENGTH) {
+                for (i in 0 until SolverVariable.MAX_STRENGTH) {
                     mVariable!!.mGoalStrengthVector[i] += other.mGoalStrengthVector[i] * value
                     val v = mVariable!!.mGoalStrengthVector[i]
-                    if (java.lang.Math.abs(v) < PriorityGoalRow.Companion.EPSILON) {
+                    if (abs(v) < EPSILON) {
                         mVariable!!.mGoalStrengthVector[i] = 0f
                     } else {
                         empty = false
@@ -51,11 +49,11 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
                     removeGoal(mVariable)
                 }
             } else {
-                for (i in 0 until SolverVariable.Companion.MAX_STRENGTH) {
+                for (i in 0 until SolverVariable.MAX_STRENGTH) {
                     val strength = other.mGoalStrengthVector[i]
                     if (strength != 0f) {
                         var v = value * strength
-                        if (java.lang.Math.abs(v) < PriorityGoalRow.Companion.EPSILON) {
+                        if (abs(v) < EPSILON) {
                             v = 0f
                         }
                         mVariable!!.mGoalStrengthVector[i] = v
@@ -69,10 +67,10 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
         }
 
         fun add(other: SolverVariable) {
-            for (i in 0 until SolverVariable.Companion.MAX_STRENGTH) {
+            for (i in 0 until SolverVariable.MAX_STRENGTH) {
                 mVariable!!.mGoalStrengthVector[i] += other.mGoalStrengthVector[i]
                 val value = mVariable!!.mGoalStrengthVector[i]
-                if (java.lang.Math.abs(value) < PriorityGoalRow.Companion.EPSILON) {
+                if (abs(value) < EPSILON) {
                     mVariable!!.mGoalStrengthVector[i] = 0f
                 }
             }
@@ -80,7 +78,7 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
 
         val isNegative: Boolean
             get() {
-                for (i in SolverVariable.Companion.MAX_STRENGTH - 1 downTo 0) {
+                for (i in SolverVariable.MAX_STRENGTH - 1 downTo 0) {
                     val value = mVariable!!.mGoalStrengthVector[i]
                     if (value > 0) {
                         return false
@@ -93,7 +91,7 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
             }
 
         fun isSmallerThan(other: SolverVariable?): Boolean {
-            for (i in SolverVariable.Companion.MAX_STRENGTH - 1 downTo 0) {
+            for (i in SolverVariable.MAX_STRENGTH - 1 downTo 0) {
                 val comparedValue = other!!.mGoalStrengthVector[i]
                 val value = mVariable!!.mGoalStrengthVector[i]
                 if (value == comparedValue) {
@@ -106,7 +104,7 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
 
         val isNull: Boolean
             get() {
-                for (i in 0 until SolverVariable.Companion.MAX_STRENGTH) {
+                for (i in 0 until SolverVariable.MAX_STRENGTH) {
                     if (mVariable!!.mGoalStrengthVector[i] != 0f) {
                         return false
                     }
@@ -115,13 +113,13 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
             }
 
         fun reset() {
-            java.util.Arrays.fill(mVariable!!.mGoalStrengthVector, 0f)
+            mVariable!!.mGoalStrengthVector.fill(0f)
         }
 
         override fun toString(): String {
             var result = "[ "
             if (mVariable != null) {
-                for (i in 0 until SolverVariable.Companion.MAX_STRENGTH) {
+                for (i in 0 until SolverVariable.MAX_STRENGTH) {
                     result += mVariable!!.mGoalStrengthVector[i].toString() + " "
                 }
             }
@@ -135,19 +133,18 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
         mConstantValue = 0f
     }
 
-    override fun isEmpty(): Boolean {
-        return mNumGoals == 0
-    }
+    override val isEmpty: Boolean
+        get() = mNumGoals == 0
 
-    override fun getPivotCandidate(system: LinearSystem?, avoid: BooleanArray): SolverVariable? {
-        var pivot: Int = PriorityGoalRow.Companion.NOT_FOUND
+    override fun getPivotCandidate(system: LinearSystem?, avoid: BooleanArray?): SolverVariable? {
+        var pivot: Int = NOT_FOUND
         for (i in 0 until mNumGoals) {
             val variable = mArrayGoals[i]
-            if (avoid[variable!!.id]) {
+            if (avoid?.get(variable!!.id) == true) {
                 continue
             }
             mAccessor.init(variable)
-            if (pivot == PriorityGoalRow.Companion.NOT_FOUND) {
+            if (pivot == NOT_FOUND) {
                 if (mAccessor.isNegative) {
                     pivot = i
                 }
@@ -155,7 +152,7 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
                 pivot = i
             }
         }
-        return if (pivot == PriorityGoalRow.Companion.NOT_FOUND) {
+        return if (pivot == NOT_FOUND) {
             null
         } else mArrayGoals[pivot]
     }
@@ -169,8 +166,8 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
 
     private fun addToGoal(variable: SolverVariable) {
         if (mNumGoals + 1 > mArrayGoals.size) {
-            mArrayGoals = java.util.Arrays.copyOf<SolverVariable>(mArrayGoals, mArrayGoals.size * 2)
-            mSortArray = java.util.Arrays.copyOf<SolverVariable>(mArrayGoals, mArrayGoals.size * 2)
+            mArrayGoals = mArrayGoals.copyOf(mArrayGoals.size * 2)
+            mSortArray = mSortArray.copyOf(mArrayGoals.size * 2)
         }
         mArrayGoals[mNumGoals] = variable
         mNumGoals++
@@ -178,15 +175,10 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
             for (i in 0 until mNumGoals) {
                 mSortArray[i] = mArrayGoals[i]
             }
-            java.util.Arrays.sort<SolverVariable>(
-                mSortArray,
-                0,
-                mNumGoals,
-                object : java.util.Comparator<SolverVariable?>() {
-                    override fun compare(variable1: SolverVariable, variable2: SolverVariable): Int {
-                        return variable1.id - variable2.id
-                    }
-                })
+            mSortArray.sortWith({ v1, v2 ->
+                v1!!.id - v2!!.id
+            }, fromIndex = 0, toIndex = mNumGoals)
+
             for (i in 0 until mNumGoals) {
                 mArrayGoals[i] = mSortArray[i]
             }
@@ -210,18 +202,18 @@ class PriorityGoalRow(var mCache: Cache) : ArrayRow(mCache) {
 
     override fun updateFromRow(
         system: LinearSystem?,
-        definition: ArrayRow,
+        definition: ArrayRow?,
         removeFromDefinition: Boolean
     ) {
-        val goalVariable = definition.mVariable ?: return
-        val rowVariables: ArrayRowVariables = definition.variables
+        val goalVariable = definition?.key ?: return
+        val rowVariables: ArrayRowVariables = definition.variables!!
         val currentSize = rowVariables.currentSize
         for (i in 0 until currentSize) {
             val solverVariable = rowVariables.getVariable(i)
             val value = rowVariables.getVariableValue(i)
             mAccessor.init(solverVariable)
             if (mAccessor.addToGoal(goalVariable, value)) {
-                addToGoal(solverVariable)
+                addToGoal(solverVariable!!)
             }
             mConstantValue += definition.mConstantValue * value
         }
