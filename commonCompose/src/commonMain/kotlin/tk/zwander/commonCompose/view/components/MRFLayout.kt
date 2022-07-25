@@ -1,8 +1,7 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.animateIntOffsetAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -10,17 +9,10 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.*
-import com.soywiz.kmem.toIntCeil
-import com.soywiz.kmem.toIntFloor
-import tk.zwander.commonCompose.flow.FlowRow
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
@@ -33,6 +25,7 @@ import tk.zwander.samloaderkotlin.strings
  * @param canChangeFirmware whether the firmware field should be editable.
  * @param showFirmware whether to show the firmware field.
  */
+@OptIn(ExperimentalMotionApi::class)
 @Composable
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
     BoxWithConstraints(
@@ -41,40 +34,71 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
         val constraint = rememberIsOverScaledThreshold(constraints.maxWidth)
         val constraints = this.constraints
 
-        val set = ConstraintSet {
+        val progress by animateFloatAsState(if (constraint) 0f else 1f)
+
+        val wideSet = ConstraintSet {
             val modelRef = createRefFor("model")
             val regionRef = createRefFor("region")
 
-            val horizontalRef = if (constraint) createHorizontalChain(modelRef, regionRef) else null
-
-            horizontalRef?.let {
-                constrain(horizontalRef) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }
-            }
+//            val horizontalRef = createHorizontalChain(modelRef, regionRef)
+//
+//            constrain(horizontalRef) {
+//                start.linkTo(parent.start)
+//                end.linkTo(parent.end)
+//            }
 
             constrain(modelRef) {
                 start.linkTo(parent.start)
-                end.linkTo(if (constraint) regionRef.start else parent.end)
+                end.linkTo(regionRef.start)
                 top.linkTo(parent.top)
                 this.horizontalChainWeight = 0.6f
                 width = Dimension.fillToConstraints
             }
 
             constrain(regionRef) {
-                start.linkTo(if (constraint) modelRef.end else parent.start)
+                start.linkTo(modelRef.end)
                 end.linkTo(parent.end)
-                top.linkTo(if (constraint) parent.top else modelRef.bottom)
+                top.linkTo(parent.top)
                 this.horizontalChainWeight = 0.4f
                 width = Dimension.fillToConstraints
             }
         }
 
-        ConstraintLayout(
-            constraintSet = set,
-            animateChanges = true,
-            modifier = Modifier.fillMaxWidth()
+        val narrowSet = ConstraintSet {
+            val modelRef = createRefFor("model")
+            val regionRef = createRefFor("region")
+
+            constrain(modelRef) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+                bottom.linkTo(regionRef.top)
+                width = Dimension.fillToConstraints
+            }
+
+            constrain(regionRef) {
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                top.linkTo(modelRef.bottom)
+                bottom.linkTo(parent.bottom)
+                width = Dimension.fillToConstraints
+            }
+        }
+
+        MotionLayout(
+            start = wideSet,
+            end = narrowSet,
+            progress = progress,
+            modifier = Modifier.fillMaxWidth(),
+            transition = Transition("""
+                {
+                    default: {
+                        from: 'start',
+                        to: 'end',
+                        pathMotionArc: 'startHorizontal'
+                    }
+                }
+            """.trimIndent())
         ) {
             OutlinedTextField(
                 value = model.model,
@@ -85,7 +109,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                         model.osCode = ""
                     }
                 },
-                modifier = Modifier.fillMaxWidth().layoutId("model"),
+                modifier = Modifier.layoutId("model"),
                 label = { Text(strings.modelHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),

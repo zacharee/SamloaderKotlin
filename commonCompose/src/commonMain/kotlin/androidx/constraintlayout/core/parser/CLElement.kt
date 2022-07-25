@@ -67,7 +67,7 @@ open class CLElement(private val mContent: CharArray?) {
         if (start > mEnd || mEnd == Long.MAX_VALUE) {
             return this::class.toString() + " (INVALID, " + start + "-" + mEnd + ")"
         }
-        var content = mContent!!.toString()
+        var content = mContent!!.concatToString()
         content = content.substring(start.toInt(), mEnd.toInt() + 1)
         return strClass + " (" + start + " : " + mEnd + ") <<" + content + ">>"
     }
@@ -86,7 +86,7 @@ open class CLElement(private val mContent: CharArray?) {
      * @TODO: add description
      */
     fun content(): String {
-        val content = mContent!!.toString()
+        val content = mContent!!.concatToString()
         return if (mEnd == Long.MAX_VALUE || mEnd < start) {
             content.substring(start.toInt(), start.toInt() + 1)
         } else content.substring(start.toInt(), mEnd.toInt() + 1)
