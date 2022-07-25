@@ -86,10 +86,10 @@ open class HelperWidget : ConstraintWidget(), Helper {
     fun findGroupInDependents(orientation: Int): Int {
         for (i in 0 until mWidgetsCount) {
             val widget = mWidgets[i]
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL && widget!!.horizontalGroup != -1) {
+            if (orientation == ConstraintWidget.HORIZONTAL && widget!!.horizontalGroup != -1) {
                 return widget.horizontalGroup
             }
-            if (orientation == ConstraintWidget.Companion.VERTICAL && widget!!.verticalGroup != -1) {
+            if (orientation == ConstraintWidget.VERTICAL && widget!!.verticalGroup != -1) {
                 return widget.verticalGroup
             }
         }

@@ -158,10 +158,10 @@ open class VirtualLayout : HelperWidget() {
             if (widget is Guideline) {
                 continue
             }
-            var widthBehavior = widget.getDimensionBehaviour(ConstraintWidget.Companion.HORIZONTAL)
-            var heightBehavior = widget.getDimensionBehaviour(ConstraintWidget.Companion.VERTICAL)
+            var widthBehavior = widget.getDimensionBehaviour(ConstraintWidget.HORIZONTAL)
+            var heightBehavior = widget.getDimensionBehaviour(ConstraintWidget.VERTICAL)
             val skip =
-                widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT && widget.mMatchConstraintDefaultWidth != ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP && heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT && widget.mMatchConstraintDefaultHeight != ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
+                widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT && widget.mMatchConstraintDefaultWidth != ConstraintWidget.MATCH_CONSTRAINT_WRAP && heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT && widget.mMatchConstraintDefaultHeight != ConstraintWidget.MATCH_CONSTRAINT_WRAP
             if (skip) {
                 // we don't need to measure here as the dimension of the widget
                 // will be completely computed by the solver.

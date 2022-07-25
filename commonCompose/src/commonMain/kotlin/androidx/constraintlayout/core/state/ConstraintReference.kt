@@ -33,10 +33,10 @@ open class ConstraintReference(protected open val mState: State) : Reference {
 
     var tag: String? = null
     var mFacade: Facade? = null
-    var horizontalChainStyle: Int = ConstraintWidget.Companion.CHAIN_SPREAD
-    var mVerticalChainStyle: Int = ConstraintWidget.Companion.CHAIN_SPREAD
-    var horizontalChainWeight: Float = ConstraintWidget.Companion.UNKNOWN.toFloat()
-    var verticalChainWeight: Float = ConstraintWidget.Companion.UNKNOWN.toFloat()
+    var horizontalChainStyle: Int = ConstraintWidget.CHAIN_SPREAD
+    var mVerticalChainStyle: Int = ConstraintWidget.CHAIN_SPREAD
+    var horizontalChainWeight: Float = ConstraintWidget.UNKNOWN.toFloat()
+    var verticalChainWeight: Float = ConstraintWidget.UNKNOWN.toFloat()
     var mHorizontalBias = 0.5f
     var mVerticalBias = 0.5f
     protected var mMarginLeft = 0
@@ -64,7 +64,7 @@ open class ConstraintReference(protected open val mState: State) : Reference {
     var alpha = Float.NaN
     var scaleX = Float.NaN
     var scaleY = Float.NaN
-    var mVisibility: Int = ConstraintWidget.Companion.VISIBLE
+    var mVisibility: Int = ConstraintWidget.VISIBLE
     protected var mLeftToLeft: Any? = null
     protected var mLeftToRight: Any? = null
     protected var mRightToLeft: Any? = null
@@ -84,12 +84,12 @@ open class ConstraintReference(protected open val mState: State) : Reference {
     private var mCircularAngle = 0f
     private var mCircularDistance = 0f
     var mLast: State.Constraint? = null
-    var mHorizontalDimension: Dimension = Dimension.Companion.createFixed(Dimension.Companion.WRAP_DIMENSION)
-    var mVerticalDimension: Dimension = Dimension.Companion.createFixed(Dimension.Companion.WRAP_DIMENSION)
+    var mHorizontalDimension: Dimension = Dimension.createFixed(Dimension.WRAP_DIMENSION)
+    var mVerticalDimension: Dimension = Dimension.createFixed(Dimension.WRAP_DIMENSION)
     private var mView: Any? = null
     private var mConstraintWidget: ConstraintWidget? = null
-    private val mCustomColors: HashMap<String, Int>? = HashMap<String, Int>()
-    private var mCustomFloats: HashMap<String, Float>? = HashMap<String, Float>()
+    private val mCustomColors: HashMap<String, Int> = HashMap()
+    private val mCustomFloats: HashMap<String, Float> = HashMap()
     var mMotionProperties: TypedBundle? = null
 
     /**
@@ -165,7 +165,7 @@ open class ConstraintReference(protected open val mState: State) : Reference {
      */
     @Throws(IncorrectConstraintException::class)
     fun validate() {
-        val errors: ArrayList<String> = ArrayList<String>()
+        val errors: ArrayList<String> = ArrayList()
         if (mLeftToLeft != null && mLeftToRight != null) {
             errors.add("LeftToLeft and LeftToRight both defined")
         }
@@ -404,17 +404,14 @@ open class ConstraintReference(protected open val mState: State) : Reference {
      * @TODO: add description
      */
     fun addCustomColor(name: String, color: Int) {
-        mCustomColors?.put(name, color)
+        mCustomColors[name] = color
     }
 
     /**
      * @TODO: add description
      */
     fun addCustomFloat(name: String, value: Float) {
-        if (mCustomFloats == null) {
-            mCustomFloats = HashMap()
-        }
-        mCustomFloats?.put(name, value)
+        mCustomFloats[name] = value
     }
 
     private fun dereference() {
@@ -888,9 +885,6 @@ open class ConstraintReference(protected open val mState: State) : Reference {
     ) {
         val target = getTarget(opaqueTarget) ?: return
         when (type) {
-            else -> {}
-        }
-        when (type) {
             State.Constraint.START_TO_START -> {
                 widget.getAnchor(ConstraintAnchor.Type.LEFT)!!.connect(
                     target.getAnchor(
@@ -1026,8 +1020,8 @@ open class ConstraintReference(protected open val mState: State) : Reference {
         if (mFacade != null) {
             mFacade!!.apply()
         }
-        mHorizontalDimension.apply(mState, mConstraintWidget!!, ConstraintWidget.Companion.HORIZONTAL)
-        mVerticalDimension.apply(mState, mConstraintWidget!!, ConstraintWidget.Companion.VERTICAL)
+        mHorizontalDimension.apply(mState, mConstraintWidget!!, ConstraintWidget.HORIZONTAL)
+        mVerticalDimension.apply(mState, mConstraintWidget!!, ConstraintWidget.VERTICAL)
         dereference()
         applyConnection(mConstraintWidget!!, mLeftToLeft, State.Constraint.LEFT_TO_LEFT)
         applyConnection(mConstraintWidget!!, mLeftToRight, State.Constraint.LEFT_TO_RIGHT)
@@ -1051,16 +1045,16 @@ open class ConstraintReference(protected open val mState: State) : Reference {
             mConstraintWidget!!, mCircularConstraint,
             State.Constraint.CIRCULAR_CONSTRAINT
         )
-        if (horizontalChainStyle != ConstraintWidget.Companion.CHAIN_SPREAD) {
+        if (horizontalChainStyle != ConstraintWidget.CHAIN_SPREAD) {
             mConstraintWidget?.horizontalChainStyle = (horizontalChainStyle)
         }
-        if (mVerticalChainStyle != ConstraintWidget.Companion.CHAIN_SPREAD) {
+        if (mVerticalChainStyle != ConstraintWidget.CHAIN_SPREAD) {
             mConstraintWidget?.verticalChainStyle = (mVerticalChainStyle)
         }
-        if (horizontalChainWeight != ConstraintWidget.Companion.UNKNOWN.toFloat()) {
+        if (horizontalChainWeight != ConstraintWidget.UNKNOWN.toFloat()) {
             mConstraintWidget!!.setHorizontalWeight(horizontalChainWeight)
         }
-        if (verticalChainWeight != ConstraintWidget.Companion.UNKNOWN.toFloat()) {
+        if (verticalChainWeight != ConstraintWidget.UNKNOWN.toFloat()) {
             mConstraintWidget!!.setVerticalWeight(verticalChainWeight)
         }
         mConstraintWidget?.horizontalBiasPercent = (mHorizontalBias)
@@ -1079,23 +1073,19 @@ open class ConstraintReference(protected open val mState: State) : Reference {
         mConstraintWidget!!.frame.visibility = mVisibility
         mConstraintWidget?.visibility = (mVisibility)
         mConstraintWidget!!.frame.setMotionAttributes(mMotionProperties)
-        if (mCustomColors != null) {
-            for (key in mCustomColors.keys) {
-                val color: Int = mCustomColors[key]!!
-                mConstraintWidget!!.frame.setCustomAttribute(
-                    key,
-                    TypedValues.Custom.Companion.TYPE_COLOR, color
-                )
-            }
+        for (key in mCustomColors.keys) {
+            val color: Int = mCustomColors[key]!!
+            mConstraintWidget!!.frame.setCustomAttribute(
+                key,
+                TypedValues.Custom.TYPE_COLOR, color
+            )
         }
-        if (mCustomFloats != null) {
-            for (key in mCustomFloats!!.keys) {
-                val value: Float = mCustomFloats!![key]!!
-                mConstraintWidget!!.frame.setCustomAttribute(
-                    key,
-                    TypedValues.Custom.Companion.TYPE_FLOAT, value
-                )
-            }
+        for (key in mCustomFloats.keys) {
+            val value: Float = mCustomFloats[key]!!
+            mConstraintWidget!!.frame.setCustomAttribute(
+                key,
+                TypedValues.Custom.TYPE_FLOAT, value
+            )
         }
     }
 }

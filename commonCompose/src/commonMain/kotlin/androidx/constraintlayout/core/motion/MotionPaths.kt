@@ -37,7 +37,7 @@ class MotionPaths : Comparable<MotionPaths> {
     var mHeight = 0f
     var mPathRotate = Float.NaN
     var mProgress = Float.NaN
-    var mPathMotionArc: Int = MotionWidget.Companion.UNSET
+    var mPathMotionArc: Int = MotionWidget.UNSET
     var mAnimateRelativeTo: String? = null
     var mRelativeAngle = Float.NaN
     var mRelativeToController: Motion? = null
@@ -80,7 +80,7 @@ class MotionPaths : Comparable<MotionPaths> {
             (startTimePoint.mX + pathVectorX * dxdx + pathVectorY * dxdy - scaleX * scaleWidth / 2).toInt().toFloat()
         point.mY =
             (startTimePoint.mY + pathVectorX * dydx + pathVectorY * dydy - scaleY * scaleHeight / 2).toInt().toFloat()
-        point.mKeyFrameEasing = Easing.Companion.getInterpolator(c.mTransitionEasing!!)
+        point.mKeyFrameEasing = Easing.getInterpolator(c.mTransitionEasing!!)
         point.mPathMotionArc = c.mPathMotionArc
     }
 
@@ -99,17 +99,17 @@ class MotionPaths : Comparable<MotionPaths> {
             return
         }
         when (c.mPositionType) {
-            MotionKeyPosition.Companion.TYPE_SCREEN -> {
+            MotionKeyPosition.TYPE_SCREEN -> {
                 initScreen(parentWidth, parentHeight, c, startTimePoint, endTimePoint)
                 return
             }
 
-            MotionKeyPosition.Companion.TYPE_PATH -> {
+            MotionKeyPosition.TYPE_PATH -> {
                 initPath(c, startTimePoint, endTimePoint)
                 return
             }
 
-            MotionKeyPosition.Companion.TYPE_CARTESIAN -> {
+            MotionKeyPosition.TYPE_CARTESIAN -> {
                 initCartesian(c, startTimePoint, endTimePoint)
                 return
             }
@@ -142,7 +142,7 @@ class MotionPaths : Comparable<MotionPaths> {
         val startfactor = 1 - position
         val endfactor = position
         when (c.mPositionType) {
-            MotionKeyPosition.Companion.TYPE_SCREEN -> {
+            MotionKeyPosition.TYPE_SCREEN -> {
                 mX =
                     if (c.mPercentX.isNaN()) position * (e.mX - s.mX) + s.mX else c.mPercentX * min(
                         scaleHeight,
@@ -151,12 +151,12 @@ class MotionPaths : Comparable<MotionPaths> {
                 mY = if (c.mPercentY.isNaN()) position * (e.mY - s.mY) + s.mY else c.mPercentY
             }
 
-            MotionKeyPosition.Companion.TYPE_PATH -> {
+            MotionKeyPosition.TYPE_PATH -> {
                 mX = (if (c.mPercentX.isNaN()) position else c.mPercentX) * (e.mX - s.mX) + s.mX
                 mY = (if (c.mPercentY.isNaN()) position else c.mPercentY) * (e.mY - s.mY) + s.mY
             }
 
-            MotionKeyPosition.Companion.TYPE_CARTESIAN -> {
+            MotionKeyPosition.TYPE_CARTESIAN -> {
                 mX = (if (c.mPercentX.isNaN()) position else c.mPercentX) * (e.mX - s.mX) + s.mX
                 mY = (if (c.mPercentY.isNaN()) position else c.mPercentY) * (e.mY - s.mY) + s.mY
             }
@@ -167,7 +167,7 @@ class MotionPaths : Comparable<MotionPaths> {
             }
         }
         mAnimateRelativeTo = s.mAnimateRelativeTo
-        mKeyFrameEasing = Easing.Companion.getInterpolator(c.mTransitionEasing!!)
+        mKeyFrameEasing = Easing.getInterpolator(c.mTransitionEasing!!)
         mPathMotionArc = c.mPathMotionArc
     }
 
@@ -224,7 +224,7 @@ class MotionPaths : Comparable<MotionPaths> {
             point.mY = (c.mPercentY * parentHeight).toInt().toFloat()
         }
         point.mAnimateRelativeTo = mAnimateRelativeTo
-        point.mKeyFrameEasing = Easing.Companion.getInterpolator(c.mTransitionEasing!!)
+        point.mKeyFrameEasing = Easing.getInterpolator(c.mTransitionEasing!!)
         point.mPathMotionArc = c.mPathMotionArc
     }
 
@@ -261,7 +261,7 @@ class MotionPaths : Comparable<MotionPaths> {
         point.mY += normalY
         point.mAnimateRelativeTo = mAnimateRelativeTo
         point.mKeyFrameEasing =
-            Easing.Companion.getInterpolator(c.mTransitionEasing!!)
+            Easing.getInterpolator(c.mTransitionEasing!!)
         point.mPathMotionArc = c.mPathMotionArc
     }
 
@@ -459,8 +459,8 @@ class MotionPaths : Comparable<MotionPaths> {
         var dv_height = 0f
         var delta_path = 0f
         var path_rotate = Float.NaN
-        var mod: String = ""
-        if (toUse.size != 0 && mTempValue.size <= toUse[toUse.size - 1]) {
+        val mod = ""
+        if (toUse.isNotEmpty() && mTempValue.size <= toUse[toUse.size - 1]) {
             val scratch_data_length = toUse[toUse.size - 1] + 1
             mTempValue = DoubleArray(scratch_data_length)
             mTempDelta = DoubleArray(scratch_data_length)
@@ -546,10 +546,10 @@ class MotionPaths : Comparable<MotionPaths> {
                 val dx = dv_x + dv_width / 2
                 val dy = dv_y + dv_height / 2
                 if (DEBUG) {
-                    Utils.Companion.log(TAG, "dv_x       =$dv_x")
-                    Utils.Companion.log(TAG, "dv_y       =$dv_y")
-                    Utils.Companion.log(TAG, "dv_width   =$dv_width")
-                    Utils.Companion.log(TAG, "dv_height  =$dv_height")
+                    Utils.log(TAG, "dv_x       =$dv_x")
+                    Utils.log(TAG, "dv_y       =$dv_y")
+                    Utils.log(TAG, "dv_width   =$dv_width")
+                    Utils.log(TAG, "dv_height  =$dv_height")
                 }
                 rot += (path_rotate + (
                     atan2(
@@ -559,7 +559,7 @@ class MotionPaths : Comparable<MotionPaths> {
                 )).toFloat()
                 view.rotationZ = rot
                 if (DEBUG) {
-                    Utils.Companion.log(TAG, "Rotated $rot  = $dx,$dy")
+                    Utils.log(TAG, "Rotated $rot  = $dx,$dy")
                 }
             }
         }
@@ -584,7 +584,7 @@ class MotionPaths : Comparable<MotionPaths> {
         view.layout(l, t, r, b)
         if (DEBUG) {
             if (toUse.size > 0) {
-                Utils.Companion.log(TAG, "setView $mod")
+                Utils.log(TAG, "setView $mod")
             }
         }
     }
@@ -731,7 +731,7 @@ class MotionPaths : Comparable<MotionPaths> {
         }
         if (DEBUG) {
             if (toUse.size > 0) {
-                Utils.Companion.log(TAG, "setDpDt $mod")
+                Utils.log(TAG, "setDpDt $mod")
             }
         }
         val deltaX = d_x - deltaScaleX * d_width / 2
@@ -742,22 +742,22 @@ class MotionPaths : Comparable<MotionPaths> {
         val deltaBottom = deltaY + deltaHeight
         if (DEBUG) {
             if (toUse.size > 0) {
-                Utils.Companion.log(TAG, "D x /dt           =$d_x")
-                Utils.Companion.log(TAG, "D y /dt           =$d_y")
-                Utils.Companion.log(TAG, "D width /dt       =$d_width")
-                Utils.Companion.log(TAG, "D height /dt      =$d_height")
-                Utils.Companion.log(TAG, "D deltaScaleX /dt =$deltaScaleX")
-                Utils.Companion.log(TAG, "D deltaScaleY /dt =$deltaScaleY")
-                Utils.Companion.log(TAG, "D deltaX /dt      =$deltaX")
-                Utils.Companion.log(TAG, "D deltaY /dt      =$deltaY")
-                Utils.Companion.log(TAG, "D deltaWidth /dt  =$deltaWidth")
-                Utils.Companion.log(TAG, "D deltaHeight /dt =$deltaHeight")
-                Utils.Companion.log(TAG, "D deltaRight /dt  =$deltaRight")
-                Utils.Companion.log(TAG, "D deltaBottom /dt =$deltaBottom")
-                Utils.Companion.log(TAG, "locationX         =$locationX")
-                Utils.Companion.log(TAG, "locationY         =$locationY")
-                Utils.Companion.log(TAG, "deltaTranslationX =$deltaTranslationX")
-                Utils.Companion.log(TAG, "deltaTranslationX =$deltaTranslationX")
+                Utils.log(TAG, "D x /dt           =$d_x")
+                Utils.log(TAG, "D y /dt           =$d_y")
+                Utils.log(TAG, "D width /dt       =$d_width")
+                Utils.log(TAG, "D height /dt      =$d_height")
+                Utils.log(TAG, "D deltaScaleX /dt =$deltaScaleX")
+                Utils.log(TAG, "D deltaScaleY /dt =$deltaScaleY")
+                Utils.log(TAG, "D deltaX /dt      =$deltaX")
+                Utils.log(TAG, "D deltaY /dt      =$deltaY")
+                Utils.log(TAG, "D deltaWidth /dt  =$deltaWidth")
+                Utils.log(TAG, "D deltaHeight /dt =$deltaHeight")
+                Utils.log(TAG, "D deltaRight /dt  =$deltaRight")
+                Utils.log(TAG, "D deltaBottom /dt =$deltaBottom")
+                Utils.log(TAG, "locationX         =$locationX")
+                Utils.log(TAG, "locationY         =$locationY")
+                Utils.log(TAG, "deltaTranslationX =$deltaTranslationX")
+                Utils.log(TAG, "deltaTranslationX =$deltaTranslationX")
             }
         }
         mAnchorDpDt[0] = deltaX * (1 - locationX) + deltaRight * locationX + deltaTranslationX
@@ -818,7 +818,7 @@ class MotionPaths : Comparable<MotionPaths> {
      */
     fun applyParameters(c: MotionWidget) {
         val point = this
-        point.mKeyFrameEasing = Easing.Companion.getInterpolator(c.mMotion.mTransitionEasing)
+        point.mKeyFrameEasing = Easing.getInterpolator(c.mMotion.mTransitionEasing)
         point.mPathMotionArc = c.mMotion.mPathMotionArc
         point.mAnimateRelativeTo = c.mMotion.mAnimateRelativeTo
         point.mPathRotate = c.mMotion.mPathRotate
@@ -831,8 +831,8 @@ class MotionPaths : Comparable<MotionPaths> {
         val at = c.customAttributeNames
         for (s in at!!) {
             val attr = c.getCustomAttribute(s)
-            if (attr != null && attr.isContinuous) {
-                mCustomAttributes[s!!] = attr
+            if (attr.isContinuous) {
+                mCustomAttributes[s] = attr
             }
         }
     }
@@ -856,23 +856,23 @@ class MotionPaths : Comparable<MotionPaths> {
         const val OFF_PATH_ROTATE = 5
 
         // mode and type have same numbering scheme
-        val PERPENDICULAR: Int = MotionKeyPosition.Companion.TYPE_PATH
-        val CARTESIAN: Int = MotionKeyPosition.Companion.TYPE_CARTESIAN
-        val SCREEN: Int = MotionKeyPosition.Companion.TYPE_SCREEN
-        var sNames = arrayOf("position", "x", "y", "width", "height", "pathRotate")
+        val PERPENDICULAR: Int = MotionKeyPosition.TYPE_PATH
+        val CARTESIAN: Int = MotionKeyPosition.TYPE_CARTESIAN
+        val SCREEN: Int = MotionKeyPosition.TYPE_SCREEN
+        val sNames = arrayOf("position", "x", "y", "width", "height", "pathRotate")
         private fun xRotate(sin: Float, cos: Float, cx: Float, cy: Float, x: Float, y: Float): Float {
             var x = x
             var y = y
-            x = x - cx
-            y = y - cy
+            x -= cx
+            y -= cy
             return x * cos - y * sin + cx
         }
 
         private fun yRotate(sin: Float, cos: Float, cx: Float, cy: Float, x: Float, y: Float): Float {
             var x = x
             var y = y
-            x = x - cx
-            y = y - cy
+            x -= cx
+            y -= cy
             return x * sin + y * cos + cy
         }
     }

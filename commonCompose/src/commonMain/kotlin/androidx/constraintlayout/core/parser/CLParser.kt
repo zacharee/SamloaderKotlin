@@ -28,9 +28,8 @@ class CLParser(private val mContent: String) {
      */
     @Throws(CLParsingException::class)
     fun parse(): CLObject {
-        var root: CLObject? = null
         val content = mContent.toCharArray()
-        var currentElement: CLElement? = null
+        var currentElement: CLElement?
         val length = content.size
 
         // First, let's find the root element start
@@ -51,9 +50,9 @@ class CLParser(private val mContent: String) {
         }
 
         // We have a root object, let's start
-        root = CLObject.Companion.allocate(content)
-        root!!.line = (mLineNumber)
-        root!!.start = (startIndex.toLong())
+        val root = CLObject.allocate(content)
+        root.line = (mLineNumber)
+        root.start = (startIndex.toLong())
         currentElement = root
         for (i in startIndex + 1 until length) {
             val c = content[i]
@@ -238,29 +237,29 @@ class CLParser(private val mContent: String) {
         }
         when (type) {
             TYPE.OBJECT -> {
-                newElement = CLObject.Companion.allocate(content)
+                newElement = CLObject.allocate(content)
                 position++
             }
 
             TYPE.ARRAY -> {
-                newElement = CLArray.Companion.allocate(content)
+                newElement = CLArray.allocate(content)
                 position++
             }
 
             TYPE.STRING -> {
-                newElement = CLString.Companion.allocate(content)
+                newElement = CLString.allocate(content)
             }
 
             TYPE.NUMBER -> {
-                newElement = CLNumber.Companion.allocate(content)
+                newElement = CLNumber.allocate(content)
             }
 
             TYPE.KEY -> {
-                newElement = CLKey.Companion.allocate(content)
+                newElement = CLKey.allocate(content)
             }
 
             TYPE.TOKEN -> {
-                newElement = CLToken.Companion.allocate(content)
+                newElement = CLToken.allocate(content)
             }
 
             else -> {}
@@ -279,7 +278,7 @@ class CLParser(private val mContent: String) {
     }
 
     companion object {
-        var sDebug = false
+        const val sDebug = false
 
         /**
          * @TODO: add description

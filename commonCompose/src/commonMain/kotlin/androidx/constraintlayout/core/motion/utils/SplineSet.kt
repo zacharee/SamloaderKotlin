@@ -41,7 +41,7 @@ abstract class SplineSet {
      * @TODO: add description
      */
     open fun setProperty(widget: TypedValues, t: Float) {
-        widget.setValue(AttributesType.Companion.getId(mType), get(t))
+        widget.setValue(AttributesType.getId(mType), get(t))
     }
 
     override fun toString(): String {
@@ -108,7 +108,7 @@ abstract class SplineSet {
             values[k][0] = mValues[i].toDouble()
             k++
         }
-        curveFit = CurveFit.Companion.get(curveType, time, values)
+        curveFit = CurveFit.get(curveType, time, values)
     }
 
     private object Sort {
@@ -183,7 +183,7 @@ abstract class SplineSet {
                     values[i][k] = mTempValues[k].toDouble()
                 }
             }
-            curveFit = CurveFit.Companion.get(curveType, time, values)
+            curveFit = CurveFit.get(curveType, time, values)
         }
 
         /**
@@ -247,7 +247,7 @@ abstract class SplineSet {
                     values[i][k] = mTempValues[k].toDouble()
                 }
             }
-            curveFit = CurveFit.Companion.get(curveType, time, values)
+            curveFit = CurveFit.get(curveType, time, values)
         }
 
         /**

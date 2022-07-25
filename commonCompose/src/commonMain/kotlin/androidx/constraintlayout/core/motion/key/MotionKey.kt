@@ -18,6 +18,7 @@ package androidx.constraintlayout.core.motion.key
 import androidx.constraintlayout.core.motion.CustomVariable
 import androidx.constraintlayout.core.motion.utils.SplineSet
 import androidx.constraintlayout.core.motion.utils.TypedValues
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * Base class in an element in a KeyFrame
@@ -116,7 +117,7 @@ abstract class MotionKey : TypedValues {
      */
     override fun setValue(type: Int, value: Int): Boolean {
         when (type) {
-            TypedValues.Companion.TYPE_FRAME_POSITION -> {
+            TypedValues.TYPE_FRAME_POSITION -> {
                 framePosition = value
                 return true
             }
@@ -136,7 +137,7 @@ abstract class MotionKey : TypedValues {
      */
     override fun setValue(type: Int, value: String): Boolean {
         when (type) {
-            TypedValues.Companion.TYPE_TARGET -> {
+            TypedValues.TYPE_TARGET -> {
                 mTargetString = value
                 return true
             }
@@ -179,8 +180,9 @@ abstract class MotionKey : TypedValues {
         mCustom?.put(name, CustomVariable(name, type, value))
     }
 
+    @ThreadLocal
     companion object {
-        var UNSET = -1
+        const val UNSET = -1
         const val ALPHA = "alpha"
         const val ELEVATION = "elevation"
         const val ROTATION = "rotationZ"

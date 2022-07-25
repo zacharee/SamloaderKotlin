@@ -658,7 +658,7 @@ open class ArrayRow : LinearSystem.Row {
         if (removeFromDefinition) {
             definition.key?.removeFromRow(this)
         }
-        if (LinearSystem.Companion.SIMPLIFY_SYNONYMS && key != null && variables!!.currentSize == 0) {
+        if (LinearSystem.SIMPLIFY_SYNONYMS && key != null && variables!!.currentSize == 0) {
             mIsSimpleDefinition = true
             system?.hasSimpleDefinition = true
         }
@@ -681,7 +681,7 @@ open class ArrayRow : LinearSystem.Row {
         if (removeFromDefinition) {
             variable.removeFromRow(this)
         }
-        if (LinearSystem.Companion.SIMPLIFY_SYNONYMS
+        if (LinearSystem.SIMPLIFY_SYNONYMS
             && variables!!.currentSize == 0
         ) {
             mIsSimpleDefinition = true
@@ -710,7 +710,7 @@ open class ArrayRow : LinearSystem.Row {
             system.cache.mIndexedVariables.get(variable.mSynonym)!!,
             value, removeFromDefinition
         )
-        if (LinearSystem.Companion.SIMPLIFY_SYNONYMS
+        if (LinearSystem.SIMPLIFY_SYNONYMS
             && variables!!.currentSize == 0
         ) {
             mIsSimpleDefinition = true
@@ -847,7 +847,7 @@ open class ArrayRow : LinearSystem.Row {
                 done = true
             }
         }
-        if (LinearSystem.Companion.SIMPLIFY_SYNONYMS && key != null && variables!!.currentSize == 0) {
+        if (LinearSystem.SIMPLIFY_SYNONYMS && key != null && variables!!.currentSize == 0) {
             mIsSimpleDefinition = true
             system?.hasSimpleDefinition = true
         }

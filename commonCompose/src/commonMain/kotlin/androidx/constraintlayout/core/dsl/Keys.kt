@@ -20,14 +20,7 @@ package androidx.constraintlayout.core.dsl
  */
 open class Keys {
     protected fun unpack(str: Array<String?>): String {
-        val ret = StringBuilder("[")
-        for (i in str.indices) {
-            ret.append(if (i == 0) "'" else ",'")
-            ret.append(str[i])
-            ret.append("'")
-        }
-        ret.append("]")
-        return ret.toString()
+        return str.stringRepresentation()
     }
 
     protected fun append(builder: StringBuilder, name: String?, value: Int) {

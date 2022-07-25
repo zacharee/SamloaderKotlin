@@ -19,16 +19,16 @@ import androidx.constraintlayout.core.widgets.Barrier
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 
 internal class HelperReferences(widget: ConstraintWidget) : WidgetRun(widget) {
-    public override fun clear() {
+    override fun clear() {
         mRunGroup = null
         start.clear()
     }
 
-    public override fun reset() {
+    override fun reset() {
         start.resolved = false
     }
 
-    public override fun supportsWrapComputation(): Boolean {
+    override fun supportsWrapComputation(): Boolean {
         return false
     }
 
@@ -37,20 +37,20 @@ internal class HelperReferences(widget: ConstraintWidget) : WidgetRun(widget) {
         node.mTargets.add(start)
     }
 
-    public override fun apply() {
+    override fun apply() {
         if (mWidget is Barrier) {
             start.delegateToWidgetRun = true
             val barrier = mWidget as Barrier
             val type = barrier.barrierType
             val allowsGoneWidget = barrier.allowsGoneWidget
             when (type) {
-                Barrier.Companion.LEFT -> {
+                Barrier.LEFT -> {
                     start.mType = DependencyNode.Type.LEFT
                     var i = 0
                     while (i < barrier.mWidgetsCount) {
                         val refWidget: ConstraintWidget = barrier.mWidgets.get(i)!!
                         if (!allowsGoneWidget
-                            && refWidget.visibility == ConstraintWidget.Companion.GONE
+                            && refWidget.visibility == ConstraintWidget.GONE
                         ) {
                             i++
                             continue
@@ -64,13 +64,13 @@ internal class HelperReferences(widget: ConstraintWidget) : WidgetRun(widget) {
                     addDependency(mWidget.mHorizontalRun!!.end)
                 }
 
-                Barrier.Companion.RIGHT -> {
+                Barrier.RIGHT -> {
                     start.mType = DependencyNode.Type.RIGHT
                     var i = 0
                     while (i < barrier.mWidgetsCount) {
                         val refWidget: ConstraintWidget = barrier.mWidgets.get(i)!!
                         if (!allowsGoneWidget
-                            && refWidget.visibility == ConstraintWidget.Companion.GONE
+                            && refWidget.visibility == ConstraintWidget.GONE
                         ) {
                             i++
                             continue
@@ -84,13 +84,13 @@ internal class HelperReferences(widget: ConstraintWidget) : WidgetRun(widget) {
                     addDependency(mWidget.mHorizontalRun!!.end)
                 }
 
-                Barrier.Companion.TOP -> {
+                Barrier.TOP -> {
                     start.mType = DependencyNode.Type.TOP
                     var i = 0
                     while (i < barrier.mWidgetsCount) {
                         val refwidget: ConstraintWidget = barrier.mWidgets.get(i)!!
                         if (!allowsGoneWidget
-                            && refwidget.visibility == ConstraintWidget.Companion.GONE
+                            && refwidget.visibility == ConstraintWidget.GONE
                         ) {
                             i++
                             continue
@@ -104,13 +104,13 @@ internal class HelperReferences(widget: ConstraintWidget) : WidgetRun(widget) {
                     addDependency(mWidget.mVerticalRun!!.end)
                 }
 
-                Barrier.Companion.BOTTOM -> {
+                Barrier.BOTTOM -> {
                     start.mType = DependencyNode.Type.BOTTOM
                     var i = 0
                     while (i < barrier.mWidgetsCount) {
                         val refwidget: ConstraintWidget = barrier.mWidgets.get(i)!!
                         if (!allowsGoneWidget
-                            && refwidget.visibility == ConstraintWidget.Companion.GONE
+                            && refwidget.visibility == ConstraintWidget.GONE
                         ) {
                             i++
                             continue
@@ -141,19 +141,19 @@ internal class HelperReferences(widget: ConstraintWidget) : WidgetRun(widget) {
                 max = value
             }
         }
-        if (type == Barrier.Companion.LEFT || type == Barrier.Companion.TOP) {
+        if (type == Barrier.LEFT || type == Barrier.TOP) {
             start.resolve(min + barrier.margin)
         } else {
             start.resolve(max + barrier.margin)
         }
     }
 
-    public override fun applyToWidget() {
+    override fun applyToWidget() {
         if (mWidget is Barrier) {
             val barrier = mWidget as Barrier
             val type = barrier.barrierType
-            if (type == Barrier.Companion.LEFT
-                || type == Barrier.Companion.RIGHT
+            if (type == Barrier.LEFT
+                || type == Barrier.RIGHT
             ) {
                 mWidget.x = (start.value)
             } else {

@@ -57,17 +57,17 @@ abstract class TimeCycleSplineSet {
      */
     protected fun calcWave(period: Float): Float {
         return when (mWaveShape) {
-            Oscillator.Companion.SIN_WAVE -> sin((period * sVal2PI).toDouble())
+            Oscillator.SIN_WAVE -> sin((period * sVal2PI).toDouble())
                 .toFloat()
 
-            Oscillator.Companion.SQUARE_WAVE -> sign(period * sVal2PI)
-            Oscillator.Companion.TRIANGLE_WAVE -> 1 - abs(period)
-            Oscillator.Companion.SAW_WAVE -> (period * 2 + 1) % 2 - 1
-            Oscillator.Companion.REVERSE_SAW_WAVE -> 1 - (period * 2 + 1) % 2
-            Oscillator.Companion.COS_WAVE -> cos((period * sVal2PI).toDouble())
+            Oscillator.SQUARE_WAVE -> sign(period * sVal2PI)
+            Oscillator.TRIANGLE_WAVE -> 1 - abs(period)
+            Oscillator.SAW_WAVE -> (period * 2 + 1) % 2 - 1
+            Oscillator.REVERSE_SAW_WAVE -> 1 - (period * 2 + 1) % 2
+            Oscillator.COS_WAVE -> cos((period * sVal2PI).toDouble())
                 .toFloat()
 
-            Oscillator.Companion.BOUNCE -> {
+            Oscillator.BOUNCE -> {
                 val x: Float = 1 - abs(period * 4 % 4 - 2)
                 1 - x * x
             }
@@ -126,7 +126,7 @@ abstract class TimeCycleSplineSet {
                 values[i][dimensionality] = waveProp!![0].toDouble()
                 values[i][dimensionality + 1] = waveProp[1].toDouble()
             }
-            curveFit = CurveFit.Companion.get(curveType, time, values)
+            curveFit = CurveFit.get(curveType, time, values)
         }
 
         /**
@@ -215,7 +215,7 @@ abstract class TimeCycleSplineSet {
             values[k][2] = mValues[i][2].toDouble()
             k++
         }
-        curveFit = CurveFit.Companion.get(curveType, time, values)
+        curveFit = CurveFit.get(curveType, time, values)
     }
 
     protected object Sort {
@@ -296,7 +296,7 @@ abstract class TimeCycleSplineSet {
                 values[i][dimensionality] = waveProp!![0].toDouble()
                 values[i][dimensionality + 1] = waveProp[1].toDouble()
             }
-            curveFit = CurveFit.Companion.get(curveType, time, values)
+            curveFit = CurveFit.get(curveType, time, values)
         }
 
         /**
@@ -359,6 +359,6 @@ abstract class TimeCycleSplineSet {
         protected const val CURVE_VALUE = 0
         protected const val CURVE_PERIOD = 1
         protected const val CURVE_OFFSET = 2
-        protected var sVal2PI: Float = (2 * PI).toFloat()
+        protected const val sVal2PI: Float = (2 * PI).toFloat()
     }
 }

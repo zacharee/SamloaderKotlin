@@ -22,6 +22,7 @@ import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
 import kotlinx.datetime.Clock
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * Implements basic measure for linear resolution
@@ -69,17 +70,17 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             ) {
                 continue
             }
-            val widthBehavior: DimensionBehaviour? = child.getDimensionBehaviour(ConstraintWidget.Companion.HORIZONTAL)
-            val heightBehavior: DimensionBehaviour? = child.getDimensionBehaviour(ConstraintWidget.Companion.VERTICAL)
+            val widthBehavior: DimensionBehaviour? = child.getDimensionBehaviour(ConstraintWidget.HORIZONTAL)
+            val heightBehavior: DimensionBehaviour? = child.getDimensionBehaviour(ConstraintWidget.VERTICAL)
             var skip =
-                widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultWidth != ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP && heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultHeight != ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
+                widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultWidth != ConstraintWidget.MATCH_CONSTRAINT_WRAP && heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultHeight != ConstraintWidget.MATCH_CONSTRAINT_WRAP
             if (!skip && layout.optimizeFor(Optimizer.OPTIMIZATION_DIRECT)
                 && child !is VirtualLayout
             ) {
-                if (widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD && heightBehavior != DimensionBehaviour.MATCH_CONSTRAINT && !child.isInHorizontalChain) {
+                if (widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultWidth == ConstraintWidget.MATCH_CONSTRAINT_SPREAD && heightBehavior != DimensionBehaviour.MATCH_CONSTRAINT && !child.isInHorizontalChain) {
                     skip = true
                 }
-                if (heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD && widthBehavior != DimensionBehaviour.MATCH_CONSTRAINT && !child.isInHorizontalChain) {
+                if (heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultHeight == ConstraintWidget.MATCH_CONSTRAINT_SPREAD && widthBehavior != DimensionBehaviour.MATCH_CONSTRAINT && !child.isInHorizontalChain) {
                     skip = true
                 }
 
@@ -111,7 +112,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
         w: Int,
         h: Int
     ) {
-        val startLayout = if (LinearSystem.Companion.MEASURE) {
+        val startLayout = if (LinearSystem.MEASURE) {
             Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond }
         } else {
             0L
@@ -129,7 +130,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
         }
         mConstraintWidgetContainer.setPass(pass)
         mConstraintWidgetContainer.layout()
-        if (LinearSystem.Companion.MEASURE && layout.mMetrics != null) {
+        if (LinearSystem.MEASURE && layout.mMetrics != null) {
             val endLayout: Long = Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond }
             layout.mMetrics!!.measuresLayoutDuration += endLayout - startLayout
         }
@@ -159,7 +160,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                 || Optimizer.enabled(optimizationLevel, Optimizer.OPTIMIZATION_GRAPH))
         if (optimize) {
             for (i in 0 until childCount) {
-                val child: ConstraintWidget = layout.mChildren.get(i)
+                val child: ConstraintWidget = layout.mChildren[i]
                 val matchWidth = (child.horizontalDimensionBehaviour
                         == DimensionBehaviour.MATCH_CONSTRAINT)
                 val matchHeight = (child.verticalDimensionBehaviour
@@ -185,8 +186,8 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                 }
             }
         }
-        if (optimize && LinearSystem.Companion.sMetrics != null) {
-            LinearSystem.Companion.sMetrics!!.measures++
+        if (optimize && LinearSystem.sMetrics != null) {
+            LinearSystem.sMetrics!!.measures++
         }
         var allSolved = false
         optimize = optimize and (widthMode == EXACTLY && heightMode == EXACTLY || optimizeWrap)
@@ -214,14 +215,14 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                 if (widthMode == EXACTLY) {
                     allSolved = allSolved and layout.directMeasureWithOrientation(
                         optimizeWrap,
-                        ConstraintWidget.Companion.HORIZONTAL
+                        ConstraintWidget.HORIZONTAL
                     )
                     computations++
                 }
                 if (heightMode == EXACTLY) {
                     allSolved = allSolved and layout.directMeasureWithOrientation(
                         optimizeWrap,
-                        ConstraintWidget.Companion.VERTICAL
+                        ConstraintWidget.VERTICAL
                     )
                     computations++
                 }
@@ -244,7 +245,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             if (childCount > 0) {
                 measureChildren(layout)
             }
-            if (LinearSystem.Companion.MEASURE) {
+            if (LinearSystem.MEASURE) {
                 layoutTime = Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond }
             }
             updateHierarchy(layout)
@@ -320,7 +321,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                         ) {
                             continue
                         }
-                        if (widget.visibility == ConstraintWidget.Companion.GONE) {
+                        if (widget.visibility == ConstraintWidget.GONE) {
                             continue
                         }
                         if (optimize && widget.mHorizontalRun!!.mDimension.resolved
@@ -413,7 +414,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             }
             layout.optimizationLevel = optimizations
         }
-        if (LinearSystem.Companion.MEASURE) {
+        if (LinearSystem.MEASURE) {
             layoutTime = Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond } - layoutTime
         }
         return layoutTime
@@ -441,15 +442,15 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
         val horizontalUseRatio = horizontalMatchConstraints && widget.dimensionRatio > 0
         val verticalUseRatio = verticalMatchConstraints && widget.dimensionRatio > 0
         if (horizontalUseRatio) {
-            if (widget.mResolvedMatchConstraintDefault[ConstraintWidget.Companion.HORIZONTAL]
-                == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO_RESOLVED
+            if (widget.mResolvedMatchConstraintDefault[ConstraintWidget.HORIZONTAL]
+                == ConstraintWidget.MATCH_CONSTRAINT_RATIO_RESOLVED
             ) {
                 mMeasure.horizontalBehavior = DimensionBehaviour.FIXED
             }
         }
         if (verticalUseRatio) {
-            if (widget.mResolvedMatchConstraintDefault[ConstraintWidget.Companion.VERTICAL]
-                == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO_RESOLVED
+            if (widget.mResolvedMatchConstraintDefault[ConstraintWidget.VERTICAL]
+                == ConstraintWidget.MATCH_CONSTRAINT_RATIO_RESOLVED
             ) {
                 mMeasure.verticalBehavior = DimensionBehaviour.FIXED
             }
@@ -487,10 +488,11 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
         var measuredNeedsSolverPass = false
         var measureStrategy = 0
 
+        @ThreadLocal
         companion object {
-            var SELF_DIMENSIONS = 0
-            var TRY_GIVEN_DIMENSIONS = 1
-            var USE_GIVEN_DIMENSIONS = 2
+            const val SELF_DIMENSIONS = 0
+            const val TRY_GIVEN_DIMENSIONS = 1
+            const val USE_GIVEN_DIMENSIONS = 2
         }
     }
 

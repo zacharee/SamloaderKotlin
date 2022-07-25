@@ -33,16 +33,16 @@ object ConstraintSetParser {
      */
     fun parseJSON(content: String, transition: Transition, state: Int) {
         try {
-            val json: CLObject = CLParser.Companion.parse(content)
-            val elements: ArrayList<String> = json.names() ?: return
+            val json: CLObject = CLParser.parse(content)
+            val elements: ArrayList<String> = json.names()
             for (elementName in elements) {
-                val base_element: CLElement = json.get(elementName)!!
+                val base_element = json[elementName]
                 if (base_element is CLObject) {
                     val customProperties: CLObject? = base_element.getObjectOrNull("custom")
                     if (customProperties != null) {
                         val properties: ArrayList<String> = customProperties.names()
                         for (property in properties) {
-                            val value: CLElement = customProperties.get(property!!)!!
+                            val value = customProperties[property]
                             if (value is CLNumber) {
                                 transition.addCustomFloat(
                                     state,
@@ -75,10 +75,10 @@ object ConstraintSetParser {
      */
     fun parseMotionSceneJSON(scene: CoreMotionScene, content: String) {
         try {
-            val json: CLObject = CLParser.Companion.parse(content)
+            val json: CLObject = CLParser.parse(content)
             val elements: ArrayList<String> = json.names() ?: return
             for (elementName in elements) {
-                val element: CLElement = json.get(elementName)!!
+                val element = json[elementName]
                 if (element is CLObject) {
                     val clObject = element
                     when (elementName) {
@@ -101,17 +101,17 @@ object ConstraintSetParser {
         scene: CoreMotionScene,
         json: CLObject
     ) {
-        val constraintSetNames: ArrayList<String> = json.names() ?: return
+        val constraintSetNames: ArrayList<String> = json.names()
         for (csName in constraintSetNames) {
-            val constraintSet: CLObject = json.getObject(csName!!)
+            val constraintSet = json.getObject(csName)
             var added = false
             val ext = constraintSet.getStringOrNull("Extends")
             if (!ext.isNullOrEmpty()) {
                 val base = scene.getConstraintSet(ext) ?: continue
-                val baseJson: CLObject = CLParser.Companion.parse(base)
-                val widgetsOverride: ArrayList<String> = constraintSet.names() ?: continue
+                val baseJson: CLObject = CLParser.parse(base)
+                val widgetsOverride: ArrayList<String> = constraintSet.names()
                 for (widgetOverrideName in widgetsOverride) {
-                    val value: CLElement = constraintSet.get(widgetOverrideName!!)!!
+                    val value = constraintSet[widgetOverrideName]
                     if (value is CLObject) {
                         override(baseJson, widgetOverrideName, value)
                     }
@@ -131,13 +131,13 @@ object ConstraintSetParser {
         name: String?, overrideValue: CLObject
     ) {
         if (!baseJson!!.has(name!!)) {
-            baseJson.put(name!!, overrideValue)
+            baseJson.put(name, overrideValue)
         } else {
-            val base: CLObject = baseJson.getObject(name!!)
+            val base: CLObject = baseJson.getObject(name)
             val keys: ArrayList<String> = overrideValue.names()
             for (key in keys) {
                 if (key != "clear") {
-                    base.put(key, overrideValue.get(key))
+                    base.put(key, overrideValue[key])
                     continue
                 }
                 val toClear: CLArray = overrideValue.getArray("clear")
@@ -186,9 +186,9 @@ object ConstraintSetParser {
      */
     @Throws(CLParsingException::class)
     fun parseTransitions(scene: CoreMotionScene, json: CLObject) {
-        val elements: ArrayList<String> = json.names() ?: return
+        val elements: ArrayList<String> = json.names()
         for (elementName in elements) {
-            scene.setTransitionContent(elementName, json.getObject(elementName!!).toJSON())
+            scene.setTransitionContent(elementName, json.getObject(elementName).toJSON())
         }
     }
 
@@ -216,10 +216,10 @@ object ConstraintSetParser {
         layoutVariables: LayoutVariables
     ) {
         try {
-            val json: CLObject = CLParser.Companion.parse(content)
-            val elements: ArrayList<String> = json.names() ?: return
+            val json: CLObject = CLParser.parse(content)
+            val elements: ArrayList<String> = json.names()
             for (elementName in elements) {
-                val element: CLElement = json.get(elementName)!!
+                val element = json[elementName]!!
                 if (PARSER_DEBUG) {
                     println(
                         "[" + elementName + "] = " + element
@@ -244,14 +244,14 @@ object ConstraintSetParser {
                         if (type != null) {
                             when (type) {
                                 "hGuideline" -> parseGuidelineParams(
-                                    ConstraintWidget.Companion.HORIZONTAL,
+                                    ConstraintWidget.HORIZONTAL,
                                     state,
                                     elementName,
                                     element
                                 )
 
                                 "vGuideline" -> parseGuidelineParams(
-                                    ConstraintWidget.Companion.VERTICAL,
+                                    ConstraintWidget.VERTICAL,
                                     state,
                                     elementName,
                                     element
@@ -294,27 +294,26 @@ object ConstraintSetParser {
             if (element is CLNumber) {
                 layoutVariables.put(elementName, element.int)
             } else if (element is CLObject) {
-                val obj = element
                 var arrayIds: ArrayList<String>
-                if (obj.has("from") && obj.has("to")) {
-                    val from = layoutVariables[obj.get("from")!!]
-                    val to = layoutVariables[obj.get("to")!!]
-                    val prefix: String = obj.getStringOrNull("prefix")!!
-                    val postfix: String = obj.getStringOrNull("postfix")!!
+                if (element.has("from") && element.has("to")) {
+                    val from = layoutVariables[element["from"]!!]
+                    val to = layoutVariables[element["to"]!!]
+                    val prefix: String = element.getStringOrNull("prefix")!!
+                    val postfix: String = element.getStringOrNull("postfix")!!
                     layoutVariables.put(elementName, from, to, 1f, prefix, postfix)
-                } else if (obj.has("from") && obj.has("step")) {
-                    val start = layoutVariables[obj.get("from")!!]
-                    val increment = layoutVariables[obj.get("step")!!]
+                } else if (element.has("from") && element.has("step")) {
+                    val start = layoutVariables[element.get("from")!!]
+                    val increment = layoutVariables[element.get("step")!!]
                     layoutVariables.put(elementName, start, increment)
-                } else if (obj.has("ids")) {
-                    val ids: CLArray = obj.getArray("ids")
+                } else if (element.has("ids")) {
+                    val ids: CLArray = element.getArray("ids")
                     arrayIds = ArrayList()
                     for (i in 0 until ids.size()) {
                         arrayIds.add(ids.getString(i)!!)
                     }
                     layoutVariables.put(elementName, arrayIds)
-                } else if (obj.has("tag")) {
-                    arrayIds = state.getIdsForTag(obj.getString("tag"))!!
+                } else if (element.has("tag")) {
+                    arrayIds = state.getIdsForTag(element.getString("tag"))!!
                     layoutVariables.put(elementName, arrayIds)
                 }
             }
@@ -331,11 +330,11 @@ object ConstraintSetParser {
     fun parseDesignElementsJSON(
         content: String, list: ArrayList<DesignElement>
     ) {
-        val json: CLObject = CLParser.Companion.parse(content)
-        var elements: ArrayList<String> = json.names() ?: return
+        val json: CLObject = CLParser.parse(content)
+        var elements: ArrayList<String> = json.names()
         for (i in elements.indices) {
-            val elementName: String = elements.get(i)
-            val element: CLElement = json.get(elementName)!!
+            val elementName: String = elements[i]
+            val element: CLElement = json[elementName]!!
             if (PARSER_DEBUG) {
                 println("[" + element + "] " + element::class)
             }
@@ -347,8 +346,8 @@ object ConstraintSetParser {
                     elements = element.names()
                     var j = 0
                     while (j < elements.size) {
-                        val designElementName: String = elements.get(j)
-                        val designElement = element.get(designElementName) as CLObject
+                        val designElementName: String = elements[j]
+                        val designElement = element[designElementName] as CLObject
                         println("element found $designElementName")
                         val type = designElement.getStringOrNull("type")
                         if (type != null) {
@@ -356,11 +355,11 @@ object ConstraintSetParser {
                             val size: Int = designElement.size()
                             var k = 0
                             while (k < size) {
-                                val key = designElement.get(j) as CLKey
+                                val key = designElement[j] as CLKey
                                 val paramName: String = key.content()
                                 val paramValue = key.value?.content()
                                 if (paramValue != null) {
-                                    parameters.put(paramName, paramValue)
+                                    parameters[paramName] = paramValue
                                 }
                                 k++
                             }
@@ -381,15 +380,14 @@ object ConstraintSetParser {
         element: CLArray
     ) {
         for (i in 0 until element.size()) {
-            val helper = element.get(i)
+            val helper = element[i]
             if (helper is CLArray) {
-                val array = helper
-                if (array.size() > 1) {
-                    when (array.getString(0)) {
-                        "hChain" -> parseChain(ConstraintWidget.Companion.HORIZONTAL, state, layoutVariables, array)
-                        "vChain" -> parseChain(ConstraintWidget.Companion.VERTICAL, state, layoutVariables, array)
-                        "hGuideline" -> parseGuideline(ConstraintWidget.Companion.HORIZONTAL, state, array)
-                        "vGuideline" -> parseGuideline(ConstraintWidget.Companion.VERTICAL, state, array)
+                if (helper.size() > 1) {
+                    when (helper.getString(0)) {
+                        "hChain" -> parseChain(ConstraintWidget.HORIZONTAL, state, layoutVariables, helper)
+                        "vChain" -> parseChain(ConstraintWidget.VERTICAL, state, layoutVariables, helper)
+                        "hGuideline" -> parseGuideline(ConstraintWidget.HORIZONTAL, state, helper)
+                        "vGuideline" -> parseGuideline(ConstraintWidget.VERTICAL, state, helper)
                     }
                 }
             }
@@ -402,9 +400,9 @@ object ConstraintSetParser {
         layoutVariables: LayoutVariables,
         json: CLObject
     ) {
-        val elements: ArrayList<String> = json.names() ?: return
+        val elements: ArrayList<String> = json.names()
         for (elementName in elements) {
-            val element = json.get(elementName)
+            val element = json[elementName]
             val arrayIds: ArrayList<String>? = layoutVariables.getList(elementName)
             if (arrayIds != null && element is CLObject) {
                 for (id in arrayIds) {
@@ -419,17 +417,17 @@ object ConstraintSetParser {
         orientation: Int, state: State,
         margins: LayoutVariables, helper: CLArray
     ) {
-        val chain: ChainReference? =
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) state.horizontalChain() else state.verticalChain()
-        val refs = helper.get(1)
+        val chain: ChainReference =
+            if (orientation == ConstraintWidget.HORIZONTAL) state.horizontalChain() else state.verticalChain()
+        val refs = helper[1]
         if (refs !is CLArray || refs.size() < 1) {
             return
         }
         for (i in 0 until refs.size()) {
-            chain?.add(refs.getString(i)!!)
+            chain.add(refs.getString(i)!!)
         }
         if (helper.size() > 2) { // we have additional parameters
-            val params = helper.get(2)
+            val params = helper[2]
             if (params !is CLObject) {
                 return
             }
@@ -437,19 +435,19 @@ object ConstraintSetParser {
             for (constraintName in constraints) {
                 when (constraintName) {
                     "style" -> {
-                        val styleObject = params.get(constraintName)
+                        val styleObject = params[constraintName]
                         var styleValue: String?
                         if (styleObject is CLArray && styleObject.size() > 1) {
                             styleValue = styleObject.getString(0)
                             val biasValue: Float = styleObject.getFloat(1)
-                            chain!!.bias(biasValue)
+                            chain.bias(biasValue)
                         } else {
                             styleValue = styleObject?.content()
                         }
                         when (styleValue) {
-                            "packed" -> chain!!.style(State.Chain.PACKED)
-                            "spread_inside" -> chain!!.style(State.Chain.SPREAD_INSIDE)
-                            else -> chain!!.style(State.Chain.SPREAD)
+                            "packed" -> chain.style(State.Chain.PACKED)
+                            "spread_inside" -> chain.style(State.Chain.SPREAD_INSIDE)
+                            else -> chain.style(State.Chain.SPREAD)
                         }
                     }
 
@@ -497,7 +495,7 @@ object ConstraintSetParser {
         for (params in `object`.names()) {
             when (params) {
                 "contains" -> {
-                    val refs: CLElement = `object`.get(params)!!
+                    val refs: CLElement = `object`[params]!!
                     if (refs !is CLArray || refs.size() < 1) {
                         println(
                             chainName + " contains should be an array \"" + refs.content()
@@ -507,31 +505,30 @@ object ConstraintSetParser {
                     }
                     var i = 0
                     while (i < refs.size()) {
-                        val chainElement = refs.get(i)
+                        val chainElement = refs[i]
                         if (chainElement is CLArray) {
-                            val array = chainElement
-                            if (array.size() > 0) {
-                                val id = array.get(0)?.content()
+                            if (chainElement.size() > 0) {
+                                val id = chainElement[0]?.content()
                                 var weight = Float.NaN
                                 var preMargin = Float.NaN
                                 var postMargin = Float.NaN
-                                when (array.size()) {
-                                    2 -> weight = array.getFloat(1)
+                                when (chainElement.size()) {
+                                    2 -> weight = chainElement.getFloat(1)
                                     3 -> {
-                                        weight = array.getFloat(1)
+                                        weight = chainElement.getFloat(1)
                                         run {
-                                            preMargin = toPix(state, array.getFloat(2))
+                                            preMargin = toPix(state, chainElement.getFloat(2))
                                             postMargin = preMargin
                                         }
                                     }
 
                                     4 -> {
-                                        weight = array.getFloat(1)
-                                        preMargin = toPix(state, array.getFloat(2))
-                                        postMargin = toPix(state, array.getFloat(3))
+                                        weight = chainElement.getFloat(1)
+                                        preMargin = toPix(state, chainElement.getFloat(2))
+                                        postMargin = toPix(state, chainElement.getFloat(3))
                                     }
                                 }
-                                chain!!.addChainElement(id!!, weight, preMargin, postMargin)
+                                chain.addChainElement(id!!, weight, preMargin, postMargin)
                             }
                         } else {
                             chain.add(chainElement?.content()!!)
@@ -549,19 +546,19 @@ object ConstraintSetParser {
                 )
 
                 "style" -> {
-                    val styleObject: CLElement = `object`.get(params)!!
+                    val styleObject: CLElement = `object`[params]!!
                     var styleValue: String?
                     if (styleObject is CLArray && styleObject.size() > 1) {
                         styleValue = styleObject.getString(0)
                         val biasValue: Float = styleObject.getFloat(1)
-                        chain!!.bias(biasValue)
+                        chain.bias(biasValue)
                     } else {
                         styleValue = styleObject.content()
                     }
                     when (styleValue) {
-                        "packed" -> chain!!.style(State.Chain.PACKED)
-                        "spread_inside" -> chain!!.style(State.Chain.SPREAD_INSIDE)
-                        else -> chain!!.style(State.Chain.SPREAD)
+                        "packed" -> chain.style(State.Chain.PACKED)
+                        "spread_inside" -> chain.style(State.Chain.SPREAD_INSIDE)
+                        else -> chain.style(State.Chain.SPREAD)
                     }
                 }
             }
@@ -573,7 +570,7 @@ object ConstraintSetParser {
         orientation: Int,
         state: State, helper: CLArray
     ) {
-        val params = helper.get(1)
+        val params = helper[1]
         if (params !is CLObject) {
             return
         }
@@ -590,7 +587,7 @@ object ConstraintSetParser {
     ) {
         val constraints: ArrayList<String> = params.names()
         val reference = state.constraints(guidelineId)
-        if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        if (orientation == ConstraintWidget.HORIZONTAL) {
             state.horizontalGuideline(guidelineId)
         } else {
             state.verticalGuideline(guidelineId)
@@ -619,24 +616,24 @@ object ConstraintSetParser {
         elementName: String, element: CLObject
     ) {
         val reference = state.barrier(elementName, State.Direction.END)
-        val constraints: ArrayList<String> = element.names() ?: return
+        val constraints: ArrayList<String> = element.names()
         for (constraintName in constraints) {
             when (constraintName) {
                 "direction" -> {
                     when (element.getString(constraintName)) {
-                        "start" -> reference!!.setBarrierDirection(State.Direction.START)
-                        "end" -> reference!!.setBarrierDirection(State.Direction.END)
-                        "left" -> reference!!.setBarrierDirection(State.Direction.LEFT)
-                        "right" -> reference!!.setBarrierDirection(State.Direction.RIGHT)
-                        "top" -> reference!!.setBarrierDirection(State.Direction.TOP)
-                        "bottom" -> reference!!.setBarrierDirection(State.Direction.BOTTOM)
+                        "start" -> reference.setBarrierDirection(State.Direction.START)
+                        "end" -> reference.setBarrierDirection(State.Direction.END)
+                        "left" -> reference.setBarrierDirection(State.Direction.LEFT)
+                        "right" -> reference.setBarrierDirection(State.Direction.RIGHT)
+                        "top" -> reference.setBarrierDirection(State.Direction.TOP)
+                        "bottom" -> reference.setBarrierDirection(State.Direction.BOTTOM)
                     }
                 }
 
                 "margin" -> {
                     val margin: Float = element.getFloatOrNaN(constraintName)
                     if (!margin.isNaN()) {
-                        reference!!.margin(margin) // TODO is this a bug
+                        reference.margin(margin) // TODO is this a bug
                     }
                 }
 
@@ -645,7 +642,7 @@ object ConstraintSetParser {
                     if (list != null) {
                         var j = 0
                         while (j < list.size()) {
-                            val elementNameReference = list.get(j)?.content()!!
+                            val elementNameReference = list[j]?.content()!!
                             val elementReference = state.constraints(elementNameReference)
                             if (PARSER_DEBUG) {
                                 println(
@@ -654,7 +651,7 @@ object ConstraintSetParser {
                                             + "TO BARRIER "
                                 )
                             }
-                            reference?.add(elementReference!!)
+                            reference.add(elementReference!!)
                             j++
                         }
                     }
@@ -674,13 +671,13 @@ object ConstraintSetParser {
         val reference = state.constraints(elementName)
         if (reference?.width == null) {
             // Default to Wrap when the Dimension has not been assigned
-            reference!!.width = Dimension.Companion.createWrap()
+            reference?.width = Dimension.createWrap()
         }
         if (reference?.height == null) {
             // Default to Wrap when the Dimension has not been assigned
-            reference!!.height = Dimension.Companion.createWrap()
+            reference?.height = Dimension.createWrap()
         }
-        val constraints: ArrayList<String> = element.names() ?: return
+        val constraints: ArrayList<String> = element.names()
         for (constraintName in constraints) {
             when (constraintName) {
                 "width" -> reference!!.width = parseDimension(
@@ -694,118 +691,117 @@ object ConstraintSetParser {
                 )
 
                 "center" -> {
-                    val target: String = element.getString(constraintName)!!
-                    var targetReference: ConstraintReference?
-                    targetReference = if (target == "parent") {
-                        state.constraints(State.Companion.PARENT)
+                    val target: String = element.getString(constraintName)
+                    val targetReference = if (target == "parent") {
+                        state.constraints(State.PARENT)
                     } else {
                         state.constraints(target)
                     }
-                    reference!!.startToStart(targetReference)
-                    reference.endToEnd(targetReference)
-                    reference.topToTop(targetReference)
-                    reference.bottomToBottom(targetReference)
+                    reference?.startToStart(targetReference)
+                    reference?.endToEnd(targetReference)
+                    reference?.topToTop(targetReference)
+                    reference?.bottomToBottom(targetReference)
                 }
 
                 "centerHorizontally" -> {
                     val target = element.getString(constraintName)
                     val targetReference =
-                        if (target == "parent") state.constraints(State.Companion.PARENT) else state.constraints(target!!)
-                    reference!!.startToStart(targetReference)
-                    reference.endToEnd(targetReference)
+                        if (target == "parent") state.constraints(State.PARENT) else state.constraints(target)
+                    reference?.startToStart(targetReference)
+                    reference?.endToEnd(targetReference)
                 }
 
                 "centerVertically" -> {
                     val target = element.getString(constraintName)
                     val targetReference =
-                        if (target == "parent") state.constraints(State.Companion.PARENT) else state.constraints(target!!)
-                    reference!!.topToTop(targetReference)
-                    reference.bottomToBottom(targetReference)
+                        if (target == "parent") state.constraints(State.PARENT) else state.constraints(target)
+                    reference?.topToTop(targetReference)
+                    reference?.bottomToBottom(targetReference)
                 }
 
                 "alpha" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.alpha(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.alpha(value)
                 }
 
                 "scaleX" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.scaleX(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.scaleX(value)
                 }
 
                 "scaleY" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.scaleY(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.scaleY(value)
                 }
 
                 "translationX" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.translationX(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.translationX(value)
                 }
 
                 "translationY" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.translationY(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.translationY(value)
                 }
 
                 "translationZ" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.translationZ(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.translationZ(value)
                 }
 
                 "pivotX" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.pivotX(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.pivotX(value)
                 }
 
                 "pivotY" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.pivotY(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.pivotY(value)
                 }
 
                 "rotationX" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.rotationX(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.rotationX(value)
                 }
 
                 "rotationY" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.rotationY(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.rotationY(value)
                 }
 
                 "rotationZ" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.rotationZ(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.rotationZ(value)
                 }
 
                 "visibility" -> when (element.getString(constraintName)) {
-                    "visible" -> reference!!.visibility(ConstraintWidget.Companion.VISIBLE)
-                    "invisible" -> reference!!.visibility(ConstraintWidget.Companion.INVISIBLE)
-                    "gone" -> reference!!.visibility(ConstraintWidget.Companion.GONE)
+                    "visible" -> reference?.visibility(ConstraintWidget.VISIBLE)
+                    "invisible" -> reference?.visibility(ConstraintWidget.INVISIBLE)
+                    "gone" -> reference?.visibility(ConstraintWidget.GONE)
                 }
 
                 "vBias" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.verticalBias(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.verticalBias(value)
                 }
 
                 "hBias" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference!!.horizontalBias(value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.horizontalBias(value)
                 }
 
                 "vWeight" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference.verticalChainWeight = (value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.verticalChainWeight = (value)
                 }
 
                 "hWeight" -> {
-                    value = layoutVariables[element.get(constraintName)!!]
-                    reference.horizontalChainWeight = (value)
+                    value = layoutVariables[element[constraintName]!!]
+                    reference?.horizontalChainWeight = (value)
                 }
 
                 "custom" -> parseCustomProperties(element, reference, constraintName)
-                "motion" -> parseMotionProperties(element.get(constraintName)!!, reference)
+                "motion" -> parseMotionProperties(element[constraintName]!!, reference)
                 else -> parseConstraint(state, layoutVariables, element, reference, constraintName)
             }
         }
@@ -818,9 +814,9 @@ object ConstraintSetParser {
         constraintName: String?
     ) {
         val json: CLObject = element.getObjectOrNull(constraintName!!) ?: return
-        val properties: ArrayList<String> = json.names() ?: return
+        val properties: ArrayList<String> = json.names()
         for (property in properties) {
-            val value: CLElement = json.get(property!!)!!
+            val value: CLElement = json[property]!!
             if (value is CLNumber) {
                 reference!!.addCustomFloat(property, value.float)
             } else if (value is CLString) {
@@ -865,44 +861,42 @@ object ConstraintSetParser {
         if (element !is CLObject) {
             return
         }
-        val obj = element
         val bundle = TypedBundle()
-        val constraints: ArrayList<String> = obj.names() ?: return
+        val constraints: ArrayList<String> = element.names()
         for (constraintName in constraints) {
             when (constraintName) {
                 "pathArc" -> {
-                    val `val`: String = obj.getString(constraintName)!!
+                    val `val`: String = element.getString(constraintName)
                     val ord = indexOf(`val`, "none", "startVertical", "startHorizontal", "flip")
                     if (ord == -1) {
-                        println(obj.line.toString() + " pathArc = '" + `val` + "'")
+                        println(element.line.toString() + " pathArc = '" + `val` + "'")
                         break
                     }
-                    bundle.add(MotionType.Companion.TYPE_PATHMOTION_ARC, ord)
+                    bundle.add(MotionType.TYPE_PATHMOTION_ARC, ord)
                 }
 
                 "relativeTo" -> bundle.add(
-                    MotionType.Companion.TYPE_ANIMATE_RELATIVE_TO,
-                    obj.getString(constraintName)
+                    MotionType.TYPE_ANIMATE_RELATIVE_TO,
+                    element.getString(constraintName)
                 )
 
-                "easing" -> bundle.add(MotionType.Companion.TYPE_EASING, obj.getString(constraintName))
-                "stagger" -> bundle.add(MotionType.Companion.TYPE_STAGGER, obj.getFloat(constraintName))
+                "easing" -> bundle.add(MotionType.TYPE_EASING, element.getString(constraintName))
+                "stagger" -> bundle.add(MotionType.TYPE_STAGGER, element.getFloat(constraintName))
                 "quantize" -> {
-                    val quant: CLElement = obj.get(constraintName)!!
+                    val quant = element[constraintName]
                     if (quant is CLArray) {
-                        val array = quant
-                        val len: Int = array.size()
+                        val len: Int = quant.size()
                         if (len > 0) {
-                            bundle.add(MotionType.Companion.TYPE_QUANTIZE_MOTIONSTEPS, array.getInt(0))
+                            bundle.add(MotionType.TYPE_QUANTIZE_MOTIONSTEPS, quant.getInt(0))
                             if (len > 1) {
-                                bundle.add(MotionType.Companion.TYPE_QUANTIZE_INTERPOLATOR_TYPE, array.getString(1))
+                                bundle.add(MotionType.TYPE_QUANTIZE_INTERPOLATOR_TYPE, quant.getString(1))
                                 if (len > 2) {
-                                    bundle.add(MotionType.Companion.TYPE_QUANTIZE_MOTION_PHASE, array.getFloat(2))
+                                    bundle.add(MotionType.TYPE_QUANTIZE_MOTION_PHASE, quant.getFloat(2))
                                 }
                             }
                         }
                     } else {
-                        bundle.add(MotionType.Companion.TYPE_QUANTIZE_MOTIONSTEPS, obj.getInt(constraintName))
+                        bundle.add(MotionType.TYPE_QUANTIZE_MOTIONSTEPS, element.getInt(constraintName))
                     }
                 }
             }
@@ -935,41 +929,41 @@ object ConstraintSetParser {
                 marginGone = state.convertDimension(state.dpToPixel!!.toPixels(margin)).toFloat()
             }
             val targetReference =
-                if (target == "parent") state.constraints(State.Companion.PARENT) else state.constraints(target)
+                if (target == "parent") state.constraints(State.PARENT) else state.constraints(target)
             when (constraintName) {
                 "circular" -> {
-                    val angle = layoutVariables[constraint.get(1)!!]
-                    reference!!.circularConstraint(targetReference, angle, 0f)
+                    val angle = layoutVariables[constraint[1]!!]
+                    reference?.circularConstraint(targetReference, angle, 0f)
                 }
 
                 "start" -> when (anchor) {
-                    "start" -> reference!!.startToStart(targetReference)
-                    "end" -> reference!!.startToEnd(targetReference)
+                    "start" -> reference?.startToStart(targetReference)
+                    "end" -> reference?.startToEnd(targetReference)
                 }
 
                 "end" -> when (anchor) {
-                    "start" -> reference!!.endToStart(targetReference)
-                    "end" -> reference!!.endToEnd(targetReference)
+                    "start" -> reference?.endToStart(targetReference)
+                    "end" -> reference?.endToEnd(targetReference)
                 }
 
                 "left" -> when (anchor) {
-                    "left" -> reference!!.leftToLeft(targetReference)
-                    "right" -> reference!!.leftToRight(targetReference)
+                    "left" -> reference?.leftToLeft(targetReference)
+                    "right" -> reference?.leftToRight(targetReference)
                 }
 
                 "right" -> when (anchor) {
-                    "left" -> reference!!.rightToLeft(targetReference)
-                    "right" -> reference!!.rightToRight(targetReference)
+                    "left" -> reference?.rightToLeft(targetReference)
+                    "right" -> reference?.rightToRight(targetReference)
                 }
 
                 "top" -> when (anchor) {
-                    "top" -> reference!!.topToTop(targetReference)
-                    "bottom" -> reference!!.topToBottom(targetReference)
+                    "top" -> reference?.topToTop(targetReference)
+                    "bottom" -> reference?.topToBottom(targetReference)
                 }
 
                 "bottom" -> when (anchor) {
-                    "top" -> reference!!.bottomToTop(targetReference)
-                    "bottom" -> reference!!.bottomToBottom(targetReference)
+                    "top" -> reference?.bottomToTop(targetReference)
+                    "bottom" -> reference?.bottomToBottom(targetReference)
                 }
 
                 "baseline" -> when (anchor) {
@@ -994,10 +988,10 @@ object ConstraintSetParser {
             }
             reference!!.margin(margin).marginGone(marginGone)
         } else {
-            val target = element.getStringOrNull(constraintName!!)
+            val target = element.getStringOrNull(constraintName)
             if (target != null) {
                 val targetReference =
-                    if (target == "parent") state.constraints(State.Companion.PARENT) else state.constraints(target)
+                    if (target == "parent") state.constraints(State.PARENT) else state.constraints(target)
                 when (constraintName) {
                     "start" -> reference!!.startToStart(targetReference)
                     "end" -> reference!!.endToEnd(targetReference)
@@ -1014,21 +1008,21 @@ object ConstraintSetParser {
     }
 
     fun parseDimensionMode(dimensionString: String?): Dimension {
-        var dimension: Dimension = Dimension.Companion.createFixed(0)
+        var dimension: Dimension = Dimension.createFixed(0)
         when (dimensionString) {
-            "wrap" -> dimension = Dimension.Companion.createWrap()
-            "preferWrap" -> dimension = Dimension.Companion.createSuggested(Dimension.Companion.WRAP_DIMENSION)
-            "spread" -> dimension = Dimension.Companion.createSuggested(Dimension.Companion.SPREAD_DIMENSION)
-            "parent" -> dimension = Dimension.Companion.createParent()
+            "wrap" -> dimension = Dimension.createWrap()
+            "preferWrap" -> dimension = Dimension.createSuggested(Dimension.WRAP_DIMENSION)
+            "spread" -> dimension = Dimension.createSuggested(Dimension.SPREAD_DIMENSION)
+            "parent" -> dimension = Dimension.createParent()
             else -> {
                 if (dimensionString!!.endsWith("%")) {
                     // parent percent
                     val percentString = dimensionString.substring(0, dimensionString.indexOf('%'))
                     val percentValue = percentString.toFloat() / 100f
-                    dimension = Dimension.Companion.createPercent(0, percentValue).suggested(0)
+                    dimension = Dimension.createPercent(0, percentValue).suggested(0)
                 } else if (dimensionString.contains(":")) {
-                    dimension = Dimension.Companion.createRatio(dimensionString)
-                        .suggested(Dimension.Companion.SPREAD_DIMENSION)
+                    dimension = Dimension.createRatio(dimensionString)
+                        .suggested(Dimension.SPREAD_DIMENSION)
                 }
             }
         }
@@ -1042,36 +1036,35 @@ object ConstraintSetParser {
         state: State,
         dpToPixels: CorePixelDp?
     ): Dimension {
-        val dimensionElement: CLElement = element.get(constraintName!!)!!
-        var dimension: Dimension = Dimension.Companion.createFixed(0)
+        val dimensionElement = element[constraintName!!]
+        var dimension: Dimension = Dimension.createFixed(0)
         if (dimensionElement is CLString) {
             dimension = parseDimensionMode(dimensionElement.content())
         } else if (dimensionElement is CLNumber) {
-            dimension = Dimension.Companion.createFixed(
-                state.convertDimension(dpToPixels!!.toPixels(element.getFloat(constraintName!!)))
+            dimension = Dimension.createFixed(
+                state.convertDimension(dpToPixels!!.toPixels(element.getFloat(constraintName)))
             )
         } else if (dimensionElement is CLObject) {
-            val obj = dimensionElement
-            val mode = obj.getStringOrNull("value")
+            val mode = dimensionElement.getStringOrNull("value")
             if (mode != null) {
                 dimension = parseDimensionMode(mode)
             }
-            val minEl = obj.getOrNull("min")
+            val minEl = dimensionElement.getOrNull("min")
             if (minEl != null) {
                 if (minEl is CLNumber) {
                     val min = minEl.float
                     dimension.min(state.convertDimension(dpToPixels!!.toPixels(min)))
                 } else if (minEl is CLString) {
-                    dimension.min(Dimension.Companion.WRAP_DIMENSION)
+                    dimension.min(Dimension.WRAP_DIMENSION)
                 }
             }
-            val maxEl = obj.getOrNull("max")
+            val maxEl = dimensionElement.getOrNull("max")
             if (maxEl != null) {
                 if (maxEl is CLNumber) {
                     val max = maxEl.float
                     dimension.max(state.convertDimension(dpToPixels!!.toPixels(max)))
                 } else if (maxEl is CLString) {
-                    dimension.max(Dimension.Companion.WRAP_DIMENSION)
+                    dimension.max(Dimension.WRAP_DIMENSION)
                 }
             }
         }
@@ -1126,22 +1119,21 @@ object ConstraintSetParser {
      * When the json has a variable:{   } section this is used.
      */
     class LayoutVariables {
-        var mMargins: HashMap<String, Int> = HashMap<String, Int>()
-        var mGenerators: HashMap<String, GeneratedValue> = HashMap<String, GeneratedValue>()
-        var mArrayIds: HashMap<String, ArrayList<String>> =
-            HashMap<String, ArrayList<String>>()
+        var mMargins: HashMap<String, Int> = HashMap()
+        var mGenerators: HashMap<String, GeneratedValue> = HashMap()
+        var mArrayIds: HashMap<String, ArrayList<String>> = HashMap()
 
         fun put(elementName: String, element: Int) {
-            mMargins.put(elementName, element)
+            mMargins[elementName] = element
         }
 
         fun put(elementName: String, start: Float, incrementBy: Float) {
             if (mGenerators.containsKey(elementName)) {
-                if (mGenerators.get(elementName) is OverrideValue) {
+                if (mGenerators[elementName] is OverrideValue) {
                     return
                 }
             }
-            mGenerators.put(elementName, Generator(start, incrementBy))
+            mGenerators[elementName] = Generator(start, incrementBy)
         }
 
         fun put(
@@ -1153,13 +1145,13 @@ object ConstraintSetParser {
             postfix: String?
         ) {
             if (mGenerators.containsKey(elementName)) {
-                if (mGenerators.get(elementName) is OverrideValue) {
+                if (mGenerators[elementName] is OverrideValue) {
                     return
                 }
             }
             val generator = FiniteGenerator(from, to, step, prefix, postfix)
-            mGenerators.put(elementName, generator)
-            mArrayIds.put(elementName, generator.array())
+            mGenerators[elementName] = generator
+            mArrayIds[elementName] = generator.array()
         }
 
         /**
@@ -1170,17 +1162,17 @@ object ConstraintSetParser {
          */
         fun putOverride(elementName: String, value: Float) {
             val generator: GeneratedValue = OverrideValue(value)
-            mGenerators.put(elementName, generator)
+            mGenerators[elementName] = generator
         }
 
         operator fun get(elementName: Any): Float {
             if (elementName is CLString) {
                 val stringValue: String = elementName.content()
                 if (mGenerators.containsKey(stringValue)) {
-                    return mGenerators.get(stringValue)!!.value()
+                    return mGenerators[stringValue]!!.value()
                 }
                 if (mMargins.containsKey(stringValue)) {
-                    return mMargins.get(stringValue)!!.toFloat()
+                    return mMargins[stringValue]!!.toFloat()
                 }
             } else if (elementName is CLNumber) {
                 return elementName.float
@@ -1190,7 +1182,7 @@ object ConstraintSetParser {
 
         fun getList(elementName: String?): ArrayList<String>? {
             return if (mArrayIds.containsKey(elementName)) {
-                mArrayIds.get(elementName)
+                mArrayIds[elementName]
             } else null
         }
 
@@ -1267,7 +1259,7 @@ object ConstraintSetParser {
         }
 
         fun array(): ArrayList<String> {
-            val array: ArrayList<String> = ArrayList<String>()
+            val array: ArrayList<String> = ArrayList()
             var value = mInitial.toInt()
             val maxInt = mMax.toInt()
             for (i in value..maxInt) {

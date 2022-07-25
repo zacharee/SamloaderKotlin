@@ -15,7 +15,7 @@
  */
 package androidx.constraintlayout.core.dsl
 
-import androidx.compose.ui.text.intl.Locale
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * Provides the API for creating a Constraint Object for use in the Core
@@ -604,18 +604,11 @@ class Constraint(val id: String) {
      * @param str String array to be converted
      * @return a String representation of the input array.
      */
-    fun convertStringArrayToString(str: Array<String>): String {
-        val ret: StringBuilder = StringBuilder("[")
-        for (i in str.indices) {
-            ret.append(if (i == 0) "'" else ",'")
-            ret.append(str[i])
-            ret.append("'")
-        }
-        ret.append("]")
-        return ret.toString()
+    private fun convertStringArrayToString(str: Array<String>): String {
+        return str.stringRepresentation()
     }
 
-    protected fun append(builder: StringBuilder, name: String?, value: Float) {
+    private fun append(builder: StringBuilder, name: String?, value: Float) {
         if (value.isNaN()) {
             return
         }
@@ -624,12 +617,7 @@ class Constraint(val id: String) {
     }
 
     override fun toString(): String {
-        val ret: StringBuilder = StringBuilder(
-            """
-    ${id}:{
-    
-    """.trimIndent()
-        )
+        val ret = StringBuilder("${id}:{")
         left.build(ret)
         right.build(ret)
         top.build(ret)
@@ -727,9 +715,10 @@ class Constraint(val id: String) {
         return ret.toString()
     }
 
+    @ThreadLocal
     companion object {
         var UNSET = Int.MIN_VALUE
-        var chainModeMap: MutableMap<ChainMode, String> = HashMap<ChainMode, String>()
+        var chainModeMap: MutableMap<ChainMode, String> = HashMap()
 
         init {
             chainModeMap[ChainMode.SPREAD] = "spread"

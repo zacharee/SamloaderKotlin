@@ -70,7 +70,7 @@ class KeyPositions(numOfFrames: Int, vararg targets: String?) : Keys() {
     }
 
     override fun toString(): String {
-        val ret: StringBuilder = StringBuilder()
+        val ret = StringBuilder()
         ret.append("KeyPositions:{\n")
         append(ret, "target", target.contentToString())
         ret.append("frame:").append(frames?.contentToString()).append(",\n")

@@ -22,7 +22,7 @@ import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.Dimension.Companion.percent
+import androidx.constraintlayout.compose.Dimension.percent
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 
 /**

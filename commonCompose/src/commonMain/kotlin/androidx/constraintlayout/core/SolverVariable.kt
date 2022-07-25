@@ -295,7 +295,7 @@ class SolverVariable : Comparable<SolverVariable> {
 
     @ThreadLocal
     companion object {
-        private val INTERNAL_DEBUG: Boolean = LinearSystem.Companion.FULL_DEBUG
+        private val INTERNAL_DEBUG: Boolean = LinearSystem.FULL_DEBUG
         private const val VAR_USE_HASH = false
         private const val DO_NOT_USE = false
         const val STRENGTH_NONE = 0

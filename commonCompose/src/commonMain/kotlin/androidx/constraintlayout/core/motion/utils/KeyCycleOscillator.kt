@@ -39,11 +39,7 @@ abstract class KeyCycleOscillator {
     var mWavePoints: ArrayList<WavePoint> = ArrayList()
 
     private class CoreSpline(var mType: String) : KeyCycleOscillator() {
-        var mTypeId: Int
-
-        init {
-            mTypeId = CycleType.Companion.getId(mType)
-        }
+        val mTypeId = CycleType.getId(mType)
 
         override fun setProperty(widget: MotionWidget, t: Float) {
             widget.setValue(mTypeId, get(t))
@@ -51,11 +47,7 @@ abstract class KeyCycleOscillator {
     }
 
     class PathRotateSet(var mType: String) : KeyCycleOscillator() {
-        var mTypeId: Int
-
-        init {
-            mTypeId = CycleType.Companion.getId(mType)
-        }
+        val mTypeId = CycleType.getId(mType)
 
         override fun setProperty(widget: MotionWidget, t: Float) {
             widget.setValue(mTypeId, get(t))
@@ -177,8 +169,7 @@ abstract class KeyCycleOscillator {
         val time = DoubleArray(count)
         val values = Array(count) { DoubleArray(3) }
         mCycleOscillator = CycleOscillator(mWaveShape, mWaveString, mVariesBy, count)
-        var i = 0
-        for (wp in mWavePoints) {
+        mWavePoints.forEachIndexed { i, wp ->
             time[i] = wp.mPeriod * 1E-2
             values[i][0] = wp.mValue.toDouble()
             values[i][1] = wp.mOffset.toDouble()
@@ -187,13 +178,13 @@ abstract class KeyCycleOscillator {
                 i, wp.mPosition, wp.mPeriod,
                 wp.mOffset, wp.mPhase, wp.mValue
             )
-            i++
         }
+
         mCycleOscillator!!.setup(pathLength)
-        curveFit = CurveFit.Companion.get(CurveFit.Companion.SPLINE, time, values)
+        curveFit = CurveFit[CurveFit.SPLINE, time, values]
     }
 
-    internal class CycleOscillator(var mWaveShape: Int, customShape: String?, private val mVariesBy: Int, steps: Int) {
+    internal class CycleOscillator(mWaveShape: Int, customShape: String?, private val mVariesBy: Int, steps: Int) {
         var mOscillator = Oscillator()
         private val mOffst = 0
         private val mPhase = 1
@@ -298,7 +289,7 @@ abstract class KeyCycleOscillator {
             // TODO: add mVariesBy and get total time and path length
             mOscillator.normalize()
             mCurveFit = if (mPosition.size > 1) {
-                CurveFit.Companion.get(CurveFit.Companion.SPLINE, mPosition, splineValues)
+                CurveFit.get(CurveFit.SPLINE, mPosition, splineValues)
             } else {
                 null
             }
@@ -322,7 +313,7 @@ abstract class KeyCycleOscillator {
          * @TODO: add description
          */
         fun makeWidgetCycle(attribute: String): KeyCycleOscillator {
-            return if (attribute == AttributesType.Companion.S_PATH_ROTATE) {
+            return if (attribute == AttributesType.S_PATH_ROTATE) {
                 PathRotateSet(attribute)
             } else CoreSpline(attribute)
         }

@@ -72,12 +72,12 @@ internal class MotionMeasurer : Measurer() {
             root.debugName = "ConstraintLayout"
             root.children.forEach { child ->
                 child.debugName =
-                    (child.companionWidget as? Measurable)?.layoutId?.toString() ?: "NOTAG"
+                    (childWidget as? Measurable)?.layoutId?.toString() ?: "NOTAG"
             }
         }
 
         root.children.forEach { child ->
-            val measurable = (child.companionWidget as? Measurable)
+            val measurable = (childWidget as? Measurable)
             val id = measurable?.layoutId ?: measurable?.constraintLayoutId
             child.stringId = id?.toString()
         }
@@ -146,7 +146,7 @@ internal class MotionMeasurer : Measurer() {
 
         return root.children.fastAny { child ->
             // Check if measurables have changed their size
-            val measurable = (child.companionWidget as? Measurable) ?: return@fastAny false
+            val measurable = (childWidget as? Measurable) ?: return@fastAny false
             val interpolatedFrame = this.transition.getInterpolated(child) ?: return@fastAny false
             val placeable = placeables[measurable] ?: return@fastAny false
             val currentWidth = placeable.width
@@ -215,7 +215,7 @@ internal class MotionMeasurer : Measurer() {
 
         root.children.fastForEach { child ->
             // Update measurables to the interpolated dimensions
-            val measurable = (child.companionWidget as? Measurable) ?: return@fastForEach
+            val measurable = (childWidget as? Measurable) ?: return@fastForEach
             val interpolatedFrame = this.transition.getInterpolated(child) ?: return@fastForEach
             val placeable = placeables[measurable]
             val currentWidth = placeable?.width

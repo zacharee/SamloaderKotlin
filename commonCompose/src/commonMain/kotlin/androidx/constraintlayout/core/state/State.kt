@@ -30,7 +30,7 @@ open class State {
     var dpToPixel: CorePixelDp? = null
     protected var mReferences: HashMap<Any, Reference> = HashMap()
     protected var mHelperReferences: HashMap<Any, HelperReference> = HashMap()
-    var mTags: HashMap<String, ArrayList<String>> = HashMap<String, ArrayList<String>>()
+    var mTags: HashMap<String, ArrayList<String>> = HashMap()
     val mParent = ConstraintReference(this)
 
     enum class Constraint {
@@ -91,14 +91,14 @@ open class State {
      * @TODO: add description
      */
     fun sameFixedWidth(width: Int): Boolean {
-        return mParent.width?.equalsFixedValue(width) == true
+        return mParent.width.equalsFixedValue(width) == true
     }
 
     /**
      * @TODO: add description
      */
     fun sameFixedHeight(height: Int): Boolean {
-        return mParent.height?.equalsFixedValue(height) == true
+        return mParent.height.equalsFixedValue(height) == true
     }
 
     /**
@@ -132,7 +132,7 @@ open class State {
     }
 
     fun reference(key: Any?): Reference {
-        return mReferences.get(key)!!
+        return mReferences[key]!!
     }
 
     /**
@@ -163,7 +163,7 @@ open class State {
         if (key == null) {
             key = createHelperKey()
         }
-        var reference: HelperReference? = mHelperReferences.get(key)
+        var reference: HelperReference? = mHelperReferences[key]
         if (reference == null) {
             when (type) {
                 Helper.HORIZONTAL_CHAIN -> {
@@ -191,7 +191,7 @@ open class State {
                 }
             }
             reference.key = (key)
-            mHelperReferences.put(key, reference)
+            mHelperReferences[key] = reference
         }
         return reference
     }
@@ -200,20 +200,20 @@ open class State {
      * @TODO: add description
      */
     fun horizontalGuideline(key: Any): GuidelineReference? {
-        return guideline(key, ConstraintWidget.Companion.HORIZONTAL)
+        return guideline(key, ConstraintWidget.HORIZONTAL)
     }
 
     /**
      * @TODO: add description
      */
     fun verticalGuideline(key: Any): GuidelineReference? {
-        return guideline(key, ConstraintWidget.Companion.VERTICAL)
+        return guideline(key, ConstraintWidget.VERTICAL)
     }
 
     /**
      * @TODO: add description
      */
-    fun guideline(key: Any, orientation: Int): GuidelineReference? {
+    fun guideline(key: Any, orientation: Int): GuidelineReference {
         val reference = constraints(key)
         if (reference!!.facade == null
             || reference.facade !is GuidelineReference
@@ -318,7 +318,7 @@ open class State {
             ref.tag = tag
             val list: ArrayList<String>?
             if (!mTags.containsKey(tag)) {
-                list = ArrayList<String>()
+                list = ArrayList()
                 mTags.put(tag, list)
             } else {
                 list = mTags.get(tag)
@@ -341,11 +341,11 @@ open class State {
      */
     fun apply(container: ConstraintWidgetContainer) {
         container.removeAllChildren()
-        mParent.width.apply(this, container, ConstraintWidget.Companion.HORIZONTAL)
-        mParent.height.apply(this, container, ConstraintWidget.Companion.VERTICAL)
+        mParent.width.apply(this, container, ConstraintWidget.HORIZONTAL)
+        mParent.height.apply(this, container, ConstraintWidget.VERTICAL)
         // add helper references
         for (key in mHelperReferences.keys) {
-            val reference = mHelperReferences.get(key)
+            val reference = mHelperReferences[key]
             val helperWidget = reference?.helperWidget
             if (helperWidget != null) {
                 var constraintReference: Reference? = mReferences[key]
@@ -360,7 +360,7 @@ open class State {
             if (reference !== mParent && reference?.facade is HelperReference) {
                 val helperWidget = (reference.facade as HelperReference).helperWidget
                 if (helperWidget != null) {
-                    var constraintReference: Reference? = mReferences.get(key)
+                    var constraintReference: Reference? = mReferences[key]
                     if (constraintReference == null) {
                         constraintReference = constraints(key)
                     }
@@ -386,11 +386,11 @@ open class State {
             }
         }
         for (key in mHelperReferences.keys) {
-            val reference = mHelperReferences.get(key)
+            val reference = mHelperReferences[key]
             val helperWidget = reference?.helperWidget
             if (helperWidget != null) {
                 for (keyRef in reference.mReferences) {
-                    val constraintReference = mReferences.get(keyRef)
+                    val constraintReference = mReferences[keyRef]
                     reference.helperWidget?.add(constraintReference?.constraintWidget)
                 }
                 reference.apply()
@@ -399,13 +399,13 @@ open class State {
             }
         }
         for (key in mReferences.keys) {
-            val reference = mReferences.get(key)
+            val reference = mReferences[key]
             if (reference !== mParent && reference?.facade is HelperReference) {
                 val helperReference = reference.facade as HelperReference
                 val helperWidget = helperReference.helperWidget
                 if (helperWidget != null) {
                     for (keyRef in helperReference.mReferences) {
-                        val constraintReference = mReferences.get(keyRef)
+                        val constraintReference = mReferences[keyRef]
                         if (constraintReference != null) {
                             helperWidget.add(constraintReference.constraintWidget)
                         } else if (keyRef is Reference) {
@@ -419,7 +419,7 @@ open class State {
             }
         }
         for (key in mReferences.keys) {
-            val reference = mReferences.get(key)
+            val reference = mReferences[key]
             reference?.apply()
             val widget = reference?.constraintWidget
             if (widget != null) {
@@ -429,12 +429,12 @@ open class State {
     }
 
     // ================= add baseline code================================
-    var mBaselineNeeded: ArrayList<Any> = ArrayList<Any>()
-    var mBaselineNeededWidgets: ArrayList<ConstraintWidget> = ArrayList<ConstraintWidget>()
+    var mBaselineNeeded: ArrayList<Any> = ArrayList()
+    var mBaselineNeededWidgets: ArrayList<ConstraintWidget> = ArrayList()
     var mDirtyBaselineNeededWidgets = true
 
     init {
-        mReferences.put(PARENT, mParent)
+        mReferences[PARENT] = mParent
     }
 
     /**
@@ -454,7 +454,7 @@ open class State {
         if (mDirtyBaselineNeededWidgets) {
             mBaselineNeededWidgets.clear()
             for (id in mBaselineNeeded) {
-                val widget = mReferences.get(id)?.constraintWidget
+                val widget = mReferences[id]?.constraintWidget
                 if (widget != null) mBaselineNeededWidgets.add(widget)
             }
             mDirtyBaselineNeededWidgets = false

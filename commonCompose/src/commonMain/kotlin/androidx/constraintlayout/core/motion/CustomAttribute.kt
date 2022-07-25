@@ -154,7 +154,6 @@ class CustomAttribute {
             AttributeType.STRING_TYPE -> throw RuntimeException("Color does not have a single color to interpolate")
             AttributeType.BOOLEAN_TYPE -> mBooleanValue = value[0] > 0.5
             AttributeType.DIMENSION_TYPE -> mFloatValue = value[0]
-            else -> {}
         }
     }
 
@@ -171,7 +170,6 @@ class CustomAttribute {
             AttributeType.STRING_TYPE -> mIntegerValue == customAttribute.mIntegerValue
             AttributeType.BOOLEAN_TYPE -> mBooleanValue == customAttribute.mBooleanValue
             AttributeType.DIMENSION_TYPE -> mFloatValue == customAttribute.mFloatValue
-            else -> false
         }
     }
 
@@ -204,7 +202,6 @@ class CustomAttribute {
             AttributeType.STRING_TYPE -> mStringValue = value as String
             AttributeType.BOOLEAN_TYPE -> mBooleanValue = value as Boolean
             AttributeType.DIMENSION_TYPE -> mFloatValue = value as Float
-            else -> {}
         }
     }
 

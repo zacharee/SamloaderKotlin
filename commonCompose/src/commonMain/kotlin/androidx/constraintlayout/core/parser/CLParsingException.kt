@@ -37,6 +37,6 @@ class CLParsingException(private val mReason: String, element: CLElement?) : Exc
     }
 
     override fun toString(): String {
-        return "CLParsingException (" + this.hashCode() + ") : " + reason()
+        return "CLParsingException (${this.hashCode()}) : ${reason()}"
     }
 }

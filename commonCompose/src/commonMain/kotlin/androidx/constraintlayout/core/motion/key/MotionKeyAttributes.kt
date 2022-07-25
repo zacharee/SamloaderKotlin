@@ -43,65 +43,65 @@ class MotionKeyAttributes : MotionKey() {
 
     init {
         mType = KEY_TYPE
-        mCustom = HashMap<String, CustomVariable>()
+        mCustom = HashMap()
     }
 
     override fun getAttributeNames(attributes: HashSet<String>) {
         if (!mAlpha.isNaN()) {
-            attributes.add(AttributesType.Companion.S_ALPHA)
+            attributes.add(AttributesType.S_ALPHA)
         }
         if (!mElevation.isNaN()) {
-            attributes.add(AttributesType.Companion.S_ELEVATION)
+            attributes.add(AttributesType.S_ELEVATION)
         }
         if (!mRotation.isNaN()) {
-            attributes.add(AttributesType.Companion.S_ROTATION_Z)
+            attributes.add(AttributesType.S_ROTATION_Z)
         }
         if (!mRotationX.isNaN()) {
-            attributes.add(AttributesType.Companion.S_ROTATION_X)
+            attributes.add(AttributesType.S_ROTATION_X)
         }
         if (!mRotationY.isNaN()) {
-            attributes.add(AttributesType.Companion.S_ROTATION_Y)
+            attributes.add(AttributesType.S_ROTATION_Y)
         }
         if (!mPivotX.isNaN()) {
-            attributes.add(AttributesType.Companion.S_PIVOT_X)
+            attributes.add(AttributesType.S_PIVOT_X)
         }
         if (!mPivotY.isNaN()) {
-            attributes.add(AttributesType.Companion.S_PIVOT_Y)
+            attributes.add(AttributesType.S_PIVOT_Y)
         }
         if (!mTranslationX.isNaN()) {
-            attributes.add(AttributesType.Companion.S_TRANSLATION_X)
+            attributes.add(AttributesType.S_TRANSLATION_X)
         }
         if (!mTranslationY.isNaN()) {
-            attributes.add(AttributesType.Companion.S_TRANSLATION_Y)
+            attributes.add(AttributesType.S_TRANSLATION_Y)
         }
         if (!mTranslationZ.isNaN()) {
-            attributes.add(AttributesType.Companion.S_TRANSLATION_Z)
+            attributes.add(AttributesType.S_TRANSLATION_Z)
         }
         if (!mTransitionPathRotate.isNaN()) {
-            attributes.add(AttributesType.Companion.S_PATH_ROTATE)
+            attributes.add(AttributesType.S_PATH_ROTATE)
         }
         if (!mScaleX.isNaN()) {
-            attributes.add(AttributesType.Companion.S_SCALE_X)
+            attributes.add(AttributesType.S_SCALE_X)
         }
         if (!mScaleY.isNaN()) {
-            attributes.add(AttributesType.Companion.S_SCALE_Y)
+            attributes.add(AttributesType.S_SCALE_Y)
         }
         if (!mProgress.isNaN()) {
-            attributes.add(AttributesType.Companion.S_PROGRESS)
+            attributes.add(AttributesType.S_PROGRESS)
         }
         if (mCustom!!.size > 0) {
             for (s in mCustom!!.keys) {
-                attributes.add(TypedValues.Companion.S_CUSTOM + "," + s)
+                attributes.add(TypedValues.S_CUSTOM + "," + s)
             }
         }
     }
 
     override fun addValues(splines: HashMap<String, SplineSet>) {
         for (s in splines.keys) {
-            val splineSet: SplineSet = splines.get(s) ?: continue
+            val splineSet: SplineSet = splines[s] ?: continue
             // TODO support custom
-            if (s.startsWith(AttributesType.Companion.S_CUSTOM) == true) {
-                val cKey: String = s.substring(AttributesType.Companion.S_CUSTOM.length + 1)
+            if (s.startsWith(AttributesType.S_CUSTOM)) {
+                val cKey: String = s.substring(AttributesType.S_CUSTOM.length + 1)
                 val cValue = mCustom?.get(cKey)
                 if (cValue != null) {
                     (splineSet as CustomSpline).setPoint(framePosition, cValue)
@@ -109,59 +109,59 @@ class MotionKeyAttributes : MotionKey() {
                 continue
             }
             when (s) {
-                AttributesType.Companion.S_ALPHA -> if (!mAlpha.isNaN()) {
+                AttributesType.S_ALPHA -> if (!mAlpha.isNaN()) {
                     splineSet.setPoint(framePosition, mAlpha)
                 }
 
-                AttributesType.Companion.S_ELEVATION -> if (!mElevation.isNaN()) {
+                AttributesType.S_ELEVATION -> if (!mElevation.isNaN()) {
                     splineSet.setPoint(framePosition, mElevation)
                 }
 
-                AttributesType.Companion.S_ROTATION_Z -> if (!mRotation.isNaN()) {
+                AttributesType.S_ROTATION_Z -> if (!mRotation.isNaN()) {
                     splineSet.setPoint(framePosition, mRotation)
                 }
 
-                AttributesType.Companion.S_ROTATION_X -> if (!mRotationX.isNaN()) {
+                AttributesType.S_ROTATION_X -> if (!mRotationX.isNaN()) {
                     splineSet.setPoint(framePosition, mRotationX)
                 }
 
-                AttributesType.Companion.S_ROTATION_Y -> if (!mRotationY.isNaN()) {
+                AttributesType.S_ROTATION_Y -> if (!mRotationY.isNaN()) {
                     splineSet.setPoint(framePosition, mRotationY)
                 }
 
-                AttributesType.Companion.S_PIVOT_X -> if (!mRotationX.isNaN()) {
+                AttributesType.S_PIVOT_X -> if (!mRotationX.isNaN()) {
                     splineSet.setPoint(framePosition, mPivotX)
                 }
 
-                AttributesType.Companion.S_PIVOT_Y -> if (!mRotationY.isNaN()) {
+                AttributesType.S_PIVOT_Y -> if (!mRotationY.isNaN()) {
                     splineSet.setPoint(framePosition, mPivotY)
                 }
 
-                AttributesType.Companion.S_PATH_ROTATE -> if (!mTransitionPathRotate.isNaN()) {
+                AttributesType.S_PATH_ROTATE -> if (!mTransitionPathRotate.isNaN()) {
                     splineSet.setPoint(framePosition, mTransitionPathRotate)
                 }
 
-                AttributesType.Companion.S_SCALE_X -> if (!mScaleX.isNaN()) {
+                AttributesType.S_SCALE_X -> if (!mScaleX.isNaN()) {
                     splineSet.setPoint(framePosition, mScaleX)
                 }
 
-                AttributesType.Companion.S_SCALE_Y -> if (!mScaleY.isNaN()) {
+                AttributesType.S_SCALE_Y -> if (!mScaleY.isNaN()) {
                     splineSet.setPoint(framePosition, mScaleY)
                 }
 
-                AttributesType.Companion.S_TRANSLATION_X -> if (!mTranslationX.isNaN()) {
+                AttributesType.S_TRANSLATION_X -> if (!mTranslationX.isNaN()) {
                     splineSet.setPoint(framePosition, mTranslationX)
                 }
 
-                AttributesType.Companion.S_TRANSLATION_Y -> if (!mTranslationY.isNaN()) {
+                AttributesType.S_TRANSLATION_Y -> if (!mTranslationY.isNaN()) {
                     splineSet.setPoint(framePosition, mTranslationY)
                 }
 
-                AttributesType.Companion.S_TRANSLATION_Z -> if (!mTranslationZ.isNaN()) {
+                AttributesType.S_TRANSLATION_Z -> if (!mTranslationZ.isNaN()) {
                     splineSet.setPoint(framePosition, mTranslationZ)
                 }
 
-                AttributesType.Companion.S_PROGRESS -> if (!mProgress.isNaN()) {
+                AttributesType.S_PROGRESS -> if (!mProgress.isNaN()) {
                     splineSet.setPoint(framePosition, mProgress)
                 }
 
@@ -179,9 +179,9 @@ class MotionKeyAttributes : MotionKey() {
      */
     override fun setValue(type: Int, value: Int): Boolean {
         when (type) {
-            AttributesType.Companion.TYPE_VISIBILITY -> mVisibility = value
-            AttributesType.Companion.TYPE_CURVE_FIT -> curveFit = value
-            TypedValues.Companion.TYPE_FRAME_POSITION -> framePosition = value
+            AttributesType.TYPE_VISIBILITY -> mVisibility = value
+            AttributesType.TYPE_CURVE_FIT -> curveFit = value
+            TypedValues.TYPE_FRAME_POSITION -> framePosition = value
             else -> if (!setValue(type, value)) {
                 return super.setValue(type, value)
             }
@@ -194,21 +194,21 @@ class MotionKeyAttributes : MotionKey() {
      */
     override fun setValue(type: Int, value: Float): Boolean {
         when (type) {
-            AttributesType.Companion.TYPE_ALPHA -> mAlpha = value
-            AttributesType.Companion.TYPE_TRANSLATION_X -> mTranslationX = value
-            AttributesType.Companion.TYPE_TRANSLATION_Y -> mTranslationY = value
-            AttributesType.Companion.TYPE_TRANSLATION_Z -> mTranslationZ = value
-            AttributesType.Companion.TYPE_ELEVATION -> mElevation = value
-            AttributesType.Companion.TYPE_ROTATION_X -> mRotationX = value
-            AttributesType.Companion.TYPE_ROTATION_Y -> mRotationY = value
-            AttributesType.Companion.TYPE_ROTATION_Z -> mRotation = value
-            AttributesType.Companion.TYPE_SCALE_X -> mScaleX = value
-            AttributesType.Companion.TYPE_SCALE_Y -> mScaleY = value
-            AttributesType.Companion.TYPE_PIVOT_X -> mPivotX = value
-            AttributesType.Companion.TYPE_PIVOT_Y -> mPivotY = value
-            AttributesType.Companion.TYPE_PROGRESS -> mProgress = value
-            AttributesType.Companion.TYPE_PATH_ROTATE -> mTransitionPathRotate = value
-            TypedValues.Companion.TYPE_FRAME_POSITION -> mTransitionPathRotate = value
+            AttributesType.TYPE_ALPHA -> mAlpha = value
+            AttributesType.TYPE_TRANSLATION_X -> mTranslationX = value
+            AttributesType.TYPE_TRANSLATION_Y -> mTranslationY = value
+            AttributesType.TYPE_TRANSLATION_Z -> mTranslationZ = value
+            AttributesType.TYPE_ELEVATION -> mElevation = value
+            AttributesType.TYPE_ROTATION_X -> mRotationX = value
+            AttributesType.TYPE_ROTATION_Y -> mRotationY = value
+            AttributesType.TYPE_ROTATION_Z -> mRotation = value
+            AttributesType.TYPE_SCALE_X -> mScaleX = value
+            AttributesType.TYPE_SCALE_Y -> mScaleY = value
+            AttributesType.TYPE_PIVOT_X -> mPivotX = value
+            AttributesType.TYPE_PIVOT_Y -> mPivotY = value
+            AttributesType.TYPE_PROGRESS -> mProgress = value
+            AttributesType.TYPE_PATH_ROTATE -> mTransitionPathRotate = value
+            TypedValues.TYPE_FRAME_POSITION -> mTransitionPathRotate = value
             else -> return super.setValue(type, value)
         }
         return true
@@ -219,50 +219,50 @@ class MotionKeyAttributes : MotionKey() {
      */
     override fun setInterpolation(interpolation: HashMap<String, Int>) {
         if (!mAlpha.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_ALPHA, curveFit)
+            interpolation[AttributesType.S_ALPHA] = curveFit
         }
         if (!mElevation.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_ELEVATION, curveFit)
+            interpolation[AttributesType.S_ELEVATION] = curveFit
         }
         if (!mRotation.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_ROTATION_Z, curveFit)
+            interpolation[AttributesType.S_ROTATION_Z] = curveFit
         }
         if (!mRotationX.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_ROTATION_X, curveFit)
+            interpolation[AttributesType.S_ROTATION_X] = curveFit
         }
         if (!mRotationY.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_ROTATION_Y, curveFit)
+            interpolation[AttributesType.S_ROTATION_Y] = curveFit
         }
         if (!mPivotX.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_PIVOT_X, curveFit)
+            interpolation[AttributesType.S_PIVOT_X] = curveFit
         }
         if (!mPivotY.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_PIVOT_Y, curveFit)
+            interpolation[AttributesType.S_PIVOT_Y] = curveFit
         }
         if (!mTranslationX.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_TRANSLATION_X, curveFit)
+            interpolation[AttributesType.S_TRANSLATION_X] = curveFit
         }
         if (!mTranslationY.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_TRANSLATION_Y, curveFit)
+            interpolation[AttributesType.S_TRANSLATION_Y] = curveFit
         }
         if (!mTranslationZ.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_TRANSLATION_Z, curveFit)
+            interpolation[AttributesType.S_TRANSLATION_Z] = curveFit
         }
         if (!mTransitionPathRotate.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_PATH_ROTATE, curveFit)
+            interpolation[AttributesType.S_PATH_ROTATE] = curveFit
         }
         if (!mScaleX.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_SCALE_X, curveFit)
+            interpolation[AttributesType.S_SCALE_X] = curveFit
         }
         if (!mScaleY.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_SCALE_Y, curveFit)
+            interpolation[AttributesType.S_SCALE_Y] = curveFit
         }
         if (!mProgress.isNaN()) {
-            interpolation.put(AttributesType.Companion.S_PROGRESS, curveFit)
+            interpolation[AttributesType.S_PROGRESS] = curveFit
         }
         if (mCustom!!.size > 0) {
             for (s in mCustom!!.keys) {
-                interpolation.put(AttributesType.Companion.S_CUSTOM + "," + s, curveFit)
+                interpolation[AttributesType.S_CUSTOM + "," + s] = curveFit
             }
         }
     }
@@ -272,15 +272,15 @@ class MotionKeyAttributes : MotionKey() {
      */
     override fun setValue(type: Int, value: String): Boolean {
         when (type) {
-            AttributesType.Companion.TYPE_EASING -> mTransitionEasing = value
-            TypedValues.Companion.TYPE_TARGET -> mTargetString = value
+            AttributesType.TYPE_EASING -> mTransitionEasing = value
+            TypedValues.TYPE_TARGET -> mTargetString = value
             else -> return super.setValue(type, value)
         }
         return true
     }
 
     override fun getId(name: String?): Int {
-        return AttributesType.Companion.getId(name)
+        return AttributesType.getId(name)
     }
 
     /**
@@ -292,28 +292,28 @@ class MotionKeyAttributes : MotionKey() {
         println(" ------------- $framePosition -------------")
         val names: Array<String?> = nameSet.toTypedArray()
         for (i in names.indices) {
-            val id: Int = AttributesType.Companion.getId(names[i])
+            val id: Int = AttributesType.getId(names[i])
             println(names[i] + ":" + getFloatValue(id))
         }
     }
 
     private fun getFloatValue(id: Int): Float {
         return when (id) {
-            AttributesType.Companion.TYPE_ALPHA -> mAlpha
-            AttributesType.Companion.TYPE_TRANSLATION_X -> mTranslationX
-            AttributesType.Companion.TYPE_TRANSLATION_Y -> mTranslationY
-            AttributesType.Companion.TYPE_TRANSLATION_Z -> mTranslationZ
-            AttributesType.Companion.TYPE_ELEVATION -> mElevation
-            AttributesType.Companion.TYPE_ROTATION_X -> mRotationX
-            AttributesType.Companion.TYPE_ROTATION_Y -> mRotationY
-            AttributesType.Companion.TYPE_ROTATION_Z -> mRotation
-            AttributesType.Companion.TYPE_SCALE_X -> mScaleX
-            AttributesType.Companion.TYPE_SCALE_Y -> mScaleY
-            AttributesType.Companion.TYPE_PIVOT_X -> mPivotX
-            AttributesType.Companion.TYPE_PIVOT_Y -> mPivotY
-            AttributesType.Companion.TYPE_PROGRESS -> mProgress
-            AttributesType.Companion.TYPE_PATH_ROTATE -> mTransitionPathRotate
-            TypedValues.Companion.TYPE_FRAME_POSITION -> framePosition.toFloat()
+            AttributesType.TYPE_ALPHA -> mAlpha
+            AttributesType.TYPE_TRANSLATION_X -> mTranslationX
+            AttributesType.TYPE_TRANSLATION_Y -> mTranslationY
+            AttributesType.TYPE_TRANSLATION_Z -> mTranslationZ
+            AttributesType.TYPE_ELEVATION -> mElevation
+            AttributesType.TYPE_ROTATION_X -> mRotationX
+            AttributesType.TYPE_ROTATION_Y -> mRotationY
+            AttributesType.TYPE_ROTATION_Z -> mRotation
+            AttributesType.TYPE_SCALE_X -> mScaleX
+            AttributesType.TYPE_SCALE_Y -> mScaleY
+            AttributesType.TYPE_PIVOT_X -> mPivotX
+            AttributesType.TYPE_PIVOT_Y -> mPivotY
+            AttributesType.TYPE_PROGRESS -> mProgress
+            AttributesType.TYPE_PATH_ROTATE -> mTransitionPathRotate
+            TypedValues.TYPE_FRAME_POSITION -> framePosition.toFloat()
             else -> Float.NaN
         }
     }

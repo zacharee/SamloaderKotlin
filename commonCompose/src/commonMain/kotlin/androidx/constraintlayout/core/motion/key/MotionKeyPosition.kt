@@ -24,9 +24,9 @@ import kotlin.math.abs
 import kotlin.math.hypot
 
 class MotionKeyPosition : MotionKey() {
-    var mCurveFit: Int = MotionKey.Companion.UNSET
+    var mCurveFit: Int = UNSET
     var mTransitionEasing: String? = null
-    var mPathMotionArc: Int = MotionKey.Companion.UNSET // -1 means not set
+    var mPathMotionArc: Int = UNSET // -1 means not set
     var mDrawPath = 0
     var mPercentWidth = Float.NaN
     var mPercentHeight = Float.NaN
@@ -138,13 +138,13 @@ class MotionKeyPosition : MotionKey() {
         val perpendicular = (dx * (y - startCenterY) - (x - startCenterX) * dy) / distance
         val dist = (dx * (x - startCenterX) + dy * (y - startCenterY)) / distance
         if (attribute[0] != null) {
-            if (PositionType.Companion.S_PERCENT_X == attribute[0]) {
+            if (PositionType.S_PERCENT_X == attribute[0]) {
                 value[0] = dist
                 value[1] = perpendicular
             }
         } else {
-            attribute[0] = PositionType.Companion.S_PERCENT_X
-            attribute[1] = PositionType.Companion.S_PERCENT_Y
+            attribute[0] = PositionType.S_PERCENT_X
+            attribute[1] = PositionType.S_PERCENT_Y
             value[0] = dist
             value[1] = perpendicular
         }
@@ -169,7 +169,7 @@ class MotionKeyPosition : MotionKey() {
         val width = viewGroup.width
         val height = viewGroup.height
         if (attribute[0] != null) { // they are saying what to use
-            if (PositionType.Companion.S_PERCENT_X == attribute[0]) {
+            if (PositionType.S_PERCENT_X == attribute[0]) {
                 value[0] = x / width
                 value[1] = y / height
             } else {
@@ -177,9 +177,9 @@ class MotionKeyPosition : MotionKey() {
                 value[0] = y / height
             }
         } else { // we will use what we want to
-            attribute[0] = PositionType.Companion.S_PERCENT_X
+            attribute[0] = PositionType.S_PERCENT_X
             value[0] = x / width
-            attribute[1] = PositionType.Companion.S_PERCENT_Y
+            attribute[1] = PositionType.S_PERCENT_Y
             value[1] = y / height
         }
     }
@@ -199,7 +199,7 @@ class MotionKeyPosition : MotionKey() {
         val pathVectorX = endCenterX - startCenterX
         val pathVectorY = endCenterY - startCenterY
         if (attribute[0] != null) { // they are saying what to use
-            if (PositionType.Companion.S_PERCENT_X == attribute[0]) {
+            if (PositionType.S_PERCENT_X == attribute[0]) {
                 value[0] = (x - startCenterX) / pathVectorX
                 value[1] = (y - startCenterY) / pathVectorY
             } else {
@@ -207,9 +207,9 @@ class MotionKeyPosition : MotionKey() {
                 value[0] = (y - startCenterY) / pathVectorY
             }
         } else { // we will use what we want to
-            attribute[0] = PositionType.Companion.S_PERCENT_X
+            attribute[0] = PositionType.S_PERCENT_X
             value[0] = (x - startCenterX) / pathVectorX
-            attribute[1] = PositionType.Companion.S_PERCENT_Y
+            attribute[1] = PositionType.S_PERCENT_Y
             value[1] = (y - startCenterY) / pathVectorY
         }
     }
@@ -299,9 +299,9 @@ class MotionKeyPosition : MotionKey() {
     override fun addValues(splines: HashMap<String, SplineSet>) {}
     override fun setValue(type: Int, value: Int): Boolean {
         when (type) {
-            PositionType.Companion.TYPE_POSITION_TYPE -> mPositionType = value
-            TypedValues.Companion.TYPE_FRAME_POSITION -> framePosition = value
-            PositionType.Companion.TYPE_CURVE_FIT -> mCurveFit = value
+            PositionType.TYPE_POSITION_TYPE -> mPositionType = value
+            TypedValues.TYPE_FRAME_POSITION -> framePosition = value
+            PositionType.TYPE_CURVE_FIT -> mCurveFit = value
             else -> return super.setValue(type, value)
         }
         return true
@@ -309,15 +309,15 @@ class MotionKeyPosition : MotionKey() {
 
     override fun setValue(type: Int, value: Float): Boolean {
         when (type) {
-            PositionType.Companion.TYPE_PERCENT_WIDTH -> mPercentWidth = value
-            PositionType.Companion.TYPE_PERCENT_HEIGHT -> mPercentHeight = value
-            PositionType.Companion.TYPE_SIZE_PERCENT -> {
+            PositionType.TYPE_PERCENT_WIDTH -> mPercentWidth = value
+            PositionType.TYPE_PERCENT_HEIGHT -> mPercentHeight = value
+            PositionType.TYPE_SIZE_PERCENT -> {
                 mPercentWidth = value
                 mPercentHeight = mPercentWidth
             }
 
-            PositionType.Companion.TYPE_PERCENT_X -> mPercentX = value
-            PositionType.Companion.TYPE_PERCENT_Y -> mPercentY = value
+            PositionType.TYPE_PERCENT_X -> mPercentX = value
+            PositionType.TYPE_PERCENT_Y -> mPercentY = value
             else -> return super.setValue(type, value)
         }
         return true
@@ -325,19 +325,19 @@ class MotionKeyPosition : MotionKey() {
 
     override fun setValue(type: Int, value: String): Boolean {
         mTransitionEasing = when (type) {
-            PositionType.Companion.TYPE_TRANSITION_EASING -> value
+            PositionType.TYPE_TRANSITION_EASING -> value
             else -> return super.setValue(type, value)
         }
         return true
     }
 
     override fun getId(name: String?): Int {
-        return PositionType.Companion.getId(name)
+        return PositionType.getId(name)
     }
 
     companion object {
         const val NAME = "KeyPosition"
-        protected const val SELECTION_SLOPE = 20f
+        private const val SELECTION_SLOPE = 20f
         const val TYPE_SCREEN = 2
         const val TYPE_PATH = 1
         const val TYPE_CARTESIAN = 0

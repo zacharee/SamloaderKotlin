@@ -231,7 +231,7 @@ class GridEngine {
      * @return int[] -> [row, column]
      */
     private val nextPosition: Int
-        private get() {
+        get() {
             var position = 0
             var positionFound = false
             while (!positionFound) {

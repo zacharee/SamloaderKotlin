@@ -189,7 +189,7 @@ open class ConstraintWidget {
             mBaseline?.finalValue = (y1 + mBaselineDistance)
         }
         mResolvedVertical = true
-        if (LinearSystem.Companion.FULL_DEBUG) {
+        if (LinearSystem.FULL_DEBUG) {
             println(
                 "*** SET FINAL VERTICAL FOR " + debugName
                         + " : " + y1 + " -> " + y2 + " (height: " + mHeight + ")"
@@ -1535,7 +1535,7 @@ open class ConstraintWidget {
         if (h != mHeight) {
             mHeightOverride = mHeight
         }
-        if (LinearSystem.Companion.FULL_DEBUG) {
+        if (LinearSystem.FULL_DEBUG) {
             println(
                 "update from solver " + debugName
                         + " " + mX + ":" + mY + " - " + mWidth + " x " + mHeight
@@ -1708,7 +1708,7 @@ open class ConstraintWidget {
         target: ConstraintWidget,
         constraintTo: ConstraintAnchor.Type
     ) {
-        if (LinearSystem.Companion.DEBUG) {
+        if (LinearSystem.DEBUG) {
             println(
                 debugName + " connect "
                         + constraintFrom + " to " + target + " " + constraintTo
@@ -2217,7 +2217,7 @@ open class ConstraintWidget {
      * @param optimize true if [Optimizer.OPTIMIZATION_GRAPH] is on
      */
     open fun addToSolver(system: LinearSystem, optimize: Boolean) {
-        if (LinearSystem.Companion.FULL_DEBUG) {
+        if (LinearSystem.FULL_DEBUG) {
             println("\n----------------------------------------------")
             println("-- adding " + debugName + " to the solver")
             if (isInVirtualLayout) {
@@ -2258,7 +2258,7 @@ open class ConstraintWidget {
             return
         }
         if (mResolvedHorizontal || mResolvedVertical) {
-            if (LinearSystem.Companion.FULL_DEBUG) {
+            if (LinearSystem.FULL_DEBUG) {
                 println("\n----------------------------------------------")
                 println(
                     "-- setting " + debugName
@@ -2276,7 +2276,7 @@ open class ConstraintWidget {
                         container.addHorizontalWrapMinVariable(mLeft!!)
                         container.addHorizontalWrapMaxVariable(mRight!!)
                     } else {
-                        val wrapStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
+                        val wrapStrength: Int = SolverVariable.STRENGTH_EQUALITY
                         system.addGreaterThan(
                             system.createObjectVariable(parent!!.mRight)!!,
                             right!!, 0, wrapStrength
@@ -2296,7 +2296,7 @@ open class ConstraintWidget {
                         container.addVerticalWrapMinVariable(mTop)
                         container.addVerticalWrapMaxVariable(mBottom)
                     } else {
-                        val wrapStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
+                        val wrapStrength: Int = SolverVariable.STRENGTH_EQUALITY
                         system.addGreaterThan(
                             system.createObjectVariable(parent!!.mBottom)!!,
                             bottom!!, 0, wrapStrength
@@ -2307,7 +2307,7 @@ open class ConstraintWidget {
             if (mResolvedHorizontal && mResolvedVertical) {
                 mResolvedHorizontal = false
                 mResolvedVertical = false
-                if (LinearSystem.Companion.FULL_DEBUG) {
+                if (LinearSystem.FULL_DEBUG) {
                     println("\n----------------------------------------------")
                     println("-- setting COMPLETED for " + debugName)
                     println("----------------------------------------------\n")
@@ -2315,10 +2315,10 @@ open class ConstraintWidget {
                 return
             }
         }
-        if (LinearSystem.Companion.sMetrics != null) {
-            LinearSystem.Companion.sMetrics!!.widgets++
+        if (LinearSystem.sMetrics != null) {
+            LinearSystem.sMetrics!!.widgets++
         }
-        if (LinearSystem.Companion.FULL_DEBUG) {
+        if (LinearSystem.FULL_DEBUG) {
             if (optimize && mHorizontalRun != null && mVerticalRun != null) {
                 println(
                     "-- horizontal run : "
@@ -2333,8 +2333,8 @@ open class ConstraintWidget {
         if (optimize && mHorizontalRun != null && mVerticalRun != null && mHorizontalRun!!.start.resolved && mHorizontalRun!!.end.resolved
             && mVerticalRun!!.start.resolved && mVerticalRun!!.end.resolved
         ) {
-            if (LinearSystem.Companion.sMetrics != null) {
-                LinearSystem.Companion.sMetrics!!.graphSolved++
+            if (LinearSystem.sMetrics != null) {
+                LinearSystem.sMetrics!!.graphSolved++
             }
             system.addEquality(left!!, mHorizontalRun!!.start.value)
             system.addEquality(right!!, mHorizontalRun!!.end.value)
@@ -2346,21 +2346,21 @@ open class ConstraintWidget {
                     && isTerminalWidget[HORIZONTAL] && !isInHorizontalChain
                 ) {
                     val parentMax = system.createObjectVariable(parent!!.mRight)
-                    system.addGreaterThan(parentMax!!, right!!, 0, SolverVariable.Companion.STRENGTH_FIXED)
+                    system.addGreaterThan(parentMax!!, right!!, 0, SolverVariable.STRENGTH_FIXED)
                 }
                 if (verticalParentWrapContent
                     && isTerminalWidget[VERTICAL] && !isInVerticalChain
                 ) {
                     val parentMax = system.createObjectVariable(parent!!.mBottom)
-                    system.addGreaterThan(parentMax!!, bottom!!, 0, SolverVariable.Companion.STRENGTH_FIXED)
+                    system.addGreaterThan(parentMax!!, bottom!!, 0, SolverVariable.STRENGTH_FIXED)
                 }
             }
             mResolvedHorizontal = false
             mResolvedVertical = false
             return  // we are done here
         }
-        if (LinearSystem.Companion.sMetrics != null) {
-            LinearSystem.Companion.sMetrics!!.linearSolved++
+        if (LinearSystem.sMetrics != null) {
+            LinearSystem.sMetrics!!.linearSolved++
         }
         var inHorizontalChain = false
         var inVerticalChain = false
@@ -2381,18 +2381,18 @@ open class ConstraintWidget {
                 isInVerticalChain
             }
             if (!inHorizontalChain && horizontalParentWrapContent && visibility != GONE && mLeft?.target == null && mRight?.target == null) {
-                if (LinearSystem.Companion.FULL_DEBUG) {
+                if (LinearSystem.FULL_DEBUG) {
                     println("<>1 ADDING H WRAP GREATER FOR " + debugName)
                 }
                 val parentRight = system.createObjectVariable(parent!!.mRight)
-                system.addGreaterThan(parentRight!!, right!!, 0, SolverVariable.Companion.STRENGTH_LOW)
+                system.addGreaterThan(parentRight!!, right!!, 0, SolverVariable.STRENGTH_LOW)
             }
             if (!inVerticalChain && verticalParentWrapContent && visibility != GONE && mTop?.target == null && mBottom?.target == null && mBaseline == null) {
-                if (LinearSystem.Companion.FULL_DEBUG) {
+                if (LinearSystem.FULL_DEBUG) {
                     println("<>1 ADDING V WRAP GREATER FOR " + debugName)
                 }
                 val parentBottom = system.createObjectVariable(parent!!.mBottom)
-                system.addGreaterThan(parentBottom!!, bottom!!, 0, SolverVariable.Companion.STRENGTH_LOW)
+                system.addGreaterThan(parentBottom!!, bottom!!, 0, SolverVariable.STRENGTH_LOW)
             }
         }
         var width = mWidth
@@ -2502,11 +2502,11 @@ open class ConstraintWidget {
                     if (horizontalParentWrapContent
                         && isTerminalWidget[HORIZONTAL] && !isInHorizontalChain
                     ) {
-                        if (LinearSystem.Companion.FULL_DEBUG) {
+                        if (LinearSystem.FULL_DEBUG) {
                             println("<>2 ADDING H WRAP GREATER FOR " + debugName)
                         }
                         val parentMax = system.createObjectVariable(parent!!.mRight)
-                        system.addGreaterThan(parentMax!!, right!!, 0, SolverVariable.Companion.STRENGTH_FIXED)
+                        system.addGreaterThan(parentMax!!, right!!, 0, SolverVariable.STRENGTH_FIXED)
                     }
                 }
             }
@@ -2518,17 +2518,17 @@ open class ConstraintWidget {
             system.addEquality(baseline!!, mVerticalRun!!.baseline.value)
             if (parent != null) {
                 if (!inVerticalChain && verticalParentWrapContent && isTerminalWidget[VERTICAL]) {
-                    if (LinearSystem.Companion.FULL_DEBUG) {
+                    if (LinearSystem.FULL_DEBUG) {
                         println("<>2 ADDING V WRAP GREATER FOR " + debugName)
                     }
                     val parentMax = system.createObjectVariable(parent!!.mBottom)
-                    system.addGreaterThan(parentMax!!, bottom!!, 0, SolverVariable.Companion.STRENGTH_FIXED)
+                    system.addGreaterThan(parentMax!!, bottom!!, 0, SolverVariable.STRENGTH_FIXED)
                 }
             }
             applyVerticalConstraints = false
         }
         if (mVerticalResolution == DIRECT) {
-            if (LinearSystem.Companion.FULL_DEBUG) {
+            if (LinearSystem.FULL_DEBUG) {
                 println("\n----------------------------------------------")
                 println("-- DONE adding " + debugName + " to the solver")
                 println("-- SKIP VERTICAL RESOLUTION")
@@ -2551,33 +2551,33 @@ open class ConstraintWidget {
                 if (mBaseline?.target != null) {
                     system.addEquality(
                         baseline!!, top!!, baselineDistance,
-                        SolverVariable.Companion.STRENGTH_FIXED
+                        SolverVariable.STRENGTH_FIXED
                     )
                     val baselineTarget = system.createObjectVariable(mBaseline?.target)
                     val baselineMargin = mBaseline!!.margin
                     system.addEquality(
                         baseline!!, baselineTarget!!, baselineMargin,
-                        SolverVariable.Companion.STRENGTH_FIXED
+                        SolverVariable.STRENGTH_FIXED
                     )
                     applyPosition = false
                     if (verticalParentWrapContent) {
-                        if (LinearSystem.Companion.FULL_DEBUG) {
+                        if (LinearSystem.FULL_DEBUG) {
                             println("<>3 ADDING V WRAP GREATER FOR " + debugName)
                         }
                         val end = system.createObjectVariable(mBottom)
-                        val wrapStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
+                        val wrapStrength: Int = SolverVariable.STRENGTH_EQUALITY
                         system.addGreaterThan(parentMax!!, end!!, 0, wrapStrength)
                     }
                 } else if (visibility == GONE) {
                     // TODO: use the constraints graph here to help
                     system.addEquality(
                         baseline!!, top!!, mBaseline!!.margin,
-                        SolverVariable.Companion.STRENGTH_FIXED
+                        SolverVariable.STRENGTH_FIXED
                     )
                 } else {
                     system.addEquality(
                         baseline!!, top!!, baselineDistance,
-                        SolverVariable.Companion.STRENGTH_FIXED
+                        SolverVariable.STRENGTH_FIXED
                     )
                 }
             }
@@ -2595,7 +2595,7 @@ open class ConstraintWidget {
             )
         }
         if (useRatio) {
-            val strength: Int = SolverVariable.Companion.STRENGTH_FIXED
+            val strength: Int = SolverVariable.STRENGTH_FIXED
             if (mResolvedDimensionRatioSide == VERTICAL) {
                 system.addRatio(bottom!!, top!!, right!!, left!!, mResolvedDimensionRatio, strength)
             } else {
@@ -2610,7 +2610,7 @@ open class ConstraintWidget {
                 mCenter.margin
             )
         }
-        if (LinearSystem.Companion.FULL_DEBUG) {
+        if (LinearSystem.FULL_DEBUG) {
             println("\n----------------------------------------------")
             println("-- DONE adding " + debugName + " to the solver")
             println("----------------------------------------------\n")
@@ -2737,8 +2737,8 @@ open class ConstraintWidget {
         val end = system.createObjectVariable(endAnchor)
         val beginTarget = system.createObjectVariable(beginAnchor!!.target)
         val endTarget = system.createObjectVariable(endAnchor!!.target)
-        if (LinearSystem.Companion.sMetrics != null) {
-            LinearSystem.Companion.sMetrics!!.nonresolvedWidgets++
+        if (LinearSystem.sMetrics != null) {
+            LinearSystem.sMetrics!!.nonresolvedWidgets++
         }
         val isBeginConnected = beginAnchor!!.isConnected
         val isEndConnected = endAnchor!!.isConnected
@@ -2776,7 +2776,7 @@ open class ConstraintWidget {
             else -> {}
         }
         if (mWidthOverride != -1 && isHorizontal) {
-            if (LinearSystem.Companion.FULL_DEBUG) {
+            if (LinearSystem.FULL_DEBUG) {
                 println("OVERRIDE WIDTH to $mWidthOverride")
             }
             variableSize = false
@@ -2784,7 +2784,7 @@ open class ConstraintWidget {
             mWidthOverride = -1
         }
         if (mHeightOverride != -1 && !isHorizontal) {
-            if (LinearSystem.Companion.FULL_DEBUG) {
+            if (LinearSystem.FULL_DEBUG) {
                 println("OVERRIDE HEIGHT to $mHeightOverride")
             }
             variableSize = false
@@ -2803,7 +2803,7 @@ open class ConstraintWidget {
             } else if (isBeginConnected && !isEndConnected) {
                 system.addEquality(
                     begin!!, beginTarget!!,
-                    beginAnchor.margin, SolverVariable.Companion.STRENGTH_FIXED
+                    beginAnchor.margin, SolverVariable.STRENGTH_FIXED
                 )
             }
         }
@@ -2811,15 +2811,15 @@ open class ConstraintWidget {
         // Then apply the dimension
         if (!variableSize) {
             if (wrapContent) {
-                system.addEquality(end!!, begin!!, 0, SolverVariable.Companion.STRENGTH_HIGH)
+                system.addEquality(end!!, begin!!, 0, SolverVariable.STRENGTH_HIGH)
                 if (minDimension > 0) {
-                    system.addGreaterThan(end!!, begin!!, minDimension, SolverVariable.Companion.STRENGTH_FIXED)
+                    system.addGreaterThan(end!!, begin!!, minDimension, SolverVariable.STRENGTH_FIXED)
                 }
                 if (maxDimension < Int.MAX_VALUE) {
-                    system.addLowerThan(end!!, begin!!, maxDimension, SolverVariable.Companion.STRENGTH_FIXED)
+                    system.addLowerThan(end!!, begin!!, maxDimension, SolverVariable.STRENGTH_FIXED)
                 }
             } else {
-                system.addEquality(end!!, begin!!, dimension, SolverVariable.Companion.STRENGTH_FIXED)
+                system.addEquality(end!!, begin!!, dimension, SolverVariable.STRENGTH_FIXED)
             }
         } else {
             if (numConnections != 2 && !useRatio && (matchConstraintDefault == MATCH_CONSTRAINT_WRAP || matchConstraintDefault == MATCH_CONSTRAINT_SPREAD)) {
@@ -2828,7 +2828,7 @@ open class ConstraintWidget {
                 if (matchMaxDimension > 0) {
                     d = min(matchMaxDimension, d)
                 }
-                system.addEquality(end!!, begin!!, d, SolverVariable.Companion.STRENGTH_FIXED)
+                system.addEquality(end!!, begin!!, d, SolverVariable.STRENGTH_FIXED)
             } else {
                 if (matchMinDimension == WRAP) {
                     matchMinDimension = dimension
@@ -2842,7 +2842,7 @@ open class ConstraintWidget {
                     if (USE_WRAP_DIMENSION_FOR_SPREAD && matchConstraintDefault == MATCH_CONSTRAINT_SPREAD) {
                         system.addGreaterThan(
                             end!!, begin!!, dimension,
-                            SolverVariable.Companion.STRENGTH_HIGHEST
+                            SolverVariable.STRENGTH_HIGHEST
                         )
                     }
                     dimension = 0
@@ -2850,7 +2850,7 @@ open class ConstraintWidget {
                 if (matchMinDimension > 0) {
                     system.addGreaterThan(
                         end!!, begin!!, matchMinDimension,
-                        SolverVariable.Companion.STRENGTH_FIXED
+                        SolverVariable.STRENGTH_FIXED
                     )
                     dimension = max(dimension, matchMinDimension)
                 }
@@ -2862,20 +2862,20 @@ open class ConstraintWidget {
                     if (applyLimit) {
                         system.addLowerThan(
                             end!!, begin!!,
-                            matchMaxDimension, SolverVariable.Companion.STRENGTH_FIXED
+                            matchMaxDimension, SolverVariable.STRENGTH_FIXED
                         )
                     }
                     dimension = min(dimension, matchMaxDimension)
                 }
                 if (matchConstraintDefault == MATCH_CONSTRAINT_WRAP) {
                     if (parentWrapContent) {
-                        system.addEquality(end!!, begin!!, dimension, SolverVariable.Companion.STRENGTH_FIXED)
+                        system.addEquality(end!!, begin!!, dimension, SolverVariable.STRENGTH_FIXED)
                     } else if (inChain) {
-                        system.addEquality(end!!, begin!!, dimension, SolverVariable.Companion.STRENGTH_EQUALITY)
-                        system.addLowerThan(end!!, begin!!, dimension, SolverVariable.Companion.STRENGTH_FIXED)
+                        system.addEquality(end!!, begin!!, dimension, SolverVariable.STRENGTH_EQUALITY)
+                        system.addLowerThan(end!!, begin!!, dimension, SolverVariable.STRENGTH_FIXED)
                     } else {
-                        system.addEquality(end!!, begin!!, dimension, SolverVariable.Companion.STRENGTH_EQUALITY)
-                        system.addLowerThan(end!!, begin!!, dimension, SolverVariable.Companion.STRENGTH_FIXED)
+                        system.addEquality(end!!, begin!!, dimension, SolverVariable.STRENGTH_EQUALITY)
+                        system.addLowerThan(end!!, begin!!, dimension, SolverVariable.STRENGTH_FIXED)
                     }
                 } else if (matchConstraintDefault == MATCH_CONSTRAINT_PERCENT) {
                     var percentBegin: SolverVariable? = null
@@ -2914,7 +2914,7 @@ open class ConstraintWidget {
         }
         if (!applyPosition || inChain) {
             // If we don't need to apply the position, let's finish now.
-            if (LinearSystem.Companion.FULL_DEBUG) {
+            if (LinearSystem.FULL_DEBUG) {
                 println(
                     "only deal with dimension for " + debugName
                             + ", not positioning (applyPosition: "
@@ -2922,7 +2922,7 @@ open class ConstraintWidget {
                 )
             }
             if (numConnections < 2 && parentWrapContent && isTerminal) {
-                system.addGreaterThan(begin!!, parentMin!!, 0, SolverVariable.Companion.STRENGTH_FIXED)
+                system.addGreaterThan(begin!!, parentMin!!, 0, SolverVariable.STRENGTH_FIXED)
                 var applyEnd = isHorizontal || mBaseline?.target == null
                 if (!isHorizontal && mBaseline?.target != null) {
                     // generally we wouldn't take the current widget in the wrap content,
@@ -2934,17 +2934,17 @@ open class ConstraintWidget {
                         target.dimensionRatio != 0f && target.mListDimensionBehaviors[0] == DimensionBehaviour.MATCH_CONSTRAINT && target.mListDimensionBehaviors[1] == DimensionBehaviour.MATCH_CONSTRAINT
                 }
                 if (applyEnd) {
-                    if (LinearSystem.Companion.FULL_DEBUG) {
+                    if (LinearSystem.FULL_DEBUG) {
                         println("<>4 ADDING WRAP GREATER FOR " + debugName)
                     }
-                    system.addGreaterThan(parentMax!!, end!!, 0, SolverVariable.Companion.STRENGTH_FIXED)
+                    system.addGreaterThan(parentMax!!, end!!, 0, SolverVariable.STRENGTH_FIXED)
                 }
             }
             return
         }
 
         // Ok, we are dealing with single or centered constraints, let's apply them
-        var wrapStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
+        var wrapStrength: Int = SolverVariable.STRENGTH_EQUALITY
         if (!isBeginConnected && !isEndConnected && !isCenterConnected) {
             // note we already applied the start position before, no need to redo it...
         } else if (isBeginConnected && !isEndConnected) {
@@ -2953,12 +2953,12 @@ open class ConstraintWidget {
             // If we are constrained to a barrier, make sure that we are not bypassed in the wrap
             val beginWidget = beginAnchor?.target?.owner
             if (parentWrapContent && beginWidget is Barrier) {
-                wrapStrength = SolverVariable.Companion.STRENGTH_FIXED
+                wrapStrength = SolverVariable.STRENGTH_FIXED
             }
         } else if (!isBeginConnected && isEndConnected) {
             system.addEquality(
                 end!!, endTarget!!,
-                -endAnchor.margin, SolverVariable.Companion.STRENGTH_FIXED
+                -endAnchor.margin, SolverVariable.STRENGTH_FIXED
             )
             if (parentWrapContent) {
                 if (mOptimizeWrapO && begin!!.isFinalValue && parent != null) {
@@ -2969,10 +2969,10 @@ open class ConstraintWidget {
                         container.addVerticalWrapMinVariable(beginAnchor)
                     }
                 } else {
-                    if (LinearSystem.Companion.FULL_DEBUG) {
+                    if (LinearSystem.FULL_DEBUG) {
                         println("<>5 ADDING WRAP GREATER FOR " + debugName)
                     }
-                    system.addGreaterThan(begin!!, parentMin!!, 0, SolverVariable.Companion.STRENGTH_EQUALITY)
+                    system.addGreaterThan(begin!!, parentMin!!, 0, SolverVariable.STRENGTH_EQUALITY)
                 }
             }
         } else if (isBeginConnected && isEndConnected) {
@@ -2980,13 +2980,13 @@ open class ConstraintWidget {
             var applyCentering = false
             var applyStrongChecks = false
             var applyRangeCheck = false
-            var rangeCheckStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
+            var rangeCheckStrength: Int = SolverVariable.STRENGTH_EQUALITY
 
             // TODO: might not need it here (it's overridden)
-            var boundsCheckStrength: Int = SolverVariable.Companion.STRENGTH_HIGHEST
-            var centeringStrength: Int = SolverVariable.Companion.STRENGTH_BARRIER
+            var boundsCheckStrength: Int = SolverVariable.STRENGTH_HIGHEST
+            var centeringStrength: Int = SolverVariable.STRENGTH_BARRIER
             if (parentWrapContent) {
-                rangeCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
+                rangeCheckStrength = SolverVariable.STRENGTH_EQUALITY
             }
             val beginWidget: ConstraintWidget = beginAnchor?.target!!.owner
             val endWidget: ConstraintWidget = endAnchor?.target!!.owner
@@ -2995,58 +2995,58 @@ open class ConstraintWidget {
                 if (matchConstraintDefault == MATCH_CONSTRAINT_SPREAD) {
                     if (matchMaxDimension == 0 && matchMinDimension == 0) {
                         applyStrongChecks = true
-                        rangeCheckStrength = SolverVariable.Companion.STRENGTH_FIXED
-                        boundsCheckStrength = SolverVariable.Companion.STRENGTH_FIXED
+                        rangeCheckStrength = SolverVariable.STRENGTH_FIXED
+                        boundsCheckStrength = SolverVariable.STRENGTH_FIXED
                         // Optimization in case of centering in parent
                         if (beginTarget!!.isFinalValue && endTarget!!.isFinalValue) {
                             system.addEquality(
                                 begin!!, beginTarget!!,
-                                beginAnchor.margin, SolverVariable.Companion.STRENGTH_FIXED
+                                beginAnchor.margin, SolverVariable.STRENGTH_FIXED
                             )
                             system.addEquality(
                                 end!!, endTarget!!,
-                                -endAnchor.margin, SolverVariable.Companion.STRENGTH_FIXED
+                                -endAnchor.margin, SolverVariable.STRENGTH_FIXED
                             )
                             return
                         }
                     } else {
                         applyCentering = true
-                        rangeCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
-                        boundsCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
+                        rangeCheckStrength = SolverVariable.STRENGTH_EQUALITY
+                        boundsCheckStrength = SolverVariable.STRENGTH_EQUALITY
                         applyBoundsCheck = true
                         applyRangeCheck = true
                     }
                     if (beginWidget is Barrier || endWidget is Barrier) {
-                        boundsCheckStrength = SolverVariable.Companion.STRENGTH_HIGHEST
+                        boundsCheckStrength = SolverVariable.STRENGTH_HIGHEST
                     }
                 } else if (matchConstraintDefault == MATCH_CONSTRAINT_PERCENT) {
                     applyCentering = true
-                    rangeCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
-                    boundsCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
+                    rangeCheckStrength = SolverVariable.STRENGTH_EQUALITY
+                    boundsCheckStrength = SolverVariable.STRENGTH_EQUALITY
                     applyBoundsCheck = true
                     applyRangeCheck = true
                     if (beginWidget is Barrier || endWidget is Barrier) {
-                        boundsCheckStrength = SolverVariable.Companion.STRENGTH_HIGHEST
+                        boundsCheckStrength = SolverVariable.STRENGTH_HIGHEST
                     }
                 } else if (matchConstraintDefault == MATCH_CONSTRAINT_WRAP) {
                     applyCentering = true
                     applyRangeCheck = true
-                    rangeCheckStrength = SolverVariable.Companion.STRENGTH_FIXED
+                    rangeCheckStrength = SolverVariable.STRENGTH_FIXED
                 } else if (matchConstraintDefault == MATCH_CONSTRAINT_RATIO) {
                     if (mResolvedDimensionRatioSide == UNKNOWN) {
                         applyCentering = true
                         applyRangeCheck = true
                         applyStrongChecks = true
-                        rangeCheckStrength = SolverVariable.Companion.STRENGTH_FIXED
-                        boundsCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
+                        rangeCheckStrength = SolverVariable.STRENGTH_FIXED
+                        boundsCheckStrength = SolverVariable.STRENGTH_EQUALITY
                         if (oppositeInChain) {
-                            boundsCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
-                            centeringStrength = SolverVariable.Companion.STRENGTH_HIGHEST
+                            boundsCheckStrength = SolverVariable.STRENGTH_EQUALITY
+                            centeringStrength = SolverVariable.STRENGTH_HIGHEST
                             if (parentWrapContent) {
-                                centeringStrength = SolverVariable.Companion.STRENGTH_EQUALITY
+                                centeringStrength = SolverVariable.STRENGTH_EQUALITY
                             }
                         } else {
-                            centeringStrength = SolverVariable.Companion.STRENGTH_FIXED
+                            centeringStrength = SolverVariable.STRENGTH_FIXED
                         }
                     } else {
                         applyCentering = true
@@ -3060,23 +3060,23 @@ open class ConstraintWidget {
                                     || oppositeMatchConstraintDefault
                                     == MATCH_CONSTRAINT_WRAP)
                             if (!otherSideInvariable) {
-                                rangeCheckStrength = SolverVariable.Companion.STRENGTH_FIXED
-                                boundsCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
+                                rangeCheckStrength = SolverVariable.STRENGTH_FIXED
+                                boundsCheckStrength = SolverVariable.STRENGTH_EQUALITY
                             }
                         } else {
-                            rangeCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
+                            rangeCheckStrength = SolverVariable.STRENGTH_EQUALITY
                             if (matchMaxDimension > 0) {
-                                boundsCheckStrength = SolverVariable.Companion.STRENGTH_EQUALITY
+                                boundsCheckStrength = SolverVariable.STRENGTH_EQUALITY
                             } else if (matchMaxDimension == 0 && matchMinDimension == 0) {
                                 if (!oppositeInChain) {
-                                    boundsCheckStrength = SolverVariable.Companion.STRENGTH_FIXED
+                                    boundsCheckStrength = SolverVariable.STRENGTH_FIXED
                                 } else {
                                     rangeCheckStrength = if (beginWidget !== parent && endWidget !== parent) {
-                                        SolverVariable.Companion.STRENGTH_HIGHEST
+                                        SolverVariable.STRENGTH_HIGHEST
                                     } else {
-                                        SolverVariable.Companion.STRENGTH_EQUALITY
+                                        SolverVariable.STRENGTH_EQUALITY
                                     }
-                                    boundsCheckStrength = SolverVariable.Companion.STRENGTH_HIGHEST
+                                    boundsCheckStrength = SolverVariable.STRENGTH_HIGHEST
                                 }
                             }
                         }
@@ -3091,7 +3091,7 @@ open class ConstraintWidget {
                     system.addCentering(
                         begin!!, beginTarget!!, beginAnchor.margin,
                         bias, endTarget!!, end!!, endAnchor.margin,
-                        SolverVariable.Companion.STRENGTH_FIXED
+                        SolverVariable.STRENGTH_FIXED
                     )
                     if (parentWrapContent && isTerminal) {
                         var margin = 0
@@ -3099,7 +3099,7 @@ open class ConstraintWidget {
                             margin = endAnchor.margin
                         }
                         if (endTarget !== parentMax) { // if not already applied
-                            if (LinearSystem.Companion.FULL_DEBUG) {
+                            if (LinearSystem.FULL_DEBUG) {
                                 println("<>6 ADDING WRAP GREATER FOR " + debugName)
                             }
                             system.addGreaterThan(parentMax!!, end, margin, wrapStrength)
@@ -3116,8 +3116,8 @@ open class ConstraintWidget {
             if (applyCentering) {
                 if (!variableSize && !oppositeVariable && !oppositeInChain && beginTarget === parentMin && endTarget === parentMax) {
                     // for fixed size widgets, we can simplify the constraints
-                    centeringStrength = SolverVariable.Companion.STRENGTH_FIXED
-                    rangeCheckStrength = SolverVariable.Companion.STRENGTH_FIXED
+                    centeringStrength = SolverVariable.STRENGTH_FIXED
+                    rangeCheckStrength = SolverVariable.STRENGTH_FIXED
                     applyBoundsCheck = false
                     parentWrapContent = false
                 }
@@ -3132,7 +3132,7 @@ open class ConstraintWidget {
             if (applyRangeCheck) {
                 if (parentWrapContent && beginTarget !== endTarget && !variableSize) {
                     if (beginWidget is Barrier || endWidget is Barrier) {
-                        rangeCheckStrength = SolverVariable.Companion.STRENGTH_BARRIER
+                        rangeCheckStrength = SolverVariable.STRENGTH_BARRIER
                     }
                 }
                 system.addGreaterThan(
@@ -3147,24 +3147,24 @@ open class ConstraintWidget {
             ) {
                 // ... but not directly constrained by it
                 // ... then make sure we can hold our own
-                boundsCheckStrength = SolverVariable.Companion.STRENGTH_BARRIER
-                rangeCheckStrength = SolverVariable.Companion.STRENGTH_BARRIER
+                boundsCheckStrength = SolverVariable.STRENGTH_BARRIER
+                rangeCheckStrength = SolverVariable.STRENGTH_BARRIER
                 applyBoundsCheck = true
             }
             if (applyBoundsCheck) {
                 if (applyStrongChecks && (!oppositeInChain || oppositeParentWrapContent)) {
                     var strength = boundsCheckStrength
                     if (beginWidget === parent || endWidget === parent) {
-                        strength = SolverVariable.Companion.STRENGTH_BARRIER
+                        strength = SolverVariable.STRENGTH_BARRIER
                     }
                     if (beginWidget is Guideline || endWidget is Guideline) {
-                        strength = SolverVariable.Companion.STRENGTH_EQUALITY
+                        strength = SolverVariable.STRENGTH_EQUALITY
                     }
                     if (beginWidget is Barrier || endWidget is Barrier) {
-                        strength = SolverVariable.Companion.STRENGTH_EQUALITY
+                        strength = SolverVariable.STRENGTH_EQUALITY
                     }
                     if (oppositeInChain) {
-                        strength = SolverVariable.Companion.STRENGTH_EQUALITY
+                        strength = SolverVariable.STRENGTH_EQUALITY
                     }
                     boundsCheckStrength = max(strength, boundsCheckStrength)
                 }
@@ -3175,7 +3175,7 @@ open class ConstraintWidget {
                     ) {
                         // When using ratio, relax some strength to allow other parts of the system
                         // to take precedence rather than driving it
-                        boundsCheckStrength = SolverVariable.Companion.STRENGTH_HIGHEST
+                        boundsCheckStrength = SolverVariable.STRENGTH_HIGHEST
                     }
                 }
                 system.addEquality(
@@ -3190,18 +3190,18 @@ open class ConstraintWidget {
                     margin = beginAnchor.margin
                 }
                 if (beginTarget !== parentMin) { // already done otherwise
-                    if (LinearSystem.Companion.FULL_DEBUG) {
+                    if (LinearSystem.FULL_DEBUG) {
                         println("<>7 ADDING WRAP GREATER FOR " + debugName)
                     }
                     system.addGreaterThan(begin!!, parentMin!!, margin, wrapStrength)
                 }
             }
             if (parentWrapContent && variableSize && minDimension == 0 && matchMinDimension == 0) {
-                if (LinearSystem.Companion.FULL_DEBUG) {
+                if (LinearSystem.FULL_DEBUG) {
                     println("<>8 ADDING WRAP GREATER FOR " + debugName)
                 }
                 if (variableSize && matchConstraintDefault == MATCH_CONSTRAINT_RATIO) {
-                    system.addGreaterThan(end!!, begin!!, 0, SolverVariable.Companion.STRENGTH_FIXED)
+                    system.addGreaterThan(end!!, begin!!, 0, SolverVariable.STRENGTH_FIXED)
                 } else {
                     system.addGreaterThan(end!!, begin!!, 0, wrapStrength)
                 }
@@ -3222,7 +3222,7 @@ open class ConstraintWidget {
                     }
                     return
                 }
-                if (LinearSystem.Companion.FULL_DEBUG) {
+                if (LinearSystem.FULL_DEBUG) {
                     println("<>9 ADDING WRAP GREATER FOR " + debugName)
                 }
                 system.addGreaterThan(parentMax!!, end!!, margin, wrapStrength)
@@ -3258,7 +3258,7 @@ open class ConstraintWidget {
             bottom = 0
         }
         setFrame(left, top, right, bottom)
-        if (LinearSystem.Companion.DEBUG) {
+        if (LinearSystem.DEBUG) {
             println(" *** UPDATE FROM SOLVER $this")
         }
     }
@@ -3285,7 +3285,7 @@ open class ConstraintWidget {
         mResolvedDimensionRatio = src.mResolvedDimensionRatio
         mMaxDimension = src.mMaxDimension.copyOf(src.mMaxDimension.size)
         mCircleConstraintAngle = src.mCircleConstraintAngle
-        Utils.Companion.logStack(" copying angle = $mCircleConstraintAngle", 5)
+        Utils.logStack(" copying angle = $mCircleConstraintAngle", 5)
         hasBaseline = src.hasBaseline
         isInPlaceholder = src.isInPlaceholder
 
@@ -3316,7 +3316,7 @@ open class ConstraintWidget {
         mMinHeight = src.mMinHeight
         horizontalBiasPercent = src.horizontalBiasPercent
         verticalBiasPercent = src.verticalBiasPercent
-        companionWidget = src.companionWidget
+        companionWidget = srcWidget
         mContainerItemSkip = src.mContainerItemSkip
         visibility = src.visibility
         isAnimated = src.isAnimated

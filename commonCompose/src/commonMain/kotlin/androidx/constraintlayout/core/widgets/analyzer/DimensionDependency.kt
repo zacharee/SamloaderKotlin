@@ -19,10 +19,10 @@ open class DimensionDependency(run: WidgetRun) : DependencyNode(run) {
     var wrapValue = 0
 
     init {
-        if (run is HorizontalWidgetRun) {
-            mType = Type.HORIZONTAL_DIMENSION
+        mType = if (run is HorizontalWidgetRun) {
+            Type.HORIZONTAL_DIMENSION
         } else {
-            mType = Type.VERTICAL_DIMENSION
+            Type.VERTICAL_DIMENSION
         }
     }
 

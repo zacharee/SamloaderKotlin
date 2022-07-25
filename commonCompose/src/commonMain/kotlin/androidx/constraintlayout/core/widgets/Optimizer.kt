@@ -53,11 +53,11 @@ object Optimizer {
         system: LinearSystem,
         widget: ConstraintWidget
     ) {
-        widget.mHorizontalResolution = ConstraintWidget.Companion.UNKNOWN
-        widget.mVerticalResolution = ConstraintWidget.Companion.UNKNOWN
-        if (container.mListDimensionBehaviors.get(ConstraintWidget.Companion.DIMENSION_HORIZONTAL)
+        widget.mHorizontalResolution = ConstraintWidget.UNKNOWN
+        widget.mVerticalResolution = ConstraintWidget.UNKNOWN
+        if (container.mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_HORIZONTAL)
             != DimensionBehaviour.WRAP_CONTENT
-            && widget.mListDimensionBehaviors[ConstraintWidget.Companion.DIMENSION_HORIZONTAL]
+            && widget.mListDimensionBehaviors[ConstraintWidget.DIMENSION_HORIZONTAL]
             == DimensionBehaviour.MATCH_PARENT
         ) {
             val left: Int = widget.mLeft!!.mMargin
@@ -66,12 +66,12 @@ object Optimizer {
             widget.mRight.solverVariable = system.createObjectVariable(widget.mRight)
             system.addEquality(widget.mLeft.solverVariable!!, left)
             system.addEquality(widget.mRight.solverVariable!!, right)
-            widget.mHorizontalResolution = ConstraintWidget.Companion.DIRECT
+            widget.mHorizontalResolution = ConstraintWidget.DIRECT
             widget.setHorizontalDimension(left, right)
         }
-        if (container.mListDimensionBehaviors.get(ConstraintWidget.Companion.DIMENSION_VERTICAL)
+        if (container.mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_VERTICAL)
             != DimensionBehaviour.WRAP_CONTENT
-            && widget.mListDimensionBehaviors[ConstraintWidget.Companion.DIMENSION_VERTICAL]
+            && widget.mListDimensionBehaviors[ConstraintWidget.DIMENSION_VERTICAL]
             == DimensionBehaviour.MATCH_PARENT
         ) {
             val top: Int = widget.mTop.mMargin
@@ -80,14 +80,14 @@ object Optimizer {
             widget.mBottom.solverVariable = system.createObjectVariable(widget.mBottom)
             system.addEquality(widget.mTop.solverVariable!!, top)
             system.addEquality(widget.mBottom.solverVariable!!, bottom)
-            if (widget.mBaselineDistance > 0 || widget.visibility == ConstraintWidget.Companion.GONE) {
+            if (widget.mBaselineDistance > 0 || widget.visibility == ConstraintWidget.GONE) {
                 widget.mBaseline.solverVariable = system.createObjectVariable(widget.mBaseline)
                 system.addEquality(
                     widget.mBaseline.solverVariable!!,
                     top + widget.mBaselineDistance
                 )
             }
-            widget.mVerticalResolution = ConstraintWidget.Companion.DIRECT
+            widget.mVerticalResolution = ConstraintWidget.DIRECT
             widget.setVerticalDimension(top, bottom)
         }
     }

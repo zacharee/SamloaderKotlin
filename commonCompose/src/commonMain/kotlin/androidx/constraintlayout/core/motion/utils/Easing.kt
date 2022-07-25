@@ -15,6 +15,8 @@
  */
 package androidx.constraintlayout.core.motion.utils
 
+import kotlin.native.concurrent.ThreadLocal
+
 /**
  * Provide the engine for cubic spline easing
  *
@@ -161,8 +163,9 @@ open class Easing {
         }
     }
 
+    @ThreadLocal
     companion object {
-        var sDefault = Easing()
+        private val sDefault = Easing()
         private const val STANDARD = "cubic(0.4, 0.0, 0.2, 1)"
         private const val ACCELERATE = "cubic(0.4, 0.05, 0.8, 0.7)"
         private const val DECELERATE = "cubic(0.0, 0.0, 0.2, 0.95)"
@@ -175,7 +178,7 @@ open class Easing {
         private const val LINEAR_NAME = "linear"
         private const val ANTICIPATE_NAME = "anticipate"
         private const val OVERSHOOT_NAME = "overshoot"
-        var NAMED_EASING = arrayOf(STANDARD_NAME, ACCELERATE_NAME, DECELERATE_NAME, LINEAR_NAME)
+        private val NAMED_EASING = arrayOf(STANDARD_NAME, ACCELERATE_NAME, DECELERATE_NAME, LINEAR_NAME)
 
         /**
          * @TODO: add description

@@ -45,18 +45,18 @@ class Placeholder : VirtualLayout() {
         height = max(minHeight, height)
         var measuredWidth = 0
         var measuredHeight = 0
-        if (widthMode == BasicMeasure.Companion.EXACTLY) {
+        if (widthMode == BasicMeasure.EXACTLY) {
             measuredWidth = widthSize
-        } else if (widthMode == BasicMeasure.Companion.AT_MOST) {
+        } else if (widthMode == BasicMeasure.AT_MOST) {
             measuredWidth = min(width, widthSize)
-        } else if (widthMode == BasicMeasure.Companion.UNSPECIFIED) {
+        } else if (widthMode == BasicMeasure.UNSPECIFIED) {
             measuredWidth = width
         }
-        if (heightMode == BasicMeasure.Companion.EXACTLY) {
+        if (heightMode == BasicMeasure.EXACTLY) {
             measuredHeight = heightSize
-        } else if (heightMode == BasicMeasure.Companion.AT_MOST) {
+        } else if (heightMode == BasicMeasure.AT_MOST) {
             measuredHeight = min(height, heightSize)
-        } else if (heightMode == BasicMeasure.Companion.UNSPECIFIED) {
+        } else if (heightMode == BasicMeasure.UNSPECIFIED) {
             measuredHeight = height
         }
         setMeasure(measuredWidth, measuredHeight)

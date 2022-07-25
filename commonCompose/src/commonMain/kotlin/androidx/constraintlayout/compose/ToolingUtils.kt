@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.semantics.SemanticsPropertyKey
 import androidx.compose.ui.semantics.SemanticsPropertyReceiver
-import androidx.constraintlayout.core.state.State.Companion.PARENT
+import androidx.constraintlayout.core.state.State.PARENT
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import androidx.constraintlayout.core.widgets.HelperWidget
 import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
@@ -154,7 +154,7 @@ private fun ConstraintWidget.getHelperId(state: State): String =
  * Returns the Id used for Composables within the layout. Blank if there's no Id.
  */
 private fun ConstraintWidget?.getRefId(): String =
-    (this?.companionWidget as? Measurable)?.layoutId?.toString() ?: this?.stringId.toString()
+    (this?Widget as? Measurable)?.layoutId?.toString() ?: this?.stringId.toString()
 
 private fun createDesignInfoJson(content: JsonObject) = buildJsonObject {
     put("type", "CONSTRAINTS")

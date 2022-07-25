@@ -252,7 +252,7 @@ class OnSwipe {
     }
 
     override fun toString(): String {
-        val ret: StringBuilder = StringBuilder()
+        val ret = StringBuilder()
         ret.append("OnSwipe:{\n")
         if (touchAnchorId != null) {
             ret.append("anchor:'").append(touchAnchorId).append("',\n")

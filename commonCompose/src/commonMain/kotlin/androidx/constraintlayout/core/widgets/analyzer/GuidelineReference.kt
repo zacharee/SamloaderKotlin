@@ -25,16 +25,16 @@ internal class GuidelineReference(widget: ConstraintWidget) : WidgetRun(widget) 
         orientation = (widget as Guideline).orientation
     }
 
-    public override fun clear() {
+    override fun clear() {
         start.clear()
     }
 
-    public override fun reset() {
+    override fun reset() {
         start.resolved = false
         end.resolved = false
     }
 
-    public override fun supportsWrapComputation(): Boolean {
+    override fun supportsWrapComputation(): Boolean {
         return false
     }
 
@@ -53,18 +53,18 @@ internal class GuidelineReference(widget: ConstraintWidget) : WidgetRun(widget) 
             return
         }
         // ready to solve, centering.
-        val startTarget = start.mTargets.get(0)!!
+        val startTarget = start.mTargets[0]!!
         val guideline = mWidget as Guideline
         val startPos = (0.5f + startTarget.value * guideline.relativePercent).toInt()
         start.resolve(startPos)
     }
 
-    public override fun apply() {
+    override fun apply() {
         val guideline = mWidget as Guideline
         val relativeBegin = guideline.relativeBegin
         val relativeEnd = guideline.relativeEnd
         val percent = guideline.relativePercent
-        if (guideline.orientation == ConstraintWidget.Companion.VERTICAL) {
+        if (guideline.orientation == ConstraintWidget.VERTICAL) {
             if (relativeBegin != -1) {
                 start.mTargets.add(mWidget.parent!!.mHorizontalRun!!.start)
                 mWidget.parent!!.mHorizontalRun!!.start.mDependencies.add(start)
@@ -103,9 +103,9 @@ internal class GuidelineReference(widget: ConstraintWidget) : WidgetRun(widget) 
         }
     }
 
-    public override fun applyToWidget() {
+    override fun applyToWidget() {
         val guideline = mWidget as Guideline
-        if (guideline.orientation == ConstraintWidget.Companion.VERTICAL) {
+        if (guideline.orientation == ConstraintWidget.VERTICAL) {
             mWidget.x = (start.value)
         } else {
             mWidget.y = (start.value)

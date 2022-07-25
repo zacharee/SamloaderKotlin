@@ -162,16 +162,16 @@ class Dimension {
         if (mRatioString != null) {
             constraintWidget.setDimensionRatio(mRatioString)
         }
-        if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        if (orientation == ConstraintWidget.HORIZONTAL) {
             if (mIsSuggested) {
                 constraintWidget.horizontalDimensionBehaviour = (
                     ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
                 )
-                var type: Int = ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD
+                var type: Int = ConstraintWidget.MATCH_CONSTRAINT_SPREAD
                 if (mInitialValue === WRAP_DIMENSION) {
-                    type = ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
+                    type = ConstraintWidget.MATCH_CONSTRAINT_WRAP
                 } else if (mInitialValue === PERCENT_DIMENSION) {
-                    type = ConstraintWidget.Companion.MATCH_CONSTRAINT_PERCENT
+                    type = ConstraintWidget.MATCH_CONSTRAINT_PERCENT
                 }
                 constraintWidget.setHorizontalMatchStyle(type, mMin, mMax, mPercent)
             } else { // fixed
@@ -201,11 +201,11 @@ class Dimension {
                 constraintWidget.verticalDimensionBehaviour = (
                     ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
                 )
-                var type: Int = ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD
+                var type: Int = ConstraintWidget.MATCH_CONSTRAINT_SPREAD
                 if (mInitialValue === WRAP_DIMENSION) {
-                    type = ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
+                    type = ConstraintWidget.MATCH_CONSTRAINT_WRAP
                 } else if (mInitialValue === PERCENT_DIMENSION) {
-                    type = ConstraintWidget.Companion.MATCH_CONSTRAINT_PERCENT
+                    type = ConstraintWidget.MATCH_CONSTRAINT_PERCENT
                 }
                 constraintWidget.setVerticalMatchStyle(type, mMin, mMax, mPercent)
             } else { // fixed

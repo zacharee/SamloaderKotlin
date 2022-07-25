@@ -58,7 +58,7 @@ class CustomVariable {
     constructor(name: String, type: Int, value: Int) {
         this.name = name
         this.type = type
-        if (type == TypedValues.Custom.Companion.TYPE_FLOAT) { // catch int ment for float
+        if (type == TypedValues.Custom.TYPE_FLOAT) { // catch int ment for float
             floatValue = value.toFloat()
         } else {
             integerValue = value
@@ -78,17 +78,17 @@ class CustomVariable {
     }
 
     override fun toString(): String {
-        val str = name + ':'
+        val str = "$name:"
         when (type) {
-            TypedValues.Custom.Companion.TYPE_INT -> return str + integerValue
-            TypedValues.Custom.Companion.TYPE_FLOAT -> return str + floatValue
-            TypedValues.Custom.Companion.TYPE_COLOR -> return str + colorString(
+            TypedValues.Custom.TYPE_INT -> return str + integerValue
+            TypedValues.Custom.TYPE_FLOAT -> return str + floatValue
+            TypedValues.Custom.TYPE_COLOR -> return str + colorString(
                 integerValue
             )
 
-            TypedValues.Custom.Companion.TYPE_STRING -> return str + stringValue
-            TypedValues.Custom.Companion.TYPE_BOOLEAN -> return str + booleanValue
-            TypedValues.Custom.Companion.TYPE_DIMENSION -> return str + floatValue
+            TypedValues.Custom.TYPE_STRING -> return str + stringValue
+            TypedValues.Custom.TYPE_BOOLEAN -> return str + booleanValue
+            TypedValues.Custom.TYPE_DIMENSION -> return str + floatValue
         }
         return "$str????"
     }
@@ -98,7 +98,7 @@ class CustomVariable {
      */
     val isContinuous: Boolean
         get() = when (type) {
-            TypedValues.Custom.Companion.TYPE_REFERENCE, TypedValues.Custom.Companion.TYPE_BOOLEAN, TypedValues.Custom.Companion.TYPE_STRING -> false
+            TypedValues.Custom.TYPE_REFERENCE, TypedValues.Custom.TYPE_BOOLEAN, TypedValues.Custom.TYPE_STRING -> false
             else -> true
         }
 
@@ -114,7 +114,7 @@ class CustomVariable {
      */
     fun numberOfInterpolatedValues(): Int {
         return when (type) {
-            TypedValues.Custom.Companion.TYPE_COLOR -> 4
+            TypedValues.Custom.TYPE_COLOR -> 4
             else -> 1
         }
     }
@@ -127,12 +127,12 @@ class CustomVariable {
     val valueToInterpolate: Float
         get() {
             when (type) {
-                TypedValues.Custom.Companion.TYPE_INT -> return integerValue.toFloat()
-                TypedValues.Custom.Companion.TYPE_FLOAT -> return floatValue
-                TypedValues.Custom.Companion.TYPE_COLOR -> throw RuntimeException("Color does not have a single color to interpolate")
-                TypedValues.Custom.Companion.TYPE_STRING -> throw RuntimeException("Cannot interpolate String")
-                TypedValues.Custom.Companion.TYPE_BOOLEAN -> return if (booleanValue) 1f else 0f
-                TypedValues.Custom.Companion.TYPE_DIMENSION -> return floatValue
+                TypedValues.Custom.TYPE_INT -> return integerValue.toFloat()
+                TypedValues.Custom.TYPE_FLOAT -> return floatValue
+                TypedValues.Custom.TYPE_COLOR -> throw RuntimeException("Color does not have a single color to interpolate")
+                TypedValues.Custom.TYPE_STRING -> throw RuntimeException("Cannot interpolate String")
+                TypedValues.Custom.TYPE_BOOLEAN -> return if (booleanValue) 1f else 0f
+                TypedValues.Custom.TYPE_DIMENSION -> return floatValue
             }
             return Float.NaN
         }
@@ -142,9 +142,9 @@ class CustomVariable {
      */
     fun getValuesToInterpolate(ret: FloatArray) {
         when (type) {
-            TypedValues.Custom.Companion.TYPE_INT -> ret[0] = integerValue.toFloat()
-            TypedValues.Custom.Companion.TYPE_FLOAT -> ret[0] = floatValue
-            TypedValues.Custom.Companion.TYPE_COLOR -> {
+            TypedValues.Custom.TYPE_INT -> ret[0] = integerValue.toFloat()
+            TypedValues.Custom.TYPE_FLOAT -> ret[0] = floatValue
+            TypedValues.Custom.TYPE_COLOR -> {
                 val a = 0xFF and (integerValue shr 24)
                 val r = 0xFF and (integerValue shr 16)
                 val g = 0xFF and (integerValue shr 8)
@@ -158,9 +158,9 @@ class CustomVariable {
                 ret[3] = a / 255f
             }
 
-            TypedValues.Custom.Companion.TYPE_STRING -> throw RuntimeException("Cannot interpolate String")
-            TypedValues.Custom.Companion.TYPE_BOOLEAN -> ret[0] = (if (booleanValue) 1 else 0).toFloat()
-            TypedValues.Custom.Companion.TYPE_DIMENSION -> ret[0] = floatValue
+            TypedValues.Custom.TYPE_STRING -> throw RuntimeException("Cannot interpolate String")
+            TypedValues.Custom.TYPE_BOOLEAN -> ret[0] = (if (booleanValue) 1 else 0).toFloat()
+            TypedValues.Custom.TYPE_DIMENSION -> ret[0] = floatValue
         }
     }
 
@@ -169,13 +169,13 @@ class CustomVariable {
      */
     fun setValue(value: FloatArray) {
         when (type) {
-            TypedValues.Custom.Companion.TYPE_REFERENCE, TypedValues.Custom.Companion.TYPE_INT -> integerValue =
+            TypedValues.Custom.TYPE_REFERENCE, TypedValues.Custom.TYPE_INT -> integerValue =
                 value[0].toInt()
 
-            TypedValues.Custom.Companion.TYPE_FLOAT, TypedValues.Custom.Companion.TYPE_DIMENSION -> floatValue =
+            TypedValues.Custom.TYPE_FLOAT, TypedValues.Custom.TYPE_DIMENSION -> floatValue =
                 value[0]
 
-            TypedValues.Custom.Companion.TYPE_COLOR -> {
+            TypedValues.Custom.TYPE_COLOR -> {
                 val f_r = value[0]
                 val f_g = value[1]
                 val f_b = value[2]
@@ -186,8 +186,8 @@ class CustomVariable {
                 integerValue = a shl 24 or (r shl 16) or (g shl 8) or b
             }
 
-            TypedValues.Custom.Companion.TYPE_STRING -> throw RuntimeException("Cannot interpolate String")
-            TypedValues.Custom.Companion.TYPE_BOOLEAN -> booleanValue = value[0] > 0.5
+            TypedValues.Custom.TYPE_STRING -> throw RuntimeException("Cannot interpolate String")
+            TypedValues.Custom.TYPE_BOOLEAN -> booleanValue = value[0] > 0.5
         }
     }
 
@@ -199,12 +199,12 @@ class CustomVariable {
             return false
         }
         when (type) {
-            TypedValues.Custom.Companion.TYPE_INT, TypedValues.Custom.Companion.TYPE_REFERENCE -> return integerValue == customAttribute.integerValue
-            TypedValues.Custom.Companion.TYPE_FLOAT -> return floatValue == customAttribute.floatValue
-            TypedValues.Custom.Companion.TYPE_COLOR -> return integerValue == customAttribute.integerValue
-            TypedValues.Custom.Companion.TYPE_STRING -> return integerValue == customAttribute.integerValue
-            TypedValues.Custom.Companion.TYPE_BOOLEAN -> return booleanValue == customAttribute.booleanValue
-            TypedValues.Custom.Companion.TYPE_DIMENSION -> return floatValue == customAttribute.floatValue
+            TypedValues.Custom.TYPE_INT, TypedValues.Custom.TYPE_REFERENCE -> return integerValue == customAttribute.integerValue
+            TypedValues.Custom.TYPE_FLOAT -> return floatValue == customAttribute.floatValue
+            TypedValues.Custom.TYPE_COLOR -> return integerValue == customAttribute.integerValue
+            TypedValues.Custom.TYPE_STRING -> return integerValue == customAttribute.integerValue
+            TypedValues.Custom.TYPE_BOOLEAN -> return booleanValue == customAttribute.booleanValue
+            TypedValues.Custom.TYPE_DIMENSION -> return floatValue == customAttribute.floatValue
         }
         return false
     }
@@ -231,14 +231,14 @@ class CustomVariable {
      */
     fun setValue(value: Any) {
         when (type) {
-            TypedValues.Custom.Companion.TYPE_REFERENCE, TypedValues.Custom.Companion.TYPE_INT -> integerValue =
+            TypedValues.Custom.TYPE_REFERENCE, TypedValues.Custom.TYPE_INT -> integerValue =
                 value as Int
 
-            TypedValues.Custom.Companion.TYPE_FLOAT -> floatValue = value as Float
-            TypedValues.Custom.Companion.TYPE_COLOR -> integerValue = value as Int
-            TypedValues.Custom.Companion.TYPE_STRING -> stringValue = value as String
-            TypedValues.Custom.Companion.TYPE_BOOLEAN -> booleanValue = value as Boolean
-            TypedValues.Custom.Companion.TYPE_DIMENSION -> floatValue = value as Float
+            TypedValues.Custom.TYPE_FLOAT -> floatValue = value as Float
+            TypedValues.Custom.TYPE_COLOR -> integerValue = value as Int
+            TypedValues.Custom.TYPE_STRING -> stringValue = value as String
+            TypedValues.Custom.TYPE_BOOLEAN -> booleanValue = value as Boolean
+            TypedValues.Custom.TYPE_DIMENSION -> floatValue = value as Float
         }
     }
 
@@ -264,11 +264,11 @@ class CustomVariable {
      */
     fun setInterpolatedValue(view: MotionWidget, value: FloatArray) {
         when (type) {
-            TypedValues.Custom.Companion.TYPE_INT -> view.setCustomAttribute(
-                name!!, type, value[0].toInt()
+            TypedValues.Custom.TYPE_INT -> view.setCustomAttribute(
+                name, type, value[0].toInt()
             )
 
-            TypedValues.Custom.Companion.TYPE_COLOR -> {
+            TypedValues.Custom.TYPE_COLOR -> {
                 val r = clamp((value[0].toDouble().pow(1.0 / 2.2).toFloat() * 255.0f).toInt())
                 val g = clamp((value[1].toDouble().pow(1.0 / 2.2).toFloat() * 255.0f).toInt())
                 val b = clamp((value[2].toDouble().pow(1.0 / 2.2).toFloat() * 255.0f).toInt())
@@ -277,15 +277,15 @@ class CustomVariable {
                 view.setCustomAttribute(name, type, color)
             }
 
-            TypedValues.Custom.Companion.TYPE_REFERENCE, TypedValues.Custom.Companion.TYPE_STRING -> throw RuntimeException(
-                "unable to interpolate " + name
+            TypedValues.Custom.TYPE_REFERENCE, TypedValues.Custom.TYPE_STRING -> throw RuntimeException(
+                "unable to interpolate $name"
             )
 
-            TypedValues.Custom.Companion.TYPE_BOOLEAN -> view.setCustomAttribute(
+            TypedValues.Custom.TYPE_BOOLEAN -> view.setCustomAttribute(
                 name, type, value[0] > 0.5f
             )
 
-            TypedValues.Custom.Companion.TYPE_DIMENSION, TypedValues.Custom.Companion.TYPE_FLOAT -> view.setCustomAttribute(
+            TypedValues.Custom.TYPE_DIMENSION, TypedValues.Custom.TYPE_FLOAT -> view.setCustomAttribute(
                 name, type, value[0]
             )
         }
@@ -296,19 +296,19 @@ class CustomVariable {
      */
     fun applyToWidget(view: MotionWidget) {
         when (type) {
-            TypedValues.Custom.Companion.TYPE_INT, TypedValues.Custom.Companion.TYPE_COLOR, TypedValues.Custom.Companion.TYPE_REFERENCE -> view.setCustomAttribute(
+            TypedValues.Custom.TYPE_INT, TypedValues.Custom.TYPE_COLOR, TypedValues.Custom.TYPE_REFERENCE -> view.setCustomAttribute(
                 name, type, integerValue
             )
 
-            TypedValues.Custom.Companion.TYPE_STRING -> view.setCustomAttribute(
+            TypedValues.Custom.TYPE_STRING -> view.setCustomAttribute(
                 name, type, stringValue
             )
 
-            TypedValues.Custom.Companion.TYPE_BOOLEAN -> view.setCustomAttribute(
+            TypedValues.Custom.TYPE_BOOLEAN -> view.setCustomAttribute(
                 name, type, booleanValue
             )
 
-            TypedValues.Custom.Companion.TYPE_DIMENSION, TypedValues.Custom.Companion.TYPE_FLOAT -> view.setCustomAttribute(
+            TypedValues.Custom.TYPE_DIMENSION, TypedValues.Custom.TYPE_FLOAT -> view.setCustomAttribute(
                 name, type, floatValue
             )
         }

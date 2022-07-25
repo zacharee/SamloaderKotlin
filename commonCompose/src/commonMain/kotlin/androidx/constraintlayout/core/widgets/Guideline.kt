@@ -184,7 +184,7 @@ class Guideline : ConstraintWidget() {
      * @TODO: add description
      */
     fun setFinalValue(position: Int) {
-        if (LinearSystem.Companion.FULL_DEBUG) {
+        if (LinearSystem.FULL_DEBUG) {
             println(
                 "*** SET FINAL GUIDELINE VALUE "
                         + position + " FOR " + debugName
@@ -195,7 +195,7 @@ class Guideline : ConstraintWidget() {
     }
 
     override fun addToSolver(system: LinearSystem, optimize: Boolean) {
-        if (LinearSystem.Companion.FULL_DEBUG) {
+        if (LinearSystem.FULL_DEBUG) {
             println("\n----------------------------------------------")
             println("-- adding $debugName to the solver")
             println("----------------------------------------------\n")
@@ -204,16 +204,16 @@ class Guideline : ConstraintWidget() {
         var begin: ConstraintAnchor? = parent.getAnchor(ConstraintAnchor.Type.LEFT)
         var end: ConstraintAnchor? = parent.getAnchor(ConstraintAnchor.Type.RIGHT)
         var parentWrapContent =
-            parent.mListDimensionBehaviors.get(ConstraintWidget.Companion.DIMENSION_HORIZONTAL) == DimensionBehaviour.WRAP_CONTENT
+            parent.mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_HORIZONTAL) == DimensionBehaviour.WRAP_CONTENT
         if (mOrientation == HORIZONTAL) {
             begin = parent.getAnchor(ConstraintAnchor.Type.TOP)
             end = parent.getAnchor(ConstraintAnchor.Type.BOTTOM)
             parentWrapContent =
-                parent.mListDimensionBehaviors.get(ConstraintWidget.Companion.DIMENSION_VERTICAL) == DimensionBehaviour.WRAP_CONTENT
+                parent.mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_VERTICAL) == DimensionBehaviour.WRAP_CONTENT
         }
         if (isResolvedVertically && anchor.hasFinalValue()) {
             val guide = system.createObjectVariable(anchor)
-            if (LinearSystem.Companion.FULL_DEBUG) {
+            if (LinearSystem.FULL_DEBUG) {
                 println(
                     "*** SET FINAL POSITION FOR GUIDELINE "
                             + debugName + " TO " + anchor.finalValue
@@ -224,7 +224,7 @@ class Guideline : ConstraintWidget() {
                 if (parentWrapContent) {
                     system.addGreaterThan(
                         system.createObjectVariable(end)!!, guide!!,
-                        0, SolverVariable.Companion.STRENGTH_EQUALITY
+                        0, SolverVariable.STRENGTH_EQUALITY
                     )
                 }
             } else if (relativeEnd != -1) {
@@ -232,9 +232,9 @@ class Guideline : ConstraintWidget() {
                     val parentRight = system.createObjectVariable(end)
                     system.addGreaterThan(
                         guide!!, system.createObjectVariable(begin)!!,
-                        0, SolverVariable.Companion.STRENGTH_EQUALITY
+                        0, SolverVariable.STRENGTH_EQUALITY
                     )
-                    system.addGreaterThan(parentRight!!, guide, 0, SolverVariable.Companion.STRENGTH_EQUALITY)
+                    system.addGreaterThan(parentRight!!, guide, 0, SolverVariable.STRENGTH_EQUALITY)
                 }
             }
             isResolvedVertically = false
@@ -243,29 +243,29 @@ class Guideline : ConstraintWidget() {
         if (relativeBegin != -1) {
             val guide = system.createObjectVariable(anchor)
             val parentLeft = system.createObjectVariable(begin)
-            system.addEquality(guide!!, parentLeft!!, relativeBegin, SolverVariable.Companion.STRENGTH_FIXED)
+            system.addEquality(guide!!, parentLeft!!, relativeBegin, SolverVariable.STRENGTH_FIXED)
             if (parentWrapContent) {
                 system.addGreaterThan(
                     system.createObjectVariable(end)!!,
-                    guide!!, 0, SolverVariable.Companion.STRENGTH_EQUALITY
+                    guide!!, 0, SolverVariable.STRENGTH_EQUALITY
                 )
             }
         } else if (relativeEnd != -1) {
             val guide = system.createObjectVariable(anchor)
             val parentRight = system.createObjectVariable(end)
-            system.addEquality(guide!!, parentRight!!, -relativeEnd, SolverVariable.Companion.STRENGTH_FIXED)
+            system.addEquality(guide!!, parentRight!!, -relativeEnd, SolverVariable.STRENGTH_FIXED)
             if (parentWrapContent) {
                 system.addGreaterThan(
                     guide, system.createObjectVariable(begin)!!,
-                    0, SolverVariable.Companion.STRENGTH_EQUALITY
+                    0, SolverVariable.STRENGTH_EQUALITY
                 )
-                system.addGreaterThan(parentRight, guide, 0, SolverVariable.Companion.STRENGTH_EQUALITY)
+                system.addGreaterThan(parentRight, guide, 0, SolverVariable.STRENGTH_EQUALITY)
             }
         } else if (relativePercent != -1f) {
             val guide = system.createObjectVariable(anchor)
             val parentRight = system.createObjectVariable(end)
             system.addConstraint(
-                LinearSystem.Companion.createRowDimensionPercent(
+                LinearSystem.createRowDimensionPercent(
                     system, guide!!, parentRight!!,
                     relativePercent
                 )

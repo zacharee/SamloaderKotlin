@@ -48,7 +48,7 @@ class HorizontalChainReference(state: State) : ChainReference(state, State.Helpe
                 } else {
                     // No constraint declared, default to Parent.
                     val refKey = reference.key.toString()
-                    first.startToStart(State.Companion.PARENT).margin(getPreMargin(refKey))
+                    first.startToStart(State.PARENT).margin(getPreMargin(refKey))
                 }
             }
             if (previous != null) {
@@ -58,7 +58,7 @@ class HorizontalChainReference(state: State) : ChainReference(state, State.Helpe
                 reference.startToEnd(previous.key).margin(getPreMargin(refKey))
             }
             val weight = getWeight(key.toString())
-            if (weight != ConstraintWidget.Companion.UNKNOWN.toFloat()) {
+            if (weight != ConstraintWidget.UNKNOWN.toFloat()) {
                 reference.horizontalChainWeight = weight
             }
             previous = reference
@@ -77,7 +77,7 @@ class HorizontalChainReference(state: State) : ChainReference(state, State.Helpe
             } else {
                 // No constraint declared, default to Parent.
                 val preKey = previous.key.toString()
-                previous.endToEnd(State.Companion.PARENT).margin(getPostMargin(preKey))
+                previous.endToEnd(State.PARENT).margin(getPostMargin(preKey))
             }
         }
         if (first == null) {
@@ -88,15 +88,15 @@ class HorizontalChainReference(state: State) : ChainReference(state, State.Helpe
         }
         when (mStyle) {
             State.Chain.SPREAD -> {
-                first.horizontalChainStyle = ConstraintWidget.Companion.CHAIN_SPREAD
+                first.horizontalChainStyle = ConstraintWidget.CHAIN_SPREAD
             }
 
             State.Chain.SPREAD_INSIDE -> {
-                first.horizontalChainStyle = ConstraintWidget.Companion.CHAIN_SPREAD_INSIDE
+                first.horizontalChainStyle = ConstraintWidget.CHAIN_SPREAD_INSIDE
             }
 
             State.Chain.PACKED -> {
-                first.horizontalChainStyle = ConstraintWidget.Companion.CHAIN_PACKED
+                first.horizontalChainStyle = ConstraintWidget.CHAIN_PACKED
             }
         }
     }

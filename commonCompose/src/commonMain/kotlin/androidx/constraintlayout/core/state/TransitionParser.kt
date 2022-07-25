@@ -39,21 +39,21 @@ object TransitionParser {
         if (pathMotionArc != null) {
             setBundle = true
             when (pathMotionArc) {
-                "none" -> bundle.add(PositionType.Companion.TYPE_PATH_MOTION_ARC, 0)
-                "startVertical" -> bundle.add(PositionType.Companion.TYPE_PATH_MOTION_ARC, 1)
-                "startHorizontal" -> bundle.add(PositionType.Companion.TYPE_PATH_MOTION_ARC, 2)
-                "flip" -> bundle.add(PositionType.Companion.TYPE_PATH_MOTION_ARC, 3)
+                "none" -> bundle.add(PositionType.TYPE_PATH_MOTION_ARC, 0)
+                "startVertical" -> bundle.add(PositionType.TYPE_PATH_MOTION_ARC, 1)
+                "startHorizontal" -> bundle.add(PositionType.TYPE_PATH_MOTION_ARC, 2)
+                "flip" -> bundle.add(PositionType.TYPE_PATH_MOTION_ARC, 3)
             }
         }
         val interpolator = json.getStringOrNull("interpolator")
         if (interpolator != null) {
             setBundle = true
-            bundle.add(TypedValues.TransitionType.Companion.TYPE_INTERPOLATOR, interpolator)
+            bundle.add(TransitionType.TYPE_INTERPOLATOR, interpolator)
         }
         val staggered: Float = json.getFloatOrNaN("staggered")
         if (!staggered.isNaN()) {
             setBundle = true
-            bundle.add(TypedValues.TransitionType.Companion.TYPE_STAGGERED, staggered)
+            bundle.add(TransitionType.TYPE_STAGGERED, staggered)
         }
         if (setBundle) {
             transition.setTransitionProperties(bundle)
@@ -67,29 +67,29 @@ object TransitionParser {
 
     private fun parseOnSwipe(onSwipe: CLContainer, transition: Transition) {
         val anchor = onSwipe.getStringOrNull("anchor")
-        val side = map(onSwipe.getStringOrNull("side"), *Transition.OnSwipe.Companion.SIDES)
+        val side = map(onSwipe.getStringOrNull("side"), *Transition.OnSwipe.SIDES)
         val direction = map(
             onSwipe.getStringOrNull("direction"),
-            *Transition.OnSwipe.Companion.DIRECTIONS
+            *Transition.OnSwipe.DIRECTIONS
         )
         val scale = onSwipe.getFloatOrNaN("scale")
         val threshold = onSwipe.getFloatOrNaN("threshold")
         val maxVelocity = onSwipe.getFloatOrNaN("maxVelocity")
         val maxAccel = onSwipe.getFloatOrNaN("maxAccel")
         val limitBounds = onSwipe.getStringOrNull("limitBounds")
-        val autoCompleteMode = map(onSwipe.getStringOrNull("mode"), *Transition.OnSwipe.Companion.MODE)
-        val touchUp = map(onSwipe.getStringOrNull("touchUp"), *Transition.OnSwipe.Companion.TOUCH_UP)
+        val autoCompleteMode = map(onSwipe.getStringOrNull("mode"), *Transition.OnSwipe.MODE)
+        val touchUp = map(onSwipe.getStringOrNull("touchUp"), *Transition.OnSwipe.TOUCH_UP)
         val springMass = onSwipe.getFloatOrNaN("springMass")
         val springStiffness = onSwipe.getFloatOrNaN("springStiffness")
         val springDamping = onSwipe.getFloatOrNaN("springDamping")
         val stopThreshold = onSwipe.getFloatOrNaN("stopThreshold")
         val springBoundary = map(
             onSwipe.getStringOrNull("springBoundary"),
-            *Transition.OnSwipe.Companion.BOUNDARY
+            *Transition.OnSwipe.BOUNDARY
         )
         val around = onSwipe.getStringOrNull("around")
-        val swipe: Transition.OnSwipe? = transition.createOnSwipe()
-        swipe!!.setAnchorId(anchor)
+        val swipe: Transition.OnSwipe = transition.createOnSwipe()
+        swipe.setAnchorId(anchor)
         swipe.setAnchorSide(side)
         swipe.setDragDirection(direction)
         swipe.setDragScale(scale)
@@ -136,7 +136,7 @@ object TransitionParser {
         val keyPositions = keyframes.getArrayOrNull("KeyPositions")
         if (keyPositions != null) {
             for (i in 0 until keyPositions.size()) {
-                val keyPosition = keyPositions.get(i)
+                val keyPosition = keyPositions[i]
                 if (keyPosition is CLObject) {
                     parseKeyPosition(keyPosition, transition)
                 }
@@ -145,7 +145,7 @@ object TransitionParser {
         val keyAttributes = keyframes.getArrayOrNull("KeyAttributes")
         if (keyAttributes != null) {
             for (i in 0 until keyAttributes.size()) {
-                val keyAttribute = keyAttributes.get(i)
+                val keyAttribute = keyAttributes[i]
                 if (keyAttribute is CLObject) {
                     parseKeyAttribute(keyAttribute, transition)
                 }
@@ -154,7 +154,7 @@ object TransitionParser {
         val keyCycles = keyframes.getArrayOrNull("KeyCycles")
         if (keyCycles != null) {
             for (i in 0 until keyCycles.size()) {
-                val keyCycle = keyCycles.get(i)
+                val keyCycle = keyCycles[i]
                 if (keyCycle is CLObject) {
                     parseKeyCycle(keyCycle, transition)
                 }
@@ -191,27 +191,27 @@ object TransitionParser {
             val target: String = targets.getString(i)!!
             val pos_type = map(type, "deltaRelative", "pathRelative", "parentRelative")
             bundle.clear()
-            bundle.add(PositionType.Companion.TYPE_POSITION_TYPE, pos_type)
+            bundle.add(PositionType.TYPE_POSITION_TYPE, pos_type)
             if (curveFit != null) {
                 map(
-                    bundle, PositionType.Companion.TYPE_CURVE_FIT, curveFit,
+                    bundle, PositionType.TYPE_CURVE_FIT, curveFit,
                     "spline", "linear"
                 )
             }
-            bundle.addIfNotNull(PositionType.Companion.TYPE_TRANSITION_EASING, transitionEasing)
+            bundle.addIfNotNull(PositionType.TYPE_TRANSITION_EASING, transitionEasing)
             if (pathMotionArc != null) {
                 map(
-                    bundle, PositionType.Companion.TYPE_PATH_MOTION_ARC, pathMotionArc,
+                    bundle, PositionType.TYPE_PATH_MOTION_ARC, pathMotionArc,
                     "none", "startVertical", "startHorizontal", "flip"
                 )
             }
             for (j in 0 until frames.size()) {
                 val frame: Int = frames.getInt(j)
-                bundle.add(TypedValues.Companion.TYPE_FRAME_POSITION, frame)
-                TransitionParser[bundle, PositionType.Companion.TYPE_PERCENT_X, percentX] = j
-                TransitionParser[bundle, PositionType.Companion.TYPE_PERCENT_Y, percentY] = j
-                TransitionParser[bundle, PositionType.Companion.TYPE_PERCENT_WIDTH, percentWidth] = j
-                TransitionParser[bundle, PositionType.Companion.TYPE_PERCENT_HEIGHT, percentHeight] = j
+                bundle.add(TypedValues.TYPE_FRAME_POSITION, frame)
+                TransitionParser[bundle, PositionType.TYPE_PERCENT_X, percentX] = j
+                TransitionParser[bundle, PositionType.TYPE_PERCENT_Y, percentY] = j
+                TransitionParser[bundle, PositionType.TYPE_PERCENT_WIDTH, percentWidth] = j
+                TransitionParser[bundle, PositionType.TYPE_PERCENT_HEIGHT, percentHeight] = j
                 transition.addKeyPosition(target, bundle)
             }
         }
@@ -237,26 +237,26 @@ object TransitionParser {
         val transitionEasing: String = keyAttribute.getStringOrNull("transitionEasing")!!
         // These present an ordered list of attributes that might be used in a keyCycle
         val attrNames = arrayOf<String>(
-            AttributesType.Companion.S_SCALE_X,
-            AttributesType.Companion.S_SCALE_Y,
-            AttributesType.Companion.S_TRANSLATION_X,
-            AttributesType.Companion.S_TRANSLATION_Y,
-            AttributesType.Companion.S_TRANSLATION_Z,
-            AttributesType.Companion.S_ROTATION_X,
-            AttributesType.Companion.S_ROTATION_Y,
-            AttributesType.Companion.S_ROTATION_Z,
-            AttributesType.Companion.S_ALPHA
+            AttributesType.S_SCALE_X,
+            AttributesType.S_SCALE_Y,
+            AttributesType.S_TRANSLATION_X,
+            AttributesType.S_TRANSLATION_Y,
+            AttributesType.S_TRANSLATION_Z,
+            AttributesType.S_ROTATION_X,
+            AttributesType.S_ROTATION_Y,
+            AttributesType.S_ROTATION_Z,
+            AttributesType.S_ALPHA
         )
         val attrIds = intArrayOf(
-            AttributesType.Companion.TYPE_SCALE_X,
-            AttributesType.Companion.TYPE_SCALE_Y,
-            AttributesType.Companion.TYPE_TRANSLATION_X,
-            AttributesType.Companion.TYPE_TRANSLATION_Y,
-            AttributesType.Companion.TYPE_TRANSLATION_Z,
-            AttributesType.Companion.TYPE_ROTATION_X,
-            AttributesType.Companion.TYPE_ROTATION_Y,
-            AttributesType.Companion.TYPE_ROTATION_Z,
-            AttributesType.Companion.TYPE_ALPHA
+            AttributesType.TYPE_SCALE_X,
+            AttributesType.TYPE_SCALE_Y,
+            AttributesType.TYPE_TRANSLATION_X,
+            AttributesType.TYPE_TRANSLATION_Y,
+            AttributesType.TYPE_TRANSLATION_Z,
+            AttributesType.TYPE_ROTATION_X,
+            AttributesType.TYPE_ROTATION_Y,
+            AttributesType.TYPE_ROTATION_Z,
+            AttributesType.TYPE_ALPHA
         )
         // if true scale the values from pixels to dp
         val scaleTypes = booleanArrayOf(
@@ -313,16 +313,16 @@ object TransitionParser {
                 val bundle = bundles[j]
                 if (curveFit != null) {
                     bundle!!.add(
-                        PositionType.Companion.TYPE_CURVE_FIT,
+                        PositionType.TYPE_CURVE_FIT,
                         map(curveFit, "spline", "linear")
                     )
                 }
                 bundle!!.addIfNotNull(
-                    PositionType.Companion.TYPE_TRANSITION_EASING,
+                    PositionType.TYPE_TRANSITION_EASING,
                     transitionEasing
                 )
                 val frame: Int = frames.getInt(j)
-                bundle.add(TypedValues.Companion.TYPE_FRAME_POSITION, frame)
+                bundle.add(TypedValues.TYPE_FRAME_POSITION, frame)
                 transition.addKeyAttribute(target, bundle)
             }
         }
@@ -338,32 +338,32 @@ object TransitionParser {
         val transitionEasing: String = keyCycleData.getStringOrNull("transitionEasing")!!
         // These present an ordered list of attributes that might be used in a keyCycle
         val attrNames = arrayOf<String>(
-            CycleType.Companion.S_SCALE_X,
-            CycleType.Companion.S_SCALE_Y,
-            CycleType.Companion.S_TRANSLATION_X,
-            CycleType.Companion.S_TRANSLATION_Y,
-            CycleType.Companion.S_TRANSLATION_Z,
-            CycleType.Companion.S_ROTATION_X,
-            CycleType.Companion.S_ROTATION_Y,
-            CycleType.Companion.S_ROTATION_Z,
-            CycleType.Companion.S_ALPHA,
-            CycleType.Companion.S_WAVE_PERIOD,
-            CycleType.Companion.S_WAVE_OFFSET,
-            CycleType.Companion.S_WAVE_PHASE
+            CycleType.S_SCALE_X,
+            CycleType.S_SCALE_Y,
+            CycleType.S_TRANSLATION_X,
+            CycleType.S_TRANSLATION_Y,
+            CycleType.S_TRANSLATION_Z,
+            CycleType.S_ROTATION_X,
+            CycleType.S_ROTATION_Y,
+            CycleType.S_ROTATION_Z,
+            CycleType.S_ALPHA,
+            CycleType.S_WAVE_PERIOD,
+            CycleType.S_WAVE_OFFSET,
+            CycleType.S_WAVE_PHASE
         )
         val attrIds = intArrayOf(
-            CycleType.Companion.TYPE_SCALE_X,
-            CycleType.Companion.TYPE_SCALE_Y,
-            CycleType.Companion.TYPE_TRANSLATION_X,
-            CycleType.Companion.TYPE_TRANSLATION_Y,
-            CycleType.Companion.TYPE_TRANSLATION_Z,
-            CycleType.Companion.TYPE_ROTATION_X,
-            CycleType.Companion.TYPE_ROTATION_Y,
-            CycleType.Companion.TYPE_ROTATION_Z,
-            CycleType.Companion.TYPE_ALPHA,
-            CycleType.Companion.TYPE_WAVE_PERIOD,
-            CycleType.Companion.TYPE_WAVE_OFFSET,
-            CycleType.Companion.TYPE_WAVE_PHASE
+            CycleType.TYPE_SCALE_X,
+            CycleType.TYPE_SCALE_Y,
+            CycleType.TYPE_TRANSLATION_X,
+            CycleType.TYPE_TRANSLATION_Y,
+            CycleType.TYPE_TRANSLATION_Z,
+            CycleType.TYPE_ROTATION_X,
+            CycleType.TYPE_ROTATION_Y,
+            CycleType.TYPE_ROTATION_Z,
+            CycleType.TYPE_ALPHA,
+            CycleType.TYPE_WAVE_PERIOD,
+            CycleType.TYPE_WAVE_OFFSET,
+            CycleType.TYPE_WAVE_PHASE
         )
         // type 0 the values are used as.
         // type 1 the value is scaled from dp to pixels.
@@ -430,35 +430,35 @@ object TransitionParser {
                 }
             }
         }
-        val curveFit = keyCycleData.getStringOrNull(CycleType.Companion.S_CURVE_FIT)
-        val easing = keyCycleData.getStringOrNull(CycleType.Companion.S_EASING)
-        val waveShape = keyCycleData.getStringOrNull(CycleType.Companion.S_WAVE_SHAPE)
-        val customWave = keyCycleData.getStringOrNull(CycleType.Companion.S_CUSTOM_WAVE_SHAPE)
+        val curveFit = keyCycleData.getStringOrNull(CycleType.S_CURVE_FIT)
+        val easing = keyCycleData.getStringOrNull(CycleType.S_EASING)
+        val waveShape = keyCycleData.getStringOrNull(CycleType.S_WAVE_SHAPE)
+        val customWave = keyCycleData.getStringOrNull(CycleType.S_CUSTOM_WAVE_SHAPE)
         for (i in 0 until targets.size()) {
             for (j in bundles.indices) {
                 val target: String = targets.getString(i)!!
                 val bundle = bundles[j]
                 if (curveFit != null) {
                     when (curveFit) {
-                        "spline" -> bundle!!.add(CycleType.Companion.TYPE_CURVE_FIT, 0)
-                        "linear" -> bundle!!.add(CycleType.Companion.TYPE_CURVE_FIT, 1)
+                        "spline" -> bundle!!.add(CycleType.TYPE_CURVE_FIT, 0)
+                        "linear" -> bundle!!.add(CycleType.TYPE_CURVE_FIT, 1)
                     }
                 }
                 bundle!!.addIfNotNull(
-                    PositionType.Companion.TYPE_TRANSITION_EASING,
+                    PositionType.TYPE_TRANSITION_EASING,
                     transitionEasing
                 )
                 if (easing != null) {
-                    bundle.add(CycleType.Companion.TYPE_EASING, easing)
+                    bundle.add(CycleType.TYPE_EASING, easing)
                 }
                 if (waveShape != null) {
-                    bundle.add(CycleType.Companion.TYPE_WAVE_SHAPE, waveShape)
+                    bundle.add(CycleType.TYPE_WAVE_SHAPE, waveShape)
                 }
                 if (customWave != null) {
-                    bundle.add(CycleType.Companion.TYPE_CUSTOM_WAVE_SHAPE, customWave)
+                    bundle.add(CycleType.TYPE_CUSTOM_WAVE_SHAPE, customWave)
                 }
                 val frame: Int = frames.getInt(j)
-                bundle.add(TypedValues.Companion.TYPE_FRAME_POSITION, frame)
+                bundle.add(TypedValues.TYPE_FRAME_POSITION, frame)
                 transition.addKeyCycle(target, bundle)
             }
         }

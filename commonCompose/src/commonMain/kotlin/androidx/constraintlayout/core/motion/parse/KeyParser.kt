@@ -28,7 +28,7 @@ object KeyParser {
     private fun parse(str: String, table: Ids, dtype: DataType): TypedBundle {
         val bundle = TypedBundle()
         try {
-            val parsedContent: CLObject = CLParser.Companion.parse(str)
+            val parsedContent: CLObject = CLParser.parse(str)
             val n: Int = parsedContent.size()
             for (i in 0 until n) {
                 val clkey = parsedContent.get(i) as CLKey
@@ -40,22 +40,22 @@ object KeyParser {
                     continue
                 }
                 when (dtype[id]) {
-                    TypedValues.Companion.FLOAT_MASK -> {
+                    TypedValues.FLOAT_MASK -> {
                         bundle.add(id, value!!.float)
                         println("parse " + type + " FLOAT_MASK > " + value.float)
                     }
 
-                    TypedValues.Companion.STRING_MASK -> {
+                    TypedValues.STRING_MASK -> {
                         bundle.add(id, value!!.content())
                         println("parse " + type + " STRING_MASK > " + value.content())
                     }
 
-                    TypedValues.Companion.INT_MASK -> {
+                    TypedValues.INT_MASK -> {
                         bundle.add(id, value!!.int)
                         println("parse " + type + " INT_MASK > " + value.int)
                     }
 
-                    TypedValues.Companion.BOOLEAN_MASK -> bundle.add(id, parsedContent.getBoolean(i))
+                    TypedValues.BOOLEAN_MASK -> bundle.add(id, parsedContent.getBoolean(i))
                 }
             }
         } catch (e: CLParsingException) {
@@ -72,12 +72,12 @@ object KeyParser {
             str,
             object : Ids {
                 override fun get(str: String?): Int {
-                    return AttributesType.Companion.getId(str)
+                    return AttributesType.getId(str)
                 }
             },
             object : DataType {
                 override fun get(str: Int): Int {
-                    return AttributesType.Companion.getType(str)
+                    return AttributesType.getType(str)
                 }
             }
         )

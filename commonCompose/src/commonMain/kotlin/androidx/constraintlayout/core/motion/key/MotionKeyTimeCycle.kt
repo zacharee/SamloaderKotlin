@@ -53,9 +53,9 @@ class MotionKeyTimeCycle : MotionKey() {
      */
     fun addTimeValues(splines: HashMap<String, TimeCycleSplineSet>) {
         for (s in splines.keys) {
-            val splineSet: TimeCycleSplineSet = splines.get(s) ?: continue
+            val splineSet: TimeCycleSplineSet = splines[s] ?: continue
             if (s.startsWith(CUSTOM)) {
-                val cKey: String = s.substring(MotionKey.Companion.CUSTOM.length + 1)
+                val cKey: String = s.substring(CUSTOM.length + 1)
                 val cValue = mCustom!![cKey]
                 if (cValue != null) {
                     (splineSet as CustomVarSet)
@@ -64,91 +64,91 @@ class MotionKeyTimeCycle : MotionKey() {
                 continue
             }
             when (s) {
-                AttributesType.Companion.S_ALPHA -> if (!mAlpha.isNaN()) {
+                AttributesType.S_ALPHA -> if (!mAlpha.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mAlpha, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_ROTATION_X -> if (!mRotationX.isNaN()) {
+                AttributesType.S_ROTATION_X -> if (!mRotationX.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mRotationX, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_ROTATION_Y -> if (!mRotationY.isNaN()) {
+                AttributesType.S_ROTATION_Y -> if (!mRotationY.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mRotationY, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_ROTATION_Z -> if (!mRotation.isNaN()) {
+                AttributesType.S_ROTATION_Z -> if (!mRotation.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mRotation, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_PATH_ROTATE -> if (!mTransitionPathRotate.isNaN()) {
+                AttributesType.S_PATH_ROTATE -> if (!mTransitionPathRotate.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mTransitionPathRotate, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_SCALE_X -> if (!mScaleX.isNaN()) {
+                AttributesType.S_SCALE_X -> if (!mScaleX.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mScaleX, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_SCALE_Y -> if (!mScaleY.isNaN()) {
+                AttributesType.S_SCALE_Y -> if (!mScaleY.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mScaleY, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_TRANSLATION_X -> if (!mTranslationX.isNaN()) {
+                AttributesType.S_TRANSLATION_X -> if (!mTranslationX.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mTranslationX, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_TRANSLATION_Y -> if (!mTranslationY.isNaN()) {
+                AttributesType.S_TRANSLATION_Y -> if (!mTranslationY.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mTranslationY, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_TRANSLATION_Z -> if (!mTranslationZ.isNaN()) {
+                AttributesType.S_TRANSLATION_Z -> if (!mTranslationZ.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mTranslationZ, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_ELEVATION -> if (!mTranslationZ.isNaN()) {
+                AttributesType.S_ELEVATION -> if (!mTranslationZ.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mTranslationZ, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                AttributesType.Companion.S_PROGRESS -> if (!mProgress.isNaN()) {
+                AttributesType.S_PROGRESS -> if (!mProgress.isNaN()) {
                     splineSet.setPoint(
                         framePosition,
                         mProgress, mWavePeriod, mWaveShape, mWaveOffset
                     )
                 }
 
-                else -> Utils.Companion.loge("KeyTimeCycles", "UNKNOWN addValues \"$s\"")
+                else -> Utils.loge("KeyTimeCycles", "UNKNOWN addValues \"$s\"")
             }
         }
     }
@@ -160,8 +160,8 @@ class MotionKeyTimeCycle : MotionKey() {
      */
     override fun setValue(type: Int, value: Int): Boolean {
         when (type) {
-            TypedValues.Companion.TYPE_FRAME_POSITION -> framePosition = value
-            CycleType.Companion.TYPE_WAVE_SHAPE -> mWaveShape = value
+            TypedValues.TYPE_FRAME_POSITION -> framePosition = value
+            CycleType.TYPE_WAVE_SHAPE -> mWaveShape = value
             else -> return super.setValue(type, value)
         }
         return true
@@ -172,21 +172,21 @@ class MotionKeyTimeCycle : MotionKey() {
      */
     override fun setValue(type: Int, value: Float): Boolean {
         when (type) {
-            CycleType.Companion.TYPE_ALPHA -> mAlpha = value
-            CycleType.Companion.TYPE_CURVE_FIT -> mCurveFit = toInt(value)
-            CycleType.Companion.TYPE_ELEVATION -> mElevation = toFloat(value)
-            CycleType.Companion.TYPE_PROGRESS -> mProgress = toFloat(value)
-            CycleType.Companion.TYPE_ROTATION_Z -> mRotation = toFloat(value)
-            CycleType.Companion.TYPE_ROTATION_X -> mRotationX = toFloat(value)
-            CycleType.Companion.TYPE_ROTATION_Y -> mRotationY = toFloat(value)
-            CycleType.Companion.TYPE_SCALE_X -> mScaleX = toFloat(value)
-            CycleType.Companion.TYPE_SCALE_Y -> mScaleY = toFloat(value)
-            CycleType.Companion.TYPE_PATH_ROTATE -> mTransitionPathRotate = toFloat(value)
-            CycleType.Companion.TYPE_TRANSLATION_X -> mTranslationX = toFloat(value)
-            CycleType.Companion.TYPE_TRANSLATION_Y -> mTranslationY = toFloat(value)
-            CycleType.Companion.TYPE_TRANSLATION_Z -> mTranslationZ = toFloat(value)
-            CycleType.Companion.TYPE_WAVE_PERIOD -> mWavePeriod = toFloat(value)
-            CycleType.Companion.TYPE_WAVE_OFFSET -> mWaveOffset = toFloat(value)
+            CycleType.TYPE_ALPHA -> mAlpha = value
+            CycleType.TYPE_CURVE_FIT -> mCurveFit = toInt(value)
+            CycleType.TYPE_ELEVATION -> mElevation = toFloat(value)
+            CycleType.TYPE_PROGRESS -> mProgress = toFloat(value)
+            CycleType.TYPE_ROTATION_Z -> mRotation = toFloat(value)
+            CycleType.TYPE_ROTATION_X -> mRotationX = toFloat(value)
+            CycleType.TYPE_ROTATION_Y -> mRotationY = toFloat(value)
+            CycleType.TYPE_SCALE_X -> mScaleX = toFloat(value)
+            CycleType.TYPE_SCALE_Y -> mScaleY = toFloat(value)
+            CycleType.TYPE_PATH_ROTATE -> mTransitionPathRotate = toFloat(value)
+            CycleType.TYPE_TRANSLATION_X -> mTranslationX = toFloat(value)
+            CycleType.TYPE_TRANSLATION_Y -> mTranslationY = toFloat(value)
+            CycleType.TYPE_TRANSLATION_Z -> mTranslationZ = toFloat(value)
+            CycleType.TYPE_WAVE_PERIOD -> mWavePeriod = toFloat(value)
+            CycleType.TYPE_WAVE_OFFSET -> mWaveOffset = toFloat(value)
             else -> return super.setValue(type, value)
         }
         return true
@@ -197,12 +197,12 @@ class MotionKeyTimeCycle : MotionKey() {
      */
     override fun setValue(type: Int, value: String): Boolean {
         when (type) {
-            CycleType.Companion.TYPE_WAVE_SHAPE -> {
-                mWaveShape = Oscillator.Companion.CUSTOM
+            CycleType.TYPE_WAVE_SHAPE -> {
+                mWaveShape = Oscillator.CUSTOM
                 mCustomWaveShape = value
             }
 
-            CycleType.Companion.TYPE_EASING -> mTransitionEasing = value
+            CycleType.TYPE_EASING -> mTransitionEasing = value
             else -> return super.setValue(type, value)
         }
         return true
@@ -243,41 +243,41 @@ class MotionKeyTimeCycle : MotionKey() {
 
     override fun getAttributeNames(attributes: HashSet<String>) {
         if (!mAlpha.isNaN()) {
-            attributes.add(CycleType.Companion.S_ALPHA)
+            attributes.add(CycleType.S_ALPHA)
         }
         if (!mElevation.isNaN()) {
-            attributes.add(CycleType.Companion.S_ELEVATION)
+            attributes.add(CycleType.S_ELEVATION)
         }
         if (!mRotation.isNaN()) {
-            attributes.add(CycleType.Companion.S_ROTATION_Z)
+            attributes.add(CycleType.S_ROTATION_Z)
         }
         if (!mRotationX.isNaN()) {
-            attributes.add(CycleType.Companion.S_ROTATION_X)
+            attributes.add(CycleType.S_ROTATION_X)
         }
         if (!mRotationY.isNaN()) {
-            attributes.add(CycleType.Companion.S_ROTATION_Y)
+            attributes.add(CycleType.S_ROTATION_Y)
         }
         if (!mScaleX.isNaN()) {
-            attributes.add(CycleType.Companion.S_SCALE_X)
+            attributes.add(CycleType.S_SCALE_X)
         }
         if (!mScaleY.isNaN()) {
-            attributes.add(CycleType.Companion.S_SCALE_Y)
+            attributes.add(CycleType.S_SCALE_Y)
         }
         if (!mTransitionPathRotate.isNaN()) {
-            attributes.add(CycleType.Companion.S_PATH_ROTATE)
+            attributes.add(CycleType.S_PATH_ROTATE)
         }
         if (!mTranslationX.isNaN()) {
-            attributes.add(CycleType.Companion.S_TRANSLATION_X)
+            attributes.add(CycleType.S_TRANSLATION_X)
         }
         if (!mTranslationY.isNaN()) {
-            attributes.add(CycleType.Companion.S_TRANSLATION_Y)
+            attributes.add(CycleType.S_TRANSLATION_Y)
         }
         if (!mTranslationZ.isNaN()) {
-            attributes.add(CycleType.Companion.S_TRANSLATION_Z)
+            attributes.add(CycleType.S_TRANSLATION_Z)
         }
         if (mCustom!!.size > 0) {
             for (s in mCustom!!.keys) {
-                attributes.add(TypedValues.Companion.S_CUSTOM + "," + s)
+                attributes.add(TypedValues.S_CUSTOM + "," + s)
             }
         }
     }
@@ -290,11 +290,11 @@ class MotionKeyTimeCycle : MotionKey() {
     }
 
     override fun getId(name: String?): Int {
-        return CycleType.Companion.getId(name)
+        return CycleType.getId(name)
     }
 
     companion object {
-        const val NAME = "KeyTimeCycle"
+        private const val NAME = "KeyTimeCycle"
         private const val TAG = NAME
         const val KEY_TYPE = 3
     }

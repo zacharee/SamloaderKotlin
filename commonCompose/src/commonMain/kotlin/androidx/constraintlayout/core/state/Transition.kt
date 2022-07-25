@@ -372,7 +372,7 @@ class Transition : TypedValues {
                 dir[1]
             ) / motionDpDt[1]
         if (DEBUG) {
-            Utils.Companion.log(" drag $drag")
+            Utils.log(" drag $drag")
         }
         return drag * mOnSwipe!!.scale
     }
@@ -393,7 +393,7 @@ class Transition : TypedValues {
     ) {
         if (mOnSwipe != null) {
             if (DEBUG) {
-                Utils.Companion.log(" >>> velocity x,y = $velocityX , $velocityY")
+                Utils.log(" >>> velocity x,y = $velocityX , $velocityY")
             }
             val base: WidgetState = mState[mOnSwipe!!.mAnchorId]!!
             val motionDpDt = FloatArray(2)
@@ -403,7 +403,7 @@ class Transition : TypedValues {
             val movementInDir = dir[0] * motionDpDt[0] + dir[1] * motionDpDt[1]
             if (abs(movementInDir) < 0.01) {
                 if (DEBUG) {
-                    Utils.Companion.log(" >>> cap minimum v!! ")
+                    Utils.log(" >>> cap minimum v!! ")
                 }
                 motionDpDt[0] = .01f
                 motionDpDt[1] = .01f
@@ -411,9 +411,9 @@ class Transition : TypedValues {
             var drag = if (dir[0] != 0f) velocityX / motionDpDt[0] else velocityY / motionDpDt[1]
             drag *= mOnSwipe!!.scale
             if (DEBUG) {
-                Utils.Companion.log(" >>> velocity        $drag")
-                Utils.Companion.log(" >>> mDuration       $mDuration")
-                Utils.Companion.log(" >>> currentProgress $currentProgress")
+                Utils.log(" >>> velocity        $drag")
+                Utils.log(" >>> mDuration       $mDuration")
+                Utils.log(" >>> currentProgress $currentProgress")
             }
             mOnSwipe!!.config(currentProgress, drag, currentTime, mDuration * 1E-3f)
             if (DEBUG) {
@@ -469,9 +469,9 @@ class Transition : TypedValues {
     fun findNextPosition(target: String?, frameNumber: Int): KeyPosition? {
         var frameNumber = frameNumber
         while (frameNumber <= 100) {
-            val map: HashMap<String, KeyPosition>? = mKeyPositions.get(frameNumber)
+            val map: HashMap<String, KeyPosition>? = mKeyPositions[frameNumber]
             if (map != null) {
-                val keyPosition: KeyPosition? = map.get(target)
+                val keyPosition: KeyPosition? = map[target]
                 if (keyPosition != null) {
                     return keyPosition
                 }
@@ -488,9 +488,9 @@ class Transition : TypedValues {
         var numKeyPositions = 0
         var frameNumber = 0
         while (frameNumber <= 100) {
-            val map: HashMap<String, KeyPosition>? = mKeyPositions.get(frameNumber)
+            val map: HashMap<String, KeyPosition>? = mKeyPositions[frameNumber]
             if (map != null) {
-                val keyPosition: KeyPosition? = map.get(frame.widget!!.stringId)
+                val keyPosition: KeyPosition? = map[frame.widget!!.stringId]
                 if (keyPosition != null) {
                     numKeyPositions++
                 }
@@ -548,15 +548,15 @@ class Transition : TypedValues {
     }
 
     override fun setValue(id: Int, value: Float): Boolean {
-        if (id == TypedValues.TransitionType.Companion.TYPE_STAGGERED) {
+        if (id == TypedValues.TransitionType.TYPE_STAGGERED) {
             mStagger = value
         }
         return false
     }
 
     override fun setValue(id: Int, value: String): Boolean {
-        if (id == TypedValues.TransitionType.Companion.TYPE_INTERPOLATOR) {
-            mEasing = Easing.Companion.getInterpolator(value.also { mDefaultInterpolatorString = it }!!)
+        if (id == TypedValues.TransitionType.TYPE_INTERPOLATOR) {
+            mEasing = Easing.getInterpolator(value.also { mDefaultInterpolatorString = it })
         }
         return false
     }
@@ -612,10 +612,10 @@ class Transition : TypedValues {
      */
     fun addKeyPosition(target: String, frame: Int, type: Int, x: Float, y: Float) {
         val bundle = TypedBundle()
-        bundle.add(TypedValues.PositionType.Companion.TYPE_POSITION_TYPE, 2)
+        bundle.add(TypedValues.PositionType.TYPE_POSITION_TYPE, 2)
         bundle.add(TypedValues.TYPE_FRAME_POSITION, frame)
-        bundle.add(TypedValues.PositionType.Companion.TYPE_PERCENT_X, x)
-        bundle.add(TypedValues.PositionType.Companion.TYPE_PERCENT_Y, y)
+        bundle.add(TypedValues.PositionType.TYPE_PERCENT_X, x)
+        bundle.add(TypedValues.PositionType.TYPE_PERCENT_Y, y)
         getWidgetState(target, null, 0).setKeyPosition(bundle)
         val keyPosition = KeyPosition(target, frame, type, x, y)
         var map: HashMap<String, KeyPosition>? = mKeyPositions[frame]
@@ -720,7 +720,7 @@ class Transition : TypedValues {
      * @TODO: add description
      */
     fun getKeyFrames(id: String?, rectangles: FloatArray?, pathMode: IntArray?, position: IntArray?): Int {
-        val widgetState: WidgetState? = mState.get(id)
+        val widgetState: WidgetState? = mState[id]
         return widgetState?.mMotionControl?.buildKeyFrames(rectangles, pathMode, position)!!
     }
 
@@ -733,7 +733,7 @@ class Transition : TypedValues {
         child: ConstraintWidget?,
         transitionState: Int
     ): WidgetState {
-        var widgetState: WidgetState? = mState.get(widgetId)
+        var widgetState: WidgetState? = mState[widgetId]
         if (widgetState == null) {
             widgetState = WidgetState()
             mBundle.applyDelta(widgetState.mMotionControl)
@@ -853,7 +853,7 @@ class Transition : TypedValues {
                 mMotionControl.setup(parentWidth, parentHeight, 1f, Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond })
                 mNeedSetup = false
             }
-            WidgetFrame.Companion.interpolate(
+            WidgetFrame.interpolate(
                 parentWidth, parentHeight,
                 mInterpolated, mStart, mEnd, transition, progress
             )
@@ -891,7 +891,7 @@ class Transition : TypedValues {
         }
         if (useMotionStagger) {
             for (widgetId in mState.keys) {
-                val widgetState: WidgetState = mState.get(widgetId)!!
+                val widgetState: WidgetState = mState[widgetId]!!
                 val f = widgetState.mMotionControl
                 val widgetStagger = f.motionStagger
                 if (!widgetStagger.isNaN()) {
@@ -900,7 +900,7 @@ class Transition : TypedValues {
                 }
             }
             for (widgetId in mState.keys) {
-                val widgetState: WidgetState = mState.get(widgetId)!!
+                val widgetState: WidgetState = mState[widgetId]!!
                 val f = widgetState.mMotionControl
                 val widgetStagger = f.motionStagger
                 if (!widgetStagger.isNaN()) {
@@ -915,7 +915,7 @@ class Transition : TypedValues {
             }
         } else {
             for (widgetId in mState.keys) {
-                val widgetState: WidgetState = mState.get(widgetId)!!
+                val widgetState: WidgetState = mState[widgetId]!!
                 val f = widgetState.mMotionControl
                 val x = f.finalX
                 val y = f.finalY
@@ -924,7 +924,7 @@ class Transition : TypedValues {
                 max = max(max, widgetStagger)
             }
             for (widgetId in mState.keys) {
-                val widgetState: WidgetState = mState.get(widgetId)!!
+                val widgetState: WidgetState = mState[widgetId]!!
                 val f = widgetState.mMotionControl
                 val x = f.finalX
                 val y = f.finalY
@@ -962,59 +962,52 @@ class Transition : TypedValues {
             when (interpolator) {
                 SPLINE_STRING -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator(interpolatorString!!)
-                            .get(input.toDouble()).toFloat()
+                        return Easing.getInterpolator(interpolatorString!!)[input.toDouble()].toFloat()
                     }
                 }
 
                 EASE_IN_OUT -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator("standard")!!
-                            .get(input.toDouble()).toFloat()
+                        return Easing.getInterpolator("standard")[input.toDouble()].toFloat()
                     }
                 }
 
                 EASE_IN -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator("accelerate")!!
-                            .get(input.toDouble()).toFloat()
+                        return Easing.getInterpolator("accelerate")[input.toDouble()].toFloat()
                     }
                 }
 
                 EASE_OUT -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator("decelerate")!!
-                            .get(input.toDouble()).toFloat()
+                        return Easing.getInterpolator("decelerate")[input.toDouble()].toFloat()
                     }
                 }
 
                 LINEAR -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator("linear")!!
-                            .get(input.toDouble()).toFloat()
+                        return Easing.getInterpolator("linear")[input.toDouble()].toFloat()
                     }
                 }
 
                 ANTICIPATE -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator("anticipate")!!
-                            .get(input.toDouble()).toFloat()
+                        return Easing.getInterpolator("anticipate")[input.toDouble()].toFloat()
                     }
                 }
 
                 OVERSHOOT -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator("overshoot")!!
-                            .get(input.toDouble()).toFloat()
+                        return Easing.getInterpolator("overshoot")[input.toDouble()].toFloat()
                     }
                 }
 
                 BOUNCE -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator(
+                        return Easing.getInterpolator(
                             "spline(0.0, 0.2, 0.4, 0.6, "
                                     + "0.8 ,1.0, 0.8, 1.0, 0.9, 1.0)"
-                        )!!.get(input.toDouble()).toFloat()
+                        )[input.toDouble()].toFloat()
                     }
                 }
             }

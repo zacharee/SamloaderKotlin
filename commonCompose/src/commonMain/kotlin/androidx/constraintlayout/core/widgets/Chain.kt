@@ -46,7 +46,7 @@ object Chain {
         var offset = 0
         var chainsSize = 0
         val chainsArray: Array<ChainHead?>
-        if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        if (orientation == ConstraintWidget.HORIZONTAL) {
             offset = 0
             chainsSize = constraintWidgetContainer.mHorizontalChainsSize
             chainsArray = constraintWidgetContainer.mHorizontalChainsArray
@@ -100,14 +100,14 @@ object Chain {
         var isChainSpread = false
         var isChainSpreadInside = false
         var isChainPacked = false
-        if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-            isChainSpread = head!!.horizontalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD
-            isChainSpreadInside = head!!.horizontalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD_INSIDE
-            isChainPacked = head!!.horizontalChainStyle == ConstraintWidget.Companion.CHAIN_PACKED
+        if (orientation == ConstraintWidget.HORIZONTAL) {
+            isChainSpread = head!!.horizontalChainStyle == ConstraintWidget.CHAIN_SPREAD
+            isChainSpreadInside = head!!.horizontalChainStyle == ConstraintWidget.CHAIN_SPREAD_INSIDE
+            isChainPacked = head!!.horizontalChainStyle == ConstraintWidget.CHAIN_PACKED
         } else {
-            isChainSpread = head!!.verticalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD
-            isChainSpreadInside = head!!.verticalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD_INSIDE
-            isChainPacked = head!!.verticalChainStyle == ConstraintWidget.Companion.CHAIN_PACKED
+            isChainSpread = head!!.verticalChainStyle == ConstraintWidget.CHAIN_SPREAD
+            isChainSpreadInside = head!!.verticalChainStyle == ConstraintWidget.CHAIN_SPREAD_INSIDE
+            isChainPacked = head!!.verticalChainStyle == ConstraintWidget.CHAIN_PACKED
         }
         if (USE_CHAIN_OPTIMIZATION && !isWrapContent
             && Direct.solveChain(
@@ -115,11 +115,11 @@ object Chain {
                 isChainSpread, isChainSpreadInside, isChainPacked
             )
         ) {
-            if (LinearSystem.Companion.FULL_DEBUG) {
+            if (LinearSystem.FULL_DEBUG) {
                 println("### CHAIN FULLY SOLVED! ###")
             }
             return  // done with the chain!
-        } else if (LinearSystem.Companion.FULL_DEBUG) {
+        } else if (LinearSystem.FULL_DEBUG) {
             println("### CHAIN WASN'T SOLVED DIRECTLY... ###")
         }
 
@@ -128,40 +128,40 @@ object Chain {
         // - build a linked list of matched constraints widgets
         while (!done) {
             val begin: ConstraintAnchor = widget!!.mListAnchors.get(offset)!!
-            var strength: Int = SolverVariable.Companion.STRENGTH_HIGHEST
+            var strength: Int = SolverVariable.STRENGTH_HIGHEST
             if (isChainPacked) {
-                strength = SolverVariable.Companion.STRENGTH_LOW
+                strength = SolverVariable.STRENGTH_LOW
             }
             var margin = begin.margin
             val isSpreadOnly = (widget!!.mListDimensionBehaviors.get(orientation)
                     == DimensionBehaviour.MATCH_CONSTRAINT
                     && widget!!.mResolvedMatchConstraintDefault.get(orientation)
-                    == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD)
+                    == ConstraintWidget.MATCH_CONSTRAINT_SPREAD)
             if (begin!!.target != null && widget !== first) {
                 margin += begin!!.target!!.margin
             }
             if (isChainPacked && widget !== first && widget !== firstVisibleWidget) {
-                strength = SolverVariable.Companion.STRENGTH_FIXED
+                strength = SolverVariable.STRENGTH_FIXED
             }
             if (begin!!.target != null) {
                 if (widget === firstVisibleWidget) {
                     system.addGreaterThan(
                         begin!!.solverVariable!!, begin!!.target!!.solverVariable!!,
-                        margin, SolverVariable.Companion.STRENGTH_BARRIER
+                        margin, SolverVariable.STRENGTH_BARRIER
                     )
                 } else {
                     system.addGreaterThan(
                         begin!!.solverVariable!!, begin!!.target!!.solverVariable!!,
-                        margin, SolverVariable.Companion.STRENGTH_FIXED
+                        margin, SolverVariable.STRENGTH_FIXED
                     )
                 }
                 if (isSpreadOnly && !isChainPacked) {
-                    strength = SolverVariable.Companion.STRENGTH_EQUALITY
+                    strength = SolverVariable.STRENGTH_EQUALITY
                 }
                 if (widget === firstVisibleWidget && isChainPacked
                     && widget!!.isInBarrier(orientation)
                 ) {
-                    strength = SolverVariable.Companion.STRENGTH_EQUALITY
+                    strength = SolverVariable.STRENGTH_EQUALITY
                 }
                 system.addEquality(
                     begin!!.solverVariable!!, begin!!.target!!.solverVariable!!, margin,
@@ -169,20 +169,20 @@ object Chain {
                 )
             }
             if (isWrapContent) {
-                if (widget.visibility != ConstraintWidget.Companion.GONE
+                if (widget.visibility != ConstraintWidget.GONE
                     && widget!!.mListDimensionBehaviors.get(orientation)
                     == DimensionBehaviour.MATCH_CONSTRAINT
                 ) {
                     system.addGreaterThan(
                         widget!!.mListAnchors.get(offset + 1)!!.solverVariable!!,
                         widget!!.mListAnchors.get(offset)!!.solverVariable!!, 0,
-                        SolverVariable.Companion.STRENGTH_EQUALITY
+                        SolverVariable.STRENGTH_EQUALITY
                     )
                 }
                 system.addGreaterThan(
                     widget!!.mListAnchors.get(offset)!!.solverVariable!!,
                     container.mListAnchors.get(offset)!!.solverVariable!!,
-                    0, SolverVariable.Companion.STRENGTH_FIXED
+                    0, SolverVariable.STRENGTH_FIXED
                 )
             }
 
@@ -211,22 +211,22 @@ object Chain {
             val isSpreadOnly = (lastVisibleWidget.mListDimensionBehaviors.get(orientation)
                     == DimensionBehaviour.MATCH_CONSTRAINT
                     && lastVisibleWidget.mResolvedMatchConstraintDefault.get(orientation)
-                    == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD)
+                    == ConstraintWidget.MATCH_CONSTRAINT_SPREAD)
             if (isSpreadOnly && !isChainPacked && end!!.target!!.owner === container) {
                 system.addEquality(
                     end!!.solverVariable!!, end!!.target!!.solverVariable!!,
-                    -end.margin, SolverVariable.Companion.STRENGTH_EQUALITY
+                    -end.margin, SolverVariable.STRENGTH_EQUALITY
                 )
             } else if (isChainPacked && end!!.target!!.owner === container) {
                 system.addEquality(
                     end!!.solverVariable!!, end!!.target!!.solverVariable!!,
-                    -end.margin, SolverVariable.Companion.STRENGTH_HIGHEST
+                    -end.margin, SolverVariable.STRENGTH_HIGHEST
                 )
             }
             system.addLowerThan(
                 end!!.solverVariable!!,
                 last!!.mListAnchors.get(offset + 1)!!.target!!.solverVariable!!, -end.margin,
-                SolverVariable.Companion.STRENGTH_BARRIER
+                SolverVariable.STRENGTH_BARRIER
             )
         }
 
@@ -235,7 +235,7 @@ object Chain {
             system.addGreaterThan(
                 container.mListAnchors.get(offset + 1)!!.solverVariable!!,
                 last!!.mListAnchors.get(offset + 1)!!.solverVariable!!,
-                last!!.mListAnchors.get(offset + 1)!!.margin, SolverVariable.Companion.STRENGTH_FIXED
+                last!!.mListAnchors.get(offset + 1)!!.margin, SolverVariable.STRENGTH_FIXED
             )
         }
 
@@ -257,7 +257,7 @@ object Chain {
                             system.addEquality(
                                 match.mListAnchors[offset + 1]!!.solverVariable!!,
                                 match.mListAnchors[offset]!!.solverVariable!!,
-                                0, SolverVariable.Companion.STRENGTH_HIGHEST
+                                0, SolverVariable.STRENGTH_HIGHEST
                             )
                             continue
                         }
@@ -267,7 +267,7 @@ object Chain {
                         system.addEquality(
                             match.mListAnchors[offset + 1]!!.solverVariable!!,
                             match.mListAnchors[offset]!!.solverVariable!!,
-                            0, SolverVariable.Companion.STRENGTH_FIXED
+                            0, SolverVariable.STRENGTH_FIXED
                         )
                         continue
                     }
@@ -312,7 +312,7 @@ object Chain {
             }
             if (beginTarget != null && endTarget != null) {
                 var bias = 0.5f
-                if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+                if (orientation == ConstraintWidget.HORIZONTAL) {
                     bias = head.horizontalBiasPercent
                 } else {
                     bias = head.verticalBiasPercent
@@ -322,7 +322,7 @@ object Chain {
                 system.addCentering(
                     begin!!.solverVariable!!, beginTarget,
                     beginMargin, bias, endTarget, end!!.solverVariable!!,
-                    endMargin, SolverVariable.Companion.STRENGTH_CENTERING
+                    endMargin, SolverVariable.STRENGTH_CENTERING
                 )
             }
         } else if (isChainSpread && firstVisibleWidget != null) {
@@ -333,7 +333,7 @@ object Chain {
                 chainHead.mWidgetsMatchCount > 0 && chainHead.mWidgetsCount == chainHead.mWidgetsMatchCount
             while (widget != null) {
                 next = widget.mNextChainWidget.get(orientation)
-                while (next != null && next.visibility == ConstraintWidget.Companion.GONE) {
+                while (next != null && next.visibility == ConstraintWidget.GONE) {
                     next = next.mNextChainWidget[orientation]
                 }
                 if (next != null || widget === lastVisibleWidget) {
@@ -375,9 +375,9 @@ object Chain {
                         if (widget === lastVisibleWidget) {
                             margin2 = lastVisibleWidget.mListAnchors.get(offset + 1)!!.margin
                         }
-                        var strength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
+                        var strength: Int = SolverVariable.STRENGTH_EQUALITY
                         if (applyFixedEquality) {
-                            strength = SolverVariable.Companion.STRENGTH_FIXED
+                            strength = SolverVariable.STRENGTH_FIXED
                         }
                         system.addCentering(
                             begin, beginTarget, margin1, 0.5f,
@@ -386,7 +386,7 @@ object Chain {
                         )
                     }
                 }
-                if (widget.visibility != ConstraintWidget.Companion.GONE) {
+                if (widget.visibility != ConstraintWidget.GONE) {
                     previousVisibleWidget = widget
                 }
                 widget = next
@@ -399,7 +399,7 @@ object Chain {
                 chainHead.mWidgetsMatchCount > 0 && chainHead.mWidgetsCount == chainHead.mWidgetsMatchCount
             while (widget != null) {
                 next = widget.mNextChainWidget.get(orientation)
-                while (next != null && next.visibility == ConstraintWidget.Companion.GONE) {
+                while (next != null && next.visibility == ConstraintWidget.GONE) {
                     next = next.mNextChainWidget[orientation]
                 }
                 if (widget !== firstVisibleWidget && widget !== lastVisibleWidget && next != null) {
@@ -432,9 +432,9 @@ object Chain {
                         nextMargin += beginNextAnchor.margin
                     }
                     beginMargin += previousVisibleWidget.mListAnchors[offset + 1]!!.margin
-                    var strength: Int = SolverVariable.Companion.STRENGTH_HIGHEST
+                    var strength: Int = SolverVariable.STRENGTH_HIGHEST
                     if (applyFixedEquality) {
-                        strength = SolverVariable.Companion.STRENGTH_FIXED
+                        strength = SolverVariable.STRENGTH_FIXED
                     }
                     if (begin != null && beginTarget != null && beginNext != null && beginNextTarget != null) {
                         system.addCentering(
@@ -444,7 +444,7 @@ object Chain {
                         )
                     }
                 }
-                if (widget.visibility != ConstraintWidget.Companion.GONE) {
+                if (widget.visibility != ConstraintWidget.GONE) {
                     previousVisibleWidget = widget
                 }
                 widget = next
@@ -453,7 +453,7 @@ object Chain {
             val beginTarget = first!!.mListAnchors.get(offset)!!.target
             val end = lastVisibleWidget!!.mListAnchors.get(offset + 1)
             val endTarget = last!!.mListAnchors.get(offset + 1)!!.target
-            val endPointsStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
+            val endPointsStrength: Int = SolverVariable.STRENGTH_EQUALITY
             if (beginTarget != null) {
                 if (firstVisibleWidget !== lastVisibleWidget) {
                     system.addEquality(
@@ -502,7 +502,7 @@ object Chain {
                 system.addCentering(
                     begin!!.solverVariable!!, beginTarget, beginMargin,
                     bias, endTarget, end!!.solverVariable!!, endMargin,
-                    SolverVariable.Companion.STRENGTH_EQUALITY
+                    SolverVariable.STRENGTH_EQUALITY
                 )
             }
         }

@@ -131,7 +131,7 @@ class MotionWidget : TypedValues {
     }
 
     override fun setValue(id: Int, value: String): Boolean {
-        if (id == MotionType.Companion.TYPE_ANIMATE_RELATIVE_TO) {
+        if (id == MotionType.TYPE_ANIMATE_RELATIVE_TO) {
             mMotion.mAnimateRelativeTo = value
             return true
         }
@@ -147,13 +147,13 @@ class MotionWidget : TypedValues {
      */
     fun setValueMotion(id: Int, value: Int): Boolean {
         when (id) {
-            MotionType.Companion.TYPE_ANIMATE_CIRCLEANGLE_TO -> mMotion.mAnimateCircleAngleTo = value
-            MotionType.Companion.TYPE_PATHMOTION_ARC -> mMotion.mPathMotionArc = value
-            MotionType.Companion.TYPE_DRAW_PATH -> mMotion.mDrawPath = value
-            MotionType.Companion.TYPE_POLAR_RELATIVETO -> mMotion.mPolarRelativeTo = value
-            MotionType.Companion.TYPE_QUANTIZE_MOTIONSTEPS -> mMotion.mQuantizeMotionSteps = value
-            MotionType.Companion.TYPE_QUANTIZE_INTERPOLATOR_TYPE -> mMotion.mQuantizeInterpolatorType = value
-            MotionType.Companion.TYPE_QUANTIZE_INTERPOLATOR_ID -> mMotion.mQuantizeInterpolatorID = value
+            MotionType.TYPE_ANIMATE_CIRCLEANGLE_TO -> mMotion.mAnimateCircleAngleTo = value
+            MotionType.TYPE_PATHMOTION_ARC -> mMotion.mPathMotionArc = value
+            MotionType.TYPE_DRAW_PATH -> mMotion.mDrawPath = value
+            MotionType.TYPE_POLAR_RELATIVETO -> mMotion.mPolarRelativeTo = value
+            MotionType.TYPE_QUANTIZE_MOTIONSTEPS -> mMotion.mQuantizeMotionSteps = value
+            MotionType.TYPE_QUANTIZE_INTERPOLATOR_TYPE -> mMotion.mQuantizeInterpolatorType = value
+            MotionType.TYPE_QUANTIZE_INTERPOLATOR_ID -> mMotion.mQuantizeInterpolatorID = value
             else -> return false
         }
         return true
@@ -164,8 +164,8 @@ class MotionWidget : TypedValues {
      */
     fun setValueMotion(id: Int, value: String?): Boolean {
         when (id) {
-            MotionType.Companion.TYPE_EASING -> mMotion.mTransitionEasing = value
-            MotionType.Companion.TYPE_QUANTIZE_INTERPOLATOR -> mMotion.mQuantizeInterpolatorString = value
+            MotionType.TYPE_EASING -> mMotion.mTransitionEasing = value
+            MotionType.TYPE_QUANTIZE_INTERPOLATOR -> mMotion.mQuantizeInterpolatorString = value
             else -> return false
         }
         return true
@@ -176,9 +176,9 @@ class MotionWidget : TypedValues {
      */
     fun setValueMotion(id: Int, value: Float): Boolean {
         when (id) {
-            MotionType.Companion.TYPE_STAGGER -> mMotion.mMotionStagger = value
-            MotionType.Companion.TYPE_PATH_ROTATE -> mMotion.mPathRotate = value
-            MotionType.Companion.TYPE_QUANTIZE_MOTION_PHASE -> mMotion.mQuantizeMotionPhase = value
+            MotionType.TYPE_STAGGER -> mMotion.mMotionStagger = value
+            MotionType.TYPE_PATH_ROTATE -> mMotion.mPathRotate = value
+            MotionType.TYPE_QUANTIZE_MOTION_PHASE -> mMotion.mQuantizeMotionPhase = value
             else -> return false
         }
         return true
@@ -189,19 +189,19 @@ class MotionWidget : TypedValues {
      */
     fun setValueAttributes(id: Int, value: Float): Boolean {
         when (id) {
-            AttributesType.Companion.TYPE_ALPHA -> widgetFrame!!.alpha = value
-            AttributesType.Companion.TYPE_TRANSLATION_X -> widgetFrame!!.translationX = value
-            AttributesType.Companion.TYPE_TRANSLATION_Y -> widgetFrame!!.translationY = value
-            AttributesType.Companion.TYPE_TRANSLATION_Z -> widgetFrame!!.translationZ = value
-            AttributesType.Companion.TYPE_ROTATION_X -> widgetFrame!!.rotationX = value
-            AttributesType.Companion.TYPE_ROTATION_Y -> widgetFrame!!.rotationY = value
-            AttributesType.Companion.TYPE_ROTATION_Z -> widgetFrame!!.rotationZ = value
-            AttributesType.Companion.TYPE_SCALE_X -> widgetFrame!!.scaleX = value
-            AttributesType.Companion.TYPE_SCALE_Y -> widgetFrame!!.scaleY = value
-            AttributesType.Companion.TYPE_PIVOT_X -> widgetFrame!!.pivotX = value
-            AttributesType.Companion.TYPE_PIVOT_Y -> widgetFrame!!.pivotY = value
-            AttributesType.Companion.TYPE_PROGRESS -> mProgress = value
-            AttributesType.Companion.TYPE_PATH_ROTATE -> mTransitionPathRotate = value
+            AttributesType.TYPE_ALPHA -> widgetFrame!!.alpha = value
+            AttributesType.TYPE_TRANSLATION_X -> widgetFrame!!.translationX = value
+            AttributesType.TYPE_TRANSLATION_Y -> widgetFrame!!.translationY = value
+            AttributesType.TYPE_TRANSLATION_Z -> widgetFrame!!.translationZ = value
+            AttributesType.TYPE_ROTATION_X -> widgetFrame!!.rotationX = value
+            AttributesType.TYPE_ROTATION_Y -> widgetFrame!!.rotationY = value
+            AttributesType.TYPE_ROTATION_Z -> widgetFrame!!.rotationZ = value
+            AttributesType.TYPE_SCALE_X -> widgetFrame!!.scaleX = value
+            AttributesType.TYPE_SCALE_Y -> widgetFrame!!.scaleY = value
+            AttributesType.TYPE_PIVOT_X -> widgetFrame!!.pivotX = value
+            AttributesType.TYPE_PIVOT_Y -> widgetFrame!!.pivotY = value
+            AttributesType.TYPE_PROGRESS -> mProgress = value
+            AttributesType.TYPE_PATH_ROTATE -> mTransitionPathRotate = value
             else -> return false
         }
         return true
@@ -212,28 +212,28 @@ class MotionWidget : TypedValues {
      */
     fun getValueAttributes(id: Int): Float {
         return when (id) {
-            AttributesType.Companion.TYPE_ALPHA -> widgetFrame!!.alpha
-            AttributesType.Companion.TYPE_TRANSLATION_X -> widgetFrame!!.translationX
-            AttributesType.Companion.TYPE_TRANSLATION_Y -> widgetFrame!!.translationY
-            AttributesType.Companion.TYPE_TRANSLATION_Z -> widgetFrame!!.translationZ
-            AttributesType.Companion.TYPE_ROTATION_X -> widgetFrame!!.rotationX
-            AttributesType.Companion.TYPE_ROTATION_Y -> widgetFrame!!.rotationY
-            AttributesType.Companion.TYPE_ROTATION_Z -> widgetFrame!!.rotationZ
-            AttributesType.Companion.TYPE_SCALE_X -> widgetFrame!!.scaleX
-            AttributesType.Companion.TYPE_SCALE_Y -> widgetFrame!!.scaleY
-            AttributesType.Companion.TYPE_PIVOT_X -> widgetFrame!!.pivotX
-            AttributesType.Companion.TYPE_PIVOT_Y -> widgetFrame!!.pivotY
-            AttributesType.Companion.TYPE_PROGRESS -> mProgress
-            AttributesType.Companion.TYPE_PATH_ROTATE -> mTransitionPathRotate
+            AttributesType.TYPE_ALPHA -> widgetFrame!!.alpha
+            AttributesType.TYPE_TRANSLATION_X -> widgetFrame!!.translationX
+            AttributesType.TYPE_TRANSLATION_Y -> widgetFrame!!.translationY
+            AttributesType.TYPE_TRANSLATION_Z -> widgetFrame!!.translationZ
+            AttributesType.TYPE_ROTATION_X -> widgetFrame!!.rotationX
+            AttributesType.TYPE_ROTATION_Y -> widgetFrame!!.rotationY
+            AttributesType.TYPE_ROTATION_Z -> widgetFrame!!.rotationZ
+            AttributesType.TYPE_SCALE_X -> widgetFrame!!.scaleX
+            AttributesType.TYPE_SCALE_Y -> widgetFrame!!.scaleY
+            AttributesType.TYPE_PIVOT_X -> widgetFrame!!.pivotX
+            AttributesType.TYPE_PIVOT_Y -> widgetFrame!!.pivotY
+            AttributesType.TYPE_PROGRESS -> mProgress
+            AttributesType.TYPE_PATH_ROTATE -> mTransitionPathRotate
             else -> Float.NaN
         }
     }
 
     override fun getId(name: String?): Int {
-        val ret: Int = AttributesType.Companion.getId(name)
+        val ret: Int = AttributesType.getId(name)
         return if (ret != -1) {
             ret
-        } else MotionType.Companion.getId(name)
+        } else MotionType.getId(name)
     }
 
     val top: Int
@@ -351,7 +351,7 @@ class MotionWidget : TypedValues {
      * @TODO: add description
      */
     fun setInterpolatedValue(attribute: CustomAttribute?, mCache: FloatArray) {
-        widgetFrame!!.setCustomAttribute(attribute!!.mName, TypedValues.Custom.Companion.TYPE_FLOAT, mCache[0])
+        widgetFrame!!.setCustomAttribute(attribute!!.mName, TypedValues.Custom.TYPE_FLOAT, mCache[0])
     }
 
     companion object {
@@ -375,6 +375,6 @@ class MotionWidget : TypedValues {
         const val MATCH_PARENT = -1
         const val WRAP_CONTENT = -2
         const val GONE_UNSET = Int.MIN_VALUE
-        val MATCH_CONSTRAINT_WRAP: Int = ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
+        const val MATCH_CONSTRAINT_WRAP: Int = ConstraintWidget.MATCH_CONSTRAINT_WRAP
     }
 }

@@ -28,7 +28,7 @@ class KeyFrames {
     }
 
     override fun toString(): String {
-        val ret: StringBuilder = StringBuilder()
+        val ret = StringBuilder()
         if (!mKeys.isEmpty()) {
             ret.append("keyFrames:{\n")
             for (key in mKeys) {

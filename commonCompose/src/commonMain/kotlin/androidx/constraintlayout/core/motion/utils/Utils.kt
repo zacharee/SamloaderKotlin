@@ -16,6 +16,7 @@
 package androidx.constraintlayout.core.motion.utils
 
 import kotlin.math.pow
+import kotlin.native.concurrent.ThreadLocal
 
 class Utils {
     /**
@@ -43,6 +44,7 @@ class Utils {
         fun message(str: String?)
     }
 
+    @ThreadLocal
     companion object {
         /**
          * @TODO: add description

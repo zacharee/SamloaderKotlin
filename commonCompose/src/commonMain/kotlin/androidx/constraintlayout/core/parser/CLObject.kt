@@ -20,7 +20,7 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
      * Returns objet as a JSON5 String
      */
     override fun toJSON(): String {
-        val json: StringBuilder = StringBuilder(debugName + "{ ")
+        val json = StringBuilder("$debugName{ ")
         var first = true
         for (element in mElements) {
             if (!first) {
@@ -45,7 +45,7 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
      * Returns as a formatted JSON5 String with an indentation
      */
     override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
-        val json: StringBuilder = StringBuilder(debugName)
+        val json = StringBuilder(debugName)
         json.append("{\n")
         var first = true
         for (element in mElements) {
@@ -54,7 +54,7 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
             } else {
                 first = false
             }
-            json.append(element?.toFormattedJSON(indent + CLElement.Companion.sBaseIndent, forceIndent - 1))
+            json.append(element?.toFormattedJSON(indent + sBaseIndent, forceIndent - 1))
         }
         json.append("\n")
         addIndent(json, indent)
@@ -66,7 +66,7 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
         return CLObjectIterator(this)
     }
 
-    private class CLObjectIterator internal constructor(var mObject: CLObject) : MutableIterator<CLKey> {
+    private class CLObjectIterator(var mObject: CLObject) : MutableIterator<CLKey> {
         var mIndex = 0
         override fun hasNext(): Boolean {
             return mIndex < mObject.size()

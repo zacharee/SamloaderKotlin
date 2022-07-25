@@ -38,7 +38,7 @@ class Motion(view: MotionWidget?) : TypedValues {
     var view: MotionWidget? = null
     var mId: String? = null
     var mConstraintTag: String? = null
-    private var mCurveFitType: Int = CurveFit.Companion.SPLINE
+    private var mCurveFitType: Int = CurveFit.SPLINE
     private val mStartMotionPath = MotionPaths()
     private val mEndMotionPath = MotionPaths()
     private val mStartPoint = MotionConstrainedPoint()
@@ -72,9 +72,9 @@ class Motion(view: MotionWidget?) : TypedValues {
             : IntArray
     private val mMaxDimension = 4
     private val mValuesBuff = FloatArray(mMaxDimension)
-    private val mMotionPaths: ArrayList<MotionPaths> = ArrayList<MotionPaths>()
+    private val mMotionPaths: ArrayList<MotionPaths> = ArrayList()
     private val mVelocity = FloatArray(1) // used as a temp buffer to return values
-    private val mKeyList: ArrayList<MotionKey> = ArrayList<MotionKey>() // List of key frame items
+    private val mKeyList: ArrayList<MotionKey> = ArrayList() // List of key frame items
 
     // splines to calculate for use TimeCycles
     private var mTimeCycleAttributesMap: HashMap<String, TimeCycleSplineSet>? = null
@@ -85,14 +85,14 @@ class Motion(view: MotionWidget?) : TypedValues {
     private var mCycleMap: HashMap<String, KeyCycleOscillator>? = null
     private var mKeyTriggers // splines to calculate values of attributes
             : Array<MotionKeyTrigger>? = null
-    private var mPathMotionArc: Int = MotionWidget.Companion.UNSET
+    private var mPathMotionArc: Int = MotionWidget.UNSET
 
     // if set, pivot point is maintained as the other object
-    private var mTransformPivotTarget: Int = MotionWidget.Companion.UNSET
+    private var mTransformPivotTarget: Int = MotionWidget.UNSET
 
     // if set, pivot point is maintained as the other object
     private var mTransformPivotView: MotionWidget? = null
-    private var mQuantizeMotionSteps: Int = MotionWidget.Companion.UNSET
+    private var mQuantizeMotionSteps: Int = MotionWidget.UNSET
     private var mQuantizeMotionPhase = Float.NaN
     private var mQuantizeMotionInterpolator: DifferentialInterpolator? = null
     private var mNoMovement = false
@@ -235,13 +235,13 @@ class Motion(view: MotionWidget?) : TypedValues {
     fun buildPath(points: FloatArray, pointCount: Int) {
         val mils = 1.0f / (pointCount - 1)
         val trans_x: SplineSet? =
-            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.TRANSLATION_X)
+            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.TRANSLATION_X)
         val trans_y: SplineSet? =
-            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.TRANSLATION_Y)
+            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.TRANSLATION_Y)
         val osc_x: KeyCycleOscillator? =
-            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.TRANSLATION_X)
+            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.TRANSLATION_X)
         val osc_y: KeyCycleOscillator? =
-            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.TRANSLATION_Y)
+            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.TRANSLATION_Y)
         for (i in 0 until pointCount) {
             var position = i * mils
             if (mStaggerScale != 1.0f) {
@@ -301,7 +301,7 @@ class Motion(view: MotionWidget?) : TypedValues {
     fun getPos(position: Double): DoubleArray {
         mSpline!![0]!!.getPos(position, mInterpolateData)
         if (mArcSpline != null) {
-            if (mInterpolateData.size > 0) {
+            if (mInterpolateData.isNotEmpty()) {
                 mArcSpline!!.getPos(position, mInterpolateData)
             }
         }
@@ -319,13 +319,13 @@ class Motion(view: MotionWidget?) : TypedValues {
     fun buildBounds(bounds: FloatArray, pointCount: Int) {
         val mils = 1.0f / (pointCount - 1)
         val trans_x: SplineSet? =
-            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.TRANSLATION_X)
+            if (mAttributesMap == null) null else mAttributesMap?.get(MotionKey.TRANSLATION_X)
         val trans_y: SplineSet? =
-            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.TRANSLATION_Y)
+            if (mAttributesMap == null) null else mAttributesMap?.get(MotionKey.TRANSLATION_Y)
         val osc_x: KeyCycleOscillator? =
-            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.TRANSLATION_X)
+            if (mCycleMap == null) null else mCycleMap?.get(MotionKey.TRANSLATION_X)
         val osc_y: KeyCycleOscillator? =
-            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.TRANSLATION_Y)
+            if (mCycleMap == null) null else mCycleMap?.get(MotionKey.TRANSLATION_Y)
         for (i in 0 until pointCount) {
             var position = i * mils
             if (mStaggerScale != 1.0f) {
@@ -364,7 +364,7 @@ class Motion(view: MotionWidget?) : TypedValues {
             }
             mSpline!![0]!!.getPos(p, mInterpolateData)
             if (mArcSpline != null) {
-                if (mInterpolateData.size > 0) {
+                if (mInterpolateData.isNotEmpty()) {
                     mArcSpline!!.getPos(p, mInterpolateData)
                 }
             }
@@ -376,7 +376,7 @@ class Motion(view: MotionWidget?) : TypedValues {
     // this is also the starting time
     // this frame has an easing
     private val preCycleDistance: Float
-        private get() {
+        get() {
             val pointCount = 100
             val points = FloatArray(2)
             var sum = 0f
@@ -451,7 +451,7 @@ class Motion(view: MotionWidget?) : TypedValues {
     fun buildKeyFrames(keyFrames: FloatArray?, mode: IntArray?, pos: IntArray?): Int {
         if (keyFrames != null) {
             var count = 0
-            val time = mSpline!![0]!!.timePoints
+            val time = mSpline?.get(0)?.timePoints ?: return 0
             if (mode != null) {
                 for (keyFrame in mMotionPaths) {
                     mode[count++] = keyFrame.mMode
@@ -464,10 +464,10 @@ class Motion(view: MotionWidget?) : TypedValues {
                 }
                 count = 0
             }
-            for (i in time!!.indices) {
-                mSpline!![0]!!.getPos(time!![i], mInterpolateData)
+            for (i in time.indices) {
+                mSpline!![0]!!.getPos(time[i], mInterpolateData)
                 mStartMotionPath.getCenter(
-                    time!![i],
+                    time[i],
                     mInterpolateVariables, mInterpolateData, keyFrames, count
                 )
                 count += 2
@@ -480,15 +480,16 @@ class Motion(view: MotionWidget?) : TypedValues {
     fun buildKeyBounds(keyBounds: FloatArray?, mode: IntArray?): Int {
         if (keyBounds != null) {
             var count = 0
-            val time = mSpline!![0]!!.timePoints
+            val splineZero = mSpline?.get(0)
+            val time = splineZero?.timePoints ?: return 0
             if (mode != null) {
                 for (keyFrame in mMotionPaths) {
                     mode[count++] = keyFrame.mMode
                 }
                 count = 0
             }
-            for (i in time!!.indices) {
-                mSpline!![0]!!.getPos(time!![i], mInterpolateData)
+            for (i in time.indices) {
+                splineZero.getPos(time[i], mInterpolateData)
                 mStartMotionPath.getBounds(
                     mInterpolateVariables,
                     mInterpolateData, keyBounds, count
@@ -571,16 +572,16 @@ class Motion(view: MotionWidget?) : TypedValues {
         }
         val pos: Int = mMotionPaths.binarySearch(point)
         if (pos == 0) {
-            Utils.Companion.loge(TAG, " KeyPath position \"" + point.mPosition + "\" outside of range")
+            Utils.loge(TAG, " KeyPath position \"" + point.mPosition + "\" outside of range")
         }
         mMotionPaths.add(-pos - 1, point)
     }
 
     fun addKeys(list: ArrayList<MotionKey>) {
-        mKeyList!!.addAll(list)
+        mKeyList.addAll(list)
         if (DEBUG) {
             for (key in mKeyList) {
-                Utils.Companion.log(TAG, " ################ set = " + key::class.simpleName)
+                Utils.log(TAG, " ################ set = " + key::class.simpleName)
             }
         }
     }
@@ -589,9 +590,9 @@ class Motion(view: MotionWidget?) : TypedValues {
      * @TODO: add description
      */
     fun addKey(key: MotionKey) {
-        mKeyList!!.add(key)
+        mKeyList.add(key)
         if (DEBUG) {
-            Utils.Companion.log(TAG, " ################ addKey = " + key::class.simpleName)
+            Utils.log(TAG, " ################ addKey = " + key::class.simpleName)
         }
     }
 
@@ -610,30 +611,30 @@ class Motion(view: MotionWidget?) : TypedValues {
         currentTime: Long
     ) {
         val springAttributes: HashSet<String> =
-            HashSet<String>() // attributes we need to interpolate
+            HashSet() // attributes we need to interpolate
         val timeCycleAttributes: HashSet<String> =
-            HashSet<String>() // attributes we need to interpolate
+            HashSet() // attributes we need to interpolate
         val splineAttributes: HashSet<String> =
-            HashSet<String>() // attributes we need to interpolate
-        val cycleAttributes: HashSet<String> = HashSet<String>() // attributes we need to oscillate
-        val interpolation: HashMap<String, Int> = HashMap<String, Int>()
+            HashSet() // attributes we need to interpolate
+        val cycleAttributes: HashSet<String> = HashSet() // attributes we need to oscillate
+        val interpolation: HashMap<String, Int> = HashMap()
         var triggerList: ArrayList<MotionKeyTrigger>? = null
         setupRelative()
         if (DEBUG) {
             if (mKeyList == null) {
-                Utils.Companion.log(TAG, ">>>>>>>>>>>>>>> mKeyList==null")
+                Utils.log(TAG, ">>>>>>>>>>>>>>> mKeyList==null")
             } else {
-                Utils.Companion.log(TAG, ">>>>>>>>>>>>>>> mKeyList for " + view?.name)
+                Utils.log(TAG, ">>>>>>>>>>>>>>> mKeyList for " + view?.name)
             }
         }
-        if (mPathMotionArc != MotionWidget.Companion.UNSET && mStartMotionPath.mPathMotionArc == MotionWidget.Companion.UNSET) {
+        if (mPathMotionArc != MotionWidget.UNSET && mStartMotionPath.mPathMotionArc == MotionWidget.UNSET) {
             mStartMotionPath.mPathMotionArc = mPathMotionArc
         }
         mStartPoint.different(mEndPoint, splineAttributes)
         if (DEBUG) {
             val attr: HashSet<String> = HashSet<String>()
             mStartPoint.different(mEndPoint, attr)
-            Utils.Companion.log(
+            Utils.log(
                 TAG, ">>>>>>>>>>>>>>> MotionConstrainedPoint found "
                         + attr.toTypedArray().contentToString()
             )
@@ -648,7 +649,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                             keyPath, mStartMotionPath, mEndMotionPath
                         )
                     )
-                    if (keyPath.mCurveFit != MotionWidget.Companion.UNSET) {
+                    if (keyPath.mCurveFit != MotionWidget.UNSET) {
                         mCurveFitType = keyPath.mCurveFit
                     }
                 } else if (key is MotionKeyCycle) {
@@ -689,9 +690,9 @@ class Motion(view: MotionWidget?) : TypedValues {
                             attrList.append(key.framePosition, customAttribute)
                         }
                     }
-                    SplineSet.Companion.makeCustomSplineSet(attribute, attrList)
+                    SplineSet.makeCustomSplineSet(attribute, attrList)
                 } else {
-                    SplineSet.Companion.makeSpline(attribute, currentTime)
+                    SplineSet.makeSpline(attribute, currentTime)
                 }
                 if (splineSets == null) {
                     continue
@@ -705,7 +706,7 @@ class Motion(view: MotionWidget?) : TypedValues {
             mStartPoint.addValues(mAttributesMap!!, 0)
             mEndPoint.addValues(mAttributesMap!!, 100)
             for (spline in mAttributesMap!!.keys) {
-                var curve: Int = CurveFit.Companion.SPLINE // default is SPLINE
+                var curve: Int = CurveFit.SPLINE // default is SPLINE
                 if (interpolation.containsKey(spline)) {
                     val boxedCurve: Int? = interpolation.get(spline)
                     if (boxedCurve != null) {
@@ -742,9 +743,9 @@ class Motion(view: MotionWidget?) : TypedValues {
                             attrList.append(key.framePosition, customAttribute)
                         }
                     }
-                    SplineSet.Companion.makeCustomSplineSet(attribute, attrList)
+                    SplineSet.makeCustomSplineSet(attribute, attrList)
                 } else {
-                    SplineSet.Companion.makeSpline(attribute, currentTime)
+                    SplineSet.makeSpline(attribute, currentTime)
                 }
                 if (splineSets == null) {
                     continue
@@ -758,7 +759,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                 }
             }
             for (spline in mTimeCycleAttributesMap!!.keys) {
-                var curve: Int = CurveFit.Companion.SPLINE // default is SPLINE
+                var curve: Int = CurveFit.SPLINE // default is SPLINE
                 if (interpolation.containsKey(spline)) {
                     curve = interpolation[spline]!!
                 }
@@ -771,8 +772,8 @@ class Motion(view: MotionWidget?) : TypedValues {
         var count = 1
         points[0] = mStartMotionPath
         points[points.size - 1] = mEndMotionPath
-        if (mMotionPaths.size > 0 && mCurveFitType == MotionKey.Companion.UNSET) {
-            mCurveFitType = CurveFit.Companion.SPLINE
+        if (mMotionPaths.size > 0 && mCurveFitType == MotionKey.UNSET) {
+            mCurveFitType = CurveFit.SPLINE
         }
         for (point in mMotionPaths) {
             points[count++] = point
@@ -803,7 +804,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                 }
             }
         }
-        val arcMode = points[0]!!.mPathMotionArc != MotionWidget.Companion.UNSET
+        val arcMode = points[0]!!.mPathMotionArc != MotionWidget.UNSET
         val mask = BooleanArray(variables + mAttributeNames.size) // defaults to false
         for (i in 1 until points.size) {
             points[i]!!.different(points[i - 1], mask, mAttributeNames, arcMode)
@@ -832,8 +833,8 @@ class Motion(view: MotionWidget?) : TypedValues {
         }
         for (j in mInterpolateVariables.indices) {
             val interpolateVariable = mInterpolateVariables[j]
-            if (interpolateVariable < MotionPaths.Companion.sNames.size) {
-                var s: String = MotionPaths.Companion.sNames.get(mInterpolateVariables[j]) + " ["
+            if (interpolateVariable < MotionPaths.sNames.size) {
+                var s: String = MotionPaths.sNames.get(mInterpolateVariables[j]) + " ["
                 for (i in points.indices) {
                     s += splineData[i][j]
                 }
@@ -858,13 +859,13 @@ class Motion(view: MotionWidget?) : TypedValues {
             }
             timePoints = timePoints?.copyOf(pointCount)
             splinePoints = splinePoints?.copyOf(pointCount)?.mapNotNull { it }?.toTypedArray()
-            mSpline!![i + 1] = CurveFit.Companion[mCurveFitType, timePoints, splinePoints]
+            mSpline!![i + 1] = CurveFit[mCurveFitType, timePoints, splinePoints]
         }
 
         // Spline for positions
-        mSpline!![0] = CurveFit.Companion[mCurveFitType, timePoint, splineData]
+        mSpline!![0] = CurveFit[mCurveFitType, timePoint, splineData]
         // --------------------------- SUPPORT ARC MODE --------------
-        if (points[0]!!.mPathMotionArc != MotionWidget.Companion.UNSET) {
+        if (points[0]!!.mPathMotionArc != MotionWidget.UNSET) {
             val size = points.size
             val mode = IntArray(size)
             val time = DoubleArray(size)
@@ -875,7 +876,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                 values[i][0] = points[i]!!.mX.toDouble()
                 values[i][1] = points[i]!!.mY.toDouble()
             }
-            mArcSpline = CurveFit.Companion.getArc(mode, time, values)
+            mArcSpline = CurveFit.getArc(mode, time, values)
         }
 
         //--------------------------- Cycle support --------------------
@@ -883,7 +884,7 @@ class Motion(view: MotionWidget?) : TypedValues {
         mCycleMap = HashMap<String, KeyCycleOscillator>()
         if (mKeyList != null) {
             for (attribute in cycleAttributes) {
-                val cycle: KeyCycleOscillator = KeyCycleOscillator.Companion.makeWidgetCycle(attribute) ?: continue
+                val cycle: KeyCycleOscillator = KeyCycleOscillator.makeWidgetCycle(attribute) ?: continue
                 if (cycle.variesByPath()) {
                     if (distance.isNaN()) {
                         distance = preCycleDistance
@@ -902,18 +903,18 @@ class Motion(view: MotionWidget?) : TypedValues {
             }
         }
         if (DEBUG) {
-            Utils.Companion.log(
+            Utils.log(
                 TAG, "Animation of splineAttributes "
                         + splineAttributes.toTypedArray().contentToString()
             )
-            Utils.Companion.log(TAG, "Animation of cycle " + mCycleMap!!.keys.toTypedArray().contentToString())
+            Utils.log(TAG, "Animation of cycle " + mCycleMap!!.keys.toTypedArray().contentToString())
             if (mAttributesMap != null) {
-                Utils.Companion.log(TAG, " splines = " + mAttributesMap!!.keys.toTypedArray().contentToString())
+                Utils.log(TAG, " splines = " + mAttributesMap!!.keys.toTypedArray().contentToString())
                 for (s in mAttributesMap!!.keys) {
-                    Utils.Companion.log(TAG, s + " = " + mAttributesMap!!.get(s))
+                    Utils.log(TAG, s + " = " + mAttributesMap!!.get(s))
                 }
             }
-            Utils.Companion.log(TAG, " ---------------------------------------- ")
+            Utils.log(TAG, " ---------------------------------------- ")
         }
 
         //--------------------------- end cycle support ----------------
@@ -1003,7 +1004,7 @@ class Motion(view: MotionWidget?) : TypedValues {
         val cx: Int
         val cy: Int
         when (rotation) {
-            MotionConstraintSet.Companion.ROTATE_PORTRATE_OF_LEFT -> {
+            MotionConstraintSet.ROTATE_PORTRATE_OF_LEFT -> {
                 cx = rect.left + rect.right
                 cy = rect.top + rect.bottom
                 out.left = preHeight - (cy + rect.width()) / 2
@@ -1012,7 +1013,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                 out.bottom = out.top + rect.height()
             }
 
-            MotionConstraintSet.Companion.ROTATE_PORTRATE_OF_RIGHT -> {
+            MotionConstraintSet.ROTATE_PORTRATE_OF_RIGHT -> {
                 cx = rect.left + rect.right
                 cy = rect.top + rect.bottom
                 out.left = (cy - rect.width()) / 2
@@ -1021,7 +1022,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                 out.bottom = out.top + rect.height()
             }
 
-            MotionConstraintSet.Companion.ROTATE_LEFT_OF_PORTRATE -> {
+            MotionConstraintSet.ROTATE_LEFT_OF_PORTRATE -> {
                 cx = rect.left + rect.right
                 cy = rect.bottom + rect.top
                 out.left = preHeight - (cy + rect.width()) / 2
@@ -1030,7 +1031,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                 out.bottom = out.top + rect.height()
             }
 
-            MotionConstraintSet.Companion.ROTATE_RIGHT_OF_PORTRATE -> {
+            MotionConstraintSet.ROTATE_RIGHT_OF_PORTRATE -> {
                 cx = rect.left + rect.right
                 cy = rect.top + rect.bottom
                 out.left = rect.height() / 2 + rect.top - cx / 2
@@ -1150,7 +1151,7 @@ class Motion(view: MotionWidget?) : TypedValues {
         val timeAnimation = false
         var position = getAdjustedPosition(globalPosition, null)
         // This quantize the position into steps e.g. 4 steps = 0-0.25,0.25-0.50 etc
-        if (mQuantizeMotionSteps != MotionWidget.Companion.UNSET) {
+        if (mQuantizeMotionSteps != MotionWidget.UNSET) {
             val pin = position
             val steps = 1.0f / mQuantizeMotionSteps // the length of a step
             val jump: Float = floor((position / steps).toDouble()).toFloat() * steps // step jumps
@@ -1197,7 +1198,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                     mInterpolateVariables, mInterpolateData, mInterpolateVelocity, null
                 )
             }
-            if (mTransformPivotTarget != MotionWidget.Companion.UNSET) {
+            if (mTransformPivotTarget != MotionWidget.UNSET) {
                 if (mTransformPivotView == null) {
                     val layout = child.parent as MotionWidget
                     mTransformPivotView = layout.findViewById(mTransformPivotTarget)
@@ -1236,13 +1237,13 @@ class Motion(view: MotionWidget?) : TypedValues {
                 //interpolated here
                 mStartMotionPath.mCustomAttributes[mAttributeNames[i - 1]]?.setInterpolatedValue(child, mValuesBuff)
             }
-            if (mStartPoint.mVisibilityMode == MotionWidget.Companion.VISIBILITY_MODE_NORMAL) {
+            if (mStartPoint.mVisibilityMode == MotionWidget.VISIBILITY_MODE_NORMAL) {
                 if (position <= 0.0f) {
                     child.visibility = mStartPoint.mVisibility
                 } else if (position >= 1.0f) {
                     child.visibility = mEndPoint.mVisibility
                 } else if (mEndPoint.mVisibility != mStartPoint.mVisibility) {
-                    child.visibility = MotionWidget.Companion.VISIBLE
+                    child.visibility = MotionWidget.VISIBLE
                 }
             }
             if (mKeyTriggers != null) {
@@ -1284,7 +1285,7 @@ class Motion(view: MotionWidget?) : TypedValues {
         if (mCycleMap != null) {
             for (osc in mCycleMap!!.values) {
                 if (osc is PathRotateSet) {
-                    (osc as PathRotateSet).setPathRotate(
+                    osc.setPathRotate(
                         child, position,
                         mInterpolateVelocity[0], mInterpolateVelocity[1]
                     )
@@ -1318,7 +1319,7 @@ class Motion(view: MotionWidget?) : TypedValues {
                 mInterpolateVelocity[i] *= v.toDouble()
             }
             if (mArcSpline != null) {
-                if (mInterpolateData.size > 0) {
+                if (mInterpolateData.isNotEmpty()) {
                     mArcSpline!!.getPos(position.toDouble(), mInterpolateData)
                     mArcSpline!!.getSlope(position.toDouble(), mInterpolateVelocity)
                     mStartMotionPath.setDpDt(
@@ -1366,27 +1367,27 @@ class Motion(view: MotionWidget?) : TypedValues {
     ) {
         var position = position
         if (DEBUG) {
-            Utils.Companion.log(
+            Utils.log(
                 TAG, " position= " + position
                         + " location= " + locationX + " , " + locationY
             )
         }
         position = getAdjustedPosition(position, mVelocity)
         val trans_x: SplineSet? =
-            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.TRANSLATION_X)
+            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.TRANSLATION_X)
         val trans_y: SplineSet? =
-            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.TRANSLATION_Y)
+            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.TRANSLATION_Y)
         val rotation: SplineSet? =
-            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.ROTATION)
-        val scale_x: SplineSet? = if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.SCALE_X)
-        val scale_y: SplineSet? = if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.Companion.SCALE_Y)
+            if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.ROTATION)
+        val scale_x: SplineSet? = if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.SCALE_X)
+        val scale_y: SplineSet? = if (mAttributesMap == null) null else mAttributesMap!!.get(MotionKey.SCALE_Y)
         val osc_x: KeyCycleOscillator? =
-            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.TRANSLATION_X)
+            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.TRANSLATION_X)
         val osc_y: KeyCycleOscillator? =
-            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.TRANSLATION_Y)
-        val osc_r: KeyCycleOscillator? = if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.ROTATION)
-        val osc_sx: KeyCycleOscillator? = if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.SCALE_X)
-        val osc_sy: KeyCycleOscillator? = if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.Companion.SCALE_Y)
+            if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.TRANSLATION_Y)
+        val osc_r: KeyCycleOscillator? = if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.ROTATION)
+        val osc_sx: KeyCycleOscillator? = if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.SCALE_X)
+        val osc_sy: KeyCycleOscillator? = if (mCycleMap == null) null else mCycleMap!!.get(MotionKey.SCALE_Y)
         val vmat = VelocityMatrix()
         vmat.clear()
         vmat.setRotationVelocity(rotation, position)
@@ -1396,7 +1397,7 @@ class Motion(view: MotionWidget?) : TypedValues {
         vmat.setTranslationVelocity(osc_x, osc_y, position)
         vmat.setScaleVelocity(osc_sx, osc_sy, position)
         if (mArcSpline != null) {
-            if (mInterpolateData.size > 0) {
+            if (mInterpolateData.isNotEmpty()) {
                 mArcSpline!!.getPos(position.toDouble(), mInterpolateData)
                 mArcSpline!!.getSlope(position.toDouble(), mInterpolateVelocity)
                 mStartMotionPath.setDpDt(
@@ -1539,10 +1540,9 @@ class Motion(view: MotionWidget?) : TypedValues {
             info[++cursor] = pos[0].toBits()
             info[++cursor] = pos[1].toBits()
             if (key is MotionKeyPosition) {
-                val kp = key as MotionKeyPosition
-                info[++cursor] = kp.mPositionType
-                info[++cursor] = kp.mPercentX.toBits()
-                info[++cursor] = kp.mPercentY.toBits()
+                info[++cursor] = key.mPositionType
+                info[++cursor] = key.mPercentX.toBits()
+                info[++cursor] = key.mPercentY.toBits()
             }
             cursor++
             info[len] = cursor - len
@@ -1553,28 +1553,28 @@ class Motion(view: MotionWidget?) : TypedValues {
 
     override fun setValue(id: Int, value: Int): Boolean {
         when (id) {
-            PositionType.Companion.TYPE_PATH_MOTION_ARC -> {
+            PositionType.TYPE_PATH_MOTION_ARC -> {
                 setPathMotionArc(value)
                 return true
             }
 
-            MotionType.Companion.TYPE_QUANTIZE_MOTIONSTEPS -> {
+            MotionType.TYPE_QUANTIZE_MOTIONSTEPS -> {
                 mQuantizeMotionSteps = value
                 return true
             }
 
-            TypedValues.TransitionType.Companion.TYPE_AUTO_TRANSITION ->                 // TODO add support for auto transitions mAutoTransition = value;
+            TypedValues.TransitionType.TYPE_AUTO_TRANSITION ->                 // TODO add support for auto transitions mAutoTransition = value;
                 return true
         }
         return false
     }
 
     override fun setValue(id: Int, value: Float): Boolean {
-        if (MotionType.Companion.TYPE_QUANTIZE_MOTION_PHASE == id) {
+        if (MotionType.TYPE_QUANTIZE_MOTION_PHASE == id) {
             mQuantizeMotionPhase = value
             return true
         }
-        if (MotionType.Companion.TYPE_STAGGER == id) {
+        if (MotionType.TYPE_STAGGER == id) {
             motionStagger = value
             return true
         }
@@ -1582,13 +1582,13 @@ class Motion(view: MotionWidget?) : TypedValues {
     }
 
     override fun setValue(id: Int, value: String): Boolean {
-        if (TypedValues.TransitionType.Companion.TYPE_INTERPOLATOR == id
-            || MotionType.Companion.TYPE_QUANTIZE_INTERPOLATOR_TYPE == id
+        if (TypedValues.TransitionType.TYPE_INTERPOLATOR == id
+            || MotionType.TYPE_QUANTIZE_INTERPOLATOR_TYPE == id
         ) {
             mQuantizeMotionInterpolator = getInterpolator(SPLINE_STRING, value, 0)
             return true
         }
-        if (MotionType.Companion.TYPE_ANIMATE_RELATIVE_TO == id) {
+        if (MotionType.TYPE_ANIMATE_RELATIVE_TO == id) {
             mStartMotionPath.mAnimateRelativeTo = value
             return true
         }

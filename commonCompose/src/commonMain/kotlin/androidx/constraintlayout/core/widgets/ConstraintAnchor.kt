@@ -187,10 +187,10 @@ class ConstraintAnchor
      */
     var margin: Int
         get() {
-            if (owner.visibility == ConstraintWidget.Companion.GONE) {
+            if (owner.visibility == ConstraintWidget.GONE) {
                 return 0
             }
-            return if (mGoneMargin != UNSET_GONE_MARGIN && target != null && target!!.owner.visibility == ConstraintWidget.Companion.GONE) {
+            return if (mGoneMargin != UNSET_GONE_MARGIN && target != null && target!!.owner.visibility == ConstraintWidget.GONE) {
                 mGoneMargin
             } else mMargin
         }

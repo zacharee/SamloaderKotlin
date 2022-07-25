@@ -297,7 +297,7 @@ inline fun ConstraintLayout(
 
         val forcedScaleFactor = measurer.forcedScaleFactor
         if (!forcedScaleFactor.isNaN()) {
-            var mod = modifier.scale(measurer.forcedScaleFactor)
+            val mod = modifier.scale(measurer.forcedScaleFactor)
             Box {
                 @Suppress("DEPRECATION")
                 MultiMeasureLayout(

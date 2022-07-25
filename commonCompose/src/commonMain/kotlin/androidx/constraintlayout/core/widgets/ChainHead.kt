@@ -67,7 +67,7 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
             mWidgetsCount++
             widget.mNextChainWidget[mOrientation] = null
             widget.mListNextMatchConstraintsWidget[mOrientation] = null
-            if (widget.visibility != ConstraintWidget.Companion.GONE) {
+            if (widget.visibility != ConstraintWidget.GONE) {
                 mVisibleWidgets++
                 if (widget.getDimensionBehaviour(mOrientation)
                     != DimensionBehaviour.MATCH_CONSTRAINT
@@ -89,9 +89,9 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
                     == DimensionBehaviour.MATCH_CONSTRAINT
                 ) {
                     if ((widget.mResolvedMatchConstraintDefault[mOrientation]
-                                == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) || (widget.mResolvedMatchConstraintDefault[mOrientation]
-                                == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO) || (widget.mResolvedMatchConstraintDefault[mOrientation]
-                                == ConstraintWidget.Companion.MATCH_CONSTRAINT_PERCENT)
+                                == ConstraintWidget.MATCH_CONSTRAINT_SPREAD) || (widget.mResolvedMatchConstraintDefault[mOrientation]
+                                == ConstraintWidget.MATCH_CONSTRAINT_RATIO) || (widget.mResolvedMatchConstraintDefault[mOrientation]
+                                == ConstraintWidget.MATCH_CONSTRAINT_PERCENT)
                     ) {
                         mWidgetsMatchCount++
                         // Note: Might cause an issue if we support MATCH_CONSTRAINT_RATIO_RESOLVED
@@ -119,9 +119,9 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
                         }
                         lastMatchConstraintWidget = widget
                     }
-                    if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
+                    if (mOrientation == ConstraintWidget.HORIZONTAL) {
                         if (widget.mMatchConstraintDefaultWidth
-                            != ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD
+                            != ConstraintWidget.MATCH_CONSTRAINT_SPREAD
                         ) {
                             mOptimizable = false
                         } else if (widget.mMatchConstraintMinWidth != 0
@@ -131,7 +131,7 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
                         }
                     } else {
                         if (widget.mMatchConstraintDefaultHeight
-                            != ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD
+                            != ConstraintWidget.MATCH_CONSTRAINT_SPREAD
                         ) {
                             mOptimizable = false
                         } else if (widget.mMatchConstraintMinHeight != 0
@@ -177,7 +177,7 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
             mTotalSize -= lastVisibleWidget!!.mListAnchors[offset + 1]!!.margin
         }
         last = widget
-        if (mOrientation == ConstraintWidget.Companion.HORIZONTAL && mIsRtl) {
+        if (mOrientation == ConstraintWidget.HORIZONTAL && mIsRtl) {
             head = last
         } else {
             head = first
@@ -206,9 +206,9 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
             widget: ConstraintWidget,
             orientation: Int
         ): Boolean {
-            return widget.visibility != ConstraintWidget.Companion.GONE && (widget.mListDimensionBehaviors[orientation]
-                    == DimensionBehaviour.MATCH_CONSTRAINT) && (widget.mResolvedMatchConstraintDefault[orientation] == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD
-                    || widget.mResolvedMatchConstraintDefault[orientation] == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO)
+            return widget.visibility != ConstraintWidget.GONE && (widget.mListDimensionBehaviors[orientation]
+                    == DimensionBehaviour.MATCH_CONSTRAINT) && (widget.mResolvedMatchConstraintDefault[orientation] == ConstraintWidget.MATCH_CONSTRAINT_SPREAD
+                    || widget.mResolvedMatchConstraintDefault[orientation] == ConstraintWidget.MATCH_CONSTRAINT_RATIO)
         }
     }
 }

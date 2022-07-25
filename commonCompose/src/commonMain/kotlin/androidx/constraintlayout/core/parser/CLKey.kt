@@ -22,12 +22,12 @@ class CLKey(content: CharArray?) : CLContainer(content) {
     override fun toJSON(): String {
         return if (mElements.size > 0) {
             debugName + content() + ": " + mElements[0]?.toJSON()
-        } else debugName + content() + ": <> "
+        } else "$debugName${content()}: <> "
     }
 
     override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
         var forceIndent = forceIndent
-        val json: StringBuilder = StringBuilder(debugName)
+        val json = StringBuilder(debugName)
         addIndent(json, indent)
         val content: String = content()
         if (mElements.size > 0) {
@@ -40,7 +40,7 @@ class CLKey(content: CharArray?) : CLContainer(content) {
                 json.append(mElements[0]?.toFormattedJSON(indent, forceIndent - 1))
             } else {
                 val `val` = mElements[0]?.toJSON()
-                if (`val` != null && `val`.length + indent < CLElement.Companion.sMaxLine) {
+                if (`val` != null && `val`.length + indent < sMaxLine) {
                     json.append(`val`)
                 } else {
                     json.append(mElements[0]?.toFormattedJSON(indent, forceIndent - 1))
@@ -71,7 +71,7 @@ class CLKey(content: CharArray?) : CLContainer(content) {
         } else null
 
     companion object {
-        private val sSections: ArrayList<String> = ArrayList<String>()
+        private val sSections: ArrayList<String> = ArrayList()
 
         init {
             sSections.add("ConstraintSets")

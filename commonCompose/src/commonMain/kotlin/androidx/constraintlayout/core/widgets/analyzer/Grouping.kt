@@ -65,7 +65,7 @@ object Grouping {
         var isolatedHorizontalChildren: ArrayList<ConstraintWidget?>? = null
         var isolatedVerticalChildren: ArrayList<ConstraintWidget?>? = null
         for (i in 0 until count) {
-            val child: ConstraintWidget = children.get(i)
+            val child: ConstraintWidget = children[i]
             if (!validInGroup(
                     layout.horizontalDimensionBehaviour!!,
                     layout.verticalDimensionBehaviour!!,
@@ -86,7 +86,7 @@ object Grouping {
             layout.mMetrics!!.grouping++
         }
         for (i in 0 until count) {
-            val child: ConstraintWidget = children.get(i)
+            val child: ConstraintWidget = children[i]
             if (!validInGroup(
                     layout.horizontalDimensionBehaviour!!,
                     layout.verticalDimensionBehaviour!!,
@@ -94,67 +94,64 @@ object Grouping {
                     child.verticalDimensionBehaviour
                 )
             ) {
-                ConstraintWidgetContainer.Companion.measure(
+                ConstraintWidgetContainer.measure(
                     0, child, measurer,
-                    layout.mMeasure, BasicMeasure.Measure.Companion.SELF_DIMENSIONS
+                    layout.mMeasure, BasicMeasure.Measure.SELF_DIMENSIONS
                 )
             }
             if (child is Guideline) {
-                val guideline = child
-                if (guideline.orientation == ConstraintWidget.Companion.HORIZONTAL) {
+                if (child.orientation == ConstraintWidget.HORIZONTAL) {
                     if (horizontalGuidelines == null) {
                         horizontalGuidelines = ArrayList()
                     }
-                    horizontalGuidelines.add(guideline)
+                    horizontalGuidelines.add(child)
                 }
-                if (guideline.orientation == ConstraintWidget.Companion.VERTICAL) {
+                if (child.orientation == ConstraintWidget.VERTICAL) {
                     if (verticalGuidelines == null) {
                         verticalGuidelines = ArrayList()
                     }
-                    verticalGuidelines.add(guideline)
+                    verticalGuidelines.add(child)
                 }
             }
             if (child is HelperWidget) {
                 if (child is Barrier) {
-                    val barrier = child
-                    if (barrier.orientation == ConstraintWidget.Companion.HORIZONTAL) {
+                    if (child.orientation == ConstraintWidget.HORIZONTAL) {
                         if (horizontalBarriers == null) {
                             horizontalBarriers = ArrayList()
                         }
-                        horizontalBarriers.add(barrier)
+                        horizontalBarriers.add(child)
                     }
-                    if (barrier.orientation == ConstraintWidget.Companion.VERTICAL) {
+                    if (child.orientation == ConstraintWidget.VERTICAL) {
                         if (verticalBarriers == null) {
                             verticalBarriers = ArrayList()
                         }
-                        verticalBarriers.add(barrier)
+                        verticalBarriers.add(child)
                     }
                 } else {
-                    val helper = child
                     if (horizontalBarriers == null) {
                         horizontalBarriers = ArrayList()
                     }
-                    horizontalBarriers.add(helper)
+                    horizontalBarriers.add(child)
                     if (verticalBarriers == null) {
                         verticalBarriers = ArrayList()
                     }
-                    verticalBarriers.add(helper)
+                    verticalBarriers.add(child)
                 }
             }
-            if (child.mLeft!!.target == null && child.mRight!!.target == null && child !is Guideline && child !is Barrier) {
+            if (child.mLeft.target == null && child.mRight.target == null && child !is Guideline && child !is Barrier) {
                 if (isolatedHorizontalChildren == null) {
                     isolatedHorizontalChildren = ArrayList()
                 }
                 isolatedHorizontalChildren.add(child)
             }
-            if (child.mTop!!.target == null && child.mBottom!!.target == null && child.mBaseline!!.target == null && child !is Guideline && child !is Barrier) {
+            if (child.mTop.target == null && child.mBottom.target == null && child.mBaseline.target == null && child !is Guideline && child !is Barrier) {
                 if (isolatedVerticalChildren == null) {
                     isolatedVerticalChildren = ArrayList()
                 }
                 isolatedVerticalChildren.add(child)
             }
         }
-        val allDependencyLists: ArrayList<WidgetGroup> = ArrayList<WidgetGroup>()
+        val allDependencyLists: ArrayList<WidgetGroup> = ArrayList()
         if (FORCE_USE || layout.horizontalDimensionBehaviour
             == DimensionBehaviour.WRAP_CONTENT
         ) {
@@ -162,13 +159,13 @@ object Grouping {
             val dependencyLists: ArrayList<WidgetGroup> = allDependencyLists
             if (verticalGuidelines != null) {
                 for (guideline in verticalGuidelines) {
-                    findDependents(guideline, ConstraintWidget.Companion.HORIZONTAL, dependencyLists, null)
+                    findDependents(guideline, ConstraintWidget.HORIZONTAL, dependencyLists, null)
                 }
             }
             if (horizontalBarriers != null) {
                 for (barrier in horizontalBarriers) {
-                    val group = findDependents(barrier, ConstraintWidget.Companion.HORIZONTAL, dependencyLists, null)
-                    barrier?.addDependents(dependencyLists, ConstraintWidget.Companion.HORIZONTAL, group)
+                    val group = findDependents(barrier, ConstraintWidget.HORIZONTAL, dependencyLists, null)
+                    barrier?.addDependents(dependencyLists, ConstraintWidget.HORIZONTAL, group)
                     group!!.cleanup(dependencyLists)
                 }
             }
@@ -176,7 +173,7 @@ object Grouping {
             if (left?.dependents != null) {
                 for (first in left.dependents!!) {
                     findDependents(
-                        first.owner, ConstraintWidget.Companion.HORIZONTAL,
+                        first.owner, ConstraintWidget.HORIZONTAL,
                         dependencyLists, null
                     )
                 }
@@ -185,7 +182,7 @@ object Grouping {
             if (right?.dependents != null) {
                 for (first in right.dependents!!) {
                     findDependents(
-                        first.owner, ConstraintWidget.Companion.HORIZONTAL,
+                        first.owner, ConstraintWidget.HORIZONTAL,
                         dependencyLists, null
                     )
                 }
@@ -194,14 +191,14 @@ object Grouping {
             if (center?.dependents != null) {
                 for (first in center.dependents!!) {
                     findDependents(
-                        first.owner, ConstraintWidget.Companion.HORIZONTAL,
+                        first.owner, ConstraintWidget.HORIZONTAL,
                         dependencyLists, null
                     )
                 }
             }
             if (isolatedHorizontalChildren != null) {
                 for (widget in isolatedHorizontalChildren) {
-                    findDependents(widget, ConstraintWidget.Companion.HORIZONTAL, dependencyLists, null)
+                    findDependents(widget, ConstraintWidget.HORIZONTAL, dependencyLists, null)
                 }
             }
         }
@@ -212,49 +209,49 @@ object Grouping {
             val dependencyLists: ArrayList<WidgetGroup> = allDependencyLists
             if (horizontalGuidelines != null) {
                 for (guideline in horizontalGuidelines) {
-                    findDependents(guideline, ConstraintWidget.Companion.VERTICAL, dependencyLists, null)
+                    findDependents(guideline, ConstraintWidget.VERTICAL, dependencyLists, null)
                 }
             }
             if (verticalBarriers != null) {
                 for (barrier in verticalBarriers) {
-                    val group = findDependents(barrier, ConstraintWidget.Companion.VERTICAL, dependencyLists, null)
-                    barrier?.addDependents(dependencyLists, ConstraintWidget.Companion.VERTICAL, group)
+                    val group = findDependents(barrier, ConstraintWidget.VERTICAL, dependencyLists, null)
+                    barrier?.addDependents(dependencyLists, ConstraintWidget.VERTICAL, group)
                     group!!.cleanup(dependencyLists)
                 }
             }
             val top = layout.getAnchor(ConstraintAnchor.Type.TOP)
             if (top?.dependents != null) {
                 for (first in top.dependents!!) {
-                    findDependents(first.owner, ConstraintWidget.Companion.VERTICAL, dependencyLists, null)
+                    findDependents(first.owner, ConstraintWidget.VERTICAL, dependencyLists, null)
                 }
             }
             val baseline = layout.getAnchor(ConstraintAnchor.Type.BASELINE)
             if (baseline?.dependents != null) {
                 for (first in baseline.dependents!!) {
-                    findDependents(first.owner, ConstraintWidget.Companion.VERTICAL, dependencyLists, null)
+                    findDependents(first.owner, ConstraintWidget.VERTICAL, dependencyLists, null)
                 }
             }
             val bottom = layout.getAnchor(ConstraintAnchor.Type.BOTTOM)
             if (bottom?.dependents != null) {
                 for (first in bottom.dependents!!) {
-                    findDependents(first.owner, ConstraintWidget.Companion.VERTICAL, dependencyLists, null)
+                    findDependents(first.owner, ConstraintWidget.VERTICAL, dependencyLists, null)
                 }
             }
             val center = layout.getAnchor(ConstraintAnchor.Type.CENTER)
             if (center?.dependents != null) {
                 for (first in center.dependents!!) {
-                    findDependents(first.owner, ConstraintWidget.Companion.VERTICAL, dependencyLists, null)
+                    findDependents(first.owner, ConstraintWidget.VERTICAL, dependencyLists, null)
                 }
             }
             if (isolatedVerticalChildren != null) {
                 for (widget in isolatedVerticalChildren) {
-                    findDependents(widget, ConstraintWidget.Companion.VERTICAL, dependencyLists, null)
+                    findDependents(widget, ConstraintWidget.VERTICAL, dependencyLists, null)
                 }
             }
         }
         // Now we may have to merge horizontal/vertical dependencies
         for (i in 0 until count) {
-            val child: ConstraintWidget = children.get(i)
+            val child: ConstraintWidget = children[i]
             if (child.oppositeDimensionsTied()) {
                 val horizontalGroup = findGroup(allDependencyLists, child.horizontalGroup)
                 val verticalGroup = findGroup(allDependencyLists, child.verticalGroup)
@@ -265,8 +262,8 @@ object Grouping {
                                     + " to " + verticalGroup + " for " + child
                         )
                     }
-                    horizontalGroup.moveTo(ConstraintWidget.Companion.HORIZONTAL, verticalGroup)
-                    verticalGroup.orientation = ConstraintWidget.Companion.BOTH
+                    horizontalGroup.moveTo(ConstraintWidget.HORIZONTAL, verticalGroup)
+                    verticalGroup.orientation = ConstraintWidget.BOTH
                     allDependencyLists.remove(horizontalGroup)
                 }
             }
@@ -285,7 +282,7 @@ object Grouping {
             println("-- Horizontal dependency lists:")
             println("----------------------------------")
             for (list in allDependencyLists) {
-                if (list.orientation != ConstraintWidget.Companion.VERTICAL) {
+                if (list.orientation != ConstraintWidget.VERTICAL) {
                     println("list: $list")
                 }
             }
@@ -293,7 +290,7 @@ object Grouping {
             println("-- Vertical dependency lists:")
             println("----------------------------------")
             for (list in allDependencyLists) {
-                if (list.orientation != ConstraintWidget.Companion.HORIZONTAL) {
+                if (list.orientation != ConstraintWidget.HORIZONTAL) {
                     println("list: $list")
                 }
             }
@@ -307,11 +304,11 @@ object Grouping {
             var maxWrap = 0
             var picked: WidgetGroup? = null
             for (list in allDependencyLists) {
-                if (list.orientation == ConstraintWidget.Companion.VERTICAL) {
+                if (list.orientation == ConstraintWidget.VERTICAL) {
                     continue
                 }
                 list.isAuthoritative = false
-                val wrap = list.measureWrap(layout.system, ConstraintWidget.Companion.HORIZONTAL)
+                val wrap = list.measureWrap(layout.system, ConstraintWidget.HORIZONTAL)
                 if (wrap > maxWrap) {
                     picked = list
                     maxWrap = wrap
@@ -335,11 +332,11 @@ object Grouping {
             var maxWrap = 0
             var picked: WidgetGroup? = null
             for (list in allDependencyLists) {
-                if (list.orientation == ConstraintWidget.Companion.HORIZONTAL) {
+                if (list.orientation == ConstraintWidget.HORIZONTAL) {
                     continue
                 }
                 list.isAuthoritative = false
-                val wrap = list.measureWrap(layout.system, ConstraintWidget.Companion.VERTICAL)
+                val wrap = list.measureWrap(layout.system, ConstraintWidget.VERTICAL)
                 if (wrap > maxWrap) {
                     picked = list
                     maxWrap = wrap
@@ -367,7 +364,7 @@ object Grouping {
     ): WidgetGroup? {
         val count: Int = horizontalDependencyLists.size
         for (i in 0 until count) {
-            val group: WidgetGroup = horizontalDependencyLists.get(i)
+            val group: WidgetGroup = horizontalDependencyLists[i]
             if (groupId == group.id) {
                 return group
             }
@@ -385,15 +382,15 @@ object Grouping {
         group: WidgetGroup?
     ): WidgetGroup? {
         var group = group
-        var groupId = -1
-        groupId = if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        var groupId: Int
+        groupId = if (orientation == ConstraintWidget.HORIZONTAL) {
             constraintWidget!!.horizontalGroup
         } else {
             constraintWidget!!.verticalGroup
         }
         if (DEBUG_GROUPING) {
             println(
-                "--- find " + (if (orientation == ConstraintWidget.Companion.HORIZONTAL) "Horiz" else "Vert")
+                "--- find " + (if (orientation == ConstraintWidget.HORIZONTAL) "Horiz" else "Vert")
                         + " dependents of " + constraintWidget.debugName
                         + " group " + group + " widget group id " + groupId
             )
@@ -407,7 +404,7 @@ object Grouping {
                 )
             }
             for (i in list.indices) {
-                val widgetGroup: WidgetGroup = list.get(i)
+                val widgetGroup: WidgetGroup = list[i]
                 if (widgetGroup.id == groupId) {
                     if (group != null) {
                         if (DEBUG_GROUPING) {
@@ -428,7 +425,7 @@ object Grouping {
                 groupId = constraintWidget.findGroupInDependents(orientation)
                 if (groupId != -1) {
                     for (i in list.indices) {
-                        val widgetGroup: WidgetGroup = list.get(i)
+                        val widgetGroup: WidgetGroup = list[i]
                         if (widgetGroup.id == groupId) {
                             group = widgetGroup
                             break
@@ -449,14 +446,13 @@ object Grouping {
         }
         if (group.add(constraintWidget)) {
             if (constraintWidget is Guideline) {
-                val guideline = constraintWidget
-                guideline.anchor!!.findDependents(
-                    if (guideline.orientation
-                        == Guideline.Companion.HORIZONTAL
-                    ) ConstraintWidget.Companion.VERTICAL else ConstraintWidget.Companion.HORIZONTAL, list, group
+                constraintWidget.anchor.findDependents(
+                    if (constraintWidget.orientation
+                        == Guideline.HORIZONTAL
+                    ) ConstraintWidget.VERTICAL else ConstraintWidget.HORIZONTAL, list, group
                 )
             }
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+            if (orientation == ConstraintWidget.HORIZONTAL) {
                 constraintWidget.horizontalGroup = group.id
                 if (DEBUG_GROUPING) {
                     println(
@@ -464,8 +460,8 @@ object Grouping {
                                 + " H group is " + constraintWidget.horizontalGroup
                     )
                 }
-                constraintWidget.mLeft!!.findDependents(orientation, list, group)
-                constraintWidget.mRight!!.findDependents(orientation, list, group)
+                constraintWidget.mLeft.findDependents(orientation, list, group)
+                constraintWidget.mRight.findDependents(orientation, list, group)
             } else {
                 constraintWidget.verticalGroup = group.id
                 if (DEBUG_GROUPING) {
@@ -475,7 +471,7 @@ object Grouping {
                     )
                 }
                 constraintWidget.mTop.findDependents(orientation, list, group)
-                constraintWidget.mBaseline!!.findDependents(orientation, list, group)
+                constraintWidget.mBaseline.findDependents(orientation, list, group)
                 constraintWidget.mBottom.findDependents(orientation, list, group)
             }
             constraintWidget.mCenter.findDependents(orientation, list, group)

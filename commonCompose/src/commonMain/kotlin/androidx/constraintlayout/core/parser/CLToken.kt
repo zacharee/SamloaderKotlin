@@ -54,7 +54,7 @@ class CLToken(content: CharArray?) : CLElement(content) {
     var mTokenFalse = "false".toCharArray()
     var mTokenNull = "null".toCharArray()
     override fun toJSON(): String {
-        return if (CLParser.Companion.sDebug) {
+        return if (CLParser.sDebug) {
             "<" + content() + ">"
         } else {
             content()
@@ -62,7 +62,7 @@ class CLToken(content: CharArray?) : CLElement(content) {
     }
 
     override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
-        val json: StringBuilder = StringBuilder()
+        val json = StringBuilder()
         addIndent(json, indent)
         json.append(content())
         return json.toString()

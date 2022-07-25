@@ -22,7 +22,7 @@ import androidx.constraintlayout.core.widgets.HelperWidget
 open class HelperReference(override val mState: State, val type: State.Helper) : ConstraintReference(
     mState
 ), Facade {
-    var mReferences: ArrayList<Any> = ArrayList<Any>()
+    var mReferences: ArrayList<Any> = ArrayList()
     open var helperWidget: HelperWidget? = null
 
     /**

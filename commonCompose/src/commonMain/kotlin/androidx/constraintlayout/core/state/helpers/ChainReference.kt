@@ -41,42 +41,42 @@ open class ChainReference(state: State, type: State.Helper) : HelperReference(st
         super.add(id)
         if (!weight.isNaN()) {
             if (mMapWeights == null) {
-                mMapWeights = HashMap<String, Float>()
+                mMapWeights = HashMap()
             }
-            mMapWeights!!.put(id, weight)
+            mMapWeights!![id] = weight
         }
         if (!preMargin.isNaN()) {
             if (mMapPreMargin == null) {
-                mMapPreMargin = HashMap<String, Float>()
+                mMapPreMargin = HashMap()
             }
-            mMapPreMargin!!.put(id, preMargin)
+            mMapPreMargin!![id] = preMargin
         }
         if (!postMargin.isNaN()) {
             if (mMapPostMargin == null) {
-                mMapPostMargin = HashMap<String, Float>()
+                mMapPostMargin = HashMap()
             }
-            mMapPostMargin!!.put(id, postMargin)
+            mMapPostMargin!![id] = postMargin
         }
     }
 
     protected fun getWeight(id: String?): Float {
         if (mMapWeights == null) {
-            return ConstraintWidget.Companion.UNKNOWN.toFloat()
+            return ConstraintWidget.UNKNOWN.toFloat()
         }
         return if (mMapWeights!!.containsKey(id)) {
             mMapWeights!![id]!!
-        } else ConstraintWidget.Companion.UNKNOWN.toFloat()
+        } else ConstraintWidget.UNKNOWN.toFloat()
     }
 
     protected fun getPostMargin(id: String?): Float {
         return if (mMapPostMargin != null && mMapPostMargin!!.containsKey(id)) {
-            mMapPostMargin!!.get(id)!!
+            mMapPostMargin!![id]!!
         } else 0f
     }
 
     protected fun getPreMargin(id: String?): Float {
         return if (mMapPreMargin != null && mMapPreMargin!!.containsKey(id)) {
-            mMapPreMargin!!.get(id)!!
+            mMapPreMargin!![id]!!
         } else 0f
     }
 

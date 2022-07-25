@@ -19,6 +19,7 @@ import androidx.constraintlayout.core.LinearSystem
 import androidx.constraintlayout.core.widgets.*
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
 import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * Represents a group of widget for the grouping mechanism.
@@ -27,7 +28,7 @@ class WidgetGroup(orientation: Int) {
     var mWidgets: ArrayList<ConstraintWidget> = ArrayList<ConstraintWidget>()
     var id = -1
     var isAuthoritative = false
-    var orientation: Int = ConstraintWidget.Companion.HORIZONTAL
+    var orientation: Int = ConstraintWidget.HORIZONTAL
     var mResults: ArrayList<MeasureResult>? = null
     private var mMoveTo = -1
 
@@ -48,19 +49,19 @@ class WidgetGroup(orientation: Int) {
     }
 
     private val orientationString: String
-        private get() {
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        get() {
+            if (orientation == ConstraintWidget.HORIZONTAL) {
                 return "Horizontal"
-            } else if (orientation == ConstraintWidget.Companion.VERTICAL) {
+            } else if (orientation == ConstraintWidget.VERTICAL) {
                 return "Vertical"
-            } else if (orientation == ConstraintWidget.Companion.BOTH) {
+            } else if (orientation == ConstraintWidget.BOTH) {
                 return "Both"
             }
             return "Unknown"
         }
 
     override fun toString(): String {
-        var ret = orientationString + " [" + id + "] <"
+        var ret = "$orientationString [$id] <"
         for (widget in mWidgets) {
             ret += " " + widget.debugName
         }
@@ -84,7 +85,7 @@ class WidgetGroup(orientation: Int) {
         }
         for (widget in mWidgets) {
             widgetGroup.add(widget)
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+            if (orientation == ConstraintWidget.HORIZONTAL) {
                 widget.horizontalGroup = widgetGroup.id
             } else {
                 widget.verticalGroup = widgetGroup.id
@@ -103,8 +104,7 @@ class WidgetGroup(orientation: Int) {
     private fun measureWrap(orientation: Int, widget: ConstraintWidget): Int {
         val behaviour: DimensionBehaviour? = widget.getDimensionBehaviour(orientation)
         if (behaviour == DimensionBehaviour.WRAP_CONTENT || behaviour == DimensionBehaviour.MATCH_PARENT || behaviour == DimensionBehaviour.FIXED) {
-            val dimension: Int
-            dimension = if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+            val dimension = if (orientation == ConstraintWidget.HORIZONTAL) {
                 widget.width
             } else {
                 widget.height
@@ -130,22 +130,22 @@ class WidgetGroup(orientation: Int) {
         widgets: ArrayList<ConstraintWidget>,
         orientation: Int
     ): Int {
-        val container = widgets.get(0).parent as ConstraintWidgetContainer
+        val container = widgets[0].parent as ConstraintWidgetContainer
         system.reset()
-        val prevDebug: Boolean = LinearSystem.Companion.FULL_DEBUG
+        val prevDebug: Boolean = LinearSystem.FULL_DEBUG
         container.addToSolver(system, false)
         for (i in widgets.indices) {
-            val widget: ConstraintWidget = widgets.get(i)
+            val widget: ConstraintWidget = widgets[i]
             widget.addToSolver(system, false)
         }
-        if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        if (orientation == ConstraintWidget.HORIZONTAL) {
             if (container.mHorizontalChainsSize > 0) {
-                Chain.applyChainConstraints(container, system, widgets, ConstraintWidget.Companion.HORIZONTAL)
+                Chain.applyChainConstraints(container, system, widgets, ConstraintWidget.HORIZONTAL)
             }
         }
-        if (orientation == ConstraintWidget.Companion.VERTICAL) {
+        if (orientation == ConstraintWidget.VERTICAL) {
             if (container.mVerticalChainsSize > 0) {
-                Chain.applyChainConstraints(container, system, widgets, ConstraintWidget.Companion.VERTICAL)
+                Chain.applyChainConstraints(container, system, widgets, ConstraintWidget.VERTICAL)
             }
         }
         try {
@@ -155,15 +155,15 @@ class WidgetGroup(orientation: Int) {
         }
 
         // save results
-        mResults = ArrayList<MeasureResult>()
+        mResults = ArrayList()
         for (i in widgets.indices) {
-            val widget: ConstraintWidget = widgets.get(i)
+            val widget: ConstraintWidget = widgets[i]
             val result = MeasureResult(widget, system, orientation)
             mResults!!.add(result)
         }
-        return if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-            val left = system.getObjectVariableValue(container.mLeft!!)
-            val right = system.getObjectVariableValue(container.mRight!!)
+        return if (orientation == ConstraintWidget.HORIZONTAL) {
+            val left = system.getObjectVariableValue(container.mLeft)
+            val right = system.getObjectVariableValue(container.mRight)
             system.reset()
             right - left
         } else {
@@ -185,7 +185,7 @@ class WidgetGroup(orientation: Int) {
             return
         }
         for (i in mResults!!.indices) {
-            val result: MeasureResult = mResults!!.get(i)
+            val result: MeasureResult = mResults!![i]
             result.apply()
         }
     }
@@ -195,7 +195,7 @@ class WidgetGroup(orientation: Int) {
      */
     fun intersectWith(group: WidgetGroup): Boolean {
         for (i in mWidgets.indices) {
-            val widget: ConstraintWidget = mWidgets.get(i)
+            val widget: ConstraintWidget = mWidgets[i]
             if (group.contains(widget)) {
                 return true
             }
@@ -221,7 +221,7 @@ class WidgetGroup(orientation: Int) {
         val count: Int = mWidgets.size
         if (mMoveTo != -1 && count > 0) {
             for (i in dependencyLists.indices) {
-                val group: WidgetGroup = dependencyLists.get(i)
+                val group: WidgetGroup = dependencyLists[i]
                 if (mMoveTo == group.id) {
                     moveTo(orientation, group)
                 }
@@ -244,11 +244,11 @@ class WidgetGroup(orientation: Int) {
 
         init {
             mWidgetRef = widget
-            mLeft = system.getObjectVariableValue(widget.mLeft!!)
+            mLeft = system.getObjectVariableValue(widget.mLeft)
             mTop = system.getObjectVariableValue(widget.mTop)
-            mRight = system.getObjectVariableValue(widget.mRight!!)
+            mRight = system.getObjectVariableValue(widget.mRight)
             mBottom = system.getObjectVariableValue(widget.mBottom)
-            mBaseline = system.getObjectVariableValue(widget.mBaseline!!)
+            mBaseline = system.getObjectVariableValue(widget.mBaseline)
             mOrientation = orientation
         }
 
@@ -257,6 +257,7 @@ class WidgetGroup(orientation: Int) {
         }
     }
 
+    @ThreadLocal
     companion object {
         private const val DEBUG = false
         var sCount = 0

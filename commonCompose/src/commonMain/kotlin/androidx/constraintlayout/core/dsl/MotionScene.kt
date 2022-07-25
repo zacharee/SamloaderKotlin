@@ -20,8 +20,8 @@ package androidx.constraintlayout.core.dsl
  * It contains ConstraintSet and Transitions
  */
 class MotionScene {
-    var mTransitions: ArrayList<Transition> = ArrayList<Transition>()
-    var mConstraintSets: ArrayList<ConstraintSet> = ArrayList<ConstraintSet>()
+    var mTransitions: ArrayList<Transition> = ArrayList()
+    var mConstraintSets: ArrayList<ConstraintSet> = ArrayList()
 
     // todo add support for variables, generate and helpers
     fun addTransition(transition: Transition) {
@@ -33,7 +33,7 @@ class MotionScene {
     }
 
     override fun toString(): String {
-        val ret: StringBuilder = StringBuilder("{\n")
+        val ret = StringBuilder("{\n")
         if (!mTransitions.isEmpty()) {
             ret.append("Transitions:{\n")
             for (transition in mTransitions) {

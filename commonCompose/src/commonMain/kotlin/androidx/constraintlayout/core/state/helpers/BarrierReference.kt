@@ -55,21 +55,21 @@ class BarrierReference(state: State) : HelperReference(state, State.Helper.BARRI
      */
     override fun apply() {
         helperWidget
-        var direction: Int = Barrier.Companion.LEFT
+        var direction: Int = Barrier.LEFT
         when (mDirection) {
             State.Direction.LEFT, State.Direction.START -> {}
             State.Direction.RIGHT, State.Direction.END -> {
 
                 // TODO: handle RTL
-                direction = Barrier.Companion.RIGHT
+                direction = Barrier.RIGHT
             }
 
             State.Direction.TOP -> {
-                direction = Barrier.Companion.TOP
+                direction = Barrier.TOP
             }
 
             State.Direction.BOTTOM -> {
-                direction = Barrier.Companion.BOTTOM
+                direction = Barrier.BOTTOM
             }
 
             else -> {}

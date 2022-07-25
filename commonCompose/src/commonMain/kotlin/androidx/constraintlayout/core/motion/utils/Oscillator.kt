@@ -43,7 +43,7 @@ class Oscillator {
         mType = type
         mCustomType = customType
         if (mCustomType != null) {
-            mCustomCurve = MonotonicCurveFit.Companion.buildWave(customType)
+            mCustomCurve = MonotonicCurveFit.buildWave(customType)
         }
     }
 
@@ -177,7 +177,7 @@ class Oscillator {
     }
 
     companion object {
-        var TAG = "Oscillator"
+        const val TAG = "Oscillator"
         const val SIN_WAVE = 0 // theses must line up with attributes
         const val SQUARE_WAVE = 1
         const val TRIANGLE_WAVE = 2

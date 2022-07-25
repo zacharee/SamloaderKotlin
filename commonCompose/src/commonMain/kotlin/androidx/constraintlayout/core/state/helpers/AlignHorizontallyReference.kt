@@ -33,14 +33,14 @@ class AlignHorizontallyReference(state: State) : HelperReference(state, State.He
             } else if (mStartToEnd != null) {
                 reference.startToEnd(mStartToEnd)
             } else {
-                reference.startToStart(State.Companion.PARENT)
+                reference.startToStart(State.PARENT)
             }
             if (mEndToStart != null) {
                 reference.endToStart(mEndToStart)
             } else if (mEndToEnd != null) {
                 reference.endToEnd(mEndToEnd)
             } else {
-                reference.endToEnd(State.Companion.PARENT)
+                reference.endToEnd(State.PARENT)
             }
             if (mBias != 0.5f) {
                 reference.horizontalBias(mBias)

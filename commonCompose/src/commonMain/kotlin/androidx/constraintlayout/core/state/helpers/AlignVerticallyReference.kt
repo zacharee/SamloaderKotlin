@@ -33,14 +33,14 @@ class AlignVerticallyReference(state: State) : HelperReference(state, State.Help
             } else if (mTopToBottom != null) {
                 reference.topToBottom(mTopToBottom)
             } else {
-                reference.topToTop(State.Companion.PARENT)
+                reference.topToTop(State.PARENT)
             }
             if (mBottomToTop != null) {
                 reference.bottomToTop(mBottomToTop)
             } else if (mBottomToBottom != null) {
                 reference.bottomToBottom(mBottomToBottom)
             } else {
-                reference.bottomToBottom(State.Companion.PARENT)
+                reference.bottomToBottom(State.PARENT)
             }
             if (mBias != 0.5f) {
                 reference.verticalBias(mBias)

@@ -24,11 +24,11 @@ import androidx.constraintlayout.core.motion.utils.TypedValues.TriggerType
 class MotionKeyTrigger : MotionKey() {
     private var mCurveFit = -1
     private var mCross: String? = null
-    private var mTriggerReceiver: Int = MotionKey.Companion.UNSET
+    private var mTriggerReceiver: Int = UNSET
     private var mNegativeCross: String? = null
     private var mPositiveCross: String? = null
-    private var mTriggerID: Int = MotionKey.Companion.UNSET
-    private var mTriggerCollisionId: Int = MotionKey.Companion.UNSET
+    private var mTriggerID: Int = UNSET
+    private var mTriggerCollisionId: Int = UNSET
 
     //   TODO private MotionWidget mTriggerCollisionView = null;
     var mTriggerSlack = .1f
@@ -38,15 +38,15 @@ class MotionKeyTrigger : MotionKey() {
     private var mFireThreshold = Float.NaN
     private var mFireLastPos = 0f
     private var mPostLayout = false
-    var mViewTransitionOnNegativeCross: Int = MotionKey.Companion.UNSET
-    var mViewTransitionOnPositiveCross: Int = MotionKey.Companion.UNSET
-    var mViewTransitionOnCross: Int = MotionKey.Companion.UNSET
+    var mViewTransitionOnNegativeCross: Int = UNSET
+    var mViewTransitionOnPositiveCross: Int = UNSET
+    var mViewTransitionOnCross: Int = UNSET
     var mCollisionRect = FloatRect()
     var mTargetRect = FloatRect()
 
     init {
         mType = KEY_TYPE
-        mCustom = HashMap<String, CustomVariable>()
+        mCustom = HashMap()
     }
 
     override fun getAttributeNames(attributes: HashSet<String>) {}
@@ -126,12 +126,12 @@ class MotionKeyTrigger : MotionKey() {
      */
     override fun setValue(type: Int, value: Int): Boolean {
         when (type) {
-            TriggerType.Companion.TYPE_TRIGGER_RECEIVER -> mTriggerReceiver = value
-            TriggerType.Companion.TYPE_TRIGGER_ID -> mTriggerID = toInt(value)
-            TriggerType.Companion.TYPE_TRIGGER_COLLISION_ID -> mTriggerCollisionId = value
-            TriggerType.Companion.TYPE_VIEW_TRANSITION_ON_NEGATIVE_CROSS -> mViewTransitionOnNegativeCross = value
-            TriggerType.Companion.TYPE_VIEW_TRANSITION_ON_POSITIVE_CROSS -> mViewTransitionOnPositiveCross = value
-            TriggerType.Companion.TYPE_VIEW_TRANSITION_ON_CROSS -> mViewTransitionOnCross = value
+            TriggerType.TYPE_TRIGGER_RECEIVER -> mTriggerReceiver = value
+            TriggerType.TYPE_TRIGGER_ID -> mTriggerID = toInt(value)
+            TriggerType.TYPE_TRIGGER_COLLISION_ID -> mTriggerCollisionId = value
+            TriggerType.TYPE_VIEW_TRANSITION_ON_NEGATIVE_CROSS -> mViewTransitionOnNegativeCross = value
+            TriggerType.TYPE_VIEW_TRANSITION_ON_POSITIVE_CROSS -> mViewTransitionOnPositiveCross = value
+            TriggerType.TYPE_VIEW_TRANSITION_ON_CROSS -> mViewTransitionOnCross = value
             else -> return super.setValue(type, value)
         }
         return true
@@ -142,7 +142,7 @@ class MotionKeyTrigger : MotionKey() {
      */
     override fun setValue(type: Int, value: Float): Boolean {
         mTriggerSlack = when (type) {
-            TriggerType.Companion.TYPE_TRIGGER_SLACK -> value
+            TriggerType.TYPE_TRIGGER_SLACK -> value
             else -> return super.setValue(type, value)
         }
         return true
@@ -153,9 +153,9 @@ class MotionKeyTrigger : MotionKey() {
      */
     override fun setValue(type: Int, value: String): Boolean {
         when (type) {
-            TriggerType.Companion.TYPE_CROSS -> mCross = value
-            TriggerType.Companion.TYPE_NEGATIVE_CROSS -> mNegativeCross = value
-            TriggerType.Companion.TYPE_POSITIVE_CROSS -> mPositiveCross = value
+            TriggerType.TYPE_CROSS -> mCross = value
+            TriggerType.TYPE_NEGATIVE_CROSS -> mNegativeCross = value
+            TriggerType.TYPE_POSITIVE_CROSS -> mPositiveCross = value
             else -> return super.setValue(type, value)
         }
         return true
@@ -166,7 +166,7 @@ class MotionKeyTrigger : MotionKey() {
      */
     override fun setValue(type: Int, value: Boolean): Boolean {
         mPostLayout = when (type) {
-            TriggerType.Companion.TYPE_POST_LAYOUT -> value
+            TriggerType.TYPE_POST_LAYOUT -> value
             else -> return super.setValue(type, value)
         }
         return true

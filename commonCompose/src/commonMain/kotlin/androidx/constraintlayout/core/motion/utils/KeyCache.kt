@@ -20,15 +20,14 @@ package androidx.constraintlayout.core.motion.utils
  * to maintain consistency across requestLayout type rebuilds.
  */
 class KeyCache {
-    var mMap: HashMap<Any, HashMap<String, FloatArray>> =
-        HashMap<Any, HashMap<String, FloatArray>>()
+    var mMap: HashMap<Any, HashMap<String, FloatArray>> = HashMap()
 
     /**
      * @TODO: add description
      */
     fun setFloatValue(view: Any, type: String, element: Int, value: Float) {
         if (!mMap.containsKey(view)) {
-            val array: HashMap<String, FloatArray> = HashMap<String, FloatArray>()
+            val array: HashMap<String, FloatArray> = HashMap()
             val vArray = FloatArray(element + 1)
             vArray[element] = value
             array[type] = vArray

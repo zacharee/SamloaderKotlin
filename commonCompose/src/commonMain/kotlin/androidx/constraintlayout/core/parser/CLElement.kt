@@ -49,7 +49,7 @@ open class CLElement(private val mContent: CharArray?) {
                 return
             }
             mEnd = end
-            if (CLParser.Companion.sDebug) {
+            if (CLParser.sDebug) {
                 println("closing " + this.hashCode() + " -> " + this)
             }
             if (mContainer != null) {
@@ -69,7 +69,7 @@ open class CLElement(private val mContent: CharArray?) {
         }
         var content = mContent!!.concatToString()
         content = content.substring(start.toInt(), mEnd.toInt() + 1)
-        return strClass + " (" + start + " : " + mEnd + ") <<" + content + ">>"
+        return "$strClass ($start : $mEnd) <<$content>>"
     }
 
     val strClass: String
@@ -78,8 +78,8 @@ open class CLElement(private val mContent: CharArray?) {
             return myClass.substring(myClass.lastIndexOf('.') + 1)
         }
     protected val debugName: String
-        protected get() = if (CLParser.Companion.sDebug) {
-            strClass + " -> "
+        get() = if (CLParser.sDebug) {
+            "$strClass -> "
         } else ""
 
     /**
@@ -125,7 +125,7 @@ open class CLElement(private val mContent: CharArray?) {
         get() = Float.NaN
 
     companion object {
-        var sMaxLine = 80 // Max number of characters before the formatter indents
-        var sBaseIndent = 2 // default indentation value
+        const val sMaxLine = 80 // Max number of characters before the formatter indents
+        const val sBaseIndent = 2 // default indentation value
     }
 }

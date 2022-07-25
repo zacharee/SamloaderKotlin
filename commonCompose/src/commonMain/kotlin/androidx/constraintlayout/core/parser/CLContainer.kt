@@ -23,7 +23,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
      */
     fun add(element: CLElement) {
         mElements.add(element)
-        if (CLParser.Companion.sDebug) {
+        if (CLParser.sDebug) {
             println("added element $element to $this")
         }
     }
@@ -31,7 +31,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
     override fun toString(): String {
         val list: StringBuilder = StringBuilder()
         for (element in mElements) {
-            if (list.length > 0) {
+            if (list.isNotEmpty()) {
                 list.append("; ")
             }
             list.append(element)
@@ -50,11 +50,10 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
      * @TODO: add description
      */
     fun names(): ArrayList<String> {
-        val names: ArrayList<String> = ArrayList<String>()
+        val names: ArrayList<String> = ArrayList()
         for (element in mElements) {
             if (element is CLKey) {
-                val key = element as CLKey
-                names.add(key.content())
+                names.add(element.content())
             }
         }
         return names
@@ -66,8 +65,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
     fun has(name: String): Boolean {
         for (element in mElements) {
             if (element is CLKey) {
-                val key = element as CLKey
-                if (key.content() == name) {
+                if (element.content() == name) {
                     return true
                 }
             }
@@ -86,7 +84,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
                 return
             }
         }
-        val key = CLKey.Companion.allocate(name, value) as CLKey
+        val key = CLKey.allocate(name, value) as CLKey
         mElements.add(key)
     }
 
@@ -101,7 +99,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
      * @TODO: add description
      */
     fun remove(name: String) {
-        val toRemove: ArrayList<CLElement> = ArrayList<CLElement>()
+        val toRemove: ArrayList<CLElement> = ArrayList()
         for (element in mElements) {
             val key = element as CLKey
             if (key.content() == name) {
@@ -193,7 +191,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
      * @TODO: add description
      */
     @Throws(CLParsingException::class)
-    fun getString(name: String): String? {
+    fun getString(name: String): String {
         val element = get(name)
         if (element is CLString) {
             return element.content()
@@ -366,7 +364,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
      */
     fun getOrNull(index: Int): CLElement? {
         return if (index >= 0 && index < mElements.size) {
-            mElements.get(index)
+            mElements[index]
         } else null
     }
 

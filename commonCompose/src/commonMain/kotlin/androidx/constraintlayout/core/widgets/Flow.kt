@@ -26,12 +26,12 @@ import kotlin.math.min
  * Implements the Flow virtual layout.
  */
 class Flow : VirtualLayout() {
-    private var mHorizontalStyle: Int = ConstraintWidget.Companion.UNKNOWN
-    private var mVerticalStyle: Int = ConstraintWidget.Companion.UNKNOWN
-    private var mFirstHorizontalStyle: Int = ConstraintWidget.Companion.UNKNOWN
-    private var mFirstVerticalStyle: Int = ConstraintWidget.Companion.UNKNOWN
-    private var mLastHorizontalStyle: Int = ConstraintWidget.Companion.UNKNOWN
-    private var mLastVerticalStyle: Int = ConstraintWidget.Companion.UNKNOWN
+    private var mHorizontalStyle: Int = ConstraintWidget.UNKNOWN
+    private var mVerticalStyle: Int = ConstraintWidget.UNKNOWN
+    private var mFirstHorizontalStyle: Int = ConstraintWidget.UNKNOWN
+    private var mFirstVerticalStyle: Int = ConstraintWidget.UNKNOWN
+    private var mLastHorizontalStyle: Int = ConstraintWidget.UNKNOWN
+    private var mLastVerticalStyle: Int = ConstraintWidget.UNKNOWN
     private var mHorizontalBias = 0.5f
     private var mVerticalBias = 0.5f
     private var mFirstHorizontalBias = 0.5f
@@ -43,8 +43,8 @@ class Flow : VirtualLayout() {
     private var mHorizontalAlign = HORIZONTAL_ALIGN_CENTER
     private var mVerticalAlign = VERTICAL_ALIGN_CENTER
     private var mWrapMode = WRAP_NONE
-    private var mMaxElementsWrap: Int = ConstraintWidget.Companion.UNKNOWN
-    private var mOrientation: Int = ConstraintWidget.Companion.HORIZONTAL
+    private var mMaxElementsWrap: Int = ConstraintWidget.UNKNOWN
+    private var mOrientation: Int = ConstraintWidget.HORIZONTAL
     private val mChainList: ArrayList<WidgetsList> = ArrayList<WidgetsList>()
 
     // Aligned management
@@ -167,9 +167,9 @@ class Flow : VirtualLayout() {
             return 0
         }
         if (widget.horizontalDimensionBehaviour == DimensionBehaviour.MATCH_CONSTRAINT) {
-            if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) {
+            if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.MATCH_CONSTRAINT_SPREAD) {
                 return 0
-            } else if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_PERCENT) {
+            } else if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.MATCH_CONSTRAINT_PERCENT) {
                 val value = (widget.mMatchConstraintPercentWidth * max).toInt()
                 if (value != widget.width) {
                     widget.isMeasureRequested = true
@@ -179,9 +179,9 @@ class Flow : VirtualLayout() {
                     )
                 }
                 return value
-            } else if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP) {
+            } else if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.MATCH_CONSTRAINT_WRAP) {
                 return widget.width
-            } else if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO) {
+            } else if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.MATCH_CONSTRAINT_RATIO) {
                 return (widget.height * widget.dimensionRatio + 0.5f).toInt()
             }
         }
@@ -193,9 +193,9 @@ class Flow : VirtualLayout() {
             return 0
         }
         if (widget.verticalDimensionBehaviour == DimensionBehaviour.MATCH_CONSTRAINT) {
-            if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) {
+            if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.MATCH_CONSTRAINT_SPREAD) {
                 return 0
-            } else if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_PERCENT) {
+            } else if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.MATCH_CONSTRAINT_PERCENT) {
                 val value = (widget.mMatchConstraintPercentHeight * max).toInt()
                 if (value != widget.height) {
                     widget.isMeasureRequested = true
@@ -205,9 +205,9 @@ class Flow : VirtualLayout() {
                     )
                 }
                 return value
-            } else if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP) {
+            } else if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.MATCH_CONSTRAINT_WRAP) {
                 return widget.height
-            } else if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO) {
+            } else if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.MATCH_CONSTRAINT_RATIO) {
                 return (widget.width * widget.dimensionRatio + 0.5f).toInt()
             }
         }
@@ -233,29 +233,29 @@ class Flow : VirtualLayout() {
         val paddingBottom = paddingBottom
         val measured = IntArray(2)
         var max = widthSize - paddingLeft - paddingRight
-        if (mOrientation == ConstraintWidget.Companion.VERTICAL) {
+        if (mOrientation == ConstraintWidget.VERTICAL) {
             max = heightSize - paddingTop - paddingBottom
         }
-        if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
-            if (mHorizontalStyle == ConstraintWidget.Companion.UNKNOWN) {
-                mHorizontalStyle = ConstraintWidget.Companion.CHAIN_SPREAD
+        if (mOrientation == ConstraintWidget.HORIZONTAL) {
+            if (mHorizontalStyle == ConstraintWidget.UNKNOWN) {
+                mHorizontalStyle = ConstraintWidget.CHAIN_SPREAD
             }
-            if (mVerticalStyle == ConstraintWidget.Companion.UNKNOWN) {
-                mVerticalStyle = ConstraintWidget.Companion.CHAIN_SPREAD
+            if (mVerticalStyle == ConstraintWidget.UNKNOWN) {
+                mVerticalStyle = ConstraintWidget.CHAIN_SPREAD
             }
         } else {
-            if (mHorizontalStyle == ConstraintWidget.Companion.UNKNOWN) {
-                mHorizontalStyle = ConstraintWidget.Companion.CHAIN_SPREAD
+            if (mHorizontalStyle == ConstraintWidget.UNKNOWN) {
+                mHorizontalStyle = ConstraintWidget.CHAIN_SPREAD
             }
-            if (mVerticalStyle == ConstraintWidget.Companion.UNKNOWN) {
-                mVerticalStyle = ConstraintWidget.Companion.CHAIN_SPREAD
+            if (mVerticalStyle == ConstraintWidget.UNKNOWN) {
+                mVerticalStyle = ConstraintWidget.CHAIN_SPREAD
             }
         }
         var widgets: Array<ConstraintWidget?> = mWidgets
         var gone = 0
         for (i in 0 until mWidgetsCount) {
             val widget: ConstraintWidget = mWidgets.get(i)!!
-            if (widget.visibility == ConstraintWidget.Companion.GONE) {
+            if (widget.visibility == ConstraintWidget.GONE) {
                 gone++
             }
         }
@@ -265,7 +265,7 @@ class Flow : VirtualLayout() {
             var j = 0
             for (i in 0 until mWidgetsCount) {
                 val widget: ConstraintWidget = mWidgets.get(i)!!
-                if (widget.visibility != ConstraintWidget.Companion.GONE) {
+                if (widget.visibility != ConstraintWidget.GONE) {
                     widgets[j] = widget
                     j++
                 }
@@ -291,22 +291,22 @@ class Flow : VirtualLayout() {
                 measureChainWrap_new(widgets, count, mOrientation, max, measured)
             }
         }
-        width = measured[ConstraintWidget.Companion.HORIZONTAL] + paddingLeft + paddingRight
-        height = measured[ConstraintWidget.Companion.VERTICAL] + paddingTop + paddingBottom
+        width = measured[ConstraintWidget.HORIZONTAL] + paddingLeft + paddingRight
+        height = measured[ConstraintWidget.VERTICAL] + paddingTop + paddingBottom
         var measuredWidth = 0
         var measuredHeight = 0
-        if (widthMode == BasicMeasure.Companion.EXACTLY) {
+        if (widthMode == BasicMeasure.EXACTLY) {
             measuredWidth = widthSize
-        } else if (widthMode == BasicMeasure.Companion.AT_MOST) {
+        } else if (widthMode == BasicMeasure.AT_MOST) {
             measuredWidth = min(width, widthSize)
-        } else if (widthMode == BasicMeasure.Companion.UNSPECIFIED) {
+        } else if (widthMode == BasicMeasure.UNSPECIFIED) {
             measuredWidth = width
         }
-        if (heightMode == BasicMeasure.Companion.EXACTLY) {
+        if (heightMode == BasicMeasure.EXACTLY) {
             measuredHeight = heightSize
-        } else if (heightMode == BasicMeasure.Companion.AT_MOST) {
+        } else if (heightMode == BasicMeasure.AT_MOST) {
             measuredHeight = min(height, heightSize)
-        } else if (heightMode == BasicMeasure.Companion.UNSPECIFIED) {
+        } else if (heightMode == BasicMeasure.UNSPECIFIED) {
             measuredHeight = height
         }
         setMeasure(measuredWidth, measuredHeight)
@@ -324,7 +324,7 @@ class Flow : VirtualLayout() {
         right: ConstraintAnchor?, bottom: ConstraintAnchor?,
         max: Int
     ) {
-        private var mOrientation: Int = ConstraintWidget.Companion.HORIZONTAL
+        private var mOrientation: Int = ConstraintWidget.HORIZONTAL
         var mBiggest: ConstraintWidget? = null
         var mBiggestDimension = 0
         private var mLeft: ConstraintAnchor?
@@ -388,16 +388,16 @@ class Flow : VirtualLayout() {
         }
 
         val width: Int
-            get() = if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
+            get() = if (mOrientation == ConstraintWidget.HORIZONTAL) {
                 mWidth - mHorizontalGap
             } else mWidth
         val height: Int
-            get() = if (mOrientation == ConstraintWidget.Companion.VERTICAL) {
+            get() = if (mOrientation == ConstraintWidget.VERTICAL) {
                 mHeight - mVerticalGap
             } else mHeight
 
         fun add(widget: ConstraintWidget?) {
-            if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
+            if (mOrientation == ConstraintWidget.HORIZONTAL) {
                 var width = getWidgetWidth(widget, mMax)
                 if (widget?.horizontalDimensionBehaviour
                     == DimensionBehaviour.MATCH_CONSTRAINT
@@ -406,7 +406,7 @@ class Flow : VirtualLayout() {
                     width = 0
                 }
                 var gap = mHorizontalGap
-                if (widget?.visibility == ConstraintWidget.Companion.GONE) {
+                if (widget?.visibility == ConstraintWidget.GONE) {
                     gap = 0
                 }
                 mWidth += width + gap
@@ -424,7 +424,7 @@ class Flow : VirtualLayout() {
                     height = 0
                 }
                 var gap = mVerticalGap
-                if (widget?.visibility == ConstraintWidget.Companion.GONE) {
+                if (widget?.visibility == ConstraintWidget.GONE) {
                     gap = 0
                 }
                 mHeight += height + gap
@@ -461,7 +461,7 @@ class Flow : VirtualLayout() {
                     break
                 }
                 val widget = mDisplayedWidgets[mStartIndex + index]
-                if (widget != null && widget.visibility == ConstraintWidget.Companion.VISIBLE) {
+                if (widget != null && widget.visibility == ConstraintWidget.VISIBLE) {
                     if (firstVisible == -1) {
                         firstVisible = i
                     }
@@ -469,7 +469,7 @@ class Flow : VirtualLayout() {
                 }
             }
             var previous: ConstraintWidget? = null
-            if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
+            if (mOrientation == ConstraintWidget.HORIZONTAL) {
                 val verticalWidget = mBiggest!!
                 verticalWidget.verticalChainStyle = mVerticalStyle
                 var padding = mPaddingTop
@@ -519,10 +519,10 @@ class Flow : VirtualLayout() {
                     if (index == 0) {
                         var style = mHorizontalStyle
                         var bias = if (isInRtl) 1 - mHorizontalBias else mHorizontalBias
-                        if (mStartIndex == 0 && mFirstHorizontalStyle != ConstraintWidget.Companion.UNKNOWN) {
+                        if (mStartIndex == 0 && mFirstHorizontalStyle != ConstraintWidget.UNKNOWN) {
                             style = mFirstHorizontalStyle
                             bias = if (isInRtl) 1 - mFirstHorizontalBias else mFirstHorizontalBias
-                        } else if (isLastChain && mLastHorizontalStyle != ConstraintWidget.Companion.UNKNOWN) {
+                        } else if (isLastChain && mLastHorizontalStyle != ConstraintWidget.UNKNOWN) {
                             style = mLastHorizontalStyle
                             bias = if (isInRtl) 1 - mLastHorizontalBias else mLastHorizontalBias
                         }
@@ -614,10 +614,10 @@ class Flow : VirtualLayout() {
                         widget.connect(widget.mTop, mTop, mPaddingTop)
                         var style = mVerticalStyle
                         var bias = mVerticalBias
-                        if (mStartIndex == 0 && mFirstVerticalStyle != ConstraintWidget.Companion.UNKNOWN) {
+                        if (mStartIndex == 0 && mFirstVerticalStyle != ConstraintWidget.UNKNOWN) {
                             style = mFirstVerticalStyle
                             bias = mFirstVerticalBias
-                        } else if (isLastChain && mLastVerticalStyle != ConstraintWidget.Companion.UNKNOWN) {
+                        } else if (isLastChain && mLastVerticalStyle != ConstraintWidget.UNKNOWN) {
                             style = mLastVerticalStyle
                             bias = mLastVerticalBias
                         }
@@ -693,11 +693,11 @@ class Flow : VirtualLayout() {
                     break
                 }
                 val widget = mDisplayedWidgets[mStartIndex + i]
-                if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
+                if (mOrientation == ConstraintWidget.HORIZONTAL) {
                     if (widget != null && widget.horizontalDimensionBehaviour
                         == DimensionBehaviour.MATCH_CONSTRAINT
                     ) {
-                        if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) {
+                        if (widget.mMatchConstraintDefaultWidth == ConstraintWidget.MATCH_CONSTRAINT_SPREAD) {
                             measure(
                                 widget, DimensionBehaviour.FIXED, widgetSize,
                                 widget.verticalDimensionBehaviour, widget.height
@@ -708,7 +708,7 @@ class Flow : VirtualLayout() {
                     if (widget != null && widget.verticalDimensionBehaviour
                         == DimensionBehaviour.MATCH_CONSTRAINT
                     ) {
-                        if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) {
+                        if (widget.mMatchConstraintDefaultHeight == ConstraintWidget.MATCH_CONSTRAINT_SPREAD) {
                             measure(
                                 widget, widget.horizontalDimensionBehaviour,
                                 widget.width, DimensionBehaviour.FIXED, widgetSize
@@ -731,10 +731,10 @@ class Flow : VirtualLayout() {
                     break
                 }
                 val widget = mDisplayedWidgets[mStartIndex + i]
-                if (mOrientation == ConstraintWidget.Companion.HORIZONTAL) {
+                if (mOrientation == ConstraintWidget.HORIZONTAL) {
                     val width = widget!!.width
                     var gap = mHorizontalGap
-                    if (widget?.visibility == ConstraintWidget.Companion.GONE) {
+                    if (widget?.visibility == ConstraintWidget.GONE) {
                         gap = 0
                     }
                     mWidth += width + gap
@@ -748,7 +748,7 @@ class Flow : VirtualLayout() {
                     val width = getWidgetWidth(widget, mMax)
                     val height = getWidgetHeight(widget, mMax)
                     var gap = mVerticalGap
-                    if (widget?.visibility == ConstraintWidget.Companion.GONE) {
+                    if (widget?.visibility == ConstraintWidget.GONE) {
                         gap = 0
                     }
                     mHeight += height + gap
@@ -786,7 +786,7 @@ class Flow : VirtualLayout() {
         var list = WidgetsList(orientation, mLeft, mTop, mRight, mBottom, max)
         mChainList.add(list)
         var nbMatchConstraintsWidgets = 0
-        if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        if (orientation == ConstraintWidget.HORIZONTAL) {
             var width = 0
             for (i in 0 until count) {
                 val widget = widgets[i]
@@ -860,7 +860,7 @@ class Flow : VirtualLayout() {
             // we have to remeasure them.
             for (i in 0 until listCount) {
                 val current: WidgetsList = mChainList.get(i)
-                if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+                if (orientation == ConstraintWidget.HORIZONTAL) {
                     current.measureMatchConstraints(max - current.width)
                 } else {
                     current.measureMatchConstraints(max - current.height)
@@ -869,7 +869,7 @@ class Flow : VirtualLayout() {
         }
         for (i in 0 until listCount) {
             val current: WidgetsList = mChainList.get(i)
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+            if (orientation == ConstraintWidget.HORIZONTAL) {
                 if (i < listCount - 1) {
                     val next: WidgetsList = mChainList.get(i + 1)
                     bottom = next.mBiggest!!.mTop
@@ -913,8 +913,8 @@ class Flow : VirtualLayout() {
                 }
             }
         }
-        measured[ConstraintWidget.Companion.HORIZONTAL] = maxWidth
-        measured[ConstraintWidget.Companion.VERTICAL] = maxHeight
+        measured[ConstraintWidget.HORIZONTAL] = maxWidth
+        measured[ConstraintWidget.VERTICAL] = maxHeight
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Measure Chain Wrap new
@@ -941,7 +941,7 @@ class Flow : VirtualLayout() {
         var list = WidgetsList(orientation, mLeft, mTop, mRight, mBottom, max)
         mChainList.add(list)
         var nbMatchConstraintsWidgets = 0
-        if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        if (orientation == ConstraintWidget.HORIZONTAL) {
             var width = 0
             var col = 0
             for (i in 0 until count) {
@@ -1020,7 +1020,7 @@ class Flow : VirtualLayout() {
             // we have to remeasure them.
             for (i in 0 until listCount) {
                 val current: WidgetsList = mChainList.get(i)
-                if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+                if (orientation == ConstraintWidget.HORIZONTAL) {
                     current.measureMatchConstraints(max - current.width)
                 } else {
                     current.measureMatchConstraints(max - current.height)
@@ -1029,7 +1029,7 @@ class Flow : VirtualLayout() {
         }
         for (i in 0 until listCount) {
             val current: WidgetsList = mChainList.get(i)
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+            if (orientation == ConstraintWidget.HORIZONTAL) {
                 if (i < listCount - 1) {
                     val next: WidgetsList = mChainList.get(i + 1)
                     bottom = next.mBiggest!!.mTop
@@ -1073,8 +1073,8 @@ class Flow : VirtualLayout() {
                 }
             }
         }
-        measured[ConstraintWidget.Companion.HORIZONTAL] = maxWidth
-        measured[ConstraintWidget.Companion.VERTICAL] = maxHeight
+        measured[ConstraintWidget.HORIZONTAL] = maxWidth
+        measured[ConstraintWidget.VERTICAL] = maxHeight
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Measure No Wrap
@@ -1113,8 +1113,8 @@ class Flow : VirtualLayout() {
             val widget = widgets[i]
             list.add(widget)
         }
-        measured[ConstraintWidget.Companion.HORIZONTAL] = list!!.width
-        measured[ConstraintWidget.Companion.VERTICAL] = list!!.height
+        measured[ConstraintWidget.HORIZONTAL] = list!!.width
+        measured[ConstraintWidget.VERTICAL] = list!!.height
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
     // Measure Aligned
@@ -1137,7 +1137,7 @@ class Flow : VirtualLayout() {
         var done = false
         var rows = 0
         var cols = 0
-        if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        if (orientation == ConstraintWidget.HORIZONTAL) {
             cols = mMaxElementsWrap
             if (cols <= 0) {
                 // let's initialize cols with an acceptable value
@@ -1177,13 +1177,13 @@ class Flow : VirtualLayout() {
         if (mAlignedDimensions == null) {
             mAlignedDimensions = IntArray(2)
         }
-        if (rows == 0 && orientation == ConstraintWidget.Companion.VERTICAL || cols == 0 && orientation == ConstraintWidget.Companion.HORIZONTAL) {
+        if (rows == 0 && orientation == ConstraintWidget.VERTICAL || cols == 0 && orientation == ConstraintWidget.HORIZONTAL) {
             done = true
         }
         while (!done) {
             // get a num of rows (or cols)
             // get for each row and cols the chain of biggest elements
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+            if (orientation == ConstraintWidget.HORIZONTAL) {
                 rows = ceil((count / cols.toFloat()).toDouble()).toInt()
             } else {
                 cols = ceil((count / rows.toFloat()).toDouble()).toInt()
@@ -1205,7 +1205,7 @@ class Flow : VirtualLayout() {
             for (i in 0 until cols) {
                 for (j in 0 until rows) {
                     var index = j * cols + i
-                    if (orientation == ConstraintWidget.Companion.VERTICAL) {
+                    if (orientation == ConstraintWidget.VERTICAL) {
                         index = i * rows + j
                     }
                     if (index >= widgets.size) {
@@ -1246,9 +1246,9 @@ class Flow : VirtualLayout() {
                     h += getWidgetHeight(widget, max)
                 }
             }
-            measured[ConstraintWidget.Companion.HORIZONTAL] = w
-            measured[ConstraintWidget.Companion.VERTICAL] = h
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+            measured[ConstraintWidget.HORIZONTAL] = w
+            measured[ConstraintWidget.VERTICAL] = h
+            if (orientation == ConstraintWidget.HORIZONTAL) {
                 if (w > max) {
                     if (cols > 1) {
                         cols--
@@ -1270,8 +1270,8 @@ class Flow : VirtualLayout() {
                 }
             }
         }
-        mAlignedDimensions!![ConstraintWidget.Companion.HORIZONTAL] = cols
-        mAlignedDimensions!![ConstraintWidget.Companion.VERTICAL] = rows
+        mAlignedDimensions!![ConstraintWidget.HORIZONTAL] = cols
+        mAlignedDimensions!![ConstraintWidget.VERTICAL] = rows
     }
 
     private fun createAlignedConstraints(isInRtl: Boolean) {
@@ -1282,8 +1282,8 @@ class Flow : VirtualLayout() {
             val widget = mDisplayedWidgets[i]
             widget!!.resetAnchors()
         }
-        val cols = mAlignedDimensions!![ConstraintWidget.Companion.HORIZONTAL]
-        val rows = mAlignedDimensions!![ConstraintWidget.Companion.VERTICAL]
+        val cols = mAlignedDimensions!![ConstraintWidget.HORIZONTAL]
+        val rows = mAlignedDimensions!![ConstraintWidget.VERTICAL]
         var previous: ConstraintWidget? = null
         var horizontalBias = mHorizontalBias
         for (i in 0 until cols) {
@@ -1293,7 +1293,7 @@ class Flow : VirtualLayout() {
                 horizontalBias = 1 - mHorizontalBias
             }
             val widget = mAlignedBiggestElementsInCols!![index]
-            if (widget == null || widget.visibility == ConstraintWidget.Companion.GONE) {
+            if (widget == null || widget.visibility == ConstraintWidget.GONE) {
                 continue
             }
             if (i == 0) {
@@ -1312,7 +1312,7 @@ class Flow : VirtualLayout() {
         }
         for (j in 0 until rows) {
             val widget = mAlignedBiggestElementsInRows!![j]
-            if (widget == null || widget.visibility == ConstraintWidget.Companion.GONE) {
+            if (widget == null || widget.visibility == ConstraintWidget.GONE) {
                 continue
             }
             if (j == 0) {
@@ -1332,14 +1332,14 @@ class Flow : VirtualLayout() {
         for (i in 0 until cols) {
             for (j in 0 until rows) {
                 var index = j * cols + i
-                if (mOrientation == ConstraintWidget.Companion.VERTICAL) {
+                if (mOrientation == ConstraintWidget.VERTICAL) {
                     index = i * rows + j
                 }
                 if (index >= mDisplayedWidgets.size) {
                     continue
                 }
                 val widget = mDisplayedWidgets[index]
-                if (widget == null || widget.visibility == ConstraintWidget.Companion.GONE) {
+                if (widget == null || widget.visibility == ConstraintWidget.GONE) {
                     continue
                 }
                 val biggestInCol = mAlignedBiggestElementsInCols!![i]

@@ -19,13 +19,14 @@ import androidx.constraintlayout.core.widgets.ConstraintWidget
 import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.native.concurrent.ThreadLocal
 
 class RunGroup(run: WidgetRun?, dir: Int) {
     var position = 0
     var dual = false
     var mFirstRun: WidgetRun? = null
     var mLastRun: WidgetRun? = null
-    var mRuns: ArrayList<WidgetRun> = ArrayList<WidgetRun>()
+    var mRuns: ArrayList<WidgetRun> = ArrayList()
     var mGroupIndex = 0
     var mDirection: Int
 
@@ -65,11 +66,11 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                 )
             }
         }
-        if (node === run!!.start) {
+        if (node === run.start) {
             // let's go for our sibling
             val dimension: Long = run.wrapDimension
-            position = max(position, traverseStart(run!!.end, startPosition + dimension))
-            position = max(position, startPosition + dimension - run!!.end.mMargin)
+            position = max(position, traverseStart(run.end, startPosition + dimension))
+            position = max(position, startPosition + dimension - run.end.mMargin)
         }
         return position
     }
@@ -97,11 +98,11 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                 )
             }
         }
-        if (node === run!!.end) {
+        if (node === run.end) {
             // let's go for our sibling
             val dimension: Long = run.wrapDimension
-            position = min(position, traverseEnd(run!!.start, startPosition - dimension))
-            position = min(position, startPosition - dimension - run!!.start.mMargin)
+            position = min(position, traverseEnd(run.start, startPosition - dimension))
+            position = min(position, startPosition - dimension - run.start.mMargin)
         }
         return position
     }
@@ -113,7 +114,7 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                 return 0
             }
         } else {
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
+            if (orientation == ConstraintWidget.HORIZONTAL) {
                 if (mFirstRun !is HorizontalWidgetRun) {
                     return 0
                 }
@@ -124,9 +125,9 @@ class RunGroup(run: WidgetRun?, dir: Int) {
             }
         }
         val containerStart: DependencyNode =
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) container.mHorizontalRun!!.start else container.mVerticalRun!!.start
+            if (orientation == ConstraintWidget.HORIZONTAL) container.mHorizontalRun!!.start else container.mVerticalRun!!.start
         val containerEnd: DependencyNode =
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) container.mHorizontalRun!!.end else container.mVerticalRun!!.end
+            if (orientation == ConstraintWidget.HORIZONTAL) container.mHorizontalRun!!.end else container.mVerticalRun!!.end
         val runWithStartTarget: Boolean = mFirstRun!!.start.mTargets.contains(containerStart)
         val runWithEndTarget: Boolean = mFirstRun!!.end.mTargets.contains(containerEnd)
         var dimension = mFirstRun!!.wrapDimension
@@ -172,11 +173,10 @@ class RunGroup(run: WidgetRun?, dir: Int) {
         }
         for (dependency in run.start.mDependencies) {
             if (dependency is DependencyNode) {
-                val node = dependency
-                if (node.mRun === run) {
+                if (dependency.mRun === run) {
                     continue
                 }
-                if (node === node.mRun.start) {
+                if (dependency === dependency.mRun.start) {
                     if (run is ChainRun) {
                         for (widgetChainRun in run.mWidgets) {
                             defineTerminalWidget(widgetChainRun, orientation)
@@ -186,17 +186,16 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                             run.mWidget.isTerminalWidget[orientation] = false
                         }
                     }
-                    defineTerminalWidget(node.mRun, orientation)
+                    defineTerminalWidget(dependency.mRun, orientation)
                 }
             }
         }
         for (dependency in run.end.mDependencies) {
             if (dependency is DependencyNode) {
-                val node = dependency
-                if (node.mRun === run) {
+                if (dependency.mRun === run) {
                     continue
                 }
-                if (node === node.mRun.start) {
+                if (dependency === dependency.mRun.start) {
                     if (run is ChainRun) {
                         for (widgetChainRun in run.mWidgets) {
                             defineTerminalWidget(widgetChainRun, orientation)
@@ -206,7 +205,7 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                             run.mWidget.isTerminalWidget[orientation] = false
                         }
                     }
-                    defineTerminalWidget(node.mRun, orientation)
+                    defineTerminalWidget(dependency.mRun, orientation)
                 }
             }
         }
@@ -215,13 +214,14 @@ class RunGroup(run: WidgetRun?, dir: Int) {
 
     fun defineTerminalWidgets(horizontalCheck: Boolean, verticalCheck: Boolean) {
         if (horizontalCheck && mFirstRun is HorizontalWidgetRun) {
-            defineTerminalWidget(mFirstRun, ConstraintWidget.Companion.HORIZONTAL)
+            defineTerminalWidget(mFirstRun, ConstraintWidget.HORIZONTAL)
         }
         if (verticalCheck && mFirstRun is VerticalWidgetRun) {
-            defineTerminalWidget(mFirstRun, ConstraintWidget.Companion.VERTICAL)
+            defineTerminalWidget(mFirstRun, ConstraintWidget.VERTICAL)
         }
     }
 
+    @ThreadLocal
     companion object {
         const val START = 0
         const val END = 1

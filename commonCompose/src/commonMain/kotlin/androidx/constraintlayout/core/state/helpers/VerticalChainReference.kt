@@ -40,7 +40,7 @@ class VerticalChainReference(state: State) : ChainReference(state, State.Helper.
                 } else {
                     // No constraint declared, default to Parent.
                     val refKey = reference.key.toString()
-                    first.topToTop(State.Companion.PARENT).margin(getPreMargin(refKey))
+                    first.topToTop(State.PARENT).margin(getPreMargin(refKey))
                 }
             }
             if (previous != null) {
@@ -50,7 +50,7 @@ class VerticalChainReference(state: State) : ChainReference(state, State.Helper.
                 reference.topToBottom(previous.key).margin(getPreMargin(refKey))
             }
             val weight = getWeight(key.toString())
-            if (weight != ConstraintWidget.Companion.UNKNOWN.toFloat()) {
+            if (weight != ConstraintWidget.UNKNOWN.toFloat()) {
                 reference.verticalChainWeight = weight
             }
             previous = reference
@@ -67,7 +67,7 @@ class VerticalChainReference(state: State) : ChainReference(state, State.Helper.
             } else {
                 // No constraint declared, default to Parent.
                 val preKey = previous.key.toString()
-                previous.bottomToBottom(State.Companion.PARENT).margin(getPostMargin(preKey))
+                previous.bottomToBottom(State.PARENT).margin(getPostMargin(preKey))
             }
         }
         if (first == null) {
@@ -78,15 +78,15 @@ class VerticalChainReference(state: State) : ChainReference(state, State.Helper.
         }
         when (mStyle) {
             State.Chain.SPREAD -> {
-                first.setVerticalChainStyle(ConstraintWidget.Companion.CHAIN_SPREAD)
+                first.setVerticalChainStyle(ConstraintWidget.CHAIN_SPREAD)
             }
 
             State.Chain.SPREAD_INSIDE -> {
-                first.setVerticalChainStyle(ConstraintWidget.Companion.CHAIN_SPREAD_INSIDE)
+                first.setVerticalChainStyle(ConstraintWidget.CHAIN_SPREAD_INSIDE)
             }
 
             State.Chain.PACKED -> {
-                first.setVerticalChainStyle(ConstraintWidget.Companion.CHAIN_PACKED)
+                first.setVerticalChainStyle(ConstraintWidget.CHAIN_PACKED)
             }
         }
     }

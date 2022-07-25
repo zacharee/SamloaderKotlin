@@ -34,7 +34,6 @@ class Barrier : HelperWidget {
     var allowsGoneWidget = true
     var margin = 0
     override var isResolvedVertically = false
-        get() = field
 
     constructor() {}
     constructor(debugName: String?) {
@@ -54,7 +53,7 @@ class Barrier : HelperWidget {
     }
 
     override fun toString(): String {
-        var debug = "[Barrier] " + debugName + " {"
+        var debug = "[Barrier] $debugName {"
         for (i in 0 until mWidgetsCount) {
             val widget = mWidgets[i]!!
             if (i > 0) {
@@ -73,9 +72,9 @@ class Barrier : HelperWidget {
                 continue
             }
             if (barrierType == LEFT || barrierType == RIGHT) {
-                widget.setInBarrier(ConstraintWidget.Companion.HORIZONTAL, true)
+                widget.setInBarrier(HORIZONTAL, true)
             } else if (barrierType == TOP || barrierType == BOTTOM) {
-                widget.setInBarrier(ConstraintWidget.Companion.VERTICAL, true)
+                widget.setInBarrier(VERTICAL, true)
             }
         }
     }
@@ -87,21 +86,20 @@ class Barrier : HelperWidget {
      * @param optimize true if [Optimizer.OPTIMIZATION_GRAPH] is on
      */
     override fun addToSolver(system: LinearSystem, optimize: Boolean) {
-        if (LinearSystem.Companion.FULL_DEBUG) {
+        if (LinearSystem.FULL_DEBUG) {
             println("\n----------------------------------------------")
             println("-- adding " + debugName + " to the solver")
             println("----------------------------------------------\n")
         }
-        val position: ConstraintAnchor
         mListAnchors[LEFT] = mLeft
         mListAnchors[TOP] = mTop
         mListAnchors[RIGHT] = mRight
         mListAnchors[BOTTOM] = mBottom
         for (i in mListAnchors.indices) {
-            mListAnchors.get(i)?.solverVariable = system.createObjectVariable(mListAnchors.get(i))
+            mListAnchors[i].solverVariable = system.createObjectVariable(mListAnchors[i])
         }
-        position = if (barrierType >= 0 && barrierType < 4) {
-            mListAnchors.get(barrierType)!!
+        val position = if (barrierType in 0..3) {
+            mListAnchors[barrierType]
         } else {
             return
         }
@@ -112,11 +110,11 @@ class Barrier : HelperWidget {
             if (isResolvedVertically) {
                 isResolvedVertically = false
                 if (barrierType == LEFT || barrierType == RIGHT) {
-                    system.addEquality(mLeft!!.solverVariable!!, mX)
-                    system.addEquality(mRight!!.solverVariable!!, mX)
+                    system.addEquality(mLeft.solverVariable!!, mX)
+                    system.addEquality(mRight.solverVariable!!, mX)
                 } else if (barrierType == TOP || barrierType == BOTTOM) {
-                    system.addEquality(mTop!!.solverVariable!!, mY)
-                    system.addEquality(mBottom!!.solverVariable!!, mY)
+                    system.addEquality(mTop.solverVariable!!, mY)
+                    system.addEquality(mBottom.solverVariable!!, mY)
                 }
                 return
             }
@@ -133,38 +131,38 @@ class Barrier : HelperWidget {
             }
             if (((barrierType == LEFT || barrierType == RIGHT)
                         && (widget.horizontalDimensionBehaviour
-                        == DimensionBehaviour.MATCH_CONSTRAINT)) && widget.mLeft!!.target != null && widget.mRight!!.target != null
+                        == DimensionBehaviour.MATCH_CONSTRAINT)) && widget.mLeft.target != null && widget.mRight.target != null
             ) {
                 hasMatchConstraintWidgets = true
                 break
             } else if (((barrierType == TOP || barrierType == BOTTOM)
                         && (widget.verticalDimensionBehaviour
-                        == DimensionBehaviour.MATCH_CONSTRAINT)) && widget.mTop!!.target != null && widget.mBottom!!.target != null
+                        == DimensionBehaviour.MATCH_CONSTRAINT)) && widget.mTop.target != null && widget.mBottom.target != null
             ) {
                 hasMatchConstraintWidgets = true
                 break
             }
         }
-        val mHasHorizontalCenteredDependents = mLeft!!.hasCenteredDependents() || mRight!!.hasCenteredDependents()
+        val mHasHorizontalCenteredDependents = mLeft.hasCenteredDependents() || mRight.hasCenteredDependents()
         val mHasVerticalCenteredDependents = mTop.hasCenteredDependents() || mBottom.hasCenteredDependents()
         val applyEqualityOnReferences =
             !hasMatchConstraintWidgets && (barrierType == LEFT && mHasHorizontalCenteredDependents || barrierType == TOP && mHasVerticalCenteredDependents || barrierType == RIGHT && mHasHorizontalCenteredDependents || barrierType == BOTTOM) && mHasVerticalCenteredDependents
-        var equalityOnReferencesStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
+        var equalityOnReferencesStrength: Int = SolverVariable.STRENGTH_EQUALITY
         if (!applyEqualityOnReferences) {
-            equalityOnReferencesStrength = SolverVariable.Companion.STRENGTH_HIGHEST
+            equalityOnReferencesStrength = SolverVariable.STRENGTH_HIGHEST
         }
         for (i in 0 until mWidgetsCount) {
             val widget = mWidgets[i]!!
             if (!allowsGoneWidget && !widget.allowedInBarrier()) {
                 continue
             }
-            val target = system.createObjectVariable(widget.mListAnchors.get(barrierType))!!
-            widget.mListAnchors.get(barrierType)?.solverVariable = target
+            val target = system.createObjectVariable(widget.mListAnchors[barrierType])!!
+            widget.mListAnchors[barrierType].solverVariable = target
             var margin = 0
-            if (widget.mListAnchors.get(barrierType)!!.target != null
-                && widget.mListAnchors.get(barrierType)!!.target!!.owner === this
+            if (widget.mListAnchors[barrierType].target != null
+                && widget.mListAnchors[barrierType].target!!.owner === this
             ) {
-                margin += widget.mListAnchors.get(barrierType)!!.mMargin
+                margin += widget.mListAnchors[barrierType].mMargin
             }
             if (barrierType == LEFT || barrierType == TOP) {
                 system.addLowerBarrier(
@@ -178,7 +176,7 @@ class Barrier : HelperWidget {
                 )
             }
             if (USE_RELAX_GONE) {
-                if (widget.visibility != ConstraintWidget.Companion.GONE || widget is Guideline || widget is Barrier) {
+                if (widget.visibility != GONE || widget is Guideline || widget is Barrier) {
                     system.addEquality(
                         position.solverVariable!!, target,
                         this.margin + margin, equalityOnReferencesStrength
@@ -191,59 +189,59 @@ class Barrier : HelperWidget {
                 )
             }
         }
-        val barrierParentStrength: Int = SolverVariable.Companion.STRENGTH_HIGHEST
-        val barrierParentStrengthOpposite: Int = SolverVariable.Companion.STRENGTH_NONE
+        val barrierParentStrength: Int = SolverVariable.STRENGTH_HIGHEST
+        val barrierParentStrengthOpposite: Int = SolverVariable.STRENGTH_NONE
         if (barrierType == LEFT) {
             system.addEquality(
-                mRight!!.solverVariable!!,
-                mLeft!!.solverVariable!!, 0, SolverVariable.Companion.STRENGTH_FIXED
+                mRight.solverVariable!!,
+                mLeft.solverVariable!!, 0, SolverVariable.STRENGTH_FIXED
             )
             system.addEquality(
-                mLeft!!.solverVariable!!,
-                parent!!.mRight!!.solverVariable!!, 0, barrierParentStrength
+                mLeft.solverVariable!!,
+                parent!!.mRight.solverVariable!!, 0, barrierParentStrength
             )
             system.addEquality(
-                mLeft!!.solverVariable!!,
-                parent!!.mLeft!!.solverVariable!!, 0, barrierParentStrengthOpposite
+                mLeft.solverVariable!!,
+                parent!!.mLeft.solverVariable!!, 0, barrierParentStrengthOpposite
             )
         } else if (barrierType == RIGHT) {
             system.addEquality(
-                mLeft!!.solverVariable!!,
-                mRight!!.solverVariable!!, 0, SolverVariable.Companion.STRENGTH_FIXED
+                mLeft.solverVariable!!,
+                mRight.solverVariable!!, 0, SolverVariable.STRENGTH_FIXED
             )
             system.addEquality(
-                mLeft!!.solverVariable!!,
-                parent!!.mLeft!!.solverVariable!!, 0, barrierParentStrength
+                mLeft.solverVariable!!,
+                parent!!.mLeft.solverVariable!!, 0, barrierParentStrength
             )
             system.addEquality(
-                mLeft!!.solverVariable!!,
-                parent!!.mRight!!.solverVariable!!, 0, barrierParentStrengthOpposite
+                mLeft.solverVariable!!,
+                parent!!.mRight.solverVariable!!, 0, barrierParentStrengthOpposite
             )
         } else if (barrierType == TOP) {
             system.addEquality(
-                mBottom!!.solverVariable!!,
-                mTop!!.solverVariable!!, 0, SolverVariable.Companion.STRENGTH_FIXED
+                mBottom.solverVariable!!,
+                mTop.solverVariable!!, 0, SolverVariable.STRENGTH_FIXED
             )
             system.addEquality(
-                mTop!!.solverVariable!!,
-                parent!!.mBottom!!.solverVariable!!, 0, barrierParentStrength
+                mTop.solverVariable!!,
+                parent!!.mBottom.solverVariable!!, 0, barrierParentStrength
             )
             system.addEquality(
-                mTop!!.solverVariable!!,
-                parent!!.mTop!!.solverVariable!!, 0, barrierParentStrengthOpposite
+                mTop.solverVariable!!,
+                parent!!.mTop.solverVariable!!, 0, barrierParentStrengthOpposite
             )
         } else if (barrierType == BOTTOM) {
             system.addEquality(
-                mTop!!.solverVariable!!,
-                mBottom!!.solverVariable!!, 0, SolverVariable.Companion.STRENGTH_FIXED
+                mTop.solverVariable!!,
+                mBottom.solverVariable!!, 0, SolverVariable.STRENGTH_FIXED
             )
             system.addEquality(
-                mTop!!.solverVariable!!,
-                parent!!.mTop!!.solverVariable!!, 0, barrierParentStrength
+                mTop.solverVariable!!,
+                parent!!.mTop.solverVariable!!, 0, barrierParentStrength
             )
             system.addEquality(
-                mTop!!.solverVariable!!,
-                parent!!.mBottom!!.solverVariable!!, 0, barrierParentStrengthOpposite
+                mTop.solverVariable!!,
+                parent!!.mBottom.solverVariable!!, 0, barrierParentStrengthOpposite
             )
         }
     }
@@ -254,10 +252,10 @@ class Barrier : HelperWidget {
     val orientation: Int
         get() {
             when (barrierType) {
-                LEFT, RIGHT -> return ConstraintWidget.Companion.HORIZONTAL
-                TOP, BOTTOM -> return ConstraintWidget.Companion.VERTICAL
+                LEFT, RIGHT -> return HORIZONTAL
+                TOP, BOTTOM -> return VERTICAL
             }
-            return ConstraintWidget.Companion.UNKNOWN
+            return UNKNOWN
         }
 
     /**
@@ -332,7 +330,7 @@ class Barrier : HelperWidget {
             } else {
                 setFinalVertical(barrierPosition, barrierPosition)
             }
-            if (LinearSystem.Companion.FULL_DEBUG) {
+            if (LinearSystem.FULL_DEBUG) {
                 println(
                     "*** BARRIER " + debugName
                             + " SOLVED TO " + barrierPosition + " ***"

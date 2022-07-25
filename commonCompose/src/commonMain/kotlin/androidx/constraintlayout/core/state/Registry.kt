@@ -16,13 +16,13 @@
 package androidx.constraintlayout.core.state
 
 class Registry {
-    private val mCallbacks: HashMap<String, RegistryCallback> = HashMap<String, RegistryCallback>()
+    private val mCallbacks: HashMap<String, RegistryCallback> = HashMap()
 
     /**
      * @TODO: add description
      */
     fun register(name: String, callback: RegistryCallback) {
-        mCallbacks.put(name, callback)
+        mCallbacks[name] = callback
     }
 
     /**
@@ -36,10 +36,7 @@ class Registry {
      * @TODO: add description
      */
     fun updateContent(name: String?, content: String?) {
-        val callback = mCallbacks.get(name)
-        if (callback != null) {
-            callback.onNewMotionScene(content)
-        }
+        mCallbacks.get(name)?.onNewMotionScene(content)
     }
 
     /**
@@ -84,7 +81,7 @@ class Registry {
      * @TODO: add description
      */
     fun getLastModified(name: String?): Long {
-        val callback = mCallbacks.get(name)
+        val callback = mCallbacks[name]
         return callback?.lastModified ?: Long.MAX_VALUE
     }
 

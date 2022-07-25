@@ -23,6 +23,7 @@ import androidx.constraintlayout.core.parser.*
 import androidx.constraintlayout.core.widgets.ConstraintAnchor
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import kotlin.math.max
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * Utility class to encapsulate layout of a widget
@@ -47,7 +48,7 @@ class WidgetFrame {
     var scaleY = Float.NaN
     var alpha = Float.NaN
     var interpolatedPos = Float.NaN
-    var visibility: Int = ConstraintWidget.Companion.VISIBLE
+    var visibility: Int = ConstraintWidget.VISIBLE
     val mCustom: HashMap<String, CustomVariable>? = HashMap<String, CustomVariable>()
     var name: String? = null
 
@@ -105,7 +106,7 @@ class WidgetFrame {
         setMotionAttributes(frame.motionProperties)
         mCustom?.clear()
         for (c in frame.mCustom!!.values) {
-            mCustom!![c.name!!] = c.copy()
+            mCustom!![c.name] = c.copy()
         }
     }
 
@@ -165,7 +166,7 @@ class WidgetFrame {
      * @TODO: add description
      */
     fun addCustomColor(name: String, color: Int) {
-        setCustomAttribute(name, TypedValues.Custom.Companion.TYPE_COLOR, color)
+        setCustomAttribute(name, TypedValues.Custom.TYPE_COLOR, color)
     }
 
     /**
@@ -181,7 +182,7 @@ class WidgetFrame {
      * @TODO: add description
      */
     fun addCustomFloat(name: String, value: Float) {
-        setCustomAttribute(name, TypedValues.Custom.Companion.TYPE_FLOAT, value)
+        setCustomAttribute(name, TypedValues.Custom.TYPE_FLOAT, value)
     }
 
     /**
@@ -189,7 +190,7 @@ class WidgetFrame {
      */
     fun getCustomFloat(name: String): Float {
         return if (mCustom!!.containsKey(name)) {
-            mCustom.get(name)!!.floatValue
+            mCustom[name]!!.floatValue
         } else Float.NaN
     }
 
@@ -198,9 +199,9 @@ class WidgetFrame {
      */
     fun setCustomAttribute(name: String, type: Int, value: Float) {
         if (mCustom!!.containsKey(name)) {
-            mCustom.get(name)!!.floatValue = (value)
+            mCustom[name]?.floatValue = (value)
         } else {
-            mCustom.put(name, CustomVariable(name, type, value))
+            mCustom[name] = CustomVariable(name, type, value)
         }
     }
 
@@ -209,9 +210,9 @@ class WidgetFrame {
      */
     fun setCustomAttribute(name: String, type: Int, value: Int) {
         if (mCustom!!.containsKey(name)) {
-            mCustom.get(name)!!.setIntValue(value)
+            mCustom[name]!!.setIntValue(value)
         } else {
-            mCustom.put(name, CustomVariable(name, type, value))
+            mCustom[name] = CustomVariable(name, type, value)
         }
     }
 
@@ -220,9 +221,9 @@ class WidgetFrame {
      */
     fun setCustomAttribute(name: String, type: Int, value: Boolean) {
         if (mCustom!!.containsKey(name)) {
-            mCustom.get(name)!!.booleanValue = (value)
+            mCustom[name]!!.booleanValue = (value)
         } else {
-            mCustom.put(name, CustomVariable(name, type, value))
+            mCustom[name] = CustomVariable(name, type, value)
         }
     }
 
@@ -231,9 +232,9 @@ class WidgetFrame {
      */
     fun setCustomAttribute(name: String, type: Int, value: String?) {
         if (mCustom!!.containsKey(name)) {
-            mCustom.get(name)!!.stringValue = (value)
+            mCustom[name]!!.stringValue = (value)
         } else {
-            mCustom.put(name, CustomVariable(name, type, value))
+            mCustom[name] = CustomVariable(name, type, value)
         }
     }
 
@@ -241,7 +242,7 @@ class WidgetFrame {
      * @TODO: add description
      */
     fun getCustomAttribute(name: String): CustomVariable {
-        return mCustom!!.get(name)!!
+        return mCustom!![name]!!
     }
 
     val customAttributeNames: Set<String>
@@ -289,17 +290,17 @@ class WidgetFrame {
         val obj = custom as CLObject
         val n: Int = obj.size()
         for (i in 0 until n) {
-            val tmp = obj.get(i)
+            val tmp = obj[i]
             val k = tmp as CLKey
             val v = k.value
             val vStr: String = v!!.content()
             if (vStr.matches(Regex("#[0-9a-fA-F]+"))) {
                 val color = vStr.substring(1).toInt(16)
-                setCustomAttribute(name!!, TypedValues.Custom.Companion.TYPE_COLOR, color)
+                setCustomAttribute(name!!, TypedValues.Custom.TYPE_COLOR, color)
             } else if (v is CLNumber) {
-                setCustomAttribute(name!!, TypedValues.Custom.Companion.TYPE_FLOAT, v.float)
+                setCustomAttribute(name!!, TypedValues.Custom.TYPE_FLOAT, v.float)
             } else {
-                setCustomAttribute(name!!, TypedValues.Custom.Companion.TYPE_STRING, vStr)
+                setCustomAttribute(name!!, TypedValues.Custom.TYPE_STRING, vStr)
             }
         }
     }
@@ -343,33 +344,33 @@ class WidgetFrame {
         if (frame.mCustom!!.size != 0) {
             ret.append("custom : {\n")
             for (s in frame.mCustom.keys) {
-                val value = frame.mCustom.get(s)!!
+                val value = frame.mCustom[s]!!
                 ret.append(s)
                 ret.append(": ")
                 when (value.type) {
-                    TypedValues.Custom.Companion.TYPE_INT -> {
+                    TypedValues.Custom.TYPE_INT -> {
                         ret.append(value.integerValue)
                         ret.append(",\n")
                     }
 
-                    TypedValues.Custom.Companion.TYPE_FLOAT, TypedValues.Custom.Companion.TYPE_DIMENSION -> {
+                    TypedValues.Custom.TYPE_FLOAT, TypedValues.Custom.TYPE_DIMENSION -> {
                         ret.append(value.floatValue)
                         ret.append(",\n")
                     }
 
-                    TypedValues.Custom.Companion.TYPE_COLOR -> {
+                    TypedValues.Custom.TYPE_COLOR -> {
                         ret.append("'")
-                        ret.append(CustomVariable.Companion.colorString(value.integerValue))
+                        ret.append(CustomVariable.colorString(value.integerValue))
                         ret.append("',\n")
                     }
 
-                    TypedValues.Custom.Companion.TYPE_STRING -> {
+                    TypedValues.Custom.TYPE_STRING -> {
                         ret.append("'")
                         ret.append(value.stringValue)
                         ret.append("',\n")
                     }
 
-                    TypedValues.Custom.Companion.TYPE_BOOLEAN -> {
+                    TypedValues.Custom.TYPE_BOOLEAN -> {
                         ret.append("'")
                         ret.append(value.booleanValue)
                         ret.append("',\n")
@@ -384,7 +385,7 @@ class WidgetFrame {
 
     private fun serializeAnchor(ret: StringBuilder, type: ConstraintAnchor.Type) {
         val anchor = widget!!.getAnchor(type)
-        if (anchor == null || anchor.target == null) {
+        if (anchor?.target == null) {
             return
         }
         ret.append("Anchor")
@@ -441,6 +442,7 @@ class WidgetFrame {
         this.motionProperties = motionProperties
     }
 
+    @ThreadLocal
     companion object {
         var phone_orientation = Float.NaN
 
@@ -468,7 +470,7 @@ class WidgetFrame {
             var progressPosition = progress
             var startAlpha = start.alpha
             var endAlpha = end.alpha
-            if (start.visibility == ConstraintWidget.Companion.GONE) {
+            if (start.visibility == ConstraintWidget.GONE) {
                 // On visibility gone, keep the same size to do an alpha to zero
                 startX -= (endWidth / 2f).toInt()
                 startY -= (endHeight / 2f).toInt()
@@ -479,7 +481,7 @@ class WidgetFrame {
                     startAlpha = 0f
                 }
             }
-            if (end.visibility == ConstraintWidget.Companion.GONE) {
+            if (end.visibility == ConstraintWidget.GONE) {
                 // On visibility gone, keep the same size to do an alpha to zero
                 endX -= (startWidth / 2f).toInt()
                 endY -= (startHeight / 2f).toInt()
@@ -496,10 +498,10 @@ class WidgetFrame {
             if (!startAlpha.isNaN() && endAlpha.isNaN()) {
                 endAlpha = 1f
             }
-            if (start.visibility == ConstraintWidget.Companion.INVISIBLE) {
+            if (start.visibility == ConstraintWidget.INVISIBLE) {
                 startAlpha = 0f
             }
-            if (end.visibility == ConstraintWidget.Companion.INVISIBLE) {
+            if (end.visibility == ConstraintWidget.INVISIBLE) {
                 endAlpha = 0f
             }
             if (frame.widget != null && transition.hasPositionKeyframes()) {

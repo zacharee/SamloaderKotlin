@@ -74,12 +74,7 @@ class Transition {
     }
 
     override fun toString(): String {
-        var ret = """
-            ${id}:{
-            from:'$mConstraintSetStart',
-            to:'$mConstraintSetEnd',
-            
-            """.trimIndent()
+        var ret = "${id}:{from:'$mConstraintSetStart', to:'$mConstraintSetEnd',"
         if (mDuration != DEFAULT_DURATION) {
             ret += "duration:$mDuration,\n"
         }

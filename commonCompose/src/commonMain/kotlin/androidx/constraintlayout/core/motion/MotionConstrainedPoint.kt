@@ -27,7 +27,7 @@ import kotlin.math.abs
  */
 internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
     private var mAlpha = 1f
-    var mVisibilityMode: Int = MotionWidget.Companion.VISIBILITY_MODE_NORMAL
+    var mVisibilityMode: Int = MotionWidget.VISIBILITY_MODE_NORMAL
     var mVisibility = 0
     private var mApplyElevation = false
     private val mElevation = 0f
@@ -52,7 +52,7 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
     private val mProgress = Float.NaN
     private val mAnimateRelativeTo = -1
     var mCustomVariable: LinkedHashMap<String, CustomVariable> =
-        LinkedHashMap<String, CustomVariable>()
+        LinkedHashMap()
     var mMode = 0 // how was this point computed 1=perpendicular 2=deltaRelative
     private fun diff(a: Float, b: Float): Boolean {
         return if (a.isNaN() || b.isNaN()) {
@@ -65,54 +65,54 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
      */
     fun different(points: MotionConstrainedPoint, keySet: HashSet<String>) {
         if (diff(mAlpha, points.mAlpha)) {
-            keySet.add(AttributesType.Companion.S_ALPHA)
+            keySet.add(AttributesType.S_ALPHA)
         }
         if (diff(mElevation, points.mElevation)) {
-            keySet.add(AttributesType.Companion.S_TRANSLATION_Z)
+            keySet.add(AttributesType.S_TRANSLATION_Z)
         }
-        if (mVisibility != points.mVisibility && mVisibilityMode == MotionWidget.Companion.VISIBILITY_MODE_NORMAL && (mVisibility == MotionWidget.Companion.VISIBLE
-                    || points.mVisibility == MotionWidget.Companion.VISIBLE)
+        if (mVisibility != points.mVisibility && mVisibilityMode == MotionWidget.VISIBILITY_MODE_NORMAL && (mVisibility == MotionWidget.VISIBLE
+                    || points.mVisibility == MotionWidget.VISIBLE)
         ) {
-            keySet.add(AttributesType.Companion.S_ALPHA)
+            keySet.add(AttributesType.S_ALPHA)
         }
         if (diff(mRotation, points.mRotation)) {
-            keySet.add(AttributesType.Companion.S_ROTATION_Z)
+            keySet.add(AttributesType.S_ROTATION_Z)
         }
         if (!(mPathRotate.isNaN() && points.mPathRotate.isNaN())) {
-            keySet.add(AttributesType.Companion.S_PATH_ROTATE)
+            keySet.add(AttributesType.S_PATH_ROTATE)
         }
         if (!(mProgress.isNaN() && points.mProgress.isNaN())) {
-            keySet.add(AttributesType.Companion.S_PROGRESS)
+            keySet.add(AttributesType.S_PROGRESS)
         }
         if (diff(mRotationX, points.mRotationX)) {
-            keySet.add(AttributesType.Companion.S_ROTATION_X)
+            keySet.add(AttributesType.S_ROTATION_X)
         }
         if (diff(rotationY, points.rotationY)) {
-            keySet.add(AttributesType.Companion.S_ROTATION_Y)
+            keySet.add(AttributesType.S_ROTATION_Y)
         }
         if (diff(mPivotX, points.mPivotX)) {
-            keySet.add(AttributesType.Companion.S_PIVOT_X)
+            keySet.add(AttributesType.S_PIVOT_X)
         }
         if (diff(mPivotY, points.mPivotY)) {
-            keySet.add(AttributesType.Companion.S_PIVOT_Y)
+            keySet.add(AttributesType.S_PIVOT_Y)
         }
         if (diff(mScaleX, points.mScaleX)) {
-            keySet.add(AttributesType.Companion.S_SCALE_X)
+            keySet.add(AttributesType.S_SCALE_X)
         }
         if (diff(mScaleY, points.mScaleY)) {
-            keySet.add(AttributesType.Companion.S_SCALE_Y)
+            keySet.add(AttributesType.S_SCALE_Y)
         }
         if (diff(mTranslationX, points.mTranslationX)) {
-            keySet.add(AttributesType.Companion.S_TRANSLATION_X)
+            keySet.add(AttributesType.S_TRANSLATION_X)
         }
         if (diff(mTranslationY, points.mTranslationY)) {
-            keySet.add(AttributesType.Companion.S_TRANSLATION_Y)
+            keySet.add(AttributesType.S_TRANSLATION_Y)
         }
         if (diff(mTranslationZ, points.mTranslationZ)) {
-            keySet.add(AttributesType.Companion.S_TRANSLATION_Z)
+            keySet.add(AttributesType.S_TRANSLATION_Z)
         }
         if (diff(mElevation, points.mElevation)) {
-            keySet.add(AttributesType.Companion.S_ELEVATION)
+            keySet.add(AttributesType.S_ELEVATION)
         }
     }
 
@@ -179,7 +179,7 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
 
     fun applyParameters(view: MotionWidget) {
         mVisibility = view.visibility
-        mAlpha = if (view.visibility != MotionWidget.Companion.VISIBLE) 0.0f else view.alpha
+        mAlpha = if (view.visibility != MotionWidget.VISIBLE) 0.0f else view.alpha
         mApplyElevation = false // TODO figure a way to cache parameters
         mRotation = view.rotationZ
         mRotationX = view.rotationX
@@ -194,8 +194,8 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
         val at = view.customAttributeNames
         for (s in at!!) {
             val attr = view.getCustomAttribute(s)
-            if (attr != null && attr.isContinuous) {
-                mCustomVariable.put(s!!, attr)
+            if (attr.isContinuous) {
+                mCustomVariable[s] = attr
             }
         }
     }
@@ -204,70 +204,70 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
         for (s in splines.keys) {
             val viewSpline: SplineSet? = splines.get(s)
             if (DEBUG) {
-                Utils.Companion.log(TAG, "setPoint$mFramePosition  spline set = $s")
+                Utils.log(TAG, "setPoint$mFramePosition  spline set = $s")
             }
             when (s) {
-                AttributesType.Companion.S_ALPHA -> viewSpline?.setPoint(
+                AttributesType.S_ALPHA -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mAlpha.isNaN()) 1f else mAlpha
                 )
 
-                AttributesType.Companion.S_ROTATION_Z -> viewSpline?.setPoint(
+                AttributesType.S_ROTATION_Z -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mRotation.isNaN()) 0f else mRotation
                 )
 
-                AttributesType.Companion.S_ROTATION_X -> viewSpline?.setPoint(
+                AttributesType.S_ROTATION_X -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mRotationX.isNaN()) 0f else mRotationX
                 )
 
-                AttributesType.Companion.S_ROTATION_Y -> viewSpline?.setPoint(
+                AttributesType.S_ROTATION_Y -> viewSpline?.setPoint(
                     mFramePosition,
                     if (rotationY.isNaN()) 0f else rotationY
                 )
 
-                AttributesType.Companion.S_PIVOT_X -> viewSpline?.setPoint(
+                AttributesType.S_PIVOT_X -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mPivotX.isNaN()) 0f else mPivotX
                 )
 
-                AttributesType.Companion.S_PIVOT_Y -> viewSpline?.setPoint(
+                AttributesType.S_PIVOT_Y -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mPivotY.isNaN()) 0f else mPivotY
                 )
 
-                AttributesType.Companion.S_PATH_ROTATE -> viewSpline?.setPoint(
+                AttributesType.S_PATH_ROTATE -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mPathRotate.isNaN()) 0f else mPathRotate
                 )
 
-                AttributesType.Companion.S_PROGRESS -> viewSpline?.setPoint(
+                AttributesType.S_PROGRESS -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mProgress.isNaN()) 0f else mProgress
                 )
 
-                AttributesType.Companion.S_SCALE_X -> viewSpline?.setPoint(
+                AttributesType.S_SCALE_X -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mScaleX.isNaN()) 1f else mScaleX
                 )
 
-                AttributesType.Companion.S_SCALE_Y -> viewSpline?.setPoint(
+                AttributesType.S_SCALE_Y -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mScaleY.isNaN()) 1f else mScaleY
                 )
 
-                AttributesType.Companion.S_TRANSLATION_X -> viewSpline?.setPoint(
+                AttributesType.S_TRANSLATION_X -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mTranslationX.isNaN()) 0f else mTranslationX
                 )
 
-                AttributesType.Companion.S_TRANSLATION_Y -> viewSpline?.setPoint(
+                AttributesType.S_TRANSLATION_Y -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mTranslationY.isNaN()) 0f else mTranslationY
                 )
 
-                AttributesType.Companion.S_TRANSLATION_Z -> viewSpline?.setPoint(
+                AttributesType.S_TRANSLATION_Z -> viewSpline?.setPoint(
                     mFramePosition,
                     if (mTranslationZ.isNaN()) 0f else mTranslationZ
                 )
@@ -280,7 +280,7 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
                             viewSpline
                                 .setPoint(mFramePosition, custom)
                         } else {
-                            Utils.Companion.loge(
+                            Utils.loge(
                                 TAG, s + " ViewSpline not a CustomSet frame = "
                                         + mFramePosition + ", value"
                                         + custom?.valueToInterpolate + viewSpline
@@ -288,7 +288,7 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
                         }
                     }
                 } else {
-                    Utils.Companion.loge(TAG, "UNKNOWN spline $s")
+                    Utils.loge(TAG, "UNKNOWN spline $s")
                 }
             }
         }
@@ -309,8 +309,8 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
         mPivotX = Float.NaN
         mPivotY = Float.NaN
         when (rotation) {
-            MotionWidget.Companion.ROTATE_PORTRATE_OF_LEFT -> mRotation = prevous + 90
-            MotionWidget.Companion.ROTATE_PORTRATE_OF_RIGHT -> mRotation = prevous - 90
+            MotionWidget.ROTATE_PORTRATE_OF_LEFT -> mRotation = prevous + 90
+            MotionWidget.ROTATE_PORTRATE_OF_RIGHT -> mRotation = prevous - 90
         }
     } //   TODO support Screen Rotation
 
@@ -342,6 +342,6 @@ internal class MotionConstrainedPoint : Comparable<MotionConstrainedPoint> {
         const val DEBUG = false
         const val PERPENDICULAR = 1
         const val CARTESIAN = 2
-        var sNames = arrayOf("position", "x", "y", "width", "height", "pathRotate")
+        val sNames = arrayOf("position", "x", "y", "width", "height", "pathRotate")
     }
 }
