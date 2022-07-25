@@ -1,15 +1,29 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.core.animateIntOffsetAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintLayoutScope
+import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.layoutId
+import com.soywiz.kmem.toIntCeil
+import com.soywiz.kmem.toIntFloor
+import tk.zwander.commonCompose.flow.FlowRow
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
@@ -37,7 +51,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                         model.osCode = ""
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().layoutId("model"),
                 label = { Text(strings.modelHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
@@ -45,7 +59,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
             )
         }
 
-        val regionField = @Composable() {
+        val regionField = @Composable {
             OutlinedTextField(
                 value = model.region,
                 onValueChange = {
@@ -55,7 +69,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                         model.osCode = ""
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().layoutId("region"),
                 label = { Text(strings.regionHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
@@ -64,42 +78,73 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
         }
 
         val constraint = rememberIsOverScaledThreshold(constraints.maxWidth)
+        val constraints = this.constraints
 
-        AnimatedVisibility(
-            visible = constraint,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Row {
-                Box(
-                    modifier = Modifier.weight(0.6f, true)
-                ) {
-                    modelField()
-                }
+        val set = ConstraintSet {
+            val modelRef = createRefFor("model")
+            val regionRef = createRefFor("region")
 
-                Spacer(Modifier.size(8.dp))
+            constrain(modelRef) {
+                start.linkTo(parent.start)
+                end.linkTo(if (constraint) regionRef.start else parent.end)
+                top.linkTo(parent.top)
+            }
 
-                Box(
-                    modifier = Modifier.weight(0.4f, true)
-                ) {
-                    regionField()
-                }
+            constrain(regionRef) {
+                start.linkTo(if (constraint) modelRef.end else parent.start)
+                end.linkTo(parent.end)
+                top.linkTo(if (constraint) parent.top else modelRef.bottom)
             }
         }
 
-        AnimatedVisibility(
-            visible = !constraint,
-            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
-            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top)
+        ConstraintLayout(
+            constraintSet = set,
+            animateChanges = true
         ) {
-            Column {
-                modelField()
+            modelField()
 
-                Spacer(Modifier.size(8.dp))
-
-                regionField()
-            }
+            regionField()
         }
+
+//        Column {
+//            BoxWithConstraints {
+//                val constraints = constraints
+//
+//                Row {
+//                    val widthAnimator by animateIntAsState(if (!constraint) constraints.maxWidth else (constraints.maxWidth * 0.6f).toInt())
+//                    val offsetAnimator by animateIntOffsetAsState(IntOffset(if (!constraint) (constraints.maxWidth * 0.4f).toInt() else 0, 0))
+//                    val regionWidthAnimator by animateIntAsState(if (!constraint) 0 else (constraints.maxWidth * 0.4f).toInt())
+//
+//                    with (LocalDensity.current) {
+//                        Box(
+//                            modifier = Modifier.width(widthAnimator.toDp())
+//                        ) {
+//                        }
+//
+//                        Row(
+//                            modifier = Modifier
+//                                .wrapContentHeight()
+//                                .width(regionWidthAnimator.toDp())
+//                                .offset { offsetAnimator }
+//                        ) {
+//                            Spacer(Modifier.size(8.dp))
+//
+//                            regionField()
+//                        }
+//                    }
+//                }
+//            }
+//
+//            AnimatedVisibility(
+//                visible = !constraint
+//            ) {
+//                Column {
+//                    Spacer(Modifier.size(8.dp))
+//
+//                    regionField()
+//                }
+//            }
+//        }
     }
 
     if (showFirmware) {
