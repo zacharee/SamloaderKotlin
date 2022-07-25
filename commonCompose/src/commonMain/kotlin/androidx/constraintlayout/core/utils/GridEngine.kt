@@ -15,6 +15,8 @@
  */
 package androidx.constraintlayout.core.utils
 
+import kotlin.math.sqrt
+
 /**
  * GridEngine class contains the main logic of the Grid Helper
  */
@@ -69,14 +71,14 @@ class GridEngine {
      * true: available position
      * false: non-available position
      */
-    private var mPositionMatrix: Array<BooleanArray>?
+    private var mPositionMatrix: Array<BooleanArray>? = null
 
     /**
      * A int matrix that contains the positions where a widget would constraint to at each direction
      * Each row contains 4 values that indicate the position to constraint of a widget.
      * Example row: [left, top, right, bottom]
      */
-    private var mConstraintMatrix: Array<IntArray>?
+    private var mConstraintMatrix: Array<IntArray>? = null
 
     constructor() {}
     constructor(rows: Int, columns: Int) {
@@ -116,12 +118,12 @@ class GridEngine {
     private fun initVariables() {
         mPositionMatrix = Array(mRows) { BooleanArray(mColumns) }
         for (row in mPositionMatrix!!) {
-            java.util.Arrays.fill(row, true)
+            row.fill(true)
         }
         if (mNumWidgets > 0) {
             mConstraintMatrix = Array(mNumWidgets) { IntArray(4) }
             for (row in mConstraintMatrix!!) {
-                java.util.Arrays.fill(row, -1)
+                row.fill(-1)
             }
         }
     }
@@ -368,7 +370,7 @@ class GridEngine {
                 mRows = mRowsSet
                 mColumns = (mNumWidgets + mRowsSet - 1) / mRowsSet // round up
             } else { // as close to square as possible favoring more rows
-                mRows = (1.5 + java.lang.Math.sqrt(mNumWidgets.toDouble())).toInt()
+                mRows = (1.5 + sqrt(mNumWidgets.toDouble())).toInt()
                 mColumns = (mNumWidgets + mRows - 1) / mRows
             }
         } else {

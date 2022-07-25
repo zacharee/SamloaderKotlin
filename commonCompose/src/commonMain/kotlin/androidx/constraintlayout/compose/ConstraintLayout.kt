@@ -71,8 +71,8 @@ import androidx.constraintlayout.core.state.Dimension.Companion.SPREAD_DIMENSION
 import androidx.constraintlayout.core.state.Dimension.Companion.WRAP_DIMENSION
 import androidx.constraintlayout.core.state.Registry
 import androidx.constraintlayout.core.state.WidgetFrame
-import androidx.constraintlayout.core.stateimport.CorePixelDp
-import androidx.constraintlayout.core.stateimport.RegistryCallback
+import androidx.constraintlayout.core.state.CorePixelDp
+import androidx.constraintlayout.core.state.RegistryCallback
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import androidx.constraintlayout.core.widgets.ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD
 import androidx.constraintlayout.core.widgets.ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
@@ -86,7 +86,7 @@ import androidx.constraintlayout.core.widgets.Optimizer
 import androidx.constraintlayout.core.widgets.analyzer.BasicMeasure
 import androidx.constraintlayout.core.widgets.analyzer.BasicMeasure.Measure.Companion.TRY_GIVEN_DIMENSIONS
 import androidx.constraintlayout.core.widgets.analyzer.BasicMeasure.Measure.Companion.USE_GIVEN_DIMENSIONS
-import androidx.constraintlayout.core.widgetsimport.ConstraintWidgetContainer
+import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
 import com.soywiz.kds.iterators.fastForEach
 import com.soywiz.kds.iterators.fastForEachWithIndex
 import kotlinx.coroutines.CoroutineScope
@@ -758,7 +758,7 @@ internal abstract class EditableJSONLayout(content: String) :
                     }
                 }
                 val registry = Registry.instance
-                registry.register(debugName, callback)
+                registry.register(debugName!!, callback)
             }
         } catch (_: CLParsingException) {
         }

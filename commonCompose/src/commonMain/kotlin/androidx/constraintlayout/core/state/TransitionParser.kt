@@ -32,7 +32,7 @@ object TransitionParser {
      */
     @Throws(CLParsingException::class)
     fun parse(json: CLObject, transition: Transition, dpToPixel: CorePixelDp?) {
-        val pathMotionArc: String = json.getStringOrNull("pathMotionArc")
+        val pathMotionArc = json.getStringOrNull("pathMotionArc")
         val bundle = TypedBundle()
         transition.mToPixel = dpToPixel
         var setBundle = false
@@ -45,20 +45,20 @@ object TransitionParser {
                 "flip" -> bundle.add(PositionType.Companion.TYPE_PATH_MOTION_ARC, 3)
             }
         }
-        val interpolator: String = json.getStringOrNull("interpolator")
+        val interpolator = json.getStringOrNull("interpolator")
         if (interpolator != null) {
             setBundle = true
             bundle.add(TypedValues.TransitionType.Companion.TYPE_INTERPOLATOR, interpolator)
         }
         val staggered: Float = json.getFloatOrNaN("staggered")
-        if (!java.lang.Float.isNaN(staggered)) {
+        if (!staggered.isNaN()) {
             setBundle = true
             bundle.add(TypedValues.TransitionType.Companion.TYPE_STAGGERED, staggered)
         }
         if (setBundle) {
             transition.setTransitionProperties(bundle)
         }
-        val onSwipe: CLContainer = json.getObjectOrNull("onSwipe")
+        val onSwipe = json.getObjectOrNull("onSwipe")
         if (onSwipe != null) {
             parseOnSwipe(onSwipe, transition)
         }
@@ -170,14 +170,14 @@ object TransitionParser {
         val bundle = TypedBundle()
         val targets: CLArray = keyPosition.getArray("target")
         val frames: CLArray = keyPosition.getArray("frames")
-        val percentX: CLArray = keyPosition.getArrayOrNull("percentX")
-        val percentY: CLArray = keyPosition.getArrayOrNull("percentY")
-        val percentWidth: CLArray = keyPosition.getArrayOrNull("percentWidth")!!
-        val percentHeight: CLArray = keyPosition.getArrayOrNull("percentHeight")!!
-        val pathMotionArc: String = keyPosition.getStringOrNull("pathMotionArc")
-        val transitionEasing: String = keyPosition.getStringOrNull("transitionEasing")!!
-        val curveFit: String = keyPosition.getStringOrNull("curveFit")
-        var type: String = keyPosition.getStringOrNull("type")
+        val percentX = keyPosition.getArrayOrNull("percentX")
+        val percentY = keyPosition.getArrayOrNull("percentY")
+        val percentWidth = keyPosition.getArrayOrNull("percentWidth")!!
+        val percentHeight = keyPosition.getArrayOrNull("percentHeight")!!
+        val pathMotionArc = keyPosition.getStringOrNull("pathMotionArc")
+        val transitionEasing = keyPosition.getStringOrNull("transitionEasing")!!
+        val curveFit = keyPosition.getStringOrNull("curveFit")
+        var type = keyPosition.getStringOrNull("type")
         if (type == null) {
             type = "parentRelative"
         }
@@ -278,7 +278,7 @@ object TransitionParser {
             val attrName = attrNames[k]
             val attrId = attrIds[k]
             val scale = scaleTypes[k]
-            val arrayValues: CLArray = keyAttribute.getArrayOrNull(attrName)
+            val arrayValues = keyAttribute.getArrayOrNull(attrName)
             // array must contain one per frame
             if (arrayValues != null && arrayValues.size() != bundles.size) {
                 throw CLParsingException(
@@ -296,7 +296,7 @@ object TransitionParser {
                 }
             } else {
                 var value: Float = keyAttribute.getFloatOrNaN(attrName)
-                if (!java.lang.Float.isNaN(value)) {
+                if (!value.isNaN()) {
                     if (scale) {
                         value = transition.mToPixel!!.toPixels(value)
                     }
@@ -306,7 +306,7 @@ object TransitionParser {
                 }
             }
         }
-        val curveFit: String = keyAttribute.getStringOrNull("curveFit")
+        val curveFit = keyAttribute.getStringOrNull("curveFit")
         for (i in 0 until targets.size()) {
             for (j in bundles.indices) {
                 val target: String = targets.getString(i)!!
@@ -398,7 +398,7 @@ object TransitionParser {
             val attrName = attrNames[k]
             val attrId = attrIds[k]
             val scale = scaleTypes[k]
-            val arrayValues: CLArray = keyCycleData.getArrayOrNull(attrName)
+            val arrayValues = keyCycleData.getArrayOrNull(attrName)
             // array must contain one per frame
             if (arrayValues != null && arrayValues.size() != bundles.size) {
                 throw CLParsingException(
@@ -418,7 +418,7 @@ object TransitionParser {
                 }
             } else {
                 var value: Float = keyCycleData.getFloatOrNaN(attrName)
-                if (!java.lang.Float.isNaN(value)) {
+                if (!value.isNaN()) {
                     if (scale == 1) {
                         value = transition.mToPixel!!.toPixels(value)
                     } else if (scale == 2 && scaleOffset) {
@@ -430,10 +430,10 @@ object TransitionParser {
                 }
             }
         }
-        val curveFit: String = keyCycleData.getStringOrNull(CycleType.Companion.S_CURVE_FIT)
-        val easing: String = keyCycleData.getStringOrNull(CycleType.Companion.S_EASING)
-        val waveShape: String = keyCycleData.getStringOrNull(CycleType.Companion.S_WAVE_SHAPE)
-        val customWave: String = keyCycleData.getStringOrNull(CycleType.Companion.S_CUSTOM_WAVE_SHAPE)
+        val curveFit = keyCycleData.getStringOrNull(CycleType.Companion.S_CURVE_FIT)
+        val easing = keyCycleData.getStringOrNull(CycleType.Companion.S_EASING)
+        val waveShape = keyCycleData.getStringOrNull(CycleType.Companion.S_WAVE_SHAPE)
+        val customWave = keyCycleData.getStringOrNull(CycleType.Companion.S_CUSTOM_WAVE_SHAPE)
         for (i in 0 until targets.size()) {
             for (j in bundles.indices) {
                 val target: String = targets.getString(i)!!

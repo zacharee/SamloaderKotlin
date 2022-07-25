@@ -20,7 +20,7 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
      * Returns objet as a JSON5 String
      */
     override fun toJSON(): String {
-        val json: java.lang.StringBuilder = java.lang.StringBuilder(getDebugName() + "{ ")
+        val json: StringBuilder = StringBuilder(debugName + "{ ")
         var first = true
         for (element in mElements) {
             if (!first) {
@@ -45,7 +45,7 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
      * Returns as a formatted JSON5 String with an indentation
      */
     override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
-        val json: java.lang.StringBuilder = java.lang.StringBuilder(getDebugName())
+        val json: StringBuilder = StringBuilder(debugName)
         json.append("{\n")
         var first = true
         for (element in mElements) {
@@ -76,6 +76,10 @@ class CLObject(content: CharArray?) : CLContainer(content), Iterable<CLKey?> {
             val key = mObject.mElements[mIndex] as CLKey
             mIndex++
             return key
+        }
+
+        override fun remove() {
+            mObject.mElements.removeAt(mIndex)
         }
     }
 

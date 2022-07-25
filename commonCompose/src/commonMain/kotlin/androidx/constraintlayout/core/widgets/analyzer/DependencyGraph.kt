@@ -17,15 +17,17 @@ package androidx.constraintlayout.core.widgets.analyzer
 
 import androidx.constraintlayout.core.widgets.*
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
+import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
+import kotlin.math.max
 
 class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
     private var mNeedBuildGraph = true
     private var mNeedRedoMeasures = true
     private val mContainer: ConstraintWidgetContainer
-    private val mRuns: java.util.ArrayList<WidgetRun?> = java.util.ArrayList<WidgetRun>()
+    private val mRuns: ArrayList<WidgetRun> = ArrayList<WidgetRun>()
 
     // TODO: Unused, should we delete?
-    private val mRunGroups: java.util.ArrayList<RunGroup> = java.util.ArrayList<RunGroup>()
+    private val mRunGroups: ArrayList<RunGroup> = ArrayList<RunGroup>()
     private var mMeasurer: BasicMeasure.Measurer? = null
     private val mMeasure = BasicMeasure.Measure()
     fun setMeasurer(measurer: BasicMeasure.Measurer?) {
@@ -38,7 +40,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
         for (i in 0 until count) {
             val run: RunGroup = mGroups.get(i)
             val size = run.computeWrapSize(container, orientation)
-            wrapSize = java.lang.Math.max(wrapSize, size)
+            wrapSize = max(wrapSize, size)
         }
         return wrapSize.toInt()
     }
@@ -92,27 +94,27 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
             }
             mWidgetcontainer.ensureWidgetRuns()
             mWidgetcontainer.measured = false
-            mWidgetcontainer.mHorizontalRun.reset()
-            mWidgetcontainer.mVerticalRun.reset()
+            mWidgetcontainer.mHorizontalRun?.reset()
+            mWidgetcontainer.mVerticalRun?.reset()
             mNeedRedoMeasures = false
         }
         val avoid = basicMeasureWidgets(mContainer)
         if (avoid) {
             return false
         }
-        mWidgetcontainer.setX(0)
-        mWidgetcontainer.setY(0)
-        val originalHorizontalDimension: DimensionBehaviour =
+        mWidgetcontainer.x = (0)
+        mWidgetcontainer.y = (0)
+        val originalHorizontalDimension =
             mWidgetcontainer.getDimensionBehaviour(ConstraintWidget.Companion.HORIZONTAL)
-        val originalVerticalDimension: DimensionBehaviour =
+        val originalVerticalDimension =
             mWidgetcontainer.getDimensionBehaviour(ConstraintWidget.Companion.VERTICAL)
         if (mNeedBuildGraph) {
             buildGraph()
         }
-        val x1: Int = mWidgetcontainer.getX()
-        val y1: Int = mWidgetcontainer.getY()
-        mWidgetcontainer.mHorizontalRun.start.resolve(x1)
-        mWidgetcontainer.mVerticalRun.start.resolve(y1)
+        val x1: Int = mWidgetcontainer.x
+        val y1: Int = mWidgetcontainer.y
+        mWidgetcontainer.mHorizontalRun!!.start.resolve(x1)
+        mWidgetcontainer.mVerticalRun!!.start.resolve(y1)
 
         // Let's do the easy steps first -- anything that can be immediately measured
         // Whatever is left for the dimension will be match_constraints.
@@ -131,14 +133,14 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                 }
             }
             if (optimizeWrap && originalHorizontalDimension == DimensionBehaviour.WRAP_CONTENT) {
-                mWidgetcontainer.setHorizontalDimensionBehaviour(DimensionBehaviour.FIXED)
-                mWidgetcontainer.setWidth(computeWrap(mWidgetcontainer, ConstraintWidget.Companion.HORIZONTAL))
-                mWidgetcontainer.mHorizontalRun.mDimension.resolve(mWidgetcontainer.getWidth())
+                mWidgetcontainer.horizontalDimensionBehaviour = (DimensionBehaviour.FIXED)
+                mWidgetcontainer.width = (computeWrap(mWidgetcontainer, ConstraintWidget.Companion.HORIZONTAL))
+                mWidgetcontainer.mHorizontalRun!!.mDimension.resolve(mWidgetcontainer.width)
             }
             if (optimizeWrap && originalVerticalDimension == DimensionBehaviour.WRAP_CONTENT) {
-                mWidgetcontainer.setVerticalDimensionBehaviour(DimensionBehaviour.FIXED)
-                mWidgetcontainer.setHeight(computeWrap(mWidgetcontainer, ConstraintWidget.Companion.VERTICAL))
-                mWidgetcontainer.mVerticalRun.mDimension.resolve(mWidgetcontainer.getHeight())
+                mWidgetcontainer.verticalDimensionBehaviour = (DimensionBehaviour.FIXED)
+                mWidgetcontainer.height = (computeWrap(mWidgetcontainer, ConstraintWidget.Companion.VERTICAL))
+                mWidgetcontainer.mVerticalRun!!.mDimension.resolve(mWidgetcontainer.height)
             }
         }
         var checkRoot = false
@@ -152,16 +154,16 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
         ) {
 
             // solve horizontal dimension
-            val x2: Int = x1 + mWidgetcontainer.getWidth()
-            mWidgetcontainer.mHorizontalRun.end.resolve(x2)
-            mWidgetcontainer.mHorizontalRun.mDimension.resolve(x2 - x1)
+            val x2: Int = x1 + mWidgetcontainer.width
+            mWidgetcontainer.mHorizontalRun!!.end.resolve(x2)
+            mWidgetcontainer.mHorizontalRun!!.mDimension.resolve(x2 - x1)
             measureWidgets()
             if (mWidgetcontainer.mListDimensionBehaviors.get(ConstraintWidget.Companion.VERTICAL) == DimensionBehaviour.FIXED
                 || mWidgetcontainer.mListDimensionBehaviors.get(ConstraintWidget.Companion.VERTICAL) == DimensionBehaviour.MATCH_PARENT
             ) {
-                val y2: Int = y1 + mWidgetcontainer.getHeight()
-                mWidgetcontainer.mVerticalRun.end.resolve(y2)
-                mWidgetcontainer.mVerticalRun.mDimension.resolve(y2 - y1)
+                val y2: Int = y1 + mWidgetcontainer.height
+                mWidgetcontainer.mVerticalRun!!.end.resolve(y2)
+                mWidgetcontainer.mVerticalRun!!.mDimension.resolve(y2 - y1)
             }
             measureWidgets()
             checkRoot = true
@@ -171,7 +173,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
 
         // Let's apply what we did resolve
         for (run in mRuns) {
-            if (run.mWidget === mWidgetcontainer && !run.mResolved) {
+            if (run.mWidget === mWidgetcontainer && !run.isResolved) {
                 continue
             }
             run.applyToWidget()
@@ -196,8 +198,8 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                 break
             }
         }
-        mWidgetcontainer.setHorizontalDimensionBehaviour(originalHorizontalDimension)
-        mWidgetcontainer.setVerticalDimensionBehaviour(originalVerticalDimension)
+        mWidgetcontainer.horizontalDimensionBehaviour = (originalHorizontalDimension)
+        mWidgetcontainer.verticalDimensionBehaviour = (originalVerticalDimension)
         return allResolved
     }
 
@@ -210,30 +212,30 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                 widget.ensureWidgetRuns()
                 widget.measured = false
                 widget.mHorizontalRun!!.mDimension.resolved = false
-                widget.mHorizontalRun.mResolved = false
+                widget.mHorizontalRun!!.isResolved = false
                 widget.mHorizontalRun!!.reset()
                 widget.mVerticalRun!!.mDimension.resolved = false
-                widget.mVerticalRun.mResolved = false
+                widget.mVerticalRun!!.isResolved = false
                 widget.mVerticalRun!!.reset()
             }
             mWidgetcontainer.ensureWidgetRuns()
             mWidgetcontainer.measured = false
-            mWidgetcontainer.mHorizontalRun.mDimension.resolved = false
-            mWidgetcontainer.mHorizontalRun.mResolved = false
-            mWidgetcontainer.mHorizontalRun.reset()
-            mWidgetcontainer.mVerticalRun.mDimension.resolved = false
-            mWidgetcontainer.mVerticalRun.mResolved = false
-            mWidgetcontainer.mVerticalRun.reset()
+            mWidgetcontainer.mHorizontalRun!!.mDimension.resolved = false
+            mWidgetcontainer.mHorizontalRun!!.isResolved = false
+            mWidgetcontainer.mHorizontalRun!!.reset()
+            mWidgetcontainer.mVerticalRun!!.mDimension.resolved = false
+            mWidgetcontainer.mVerticalRun!!.isResolved = false
+            mWidgetcontainer.mVerticalRun!!.reset()
             buildGraph()
         }
         val avoid = basicMeasureWidgets(mContainer)
         if (avoid) {
             return false
         }
-        mWidgetcontainer.setX(0)
-        mWidgetcontainer.setY(0)
-        mWidgetcontainer.mHorizontalRun.start.resolve(0)
-        mWidgetcontainer.mVerticalRun.start.resolve(0)
+        mWidgetcontainer.x = (0)
+        mWidgetcontainer.y = (0)
+        mWidgetcontainer.mHorizontalRun!!.start.resolve(0)
+        mWidgetcontainer.mVerticalRun!!.start.resolve(0)
         return true
     }
 
@@ -243,12 +245,12 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
     fun directMeasureWithOrientation(optimizeWrap: Boolean, orientation: Int): Boolean {
         var optimizeWrap = optimizeWrap
         optimizeWrap = optimizeWrap and USE_GROUPS
-        val originalHorizontalDimension: DimensionBehaviour =
+        val originalHorizontalDimension =
             mWidgetcontainer.getDimensionBehaviour(ConstraintWidget.Companion.HORIZONTAL)
-        val originalVerticalDimension: DimensionBehaviour =
+        val originalVerticalDimension =
             mWidgetcontainer.getDimensionBehaviour(ConstraintWidget.Companion.VERTICAL)
-        val x1: Int = mWidgetcontainer.getX()
-        val y1: Int = mWidgetcontainer.getY()
+        val x1: Int = mWidgetcontainer.x
+        val y1: Int = mWidgetcontainer.y
 
         // If we have to support wrap, let's see if we can compute it directly
         if (optimizeWrap && (originalHorizontalDimension == DimensionBehaviour.WRAP_CONTENT
@@ -264,15 +266,15 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
             }
             if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
                 if (optimizeWrap && originalHorizontalDimension == DimensionBehaviour.WRAP_CONTENT) {
-                    mWidgetcontainer.setHorizontalDimensionBehaviour(DimensionBehaviour.FIXED)
-                    mWidgetcontainer.setWidth(computeWrap(mWidgetcontainer, ConstraintWidget.Companion.HORIZONTAL))
-                    mWidgetcontainer.mHorizontalRun.mDimension.resolve(mWidgetcontainer.getWidth())
+                    mWidgetcontainer.horizontalDimensionBehaviour = (DimensionBehaviour.FIXED)
+                    mWidgetcontainer.width = (computeWrap(mWidgetcontainer, ConstraintWidget.Companion.HORIZONTAL))
+                    mWidgetcontainer.mHorizontalRun!!.mDimension.resolve(mWidgetcontainer.width)
                 }
             } else {
                 if (optimizeWrap && originalVerticalDimension == DimensionBehaviour.WRAP_CONTENT) {
-                    mWidgetcontainer.setVerticalDimensionBehaviour(DimensionBehaviour.FIXED)
-                    mWidgetcontainer.setHeight(computeWrap(mWidgetcontainer, ConstraintWidget.Companion.VERTICAL))
-                    mWidgetcontainer.mVerticalRun.mDimension.resolve(mWidgetcontainer.getHeight())
+                    mWidgetcontainer.verticalDimensionBehaviour = (DimensionBehaviour.FIXED)
+                    mWidgetcontainer.height = (computeWrap(mWidgetcontainer, ConstraintWidget.Companion.VERTICAL))
+                    mWidgetcontainer.mVerticalRun!!.mDimension.resolve(mWidgetcontainer.height)
                 }
             }
         }
@@ -284,18 +286,18 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
             if (mWidgetcontainer.mListDimensionBehaviors.get(ConstraintWidget.Companion.HORIZONTAL) == DimensionBehaviour.FIXED
                 || mWidgetcontainer.mListDimensionBehaviors.get(ConstraintWidget.Companion.HORIZONTAL) == DimensionBehaviour.MATCH_PARENT
             ) {
-                val x2: Int = x1 + mWidgetcontainer.getWidth()
-                mWidgetcontainer.mHorizontalRun.end.resolve(x2)
-                mWidgetcontainer.mHorizontalRun.mDimension.resolve(x2 - x1)
+                val x2: Int = x1 + mWidgetcontainer.width
+                mWidgetcontainer.mHorizontalRun!!.end.resolve(x2)
+                mWidgetcontainer.mHorizontalRun!!.mDimension.resolve(x2 - x1)
                 checkRoot = true
             }
         } else {
             if (mWidgetcontainer.mListDimensionBehaviors.get(ConstraintWidget.Companion.VERTICAL) == DimensionBehaviour.FIXED
                 || mWidgetcontainer.mListDimensionBehaviors.get(ConstraintWidget.Companion.VERTICAL) == DimensionBehaviour.MATCH_PARENT
             ) {
-                val y2: Int = y1 + mWidgetcontainer.getHeight()
-                mWidgetcontainer.mVerticalRun.end.resolve(y2)
-                mWidgetcontainer.mVerticalRun.mDimension.resolve(y2 - y1)
+                val y2: Int = y1 + mWidgetcontainer!!.height
+                mWidgetcontainer.mVerticalRun!!.end.resolve(y2)
+                mWidgetcontainer.mVerticalRun!!.mDimension.resolve(y2 - y1)
                 checkRoot = true
             }
         }
@@ -306,7 +308,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
             if (run.orientation != orientation) {
                 continue
             }
-            if (run.mWidget === mWidgetcontainer && !run.mResolved) {
+            if (run.mWidget === mWidgetcontainer && !run.isResolved) {
                 continue
             }
             run.applyToWidget()
@@ -332,8 +334,8 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                 break
             }
         }
-        mWidgetcontainer.setHorizontalDimensionBehaviour(originalHorizontalDimension)
-        mWidgetcontainer.setVerticalDimensionBehaviour(originalVerticalDimension)
+        mWidgetcontainer.horizontalDimensionBehaviour = (originalHorizontalDimension)
+        mWidgetcontainer.verticalDimensionBehaviour = (originalVerticalDimension)
         return allResolved
     }
 
@@ -362,8 +364,8 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
 
     private fun basicMeasureWidgets(constraintWidgetContainer: ConstraintWidgetContainer): Boolean {
         for (widget in constraintWidgetContainer.mChildren) {
-            var horizontal: DimensionBehaviour = widget.mListDimensionBehaviors[ConstraintWidget.Companion.HORIZONTAL]
-            var vertical: DimensionBehaviour = widget.mListDimensionBehaviors[ConstraintWidget.Companion.VERTICAL]
+            var horizontal = widget.mListDimensionBehaviors[ConstraintWidget.Companion.HORIZONTAL]
+            var vertical = widget.mListDimensionBehaviors[ConstraintWidget.Companion.VERTICAL]
             if (widget.visibility == ConstraintWidget.Companion.GONE) {
                 widget.measured = true
                 continue
@@ -398,14 +400,14 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
             if (horizontal == DimensionBehaviour.MATCH_CONSTRAINT
                 && widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
             ) {
-                if (widget.mLeft.mTarget == null || widget.mRight.mTarget == null) {
+                if (widget.mLeft!!.target == null || widget.mRight!!.target == null) {
                     horizontal = DimensionBehaviour.WRAP_CONTENT
                 }
             }
             if (vertical == DimensionBehaviour.MATCH_CONSTRAINT
                 && widget.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
             ) {
-                if (widget.mTop.mTarget == null || widget.mBottom.mTarget == null) {
+                if (widget.mTop.target == null || widget.mBottom.target == null) {
                     vertical = DimensionBehaviour.WRAP_CONTENT
                 }
             }
@@ -413,20 +415,20 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
             widget.mHorizontalRun!!.matchConstraintsType = widget.mMatchConstraintDefaultWidth
             widget.mVerticalRun!!.mDimensionBehavior = vertical
             widget.mVerticalRun!!.matchConstraintsType = widget.mMatchConstraintDefaultHeight
-            if (horizontal == DimensionBehaviour.MATCH_PARENT || horizontal == DimensionBehaviour.FIXED || horizontal == DimensionBehaviour.WRAP_CONTENT && (vertical == DimensionBehaviour.MATCH_PARENT || vertical == DimensionBehaviour.FIXED || vertical) == DimensionBehaviour.WRAP_CONTENT) {
+            if (horizontal == DimensionBehaviour.MATCH_PARENT || horizontal == DimensionBehaviour.FIXED || horizontal == DimensionBehaviour.WRAP_CONTENT && (vertical == DimensionBehaviour.MATCH_PARENT || vertical == DimensionBehaviour.FIXED || vertical == DimensionBehaviour.WRAP_CONTENT)) {
                 var width = widget.width
                 if (horizontal == DimensionBehaviour.MATCH_PARENT) {
-                    width = (constraintWidgetContainer.getWidth()
+                    width = (constraintWidgetContainer.width
                             - widget.mLeft!!.mMargin - widget.mRight!!.mMargin)
                     horizontal = DimensionBehaviour.FIXED
                 }
                 var height = widget.height
                 if (vertical == DimensionBehaviour.MATCH_PARENT) {
-                    height = (constraintWidgetContainer.getHeight()
+                    height = (constraintWidgetContainer.height
                             - widget.mTop.mMargin - widget.mBottom.mMargin)
                     vertical = DimensionBehaviour.FIXED
                 }
-                measure(widget, horizontal, width, vertical, height)
+                measure(widget, horizontal, width, vertical!!, height)
                 widget.mHorizontalRun!!.mDimension.resolve(widget.width)
                 widget.mVerticalRun!!.mDimension.resolve(widget.height)
                 widget.measured = true
@@ -438,7 +440,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                         measure(widget, DimensionBehaviour.WRAP_CONTENT, 0, DimensionBehaviour.WRAP_CONTENT, 0)
                     }
                     val height = widget.height
-                    val width = (height * widget.mDimensionRatio + 0.5f).toInt()
+                    val width = (height * widget.dimensionRatio + 0.5f).toInt()
                     measure(widget, DimensionBehaviour.FIXED, width, DimensionBehaviour.FIXED, height)
                     widget.mHorizontalRun!!.mDimension.resolve(widget.width)
                     widget.mVerticalRun!!.mDimension.resolve(widget.height)
@@ -456,7 +458,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                         == DimensionBehaviour.MATCH_PARENT
                     ) {
                         val percent = widget.mMatchConstraintPercentWidth
-                        val width: Int = (0.5f + percent * constraintWidgetContainer.getWidth()).toInt()
+                        val width: Int = (0.5f + percent * constraintWidgetContainer.width).toInt()
                         val height = widget.height
                         measure(widget, DimensionBehaviour.FIXED, width, vertical, height)
                         widget.mHorizontalRun!!.mDimension.resolve(widget.width)
@@ -466,8 +468,8 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                     }
                 } else {
                     // let's verify we have both constraints
-                    if (widget.mListAnchors[ConstraintWidget.Companion.ANCHOR_LEFT].mTarget == null
-                        || widget.mListAnchors[ConstraintWidget.Companion.ANCHOR_RIGHT].mTarget == null
+                    if (widget.mListAnchors[ConstraintWidget.Companion.ANCHOR_LEFT]?.target == null
+                        || widget.mListAnchors[ConstraintWidget.Companion.ANCHOR_RIGHT]?.target == null
                     ) {
                         measure(widget, DimensionBehaviour.WRAP_CONTENT, 0, vertical, 0)
                         widget.mHorizontalRun!!.mDimension.resolve(widget.width)
@@ -485,7 +487,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                         measure(widget, DimensionBehaviour.WRAP_CONTENT, 0, DimensionBehaviour.WRAP_CONTENT, 0)
                     }
                     val width = widget.width
-                    var ratio = widget.mDimensionRatio
+                    var ratio = widget.dimensionRatio
                     if (widget.dimensionRatioSide == ConstraintWidget.Companion.UNKNOWN) {
                         ratio = 1f / ratio
                     }
@@ -508,7 +510,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                     ) {
                         val percent = widget.mMatchConstraintPercentHeight
                         val width = widget.width
-                        val height: Int = (0.5f + percent * constraintWidgetContainer.getHeight()).toInt()
+                        val height: Int = (0.5f + percent * constraintWidgetContainer.height).toInt()
                         measure(widget, horizontal, width, DimensionBehaviour.FIXED, height)
                         widget.mHorizontalRun!!.mDimension.resolve(widget.width)
                         widget.mVerticalRun!!.mDimension.resolve(widget.height)
@@ -517,8 +519,8 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                     }
                 } else {
                     // let's verify we have both constraints
-                    if (widget.mListAnchors[ConstraintWidget.Companion.ANCHOR_TOP].mTarget == null
-                        || widget.mListAnchors[ConstraintWidget.Companion.ANCHOR_BOTTOM].mTarget
+                    if (widget.mListAnchors[ConstraintWidget.Companion.ANCHOR_TOP]?.target == null
+                        || widget.mListAnchors[ConstraintWidget.Companion.ANCHOR_BOTTOM]?.target
                         == null
                     ) {
                         measure(widget, DimensionBehaviour.WRAP_CONTENT, 0, vertical, 0)
@@ -546,8 +548,8 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                 ) {
                     val horizPercent = widget.mMatchConstraintPercentWidth
                     val vertPercent = widget.mMatchConstraintPercentHeight
-                    val width: Int = (0.5f + horizPercent * constraintWidgetContainer.getWidth()).toInt()
-                    val height: Int = (0.5f + vertPercent * constraintWidgetContainer.getHeight()).toInt()
+                    val width: Int = (0.5f + horizPercent * constraintWidgetContainer.width).toInt()
+                    val height: Int = (0.5f + vertPercent * constraintWidgetContainer.height).toInt()
                     measure(widget, DimensionBehaviour.FIXED, width, DimensionBehaviour.FIXED, height)
                     widget.mHorizontalRun!!.mDimension.resolve(widget.width)
                     widget.mVerticalRun!!.mDimension.resolve(widget.height)
@@ -566,8 +568,8 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
             if (widget.measured) {
                 continue
             }
-            val horiz: DimensionBehaviour = widget.mListDimensionBehaviors[ConstraintWidget.Companion.HORIZONTAL]
-            val vert: DimensionBehaviour = widget.mListDimensionBehaviors[ConstraintWidget.Companion.VERTICAL]
+            val horiz = widget.mListDimensionBehaviors[ConstraintWidget.Companion.HORIZONTAL]
+            val vert = widget.mListDimensionBehaviors[ConstraintWidget.Companion.VERTICAL]
             val horizMatchConstraintsType = widget.mMatchConstraintDefaultWidth
             val vertMatchConstraintsType = widget.mMatchConstraintDefaultHeight
             val horizWrap = (horiz == DimensionBehaviour.WRAP_CONTENT
@@ -617,7 +619,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                 }
             }
             if (widget.measured && widget.mVerticalRun!!.mBaselineDimension != null) {
-                widget.mVerticalRun!!.mBaselineDimension.resolve(widget.baselineDistance)
+                widget.mVerticalRun!!.mBaselineDimension!!.resolve(widget.baselineDistance)
             }
         }
     }
@@ -636,7 +638,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
         mNeedRedoMeasures = true
     }
 
-    var mGroups: java.util.ArrayList<RunGroup> = java.util.ArrayList<RunGroup>()
+    var mGroups: ArrayList<RunGroup> = ArrayList<RunGroup>()
 
     init {
         mContainer = mWidgetcontainer
@@ -647,13 +649,13 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
      */
     fun buildGraph() {
         // First, let's identify the overall dependency graph
-        buildGraph(mRuns)
+        buildGraph(mRuns!!)
         if (USE_GROUPS) {
             mGroups.clear()
             // Then get the horizontal and vertical groups
             RunGroup.Companion.index = 0
-            findGroup(mWidgetcontainer.mHorizontalRun, ConstraintWidget.Companion.HORIZONTAL, mGroups)
-            findGroup(mWidgetcontainer.mVerticalRun, ConstraintWidget.Companion.VERTICAL, mGroups)
+            findGroup(mWidgetcontainer.mHorizontalRun!!, ConstraintWidget.Companion.HORIZONTAL, mGroups)
+            findGroup(mWidgetcontainer.mVerticalRun!!, ConstraintWidget.Companion.VERTICAL, mGroups)
         }
         mNeedBuildGraph = false
     }
@@ -661,13 +663,13 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
     /**
      * @TODO: add description
      */
-    fun buildGraph(runs: java.util.ArrayList<WidgetRun?>) {
+    fun buildGraph(runs: ArrayList<WidgetRun>) {
         runs.clear()
-        mContainer.mHorizontalRun.clear()
-        mContainer.mVerticalRun.clear()
-        runs.add(mContainer.mHorizontalRun)
-        runs.add(mContainer.mVerticalRun)
-        var chainRuns: java.util.HashSet<ChainRun?>? = null
+        mContainer.mHorizontalRun!!.clear()
+        mContainer.mVerticalRun!!.clear()
+        runs.add(mContainer.mHorizontalRun!!)
+        runs.add(mContainer.mVerticalRun!!)
+        var chainRuns: HashSet<ChainRun>? = null
         for (widget in mContainer.mChildren) {
             if (widget is Guideline) {
                 runs.add(GuidelineReference(widget))
@@ -679,11 +681,11 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                     widget.horizontalChainRun = ChainRun(widget, ConstraintWidget.Companion.HORIZONTAL)
                 }
                 if (chainRuns == null) {
-                    chainRuns = java.util.HashSet<ChainRun>()
+                    chainRuns = HashSet()
                 }
-                chainRuns.add(widget.horizontalChainRun)
+                chainRuns.add(widget.horizontalChainRun!!)
             } else {
-                runs.add(widget.mHorizontalRun)
+                runs.add(widget.mHorizontalRun!!)
             }
             if (widget.isInVerticalChain) {
                 if (widget.verticalChainRun == null) {
@@ -691,18 +693,18 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                     widget.verticalChainRun = ChainRun(widget, ConstraintWidget.Companion.VERTICAL)
                 }
                 if (chainRuns == null) {
-                    chainRuns = java.util.HashSet<ChainRun>()
+                    chainRuns = HashSet()
                 }
-                chainRuns.add(widget.verticalChainRun)
+                chainRuns.add(widget.verticalChainRun!!)
             } else {
-                runs.add(widget.mVerticalRun)
+                runs.add(widget.mVerticalRun!!)
             }
             if (widget is HelperWidget) {
                 runs.add(HelperReferences(widget))
             }
         }
         if (chainRuns != null) {
-            runs.addAll(chainRuns)
+            runs.addAll(chainRuns!!)
         }
         for (run in runs) {
             run.clear()
@@ -732,7 +734,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
         orientation: Int,
         direction: Int,
         end: DependencyNode?,
-        groups: java.util.ArrayList<RunGroup>,
+        groups: ArrayList<RunGroup>,
         group: RunGroup?
     ) {
         var group = group
@@ -791,7 +793,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
         }
     }
 
-    private fun findGroup(run: WidgetRun, orientation: Int, groups: java.util.ArrayList<RunGroup>) {
+    private fun findGroup(run: WidgetRun, orientation: Int, groups: ArrayList<RunGroup>) {
         for (dependent in run.start.mDependencies) {
             if (dependent is DependencyNode) {
                 applyGroup(dependent, orientation, RunGroup.Companion.START, run.end, groups, null)
@@ -821,7 +823,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
         content: String
     ): String {
         var content = content
-        val contentBuilder: java.lang.StringBuilder = java.lang.StringBuilder(content)
+        val contentBuilder: StringBuilder = StringBuilder(content)
         for (target in node!!.mTargets) {
             var constraint = """
                 
@@ -857,10 +859,10 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
     private fun nodeDefinition(run: WidgetRun): String {
         val orientation: Int =
             if (run is VerticalWidgetRun) ConstraintWidget.Companion.VERTICAL else ConstraintWidget.Companion.HORIZONTAL
-        val name: String = run.mWidget.getDebugName()
-        val definition: java.lang.StringBuilder = java.lang.StringBuilder(name)
-        val behaviour: DimensionBehaviour =
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) run.mWidget.getHorizontalDimensionBehaviour() else run.mWidget.getVerticalDimensionBehaviour()
+        val name: String = run.mWidget.debugName!!
+        val definition: StringBuilder = StringBuilder(name)
+        val behaviour =
+            if (orientation == ConstraintWidget.Companion.HORIZONTAL) run.mWidget.horizontalDimensionBehaviour else run.mWidget.verticalDimensionBehaviour
         val runGroup = run.mRunGroup
         if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
             definition.append("_HORIZONTAL")
@@ -929,9 +931,9 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
 
     private fun generateChainDisplayGraph(chain: ChainRun, content: String): String {
         val orientation: Int = chain.orientation
-        val subgroup: java.lang.StringBuilder = java.lang.StringBuilder("subgraph ")
+        val subgroup: StringBuilder = StringBuilder("subgraph ")
         subgroup.append("cluster_")
-        subgroup.append(chain.mWidget.getDebugName())
+        subgroup.append(chain.mWidget.debugName)
         if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
             subgroup.append("_h")
         } else {
@@ -940,7 +942,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
         subgroup.append(" {\n")
         var definitions = ""
         for (run in chain.mWidgets) {
-            subgroup.append(run.mWidget.getDebugName())
+            subgroup.append(run.mWidget.debugName)
             if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
                 subgroup.append("_HORIZONTAL")
             } else {
@@ -973,7 +975,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
         var content = content
         val start = root.start
         val end = root.end
-        val sb: java.lang.StringBuilder = java.lang.StringBuilder(content)
+        val sb: StringBuilder = StringBuilder(content)
         if (root !is HelperReferences && start!!.mDependencies.isEmpty()
             && end!!.mDependencies.isEmpty() && start.mTargets.isEmpty()
             && end.mTargets.isEmpty()
@@ -989,7 +991,7 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
             content = generateDisplayNode(baseline, centeredConnection, content)
         }
         if ((root is HorizontalWidgetRun || root is ChainRun) && (root as ChainRun).orientation == ConstraintWidget.Companion.HORIZONTAL) {
-            val behaviour: DimensionBehaviour = root.mWidget.getHorizontalDimensionBehaviour()
+            val behaviour = root.mWidget.horizontalDimensionBehaviour
             if (behaviour == DimensionBehaviour.FIXED
                 || behaviour == DimensionBehaviour.WRAP_CONTENT
             ) {
@@ -1007,16 +1009,16 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                     sb.append("\n")
                 }
             } else {
-                if (behaviour == DimensionBehaviour.MATCH_CONSTRAINT && root.mWidget.getDimensionRatio() > 0) {
+                if (behaviour == DimensionBehaviour.MATCH_CONSTRAINT && root.mWidget.dimensionRatio > 0) {
                     sb.append("\n")
-                    sb.append(root.mWidget.getDebugName())
+                    sb.append(root.mWidget.debugName)
                     sb.append("_HORIZONTAL -> ")
-                    sb.append(root.mWidget.getDebugName())
+                    sb.append(root.mWidget.debugName)
                     sb.append("_VERTICAL;\n")
                 }
             }
         } else if ((root is VerticalWidgetRun || root is ChainRun) && (root as ChainRun).orientation == ConstraintWidget.Companion.VERTICAL) {
-            val behaviour: DimensionBehaviour = root.mWidget.getVerticalDimensionBehaviour()
+            val behaviour = root.mWidget.verticalDimensionBehaviour
             if (behaviour == DimensionBehaviour.FIXED
                 || behaviour == DimensionBehaviour.WRAP_CONTENT
             ) {
@@ -1034,11 +1036,11 @@ class DependencyGraph(private val mWidgetcontainer: ConstraintWidgetContainer) {
                     sb.append("\n")
                 }
             } else {
-                if (behaviour == DimensionBehaviour.MATCH_CONSTRAINT && root.mWidget.getDimensionRatio() > 0) {
+                if (behaviour == DimensionBehaviour.MATCH_CONSTRAINT && root.mWidget.dimensionRatio > 0) {
                     sb.append("\n")
-                    sb.append(root.mWidget.getDebugName())
+                    sb.append(root.mWidget.debugName)
                     sb.append("_VERTICAL -> ")
-                    sb.append(root.mWidget.getDebugName())
+                    sb.append(root.mWidget.debugName)
                     sb.append("_HORIZONTAL;\n")
                 }
             }

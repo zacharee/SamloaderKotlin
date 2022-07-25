@@ -20,10 +20,8 @@ import androidx.constraintlayout.core.motion.key.MotionKeyAttributes
 import androidx.constraintlayout.core.motion.key.MotionKeyCycle
 import androidx.constraintlayout.core.motion.key.MotionKeyPosition
 import androidx.constraintlayout.core.motion.utils.*
-import androidx.constraintlayout.core.stateimport.CorePixelDp
-import androidx.constraintlayout.core.stateimport.Interpolator
 import androidx.constraintlayout.core.widgets.ConstraintWidget
-import androidx.constraintlayout.core.widgetsimport.ConstraintWidgetContainer
+import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
 import kotlinx.datetime.Clock
 import kotlin.math.abs
 import kotlin.math.max
@@ -556,9 +554,9 @@ class Transition : TypedValues {
         return false
     }
 
-    override fun setValue(id: Int, value: String?): Boolean {
+    override fun setValue(id: Int, value: String): Boolean {
         if (id == TypedValues.TransitionType.Companion.TYPE_INTERPOLATOR) {
-            mEasing = Easing.Companion.getInterpolator(value.also { mDefaultInterpolatorString = it })
+            mEasing = Easing.Companion.getInterpolator(value.also { mDefaultInterpolatorString = it }!!)
         }
         return false
     }
@@ -964,7 +962,7 @@ class Transition : TypedValues {
             when (interpolator) {
                 SPLINE_STRING -> return object : Interpolator {
                     override fun getInterpolation(input: Float): Float {
-                        return Easing.Companion.getInterpolator(interpolatorString)!!
+                        return Easing.Companion.getInterpolator(interpolatorString!!)
                             .get(input.toDouble()).toFloat()
                     }
                 }

@@ -18,7 +18,7 @@ package androidx.constraintlayout.core.widgets.analyzer
 internal class BaselineDimensionDependency(run: WidgetRun) : DimensionDependency(run) {
     fun update(node: DependencyNode?) {
         val verticalRun = mRun as VerticalWidgetRun
-        verticalRun.baseline.mMargin = mRun.mWidget.getBaselineDistance()
+        verticalRun.baseline.mMargin = mRun.mWidget.baselineDistance
         resolved = true
     }
 }

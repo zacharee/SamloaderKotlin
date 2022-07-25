@@ -73,7 +73,7 @@ class MotionWidget : TypedValues {
     }
 
     val name: String?
-        get() = widgetFrame.getId()
+        get() = widgetFrame?.id
 
     /**
      * @TODO: add description
@@ -309,8 +309,8 @@ class MotionWidget : TypedValues {
         get() = widgetFrame!!.right - widgetFrame!!.left
     val height: Int
         get() = widgetFrame!!.bottom - widgetFrame!!.top
-    val customAttributeNames: Set<String?>?
-        get() = widgetFrame.getCustomAttributeNames()
+    val customAttributeNames: Set<String>?
+        get() = widgetFrame?.customAttributeNames
 
     /**
      * @TODO: add description

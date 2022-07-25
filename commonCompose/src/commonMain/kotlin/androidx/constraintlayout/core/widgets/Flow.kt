@@ -42,7 +42,7 @@ class Flow : VirtualLayout() {
     private var mWrapMode = WRAP_NONE
     private var mMaxElementsWrap: Int = ConstraintWidget.Companion.UNKNOWN
     private var mOrientation: Int = ConstraintWidget.Companion.HORIZONTAL
-    private val mChainList: java.util.ArrayList<WidgetsList> = java.util.ArrayList<WidgetsList>()
+    private val mChainList: ArrayList<WidgetsList> = ArrayList<WidgetsList>()
 
     // Aligned management
     private var mAlignedBiggestElementsInRows: Array<ConstraintWidget?>? = null
@@ -50,7 +50,7 @@ class Flow : VirtualLayout() {
     private var mAlignedDimensions: IntArray? = null
     private var mDisplayedWidgets: Array<ConstraintWidget?>
     private var mDisplayedWidgetsCount = 0
-    override fun copy(src: ConstraintWidget, map: java.util.HashMap<ConstraintWidget?, ConstraintWidget?>) {
+    override fun copy(src: ConstraintWidget, map: HashMap<ConstraintWidget?, ConstraintWidget?>) {
         super.copy(src, map)
         val srcFLow = src as Flow
         mHorizontalStyle = srcFLow.mHorizontalStyle
@@ -295,14 +295,14 @@ class Flow : VirtualLayout() {
         if (widthMode == BasicMeasure.Companion.EXACTLY) {
             measuredWidth = widthSize
         } else if (widthMode == BasicMeasure.Companion.AT_MOST) {
-            measuredWidth = java.lang.Math.min(width, widthSize)
+            measuredWidth = min(width, widthSize)
         } else if (widthMode == BasicMeasure.Companion.UNSPECIFIED) {
             measuredWidth = width
         }
         if (heightMode == BasicMeasure.Companion.EXACTLY) {
             measuredHeight = heightSize
         } else if (heightMode == BasicMeasure.Companion.AT_MOST) {
-            measuredHeight = java.lang.Math.min(height, heightSize)
+            measuredHeight = min(height, heightSize)
         } else if (heightMode == BasicMeasure.Companion.UNSPECIFIED) {
             measuredHeight = height
         }
@@ -882,7 +882,7 @@ class Flow : VirtualLayout() {
                 )
                 top = currentBottom
                 paddingTop = 0
-                maxWidth = java.lang.Math.max(maxWidth, current.getWidth())
+                maxWidth = max(maxWidth, current.getWidth())
                 maxHeight += current.getHeight()
                 if (i > 0) {
                     maxHeight += mVerticalGap
@@ -904,7 +904,7 @@ class Flow : VirtualLayout() {
                 left = currentRight
                 paddingLeft = 0
                 maxWidth += current.getWidth()
-                maxHeight = java.lang.Math.max(maxHeight, current.getHeight())
+                maxHeight = max(maxHeight, current.getHeight())
                 if (i > 0) {
                     maxWidth += mHorizontalGap
                 }
@@ -1042,7 +1042,7 @@ class Flow : VirtualLayout() {
                 )
                 top = currentBottom
                 paddingTop = 0
-                maxWidth = java.lang.Math.max(maxWidth, current.getWidth())
+                maxWidth = max(maxWidth, current.getWidth())
                 maxHeight += current.getHeight()
                 if (i > 0) {
                     maxHeight += mVerticalGap
@@ -1064,7 +1064,7 @@ class Flow : VirtualLayout() {
                 left = currentRight
                 paddingLeft = 0
                 maxWidth += current.getWidth()
-                maxHeight = java.lang.Math.max(maxHeight, current.getHeight())
+                maxHeight = max(maxHeight, current.getHeight())
                 if (i > 0) {
                     maxWidth += mHorizontalGap
                 }
@@ -1181,23 +1181,23 @@ class Flow : VirtualLayout() {
             // get a num of rows (or cols)
             // get for each row and cols the chain of biggest elements
             if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-                rows = java.lang.Math.ceil((count / cols.toFloat()).toDouble()).toInt()
+                rows = ceil((count / cols.toFloat()).toDouble()).toInt()
             } else {
-                cols = java.lang.Math.ceil((count / rows.toFloat()).toDouble()).toInt()
+                cols = ceil((count / rows.toFloat()).toDouble()).toInt()
             }
             if (mAlignedBiggestElementsInCols == null
                 || mAlignedBiggestElementsInCols!!.size < cols
             ) {
                 mAlignedBiggestElementsInCols = arrayOfNulls(cols)
             } else {
-                java.util.Arrays.fill(mAlignedBiggestElementsInCols, null)
+                Arrays.fill(mAlignedBiggestElementsInCols, null)
             }
             if (mAlignedBiggestElementsInRows == null
                 || mAlignedBiggestElementsInRows!!.size < rows
             ) {
                 mAlignedBiggestElementsInRows = arrayOfNulls(rows)
             } else {
-                java.util.Arrays.fill(mAlignedBiggestElementsInRows, null)
+                Arrays.fill(mAlignedBiggestElementsInRows, null)
             }
             for (i in 0 until cols) {
                 for (j in 0 until rows) {

@@ -15,7 +15,6 @@
  */
 package androidx.constraintlayout.core.widgets
 
-import androidx.constraintlayout.core.widgetsimport.ConstraintWidgetContainer
 import androidx.constraintlayout.core.Cache
 
 /**

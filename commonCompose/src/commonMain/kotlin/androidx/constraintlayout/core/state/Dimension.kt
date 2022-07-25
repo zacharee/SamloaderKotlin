@@ -15,9 +15,8 @@
  */
 package androidx.constraintlayout.core.state
 
-import androidx.constraintlayout.core.widgets.ConstraintWidgetimport
+import androidx.constraintlayout.core.widgets.ConstraintWidget
 
-androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
 /**
  * Represents a dimension (width or height) of a constrained widget
  */
@@ -36,11 +35,8 @@ class Dimension {
      * the same given value
      */
     fun equalsFixedValue(value: Int): Boolean {
-        return if (mInitialValue == null
-            && mValue == value
-        ) {
-            true
-        } else false
+        return (mInitialValue == null
+                && mValue == value)
     }
 
     enum class Type {
@@ -168,8 +164,8 @@ class Dimension {
         }
         if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
             if (mIsSuggested) {
-                constraintWidget.setHorizontalDimensionBehaviour(
-                    DimensionBehaviour.MATCH_CONSTRAINT
+                constraintWidget.horizontalDimensionBehaviour = (
+                    ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
                 )
                 var type: Int = ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD
                 if (mInitialValue === WRAP_DIMENSION) {
@@ -186,24 +182,24 @@ class Dimension {
                     constraintWidget.maxWidth = mMax
                 }
                 if (mInitialValue === WRAP_DIMENSION) {
-                    constraintWidget.setHorizontalDimensionBehaviour(
-                        DimensionBehaviour.WRAP_CONTENT
+                    constraintWidget.horizontalDimensionBehaviour = (
+                        ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
                     )
                 } else if (mInitialValue === PARENT_DIMENSION) {
-                    constraintWidget.setHorizontalDimensionBehaviour(
-                        DimensionBehaviour.MATCH_PARENT
+                    constraintWidget.horizontalDimensionBehaviour = (
+                        ConstraintWidget.DimensionBehaviour.MATCH_PARENT
                     )
                 } else if (mInitialValue == null) {
-                    constraintWidget.setHorizontalDimensionBehaviour(
-                        DimensionBehaviour.FIXED
+                    constraintWidget.horizontalDimensionBehaviour = (
+                        ConstraintWidget.DimensionBehaviour.FIXED
                     )
                     constraintWidget.width = mValue
                 }
             }
         } else {
             if (mIsSuggested) {
-                constraintWidget.setVerticalDimensionBehaviour(
-                    DimensionBehaviour.MATCH_CONSTRAINT
+                constraintWidget.verticalDimensionBehaviour = (
+                    ConstraintWidget.DimensionBehaviour.MATCH_CONSTRAINT
                 )
                 var type: Int = ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD
                 if (mInitialValue === WRAP_DIMENSION) {
@@ -220,16 +216,16 @@ class Dimension {
                     constraintWidget.maxHeight = mMax
                 }
                 if (mInitialValue === WRAP_DIMENSION) {
-                    constraintWidget.setVerticalDimensionBehaviour(
-                        DimensionBehaviour.WRAP_CONTENT
+                    constraintWidget.verticalDimensionBehaviour = (
+                        ConstraintWidget.DimensionBehaviour.WRAP_CONTENT
                     )
                 } else if (mInitialValue === PARENT_DIMENSION) {
-                    constraintWidget.setVerticalDimensionBehaviour(
-                        DimensionBehaviour.MATCH_PARENT
+                    constraintWidget.verticalDimensionBehaviour = (
+                        ConstraintWidget.DimensionBehaviour.MATCH_PARENT
                     )
                 } else if (mInitialValue == null) {
-                    constraintWidget.setVerticalDimensionBehaviour(
-                        DimensionBehaviour.FIXED
+                    constraintWidget.verticalDimensionBehaviour = (
+                        ConstraintWidget.DimensionBehaviour.FIXED
                     )
                     constraintWidget.height = mValue
                 }

@@ -323,7 +323,7 @@ class MotionKeyPosition : MotionKey() {
         return true
     }
 
-    override fun setValue(type: Int, value: String?): Boolean {
+    override fun setValue(type: Int, value: String): Boolean {
         mTransitionEasing = when (type) {
             PositionType.Companion.TYPE_TRANSITION_EASING -> value
             else -> return super.setValue(type, value)

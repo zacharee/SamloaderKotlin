@@ -57,7 +57,7 @@ open class CLElement(private val mContent: CharArray?) {
             }
         }
 
-    protected fun addIndent(builder: java.lang.StringBuilder, indent: Int) {
+    protected fun addIndent(builder: StringBuilder, indent: Int) {
         for (i in 0 until indent) {
             builder.append(' ')
         }
@@ -65,16 +65,16 @@ open class CLElement(private val mContent: CharArray?) {
 
     override fun toString(): String {
         if (start > mEnd || mEnd == Long.MAX_VALUE) {
-            return this.javaClass.toString() + " (INVALID, " + start + "-" + mEnd + ")"
+            return this::class.toString() + " (INVALID, " + start + "-" + mEnd + ")"
         }
-        var content = String(mContent!!)
+        var content = mContent!!.toString()
         content = content.substring(start.toInt(), mEnd.toInt() + 1)
         return strClass + " (" + start + " : " + mEnd + ") <<" + content + ">>"
     }
 
     val strClass: String
         get() {
-            val myClass: String = this.javaClass.toString()
+            val myClass: String = this::class.toString()
             return myClass.substring(myClass.lastIndexOf('.') + 1)
         }
     protected val debugName: String
@@ -86,7 +86,7 @@ open class CLElement(private val mContent: CharArray?) {
      * @TODO: add description
      */
     fun content(): String {
-        val content = String(mContent!!)
+        val content = mContent!!.toString()
         return if (mEnd == Long.MAX_VALUE || mEnd < start) {
             content.substring(start.toInt(), start.toInt() + 1)
         } else content.substring(start.toInt(), mEnd.toInt() + 1)
@@ -104,11 +104,11 @@ open class CLElement(private val mContent: CharArray?) {
     val isStarted: Boolean
         get() = start > -1
 
-    open fun toJSON(): String? {
+    open fun toJSON(): String {
         return ""
     }
 
-    open fun toFormattedJSON(indent: Int, forceIndent: Int): String? {
+    open fun toFormattedJSON(indent: Int, forceIndent: Int): String {
         return ""
     }
 
@@ -116,20 +116,16 @@ open class CLElement(private val mContent: CharArray?) {
      * @TODO: add description
      */
     open val int: Int
-        get() = if (this is CLNumber) {
-            this.int
-        } else 0
+        get() = 0
 
     /**
      * @TODO: add description
      */
     open val float: Float
-        get() = if (this is CLNumber) {
-            this.float
-        } else Float.NaN
+        get() = Float.NaN
 
     companion object {
-        protected var sMaxLine = 80 // Max number of characters before the formatter indents
-        protected var sBaseIndent = 2 // default indentation value
+        var sMaxLine = 80 // Max number of characters before the formatter indents
+        var sBaseIndent = 2 // default indentation value
     }
 }

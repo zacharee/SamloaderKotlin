@@ -16,7 +16,7 @@
 package androidx.constraintlayout.core.parser
 
 open class CLContainer(content: CharArray?) : CLElement(content) {
-    var mElements: java.util.ArrayList<CLElement> = java.util.ArrayList<CLElement>()
+    var mElements: ArrayList<CLElement> = ArrayList<CLElement>()
 
     /**
      * @TODO: add description
@@ -29,7 +29,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
     }
 
     override fun toString(): String {
-        val list: java.lang.StringBuilder = java.lang.StringBuilder()
+        val list: StringBuilder = StringBuilder()
         for (element in mElements) {
             if (list.length > 0) {
                 list.append("; ")
@@ -49,8 +49,8 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
     /**
      * @TODO: add description
      */
-    fun names(): java.util.ArrayList<String> {
-        val names: java.util.ArrayList<String> = java.util.ArrayList<String>()
+    fun names(): ArrayList<String> {
+        val names: ArrayList<String> = ArrayList<String>()
         for (element in mElements) {
             if (element is CLKey) {
                 val key = element as CLKey
@@ -101,7 +101,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
      * @TODO: add description
      */
     fun remove(name: String) {
-        val toRemove: java.util.ArrayList<CLElement> = java.util.ArrayList<CLElement>()
+        val toRemove: ArrayList<CLElement> = ArrayList<CLElement>()
         for (element in mElements) {
             val key = element as CLKey
             if (key.content() == name) {
@@ -140,7 +140,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
         }
         throw CLParsingException(
             "no int found for key <" + name + ">,"
-                    + " found [" + element.getStrClass() + "] : " + element, this
+                    + " found [" + element?.strClass + "] : " + element, this
         )
     }
 
@@ -155,7 +155,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
         }
         throw CLParsingException(
             "no float found for key <" + name + ">,"
-                    + " found [" + element.getStrClass() + "] : " + element, this
+                    + " found [" + element?.strClass + "] : " + element, this
         )
     }
 
@@ -170,7 +170,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
         }
         throw CLParsingException(
             "no array found for key <" + name + ">,"
-                    + " found [" + element.getStrClass() + "] : " + element, this
+                    + " found [" + element?.strClass + "] : " + element, this
         )
     }
 
@@ -185,7 +185,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
         }
         throw CLParsingException(
             "no object found for key <" + name + ">,"
-                    + " found [" + element.getStrClass() + "] : " + element, this
+                    + " found [" + element?.strClass + "] : " + element, this
         )
     }
 
@@ -219,7 +219,7 @@ open class CLContainer(content: CharArray?) : CLElement(content) {
         }
         throw CLParsingException(
             "no boolean found for key <" + name + ">,"
-                    + " found [" + element.getStrClass() + "] : " + element, this
+                    + " found [" + element?.strClass + "] : " + element, this
         )
     }
     /////////////////////////////////////////////////////////////////////////

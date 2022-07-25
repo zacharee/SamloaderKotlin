@@ -18,9 +18,11 @@ package androidx.constraintlayout.core.widgets.analyzer
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
 import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
+import kotlin.math.max
+import kotlin.math.min
 
 class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
-    var mWidgets: java.util.ArrayList<WidgetRun> = java.util.ArrayList<WidgetRun>()
+    var mWidgets: ArrayList<WidgetRun> = ArrayList<WidgetRun>()
     private var mChainStyle = 0
 
     init {
@@ -29,7 +31,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
     }
 
     override fun toString(): String {
-        val log: java.lang.StringBuilder = java.lang.StringBuilder("ChainRun ")
+        val log: StringBuilder = StringBuilder("ChainRun ")
         log.append(if (orientation == ConstraintWidget.Companion.HORIZONTAL) "horizontal : " else "vertical : ")
         for (run in mWidgets) {
             log.append("<")
@@ -74,11 +76,11 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
             previous = current.getPreviousChainMember(orientation)
         }
         mWidget = current // first element of the chain
-        mWidgets.add(current.getRun(orientation))
+        mWidgets.add(current.getRun(orientation)!!)
         var next: ConstraintWidget? = current.getNextChainMember(orientation)
         while (next != null) {
             current = next
-            mWidgets.add(current.getRun(orientation))
+            mWidgets.add(current.getRun(orientation)!!)
             next = current.getNextChainMember(orientation)
         }
         for (run in mWidgets) {
@@ -89,12 +91,12 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
             }
         }
         val isInRtl = (orientation == ConstraintWidget.Companion.HORIZONTAL
-                && (mWidget.getParent() as ConstraintWidgetContainer).isRtl)
+                && (mWidget.parent as ConstraintWidgetContainer).isRtl)
         if (isInRtl && mWidgets.size > 1) {
             mWidget = mWidgets.get(mWidgets.size - 1).mWidget
         }
         mChainStyle =
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) mWidget.getHorizontalChainStyle() else mWidget.getVerticalChainStyle()
+            if (orientation == ConstraintWidget.Companion.HORIZONTAL) mWidget.horizontalChainStyle else mWidget.verticalChainStyle
     }
 
     public override fun clear() {
@@ -113,7 +115,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
         if (!(start.resolved && end.resolved)) {
             return
         }
-        val parent: ConstraintWidget = mWidget.getParent()
+        val parent: ConstraintWidget = mWidget.parent!!
         var isInRtl = false
         if (parent is ConstraintWidgetContainer) {
             isInRtl = (parent as ConstraintWidgetContainer).isRtl
@@ -128,7 +130,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
         var firstVisibleWidget = -1
         for (i in 0 until count) {
             val run: WidgetRun = mWidgets.get(i)
-            if (run.mWidget.getVisibility() == ConstraintWidget.Companion.GONE) {
+            if (run.mWidget.visibility == ConstraintWidget.Companion.GONE) {
                 continue
             }
             firstVisibleWidget = i
@@ -138,7 +140,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
         var lastVisibleWidget = -1
         for (i in count - 1 downTo 0) {
             val run: WidgetRun = mWidgets.get(i)
-            if (run.mWidget.getVisibility() == ConstraintWidget.Companion.GONE) {
+            if (run.mWidget.visibility == ConstraintWidget.Companion.GONE) {
                 continue
             }
             lastVisibleWidget = i
@@ -147,7 +149,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
         for (j in 0..1) {
             for (i in 0 until count) {
                 val run: WidgetRun = mWidgets.get(i)
-                if (run.mWidget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                if (run.mWidget.visibility == ConstraintWidget.Companion.GONE) {
                     continue
                 }
                 numVisibleWidgets++
@@ -211,7 +213,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
             var appliedLimits = 0
             for (i in 0 until count) {
                 val run: WidgetRun = mWidgets.get(i)
-                if (run.mWidget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                if (run.mWidget.visibility == ConstraintWidget.Companion.GONE) {
                     continue
                 }
                 if (run.mDimensionBehavior == DimensionBehaviour.MATCH_CONSTRAINT && !run.mDimension.resolved) {
@@ -231,11 +233,11 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
                         min = run.mWidget.mMatchConstraintMinHeight
                     }
                     if (run.matchConstraintsType == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP) {
-                        value = java.lang.Math.min(value, run.mDimension.wrapValue)
+                        value = min(value, run.mDimension.wrapValue)
                     }
-                    value = java.lang.Math.max(min, value)
+                    value = max(min, value)
                     if (max > 0) {
-                        value = java.lang.Math.min(max, value)
+                        value = min(max, value)
                     }
                     if (value != dimension) {
                         appliedLimits++
@@ -250,7 +252,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
                 size = 0
                 for (i in 0 until count) {
                     val run: WidgetRun = mWidgets.get(i)
-                    if (run.mWidget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                    if (run.mWidget.visibility == ConstraintWidget.Companion.GONE) {
                         continue
                     }
                     if (i > 0 && i >= firstVisibleWidget) {
@@ -289,7 +291,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
                     index = count - (i + 1)
                 }
                 val run: WidgetRun = mWidgets.get(index)
-                if (run.mWidget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                if (run.mWidget.visibility == ConstraintWidget.Companion.GONE) {
                     run.start.resolve(position)
                     run.end.resolve(position)
                     continue
@@ -329,7 +331,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
                 } else {
                     run.end.resolve(position)
                 }
-                run.mResolved = true
+                run.isResolved = true
                 if (i < count - 1 && i < lastVisibleWidget) {
                     if (isInRtl) {
                         position -= -run.end.mMargin
@@ -349,7 +351,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
                     index = count - (i + 1)
                 }
                 val run: WidgetRun = mWidgets.get(index)
-                if (run.mWidget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                if (run.mWidget.visibility == ConstraintWidget.Companion.GONE) {
                     run.start.resolve(position)
                     run.end.resolve(position)
                     continue
@@ -375,7 +377,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
                 if (run.mDimensionBehavior == DimensionBehaviour.MATCH_CONSTRAINT
                     && run.matchConstraintsType == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
                 ) {
-                    dimension = java.lang.Math.min(dimension, run.mDimension.wrapValue)
+                    dimension = min(dimension, run.mDimension.wrapValue)
                 }
                 if (isInRtl) {
                     position -= dimension
@@ -397,7 +399,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
             }
         } else if (mChainStyle == ConstraintWidget.Companion.CHAIN_PACKED) {
             var bias: Float =
-                if (orientation == ConstraintWidget.Companion.HORIZONTAL) mWidget.getHorizontalBiasPercent() else mWidget.getVerticalBiasPercent()
+                if (orientation == ConstraintWidget.Companion.HORIZONTAL) mWidget.horizontalBiasPercent else mWidget.verticalBiasPercent
             if (isInRtl) {
                 bias = 1 - bias
             }
@@ -416,7 +418,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
                     index = count - (i + 1)
                 }
                 val run: WidgetRun = mWidgets.get(index)
-                if (run.mWidget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                if (run.mWidget.visibility == ConstraintWidget.Companion.GONE) {
                     run.start.resolve(position)
                     run.end.resolve(position)
                     continue
@@ -474,7 +476,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
         private get() {
             for (i in mWidgets.indices) {
                 val run: WidgetRun = mWidgets.get(i)
-                if (run.mWidget.getVisibility() != ConstraintWidget.Companion.GONE) {
+                if (run.mWidget.visibility != ConstraintWidget.Companion.GONE) {
                     return run.mWidget
                 }
             }
@@ -484,7 +486,7 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
         private get() {
             for (i in mWidgets.indices.reversed()) {
                 val run: WidgetRun = mWidgets.get(i)
-                if (run.mWidget.getVisibility() != ConstraintWidget.Companion.GONE) {
+                if (run.mWidget.visibility != ConstraintWidget.Companion.GONE) {
                     return run.mWidget
                 }
             }
@@ -510,14 +512,14 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
             var startMargin: Int = startAnchor.margin
             val firstVisibleWidget = firstVisibleWidget
             if (firstVisibleWidget != null) {
-                startMargin = firstVisibleWidget.mLeft.getMargin()
+                startMargin = firstVisibleWidget.mLeft!!.margin
             }
             startTarget?.let { addTarget(start, it, startMargin) }
             val endTarget = getTarget(endAnchor!!, ConstraintWidget.Companion.HORIZONTAL)
             var endMargin: Int = endAnchor.margin
             val lastVisibleWidget = lastVisibleWidget
             if (lastVisibleWidget != null) {
-                endMargin = lastVisibleWidget.mRight.getMargin()
+                endMargin = lastVisibleWidget.mRight!!.margin
             }
             if (endTarget != null) {
                 addTarget(end, endTarget, -endMargin)
@@ -529,14 +531,14 @@ class ChainRun(widget: ConstraintWidget, orientation: Int) : WidgetRun(widget) {
             var startMargin: Int = startAnchor.margin
             val firstVisibleWidget = firstVisibleWidget
             if (firstVisibleWidget != null) {
-                startMargin = firstVisibleWidget.mTop.getMargin()
+                startMargin = firstVisibleWidget.mTop!!.margin
             }
             startTarget?.let { addTarget(start, it, startMargin) }
             val endTarget = getTarget(endAnchor!!, ConstraintWidget.Companion.VERTICAL)
             var endMargin: Int = endAnchor.margin
             val lastVisibleWidget = lastVisibleWidget
             if (lastVisibleWidget != null) {
-                endMargin = lastVisibleWidget.mBottom.getMargin()
+                endMargin = lastVisibleWidget.mBottom!!.margin
             }
             if (endTarget != null) {
                 addTarget(end, endTarget, -endMargin)

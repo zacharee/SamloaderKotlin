@@ -33,7 +33,7 @@ open class DimensionDependency(run: WidgetRun) : DependencyNode(run) {
         resolved = true
         this.value = value
         for (node in mDependencies) {
-            node.update(node)
+            node?.update(node)
         }
     }
 }

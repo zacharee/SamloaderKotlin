@@ -39,7 +39,7 @@ interface TypedValues {
      *
      * @return true if it accepted the value
      */
-    fun setValue(id: Int, value: String?): Boolean
+    fun setValue(id: Int, value: String): Boolean
 
     /**
      * Used to set boolean values

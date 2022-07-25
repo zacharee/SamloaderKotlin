@@ -53,7 +53,7 @@ internal class GuidelineReference(widget: ConstraintWidget) : WidgetRun(widget) 
             return
         }
         // ready to solve, centering.
-        val startTarget: DependencyNode = start.mTargets.get(0)
+        val startTarget = start.mTargets.get(0)!!
         val guideline = mWidget as Guideline
         val startPos = (0.5f + startTarget.value * guideline.relativePercent).toInt()
         start.resolve(startPos)
@@ -66,17 +66,17 @@ internal class GuidelineReference(widget: ConstraintWidget) : WidgetRun(widget) 
         val percent = guideline.relativePercent
         if (guideline.orientation == ConstraintWidget.Companion.VERTICAL) {
             if (relativeBegin != -1) {
-                start.mTargets.add(mWidget.mParent.mHorizontalRun.start)
-                mWidget.mParent.mHorizontalRun.start.mDependencies.add(start)
+                start.mTargets.add(mWidget.parent!!.mHorizontalRun!!.start)
+                mWidget.parent!!.mHorizontalRun!!.start.mDependencies.add(start)
                 start.mMargin = relativeBegin
             } else if (relativeEnd != -1) {
-                start.mTargets.add(mWidget.mParent.mHorizontalRun.end)
-                mWidget.mParent.mHorizontalRun.end.mDependencies.add(start)
+                start.mTargets.add(mWidget.parent!!.mHorizontalRun!!.end)
+                mWidget.parent!!.mHorizontalRun!!.end.mDependencies.add(start)
                 start.mMargin = -relativeEnd
             } else {
                 start.delegateToWidgetRun = true
-                start.mTargets.add(mWidget.mParent.mHorizontalRun.end)
-                mWidget.mParent.mHorizontalRun.end.mDependencies.add(start)
+                start.mTargets.add(mWidget.parent!!.mHorizontalRun!!.end)
+                mWidget.parent!!.mHorizontalRun!!.end.mDependencies.add(start)
             }
             // FIXME -- if we move the DependencyNode directly
             //              in the ConstraintAnchor we'll be good.
@@ -84,17 +84,17 @@ internal class GuidelineReference(widget: ConstraintWidget) : WidgetRun(widget) 
             addDependency(mWidget.mHorizontalRun!!.end)
         } else {
             if (relativeBegin != -1) {
-                start.mTargets.add(mWidget.mParent.mVerticalRun.start)
-                mWidget.mParent.mVerticalRun.start.mDependencies.add(start)
+                start.mTargets.add(mWidget.parent!!.mVerticalRun!!.start)
+                mWidget.parent!!.mVerticalRun!!.start.mDependencies.add(start)
                 start.mMargin = relativeBegin
             } else if (relativeEnd != -1) {
-                start.mTargets.add(mWidget.mParent.mVerticalRun.end)
-                mWidget.mParent.mVerticalRun.end.mDependencies.add(start)
+                start.mTargets.add(mWidget.parent!!.mVerticalRun!!.end)
+                mWidget.parent!!.mVerticalRun!!.end.mDependencies.add(start)
                 start.mMargin = -relativeEnd
             } else {
                 start.delegateToWidgetRun = true
-                start.mTargets.add(mWidget.mParent.mVerticalRun.end)
-                mWidget.mParent.mVerticalRun.end.mDependencies.add(start)
+                start.mTargets.add(mWidget.parent!!.mVerticalRun!!.end)
+                mWidget.parent!!.mVerticalRun!!.end.mDependencies.add(start)
             }
             // FIXME -- if we move the DependencyNode directly
             //              in the ConstraintAnchor we'll be good.
@@ -106,9 +106,9 @@ internal class GuidelineReference(widget: ConstraintWidget) : WidgetRun(widget) 
     public override fun applyToWidget() {
         val guideline = mWidget as Guideline
         if (guideline.orientation == ConstraintWidget.Companion.VERTICAL) {
-            mWidget.setX(start.value)
+            mWidget.x = (start.value)
         } else {
-            mWidget.setY(start.value)
+            mWidget.y = (start.value)
         }
     }
 }

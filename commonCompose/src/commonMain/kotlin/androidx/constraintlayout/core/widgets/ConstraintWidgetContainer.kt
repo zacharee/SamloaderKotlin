@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.constraintlayout.core.widgetsimport
+package androidx.constraintlayout.core.widgets
 
 import androidx.constraintlayout.core.*
 import androidx.constraintlayout.core.widgets.*
@@ -93,8 +93,8 @@ class ConstraintWidgetContainer : WidgetContainer {
      */
     fun defineTerminalWidgets() {
         mDependencyGraph.defineTerminalWidgets(
-            getHorizontalDimensionBehaviour(),
-            getVerticalDimensionBehaviour()
+            horizontalDimensionBehaviour!!,
+            verticalDimensionBehaviour!!
         )
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -149,7 +149,7 @@ class ConstraintWidgetContainer : WidgetContainer {
     /**
      * @TODO: add description
      */
-    fun fillMetrics(metrics: Metrics?) {
+    fun fillMetrics(metrics: Metrics) {
         mMetrics = metrics
         system.fillMetrics(metrics)
     }
@@ -208,7 +208,7 @@ class ConstraintWidgetContainer : WidgetContainer {
      */
     constructor(width: Int, height: Int) : super(width, height) {}
     constructor(debugName: String?, width: Int, height: Int) : super(width, height) {
-        setDebugName(debugName)
+        this.debugName = (debugName)
     }
     /**
      * Returns the current optimization level
@@ -252,15 +252,14 @@ class ConstraintWidgetContainer : WidgetContainer {
     }
 
     var mDebugSolverPassCount = 0
-    private var mVerticalWrapMin: WeakReference<ConstraintAnchor>? = null
-    private var mHorizontalWrapMin: WeakReference<ConstraintAnchor>? = null
-    private var mVerticalWrapMax: WeakReference<ConstraintAnchor>? = null
-    private var mHorizontalWrapMax: WeakReference<ConstraintAnchor>? = null
+    private var mVerticalWrapMin: ConstraintAnchor? = null
+    private var mHorizontalWrapMin: ConstraintAnchor? = null
+    private var mVerticalWrapMax: ConstraintAnchor? = null
+    private var mHorizontalWrapMax: ConstraintAnchor? = null
     fun addVerticalWrapMinVariable(top: ConstraintAnchor) {
-        if (mVerticalWrapMin == null || mVerticalWrapMin.get() == null || top.finalValue > mVerticalWrapMin.get()
-                .getFinalValue()
+        if (mVerticalWrapMin == null || mVerticalWrapMin == null || top.finalValue > mVerticalWrapMin!!.finalValue
         ) {
-            mVerticalWrapMin = WeakReference<ConstraintAnchor>(top)
+            mVerticalWrapMin = top
         }
     }
 
@@ -268,18 +267,16 @@ class ConstraintWidgetContainer : WidgetContainer {
      * @TODO: add description
      */
     fun addHorizontalWrapMinVariable(left: ConstraintAnchor) {
-        if (mHorizontalWrapMin == null || mHorizontalWrapMin.get() == null || left.finalValue > mHorizontalWrapMin.get()
-                .getFinalValue()
+        if (mHorizontalWrapMin == null || mHorizontalWrapMin == null || left.finalValue > mHorizontalWrapMin!!.finalValue
         ) {
-            mHorizontalWrapMin = WeakReference<ConstraintAnchor>(left)
+            mHorizontalWrapMin = left
         }
     }
 
     fun addVerticalWrapMaxVariable(bottom: ConstraintAnchor) {
-        if (mVerticalWrapMax == null || mVerticalWrapMax.get() == null || bottom.finalValue > mVerticalWrapMax.get()
-                .getFinalValue()
+        if (mVerticalWrapMax == null || mVerticalWrapMax == null || bottom.finalValue > mVerticalWrapMax!!.finalValue
         ) {
-            mVerticalWrapMax = WeakReference<ConstraintAnchor>(bottom)
+            mVerticalWrapMax = bottom
         }
     }
 
@@ -287,23 +284,22 @@ class ConstraintWidgetContainer : WidgetContainer {
      * @TODO: add description
      */
     fun addHorizontalWrapMaxVariable(right: ConstraintAnchor) {
-        if (mHorizontalWrapMax == null || mHorizontalWrapMax.get() == null || right.finalValue > mHorizontalWrapMax.get()
-                .getFinalValue()
+        if (mHorizontalWrapMax == null || mHorizontalWrapMax == null || right.finalValue > mHorizontalWrapMax!!.finalValue
         ) {
-            mHorizontalWrapMax = WeakReference<ConstraintAnchor>(right)
+            mHorizontalWrapMax = right
         }
     }
 
     private fun addMinWrap(constraintAnchor: ConstraintAnchor, parentMin: SolverVariable) {
         val variable = system.createObjectVariable(constraintAnchor)
         val wrapStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
-        system.addGreaterThan(variable, parentMin, 0, wrapStrength)
+        system.addGreaterThan(variable!!, parentMin, 0, wrapStrength)
     }
 
     private fun addMaxWrap(constraintAnchor: ConstraintAnchor, parentMax: SolverVariable) {
         val variable = system.createObjectVariable(constraintAnchor)
         val wrapStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
-        system.addGreaterThan(parentMax, variable, 0, wrapStrength)
+        system.addGreaterThan(parentMax, variable!!, 0, wrapStrength)
     }
 
     var mWidgetsToAdd: HashSet<ConstraintWidget?> = HashSet()
@@ -314,7 +310,7 @@ class ConstraintWidgetContainer : WidgetContainer {
      * @param system the solver we want to add the widget to
      */
     fun addChildrenToSolver(system: LinearSystem): Boolean {
-        if (ConstraintWidgetContainer.Companion.DEBUG) {
+        if (DEBUG) {
             println("\n#######################################")
             println("##    ADD CHILDREN TO SOLVER  ($mDebugSolverPassCount) ##")
             println("#######################################\n")
@@ -358,7 +354,7 @@ class ConstraintWidgetContainer : WidgetContainer {
             val numLayouts: Int = mWidgetsToAdd.size
             var layout: VirtualLayout? = null
             for (widget in mWidgetsToAdd) {
-                layout = widget
+                layout = widget as VirtualLayout
 
                 // we'll go through the virtual layouts that references others first, to give
                 // them a shot at setting their constraints.
@@ -371,13 +367,13 @@ class ConstraintWidgetContainer : WidgetContainer {
             if (numLayouts == mWidgetsToAdd.size) {
                 // looks we didn't find anymore dependency, let's add everything.
                 for (widget in mWidgetsToAdd) {
-                    widget.addToSolver(system, optimize)
+                    widget?.addToSolver(system, optimize)
                 }
                 mWidgetsToAdd.clear()
             }
         }
         if (LinearSystem.USE_DEPENDENCY_ORDERING) {
-            val widgetsToAdd: HashSet<ConstraintWidget> = HashSet<ConstraintWidget>()
+            val widgetsToAdd: HashSet<ConstraintWidget?> = HashSet()
             for (i in 0 until count) {
                 val widget = mChildren[i]
                 if (!widget.addFirst()) {
@@ -390,29 +386,29 @@ class ConstraintWidgetContainer : WidgetContainer {
             }
             addChildrenToSolverByDependency(this, system, widgetsToAdd, orientation, false)
             for (widget in widgetsToAdd) {
-                Optimizer.checkMatchParent(this, system, widget)
+                Optimizer.checkMatchParent(this, system, widget!!)
                 widget.addToSolver(system, optimize)
             }
         } else {
             for (i in 0 until count) {
                 val widget = mChildren[i]
                 if (widget is ConstraintWidgetContainer) {
-                    val horizontalBehaviour: DimensionBehaviour =
+                    val horizontalBehaviour =
                         widget.mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_HORIZONTAL)
-                    val verticalBehaviour: DimensionBehaviour =
+                    val verticalBehaviour =
                         widget.mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_VERTICAL)
                     if (horizontalBehaviour == DimensionBehaviour.WRAP_CONTENT) {
-                        widget.setHorizontalDimensionBehaviour(DimensionBehaviour.FIXED)
+                        widget.horizontalDimensionBehaviour = (DimensionBehaviour.FIXED)
                     }
                     if (verticalBehaviour == DimensionBehaviour.WRAP_CONTENT) {
-                        widget.setVerticalDimensionBehaviour(DimensionBehaviour.FIXED)
+                        widget.verticalDimensionBehaviour = (DimensionBehaviour.FIXED)
                     }
                     widget.addToSolver(system, optimize)
                     if (horizontalBehaviour == DimensionBehaviour.WRAP_CONTENT) {
-                        widget.setHorizontalDimensionBehaviour(horizontalBehaviour)
+                        widget.horizontalDimensionBehaviour = (horizontalBehaviour)
                     }
                     if (verticalBehaviour == DimensionBehaviour.WRAP_CONTENT) {
-                        widget.setVerticalDimensionBehaviour(verticalBehaviour)
+                        widget.verticalDimensionBehaviour = (verticalBehaviour)
                     }
                 } else {
                     Optimizer.checkMatchParent(this, system, widget)
@@ -484,7 +480,7 @@ class ConstraintWidgetContainer : WidgetContainer {
      * Layout the tree of widgets
      */
     override fun layout() {
-        if (ConstraintWidgetContainer.Companion.DEBUG) {
+        if (DEBUG) {
             println("\n#####################################")
             println("##          CL LAYOUT PASS           ##")
             println("#####################################\n")
@@ -501,7 +497,7 @@ class ConstraintWidgetContainer : WidgetContainer {
             mListDimensionBehaviors[ConstraintWidget.DIMENSION_VERTICAL]!!
         val originalHorizontalDimensionBehaviour: DimensionBehaviour =
             mListDimensionBehaviors[ConstraintWidget.DIMENSION_HORIZONTAL]!!
-        if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+        if (DEBUG_LAYOUT) {
             println(
                 "layout with preW: " + preW + " ("
                         + mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_HORIZONTAL) + ") preH: " + preH
@@ -555,17 +551,17 @@ class ConstraintWidgetContainer : WidgetContainer {
                     && child !is VirtualLayout
                     && !child.isInVirtualLayout
                 ) {
-                    val widthBehavior: DimensionBehaviour =
+                    val widthBehavior =
                         child.getDimensionBehaviour(ConstraintWidget.Companion.HORIZONTAL)
-                    val heightBehavior: DimensionBehaviour =
+                    val heightBehavior =
                         child.getDimensionBehaviour(ConstraintWidget.Companion.VERTICAL)
                     val skip =
                         widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultWidth != ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP && heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT && child.mMatchConstraintDefaultHeight != ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
                     if (!skip) {
                         val measure = BasicMeasure.Measure()
-                        ConstraintWidgetContainer.Companion.measure(
+                        measure(
                             0, child, mMeasurer,
-                            measure, BasicMeasure.Measure.Companion.SELF_DIMENSIONS
+                            measure, BasicMeasure.Measure.SELF_DIMENSIONS
                         )
                     }
                 }
@@ -586,18 +582,18 @@ class ConstraintWidgetContainer : WidgetContainer {
             if (Grouping.simpleSolvingPass(this, measurer)) {
                 if (originalHorizontalDimensionBehaviour == DimensionBehaviour.WRAP_CONTENT) {
                     if (preW < width && preW > 0) {
-                        if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                        if (DEBUG_LAYOUT) {
                             println("Override width " + width + " to " + preH)
                         }
                         width = (preW)
                         isWidthMeasuredTooSmall = true
                     } else {
-                        preW = getWidth()
+                        preW = width
                     }
                 }
                 if (originalVerticalDimensionBehaviour == DimensionBehaviour.WRAP_CONTENT) {
                     if (preH < height && preH > 0) {
-                        if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                        if (DEBUG_LAYOUT) {
                             println("Override height " + height + " to " + preH)
                         }
                         height = (preH)
@@ -607,7 +603,7 @@ class ConstraintWidgetContainer : WidgetContainer {
                     }
                 }
                 wrap_override = true
-                if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                if (DEBUG_LAYOUT) {
                     println(
                         "layout post opt, preW: " + preW
                                 + " (" + mListDimensionBehaviors.get(ConstraintWidget.Companion.DIMENSION_HORIZONTAL)
@@ -652,7 +648,7 @@ class ConstraintWidgetContainer : WidgetContainer {
             try {
                 system.reset()
                 resetChains()
-                if (ConstraintWidgetContainer.Companion.DEBUG) {
+                if (DEBUG) {
                     var debugName = this.debugName
                     if (debugName == null) {
                         debugName = "root"
@@ -672,20 +668,20 @@ class ConstraintWidgetContainer : WidgetContainer {
                     }
                 }
                 needsSolving = addChildrenToSolver(system)
-                if (mVerticalWrapMin != null && mVerticalWrapMin.get() != null) {
-                    addMinWrap(mVerticalWrapMin.get(), system.createObjectVariable(mTop)!!)
+                if (mVerticalWrapMin != null && mVerticalWrapMin != null) {
+                    addMinWrap(mVerticalWrapMin!!, system.createObjectVariable(mTop)!!)
                     mVerticalWrapMin = null
                 }
-                if (mVerticalWrapMax != null && mVerticalWrapMax.get() != null) {
-                    addMaxWrap(mVerticalWrapMax.get(), system.createObjectVariable(mBottom)!!)
+                if (mVerticalWrapMax != null && mVerticalWrapMax != null) {
+                    addMaxWrap(mVerticalWrapMax!!, system.createObjectVariable(mBottom)!!)
                     mVerticalWrapMax = null
                 }
-                if (mHorizontalWrapMin != null && mHorizontalWrapMin.get() != null) {
-                    addMinWrap(mHorizontalWrapMin.get(), system.createObjectVariable(mLeft)!!)
+                if (mHorizontalWrapMin != null && mHorizontalWrapMin != null) {
+                    addMinWrap(mHorizontalWrapMin!!, system.createObjectVariable(mLeft)!!)
                     mHorizontalWrapMin = null
                 }
-                if (mHorizontalWrapMax != null && mHorizontalWrapMax.get() != null) {
-                    addMaxWrap(mHorizontalWrapMax.get(), system.createObjectVariable(mRight)!!)
+                if (mHorizontalWrapMax != null && mHorizontalWrapMax != null) {
+                    addMaxWrap(mHorizontalWrapMax!!, system.createObjectVariable(mRight)!!)
                     mHorizontalWrapMax = null
                 }
                 if (needsSolving) {
@@ -705,7 +701,7 @@ class ConstraintWidgetContainer : WidgetContainer {
                 }
                 false
             }
-            if (hasWrapContent && countSolve < ConstraintWidgetContainer.Companion.MAX_ITERATIONS && Optimizer.sFlags[Optimizer.FLAG_RECOMPUTE_BOUNDS]) {
+            if (hasWrapContent && countSolve < MAX_ITERATIONS && Optimizer.sFlags[Optimizer.FLAG_RECOMPUTE_BOUNDS]) {
                 // let's get the new bounds
                 var maxX = 0
                 var maxY = 0
@@ -718,7 +714,7 @@ class ConstraintWidgetContainer : WidgetContainer {
                 maxY = max(mMinHeight, maxY)
                 if (originalHorizontalDimensionBehaviour == DimensionBehaviour.WRAP_CONTENT) {
                     if (width < maxX) {
-                        if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                        if (DEBUG_LAYOUT) {
                             println(
                                 countSolve.toString() +
                                         "layout override width from " + width + " vs " + maxX
@@ -734,7 +730,7 @@ class ConstraintWidgetContainer : WidgetContainer {
                 }
                 if (originalVerticalDimensionBehaviour == DimensionBehaviour.WRAP_CONTENT) {
                     if (height < maxY) {
-                        if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                        if (DEBUG_LAYOUT) {
                             println(
                                 "layout override height from " + height + " vs " + maxY
                             )
@@ -749,9 +745,9 @@ class ConstraintWidgetContainer : WidgetContainer {
                 }
             }
             if (true) {
-                val width: Int = max(mMinWidth, width)
+                var width: Int = max(mMinWidth, width)
                 if (width > this.width) {
-                    if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                    if (DEBUG_LAYOUT) {
                         println(
                             "layout override 2, width from " + this.width + " vs " + width
                         )
@@ -762,9 +758,9 @@ class ConstraintWidgetContainer : WidgetContainer {
                     wrap_override = true
                     needsSolving = true
                 }
-                val height: Int = max(mMinHeight, this.height)
+                var height: Int = max(mMinHeight, this.height)
                 if (height > this.height) {
-                    if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                    if (DEBUG_LAYOUT) {
                         println(
                             "layout override 2, height from " + this.height + " vs " + height
                         )
@@ -780,7 +776,7 @@ class ConstraintWidgetContainer : WidgetContainer {
                         && preW > 0
                     ) {
                         if (width > preW) {
-                            if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                            if (DEBUG_LAYOUT) {
                                 println(
                                     "layout override 3, width from " + width + " vs "
                                             + preW
@@ -798,7 +794,7 @@ class ConstraintWidgetContainer : WidgetContainer {
                         && preH > 0
                     ) {
                         if (height > preH) {
-                            if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+                            if (DEBUG_LAYOUT) {
                                 println(
                                     "layout override 3, height from " + height + " vs "
                                             + preH
@@ -813,12 +809,12 @@ class ConstraintWidgetContainer : WidgetContainer {
                         }
                     }
                 }
-                if (countSolve > ConstraintWidgetContainer.Companion.MAX_ITERATIONS) {
+                if (countSolve > MAX_ITERATIONS) {
                     needsSolving = false
                 }
             }
         }
-        if (ConstraintWidgetContainer.Companion.DEBUG_LAYOUT) {
+        if (DEBUG_LAYOUT) {
             println(
                 "Solved system in " + countSolve + " iterations (" + width + " x "
                         + height + ")"
@@ -828,7 +824,7 @@ class ConstraintWidgetContainer : WidgetContainer {
         if (wrap_override) {
             mListDimensionBehaviors[(ConstraintWidget.Companion.DIMENSION_HORIZONTAL)] =
                 originalHorizontalDimensionBehaviour
-            mListDimensionBehaviors.[(ConstraintWidget.Companion.DIMENSION_VERTICAL)] =
+            mListDimensionBehaviors[(ConstraintWidget.Companion.DIMENSION_VERTICAL)] =
                 originalVerticalDimensionBehaviour
         }
         resetSolverVariables(system.cache)
@@ -872,9 +868,9 @@ class ConstraintWidgetContainer : WidgetContainer {
      *
      * @return array of guidelines
      */
-    val horizontalGuidelines: java.util.ArrayList<Guideline>
+    val horizontalGuidelines: ArrayList<Guideline>
         get() {
-            val guidelines: java.util.ArrayList<Guideline> = java.util.ArrayList<Guideline>()
+            val guidelines: ArrayList<Guideline> = ArrayList<Guideline>()
             var i = 0
             val mChildrenSize = mChildren.size
             while (i < mChildrenSize) {
@@ -920,8 +916,7 @@ class ConstraintWidgetContainer : WidgetContainer {
      */
     private fun addHorizontalChain(widget: ConstraintWidget) {
         if (mHorizontalChainsSize + 1 >= mHorizontalChainsArray.size) {
-            mHorizontalChainsArray = java.util.Arrays
-                .copyOf<ChainHead>(mHorizontalChainsArray, mHorizontalChainsArray.size * 2)
+            mHorizontalChainsArray = mHorizontalChainsArray.copyOf(mHorizontalChainsArray.size * 2)
         }
         mHorizontalChainsArray[mHorizontalChainsSize] = ChainHead(widget, ConstraintWidget.Companion.HORIZONTAL, isRtl)
         mHorizontalChainsSize++
@@ -935,8 +930,7 @@ class ConstraintWidgetContainer : WidgetContainer {
      */
     private fun addVerticalChain(widget: ConstraintWidget) {
         if (mVerticalChainsSize + 1 >= mVerticalChainsArray.size) {
-            mVerticalChainsArray = java.util.Arrays
-                .copyOf<ChainHead>(mVerticalChainsArray, mVerticalChainsArray.size * 2)
+            mVerticalChainsArray = mVerticalChainsArray.copyOf(mVerticalChainsArray.size * 2)
         }
         mVerticalChainsArray[mVerticalChainsSize] = ChainHead(widget, ConstraintWidget.Companion.VERTICAL, isRtl)
         mVerticalChainsSize++
@@ -952,13 +946,13 @@ class ConstraintWidgetContainer : WidgetContainer {
     /**
      * @TODO: add description
      */
-    override fun getSceneString(ret: java.lang.StringBuilder) {
+    override fun getSceneString(ret: StringBuilder) {
         ret.append(stringId + ":{\n")
         ret.append("  actualWidth:$mWidth")
         ret.append("\n")
         ret.append("  actualHeight:$mHeight")
         ret.append("\n")
-        val children: java.util.ArrayList<ConstraintWidget> = children
+        val children: ArrayList<ConstraintWidget> = children
         for (child in children) {
             child.getSceneString(ret)
             ret.append(",\n")
@@ -982,7 +976,7 @@ class ConstraintWidgetContainer : WidgetContainer {
             measure: BasicMeasure.Measure,
             measureStrategy: Int
         ): Boolean {
-            if (ConstraintWidgetContainer.Companion.DEBUG) {
+            if (DEBUG) {
                 println(Direct.ls(level) + "(M) call to measure " + widget.debugName)
             }
             if (measurer == null) {
@@ -991,7 +985,7 @@ class ConstraintWidgetContainer : WidgetContainer {
             if (widget.visibility == ConstraintWidget.Companion.GONE || widget is Guideline
                 || widget is Barrier
             ) {
-                if (ConstraintWidgetContainer.Companion.DEBUG) {
+                if (DEBUG) {
                     println(
                         Direct.ls(level)
                                 + "(M) no measure needed for " + widget.debugName
@@ -1009,8 +1003,8 @@ class ConstraintWidgetContainer : WidgetContainer {
             measure.measureStrategy = measureStrategy
             var horizontalMatchConstraints = measure.horizontalBehavior == DimensionBehaviour.MATCH_CONSTRAINT
             var verticalMatchConstraints = measure.verticalBehavior == DimensionBehaviour.MATCH_CONSTRAINT
-            val horizontalUseRatio = horizontalMatchConstraints && widget.mDimensionRatio > 0
-            val verticalUseRatio = verticalMatchConstraints && widget.mDimensionRatio > 0
+            val horizontalUseRatio = horizontalMatchConstraints && widget.dimensionRatio > 0
+            val verticalUseRatio = verticalMatchConstraints && widget.dimensionRatio > 0
             if (horizontalMatchConstraints && widget.hasDanglingDimension(ConstraintWidget.Companion.HORIZONTAL) && widget.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD && !horizontalUseRatio) {
                 horizontalMatchConstraints = false
                 measure.horizontalBehavior = DimensionBehaviour.WRAP_CONTENT
@@ -1058,7 +1052,7 @@ class ConstraintWidgetContainer : WidgetContainer {
                     // regardless of which side we are using for the ratio, getDimensionRatio() already
                     // made sure that it's expressed in WxH format, so we can simply go and multiply
                     measure.horizontalDimension = (widget.dimensionRatio * measuredHeight).toInt()
-                    if (ConstraintWidgetContainer.Companion.DEBUG) {
+                    if (DEBUG) {
                         println("(M) Measured once for ratio on horizontal side...")
                     }
                 }
@@ -1089,7 +1083,7 @@ class ConstraintWidgetContainer : WidgetContainer {
                         // getDimensionRatio() already got reverted, so we can simply multiply
                         measure.verticalDimension = (widget.dimensionRatio * measuredWidth).toInt()
                     }
-                    if (ConstraintWidgetContainer.Companion.DEBUG) {
+                    if (DEBUG) {
                         println("(M) Measured once for ratio on vertical side...")
                     }
                 }
@@ -1100,7 +1094,7 @@ class ConstraintWidgetContainer : WidgetContainer {
             widget.hasBaseline = measure.measuredHasBaseline
             widget.baselineDistance = measure.measuredBaseline
             measure.measureStrategy = BasicMeasure.Measure.Companion.SELF_DIMENSIONS
-            if (ConstraintWidgetContainer.Companion.DEBUG) {
+            if (DEBUG) {
                 println(
                     "(M) Measured " + widget.debugName + " with : "
                             + widget.horizontalDimensionBehaviour + " x "

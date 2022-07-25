@@ -17,13 +17,15 @@ package androidx.constraintlayout.core.widgets.analyzer
 
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
+import kotlin.math.max
+import kotlin.math.min
 
 class RunGroup(run: WidgetRun?, dir: Int) {
     var position = 0
     var dual = false
     var mFirstRun: WidgetRun? = null
     var mLastRun: WidgetRun? = null
-    var mRuns: java.util.ArrayList<WidgetRun> = java.util.ArrayList<WidgetRun>()
+    var mRuns: ArrayList<WidgetRun> = ArrayList<WidgetRun>()
     var mGroupIndex = 0
     var mDirection: Int
 
@@ -35,7 +37,7 @@ class RunGroup(run: WidgetRun?, dir: Int) {
         mDirection = dir
     }
 
-    fun add(run: WidgetRun?) {
+    fun add(run: WidgetRun) {
         mRuns.add(run)
         mLastRun = run
     }
@@ -57,7 +59,7 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                     // skip our own sibling node
                     continue
                 }
-                position = java.lang.Math.max(
+                position = max(
                     position,
                     traverseStart(nextNode, startPosition + nextNode.mMargin)
                 )
@@ -65,9 +67,9 @@ class RunGroup(run: WidgetRun?, dir: Int) {
         }
         if (node === run!!.start) {
             // let's go for our sibling
-            val dimension: Long = run.getWrapDimension()
-            position = java.lang.Math.max(position, traverseStart(run!!.end, startPosition + dimension))
-            position = java.lang.Math.max(position, startPosition + dimension - run!!.end.mMargin)
+            val dimension: Long = run.wrapDimension
+            position = max(position, traverseStart(run!!.end, startPosition + dimension))
+            position = max(position, startPosition + dimension - run!!.end.mMargin)
         }
         return position
     }
@@ -89,7 +91,7 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                     // skip our own sibling node
                     continue
                 }
-                position = java.lang.Math.min(
+                position = min(
                     position,
                     traverseEnd(nextNode, startPosition + nextNode.mMargin)
                 )
@@ -97,9 +99,9 @@ class RunGroup(run: WidgetRun?, dir: Int) {
         }
         if (node === run!!.end) {
             // let's go for our sibling
-            val dimension: Long = run.getWrapDimension()
-            position = java.lang.Math.min(position, traverseEnd(run!!.start, startPosition - dimension))
-            position = java.lang.Math.min(position, startPosition - dimension - run!!.start.mMargin)
+            val dimension: Long = run.wrapDimension
+            position = min(position, traverseEnd(run!!.start, startPosition - dimension))
+            position = min(position, startPosition - dimension - run!!.start.mMargin)
         }
         return position
     }
@@ -122,12 +124,12 @@ class RunGroup(run: WidgetRun?, dir: Int) {
             }
         }
         val containerStart: DependencyNode =
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) container.mHorizontalRun.start else container.mVerticalRun.start
+            if (orientation == ConstraintWidget.Companion.HORIZONTAL) container.mHorizontalRun!!.start else container.mVerticalRun!!.start
         val containerEnd: DependencyNode =
-            if (orientation == ConstraintWidget.Companion.HORIZONTAL) container.mHorizontalRun.end else container.mVerticalRun.end
+            if (orientation == ConstraintWidget.Companion.HORIZONTAL) container.mHorizontalRun!!.end else container.mVerticalRun!!.end
         val runWithStartTarget: Boolean = mFirstRun!!.start.mTargets.contains(containerStart)
         val runWithEndTarget: Boolean = mFirstRun!!.end.mTargets.contains(containerEnd)
-        var dimension = mFirstRun.getWrapDimension()
+        var dimension = mFirstRun!!.wrapDimension
         if (runWithStartTarget && runWithEndTarget) {
             val maxPosition = traverseStart(mFirstRun!!.start, 0)
             val minPosition = traverseEnd(mFirstRun!!.end, 0)
@@ -153,14 +155,13 @@ class RunGroup(run: WidgetRun?, dir: Int) {
         } else if (runWithStartTarget) {
             val maxPosition = traverseStart(mFirstRun!!.start, mFirstRun!!.start.mMargin.toLong())
             val runDimension: Long = mFirstRun!!.start.mMargin + dimension
-            dimension = java.lang.Math.max(maxPosition, runDimension)
+            dimension = max(maxPosition, runDimension)
         } else if (runWithEndTarget) {
             val minPosition = traverseEnd(mFirstRun!!.end, mFirstRun!!.end.mMargin.toLong())
             val runDimension: Long = -mFirstRun!!.end.mMargin + dimension
-            dimension = java.lang.Math.max(-minPosition, runDimension)
+            dimension = max(-minPosition, runDimension)
         } else {
-            dimension = mFirstRun!!.start.mMargin.toLong()
-            +mFirstRun.getWrapDimension() - mFirstRun!!.end.mMargin
+            dimension = mFirstRun!!.start.mMargin.toLong() + mFirstRun!!.wrapDimension - mFirstRun!!.end.mMargin
         }
         return dimension
     }
@@ -182,7 +183,7 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                         }
                     } else {
                         if (run !is HelperReferences) {
-                            run.mWidget.isTerminalWidget.get(orientation) = false
+                            run.mWidget.isTerminalWidget[orientation] = false
                         }
                     }
                     defineTerminalWidget(node.mRun, orientation)
@@ -202,7 +203,7 @@ class RunGroup(run: WidgetRun?, dir: Int) {
                         }
                     } else {
                         if (run !is HelperReferences) {
-                            run.mWidget.isTerminalWidget.get(orientation) = false
+                            run.mWidget.isTerminalWidget[orientation] = false
                         }
                     }
                     defineTerminalWidget(node.mRun, orientation)

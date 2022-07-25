@@ -53,7 +53,7 @@ class ConstraintAnchor
     /**
      * @TODO: add description
      */
-    fun findDependents(orientation: Int, list: ArrayList<WidgetGroup>?, group: WidgetGroup?) {
+    fun findDependents(orientation: Int, list: ArrayList<WidgetGroup>, group: WidgetGroup?) {
         if (mDependents != null) {
             for (anchor in mDependents!!) {
                 Grouping.findDependents(anchor.owner, orientation, list, group)

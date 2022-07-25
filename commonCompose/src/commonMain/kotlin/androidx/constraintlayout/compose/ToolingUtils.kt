@@ -23,7 +23,7 @@ import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.constraintlayout.core.state.State.Companion.PARENT
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import androidx.constraintlayout.core.widgets.HelperWidget
-import androidx.constraintlayout.core.widgetsimport.ConstraintWidgetContainer
+import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
 import kotlinx.serialization.json.*
 
 /**

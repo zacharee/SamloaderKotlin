@@ -16,8 +16,9 @@
 package androidx.constraintlayout.core.state.helpers
 
 import androidx.constraintlayout.core.state.*
+import androidx.constraintlayout.core.state.HelperReference
 
-class AlignHorizontallyReference(state: State?) : HelperReference(state, State.Helper.ALIGN_VERTICALLY) {
+class AlignHorizontallyReference(state: State) : HelperReference(state, State.Helper.ALIGN_VERTICALLY) {
     private val mBias = 0.5f
 
     /**
@@ -25,7 +26,7 @@ class AlignHorizontallyReference(state: State?) : HelperReference(state, State.H
      */
     override fun apply() {
         for (key in mReferences) {
-            val reference: ConstraintReference = mState.constraints(key)
+            val reference: ConstraintReference = mState.constraints(key)!!
             reference.clearHorizontal()
             if (mStartToStart != null) {
                 reference.startToStart(mStartToStart)

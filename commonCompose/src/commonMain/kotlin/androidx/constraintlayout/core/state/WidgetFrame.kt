@@ -15,9 +15,12 @@
  */
 package androidx.constraintlayout.core.state
 
+import androidx.constraintlayout.core.motion.CustomAttribute
 import androidx.constraintlayout.core.motion.CustomVariable
 import androidx.constraintlayout.core.motion.utils.TypedBundle
 import androidx.constraintlayout.core.motion.utils.TypedValues
+import androidx.constraintlayout.core.parser.*
+import androidx.constraintlayout.core.widgets.ConstraintAnchor
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import kotlin.math.max
 
@@ -102,7 +105,7 @@ class WidgetFrame {
         setMotionAttributes(frame.motionProperties)
         mCustom?.clear()
         for (c in frame.mCustom!!.values) {
-            mCustom[c.name] = c.copy()
+            mCustom!![c.name!!] = c.copy()
         }
     }
 
@@ -161,7 +164,7 @@ class WidgetFrame {
     /**
      * @TODO: add description
      */
-    fun addCustomColor(name: String?, color: Int) {
+    fun addCustomColor(name: String, color: Int) {
         setCustomAttribute(name, TypedValues.Custom.Companion.TYPE_COLOR, color)
     }
 
@@ -170,32 +173,32 @@ class WidgetFrame {
      */
     fun getCustomColor(name: String?): Int {
         return if (mCustom!!.containsKey(name)) {
-            mCustom[name].getColorValue()
+            mCustom[name]!!.integerValue
         } else -0x5578
     }
 
     /**
      * @TODO: add description
      */
-    fun addCustomFloat(name: String?, value: Float) {
+    fun addCustomFloat(name: String, value: Float) {
         setCustomAttribute(name, TypedValues.Custom.Companion.TYPE_FLOAT, value)
     }
 
     /**
      * @TODO: add description
      */
-    fun getCustomFloat(name: String?): Float {
-        return if (mCustom.containsKey(name)) {
-            mCustom.get(name).getFloatValue()
+    fun getCustomFloat(name: String): Float {
+        return if (mCustom!!.containsKey(name)) {
+            mCustom.get(name)!!.floatValue
         } else Float.NaN
     }
 
     /**
      * @TODO: add description
      */
-    fun setCustomAttribute(name: String?, type: Int, value: Float) {
-        if (mCustom.containsKey(name)) {
-            mCustom.get(name).setFloatValue(value)
+    fun setCustomAttribute(name: String, type: Int, value: Float) {
+        if (mCustom!!.containsKey(name)) {
+            mCustom.get(name)!!.floatValue = (value)
         } else {
             mCustom.put(name, CustomVariable(name, type, value))
         }
@@ -204,9 +207,9 @@ class WidgetFrame {
     /**
      * @TODO: add description
      */
-    fun setCustomAttribute(name: String?, type: Int, value: Int) {
-        if (mCustom.containsKey(name)) {
-            mCustom.get(name).setIntValue(value)
+    fun setCustomAttribute(name: String, type: Int, value: Int) {
+        if (mCustom!!.containsKey(name)) {
+            mCustom.get(name)!!.setIntValue(value)
         } else {
             mCustom.put(name, CustomVariable(name, type, value))
         }
@@ -215,9 +218,9 @@ class WidgetFrame {
     /**
      * @TODO: add description
      */
-    fun setCustomAttribute(name: String?, type: Int, value: Boolean) {
-        if (mCustom.containsKey(name)) {
-            mCustom.get(name).setBooleanValue(value)
+    fun setCustomAttribute(name: String, type: Int, value: Boolean) {
+        if (mCustom!!.containsKey(name)) {
+            mCustom.get(name)!!.booleanValue = (value)
         } else {
             mCustom.put(name, CustomVariable(name, type, value))
         }
@@ -226,9 +229,9 @@ class WidgetFrame {
     /**
      * @TODO: add description
      */
-    fun setCustomAttribute(name: String?, type: Int, value: String?) {
-        if (mCustom.containsKey(name)) {
-            mCustom.get(name).setStringValue(value)
+    fun setCustomAttribute(name: String, type: Int, value: String?) {
+        if (mCustom!!.containsKey(name)) {
+            mCustom.get(name)!!.stringValue = (value)
         } else {
             mCustom.put(name, CustomVariable(name, type, value))
         }
@@ -237,12 +240,12 @@ class WidgetFrame {
     /**
      * @TODO: add description
      */
-    fun getCustomAttribute(name: String?): CustomVariable {
-        return mCustom.get(name)
+    fun getCustomAttribute(name: String): CustomVariable {
+        return mCustom!!.get(name)!!
     }
 
     val customAttributeNames: Set<String>
-        get() = mCustom.keys
+        get() = mCustom!!.keys
 
     /**
      * @TODO: add description
@@ -290,13 +293,13 @@ class WidgetFrame {
             val k = tmp as CLKey
             val v = k.value
             val vStr: String = v!!.content()
-            if (vStr.matches("#[0-9a-fA-F]+")) {
+            if (vStr.matches(Regex("#[0-9a-fA-F]+"))) {
                 val color = vStr.substring(1).toInt(16)
-                setCustomAttribute(name, TypedValues.Custom.Companion.TYPE_COLOR, color)
+                setCustomAttribute(name!!, TypedValues.Custom.Companion.TYPE_COLOR, color)
             } else if (v is CLNumber) {
-                setCustomAttribute(name, TypedValues.Custom.Companion.TYPE_FLOAT, v.float)
+                setCustomAttribute(name!!, TypedValues.Custom.Companion.TYPE_FLOAT, v.float)
             } else {
-                setCustomAttribute(name, TypedValues.Custom.Companion.TYPE_STRING, vStr)
+                setCustomAttribute(name!!, TypedValues.Custom.Companion.TYPE_STRING, vStr)
             }
         }
     }
@@ -306,7 +309,6 @@ class WidgetFrame {
     /**
      * @TODO: add description
      */
-    @JvmOverloads
     fun serialize(ret: StringBuilder, sendPhoneOrientation: Boolean = false): StringBuilder {
         val frame = this
         ret.append("{\n")
@@ -338,10 +340,10 @@ class WidgetFrame {
         if (sendPhoneOrientation) {
             add(ret, "phone_orientation", phone_orientation)
         }
-        if (frame.mCustom.size != 0) {
+        if (frame.mCustom!!.size != 0) {
             ret.append("custom : {\n")
             for (s in frame.mCustom.keys) {
-                val value: CustomVariable = frame.mCustom.get(s)
+                val value = frame.mCustom.get(s)!!
                 ret.append(s)
                 ret.append(": ")
                 when (value.type) {
@@ -382,16 +384,16 @@ class WidgetFrame {
 
     private fun serializeAnchor(ret: StringBuilder, type: ConstraintAnchor.Type) {
         val anchor = widget!!.getAnchor(type)
-        if (anchor == null || anchor.mTarget == null) {
+        if (anchor == null || anchor.target == null) {
             return
         }
         ret.append("Anchor")
         ret.append(type.name)
         ret.append(": ['")
-        val str: String = anchor.mTarget.getOwner().stringId
+        val str = anchor.target!!.owner.stringId
         ret.append(str ?: "#PARENT")
         ret.append("', '")
-        ret.append(anchor.mTarget.getType().name)
+        ret.append(anchor.target!!.type.name)
         ret.append("', '")
         ret.append(anchor.mMargin)
         ret.append("'],\n")
@@ -401,34 +403,34 @@ class WidgetFrame {
      * For debugging only
      */
     fun printCustomAttributes() {
-        val s: StackTraceElement = Throwable().getStackTrace().get(1)
-        var ss = ".(" + s.getFileName() + ":" + s.getLineNumber() + ") " + s.getMethodName()
-        ss += " " + this.hashCode() % 1000
-        if (widget != null) {
-            ss += "/" + widget.hashCode() % 1000 + " "
-        } else {
-            ss += "/NULL "
-        }
-        if (mCustom != null) {
-            for (key in mCustom.keys) {
-                println(ss + mCustom.get(key).toString())
-            }
-        }
+//        val s: StackTraceElement = Throwable().getStackTrace().get(1)
+//        var ss = ".(" + s.getFileName() + ":" + s.getLineNumber() + ") " + s.getMethodName()
+//        ss += " " + this.hashCode() % 1000
+//        if (widget != null) {
+//            ss += "/" + widget.hashCode() % 1000 + " "
+//        } else {
+//            ss += "/NULL "
+//        }
+//        if (mCustom != null) {
+//            for (key in mCustom.keys) {
+//                println(ss + mCustom.get(key).toString())
+//            }
+//        }
     }
 
     /**
      * For debugging only
      */
     fun logv(str: String) {
-        val s: StackTraceElement = Throwable().getStackTrace().get(1)
-        var ss = ".(" + s.getFileName() + ":" + s.getLineNumber() + ") " + s.getMethodName()
-        ss += " " + this.hashCode() % 1000
-        if (widget != null) {
-            ss += "/" + widget.hashCode() % 1000
-        } else {
-            ss += "/NULL"
-        }
-        println("$ss $str")
+//        val s: StackTraceElement = Throwable().getStackTrace().get(1)
+//        var ss = ".(" + s.getFileName() + ":" + s.getLineNumber() + ") " + s.getMethodName()
+//        ss += " " + this.hashCode() % 1000
+//        if (widget != null) {
+//            ss += "/" + widget.hashCode() % 1000
+//        } else {
+//            ss += "/NULL"
+//        }
+        println(str)
     }
 
     /**
@@ -472,7 +474,7 @@ class WidgetFrame {
                 startY -= (endHeight / 2f).toInt()
                 startWidth = endWidth
                 startHeight = endHeight
-                if (Float.isNaN(startAlpha)) {
+                if (startAlpha.isNaN()) {
                     // override only if not defined...
                     startAlpha = 0f
                 }
@@ -483,15 +485,15 @@ class WidgetFrame {
                 endY -= (startHeight / 2f).toInt()
                 endWidth = startWidth
                 endHeight = startHeight
-                if (Float.isNaN(endAlpha)) {
+                if (endAlpha.isNaN()) {
                     // override only if not defined...
                     endAlpha = 0f
                 }
             }
-            if (Float.isNaN(startAlpha) && !Float.isNaN(endAlpha)) {
+            if (startAlpha.isNaN() && !endAlpha.isNaN()) {
                 startAlpha = 1f
             }
-            if (!Float.isNaN(startAlpha) && Float.isNaN(endAlpha)) {
+            if (!startAlpha.isNaN() && endAlpha.isNaN()) {
                 endAlpha = 1f
             }
             if (start.visibility == ConstraintWidget.Companion.INVISIBLE) {
@@ -543,12 +545,12 @@ class WidgetFrame {
             frame.translationY = interpolate(start.translationY, end.translationY, 0f, progress)
             frame.translationZ = interpolate(start.translationZ, end.translationZ, 0f, progress)
             frame.alpha = interpolate(startAlpha, endAlpha, 1f, progress)
-            val keys: Set<String> = end.mCustom.keys
-            frame.mCustom.clear()
+            val keys: Set<String> = end.mCustom!!.keys
+            frame.mCustom!!.clear()
             for (key in keys) {
-                if (start.mCustom.containsKey(key)) {
-                    val startVariable: CustomVariable = start.mCustom.get(key)
-                    val endVariable: CustomVariable = end.mCustom.get(key)
+                if (start.mCustom!!.containsKey(key)) {
+                    val startVariable: CustomVariable = start.mCustom.get(key)!!
+                    val endVariable: CustomVariable = end.mCustom.get(key)!!
                     val interpolated = CustomVariable(startVariable)
                     frame.mCustom.put(key, interpolated)
                     if (startVariable.numberOfInterpolatedValues() == 1) {
@@ -576,8 +578,8 @@ class WidgetFrame {
         private fun interpolate(start: Float, end: Float, defaultValue: Float, progress: Float): Float {
             var start = start
             var end = end
-            val isStartUnset: Boolean = Float.isNaN(start)
-            val isEndUnset: Boolean = Float.isNaN(end)
+            val isStartUnset: Boolean = start.isNaN()
+            val isEndUnset: Boolean = end.isNaN()
             if (isStartUnset && isEndUnset) {
                 return Float.NaN
             }
@@ -598,7 +600,7 @@ class WidgetFrame {
         }
 
         private fun add(s: StringBuilder, title: String, value: Float) {
-            if (Float.isNaN(value)) {
+            if (value.isNaN()) {
                 return
             }
             s.append(title)

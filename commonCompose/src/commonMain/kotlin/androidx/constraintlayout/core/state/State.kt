@@ -16,9 +16,9 @@
 package androidx.constraintlayout.core.state
 
 import androidx.constraintlayout.core.state.helpers.*
-import androidx.constraintlayout.core.state.helpersimport.BarrierReference
-import androidx.constraintlayout.core.stateimport.CorePixelDp
-import androidx.constraintlayout.core.stateimport.HelperReference
+import androidx.constraintlayout.core.state.helpers.BarrierReference
+import androidx.constraintlayout.core.widgets.ConstraintWidget
+import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
 
 /**
  * Represents a full state of a ConstraintLayout
@@ -158,7 +158,7 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun helper(key: Any?, type: Helper?): HelperReference {
+    fun helper(key: Any?, type: Helper): HelperReference {
         var key = key
         if (key == null) {
             key = createHelperKey()
@@ -190,7 +190,7 @@ open class State {
                     reference = HelperReference(this, type)
                 }
             }
-            reference.setKey(key)
+            reference.key = (key)
             mHelperReferences.put(key, reference)
         }
         return reference
@@ -199,21 +199,21 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun horizontalGuideline(key: Any?): GuidelineReference? {
+    fun horizontalGuideline(key: Any): GuidelineReference? {
         return guideline(key, ConstraintWidget.Companion.HORIZONTAL)
     }
 
     /**
      * @TODO: add description
      */
-    fun verticalGuideline(key: Any?): GuidelineReference? {
+    fun verticalGuideline(key: Any): GuidelineReference? {
         return guideline(key, ConstraintWidget.Companion.VERTICAL)
     }
 
     /**
      * @TODO: add description
      */
-    fun guideline(key: Any?, orientation: Int): GuidelineReference? {
+    fun guideline(key: Any, orientation: Int): GuidelineReference? {
         val reference = constraints(key)
         if (reference!!.facade == null
             || reference.facade !is GuidelineReference
@@ -229,7 +229,7 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun barrier(key: Any?, direction: Direction?): BarrierReference? {
+    fun barrier(key: Any, direction: Direction?): BarrierReference {
         val reference = constraints(key)
         if (reference!!.facade == null || reference.facade !is BarrierReference) {
             val barrierReference = BarrierReference(this)
@@ -249,7 +249,7 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun verticalChain(vararg references: Any?): VerticalChainReference {
+    fun verticalChain(vararg references: Any): VerticalChainReference {
         val reference = helper(null, Helper.VERTICAL_CHAIN) as VerticalChainReference
         reference.add(*references)
         return reference
@@ -265,7 +265,7 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun horizontalChain(vararg references: Any?): HorizontalChainReference {
+    fun horizontalChain(vararg references: Any): HorizontalChainReference {
         val reference = helper(null, Helper.HORIZONTAL_CHAIN) as HorizontalChainReference
         reference.add(*references)
         return reference
@@ -274,7 +274,7 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun centerHorizontally(vararg references: Any?): AlignHorizontallyReference {
+    fun centerHorizontally(vararg references: Any): AlignHorizontallyReference {
         val reference = helper(null, Helper.ALIGN_HORIZONTALLY) as AlignHorizontallyReference
         reference.add(*references)
         return reference
@@ -283,7 +283,7 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun centerVertically(vararg references: Any?): AlignVerticallyReference {
+    fun centerVertically(vararg references: Any): AlignVerticallyReference {
         val reference = helper(null, Helper.ALIGN_VERTICALLY) as AlignVerticallyReference
         reference.add(*references)
         return reference
@@ -302,7 +302,7 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun map(key: Any?, view: Any?) {
+    fun map(key: Any, view: Any?) {
         val ref: Reference? = constraints(key)
         if (ref is ConstraintReference) {
             ref.view = view
@@ -312,25 +312,25 @@ open class State {
     /**
      * @TODO: add description
      */
-    fun setTag(key: String?, tag: String?) {
+    fun setTag(key: String, tag: String) {
         val ref: Reference? = constraints(key)
         if (ref is ConstraintReference) {
             ref.tag = tag
-            var list: java.util.ArrayList<String?>? = null
+            val list: ArrayList<String>?
             if (!mTags.containsKey(tag)) {
-                list = java.util.ArrayList<String>()
+                list = ArrayList<String>()
                 mTags.put(tag, list)
             } else {
                 list = mTags.get(tag)
             }
-            list.add(key)
+            list?.add(key)
         }
     }
 
     /**
      * @TODO: add description
      */
-    fun getIdsForTag(tag: String?): java.util.ArrayList<String>? {
+    fun getIdsForTag(tag: String?): ArrayList<String>? {
         return if (mTags.containsKey(tag)) {
             mTags.get(tag)
         } else null
@@ -345,65 +345,67 @@ open class State {
         mParent.height.apply(this, container, ConstraintWidget.Companion.VERTICAL)
         // add helper references
         for (key in mHelperReferences.keys) {
-            val reference: HelperReference = mHelperReferences.get(key)
-            val helperWidget = reference.helperWidget
+            val reference = mHelperReferences.get(key)
+            val helperWidget = reference?.helperWidget
             if (helperWidget != null) {
-                var constraintReference: Reference? = mReferences.get(key)
+                var constraintReference: Reference? = mReferences[key]
                 if (constraintReference == null) {
                     constraintReference = constraints(key)
                 }
-                constraintReference!!.setConstraintWidget(helperWidget)
+                constraintReference!!.constraintWidget = (helperWidget)
             }
         }
         for (key in mReferences.keys) {
-            val reference: Reference = mReferences.get(key)
-            if (reference !== mParent && reference.facade is HelperReference) {
+            val reference = mReferences.get(key)
+            if (reference !== mParent && reference?.facade is HelperReference) {
                 val helperWidget = (reference.facade as HelperReference).helperWidget
                 if (helperWidget != null) {
                     var constraintReference: Reference? = mReferences.get(key)
                     if (constraintReference == null) {
                         constraintReference = constraints(key)
                     }
-                    constraintReference!!.setConstraintWidget(helperWidget)
+                    constraintReference!!.constraintWidget = (helperWidget)
                 }
             }
         }
         for (key in mReferences.keys) {
-            val reference: Reference = mReferences.get(key)
+            val reference = mReferences.get(key)
             if (reference !== mParent) {
-                val widget = reference.constraintWidget
-                widget.debugName = reference.key.toString()
-                widget.parent = null
-                if (reference.facade is GuidelineReference) {
+                val widget = reference?.constraintWidget
+                widget?.debugName = reference?.key?.toString()
+                widget?.parent = null
+                if (reference?.facade is GuidelineReference) {
                     // we apply Guidelines first to correctly setup their ConstraintWidget.
                     reference.apply()
                 }
-                container.add(widget)
+                widget?.let {
+                    container.add(widget)
+                }
             } else {
-                reference.setConstraintWidget(container)
+                reference.constraintWidget = (container)
             }
         }
         for (key in mHelperReferences.keys) {
-            val reference: HelperReference = mHelperReferences.get(key)
-            val helperWidget = reference.helperWidget
+            val reference = mHelperReferences.get(key)
+            val helperWidget = reference?.helperWidget
             if (helperWidget != null) {
                 for (keyRef in reference.mReferences) {
-                    val constraintReference: Reference = mReferences.get(keyRef)
-                    reference.helperWidget.add(constraintReference.constraintWidget)
+                    val constraintReference = mReferences.get(keyRef)
+                    reference.helperWidget?.add(constraintReference?.constraintWidget)
                 }
                 reference.apply()
             } else {
-                reference.apply()
+                reference?.apply()
             }
         }
         for (key in mReferences.keys) {
-            val reference: Reference = mReferences.get(key)
-            if (reference !== mParent && reference.facade is HelperReference) {
+            val reference = mReferences.get(key)
+            if (reference !== mParent && reference?.facade is HelperReference) {
                 val helperReference = reference.facade as HelperReference
                 val helperWidget = helperReference.helperWidget
                 if (helperWidget != null) {
                     for (keyRef in helperReference.mReferences) {
-                        val constraintReference: Reference = mReferences.get(keyRef)
+                        val constraintReference = mReferences.get(keyRef)
                         if (constraintReference != null) {
                             helperWidget.add(constraintReference.constraintWidget)
                         } else if (keyRef is Reference) {
@@ -417,18 +419,18 @@ open class State {
             }
         }
         for (key in mReferences.keys) {
-            val reference: Reference = mReferences.get(key)
-            reference.apply()
-            val widget = reference.constraintWidget
-            if (widget != null && key != null) {
+            val reference = mReferences.get(key)
+            reference?.apply()
+            val widget = reference?.constraintWidget
+            if (widget != null) {
                 widget.stringId = key.toString()
             }
         }
     }
 
     // ================= add baseline code================================
-    var mBaselineNeeded: java.util.ArrayList<Any> = java.util.ArrayList<Any>()
-    var mBaselineNeededWidgets: java.util.ArrayList<ConstraintWidget> = java.util.ArrayList<ConstraintWidget>()
+    var mBaselineNeeded: ArrayList<Any> = ArrayList<Any>()
+    var mBaselineNeededWidgets: ArrayList<ConstraintWidget> = ArrayList<ConstraintWidget>()
     var mDirtyBaselineNeededWidgets = true
 
     init {
@@ -438,7 +440,7 @@ open class State {
     /**
      * Baseline is needed for this object
      */
-    fun baselineNeededFor(id: Any?) {
+    fun baselineNeededFor(id: Any) {
         mBaselineNeeded.add(id)
         mDirtyBaselineNeededWidgets = true
     }
@@ -452,7 +454,7 @@ open class State {
         if (mDirtyBaselineNeededWidgets) {
             mBaselineNeededWidgets.clear()
             for (id in mBaselineNeeded) {
-                val widget: ConstraintWidget = mReferences.get(id).getConstraintWidget()
+                val widget = mReferences.get(id)?.constraintWidget
                 if (widget != null) mBaselineNeededWidgets.add(widget)
             }
             mDirtyBaselineNeededWidgets = false

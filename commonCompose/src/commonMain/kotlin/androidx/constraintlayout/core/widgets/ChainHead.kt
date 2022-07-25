@@ -27,7 +27,7 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
     var head: ConstraintWidget? = null
     var firstMatchConstraintWidget: ConstraintWidget? = null
     var lastMatchConstraintWidget: ConstraintWidget? = null
-    var mWeightedMatchConstraintsWidgets: java.util.ArrayList<ConstraintWidget>? = null
+    var mWeightedMatchConstraintsWidgets: ArrayList<ConstraintWidget>? = null
     var mWidgetsCount = 0
     var mWidgetsMatchCount = 0
     var totalWeight = 0f
@@ -74,10 +74,10 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
                 ) {
                     mTotalSize += widget.getLength(mOrientation)
                 }
-                mTotalSize += widget.mListAnchors[offset].getMargin()
-                mTotalSize += widget.mListAnchors[offset + 1].getMargin()
-                mTotalMargins += widget.mListAnchors[offset].getMargin()
-                mTotalMargins += widget.mListAnchors[offset + 1].getMargin()
+                mTotalSize += widget.mListAnchors[offset]!!.margin
+                mTotalSize += widget.mListAnchors[offset + 1]!!.margin
+                mTotalMargins += widget.mListAnchors[offset]!!.margin
+                mTotalMargins += widget.mListAnchors[offset + 1]!!.margin
                 // Visible widgets linked list.
                 if (firstVisibleWidget == null) {
                     firstVisibleWidget = widget
@@ -107,9 +107,9 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
                                 mHasDefinedWeights = true
                             }
                             if (mWeightedMatchConstraintsWidgets == null) {
-                                mWeightedMatchConstraintsWidgets = java.util.ArrayList<ConstraintWidget>()
+                                mWeightedMatchConstraintsWidgets = ArrayList<ConstraintWidget>()
                             }
-                            mWeightedMatchConstraintsWidgets.add(widget)
+                            mWeightedMatchConstraintsWidgets!!.add(widget)
                         }
                         if (firstMatchConstraintWidget == null) {
                             firstMatchConstraintWidget = widget
@@ -140,7 +140,7 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
                             mOptimizable = false
                         }
                     }
-                    if (widget.mDimensionRatio != 0.0f) {
+                    if (widget.dimensionRatio != 0.0f) {
                         //TODO: Improve (Could use ratio optimization).
                         mOptimizable = false
                         mHasRatio = true
@@ -153,11 +153,11 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
             lastVisited = widget
 
             // go to the next widget
-            val nextAnchor: ConstraintAnchor = widget.mListAnchors[offset + 1].mTarget
+            val nextAnchor = widget.mListAnchors[offset + 1]!!.target
             if (nextAnchor != null) {
-                next = nextAnchor.mOwner
-                if (next!!.mListAnchors.get(offset).mTarget == null
-                    || next.mListAnchors.get(offset).mTarget.mOwner !== widget
+                next = nextAnchor.owner
+                if (next!!.mListAnchors.get(offset)!!.target == null
+                    || next.mListAnchors.get(offset)!!.target!!.owner !== widget
                 ) {
                     next = null
                 }
@@ -171,10 +171,10 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
             }
         }
         if (firstVisibleWidget != null) {
-            mTotalSize -= firstVisibleWidget!!.mListAnchors[offset].getMargin()
+            mTotalSize -= firstVisibleWidget!!.mListAnchors[offset]!!.margin
         }
         if (lastVisibleWidget != null) {
-            mTotalSize -= lastVisibleWidget!!.mListAnchors[offset + 1].getMargin()
+            mTotalSize -= lastVisibleWidget!!.mListAnchors[offset + 1]!!.margin
         }
         last = widget
         if (mOrientation == ConstraintWidget.Companion.HORIZONTAL && mIsRtl) {

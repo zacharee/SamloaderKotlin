@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.constraintlayout.core.state.helpersimport
+package androidx.constraintlayout.core.state.helpers
 
 import androidx.constraintlayout.core.state.*
-import androidx.constraintlayout.core.stateimport.HelperReference
+import androidx.constraintlayout.core.state.HelperReference
+import androidx.constraintlayout.core.widgets.Barrier
+import androidx.constraintlayout.core.widgets.HelperWidget
 
-class BarrierReference(state: State?) : HelperReference(state, State.Helper.BARRIER) {
+class BarrierReference(state: State) : HelperReference(state, State.Helper.BARRIER) {
     private var mDirection: State.Direction? = null
     private var mMargin = 0
     private var mBarrierWidget: Barrier? = null
@@ -39,12 +41,14 @@ class BarrierReference(state: State?) : HelperReference(state, State.Helper.BARR
         return this
     }
 
-    override fun getHelperWidget(): HelperWidget {
-        if (mBarrierWidget == null) {
-            mBarrierWidget = Barrier()
+    override var helperWidget: HelperWidget?
+        get() {
+            if (mBarrierWidget == null) {
+                mBarrierWidget = Barrier()
+            }
+            return mBarrierWidget!!
         }
-        return mBarrierWidget!!
-    }
+        set(value) {}
 
     /**
      * @TODO: add description
@@ -67,8 +71,10 @@ class BarrierReference(state: State?) : HelperReference(state, State.Helper.BARR
             State.Direction.BOTTOM -> {
                 direction = Barrier.Companion.BOTTOM
             }
+
+            else -> {}
         }
-        mBarrierWidget.setBarrierType(direction)
-        mBarrierWidget.setMargin(mMargin)
+        mBarrierWidget?.barrierType = (direction)
+        mBarrierWidget?.margin = (mMargin)
     }
 }

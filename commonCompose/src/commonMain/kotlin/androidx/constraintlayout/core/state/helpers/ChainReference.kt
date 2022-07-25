@@ -16,14 +16,15 @@
 package androidx.constraintlayout.core.state.helpers
 
 import androidx.constraintlayout.core.state.*
-import androidx.constraintlayout.core.stateimport.HelperReference
+import androidx.constraintlayout.core.state.HelperReference
+import androidx.constraintlayout.core.widgets.ConstraintWidget
 
-open class ChainReference(state: State?, type: State.Helper?) : HelperReference(state, type) {
+open class ChainReference(state: State, type: State.Helper) : HelperReference(state, type) {
     var bias = 0.5f
         protected set
-    protected var mMapWeights: java.util.HashMap<String, Float>? = null
-    protected var mMapPreMargin: java.util.HashMap<String, Float>? = null
-    protected var mMapPostMargin: java.util.HashMap<String, Float>? = null
+    protected var mMapWeights: HashMap<String, Float>? = null
+    protected var mMapPreMargin: HashMap<String, Float>? = null
+    protected var mMapPostMargin: HashMap<String, Float>? = null
     protected var mStyle = State.Chain.SPREAD
     val style: State.Chain
         get() = State.Chain.SPREAD
@@ -36,25 +37,25 @@ open class ChainReference(state: State?, type: State.Helper?) : HelperReference(
         return this
     }
 
-    fun addChainElement(id: String?, weight: Float, preMargin: Float, postMargin: Float) {
+    fun addChainElement(id: String, weight: Float, preMargin: Float, postMargin: Float) {
         super.add(id)
-        if (!java.lang.Float.isNaN(weight)) {
+        if (!weight.isNaN()) {
             if (mMapWeights == null) {
-                mMapWeights = java.util.HashMap<String, Float>()
+                mMapWeights = HashMap<String, Float>()
             }
-            mMapWeights.put(id, weight)
+            mMapWeights!!.put(id, weight)
         }
-        if (!java.lang.Float.isNaN(preMargin)) {
+        if (!preMargin.isNaN()) {
             if (mMapPreMargin == null) {
-                mMapPreMargin = java.util.HashMap<String, Float>()
+                mMapPreMargin = HashMap<String, Float>()
             }
-            mMapPreMargin.put(id, preMargin)
+            mMapPreMargin!!.put(id, preMargin)
         }
-        if (!java.lang.Float.isNaN(postMargin)) {
+        if (!postMargin.isNaN()) {
             if (mMapPostMargin == null) {
-                mMapPostMargin = java.util.HashMap<String, Float>()
+                mMapPostMargin = HashMap<String, Float>()
             }
-            mMapPostMargin.put(id, postMargin)
+            mMapPostMargin!!.put(id, postMargin)
         }
     }
 
@@ -62,21 +63,21 @@ open class ChainReference(state: State?, type: State.Helper?) : HelperReference(
         if (mMapWeights == null) {
             return ConstraintWidget.Companion.UNKNOWN.toFloat()
         }
-        return if (mMapWeights.containsKey(id)) {
-            mMapWeights.get(id)
+        return if (mMapWeights!!.containsKey(id)) {
+            mMapWeights!![id]!!
         } else ConstraintWidget.Companion.UNKNOWN.toFloat()
     }
 
     protected fun getPostMargin(id: String?): Float {
-        return if (mMapPostMargin != null && mMapPostMargin.containsKey(id)) {
-            mMapPostMargin.get(id)
-        } else 0
+        return if (mMapPostMargin != null && mMapPostMargin!!.containsKey(id)) {
+            mMapPostMargin!!.get(id)!!
+        } else 0f
     }
 
     protected fun getPreMargin(id: String?): Float {
-        return if (mMapPreMargin != null && mMapPreMargin.containsKey(id)) {
-            mMapPreMargin.get(id)
-        } else 0
+        return if (mMapPreMargin != null && mMapPreMargin!!.containsKey(id)) {
+            mMapPreMargin!!.get(id)!!
+        } else 0f
     }
 
     /**

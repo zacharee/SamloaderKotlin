@@ -19,15 +19,15 @@ class CLKey(content: CharArray?) : CLContainer(content) {
     val name: String
         get() = content()
 
-    protected override fun toJSON(): String {
+    override fun toJSON(): String {
         return if (mElements.size > 0) {
-            getDebugName() + content() + ": " + mElements[0].toJSON()
-        } else getDebugName() + content() + ": <> "
+            debugName + content() + ": " + mElements[0].toJSON()
+        } else debugName + content() + ": <> "
     }
 
-    protected override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
+    override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
         var forceIndent = forceIndent
-        val json: java.lang.StringBuilder = java.lang.StringBuilder(getDebugName())
+        val json: StringBuilder = StringBuilder(debugName)
         addIndent(json, indent)
         val content: String = content()
         if (mElements.size > 0) {
@@ -54,7 +54,7 @@ class CLKey(content: CharArray?) : CLContainer(content) {
     /**
      * @TODO: add description
      */
-    fun set(value: CLElement?) {
+    fun set(value: CLElement) {
         if (mElements.size > 0) {
             mElements[0] = value
         } else {
@@ -71,7 +71,7 @@ class CLKey(content: CharArray?) : CLContainer(content) {
         } else null
 
     companion object {
-        private val sSections: java.util.ArrayList<String> = java.util.ArrayList<String>()
+        private val sSections: ArrayList<String> = ArrayList<String>()
 
         init {
             sSections.add("ConstraintSets")
@@ -94,10 +94,10 @@ class CLKey(content: CharArray?) : CLContainer(content) {
         /**
          * @TODO: add description
          */
-        fun allocate(name: String, value: CLElement?): CLElement {
+        fun allocate(name: String, value: CLElement): CLElement {
             val key = CLKey(name.toCharArray())
-            key.setStart(0)
-            key.setEnd((name.length - 1).toLong())
+            key.start = (0)
+            key.end = ((name.length - 1).toLong())
             key.set(value)
             return key
         }

@@ -16,19 +16,19 @@
 package androidx.constraintlayout.core.state
 
 class Registry {
-    private val mCallbacks: java.util.HashMap<String, RegistryCallback> = java.util.HashMap<String, RegistryCallback>()
+    private val mCallbacks: HashMap<String, RegistryCallback> = HashMap<String, RegistryCallback>()
 
     /**
      * @TODO: add description
      */
-    fun register(name: String?, callback: RegistryCallback?) {
+    fun register(name: String, callback: RegistryCallback) {
         mCallbacks.put(name, callback)
     }
 
     /**
      * @TODO: add description
      */
-    fun unregister(name: String?, callback: RegistryCallback?) {
+    fun unregister(name: String, callback: RegistryCallback?) {
         mCallbacks.remove(name)
     }
 
@@ -36,7 +36,7 @@ class Registry {
      * @TODO: add description
      */
     fun updateContent(name: String?, content: String?) {
-        val callback: RegistryCallback = mCallbacks.get(name)
+        val callback = mCallbacks.get(name)
         if (callback != null) {
             callback.onNewMotionScene(content)
         }
@@ -46,50 +46,35 @@ class Registry {
      * @TODO: add description
      */
     fun updateProgress(name: String?, progress: Float) {
-        val callback: RegistryCallback = mCallbacks.get(name)
-        if (callback != null) {
-            callback.onProgress(progress)
-        }
+        mCallbacks[name]?.onProgress(progress)
     }
 
     /**
      * @TODO: add description
      */
     fun currentContent(name: String?): String? {
-        val callback: RegistryCallback = mCallbacks.get(name)
-        return if (callback != null) {
-            callback.currentMotionScene()
-        } else null
+        return mCallbacks[name]?.currentMotionScene()
     }
 
     /**
      * @TODO: add description
      */
     fun currentLayoutInformation(name: String?): String? {
-        val callback: RegistryCallback = mCallbacks.get(name)
-        return if (callback != null) {
-            callback.currentLayoutInformation()
-        } else null
+        return mCallbacks[name]?.currentLayoutInformation()
     }
 
     /**
      * @TODO: add description
      */
     fun setDrawDebug(name: String?, debugMode: Int) {
-        val callback: RegistryCallback = mCallbacks.get(name)
-        if (callback != null) {
-            callback.setDrawDebug(debugMode)
-        }
+        mCallbacks[name]?.setDrawDebug(debugMode)
     }
 
     /**
      * @TODO: add description
      */
     fun setLayoutInformationMode(name: String?, mode: Int) {
-        val callback: RegistryCallback = mCallbacks.get(name)
-        if (callback != null) {
-            callback.setLayoutInformationMode(mode)
-        }
+        mCallbacks[name]?.setLayoutInformationMode(mode)
     }
 
     val layoutList: Set<String>
@@ -99,7 +84,7 @@ class Registry {
      * @TODO: add description
      */
     fun getLastModified(name: String?): Long {
-        val callback: RegistryCallback = mCallbacks.get(name)
+        val callback = mCallbacks.get(name)
         return callback?.lastModified ?: Long.MAX_VALUE
     }
 
@@ -107,10 +92,7 @@ class Registry {
      * @TODO: add description
      */
     fun updateDimensions(name: String?, width: Int, height: Int) {
-        val callback: RegistryCallback = mCallbacks.get(name)
-        if (callback != null) {
-            callback.onDimensions(width, height)
-        }
+        mCallbacks[name]?.onDimensions(width, height)
     }
 
     companion object {

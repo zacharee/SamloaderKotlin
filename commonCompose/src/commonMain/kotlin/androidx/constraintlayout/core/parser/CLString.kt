@@ -21,7 +21,7 @@ class CLString(content: CharArray?) : CLElement(content) {
     }
 
     override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
-        val json: java.lang.StringBuilder = java.lang.StringBuilder()
+        val json: StringBuilder = StringBuilder()
         addIndent(json, indent)
         json.append("'")
         json.append(content())

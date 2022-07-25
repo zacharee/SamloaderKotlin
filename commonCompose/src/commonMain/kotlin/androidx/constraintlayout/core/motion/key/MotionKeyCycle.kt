@@ -116,7 +116,7 @@ class MotionKeyCycle : MotionKey() {
     /**
      * @TODO: add description
      */
-    override fun setValue(type: Int, value: String?): Boolean {
+    override fun setValue(type: Int, value: String): Boolean {
         return when (type) {
             CycleType.Companion.TYPE_EASING -> {
                 mTransitionEasing = value

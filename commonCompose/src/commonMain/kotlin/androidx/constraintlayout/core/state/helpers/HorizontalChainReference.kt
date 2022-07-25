@@ -18,7 +18,7 @@ package androidx.constraintlayout.core.state.helpers
 import androidx.constraintlayout.core.state.*
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 
-class HorizontalChainReference(state: State?) : ChainReference(state, State.Helper.HORIZONTAL_CHAIN) {
+class HorizontalChainReference(state: State) : ChainReference(state, State.Helper.HORIZONTAL_CHAIN) {
     /**
      * @TODO: add description
      */
@@ -26,11 +26,11 @@ class HorizontalChainReference(state: State?) : ChainReference(state, State.Help
         var first: ConstraintReference? = null
         var previous: ConstraintReference? = null
         for (key in mReferences) {
-            val reference: ConstraintReference = mState.constraints(key)
+            val reference: ConstraintReference = mState.constraints(key)!!
             reference.clearHorizontal()
         }
         for (key in mReferences) {
-            val reference: ConstraintReference = mState.constraints(key)
+            val reference: ConstraintReference = mState.constraints(key)!!
             if (first == null) {
                 first = reference
                 if (mStartToStart != null) {
@@ -83,8 +83,8 @@ class HorizontalChainReference(state: State?) : ChainReference(state, State.Help
         if (first == null) {
             return
         }
-        if (mBias != 0.5f) {
-            first.horizontalBias(mBias)
+        if (bias != 0.5f) {
+            first.horizontalBias(bias)
         }
         when (mStyle) {
             State.Chain.SPREAD -> {

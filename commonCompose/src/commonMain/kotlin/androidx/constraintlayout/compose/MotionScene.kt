@@ -20,7 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.constraintlayout.core.state.ConstraintSetParser
-import androidx.constraintlayout.core.stateimport.CoreMotionScene
+import androidx.constraintlayout.core.state.CoreMotionScene
 
 
 /**

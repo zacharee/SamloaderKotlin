@@ -261,13 +261,13 @@ class MotionPaths : Comparable<MotionPaths> {
         point.mY += normalY
         point.mAnimateRelativeTo = mAnimateRelativeTo
         point.mKeyFrameEasing =
-            Easing.Companion.getInterpolator(c.mTransitionEasing)
+            Easing.Companion.getInterpolator(c.mTransitionEasing!!)
         point.mPathMotionArc = c.mPathMotionArc
     }
 
     private fun diff(a: Float, b: Float): Boolean {
-        return if (Float.isNaN(a) || Float.isNaN(b)) {
-            Float.isNaN(a) != Float.isNaN(b)
+        return if (a.isNaN() || b.isNaN()) {
+            a.isNaN() != b.isNaN()
         } else abs(a - b) > 0.000001f
     }
 
@@ -459,24 +459,24 @@ class MotionPaths : Comparable<MotionPaths> {
         var dv_height = 0f
         var delta_path = 0f
         var path_rotate = Float.NaN
-        var mod: String
+        var mod: String = ""
         if (toUse.size != 0 && mTempValue.size <= toUse[toUse.size - 1]) {
             val scratch_data_length = toUse[toUse.size - 1] + 1
             mTempValue = DoubleArray(scratch_data_length)
             mTempDelta = DoubleArray(scratch_data_length)
         }
-        Arrays.fill(mTempValue, Double.NaN)
+        mTempValue.fill(Double.NaN)
         for (i in toUse.indices) {
             mTempValue[toUse[i]] = data[i]
             mTempDelta[toUse[i]] = slope[i]
         }
         for (i in mTempValue.indices) {
-            if (Double.isNaN(mTempValue[i]) && (cycle == null || cycle[i] == 0.0)) {
+            if (mTempValue[i].isNaN() && (cycle == null || cycle[i] == 0.0)) {
                 continue
             }
             val deltaCycle = cycle?.get(i) ?: 0.0
             val value =
-                (if (Double.isNaN(mTempValue[i])) deltaCycle else mTempValue[i] + deltaCycle).toFloat()
+                (if (mTempValue[i].isNaN()) deltaCycle else mTempValue[i] + deltaCycle).toFloat()
             val dvalue = mTempDelta[i].toFloat()
             when (i) {
                 OFF_POSITION -> delta_path = value
@@ -832,7 +832,7 @@ class MotionPaths : Comparable<MotionPaths> {
         for (s in at!!) {
             val attr = c.getCustomAttribute(s)
             if (attr != null && attr.isContinuous) {
-                mCustomAttributes.put(s, attr)
+                mCustomAttributes[s!!] = attr
             }
         }
     }

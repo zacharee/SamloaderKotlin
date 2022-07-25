@@ -195,7 +195,7 @@ class MotionKeyTimeCycle : MotionKey() {
     /**
      * @TODO: add description
      */
-    override fun setValue(type: Int, value: String?): Boolean {
+    override fun setValue(type: Int, value: String): Boolean {
         when (type) {
             CycleType.Companion.TYPE_WAVE_SHAPE -> {
                 mWaveShape = Oscillator.Companion.CUSTOM

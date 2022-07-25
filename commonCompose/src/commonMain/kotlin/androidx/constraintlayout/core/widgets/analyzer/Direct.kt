@@ -18,6 +18,10 @@ package androidx.constraintlayout.core.widgets.analyzer
 import androidx.constraintlayout.core.LinearSystem
 import androidx.constraintlayout.core.widgets.*
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
+import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
+import kotlinx.datetime.Clock
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Direct resolution engine
@@ -46,20 +50,20 @@ object Direct {
         layout: ConstraintWidgetContainer,
         measurer: BasicMeasure.Measurer?
     ) {
-        val horizontal: DimensionBehaviour = layout.getHorizontalDimensionBehaviour()
-        val vertical: DimensionBehaviour = layout.getVerticalDimensionBehaviour()
+        val horizontal = layout.horizontalDimensionBehaviour
+        val vertical = layout.verticalDimensionBehaviour
         sHcount = 0
         sVcount = 0
         var time: Long = 0
         if (DEBUG) {
-            time = java.lang.System.nanoTime()
+            time = Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond }
             println(
                 "#### SOLVING PASS (horiz " + horizontal
                         + ", vert " + vertical + ") ####"
             )
         }
         layout.resetFinalResolution()
-        val children: java.util.ArrayList<ConstraintWidget> = layout.getChildren()
+        val children: ArrayList<ConstraintWidget> = layout.children
         val count: Int = children.size
         if (DEBUG) {
             println("#### SOLVING PASS on $count widgeets ####")
@@ -76,7 +80,7 @@ object Direct {
         // If we know our size, we can fully set the entire dimension, but if not we can
         // still solve what we can starting from the left.
         if (horizontal == DimensionBehaviour.FIXED) {
-            layout.setFinalHorizontal(0, layout.getWidth())
+            layout.setFinalHorizontal(0, layout.width)
         } else {
             layout.setFinalLeft(0)
         }
@@ -96,11 +100,11 @@ object Direct {
                     if (guideline.relativeBegin != -1) {
                         guideline.setFinalValue(guideline.relativeBegin)
                     } else if (guideline.relativeEnd != -1
-                        && layout.isResolvedHorizontally()
+                        && layout.isResolvedHorizontally
                     ) {
-                        guideline.setFinalValue(layout.getWidth() - guideline.relativeEnd)
-                    } else if (layout.isResolvedHorizontally()) {
-                        val position: Int = (0.5f + guideline.relativePercent * layout.getWidth()).toInt()
+                        guideline.setFinalValue(layout.width - guideline.relativeEnd)
+                    } else if (layout.isResolvedHorizontally) {
+                        val position: Int = (0.5f + guideline.relativePercent * layout.width).toInt()
                         guideline.setFinalValue(position)
                     }
                     hasGuideline = true
@@ -159,7 +163,7 @@ object Direct {
 
         // Now we are done with the horizontal axis, let's see what we can do vertically
         if (vertical == DimensionBehaviour.FIXED) {
-            layout.setFinalVertical(0, layout.getHeight())
+            layout.setFinalVertical(0, layout.height)
         } else {
             layout.setFinalTop(0)
         }
@@ -174,10 +178,10 @@ object Direct {
                 if (guideline.orientation == Guideline.Companion.HORIZONTAL) {
                     if (guideline.relativeBegin != -1) {
                         guideline.setFinalValue(guideline.relativeBegin)
-                    } else if (guideline.relativeEnd != -1 && layout.isResolvedVertically()) {
-                        guideline.setFinalValue(layout.getHeight() - guideline.relativeEnd)
-                    } else if (layout.isResolvedVertically()) {
-                        val position: Int = (0.5f + guideline.relativePercent * layout.getHeight()).toInt()
+                    } else if (guideline.relativeEnd != -1 && layout.isResolvedVertically) {
+                        guideline.setFinalValue(layout.height - guideline.relativeEnd)
+                    } else if (layout.isResolvedVertically) {
+                        val position: Int = (0.5f + guideline.relativePercent * layout.height).toInt()
                         guideline.setFinalValue(position)
                     }
                     hasGuideline = true
@@ -251,7 +255,7 @@ object Direct {
             }
         }
         if (DEBUG) {
-            time = java.lang.System.nanoTime() - time
+            time = Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond } - time
             println("\n*** THROUGH WITH DIRECT PASS in $time ns ***\n")
             println("hcount: " + sHcount + " vcount: " + sVcount)
         }
@@ -282,7 +286,7 @@ object Direct {
      * @return a formatted string for the indentation
      */
     fun ls(level: Int): String {
-        val builder: java.lang.StringBuilder = java.lang.StringBuilder()
+        val builder: StringBuilder = StringBuilder()
         for (i in 0 until level) {
             builder.append("  ")
         }
@@ -314,7 +318,7 @@ object Direct {
         }
         sHcount++
         if (DEBUG) {
-            println(ls(level) + "HORIZONTAL SOLVING PASS ON " + layout.getDebugName())
+            println(ls(level) + "HORIZONTAL SOLVING PASS ON " + layout?.debugName)
         }
         if (layout !is ConstraintWidgetContainer && layout!!.isMeasureRequested
             && canMeasure(level + 1, layout)
@@ -327,11 +331,11 @@ object Direct {
         }
         val left = layout.getAnchor(ConstraintAnchor.Type.LEFT)
         val right = layout.getAnchor(ConstraintAnchor.Type.RIGHT)
-        val l: Int = left.getFinalValue()
-        val r: Int = right.getFinalValue()
-        if (left.getDependents() != null && left!!.hasFinalValue()) {
-            for (first in left.dependents) {
-                val widget = first.mOwner
+        val l: Int = left!!.finalValue
+        val r: Int = right!!.finalValue
+        if (left.dependents != null && left!!.hasFinalValue()) {
+            for (first in left.dependents!!) {
+                val widget = first.owner
                 var x1 = 0
                 var x2 = 0
                 val canMeasure = canMeasure(level + 1, widget)
@@ -343,7 +347,7 @@ object Direct {
                     )
                 }
                 val bothConnected =
-                    first === widget!!.mLeft && widget!!.mRight.mTarget != null && widget!!.mRight.mTarget.hasFinalValue() || first === widget!!.mRight && widget!!.mLeft.mTarget != null && widget!!.mLeft.mTarget.hasFinalValue()
+                    first === widget!!.mLeft && widget!!.mRight!!.target != null && widget!!.mRight!!.target!!.hasFinalValue() || first === widget!!.mRight && widget!!.mLeft!!.target != null && widget!!.mLeft!!.target!!.hasFinalValue()
                 if (widget.horizontalDimensionBehaviour
                     != DimensionBehaviour.MATCH_CONSTRAINT || canMeasure
                 ) {
@@ -357,13 +361,13 @@ object Direct {
                         }
                         continue
                     }
-                    if (first === widget!!.mLeft && widget!!.mRight.mTarget == null) {
-                        x1 = l + widget!!.mLeft.getMargin()
+                    if (first === widget!!.mLeft && widget!!.mRight!!.target == null) {
+                        x1 = l + widget!!.mLeft!!.margin
                         x2 = x1 + widget.width
                         widget!!.setFinalHorizontal(x1, x2)
                         horizontalSolvingPass(level + 1, widget, measurer, isRtl)
-                    } else if (first === widget!!.mRight && widget!!.mLeft.mTarget == null) {
-                        x2 = l - widget!!.mRight.getMargin()
+                    } else if (first === widget!!.mRight && widget!!.mLeft!!.target == null) {
+                        x2 = l - widget!!.mRight!!.margin
                         x1 = x2 - widget.width
                         widget!!.setFinalHorizontal(x1, x2)
                         horizontalSolvingPass(level + 1, widget, measurer, isRtl)
@@ -391,9 +395,9 @@ object Direct {
         if (layout is Guideline) {
             return
         }
-        if (right.getDependents() != null && right!!.hasFinalValue()) {
-            for (first in right.dependents) {
-                val widget = first.mOwner
+        if (right.dependents != null && right!!.hasFinalValue()) {
+            for (first in right.dependents!!) {
+                val widget = first.owner
                 val canMeasure = canMeasure(level + 1, widget)
                 if (widget!!.isMeasureRequested && canMeasure) {
                     val measure = BasicMeasure.Measure()
@@ -405,7 +409,7 @@ object Direct {
                 var x1 = 0
                 var x2 = 0
                 val bothConnected =
-                    first === widget!!.mLeft && widget!!.mRight.mTarget != null && widget!!.mRight.mTarget.hasFinalValue() || first === widget!!.mRight && widget!!.mLeft.mTarget != null && widget!!.mLeft.mTarget.hasFinalValue()
+                    first === widget!!.mLeft && widget!!.mRight!!.target != null && widget!!.mRight!!.target!!.hasFinalValue() || first === widget!!.mRight && widget!!.mLeft!!.target != null && widget!!.mLeft!!.target!!.hasFinalValue()
                 if (widget.horizontalDimensionBehaviour
                     != DimensionBehaviour.MATCH_CONSTRAINT || canMeasure
                 ) {
@@ -419,13 +423,13 @@ object Direct {
                         }
                         continue
                     }
-                    if (first === widget!!.mLeft && widget!!.mRight.mTarget == null) {
-                        x1 = r + widget!!.mLeft.getMargin()
+                    if (first === widget!!.mLeft && widget!!.mRight!!.target == null) {
+                        x1 = r + widget!!.mLeft!!.margin
                         x2 = x1 + widget.width
                         widget!!.setFinalHorizontal(x1, x2)
                         horizontalSolvingPass(level + 1, widget, measurer, isRtl)
-                    } else if (first === widget!!.mRight && widget!!.mLeft.mTarget == null) {
-                        x2 = r - widget!!.mRight.getMargin()
+                    } else if (first === widget!!.mRight && widget!!.mLeft!!.target == null) {
+                        x2 = r - widget!!.mRight!!.margin
                         x1 = x2 - widget.width
                         widget!!.setFinalHorizontal(x1, x2)
                         horizontalSolvingPass(level + 1, widget, measurer, isRtl)
@@ -471,7 +475,7 @@ object Direct {
         }
         sVcount++
         if (DEBUG) {
-            println(ls(level) + "VERTICAL SOLVING PASS ON " + layout.getDebugName())
+            println(ls(level) + "VERTICAL SOLVING PASS ON " + layout?.debugName)
         }
         if (layout !is ConstraintWidgetContainer
             && layout!!.isMeasureRequested && canMeasure(level + 1, layout)
@@ -484,11 +488,11 @@ object Direct {
         }
         val top = layout.getAnchor(ConstraintAnchor.Type.TOP)
         val bottom = layout.getAnchor(ConstraintAnchor.Type.BOTTOM)
-        val t: Int = top.getFinalValue()
-        val b: Int = bottom.getFinalValue()
-        if (top.getDependents() != null && top!!.hasFinalValue()) {
-            for (first in top.dependents) {
-                val widget = first.mOwner
+        val t: Int = top!!.finalValue
+        val b: Int = bottom!!.finalValue
+        if (top.dependents != null && top!!.hasFinalValue()) {
+            for (first in top.dependents!!) {
+                val widget = first.owner
                 var y1 = 0
                 var y2 = 0
                 val canMeasure = canMeasure(level + 1, widget)
@@ -500,7 +504,7 @@ object Direct {
                     )
                 }
                 val bothConnected =
-                    (first === widget!!.mTop && widget!!.mBottom.mTarget != null && widget!!.mBottom.mTarget.hasFinalValue() || first === widget!!.mBottom && widget!!.mTop.mTarget) != null && widget!!.mTop.mTarget.hasFinalValue()
+                    (first === widget!!.mTop && widget!!.mBottom.target != null && widget!!.mBottom.target!!.hasFinalValue() || first === widget!!.mBottom && widget!!.mTop.target != null && widget!!.mTop.target!!.hasFinalValue())
                 if (widget.verticalDimensionBehaviour
                     != DimensionBehaviour.MATCH_CONSTRAINT
                     || canMeasure
@@ -515,13 +519,13 @@ object Direct {
                         }
                         continue
                     }
-                    if (first === widget!!.mTop && widget!!.mBottom.mTarget == null) {
-                        y1 = t + widget!!.mTop.getMargin()
+                    if (first === widget!!.mTop && widget!!.mBottom.target == null) {
+                        y1 = t + widget!!.mTop.margin
                         y2 = y1 + widget.height
                         widget!!.setFinalVertical(y1, y2)
                         verticalSolvingPass(level + 1, widget, measurer)
-                    } else if (first === widget!!.mBottom && widget!!.mTop.mTarget == null) {
-                        y2 = t - widget!!.mBottom.getMargin()
+                    } else if (first === widget!!.mBottom && widget!!.mTop.target == null) {
+                        y2 = t - widget!!.mBottom.margin
                         y1 = y2 - widget.height
                         widget!!.setFinalVertical(y1, y2)
                         verticalSolvingPass(level + 1, widget, measurer)
@@ -549,9 +553,9 @@ object Direct {
         if (layout is Guideline) {
             return
         }
-        if (bottom.getDependents() != null && bottom!!.hasFinalValue()) {
-            for (first in bottom.dependents) {
-                val widget = first.mOwner
+        if (bottom.dependents != null && bottom!!.hasFinalValue()) {
+            for (first in bottom.dependents!!) {
+                val widget = first.owner
                 val canMeasure = canMeasure(level + 1, widget)
                 if (widget!!.isMeasureRequested && canMeasure) {
                     val measure = BasicMeasure.Measure()
@@ -563,7 +567,7 @@ object Direct {
                 var y1 = 0
                 var y2 = 0
                 val bothConnected =
-                    (first === widget!!.mTop && widget!!.mBottom.mTarget != null && widget!!.mBottom.mTarget.hasFinalValue() || first === widget!!.mBottom && widget!!.mTop.mTarget) != null && widget!!.mTop.mTarget.hasFinalValue()
+                    (first === widget!!.mTop && widget!!.mBottom.target != null && widget!!.mBottom.target!!.hasFinalValue() || first === widget!!.mBottom && widget!!.mTop.target != null && widget!!.mTop.target!!.hasFinalValue())
                 if (widget.verticalDimensionBehaviour
                     != DimensionBehaviour.MATCH_CONSTRAINT || canMeasure
                 ) {
@@ -577,13 +581,13 @@ object Direct {
                         }
                         continue
                     }
-                    if (first === widget!!.mTop && widget!!.mBottom.mTarget == null) {
-                        y1 = b + widget!!.mTop.getMargin()
+                    if (first === widget!!.mTop && widget!!.mBottom.target == null) {
+                        y1 = b + widget!!.mTop.margin
                         y2 = y1 + widget.height
                         widget!!.setFinalVertical(y1, y2)
                         verticalSolvingPass(level + 1, widget, measurer)
-                    } else if (first === widget!!.mBottom && widget!!.mTop.mTarget == null) {
-                        y2 = b - widget!!.mBottom.getMargin()
+                    } else if (first === widget!!.mBottom && widget!!.mTop.target == null) {
+                        y2 = b - widget!!.mBottom.margin
                         y1 = y2 - widget.height
                         widget!!.setFinalVertical(y1, y2)
                         verticalSolvingPass(level + 1, widget, measurer)
@@ -604,10 +608,10 @@ object Direct {
             }
         }
         val baseline = layout.getAnchor(ConstraintAnchor.Type.BASELINE)
-        if (baseline.getDependents() != null && baseline!!.hasFinalValue()) {
+        if (baseline!!.dependents != null && baseline!!.hasFinalValue()) {
             val baselineValue: Int = baseline.finalValue
-            for (first in baseline.dependents) {
-                val widget = first.mOwner
+            for (first in baseline.dependents!!) {
+                val widget = first.owner
                 val canMeasure = canMeasure(level + 1, widget)
                 if (widget!!.isMeasureRequested && canMeasure) {
                     val measure = BasicMeasure.Measure()
@@ -651,11 +655,11 @@ object Direct {
         // TODO: Handle match constraints here or before calling this
         var x1: Int
         var x2: Int
-        var bias = widget.getHorizontalBiasPercent()
-        val start: Int = widget!!.mLeft.mTarget.getFinalValue()
-        val end: Int = widget.mRight.mTarget.getFinalValue()
-        var s1: Int = start + widget.mLeft.getMargin()
-        var s2: Int = end - widget.mRight.getMargin()
+        var bias = widget!!.horizontalBiasPercent
+        val start: Int = widget!!.mLeft!!.target!!.finalValue
+        val end: Int = widget.mRight!!.target!!.finalValue
+        var s1: Int = start + widget.mLeft!!.margin
+        var s2: Int = end - widget.mRight!!.margin
         if (start == end) {
             bias = 0.5f
             s1 = start
@@ -693,11 +697,11 @@ object Direct {
         // TODO: Handle match constraints here or before calling this
         var y1: Int
         var y2: Int
-        var bias = widget.getVerticalBiasPercent()
-        val start: Int = widget!!.mTop.mTarget.getFinalValue()
-        val end: Int = widget.mBottom.mTarget.getFinalValue()
-        var s1: Int = start + widget.mTop.getMargin()
-        var s2: Int = end - widget.mBottom.getMargin()
+        var bias = widget!!.verticalBiasPercent
+        val start: Int = widget!!.mTop!!.target!!.finalValue
+        val end: Int = widget.mBottom!!.target!!.finalValue
+        var s1: Int = start + widget.mTop.margin
+        var s2: Int = end - widget.mBottom.margin
         if (start == end) {
             bias = 0.5f
             s1 = start
@@ -736,9 +740,9 @@ object Direct {
     ) {
         val x1: Int
         val x2: Int
-        val bias = widget.getHorizontalBiasPercent()
-        val s1: Int = widget!!.mLeft.mTarget.getFinalValue() + widget.mLeft.getMargin()
-        val s2: Int = widget.mRight.mTarget.getFinalValue() - widget.mRight.getMargin()
+        val bias = widget!!.horizontalBiasPercent
+        val s1: Int = widget!!.mLeft!!.target!!.finalValue + widget.mLeft!!.margin
+        val s2: Int = widget.mRight!!.target!!.finalValue - widget.mRight!!.margin
         if (s2 >= s1) {
             var width = widget.width
             if (widget.visibility != ConstraintWidget.Companion.GONE) {
@@ -749,7 +753,7 @@ object Direct {
                     if (layout is ConstraintWidgetContainer) {
                         parentWidth = layout.width
                     } else {
-                        parentWidth = layout.getParent().getWidth()
+                        parentWidth = layout!!.parent!!.width
                     }
                     width = (0.5f * widget.horizontalBiasPercent * parentWidth).toInt()
                 } else if (widget.mMatchConstraintDefaultWidth
@@ -757,9 +761,9 @@ object Direct {
                 ) {
                     width = s2 - s1
                 }
-                width = java.lang.Math.max(widget.mMatchConstraintMinWidth, width)
+                width = max(widget.mMatchConstraintMinWidth, width)
                 if (widget.mMatchConstraintMaxWidth > 0) {
-                    width = java.lang.Math.min(widget.mMatchConstraintMaxWidth, width)
+                    width = min(widget.mMatchConstraintMaxWidth, width)
                 }
             }
             val distance = s2 - s1 - width
@@ -782,9 +786,9 @@ object Direct {
     ) {
         val y1: Int
         val y2: Int
-        val bias = widget.getVerticalBiasPercent()
-        val s1: Int = widget!!.mTop.mTarget.getFinalValue() + widget.mTop.getMargin()
-        val s2: Int = widget.mBottom.mTarget.getFinalValue() - widget.mBottom.getMargin()
+        val bias = widget!!.verticalBiasPercent
+        val s1: Int = widget!!.mTop.target!!.finalValue + widget.mTop.margin
+        val s2: Int = widget.mBottom.target!!.finalValue - widget.mBottom.margin
         if (s2 >= s1) {
             var height = widget.height
             if (widget.visibility != ConstraintWidget.Companion.GONE) {
@@ -795,7 +799,7 @@ object Direct {
                     if (layout is ConstraintWidgetContainer) {
                         parentHeight = layout.height
                     } else {
-                        parentHeight = layout.getParent().getHeight()
+                        parentHeight = layout!!.parent!!.height
                     }
                     height = (0.5f * bias * parentHeight).toInt()
                 } else if (widget.mMatchConstraintDefaultHeight
@@ -803,9 +807,9 @@ object Direct {
                 ) {
                     height = s2 - s1
                 }
-                height = java.lang.Math.max(widget.mMatchConstraintMinHeight, height)
+                height = max(widget.mMatchConstraintMinHeight, height)
                 if (widget.mMatchConstraintMaxHeight > 0) {
-                    height = java.lang.Math.min(widget.mMatchConstraintMaxHeight, height)
+                    height = min(widget.mMatchConstraintMaxHeight, height)
                 }
             }
             val distance = s2 - s1 - height
@@ -824,37 +828,33 @@ object Direct {
      * @return true if both dimensions are knowable by a single measure pass
      */
     private fun canMeasure(level: Int, layout: ConstraintWidget?): Boolean {
-        val horizontalBehaviour: DimensionBehaviour? = layout.getHorizontalDimensionBehaviour()
-        val verticalBehaviour: DimensionBehaviour? = layout.getVerticalDimensionBehaviour()
-        val parent = if (layout.getParent() != null) layout.getParent() as ConstraintWidgetContainer else null
-        val isParentHorizontalFixed = parent != null && parent.getHorizontalDimensionBehaviour()
-        == DimensionBehaviour.FIXED
-        val isParentVerticalFixed = parent != null && parent.getVerticalDimensionBehaviour()
-        == DimensionBehaviour.FIXED
+        val horizontalBehaviour: DimensionBehaviour? = layout?.horizontalDimensionBehaviour
+        val verticalBehaviour: DimensionBehaviour? = layout?.verticalDimensionBehaviour
+        val parent = if (layout?.parent != null) layout.parent as ConstraintWidgetContainer else null
+        val isParentHorizontalFixed = parent != null && parent.horizontalDimensionBehaviour == DimensionBehaviour.FIXED
+        val isParentVerticalFixed = parent != null && parent.verticalDimensionBehaviour == DimensionBehaviour.FIXED
         val isHorizontalFixed =
             horizontalBehaviour == DimensionBehaviour.FIXED || layout!!.isResolvedHorizontally || APPLY_MATCH_PARENT && (horizontalBehaviour
                     == DimensionBehaviour.MATCH_PARENT) && isParentHorizontalFixed || horizontalBehaviour == DimensionBehaviour.WRAP_CONTENT || horizontalBehaviour == DimensionBehaviour.MATCH_CONSTRAINT && (layout.mMatchConstraintDefaultWidth
-                    == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) && layout.mDimensionRatio == 0f && layout.hasDanglingDimension(
+                    == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) && layout.dimensionRatio == 0f && layout.hasDanglingDimension(
                 ConstraintWidget.Companion.HORIZONTAL
             ) || horizontalBehaviour == DimensionBehaviour.MATCH_CONSTRAINT && layout.mMatchConstraintDefaultWidth == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP && layout.hasResolvedTargets(
                 ConstraintWidget.Companion.HORIZONTAL,
                 layout.width
             )
         val isVerticalFixed =
-            (verticalBehaviour == DimensionBehaviour.FIXED || layout!!.isResolvedVertically || APPLY_MATCH_PARENT && (verticalBehaviour
-                    == DimensionBehaviour.MATCH_PARENT) && isParentVerticalFixed || verticalBehaviour == DimensionBehaviour.WRAP_CONTENT || verticalBehaviour == DimensionBehaviour.MATCH_CONSTRAINT && (layout.mMatchConstraintDefaultHeight
-                    == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) && layout.mDimensionRatio) == 0f && layout!!.hasDanglingDimension(
-                ConstraintWidget.Companion.VERTICAL
-            ) || verticalBehaviour == DimensionBehaviour.MATCH_CONSTRAINT && layout!!.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP && layout.hasResolvedTargets(
+            (verticalBehaviour == DimensionBehaviour.FIXED || layout!!.isResolvedVertically || APPLY_MATCH_PARENT && (verticalBehaviour == DimensionBehaviour.MATCH_PARENT)
+                    && isParentVerticalFixed || verticalBehaviour == DimensionBehaviour.WRAP_CONTENT || verticalBehaviour == DimensionBehaviour.MATCH_CONSTRAINT && (layout.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD) && layout.dimensionRatio == 0f)
+                    && layout!!.hasDanglingDimension(ConstraintWidget.Companion.VERTICAL) || verticalBehaviour == DimensionBehaviour.MATCH_CONSTRAINT && layout!!.mMatchConstraintDefaultHeight == ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP && layout.hasResolvedTargets(
                 ConstraintWidget.Companion.VERTICAL,
                 layout.height
             )
-        if (layout.mDimensionRatio > 0 && (isHorizontalFixed || isVerticalFixed)) {
+        if (layout!!.dimensionRatio > 0 && (isHorizontalFixed || isVerticalFixed)) {
             return true
         }
         if (DEBUG) {
             println(
-                ls(level) + "can measure " + layout.getDebugName() + " ? "
+                ls(level) + "can measure " + layout!!.debugName + " ? "
                         + (isHorizontalFixed && isVerticalFixed) + "  [ "
                         + isHorizontalFixed + " (horiz " + horizontalBehaviour + ") & "
                         + isVerticalFixed + " (vert " + verticalBehaviour + ") ]"
@@ -881,11 +881,11 @@ object Direct {
             return false
         }
         if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-            if (!container.isResolvedHorizontally()) {
+            if (!container.isResolvedHorizontally) {
                 return false
             }
         } else {
-            if (!container.isResolvedVertically()) {
+            if (!container.isResolvedVertically) {
                 return false
             }
         }
@@ -899,21 +899,21 @@ object Direct {
         var widget = first
         var next: ConstraintWidget?
         var done = false
-        val begin: ConstraintAnchor = first!!.mListAnchors.get(offset)
-        val end: ConstraintAnchor = last!!.mListAnchors.get(offset + 1)
-        if (begin.mTarget == null || end.mTarget == null) {
+        val begin: ConstraintAnchor = first!!.mListAnchors.get(offset)!!
+        val end: ConstraintAnchor = last!!.mListAnchors.get(offset + 1)!!
+        if (begin.target == null || end.target == null) {
             return false
         }
-        if (!begin.mTarget.hasFinalValue() || !end.mTarget.hasFinalValue()) {
+        if (!begin.target!!.hasFinalValue() || !end.target!!.hasFinalValue()) {
             return false
         }
         if (firstVisibleWidget == null || lastVisibleWidget == null) {
             return false
         }
-        val startPoint: Int = (begin.mTarget.getFinalValue()
-                + firstVisibleWidget.mListAnchors.get(offset).getMargin())
-        val endPoint: Int = (end.mTarget.getFinalValue()
-                - lastVisibleWidget.mListAnchors.get(offset + 1).getMargin())
+        val startPoint: Int = (begin.target!!.finalValue
+                + firstVisibleWidget.mListAnchors.get(offset)!!.margin)
+        val endPoint: Int = (end.target!!.finalValue
+                - lastVisibleWidget.mListAnchors.get(offset + 1)!!.margin)
         val distance = endPoint - startPoint
         if (distance <= 0) {
             return false
@@ -938,13 +938,13 @@ object Direct {
                     container.measurer, measure, BasicMeasure.Measure.Companion.SELF_DIMENSIONS
                 )
             }
-            totalSize += widget.mListAnchors.get(offset).getMargin()
+            totalSize += widget.mListAnchors.get(offset)!!.margin
             if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
                 totalSize += +widget.width
             } else {
                 totalSize += widget.height
             }
-            totalSize += widget.mListAnchors.get(offset + 1).getMargin()
+            totalSize += widget.mListAnchors.get(offset + 1)!!.margin
             numWidgets++
             if (widget.visibility != ConstraintWidget.Companion.GONE) {
                 numVisibleWidgets++
@@ -952,11 +952,11 @@ object Direct {
 
 
             // go to the next widget
-            val nextAnchor: ConstraintAnchor = widget.mListAnchors.get(offset + 1).mTarget
+            val nextAnchor = widget.mListAnchors.get(offset + 1)!!.target
             if (nextAnchor != null) {
-                next = nextAnchor.mOwner
-                if (next!!.mListAnchors.get(offset).mTarget == null
-                    || next.mListAnchors.get(offset).mTarget.mOwner !== widget
+                next = nextAnchor.owner
+                if (next!!.mListAnchors.get(offset)!!.target == null
+                    || next.mListAnchors.get(offset)!!.target!!.owner !== widget
                 ) {
                     next = null
                 }
@@ -989,9 +989,9 @@ object Direct {
         if (numVisibleWidgets == 1) {
             val bias: Float
             if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-                bias = head.getHorizontalBiasPercent()
+                bias = head!!.horizontalBiasPercent
             } else {
-                bias = head.getVerticalBiasPercent()
+                bias = head!!.verticalBiasPercent
             }
             val p1 = (0.5f + startPoint + gap * bias).toInt()
             if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
@@ -1010,7 +1010,7 @@ object Direct {
             var current = startPoint + gap
             widget = first
             while (!done) {
-                if (widget.getVisibility() == ConstraintWidget.Companion.GONE) {
+                if (widget.visibility == ConstraintWidget.Companion.GONE) {
                     if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
                         widget!!.setFinalHorizontal(current, current)
                         horizontalSolvingPass(
@@ -1022,7 +1022,7 @@ object Direct {
                         verticalSolvingPass(level + 1, widget, container.measurer)
                     }
                 } else {
-                    current += widget!!.mListAnchors.get(offset).getMargin()
+                    current += widget!!.mListAnchors.get(offset)!!.margin
                     if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
                         widget.setFinalHorizontal(current, current + widget.width)
                         horizontalSolvingPass(
@@ -1035,17 +1035,17 @@ object Direct {
                         verticalSolvingPass(level + 1, widget, container.measurer)
                         current += widget.height
                     }
-                    current += widget.mListAnchors.get(offset + 1).getMargin()
+                    current += widget.mListAnchors.get(offset + 1)!!.margin
                     current += gap
                 }
                 widget.addToSolver(system, false)
 
                 // go to the next widget
-                val nextAnchor: ConstraintAnchor = widget.mListAnchors.get(offset + 1).mTarget
+                val nextAnchor  = widget.mListAnchors.get(offset + 1)!!.target
                 if (nextAnchor != null) {
-                    next = nextAnchor.mOwner
-                    if (next!!.mListAnchors.get(offset).mTarget == null
-                        || next.mListAnchors.get(offset).mTarget.mOwner !== widget
+                    next = nextAnchor.owner
+                    if (next!!.mListAnchors.get(offset)!!.target == null
+                        || next.mListAnchors.get(offset)!!.target!!.owner !== widget
                     ) {
                         next = null
                     }

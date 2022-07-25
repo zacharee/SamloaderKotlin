@@ -32,7 +32,7 @@ class CLNumber : CLElement {
     }
 
     override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
-        val json: java.lang.StringBuilder = java.lang.StringBuilder()
+        val json: StringBuilder = StringBuilder()
         addIndent(json, indent)
         val value = float
         val intValue = value.toInt()
@@ -54,8 +54,8 @@ class CLNumber : CLElement {
             return intValue.toFloat() == value
         }
 
-    override fun getInt(): Int {
-        if (java.lang.Float.isNaN(mValue)) {
+    fun getInt(): Int {
+        if (mValue.isNaN()) {
             mValue = content().toInt().toFloat()
         }
         return mValue.toInt()
@@ -63,7 +63,7 @@ class CLNumber : CLElement {
 
     override val float: Float
         get() {
-            if (java.lang.Float.isNaN(mValue)) {
+            if (mValue.isNaN()) {
                 mValue = content().toFloat()
             }
             return mValue

@@ -18,6 +18,8 @@ package androidx.constraintlayout.core.widgets.analyzer
 import androidx.constraintlayout.core.widgets.ConstraintAnchor
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
+import kotlin.math.max
+import kotlin.math.min
 
 abstract class WidgetRun(var mWidget: ConstraintWidget) : Dependency {
     var matchConstraintsType = 0
@@ -81,12 +83,12 @@ abstract class WidgetRun(var mWidget: ConstraintWidget) : Dependency {
     }
 
     protected fun getTarget(anchor: ConstraintAnchor): DependencyNode? {
-        if (anchor.mTarget == null) {
+        if (anchor.target == null) {
             return null
         }
         var target: DependencyNode? = null
-        val targetWidget: ConstraintWidget = anchor.mTarget.mOwner
-        val targetType: ConstraintAnchor.Type = anchor.mTarget.mType
+        val targetWidget: ConstraintWidget = anchor.target!!.owner
+        val targetType: ConstraintAnchor.Type = anchor.target!!.type
         when (targetType) {
             ConstraintAnchor.Type.LEFT -> {
                 val run = targetWidget.mHorizontalRun
@@ -171,7 +173,7 @@ abstract class WidgetRun(var mWidget: ConstraintWidget) : Dependency {
                 val parent = mWidget.parent
                 if (parent != null) {
                     val run: WidgetRun =
-                        if (orientation == ConstraintWidget.Companion.HORIZONTAL) parent.mHorizontalRun else parent.mVerticalRun
+                        if (orientation == ConstraintWidget.Companion.HORIZONTAL) parent.mHorizontalRun!! else parent.mVerticalRun!!
                     if (run.mDimension.resolved) {
                         val percent =
                             if (orientation == ConstraintWidget.Companion.HORIZONTAL) mWidget.mMatchConstraintPercentWidth else mWidget.mMatchConstraintPercentHeight
@@ -184,7 +186,7 @@ abstract class WidgetRun(var mWidget: ConstraintWidget) : Dependency {
 
             ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP -> {
                 val wrapValue = getLimitedDimension(mDimension.wrapValue, orientation)
-                mDimension.resolve(java.lang.Math.min(wrapValue, distance))
+                mDimension.resolve(min(wrapValue, distance))
             }
 
             ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO -> {
@@ -225,9 +227,9 @@ abstract class WidgetRun(var mWidget: ConstraintWidget) : Dependency {
         if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
             val max = mWidget.mMatchConstraintMaxWidth
             val min = mWidget.mMatchConstraintMinWidth
-            var value: Int = java.lang.Math.max(min, dimension)
+            var value: Int = max(min, dimension)
             if (max > 0) {
-                value = java.lang.Math.min(max, dimension)
+                value = min(max, dimension)
             }
             if (value != dimension) {
                 dimension = value
@@ -235,9 +237,9 @@ abstract class WidgetRun(var mWidget: ConstraintWidget) : Dependency {
         } else {
             val max = mWidget.mMatchConstraintMaxHeight
             val min = mWidget.mMatchConstraintMinHeight
-            var value: Int = java.lang.Math.max(min, dimension)
+            var value: Int = max(min, dimension)
             if (max > 0) {
-                value = java.lang.Math.min(max, dimension)
+                value = min(max, dimension)
             }
             if (value != dimension) {
                 dimension = value
@@ -247,14 +249,14 @@ abstract class WidgetRun(var mWidget: ConstraintWidget) : Dependency {
     }
 
     protected fun getTarget(anchor: ConstraintAnchor, orientation: Int): DependencyNode? {
-        if (anchor.mTarget == null) {
+        if (anchor.target == null) {
             return null
         }
         var target: DependencyNode? = null
-        val targetWidget: ConstraintWidget = anchor.mTarget.mOwner
+        val targetWidget: ConstraintWidget = anchor.target!!.owner
         val run: WidgetRun? =
             if (orientation == ConstraintWidget.Companion.HORIZONTAL) targetWidget.mHorizontalRun else targetWidget.mVerticalRun
-        val targetType: ConstraintAnchor.Type = anchor.mTarget.mType
+        val targetType: ConstraintAnchor.Type = anchor.target!!.type
         when (targetType) {
             ConstraintAnchor.Type.TOP, ConstraintAnchor.Type.LEFT -> {
                 target = run!!.start

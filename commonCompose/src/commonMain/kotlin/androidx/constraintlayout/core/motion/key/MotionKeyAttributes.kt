@@ -270,7 +270,7 @@ class MotionKeyAttributes : MotionKey() {
     /**
      * @TODO: add description
      */
-    override fun setValue(type: Int, value: String?): Boolean {
+    override fun setValue(type: Int, value: String): Boolean {
         when (type) {
             AttributesType.Companion.TYPE_EASING -> mTransitionEasing = value
             TypedValues.Companion.TYPE_TARGET -> mTargetString = value

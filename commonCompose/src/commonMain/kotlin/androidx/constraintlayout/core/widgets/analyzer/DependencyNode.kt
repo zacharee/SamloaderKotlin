@@ -30,10 +30,10 @@ open class DependencyNode(var mRun: WidgetRun) : Dependency {
     var mMarginFactor = 1
     var mMarginDependency: DimensionDependency? = null
     var resolved = false
-    var mDependencies: MutableList<Dependency?> = java.util.ArrayList<Dependency>()
-    var mTargets: MutableList<DependencyNode?> = java.util.ArrayList<DependencyNode>()
+    var mDependencies: MutableList<Dependency?> = ArrayList()
+    var mTargets: MutableList<DependencyNode?> = ArrayList()
     override fun toString(): String {
-        return (mRun.mWidget.getDebugName() + ":" + mType + "("
+        return (mRun.mWidget.debugName + ":" + mType + "("
                 + (if (resolved) value else "unresolved") + ") <t="
                 + mTargets.size + ":d=" + mDependencies.size + ">")
     }
@@ -106,8 +106,8 @@ open class DependencyNode(var mRun: WidgetRun) : Dependency {
     /**
      * @TODO: add description
      */
-    fun name(): String? {
-        var definition: String = mRun.mWidget.getDebugName()
+    fun name(): String {
+        var definition: String = mRun.mWidget.debugName ?: ""
         definition += if (mType == Type.LEFT
             || mType == Type.RIGHT
         ) {

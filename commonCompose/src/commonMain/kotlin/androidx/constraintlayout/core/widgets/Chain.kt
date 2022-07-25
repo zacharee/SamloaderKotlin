@@ -16,9 +16,9 @@
 package androidx.constraintlayout.core.widgets
 
 import androidx.constraintlayout.core.LinearSystem
-import androidx.constraintlayout.core.SolverVariable
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
 import androidx.constraintlayout.core.widgets.analyzer.Direct
+import androidx.constraintlayout.coreimport.SolverVariable
 
 /**
  * Chain management and constraints creation
@@ -38,14 +38,14 @@ object Chain {
     fun applyChainConstraints(
         constraintWidgetContainer: ConstraintWidgetContainer,
         system: LinearSystem,
-        widgets: java.util.ArrayList<ConstraintWidget>?,
+        widgets: ArrayList<ConstraintWidget>?,
         orientation: Int
     ) {
         // what to do:
         // Don't skip things. Either the element is GONE or not.
         var offset = 0
         var chainsSize = 0
-        var chainsArray: Array<ChainHead>? = null
+        val chainsArray: Array<ChainHead?>
         if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
             offset = 0
             chainsSize = constraintWidgetContainer.mHorizontalChainsSize
@@ -56,12 +56,12 @@ object Chain {
             chainsArray = constraintWidgetContainer.mVerticalChainsArray
         }
         for (i in 0 until chainsSize) {
-            val first = chainsArray[i]
+            val first = chainsArray[i]!!
             // we have to make sure we define the ChainHead here,
             // otherwise the values we use may not be correctly initialized
             // (as we initialize them in the ConstraintWidget.addToSolver())
-            first.define()
-            if (widgets == null || widgets != null && widgets.contains(first.mFirst)) {
+            first!!.define()
+            if (widgets == null || widgets.contains(first!!.first)) {
                 applyChainConstraints(
                     constraintWidgetContainer,
                     system, orientation, offset, first
@@ -84,30 +84,30 @@ object Chain {
         container: ConstraintWidgetContainer, system: LinearSystem,
         orientation: Int, offset: Int, chainHead: ChainHead
     ) {
-        val first = chainHead.mFirst
-        val last = chainHead.mLast
-        val firstVisibleWidget = chainHead.mFirstVisibleWidget
-        var lastVisibleWidget = chainHead.mLastVisibleWidget
-        val head = chainHead.mHead
-        var widget = first
+        val first = chainHead.first
+        val last = chainHead.last
+        val firstVisibleWidget = chainHead.firstVisibleWidget
+        var lastVisibleWidget = chainHead.lastVisibleWidget
+        val head = chainHead.head
+        var widget: ConstraintWidget? = first
         var next: ConstraintWidget? = null
         var done = false
-        var totalWeights = chainHead.mTotalWeight
-        val firstMatchConstraintsWidget = chainHead.mFirstMatchConstraintWidget
-        val previousMatchConstraintsWidget = chainHead.mLastMatchConstraintWidget
+        var totalWeights = chainHead.totalWeight
+        val firstMatchConstraintsWidget = chainHead.firstMatchConstraintWidget
+        val previousMatchConstraintsWidget = chainHead.lastMatchConstraintWidget
         val isWrapContent = (container.mListDimensionBehaviors.get(orientation)
                 == DimensionBehaviour.WRAP_CONTENT)
         var isChainSpread = false
         var isChainSpreadInside = false
         var isChainPacked = false
         if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-            isChainSpread = head.mHorizontalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD
-            isChainSpreadInside = head.mHorizontalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD_INSIDE
-            isChainPacked = head.mHorizontalChainStyle == ConstraintWidget.Companion.CHAIN_PACKED
+            isChainSpread = head!!.horizontalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD
+            isChainSpreadInside = head!!.horizontalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD_INSIDE
+            isChainPacked = head!!.horizontalChainStyle == ConstraintWidget.Companion.CHAIN_PACKED
         } else {
-            isChainSpread = head.mVerticalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD
-            isChainSpreadInside = head.mVerticalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD_INSIDE
-            isChainPacked = head.mVerticalChainStyle == ConstraintWidget.Companion.CHAIN_PACKED
+            isChainSpread = head!!.verticalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD
+            isChainSpreadInside = head!!.verticalChainStyle == ConstraintWidget.Companion.CHAIN_SPREAD_INSIDE
+            isChainPacked = head!!.verticalChainStyle == ConstraintWidget.Companion.CHAIN_PACKED
         }
         if (USE_CHAIN_OPTIMIZATION && !isWrapContent
             && Direct.solveChain(
@@ -127,7 +127,7 @@ object Chain {
         // - set up some basic ordering constraints
         // - build a linked list of matched constraints widgets
         while (!done) {
-            val begin: ConstraintAnchor = widget!!.mListAnchors.get(offset)
+            val begin: ConstraintAnchor = widget!!.mListAnchors.get(offset)!!
             var strength: Int = SolverVariable.Companion.STRENGTH_HIGHEST
             if (isChainPacked) {
                 strength = SolverVariable.Companion.STRENGTH_LOW
@@ -137,21 +137,21 @@ object Chain {
                     == DimensionBehaviour.MATCH_CONSTRAINT
                     && widget!!.mResolvedMatchConstraintDefault.get(orientation)
                     == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD)
-            if (begin.mTarget != null && widget !== first) {
-                margin += begin.mTarget.getMargin()
+            if (begin!!.target != null && widget !== first) {
+                margin += begin!!.target!!.margin
             }
             if (isChainPacked && widget !== first && widget !== firstVisibleWidget) {
                 strength = SolverVariable.Companion.STRENGTH_FIXED
             }
-            if (begin.mTarget != null) {
+            if (begin!!.target != null) {
                 if (widget === firstVisibleWidget) {
                     system.addGreaterThan(
-                        begin.mSolverVariable, begin.mTarget.mSolverVariable,
+                        begin!!.solverVariable!!, begin!!.target!!.solverVariable!!,
                         margin, SolverVariable.Companion.STRENGTH_BARRIER
                     )
                 } else {
                     system.addGreaterThan(
-                        begin.mSolverVariable, begin.mTarget.mSolverVariable,
+                        begin!!.solverVariable!!, begin!!.target!!.solverVariable!!,
                         margin, SolverVariable.Companion.STRENGTH_FIXED
                     )
                 }
@@ -164,7 +164,7 @@ object Chain {
                     strength = SolverVariable.Companion.STRENGTH_EQUALITY
                 }
                 system.addEquality(
-                    begin.mSolverVariable, begin.mTarget.mSolverVariable, margin,
+                    begin!!.solverVariable!!, begin!!.target!!.solverVariable!!, margin,
                     strength
                 )
             }
@@ -174,24 +174,24 @@ object Chain {
                     == DimensionBehaviour.MATCH_CONSTRAINT
                 ) {
                     system.addGreaterThan(
-                        widget!!.mListAnchors.get(offset + 1).mSolverVariable,
-                        widget!!.mListAnchors.get(offset).mSolverVariable, 0,
+                        widget!!.mListAnchors.get(offset + 1)!!.solverVariable!!,
+                        widget!!.mListAnchors.get(offset)!!.solverVariable!!, 0,
                         SolverVariable.Companion.STRENGTH_EQUALITY
                     )
                 }
                 system.addGreaterThan(
-                    widget!!.mListAnchors.get(offset).mSolverVariable,
-                    container.mListAnchors.get(offset).mSolverVariable,
+                    widget!!.mListAnchors.get(offset)!!.solverVariable!!,
+                    container.mListAnchors.get(offset)!!.solverVariable!!,
                     0, SolverVariable.Companion.STRENGTH_FIXED
                 )
             }
 
             // go to the next widget
-            val nextAnchor: ConstraintAnchor = widget!!.mListAnchors.get(offset + 1).mTarget
+            val nextAnchor = widget!!.mListAnchors.get(offset + 1)!!.target
             if (nextAnchor != null) {
-                next = nextAnchor.mOwner
-                if (next!!.mListAnchors.get(offset).mTarget == null
-                    || next.mListAnchors.get(offset).mTarget.mOwner !== widget
+                next = nextAnchor.owner
+                if (next!!.mListAnchors.get(offset)!!.target == null
+                    || next.mListAnchors.get(offset)!!.target!!.owner !== widget
                 ) {
                     next = null
                 }
@@ -206,26 +206,26 @@ object Chain {
         }
 
         // Make sure we have constraints for the last anchors / targets
-        if (lastVisibleWidget != null && last!!.mListAnchors.get(offset + 1).mTarget != null) {
-            val end: ConstraintAnchor = lastVisibleWidget.mListAnchors.get(offset + 1)
+        if (lastVisibleWidget != null && last!!.mListAnchors.get(offset + 1)!!.target != null) {
+            val end: ConstraintAnchor = lastVisibleWidget.mListAnchors.get(offset + 1)!!
             val isSpreadOnly = (lastVisibleWidget.mListDimensionBehaviors.get(orientation)
                     == DimensionBehaviour.MATCH_CONSTRAINT
                     && lastVisibleWidget.mResolvedMatchConstraintDefault.get(orientation)
                     == ConstraintWidget.Companion.MATCH_CONSTRAINT_SPREAD)
-            if (isSpreadOnly && !isChainPacked && end.mTarget.mOwner === container) {
+            if (isSpreadOnly && !isChainPacked && end!!.target!!.owner === container) {
                 system.addEquality(
-                    end.mSolverVariable, end.mTarget.mSolverVariable,
+                    end!!.solverVariable!!, end!!.target!!.solverVariable!!,
                     -end.margin, SolverVariable.Companion.STRENGTH_EQUALITY
                 )
-            } else if (isChainPacked && end.mTarget.mOwner === container) {
+            } else if (isChainPacked && end!!.target!!.owner === container) {
                 system.addEquality(
-                    end.mSolverVariable, end.mTarget.mSolverVariable,
+                    end!!.solverVariable!!, end!!.target!!.solverVariable!!,
                     -end.margin, SolverVariable.Companion.STRENGTH_HIGHEST
                 )
             }
             system.addLowerThan(
-                end.mSolverVariable,
-                last!!.mListAnchors.get(offset + 1).mTarget.mSolverVariable, -end.margin,
+                end!!.solverVariable!!,
+                last!!.mListAnchors.get(offset + 1)!!.target!!.solverVariable!!, -end.margin,
                 SolverVariable.Companion.STRENGTH_BARRIER
             )
         }
@@ -233,14 +233,14 @@ object Chain {
         // ... and make sure the root end is constrained in wrap content.
         if (isWrapContent) {
             system.addGreaterThan(
-                container.mListAnchors.get(offset + 1).mSolverVariable,
-                last!!.mListAnchors.get(offset + 1).mSolverVariable,
-                last!!.mListAnchors.get(offset + 1).getMargin(), SolverVariable.Companion.STRENGTH_FIXED
+                container.mListAnchors.get(offset + 1)!!.solverVariable!!,
+                last!!.mListAnchors.get(offset + 1)!!.solverVariable!!,
+                last!!.mListAnchors.get(offset + 1)!!.margin, SolverVariable.Companion.STRENGTH_FIXED
             )
         }
 
         // Now, let's apply the centering / spreading for matched constraints widgets
-        val listMatchConstraints: java.util.ArrayList<ConstraintWidget>? = chainHead.mWeightedMatchConstraintsWidgets
+        val listMatchConstraints: ArrayList<ConstraintWidget>? = chainHead.mWeightedMatchConstraintsWidgets
         if (listMatchConstraints != null) {
             val count: Int = listMatchConstraints.size
             if (count > 1) {
@@ -255,8 +255,8 @@ object Chain {
                     if (currentWeight < 0) {
                         if (chainHead.mHasComplexMatchWeights) {
                             system.addEquality(
-                                match.mListAnchors[offset + 1].mSolverVariable,
-                                match.mListAnchors[offset].mSolverVariable,
+                                match.mListAnchors[offset + 1]!!.solverVariable!!,
+                                match.mListAnchors[offset]!!.solverVariable!!,
                                 0, SolverVariable.Companion.STRENGTH_HIGHEST
                             )
                             continue
@@ -265,17 +265,17 @@ object Chain {
                     }
                     if (currentWeight == 0f) {
                         system.addEquality(
-                            match.mListAnchors[offset + 1].mSolverVariable,
-                            match.mListAnchors[offset].mSolverVariable,
+                            match.mListAnchors[offset + 1]!!.solverVariable!!,
+                            match.mListAnchors[offset]!!.solverVariable!!,
                             0, SolverVariable.Companion.STRENGTH_FIXED
                         )
                         continue
                     }
                     if (lastMatch != null) {
-                        val begin: SolverVariable = lastMatch.mListAnchors[offset].mSolverVariable
-                        val end: SolverVariable = lastMatch.mListAnchors[offset + 1].mSolverVariable
-                        val nextBegin: SolverVariable = match.mListAnchors[offset].mSolverVariable
-                        val nextEnd: SolverVariable = match.mListAnchors[offset + 1].mSolverVariable
+                        val begin: SolverVariable = lastMatch.mListAnchors[offset]!!.solverVariable!!
+                        val end: SolverVariable = lastMatch.mListAnchors[offset + 1]!!.solverVariable!!
+                        val nextBegin: SolverVariable = match.mListAnchors[offset]!!.solverVariable!!
+                        val nextEnd: SolverVariable = match.mListAnchors[offset + 1]!!.solverVariable!!
                         val row = system.createRow()
                         row.createRowEqualMatchDimensions(
                             lastWeight, totalWeights, currentWeight,
@@ -292,10 +292,8 @@ object Chain {
             widget = firstVisibleWidget
             while (widget != null) {
                 next = widget.mNextChainWidget.get(orientation)
-                widget.mListAnchors.get(offset).mSolverVariable
-                    .setName("" + widget.debugName + ".left")
-                widget.mListAnchors.get(offset + 1).mSolverVariable
-                    .setName("" + widget.debugName + ".right")
+                widget.mListAnchors.get(offset)!!.solverVariable!!.name = ("" + widget.debugName + ".left")
+                widget.mListAnchors.get(offset + 1)!!.solverVariable!!.name = ("" + widget.debugName + ".right")
                 widget = next
             }
         }
@@ -304,26 +302,26 @@ object Chain {
         if (firstVisibleWidget != null
             && (firstVisibleWidget === lastVisibleWidget || isChainPacked)
         ) {
-            var begin: ConstraintAnchor = first!!.mListAnchors.get(offset)
-            var end: ConstraintAnchor = last!!.mListAnchors.get(offset + 1)
-            val beginTarget: SolverVariable? = if (begin.mTarget != null) begin.mTarget.mSolverVariable else null
-            val endTarget: SolverVariable? = if (end.mTarget != null) end.mTarget.mSolverVariable else null
-            begin = firstVisibleWidget.mListAnchors.get(offset)
+            var begin: ConstraintAnchor = first!!.mListAnchors.get(offset)!!
+            var end: ConstraintAnchor = last!!.mListAnchors.get(offset + 1)!!
+            val beginTarget: SolverVariable? = if (begin!!.target != null) begin!!.target!!.solverVariable else null
+            val endTarget: SolverVariable? = if (end!!.target != null) end!!.target!!.solverVariable else null
+            begin = firstVisibleWidget.mListAnchors.get(offset)!!
             if (lastVisibleWidget != null) {
-                end = lastVisibleWidget.mListAnchors.get(offset + 1)
+                end = lastVisibleWidget.mListAnchors.get(offset + 1)!!
             }
             if (beginTarget != null && endTarget != null) {
                 var bias = 0.5f
                 if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-                    bias = head.mHorizontalBiasPercent
+                    bias = head.horizontalBiasPercent
                 } else {
-                    bias = head.mVerticalBiasPercent
+                    bias = head.verticalBiasPercent
                 }
                 val beginMargin = begin.margin
                 val endMargin = end.margin
                 system.addCentering(
-                    begin.mSolverVariable, beginTarget,
-                    beginMargin, bias, endTarget, end.mSolverVariable,
+                    begin!!.solverVariable!!, beginTarget,
+                    beginMargin, bias, endTarget, end!!.solverVariable!!,
                     endMargin, SolverVariable.Companion.STRENGTH_CENTERING
                 )
             }
@@ -339,43 +337,43 @@ object Chain {
                     next = next.mNextChainWidget[orientation]
                 }
                 if (next != null || widget === lastVisibleWidget) {
-                    val beginAnchor: ConstraintAnchor = widget.mListAnchors.get(offset)
-                    val begin = beginAnchor.mSolverVariable
+                    val beginAnchor: ConstraintAnchor = widget.mListAnchors.get(offset)!!
+                    val begin = beginAnchor!!.solverVariable
                     var beginTarget: SolverVariable? =
-                        if (beginAnchor.mTarget != null) beginAnchor.mTarget.mSolverVariable else null
+                        if (beginAnchor!!.target != null) beginAnchor!!.target!!.solverVariable else null
                     if (previousVisibleWidget !== widget) {
-                        beginTarget = previousVisibleWidget.mListAnchors[offset + 1].mSolverVariable
+                        beginTarget = previousVisibleWidget!!.mListAnchors[offset + 1]!!.solverVariable
                     } else if (widget === firstVisibleWidget) {
                         beginTarget =
-                            if (first!!.mListAnchors.get(offset).mTarget != null) first!!.mListAnchors.get(offset).mTarget.mSolverVariable else null
+                            if (first!!.mListAnchors.get(offset)!!.target != null) first!!.mListAnchors.get(offset)!!.target!!.solverVariable else null
                     }
                     var beginNextAnchor: ConstraintAnchor? = null
                     var beginNext: SolverVariable? = null
                     var beginNextTarget: SolverVariable? = null
                     var beginMargin = beginAnchor.margin
-                    var nextMargin: Int = widget.mListAnchors.get(offset + 1).getMargin()
+                    var nextMargin: Int = widget.mListAnchors.get(offset + 1)!!.margin
                     if (next != null) {
                         beginNextAnchor = next.mListAnchors[offset]
-                        beginNext = beginNextAnchor.mSolverVariable
+                        beginNext = beginNextAnchor!!.solverVariable
                     } else {
-                        beginNextAnchor = last!!.mListAnchors.get(offset + 1).mTarget
+                        beginNextAnchor = last!!.mListAnchors.get(offset + 1)!!.target
                         if (beginNextAnchor != null) {
-                            beginNext = beginNextAnchor.mSolverVariable
+                            beginNext = beginNextAnchor!!.solverVariable
                         }
                     }
-                    beginNextTarget = widget.mListAnchors.get(offset + 1).mSolverVariable
+                    beginNextTarget = widget.mListAnchors.get(offset + 1)!!.solverVariable
                     if (beginNextAnchor != null) {
                         nextMargin += beginNextAnchor.margin
                     }
-                    beginMargin += previousVisibleWidget.mListAnchors[offset + 1].getMargin()
+                    beginMargin += previousVisibleWidget!!.mListAnchors[offset + 1]!!.margin
                     if (begin != null && beginTarget != null && beginNext != null && beginNextTarget != null) {
                         var margin1 = beginMargin
                         if (widget === firstVisibleWidget) {
-                            margin1 = firstVisibleWidget.mListAnchors.get(offset).getMargin()
+                            margin1 = firstVisibleWidget.mListAnchors.get(offset)!!.margin
                         }
                         var margin2 = nextMargin
                         if (widget === lastVisibleWidget) {
-                            margin2 = lastVisibleWidget.mListAnchors.get(offset + 1).getMargin()
+                            margin2 = lastVisibleWidget.mListAnchors.get(offset + 1)!!.margin
                         }
                         var strength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
                         if (applyFixedEquality) {
@@ -408,32 +406,32 @@ object Chain {
                     if (next === lastVisibleWidget) {
                         next = null
                     }
-                    val beginAnchor: ConstraintAnchor = widget.mListAnchors.get(offset)
-                    val begin = beginAnchor.mSolverVariable
+                    val beginAnchor: ConstraintAnchor = widget.mListAnchors.get(offset)!!
+                    val begin = beginAnchor!!.solverVariable
                     var beginTarget: SolverVariable? =
-                        if (beginAnchor.mTarget != null) beginAnchor.mTarget.mSolverVariable else null
-                    beginTarget = previousVisibleWidget.mListAnchors[offset + 1].mSolverVariable
+                        if (beginAnchor!!.target != null) beginAnchor!!.target!!.solverVariable else null
+                    beginTarget = previousVisibleWidget!!.mListAnchors[offset + 1]!!.solverVariable
                     var beginNextAnchor: ConstraintAnchor? = null
                     var beginNext: SolverVariable? = null
                     var beginNextTarget: SolverVariable? = null
                     var beginMargin = beginAnchor.margin
-                    var nextMargin: Int = widget.mListAnchors.get(offset + 1).getMargin()
+                    var nextMargin: Int = widget.mListAnchors.get(offset + 1)!!.margin
                     if (next != null) {
                         beginNextAnchor = next.mListAnchors[offset]
-                        beginNext = beginNextAnchor.mSolverVariable
+                        beginNext = beginNextAnchor!!.solverVariable
                         beginNextTarget =
-                            if (beginNextAnchor.mTarget != null) beginNextAnchor.mTarget.mSolverVariable else null
+                            if (beginNextAnchor!!.target != null) beginNextAnchor!!.target!!.solverVariable else null
                     } else {
                         beginNextAnchor = lastVisibleWidget!!.mListAnchors.get(offset)
                         if (beginNextAnchor != null) {
-                            beginNext = beginNextAnchor.mSolverVariable
+                            beginNext = beginNextAnchor!!.solverVariable
                         }
-                        beginNextTarget = widget.mListAnchors.get(offset + 1).mSolverVariable
+                        beginNextTarget = widget.mListAnchors.get(offset + 1)!!.solverVariable
                     }
                     if (beginNextAnchor != null) {
                         nextMargin += beginNextAnchor.margin
                     }
-                    beginMargin += previousVisibleWidget.mListAnchors[offset + 1].getMargin()
+                    beginMargin += previousVisibleWidget.mListAnchors[offset + 1]!!.margin
                     var strength: Int = SolverVariable.Companion.STRENGTH_HIGHEST
                     if (applyFixedEquality) {
                         strength = SolverVariable.Companion.STRENGTH_FIXED
@@ -451,29 +449,29 @@ object Chain {
                 }
                 widget = next
             }
-            val begin: ConstraintAnchor = firstVisibleWidget.mListAnchors.get(offset)
-            val beginTarget: ConstraintAnchor = first!!.mListAnchors.get(offset).mTarget
-            val end: ConstraintAnchor = lastVisibleWidget!!.mListAnchors.get(offset + 1)
-            val endTarget: ConstraintAnchor = last!!.mListAnchors.get(offset + 1).mTarget
+            val begin = firstVisibleWidget.mListAnchors.get(offset)
+            val beginTarget = first!!.mListAnchors.get(offset)!!.target
+            val end = lastVisibleWidget!!.mListAnchors.get(offset + 1)
+            val endTarget = last!!.mListAnchors.get(offset + 1)!!.target
             val endPointsStrength: Int = SolverVariable.Companion.STRENGTH_EQUALITY
             if (beginTarget != null) {
                 if (firstVisibleWidget !== lastVisibleWidget) {
                     system.addEquality(
-                        begin.mSolverVariable, beginTarget.mSolverVariable,
+                        begin!!.solverVariable!!, beginTarget!!.solverVariable!!,
                         begin.margin, endPointsStrength
                     )
                 } else if (endTarget != null) {
                     system.addCentering(
-                        begin.mSolverVariable, beginTarget.mSolverVariable,
-                        begin.margin, 0.5f, end.mSolverVariable, endTarget.mSolverVariable,
+                        begin!!.solverVariable!!, beginTarget!!.solverVariable!!,
+                        begin.margin, 0.5f, end!!.solverVariable!!, endTarget!!.solverVariable!!,
                         end.margin, endPointsStrength
                     )
                 }
             }
             if (endTarget != null && firstVisibleWidget !== lastVisibleWidget) {
                 system.addEquality(
-                    end.mSolverVariable,
-                    endTarget.mSolverVariable, -end.margin, endPointsStrength
+                    end!!.solverVariable!!,
+                    endTarget!!.solverVariable!!, -end.margin, endPointsStrength
                 )
             }
         }
@@ -482,28 +480,28 @@ object Chain {
         if ((isChainSpread || isChainSpreadInside) && (firstVisibleWidget
                     != null) && firstVisibleWidget !== lastVisibleWidget
         ) {
-            var begin: ConstraintAnchor = firstVisibleWidget.mListAnchors.get(offset)
+            var begin: ConstraintAnchor = firstVisibleWidget.mListAnchors.get(offset)!!
             if (lastVisibleWidget == null) {
                 lastVisibleWidget = firstVisibleWidget
             }
-            var end: ConstraintAnchor = lastVisibleWidget.mListAnchors.get(offset + 1)
-            val beginTarget: SolverVariable? = if (begin.mTarget != null) begin.mTarget.mSolverVariable else null
-            var endTarget: SolverVariable? = if (end.mTarget != null) end.mTarget.mSolverVariable else null
+            var end: ConstraintAnchor = lastVisibleWidget.mListAnchors.get(offset + 1)!!
+            val beginTarget: SolverVariable? = if (begin!!.target != null) begin!!.target!!.solverVariable else null
+            var endTarget: SolverVariable? = if (end!!.target != null) end!!.target!!.solverVariable else null
             if (last !== lastVisibleWidget) {
-                val realEnd: ConstraintAnchor = last!!.mListAnchors.get(offset + 1)
-                endTarget = if (realEnd.mTarget != null) realEnd.mTarget.mSolverVariable else null
+                val realEnd: ConstraintAnchor = last!!.mListAnchors.get(offset + 1)!!
+                endTarget = if (realEnd!!.target != null) realEnd!!.target!!.solverVariable else null
             }
             if (firstVisibleWidget === lastVisibleWidget) {
-                begin = firstVisibleWidget.mListAnchors.get(offset)
-                end = firstVisibleWidget.mListAnchors.get(offset + 1)
+                begin = firstVisibleWidget.mListAnchors.get(offset)!!
+                end = firstVisibleWidget.mListAnchors.get(offset + 1)!!
             }
             if (beginTarget != null && endTarget != null) {
                 val bias = 0.5f
                 val beginMargin = begin.margin
-                val endMargin: Int = lastVisibleWidget.mListAnchors.get(offset + 1).getMargin()
+                val endMargin: Int = lastVisibleWidget.mListAnchors.get(offset + 1)!!.margin
                 system.addCentering(
-                    begin.mSolverVariable, beginTarget, beginMargin,
-                    bias, endTarget, end.mSolverVariable, endMargin,
+                    begin!!.solverVariable!!, beginTarget, beginMargin,
+                    bias, endTarget, end!!.solverVariable!!, endMargin,
                     SolverVariable.Companion.STRENGTH_EQUALITY
                 )
             }

@@ -134,7 +134,7 @@ abstract class MotionKey : TypedValues {
     /**
      * @TODO: add description
      */
-    override fun setValue(type: Int, value: String?): Boolean {
+    override fun setValue(type: Int, value: String): Boolean {
         when (type) {
             TypedValues.Companion.TYPE_TARGET -> {
                 mTargetString = value

@@ -38,13 +38,13 @@ open class HelperWidget : ConstraintWidget(), Helper {
             return
         }
         if (mWidgetsCount + 1 > mWidgets.size) {
-            mWidgets = java.util.Arrays.copyOf<ConstraintWidget>(mWidgets, mWidgets.size * 2)
+            mWidgets = mWidgets.copyOf(mWidgets.size * 2)
         }
         mWidgets[mWidgetsCount] = widget
         mWidgetsCount++
     }
 
-    override fun copy(src: ConstraintWidget, map: java.util.HashMap<ConstraintWidget?, ConstraintWidget?>) {
+    override fun copy(src: ConstraintWidget, map: HashMap<ConstraintWidget?, ConstraintWidget?>) {
         super.copy(src, map)
         val srcHelper = src as HelperWidget
         mWidgetsCount = 0
@@ -59,20 +59,20 @@ open class HelperWidget : ConstraintWidget(), Helper {
      */
     override fun removeAllIds() {
         mWidgetsCount = 0
-        java.util.Arrays.fill(mWidgets, null)
+        mWidgets.fill(null)
     }
 
     /**
      * @TODO: add description
      */
     fun addDependents(
-        dependencyLists: java.util.ArrayList<WidgetGroup>,
+        dependencyLists: ArrayList<WidgetGroup>,
         orientation: Int,
         group: WidgetGroup?
     ) {
         for (i in 0 until mWidgetsCount) {
             val widget = mWidgets[i]
-            group!!.add(widget)
+            group!!.add(widget!!)
         }
         for (i in 0 until mWidgetsCount) {
             val widget = mWidgets[i]

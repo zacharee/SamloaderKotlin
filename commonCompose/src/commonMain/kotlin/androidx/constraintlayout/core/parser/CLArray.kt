@@ -16,8 +16,8 @@
 package androidx.constraintlayout.core.parser
 
 class CLArray(content: CharArray?) : CLContainer(content) {
-    protected override fun toJSON(): String {
-        val content: java.lang.StringBuilder = java.lang.StringBuilder(getDebugName() + "[")
+    override fun toJSON(): String {
+        val content: StringBuilder = StringBuilder(debugName + "[")
         var first = true
         for (i in mElements.indices) {
             if (!first) {
@@ -30,8 +30,8 @@ class CLArray(content: CharArray?) : CLContainer(content) {
         return content.toString() + "]"
     }
 
-    protected override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
-        val json: java.lang.StringBuilder = java.lang.StringBuilder()
+    override fun toFormattedJSON(indent: Int, forceIndent: Int): String {
+        val json: StringBuilder = StringBuilder()
         val `val` = toJSON()
         if (forceIndent <= 0 && `val`.length + indent < CLElement.Companion.sMaxLine) {
             json.append(`val`)

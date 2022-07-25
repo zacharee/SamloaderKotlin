@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package androidx.constraintlayout.core.stateimport
+package androidx.constraintlayout.core.state
 
-import androidx.constraintlayout.core.state.*
-import androidx.constraintlayout.core.state.helpers.*
-import androidx.constraintlayout.core.state.helpersimportimport.Facade
+import androidx.constraintlayout.core.state.helpers.Facade
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 import androidx.constraintlayout.core.widgets.HelperWidget
 
-open class HelperReference(protected override val mState: State, val type: State.Helper) : ConstraintReference(
+open class HelperReference(override val mState: State, val type: State.Helper) : ConstraintReference(
     mState
 ), Facade {
     var mReferences: ArrayList<Any> = ArrayList<Any>()

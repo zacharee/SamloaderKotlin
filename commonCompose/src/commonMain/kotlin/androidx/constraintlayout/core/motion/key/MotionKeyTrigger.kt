@@ -151,7 +151,7 @@ class MotionKeyTrigger : MotionKey() {
     /**
      * @TODO: add description
      */
-    override fun setValue(type: Int, value: String?): Boolean {
+    override fun setValue(type: Int, value: String): Boolean {
         when (type) {
             TriggerType.Companion.TYPE_CROSS -> mCross = value
             TriggerType.Companion.TYPE_NEGATIVE_CROSS -> mNegativeCross = value

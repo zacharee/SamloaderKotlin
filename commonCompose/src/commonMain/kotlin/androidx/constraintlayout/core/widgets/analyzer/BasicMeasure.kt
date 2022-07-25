@@ -18,7 +18,10 @@ package androidx.constraintlayout.core.widgets.analyzer
 import androidx.constraintlayout.core.LinearSystem
 import androidx.constraintlayout.core.widgets.*
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
-import androidx.constraintlayout.core.widgetsimport.ConstraintWidgetContainer
+import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
+import kotlinx.datetime.Clock
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Implements basic measure for linear resolution
@@ -49,7 +52,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
     private fun measureChildren(layout: ConstraintWidgetContainer) {
         val childCount: Int = layout.mChildren.size
         val optimize = layout.optimizeFor(Optimizer.OPTIMIZATION_GRAPH)
-        val measurer: Measurer = layout.measurer
+        val measurer = layout.measurer!!
         for (i in 0 until childCount) {
             val child: ConstraintWidget = layout.mChildren.get(i)
             if (child is Guideline) {
@@ -83,7 +86,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                 // Don't measure yet -- let the direct solver have a shot at it.
                 if ((widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT
                             || heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT)
-                    && child.mDimensionRatio > 0
+                    && child.dimensionRatio > 0
                 ) {
                     skip = true
                 }
@@ -95,7 +98,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             }
             measure(measurer, child, Measure.SELF_DIMENSIONS)
             if (layout.mMetrics != null) {
-                layout.mMetrics.measuredWidgets++
+                layout.mMetrics!!.measuredWidgets++
             }
         }
         measurer.didMeasures()
@@ -108,26 +111,27 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
         w: Int,
         h: Int
     ) {
-        val startLayout: Long
-        if (LinearSystem.Companion.MEASURE) {
-            startLayout = java.lang.System.nanoTime()
+        val startLayout = if (LinearSystem.Companion.MEASURE) {
+            Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond }
+        } else {
+            0L
         }
-        val minWidth: Int = layout.getMinWidth()
-        val minHeight: Int = layout.getMinHeight()
-        layout.setMinWidth(0)
-        layout.setMinHeight(0)
-        layout.setWidth(w)
-        layout.setHeight(h)
-        layout.setMinWidth(minWidth)
-        layout.setMinHeight(minHeight)
+        val minWidth: Int = layout.minWidth
+        val minHeight: Int = layout.minHeight
+        layout.minWidth = (0)
+        layout.minHeight = (0)
+        layout.width = (w)
+        layout.height = (h)
+        layout.minWidth = (minWidth)
+        layout.minHeight = (minHeight)
         if (DEBUG) {
             println("### Solve <$reason> ###")
         }
         mConstraintWidgetContainer.setPass(pass)
         mConstraintWidgetContainer.layout()
         if (LinearSystem.Companion.MEASURE && layout.mMetrics != null) {
-            val endLayout: Long = java.lang.System.nanoTime()
-            layout.mMetrics.measuresLayoutDuration += endLayout - startLayout
+            val endLayout: Long = Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond }
+            layout.mMetrics!!.measuresLayoutDuration += endLayout - startLayout
         }
     }
 
@@ -145,11 +149,11 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
     ): Long {
         var widthSize = widthSize
         var heightSize = heightSize
-        val measurer: Measurer = layout.measurer
+        val measurer: Measurer = layout.measurer!!
         var layoutTime: Long = 0
         val childCount: Int = layout.mChildren.size
-        val startingWidth: Int = layout.getWidth()
-        val startingHeight: Int = layout.getHeight()
+        val startingWidth: Int = layout.width
+        val startingHeight: Int = layout.height
         val optimizeWrap = Optimizer.enabled(optimizationLevel, Optimizer.OPTIMIZATION_GRAPH_WRAP)
         var optimize = (optimizeWrap
                 || Optimizer.enabled(optimizationLevel, Optimizer.OPTIMIZATION_GRAPH))
@@ -182,7 +186,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             }
         }
         if (optimize && LinearSystem.Companion.sMetrics != null) {
-            LinearSystem.Companion.sMetrics.measures++
+            LinearSystem.Companion.sMetrics!!.measures++
         }
         var allSolved = false
         optimize = optimize and (widthMode == EXACTLY && heightMode == EXACTLY || optimizeWrap)
@@ -192,14 +196,14 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             // For both cases, having the width address max size early seems to work
             //  (which makes sense).
             // Putting it specific to optimizer to reduce unnecessary risk.
-            widthSize = java.lang.Math.min(layout.getMaxWidth(), widthSize)
-            heightSize = java.lang.Math.min(layout.getMaxHeight(), heightSize)
-            if (widthMode == EXACTLY && layout.getWidth() != widthSize) {
-                layout.setWidth(widthSize)
+            widthSize = min(layout.maxWidth, widthSize)
+            heightSize = min(layout.maxHeight, heightSize)
+            if (widthMode == EXACTLY && layout.width != widthSize) {
+                layout.width = (widthSize)
                 layout.invalidateGraph()
             }
-            if (heightMode == EXACTLY && layout.getHeight() != heightSize) {
-                layout.setHeight(heightSize)
+            if (heightMode == EXACTLY && layout.height != heightSize) {
+                layout.height = (heightSize)
                 layout.invalidateGraph()
             }
             if (widthMode == EXACTLY && heightMode == EXACTLY) {
@@ -227,9 +231,9 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             }
         } else {
             if (false) {
-                layout.mHorizontalRun.clear()
-                layout.mVerticalRun.clear()
-                for (child in layout.getChildren()) {
+                layout.mHorizontalRun?.clear()
+                layout.mVerticalRun?.clear()
+                for (child in layout.children) {
                     child.mHorizontalRun!!.clear()
                     child.mVerticalRun!!.clear()
                 }
@@ -241,7 +245,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                 measureChildren(layout)
             }
             if (LinearSystem.Companion.MEASURE) {
-                layoutTime = java.lang.System.nanoTime()
+                layoutTime = Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond }
             }
             updateHierarchy(layout)
 
@@ -257,17 +261,17 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             }
             if (sizeDependentWidgetsCount > 0) {
                 var needSolverPass = false
-                val containerWrapWidth = (layout.getHorizontalDimensionBehaviour()
+                val containerWrapWidth = (layout.horizontalDimensionBehaviour
                         == DimensionBehaviour.WRAP_CONTENT)
-                val containerWrapHeight = (layout.getVerticalDimensionBehaviour()
+                val containerWrapHeight = (layout.verticalDimensionBehaviour
                         == DimensionBehaviour.WRAP_CONTENT)
-                var minWidth: Int = java.lang.Math.max(
-                    layout.getWidth(),
-                    mConstraintWidgetContainer.getMinWidth()
+                var minWidth: Int = max(
+                    layout.width,
+                    mConstraintWidgetContainer.minWidth
                 )
-                var minHeight: Int = java.lang.Math.max(
-                    layout.getHeight(),
-                    mConstraintWidgetContainer.getMinHeight()
+                var minHeight: Int = max(
+                    layout.height,
+                    mConstraintWidgetContainer.minHeight
                 )
 
                 ////////////////////////////////////////////////////////////////////////////////////
@@ -282,7 +286,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                     val preHeight = widget.height
                     needSolverPass = needSolverPass or measure(measurer, widget, Measure.TRY_GIVEN_DIMENSIONS)
                     if (layout.mMetrics != null) {
-                        layout.mMetrics.measuredMatchWidgets++
+                        layout.mMetrics!!.measuredMatchWidgets++
                     }
                     val measuredWidth = widget.width
                     val measuredHeight = widget.height
@@ -290,8 +294,8 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                         widget.width = measuredWidth
                         if (containerWrapWidth && widget.right > minWidth) {
                             val w: Int = (widget.right
-                                    + widget.getAnchor(ConstraintAnchor.Type.RIGHT).getMargin())
-                            minWidth = java.lang.Math.max(minWidth, w)
+                                    + widget.getAnchor(ConstraintAnchor.Type.RIGHT)!!.margin)
+                            minWidth = max(minWidth, w)
                         }
                         needSolverPass = true
                     }
@@ -299,8 +303,8 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                         widget.height = measuredHeight
                         if (containerWrapHeight && widget.bottom > minHeight) {
                             val h: Int = (widget.bottom
-                                    + widget.getAnchor(ConstraintAnchor.Type.BOTTOM).getMargin())
-                            minHeight = java.lang.Math.max(minHeight, h)
+                                    + widget.getAnchor(ConstraintAnchor.Type.BOTTOM)!!.margin)
+                            minHeight = max(minHeight, h)
                         }
                         needSolverPass = true
                     }
@@ -346,7 +350,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                             )
                         }
                         if (layout.mMetrics != null) {
-                            layout.mMetrics.measuredMatchWidgets++
+                            layout.mMetrics!!.measuredMatchWidgets++
                         }
                         val measuredWidth = widget.width
                         val measuredHeight = widget.height
@@ -354,8 +358,8 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                             widget.width = measuredWidth
                             if (containerWrapWidth && widget.right > minWidth) {
                                 val w: Int = (widget.right
-                                        + widget.getAnchor(ConstraintAnchor.Type.RIGHT).getMargin())
-                                minWidth = java.lang.Math.max(minWidth, w)
+                                        + widget.getAnchor(ConstraintAnchor.Type.RIGHT)!!.margin)
+                                minWidth = max(minWidth, w)
                             }
                             if (DEBUG) {
                                 println(
@@ -370,9 +374,8 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                             widget.height = measuredHeight
                             if (containerWrapHeight && widget.bottom > minHeight) {
                                 val h: Int = (widget.bottom
-                                        + widget.getAnchor(ConstraintAnchor.Type.BOTTOM)
-                                    .getMargin())
-                                minHeight = java.lang.Math.max(minHeight, h)
+                                        + widget.getAnchor(ConstraintAnchor.Type.BOTTOM)!!.margin)
+                                minHeight = max(minHeight, h)
                             }
                             if (DEBUG) {
                                 println(
@@ -411,7 +414,7 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
             layout.optimizationLevel = optimizations
         }
         if (LinearSystem.Companion.MEASURE) {
-            layoutTime = java.lang.System.nanoTime() - layoutTime
+            layoutTime = Clock.System.now().run { epochSeconds * 1_000 + nanosecondsOfSecond } - layoutTime
         }
         return layoutTime
     }
@@ -435,8 +438,8 @@ class BasicMeasure(private val mConstraintWidgetContainer: ConstraintWidgetConta
                 == DimensionBehaviour.MATCH_CONSTRAINT)
         val verticalMatchConstraints = (mMeasure.verticalBehavior
                 == DimensionBehaviour.MATCH_CONSTRAINT)
-        val horizontalUseRatio = horizontalMatchConstraints && widget.mDimensionRatio > 0
-        val verticalUseRatio = verticalMatchConstraints && widget.mDimensionRatio > 0
+        val horizontalUseRatio = horizontalMatchConstraints && widget.dimensionRatio > 0
+        val verticalUseRatio = verticalMatchConstraints && widget.dimensionRatio > 0
         if (horizontalUseRatio) {
             if (widget.mResolvedMatchConstraintDefault[ConstraintWidget.Companion.HORIZONTAL]
                 == ConstraintWidget.Companion.MATCH_CONSTRAINT_RATIO_RESOLVED

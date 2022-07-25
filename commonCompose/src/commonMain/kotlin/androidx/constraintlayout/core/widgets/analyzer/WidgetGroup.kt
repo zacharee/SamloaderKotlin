@@ -18,16 +18,17 @@ package androidx.constraintlayout.core.widgets.analyzer
 import androidx.constraintlayout.core.LinearSystem
 import androidx.constraintlayout.core.widgets.*
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
+import androidx.constraintlayout.core.widgets.ConstraintWidgetContainer
 
 /**
  * Represents a group of widget for the grouping mechanism.
  */
 class WidgetGroup(orientation: Int) {
-    var mWidgets: java.util.ArrayList<ConstraintWidget> = java.util.ArrayList<ConstraintWidget>()
+    var mWidgets: ArrayList<ConstraintWidget> = ArrayList<ConstraintWidget>()
     var id = -1
     var isAuthoritative = false
     var orientation: Int = ConstraintWidget.Companion.HORIZONTAL
-    var mResults: java.util.ArrayList<MeasureResult>? = null
+    var mResults: ArrayList<MeasureResult>? = null
     private var mMoveTo = -1
 
     init {
@@ -38,7 +39,7 @@ class WidgetGroup(orientation: Int) {
     /**
      * @TODO: add description
      */
-    fun add(widget: ConstraintWidget?): Boolean {
+    fun add(widget: ConstraintWidget): Boolean {
         if (mWidgets.contains(widget)) {
             return false
         }
@@ -126,10 +127,10 @@ class WidgetGroup(orientation: Int) {
 
     private fun solverMeasure(
         system: LinearSystem,
-        widgets: java.util.ArrayList<ConstraintWidget>,
+        widgets: ArrayList<ConstraintWidget>,
         orientation: Int
     ): Int {
-        val container = widgets.get(0).getParent() as ConstraintWidgetContainer
+        val container = widgets.get(0).parent as ConstraintWidgetContainer
         system.reset()
         val prevDebug: Boolean = LinearSystem.Companion.FULL_DEBUG
         container.addToSolver(system, false)
@@ -149,20 +150,20 @@ class WidgetGroup(orientation: Int) {
         }
         try {
             system.minimize()
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 
         // save results
-        mResults = java.util.ArrayList<MeasureResult>()
+        mResults = ArrayList<MeasureResult>()
         for (i in widgets.indices) {
             val widget: ConstraintWidget = widgets.get(i)
             val result = MeasureResult(widget, system, orientation)
-            mResults.add(result)
+            mResults!!.add(result)
         }
         return if (orientation == ConstraintWidget.Companion.HORIZONTAL) {
-            val left = system.getObjectVariableValue(container.mLeft)
-            val right = system.getObjectVariableValue(container.mRight)
+            val left = system.getObjectVariableValue(container.mLeft!!)
+            val right = system.getObjectVariableValue(container.mRight!!)
             system.reset()
             right - left
         } else {
@@ -183,8 +184,8 @@ class WidgetGroup(orientation: Int) {
         if (!isAuthoritative) {
             return
         }
-        for (i in mResults.indices) {
-            val result: MeasureResult = mResults.get(i)
+        for (i in mResults!!.indices) {
+            val result: MeasureResult = mResults!!.get(i)
             result.apply()
         }
     }
@@ -216,7 +217,7 @@ class WidgetGroup(orientation: Int) {
     /**
      * @TODO: add description
      */
-    fun cleanup(dependencyLists: java.util.ArrayList<WidgetGroup>) {
+    fun cleanup(dependencyLists: ArrayList<WidgetGroup>) {
         val count: Int = mWidgets.size
         if (mMoveTo != -1 && count > 0) {
             for (i in dependencyLists.indices) {
@@ -233,7 +234,7 @@ class WidgetGroup(orientation: Int) {
     }
 
     class MeasureResult(widget: ConstraintWidget, system: LinearSystem, orientation: Int) {
-        var mWidgetRef: java.lang.ref.WeakReference<ConstraintWidget>
+        var mWidgetRef: ConstraintWidget? = null
         var mLeft: Int
         var mTop: Int
         var mRight: Int
@@ -242,20 +243,17 @@ class WidgetGroup(orientation: Int) {
         var mOrientation: Int
 
         init {
-            mWidgetRef = java.lang.ref.WeakReference<ConstraintWidget>(widget)
-            mLeft = system.getObjectVariableValue(widget.mLeft)
+            mWidgetRef = widget
+            mLeft = system.getObjectVariableValue(widget.mLeft!!)
             mTop = system.getObjectVariableValue(widget.mTop)
-            mRight = system.getObjectVariableValue(widget.mRight)
+            mRight = system.getObjectVariableValue(widget.mRight!!)
             mBottom = system.getObjectVariableValue(widget.mBottom)
-            mBaseline = system.getObjectVariableValue(widget.mBaseline)
+            mBaseline = system.getObjectVariableValue(widget.mBaseline!!)
             mOrientation = orientation
         }
 
         fun apply() {
-            val widget: ConstraintWidget = mWidgetRef.get()
-            if (widget != null) {
-                widget.setFinalFrame(mLeft, mTop, mRight, mBottom, mBaseline, mOrientation)
-            }
+            mWidgetRef?.setFinalFrame(mLeft, mTop, mRight, mBottom, mBaseline, mOrientation)
         }
     }
 

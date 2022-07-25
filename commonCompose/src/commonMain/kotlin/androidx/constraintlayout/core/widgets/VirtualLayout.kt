@@ -15,7 +15,6 @@
  */
 package androidx.constraintlayout.core.widgets
 
-import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
 import androidx.constraintlayout.core.widgets.analyzer.BasicMeasure
 
 /**
@@ -148,8 +147,8 @@ open class VirtualLayout : HelperWidget() {
 
     protected fun measureChildren(): Boolean {
         var measurer: BasicMeasure.Measurer? = null
-        if (mParent != null) {
-            measurer = (mParent as ConstraintWidgetContainer).measurer
+        if (parent != null) {
+            measurer = (parent as ConstraintWidgetContainer).measurer
         }
         if (measurer == null) {
             return false
@@ -159,8 +158,8 @@ open class VirtualLayout : HelperWidget() {
             if (widget is Guideline) {
                 continue
             }
-            var widthBehavior: DimensionBehaviour = widget.getDimensionBehaviour(ConstraintWidget.Companion.HORIZONTAL)
-            var heightBehavior: DimensionBehaviour = widget.getDimensionBehaviour(ConstraintWidget.Companion.VERTICAL)
+            var widthBehavior = widget.getDimensionBehaviour(ConstraintWidget.Companion.HORIZONTAL)
+            var heightBehavior = widget.getDimensionBehaviour(ConstraintWidget.Companion.VERTICAL)
             val skip =
                 widthBehavior == DimensionBehaviour.MATCH_CONSTRAINT && widget.mMatchConstraintDefaultWidth != ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP && heightBehavior == DimensionBehaviour.MATCH_CONSTRAINT && widget.mMatchConstraintDefaultHeight != ConstraintWidget.Companion.MATCH_CONSTRAINT_WRAP
             if (skip) {
@@ -194,8 +193,8 @@ open class VirtualLayout : HelperWidget() {
         verticalBehavior: DimensionBehaviour?,
         verticalDimension: Int
     ) {
-        while (mMeasurer == null && getParent() != null) {
-            val parent = getParent() as ConstraintWidgetContainer
+        while (mMeasurer == null && parent != null) {
+            val parent = this.parent as ConstraintWidgetContainer
             mMeasurer = parent.measurer
         }
         mMeasure.horizontalBehavior = horizontalBehavior
@@ -212,7 +211,7 @@ open class VirtualLayout : HelperWidget() {
     /**
      * @TODO: add description
      */
-    operator fun contains(widgets: java.util.HashSet<ConstraintWidget?>): Boolean {
+    operator fun contains(widgets: HashSet<ConstraintWidget?>): Boolean {
         for (i in 0 until mWidgetsCount) {
             val widget = mWidgets[i]!!
             if (widgets.contains(widget)) {

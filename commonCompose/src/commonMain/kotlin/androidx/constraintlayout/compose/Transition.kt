@@ -25,7 +25,7 @@ import androidx.constraintlayout.core.parser.CLObject
 import androidx.constraintlayout.core.parser.CLParser
 import androidx.constraintlayout.core.parser.CLParsingException
 import androidx.constraintlayout.core.state.TransitionParser
-import androidx.constraintlayout.core.stateimport.CorePixelDp
+import androidx.constraintlayout.core.state.CorePixelDp
 
 /**
  * Defines interpolation parameters between two [ConstraintSet]s.

@@ -155,9 +155,9 @@ internal class HelperReferences(widget: ConstraintWidget) : WidgetRun(widget) {
             if (type == Barrier.Companion.LEFT
                 || type == Barrier.Companion.RIGHT
             ) {
-                mWidget.setX(start.value)
+                mWidget.x = (start.value)
             } else {
-                mWidget.setY(start.value)
+                mWidget.y = (start.value)
             }
         }
     }
