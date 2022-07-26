@@ -22,7 +22,6 @@ import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.Dimension.percent
 import androidx.constraintlayout.core.widgets.ConstraintWidget
 
 /**
@@ -129,7 +128,7 @@ abstract class ConstraintLayoutBaseScope {
     fun createGuidelineFromStart(fraction: Float): VerticalAnchor {
         val id = createHelperId()
         tasks.add { state ->
-            state.verticalGuideline(id).apply {
+            state.verticalGuideline(id)?.apply {
                 if (state.layoutDirection == LayoutDirection.Ltr) {
                     percent(fraction)
                 } else {
@@ -150,7 +149,7 @@ abstract class ConstraintLayoutBaseScope {
     // TODO(popam, b/157781990): this is not really percenide
     fun createGuidelineFromAbsoluteLeft(fraction: Float): VerticalAnchor {
         val id = createHelperId()
-        tasks.add { state -> state.verticalGuideline(id).apply { percent(fraction) } }
+        tasks.add { state -> state.verticalGuideline(id)?.apply { percent(fraction) } }
         updateHelpersHashCode(4)
         updateHelpersHashCode(fraction.hashCode())
         return VerticalAnchor(id, 0)
@@ -258,9 +257,9 @@ abstract class ConstraintLayoutBaseScope {
             } else {
                 SolverDirection.RIGHT
             }
-            state.barrier(id, direction)?.apply {
+            state.barrier(id, direction).apply {
                 add(*(elements.map { it.id }.toTypedArray()))
-            }?.margin(state.convertDimension(margin))
+            }.margin(state.convertDimension(margin))
         }
         updateHelpersHashCode(10)
         elements.forEach { updateHelpersHashCode(it.hashCode()) }
@@ -277,9 +276,9 @@ abstract class ConstraintLayoutBaseScope {
     ): VerticalAnchor {
         val id = createHelperId()
         tasks.add { state ->
-            state.barrier(id, SolverDirection.LEFT)?.apply {
+            state.barrier(id, SolverDirection.LEFT).apply {
                 add(*(elements.map { it.id }.toTypedArray()))
-            }?.margin(state.convertDimension(margin))
+            }.margin(state.convertDimension(margin))
         }
         updateHelpersHashCode(11)
         elements.forEach { updateHelpersHashCode(it.hashCode()) }
@@ -296,7 +295,7 @@ abstract class ConstraintLayoutBaseScope {
     ): HorizontalAnchor {
         val id = createHelperId()
         tasks.add { state ->
-            state.barrier(id, SolverDirection.TOP)?.apply {
+            state.barrier(id, SolverDirection.TOP).apply {
                 add(*(elements.map { it.id }.toTypedArray()))
             }?.margin(state.convertDimension(margin))
         }
@@ -320,9 +319,9 @@ abstract class ConstraintLayoutBaseScope {
             } else {
                 SolverDirection.LEFT
             }
-            state.barrier(id, direction)?.apply {
+            state.barrier(id, direction).apply {
                 add(*(elements.map { it.id }.toTypedArray()))
-            }?.margin(state.convertDimension(margin))
+            }.margin(state.convertDimension(margin))
         }
         updateHelpersHashCode(13)
         elements.forEach { updateHelpersHashCode(it.hashCode()) }
@@ -339,9 +338,9 @@ abstract class ConstraintLayoutBaseScope {
     ): VerticalAnchor {
         val id = createHelperId()
         tasks.add { state ->
-            state.barrier(id, SolverDirection.RIGHT)?.apply {
+            state.barrier(id, SolverDirection.RIGHT).apply {
                 add(*(elements.map { it.id }.toTypedArray()))
-            }?.margin(state.convertDimension(margin))
+            }.margin(state.convertDimension(margin))
         }
         updateHelpersHashCode(14)
         elements.forEach { updateHelpersHashCode(it.hashCode()) }
@@ -358,9 +357,9 @@ abstract class ConstraintLayoutBaseScope {
     ): HorizontalAnchor {
         val id = createHelperId()
         tasks.add { state ->
-            state.barrier(id, SolverDirection.BOTTOM)?.apply {
+            state.barrier(id, SolverDirection.BOTTOM).apply {
                 add(*(elements.map { it.id }.toTypedArray()))
-            }?.margin(state.convertDimension(margin))
+            }.margin(state.convertDimension(margin))
         }
         updateHelpersHashCode(15)
         elements.forEach { updateHelpersHashCode(it.hashCode()) }

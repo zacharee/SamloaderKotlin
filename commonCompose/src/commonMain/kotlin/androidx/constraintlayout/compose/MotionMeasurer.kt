@@ -72,12 +72,12 @@ internal class MotionMeasurer : Measurer() {
             root.debugName = "ConstraintLayout"
             root.children.forEach { child ->
                 child.debugName =
-                    (childWidget as? Measurable)?.layoutId?.toString() ?: "NOTAG"
+                    (child.companionWidget as? Measurable)?.layoutId?.toString() ?: "NOTAG"
             }
         }
 
         root.children.forEach { child ->
-            val measurable = (childWidget as? Measurable)
+            val measurable = (child.companionWidget as? Measurable)
             val id = measurable?.layoutId ?: measurable?.constraintLayoutId
             child.stringId = id?.toString()
         }
@@ -146,7 +146,7 @@ internal class MotionMeasurer : Measurer() {
 
         return root.children.fastAny { child ->
             // Check if measurables have changed their size
-            val measurable = (childWidget as? Measurable) ?: return@fastAny false
+            val measurable = (child.companionWidget as? Measurable) ?: return@fastAny false
             val interpolatedFrame = this.transition.getInterpolated(child) ?: return@fastAny false
             val placeable = placeables[measurable] ?: return@fastAny false
             val currentWidth = placeable.width
@@ -215,7 +215,7 @@ internal class MotionMeasurer : Measurer() {
 
         root.children.fastForEach { child ->
             // Update measurables to the interpolated dimensions
-            val measurable = (childWidget as? Measurable) ?: return@fastForEach
+            val measurable = (child.companionWidget as? Measurable) ?: return@fastForEach
             val interpolatedFrame = this.transition.getInterpolated(child) ?: return@fastForEach
             val placeable = placeables[measurable]
             val currentWidth = placeable?.width
@@ -316,9 +316,9 @@ internal class MotionMeasurer : Measurer() {
     }
 
     fun DrawScope.drawDebug() {
-        var index = 0
         val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-        for (child in root.children) {
+
+        root.children.forEachIndexed { _, child ->
             val startFrame = transition.getStart(child)
             val endFrame = transition.getEnd(child)
             translate(2f, 2f) {
@@ -339,7 +339,6 @@ internal class MotionMeasurer : Measurer() {
                 pathEffect,
                 Color.Blue
             )
-            index++
         }
     }
 
