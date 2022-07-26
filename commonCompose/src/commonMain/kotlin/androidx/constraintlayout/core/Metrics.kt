@@ -53,7 +53,7 @@ class Metrics {
     var barrierConnectionResolved: Long = 0
     var oldresolvedWidgets: Long = 0
     var nonresolvedWidgets: Long = 0
-    var problematicLayouts: ArrayList<String> = ArrayList<String>()
+    var problematicLayouts: ArrayList<String> = ArrayList()
     var lastTableSize: Long = 0
     var widgets: Long = 0
     var measuresWrap: Long = 0

@@ -68,7 +68,7 @@ class Placeholder : VirtualLayout() {
     override fun addToSolver(system: LinearSystem, optimize: Boolean) {
         super.addToSolver(system, optimize)
         if (mWidgetsCount > 0) {
-            val widget: ConstraintWidget = mWidgets.get(0)!!
+            val widget: ConstraintWidget = mWidgets[0]!!
             widget.resetAllConstraints()
             widget.connect(ConstraintAnchor.Type.LEFT, this, ConstraintAnchor.Type.LEFT)
             widget.connect(ConstraintAnchor.Type.RIGHT, this, ConstraintAnchor.Type.RIGHT)

@@ -129,7 +129,7 @@ class SolverVariable : Comparable<SolverVariable> {
     }
 
     var mInRows: HashSet<ArrayRow>? =
-        if (VAR_USE_HASH) HashSet<ArrayRow>() else null
+        if (VAR_USE_HASH) HashSet() else null
 
     /**
      * @TODO: add description
@@ -276,7 +276,7 @@ class SolverVariable : Comparable<SolverVariable> {
     override fun toString(): String {
         var result = ""
         if (INTERNAL_DEBUG) {
-            result += name + "(" + id + "):" + strength
+            result += "$name($id):$strength"
             if (mIsSynonym) {
                 result += ":S($mSynonym)"
             }
@@ -295,7 +295,7 @@ class SolverVariable : Comparable<SolverVariable> {
 
     @ThreadLocal
     companion object {
-        private val INTERNAL_DEBUG: Boolean = LinearSystem.FULL_DEBUG
+        private const val INTERNAL_DEBUG: Boolean = LinearSystem.FULL_DEBUG
         private const val VAR_USE_HASH = false
         private const val DO_NOT_USE = false
         const val STRENGTH_NONE = 0
@@ -330,7 +330,6 @@ class SolverVariable : Comparable<SolverVariable> {
 
                 Type.UNKNOWN -> "V" + ++sUniqueId
             }
-            throw AssertionError(type.name)
         }
     }
 }

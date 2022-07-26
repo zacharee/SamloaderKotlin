@@ -17,10 +17,12 @@ package androidx.constraintlayout.core.widgets
 
 import androidx.constraintlayout.core.LinearSystem
 import androidx.constraintlayout.core.widgets.ConstraintWidget.DimensionBehaviour
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * Implements direct resolution without using the solver
  */
+@ThreadLocal
 object Optimizer {
     // Optimization levels (mask)
     const val OPTIMIZATION_NONE = 0
@@ -60,8 +62,8 @@ object Optimizer {
             && widget.mListDimensionBehaviors[ConstraintWidget.DIMENSION_HORIZONTAL]
             == DimensionBehaviour.MATCH_PARENT
         ) {
-            val left: Int = widget.mLeft!!.mMargin
-            val right: Int = container.width - widget.mRight!!.mMargin
+            val left: Int = widget.mLeft.mMargin
+            val right: Int = container.width - widget.mRight.mMargin
             widget.mLeft.solverVariable = system.createObjectVariable(widget.mLeft)
             widget.mRight.solverVariable = system.createObjectVariable(widget.mRight)
             system.addEquality(widget.mLeft.solverVariable!!, left)

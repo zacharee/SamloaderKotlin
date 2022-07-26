@@ -19,7 +19,7 @@ open class ArrayRow : LinearSystem.Row {
     override var key: SolverVariable? = null
     var mConstantValue = 0f
     var mUsed = false
-    var mVariablesToUpdate: ArrayList<SolverVariable> = ArrayList<SolverVariable>()
+    var mVariablesToUpdate: ArrayList<SolverVariable> = ArrayList()
     var variables: ArrayRowVariables? = null
 
     interface ArrayRowVariables {
@@ -218,7 +218,7 @@ open class ArrayRow : LinearSystem.Row {
         if (margin != 0) {
             var m = margin
             if (m < 0) {
-                m = -1 * m
+                m *= -1
                 inverse = true
             }
             mConstantValue = m.toFloat()
@@ -253,7 +253,7 @@ open class ArrayRow : LinearSystem.Row {
         if (margin != 0) {
             var m = margin
             if (m < 0) {
-                m = -1 * m
+                m *= -1
                 inverse = true
             }
             mConstantValue = m.toFloat()
@@ -290,7 +290,7 @@ open class ArrayRow : LinearSystem.Row {
         if (margin != 0) {
             var m = margin
             if (m < 0) {
-                m = -1 * m
+                m *= -1
                 inverse = true
             }
             mConstantValue = m.toFloat()
@@ -570,12 +570,12 @@ open class ArrayRow : LinearSystem.Row {
                 if (unrestrictedCandidate == null) {
                     unrestrictedCandidate = variable
                     unrestrictedCandidateAmount = amount
-                    unrestrictedCandidateIsNew = isNew(variable!!, system)
+                    unrestrictedCandidateIsNew = isNew(variable, system)
                 } else if (unrestrictedCandidateAmount > amount) {
                     unrestrictedCandidate = variable
                     unrestrictedCandidateAmount = amount
-                    unrestrictedCandidateIsNew = isNew(variable!!, system)
-                } else if (!unrestrictedCandidateIsNew && isNew(variable!!, system)) {
+                    unrestrictedCandidateIsNew = isNew(variable, system)
+                } else if (!unrestrictedCandidateIsNew && isNew(variable, system)) {
                     unrestrictedCandidate = variable
                     unrestrictedCandidateAmount = amount
                     unrestrictedCandidateIsNew = true
@@ -640,7 +640,7 @@ open class ArrayRow : LinearSystem.Row {
         if (amount == 1f) {
             return
         }
-        mConstantValue = mConstantValue / amount
+        mConstantValue /= amount
         variables!!.divideByAmount(amount)
     }
 
@@ -654,7 +654,7 @@ open class ArrayRow : LinearSystem.Row {
         removeFromDefinition: Boolean
     ) {
         val value = variables!!.use(definition!!, removeFromDefinition)
-        mConstantValue += definition!!.mConstantValue * value
+        mConstantValue += definition.mConstantValue * value
         if (removeFromDefinition) {
             definition.key?.removeFromRow(this)
         }
@@ -707,7 +707,7 @@ open class ArrayRow : LinearSystem.Row {
             variable.removeFromRow(this)
         }
         variables!!.add(
-            system.cache.mIndexedVariables.get(variable.mSynonym)!!,
+            system.cache.mIndexedVariables[variable.mSynonym]!!,
             value, removeFromDefinition
         )
         if (LinearSystem.SIMPLIFY_SYNONYMS
@@ -797,7 +797,7 @@ open class ArrayRow : LinearSystem.Row {
 
     override fun addError(variable: SolverVariable) {
         var weight = 1f
-        when (variable?.strength) {
+        when (variable.strength) {
             SolverVariable.STRENGTH_LOW -> {
                 weight = 1f
             }
@@ -833,7 +833,7 @@ open class ArrayRow : LinearSystem.Row {
             val size: Int = mVariablesToUpdate.size
             if (size > 0) {
                 for (i in 0 until size) {
-                    val variable: SolverVariable = mVariablesToUpdate.get(i)
+                    val variable: SolverVariable = mVariablesToUpdate[i]
                     if (variable.isFinalValue) {
                         updateFromFinalVariable(system, variable, true)
                     } else if (variable.mIsSynonym) {

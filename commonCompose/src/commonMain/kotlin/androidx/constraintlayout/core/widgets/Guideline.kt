@@ -43,7 +43,7 @@ class Guideline : ConstraintWidget() {
     var minimumPosition = 0
     override var isResolvedVertically = false
         private set
-        get() = field
+
     init {
         mAnchors.clear()
         mAnchors.add(anchor)
@@ -107,7 +107,7 @@ class Guideline : ConstraintWidget() {
             mOrientation = orientation
             mAnchors.clear()
             if (mOrientation == VERTICAL) {
-                anchor = mLeft!!
+                anchor = mLeft
             } else {
                 anchor = mTop
             }
@@ -203,13 +203,11 @@ class Guideline : ConstraintWidget() {
         val parent = parent as? ConstraintWidgetContainer ?: return
         var begin: ConstraintAnchor? = parent.getAnchor(ConstraintAnchor.Type.LEFT)
         var end: ConstraintAnchor? = parent.getAnchor(ConstraintAnchor.Type.RIGHT)
-        var parentWrapContent =
-            parent.mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_HORIZONTAL) == DimensionBehaviour.WRAP_CONTENT
+        var parentWrapContent = parent.mListDimensionBehaviors[DIMENSION_HORIZONTAL] == DimensionBehaviour.WRAP_CONTENT
         if (mOrientation == HORIZONTAL) {
             begin = parent.getAnchor(ConstraintAnchor.Type.TOP)
             end = parent.getAnchor(ConstraintAnchor.Type.BOTTOM)
-            parentWrapContent =
-                parent.mListDimensionBehaviors.get(ConstraintWidget.DIMENSION_VERTICAL) == DimensionBehaviour.WRAP_CONTENT
+            parentWrapContent = parent.mListDimensionBehaviors[DIMENSION_VERTICAL] == DimensionBehaviour.WRAP_CONTENT
         }
         if (isResolvedVertically && anchor.hasFinalValue()) {
             val guide = system.createObjectVariable(anchor)
@@ -223,7 +221,7 @@ class Guideline : ConstraintWidget() {
             if (relativeBegin != -1) {
                 if (parentWrapContent) {
                     system.addGreaterThan(
-                        system.createObjectVariable(end)!!, guide!!,
+                        system.createObjectVariable(end)!!, guide,
                         0, SolverVariable.STRENGTH_EQUALITY
                     )
                 }
@@ -231,7 +229,7 @@ class Guideline : ConstraintWidget() {
                 if (parentWrapContent) {
                     val parentRight = system.createObjectVariable(end)
                     system.addGreaterThan(
-                        guide!!, system.createObjectVariable(begin)!!,
+                        guide, system.createObjectVariable(begin)!!,
                         0, SolverVariable.STRENGTH_EQUALITY
                     )
                     system.addGreaterThan(parentRight!!, guide, 0, SolverVariable.STRENGTH_EQUALITY)
@@ -247,7 +245,7 @@ class Guideline : ConstraintWidget() {
             if (parentWrapContent) {
                 system.addGreaterThan(
                     system.createObjectVariable(end)!!,
-                    guide!!, 0, SolverVariable.STRENGTH_EQUALITY
+                    guide, 0, SolverVariable.STRENGTH_EQUALITY
                 )
             }
         } else if (relativeEnd != -1) {

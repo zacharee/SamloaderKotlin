@@ -19,6 +19,7 @@ import androidx.constraintlayout.core.widgets.*
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
+import kotlin.native.concurrent.ThreadLocal
 
 /**
  * Represents and solves a system of linear equations.
@@ -318,7 +319,7 @@ class LinearSystem {
         mNumColumns++
         variable.id = numVariables
         if (mVariables == null) {
-            mVariables = HashMap<String, SolverVariable>()
+            mVariables = HashMap()
         }
         mVariables!![name!!] = variable
         cache.mIndexedVariables[numVariables] = variable
@@ -361,7 +362,7 @@ class LinearSystem {
             variable.setType(type, prefix)
         }
         if (mPoolVariablesCount >= sPoolSize) {
-            sPoolSize = sPoolSize * 2
+            sPoolSize *= 2
             mPoolVariables = mPoolVariables.copyOf(sPoolSize)
         }
         mPoolVariables[mPoolVariablesCount++] = variable
@@ -402,11 +403,11 @@ class LinearSystem {
      * @param type [type][SolverVariable.Type] of the variable
      * @return a SolverVariable instance
      */
-    fun getVariable(name: String?, type: SolverVariable.Type): SolverVariable? {
+    fun getVariable(name: String?, type: SolverVariable.Type): SolverVariable {
         if (mVariables == null) {
-            mVariables = HashMap<String, SolverVariable>()
+            mVariables = HashMap()
         }
-        var variable: SolverVariable? = mVariables!!.get(name)
+        var variable: SolverVariable? = mVariables!![name]
         if (variable == null) {
             variable = createVariable(name, type)
         }
@@ -781,7 +782,7 @@ class LinearSystem {
                         }
                         // the current row does contains the variable
                         // we want to pivot on
-                        val a_j: Float = current.variables!!.get(pivotCandidate)
+                        val a_j: Float = current.variables!![pivotCandidate]
                         if (a_j < 0) {
                             val value = -current.mConstantValue / a_j
                             if (value < min) {
@@ -911,7 +912,7 @@ class LinearSystem {
                             val size: Int = current.variables?.currentSize!!
                             for (j in 0 until size) {
                                 val candidate: SolverVariable = current.variables!!.getVariable(j)!!
-                                val a_j: Float = current.variables!!.get(candidate)
+                                val a_j: Float = current.variables!![candidate]
                                 if (a_j <= 0) {
                                     continue
                                 }
@@ -931,7 +932,7 @@ class LinearSystem {
                         } else {
                             for (j in 1 until mNumColumns) {
                                 val candidate = cache.mIndexedVariables[j]
-                                val a_j: Float = current.variables!!.get(candidate)
+                                val a_j: Float = current.variables!![candidate]
                                 if (a_j <= 0) {
                                     continue
                                 }
@@ -939,7 +940,7 @@ class LinearSystem {
                                     println("candidate for pivot $candidate")
                                 }
                                 for (k in 0 until SolverVariable.MAX_STRENGTH) {
-                                    val value: Float = candidate!!.mStrengthVector.get(k) / a_j
+                                    val value: Float = candidate!!.mStrengthVector[k] / a_j
                                     if (value < min && k == strength || k > strength) {
                                         min = value
                                         pivotRowIndex = i
@@ -1038,7 +1039,7 @@ class LinearSystem {
      */
     fun displayReadableRows() {
         displaySolverVariables()
-        var s: String? = """ num vars ${numVariables}
+        var s: String? = """ num vars $numVariables
 """
         for (i in 0 until numVariables + 1) {
             val variable = cache.mIndexedVariables[i]
@@ -1204,7 +1205,7 @@ class LinearSystem {
         slack.strength = 0
         row.createRowGreaterThan(a, b, slack, margin)
         if (strength != SolverVariable.STRENGTH_FIXED) {
-            val slackValue: Float = row.variables!!.get(slack)
+            val slackValue: Float = row.variables!![slack]
             addSingleError(row, (-1 * slackValue).toInt(), strength)
         }
         addConstraint(row)
@@ -1249,7 +1250,7 @@ class LinearSystem {
         slack.strength = 0
         row.createRowLowerThan(a, b, slack, margin)
         if (strength != SolverVariable.STRENGTH_FIXED) {
-            val slackValue: Float = row.variables!!.get(slack)
+            val slackValue: Float = row.variables!![slack]
             addSingleError(row, (-1 * slackValue).toInt(), strength)
         }
         addConstraint(row)
@@ -1489,12 +1490,13 @@ class LinearSystem {
         addConstraint(row)
     }
 
+    @ThreadLocal
     companion object {
         const val FULL_DEBUG = false
         const val DEBUG = false
         private const val DO_NOT_USE = false
         const val MEASURE = false
-        private val DEBUG_CONSTRAINTS: Boolean = FULL_DEBUG
+        private const val DEBUG_CONSTRAINTS: Boolean = FULL_DEBUG
         var USE_DEPENDENCY_ORDERING = false
         var USE_BASIC_SYNONYMS = true
         var SIMPLIFY_SYNONYMS = true

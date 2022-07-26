@@ -15,7 +15,6 @@
  */
 package androidx.constraintlayout.core
 
-import androidx.constraintlayout.core.*
 import androidx.constraintlayout.core.ArrayRow.ArrayRowVariables
 
 /**

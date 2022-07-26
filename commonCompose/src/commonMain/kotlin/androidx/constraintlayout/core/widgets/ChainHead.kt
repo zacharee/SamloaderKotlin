@@ -61,7 +61,7 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
 
         // TraverseChain
         var widget = first
-        var next: ConstraintWidget? = first
+        var next: ConstraintWidget?
         var done = false
         while (!done) {
             mWidgetsCount++
@@ -69,15 +69,13 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
             widget.mListNextMatchConstraintsWidget[mOrientation] = null
             if (widget.visibility != ConstraintWidget.GONE) {
                 mVisibleWidgets++
-                if (widget.getDimensionBehaviour(mOrientation)
-                    != DimensionBehaviour.MATCH_CONSTRAINT
-                ) {
+                if (widget.getDimensionBehaviour(mOrientation) != DimensionBehaviour.MATCH_CONSTRAINT) {
                     mTotalSize += widget.getLength(mOrientation)
                 }
-                mTotalSize += widget.mListAnchors[offset]!!.margin
-                mTotalSize += widget.mListAnchors[offset + 1]!!.margin
-                mTotalMargins += widget.mListAnchors[offset]!!.margin
-                mTotalMargins += widget.mListAnchors[offset + 1]!!.margin
+                mTotalSize += widget.mListAnchors[offset].margin
+                mTotalSize += widget.mListAnchors[offset + 1].margin
+                mTotalMargins += widget.mListAnchors[offset].margin
+                mTotalMargins += widget.mListAnchors[offset + 1].margin
                 // Visible widgets linked list.
                 if (firstVisibleWidget == null) {
                     firstVisibleWidget = widget
@@ -107,7 +105,7 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
                                 mHasDefinedWeights = true
                             }
                             if (mWeightedMatchConstraintsWidgets == null) {
-                                mWeightedMatchConstraintsWidgets = ArrayList<ConstraintWidget>()
+                                mWeightedMatchConstraintsWidgets = ArrayList()
                             }
                             mWeightedMatchConstraintsWidgets!!.add(widget)
                         }
@@ -153,11 +151,11 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
             lastVisited = widget
 
             // go to the next widget
-            val nextAnchor = widget.mListAnchors[offset + 1]!!.target
+            val nextAnchor = widget.mListAnchors[offset + 1].target
             if (nextAnchor != null) {
                 next = nextAnchor.owner
-                if (next!!.mListAnchors.get(offset)!!.target == null
-                    || next.mListAnchors.get(offset)!!.target!!.owner !== widget
+                if (next.mListAnchors[offset].target == null
+                    || next.mListAnchors[offset].target!!.owner !== widget
                 ) {
                     next = null
                 }
@@ -171,16 +169,16 @@ class ChainHead(var first: ConstraintWidget, private val mOrientation: Int, isRt
             }
         }
         if (firstVisibleWidget != null) {
-            mTotalSize -= firstVisibleWidget!!.mListAnchors[offset]!!.margin
+            mTotalSize -= firstVisibleWidget!!.mListAnchors[offset].margin
         }
         if (lastVisibleWidget != null) {
-            mTotalSize -= lastVisibleWidget!!.mListAnchors[offset + 1]!!.margin
+            mTotalSize -= lastVisibleWidget!!.mListAnchors[offset + 1].margin
         }
         last = widget
-        if (mOrientation == ConstraintWidget.HORIZONTAL && mIsRtl) {
-            head = last
+        head = if (mOrientation == ConstraintWidget.HORIZONTAL && mIsRtl) {
+            last
         } else {
-            head = first
+            first
         }
         mHasComplexMatchWeights = mHasDefinedWeights && mHasUndefinedWeights
     }

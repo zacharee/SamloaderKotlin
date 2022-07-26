@@ -157,7 +157,7 @@ class ConstraintAnchor
         }
         if (target != null) {
             if (target!!.mDependents == null) {
-                target!!.mDependents = HashSet<ConstraintAnchor>()
+                target!!.mDependents = HashSet()
             }
             target!!.mDependents!!.add(this)
         }
@@ -297,14 +297,11 @@ class ConstraintAnchor
             }
 
             Type.BASELINE -> {
-                if (target == Type.LEFT || target == Type.RIGHT) {
-                    false
-                } else true
+                !(target == Type.LEFT || target == Type.RIGHT)
             }
 
             Type.CENTER_X, Type.CENTER_Y, Type.NONE -> false
         }
-        throw AssertionError(type.name)
     }
 
     /**
@@ -318,7 +315,6 @@ class ConstraintAnchor
                 Type.LEFT, Type.RIGHT, Type.TOP, Type.BOTTOM -> true
                 Type.BASELINE, Type.CENTER, Type.CENTER_X, Type.CENTER_Y, Type.NONE -> false
             }
-            throw AssertionError(type.name)
         }
 
     /**
@@ -347,7 +343,6 @@ class ConstraintAnchor
 
             Type.NONE -> false
         }
-        throw AssertionError(type.name)
     }
 
     /**
@@ -372,7 +367,6 @@ class ConstraintAnchor
                 Type.LEFT, Type.RIGHT, Type.CENTER, Type.CENTER_X -> false
                 Type.CENTER_Y, Type.TOP, Type.BOTTOM, Type.BASELINE, Type.NONE -> true
             }
-            throw AssertionError(type.name)
         }
 
     /**
@@ -413,7 +407,7 @@ class ConstraintAnchor
      * @return true if the connection is allowed, false otherwise
      */
     fun isConnectionAllowed(target: ConstraintWidget): Boolean {
-        val checked: HashSet<ConstraintWidget> = HashSet<ConstraintWidget>()
+        val checked: HashSet<ConstraintWidget> = HashSet()
         if (isConnectionToMe(target, checked)) {
             return false
         }
@@ -421,9 +415,7 @@ class ConstraintAnchor
         if (parent === target) { // allow connections to parent
             return true
         }
-        return if (target.parent === parent) { // allow if we share the same parent
-            true
-        } else false
+        return target.parent === parent
     }
 
     /**
@@ -481,7 +473,6 @@ class ConstraintAnchor
 
                 Type.BASELINE, Type.CENTER, Type.CENTER_X, Type.CENTER_Y, Type.NONE -> null
             }
-            throw AssertionError(type.name)
         }
 
     companion object {
