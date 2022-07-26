@@ -1,16 +1,21 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MultiMeasureLayout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.*
 import tk.zwander.commonCompose.model.BaseModel
@@ -25,153 +30,104 @@ import tk.zwander.samloaderkotlin.strings
  * @param canChangeFirmware whether the firmware field should be editable.
  * @param showFirmware whether to show the firmware field.
  */
-@OptIn(ExperimentalMotionApi::class)
 @Composable
 fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
     ) {
+        val density = LocalDensity.current
         val constraint = rememberIsOverScaledThreshold(constraints.maxWidth)
         val constraints = this.constraints
 
-        val progress by animateFloatAsState(if (constraint) 0f else 1f)
+        val padding = remember(density) { with(density) { 4.dp.toPx() } }
 
-        val wideSet = ConstraintSet {
-            val modelRef = createRefFor("model")
-            val regionRef = createRefFor("region")
+        var fieldHeight by remember(density) { mutableStateOf(0) }
+        val layoutHeight by animateIntAsState(if (constraint) fieldHeight else (2 * fieldHeight + 2 * padding).toInt())
 
-//            val horizontalRef = createHorizontalChain(modelRef, regionRef)
-//
-//            constrain(horizontalRef) {
-//                start.linkTo(parent.start)
-//                end.linkTo(parent.end)
-//            }
+        val modelFieldWidth by derivedStateOf { constraints.maxWidth * 0.6 - padding }
+        val regionFieldWidth by derivedStateOf { constraints.maxWidth * 0.4 - padding }
 
-            constrain(modelRef) {
-                start.linkTo(parent.start)
-                end.linkTo(regionRef.start)
-                top.linkTo(parent.top)
-                this.horizontalChainWeight = 0.6f
-                width = Dimension.fillToConstraints
-            }
+        val transition = updateTransition(constraint)
 
-            constrain(regionRef) {
-                start.linkTo(modelRef.end)
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-                this.horizontalChainWeight = 0.4f
-                width = Dimension.fillToConstraints
-            }
+        val regionFieldOffset by transition.animateIntOffset {
+            IntOffset(
+                x = if (it) (modelFieldWidth + (padding * 2)).toInt() else 0,
+                y = if (it) 0 else (fieldHeight + 2 * padding).toInt()
+            )
+        }
+        val modelFieldAnimWidth by transition.animateInt {
+            if (it) modelFieldWidth.toInt() else constraints.maxWidth
+        }
+        val regionFieldAnimWidth by transition.animateInt {
+            if (constraint) regionFieldWidth.toInt() else constraints.maxWidth
         }
 
-        val narrowSet = ConstraintSet {
-            val modelRef = createRefFor("model")
-            val regionRef = createRefFor("region")
+        val lHeight by rememberUpdatedState(layoutHeight)
+        val rOffset by rememberUpdatedState(regionFieldOffset)
+        val mWidth by rememberUpdatedState(modelFieldAnimWidth)
+        val rWidth by rememberUpdatedState(regionFieldAnimWidth)
 
-            constrain(modelRef) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-                bottom.linkTo(regionRef.top)
-                width = Dimension.fillToConstraints
-            }
-
-            constrain(regionRef) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                top.linkTo(modelRef.bottom)
-                bottom.linkTo(parent.bottom)
-                width = Dimension.fillToConstraints
-            }
-        }
-
-        MotionLayout(
-            start = wideSet,
-            end = narrowSet,
-            progress = progress,
+        MultiMeasureLayout(
             modifier = Modifier.fillMaxWidth(),
-            transition = Transition("""
-                {
-                    default: {
-                        from: 'start',
-                        to: 'end',
-                        pathMotionArc: 'startHorizontal'
-                    }
+            content = {
+                OutlinedTextField(
+                    value = model.model,
+                    onValueChange = {
+                        model.model = it.uppercase().trim()
+                        if ((model is DownloadModel && !model.manual)) {
+                            model.fw = ""
+                            model.osCode = ""
+                        }
+                    },
+                    modifier = Modifier.layoutId("model"),
+                    label = { Text(strings.modelHint()) },
+                    readOnly = !canChangeOption,
+                    keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+                    singleLine = true
+                )
+
+                OutlinedTextField(
+                    value = model.region,
+                    onValueChange = {
+                        model.region = it.uppercase().trim()
+                        if ((model is DownloadModel && !model.manual)) {
+                            model.fw = ""
+                            model.osCode = ""
+                        }
+                    },
+                    modifier = Modifier.layoutId("region"),
+                    label = { Text(strings.regionHint()) },
+                    readOnly = !canChangeOption,
+                    keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+                    singleLine = true
+                )
+            }
+        ) { measurables, c ->
+            if (fieldHeight == 0) {
+                fieldHeight = measurables[0].measure(constraints).height
+            }
+
+            layout(c.maxWidth, lHeight) {
+                measurables.forEachIndexed { index, measurable ->
+                    val placeable = measurable.measure(
+                        Constraints(
+                            maxWidth = when (index) {
+                                0 -> mWidth
+                                else -> rWidth
+                            },
+                            minWidth = when (index) {
+                                0 -> mWidth
+                                else -> rWidth
+                            }
+                        )
+                    )
+
+                    placeable.place(
+                        if (index == 0) IntOffset.Zero else rOffset
+                    )
                 }
-            """.trimIndent())
-        ) {
-            OutlinedTextField(
-                value = model.model,
-                onValueChange = {
-                    model.model = it.uppercase().trim()
-                    if ((model is DownloadModel && !model.manual)) {
-                        model.fw = ""
-                        model.osCode = ""
-                    }
-                },
-                modifier = Modifier.layoutId("model"),
-                label = { Text(strings.modelHint()) },
-                readOnly = !canChangeOption,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-                singleLine = true
-            )
-
-            OutlinedTextField(
-                value = model.region,
-                onValueChange = {
-                    model.region = it.uppercase().trim()
-                    if ((model is DownloadModel && !model.manual)) {
-                        model.fw = ""
-                        model.osCode = ""
-                    }
-                },
-                modifier = Modifier.layoutId("region"),
-                label = { Text(strings.regionHint()) },
-                readOnly = !canChangeOption,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-                singleLine = true
-            )
+            }
         }
-
-//        Column {
-//            BoxWithConstraints {
-//                val constraints = constraints
-//
-//                Row {
-//                    val widthAnimator by animateIntAsState(if (!constraint) constraints.maxWidth else (constraints.maxWidth * 0.6f).toInt())
-//                    val offsetAnimator by animateIntOffsetAsState(IntOffset(if (!constraint) (constraints.maxWidth * 0.4f).toInt() else 0, 0))
-//                    val regionWidthAnimator by animateIntAsState(if (!constraint) 0 else (constraints.maxWidth * 0.4f).toInt())
-//
-//                    with (LocalDensity.current) {
-//                        Box(
-//                            modifier = Modifier.width(widthAnimator.toDp())
-//                        ) {
-//                        }
-//
-//                        Row(
-//                            modifier = Modifier
-//                                .wrapContentHeight()
-//                                .width(regionWidthAnimator.toDp())
-//                                .offset { offsetAnimator }
-//                        ) {
-//                            Spacer(Modifier.size(8.dp))
-//
-//                            regionField()
-//                        }
-//                    }
-//                }
-//            }
-//
-//            AnimatedVisibility(
-//                visible = !constraint
-//            ) {
-//                Column {
-//                    Spacer(Modifier.size(8.dp))
-//
-//                    regionField()
-//                }
-//            }
-//        }
     }
 
     if (showFirmware) {

@@ -216,7 +216,7 @@ internal class MotionMeasurer : Measurer() {
         root.children.fastForEach { child ->
             // Update measurables to the interpolated dimensions
             val measurable = (child.companionWidget as? Measurable) ?: return@fastForEach
-            val interpolatedFrame = this.transition.getInterpolated(child) ?: return@fastForEach
+            val interpolatedFrame = this.transition.getInterpolated(child)
             val placeable = placeables[measurable]
             val currentWidth = placeable?.width
             val currentHeight = placeable?.height
