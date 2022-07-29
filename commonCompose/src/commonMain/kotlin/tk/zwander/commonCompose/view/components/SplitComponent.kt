@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateIntOffset
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
@@ -35,12 +36,12 @@ fun SplitComponent(
             horizontalSpacing.toPx() to verticalSpacing.toPx()
         }
 
-        val isOverThreshold = remember(density, constraints.maxWidth) {
+        val isOverThreshold = rememberSaveable(density, constraints.maxWidth) {
             (constraints.maxWidth / (density.density * density.fontScale)).dp > threshold
         }
         val transition = updateTransition(isOverThreshold)
 
-        var fieldHeight by remember(density) { mutableStateOf(0) }
+        var fieldHeight by rememberSaveable(density) { mutableStateOf(0) }
 
         val layoutHeight by animateIntAsState(if (isOverThreshold) fieldHeight else (2 * fieldHeight + verticalSpacingPx).toInt())
 
