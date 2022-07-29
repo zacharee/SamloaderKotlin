@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.common.tools.CryptUtils
+import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
@@ -82,13 +83,13 @@ private suspend fun onOpenFile(model: DecryptModel) {
 
 /**
  * The Decrypter View.
- * @param model the model for this View.
  * @param scrollState a shared scroll state among all pages.
  */
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-fun DecryptView(model: DecryptModel, scrollState: ScrollState) {
+fun DecryptView(scrollState: ScrollState) {
+    val model = LocalDecryptModel.current
     val canDecrypt = model.fileToDecrypt != null && model.job == null
             && model.fw.isNotBlank() && model.model.isNotBlank() && model.region.isNotBlank()
 

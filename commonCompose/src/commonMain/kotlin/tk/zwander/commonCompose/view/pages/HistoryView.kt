@@ -25,6 +25,7 @@ import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
+import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
@@ -142,16 +143,15 @@ private suspend fun onFetch(model: HistoryModel) {
 
 /**
  * The History View.
- * @param model the History model.
  * @param onDownload a callback for when the user hits the "Download" button on an item.
  * @param onDecrypt a callback for when the user hits the "Decrypt" button on an item.
  */
 @Composable
 fun HistoryView(
-    model: HistoryModel,
     onDownload: (model: String, region: String, fw: String) -> Unit,
     onDecrypt: (model: String, region: String, fw: String) -> Unit
 ) {
+    val model = LocalHistoryModel.current
     val canCheckHistory = model.model.isNotBlank()
             && model.region.isNotBlank() && model.job == null
 

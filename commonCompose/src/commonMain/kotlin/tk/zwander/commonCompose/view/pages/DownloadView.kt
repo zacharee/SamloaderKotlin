@@ -27,7 +27,7 @@ import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
-import tk.zwander.commonCompose.downloadModel
+import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.*
 import tk.zwander.samloaderkotlin.resources.MR
@@ -61,14 +61,14 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
 
     val (info, error, output) = Request.getBinaryFile(
         client,
-        downloadModel.fw,
-        downloadModel.model,
-        downloadModel.region
+        model.fw,
+        model.model,
+        model.region
     )
 
     if (error != null) {
         error.printStackTrace()
-        downloadModel.endJob("${error.message ?: strings.error()}\n\n${output}")
+        model.endJob("${error.message ?: strings.error()}\n\n${output}")
     } else {
         val (path, fileName, size, crc32, v4Key) = info!!
         val request = Request.createBinaryInit(fileName, client.getNonce())
@@ -194,13 +194,14 @@ private suspend fun onFetch(model: DownloadModel) {
 
 /**
  * The Downloader View.
- * @param model the Download model.
  * @param scrollState a shared scroll state.
  */
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-fun DownloadView(model: DownloadModel, scrollState: ScrollState) {
+fun DownloadView(scrollState: ScrollState) {
+    val model = LocalDownloadModel.current
+
     val canCheckVersion = !model.manual && model.model.isNotBlank()
             && model.region.isNotBlank() && model.job == null
 
