@@ -63,6 +63,11 @@ kotlin {
         homepage = "https://zwander.dev"
         osx.deploymentTarget = "12.0"
 
+        framework {
+            baseName = "common"
+            isStatic = false
+        }
+
         pod("HTMLReader")
 
 //        pod("HTMLKit") {

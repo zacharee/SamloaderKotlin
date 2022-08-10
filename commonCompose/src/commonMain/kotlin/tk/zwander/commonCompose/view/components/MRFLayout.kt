@@ -9,18 +9,10 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.MeasureResult
-import androidx.compose.ui.layout.MultiMeasureLayout
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.unit.Constraints
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.*
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
-import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.samloaderkotlin.strings
 
 /**
@@ -43,7 +35,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                         model.osCode = ""
                     }
                 },
-                modifier = Modifier.layoutId("model"),
+                modifier = Modifier,
                 label = { Text(strings.modelHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
@@ -60,7 +52,7 @@ fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boo
                         model.osCode = ""
                     }
                 },
-                modifier = Modifier.layoutId("region"),
+                modifier = Modifier,
                 label = { Text(strings.regionHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
