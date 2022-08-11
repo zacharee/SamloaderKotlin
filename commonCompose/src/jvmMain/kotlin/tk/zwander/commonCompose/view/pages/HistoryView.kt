@@ -1,13 +1,13 @@
 package tk.zwander.commonCompose.view.pages
 
 import com.soywiz.klock.DateFormat
-import org.jsoup.Jsoup
+import jsoup.Jsoup
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.makeFirmwareString
 
 actual object PlatformHistoryView {
     actual suspend fun parseHistory(body: String): List<HistoryInfo> {
-        val doc = Jsoup.parse(body)
+        val doc = jsoup.Jsoup.parse(body)
 
         val listItems = doc.select(".index_list").apply {
             removeAt(0)

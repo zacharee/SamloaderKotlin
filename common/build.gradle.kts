@@ -77,7 +77,7 @@ kotlin {
     }
 
     sourceSets {
-        val korlibsVersion = "2.7.0"
+        val korlibsVersion = "3.0.0"
         val ktorVersion = "2.0.3"
         val jsoupVersion = "1.14.3"
 
@@ -86,17 +86,19 @@ kotlin {
                 api(compose.runtime)
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 //                api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
                 api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                 api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
                 api("com.soywiz.korlibs.klock:klock:$korlibsVersion")
+                api("com.soywiz.korlibs.kds:kds:$korlibsVersion")
                 api("co.touchlab:stately-common:1.2.1")
                 api("co.touchlab:stately-isolate:1.2.1")
                 api("io.ktor:ktor-client-core:$ktorVersion")
                 api("io.ktor:ktor-client-auth:$ktorVersion")
+                api("io.ktor:ktor-io:$ktorVersion")
                 api("io.fluidsonic.i18n:fluid-i18n:0.11.0")
                 api("io.fluidsonic.country:fluid-country:0.11.0")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")

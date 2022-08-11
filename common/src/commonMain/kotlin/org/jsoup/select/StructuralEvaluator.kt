@@ -1,0 +1,120 @@
+package org.jsoup.select
+
+import org.jsoup.nodes.Element
+import org.jsoup.nodes.Node
+
+/**
+ * Base structural evaluator.
+ */
+internal abstract class StructuralEvaluator constructor() : Evaluator() {
+    open var evaluator: Evaluator? = null
+
+    internal class Root constructor() : Evaluator() {
+        public override fun matches(root: Element, element: Element): Boolean {
+            return root === element
+        }
+    }
+
+    internal class Has constructor(override var evaluator: Evaluator?) : StructuralEvaluator() {
+        val finder = Collector.FirstFinder(evaluator)
+
+        public override fun matches(root: Element, element: Element): Boolean {
+            // for :has, we only want to match children (or below), not the input element. And we want to minimize GCs
+            for (i in 0 until element.childNodeSize()) {
+                val node: Node? = element.childNode(i)
+                if (node is Element) {
+                    val match: Element? = finder.find(element, node as Element)
+                    if (match != null) return true
+                }
+            }
+            return false
+        }
+
+        public override fun toString(): String {
+            return ":has($evaluator)"
+        }
+    }
+
+    internal class Not constructor(override var evaluator: Evaluator?) : StructuralEvaluator() {
+        public override fun matches(root: Element, node: Element): Boolean {
+            return !evaluator!!.matches(root, node)
+        }
+
+        public override fun toString(): String {
+            return ":not($evaluator)"
+        }
+    }
+
+    internal class Parent constructor(evaluator: Evaluator?) : StructuralEvaluator() {
+        init {
+            this.evaluator = evaluator
+        }
+
+        public override fun matches(root: Element, element: Element): Boolean {
+            if (root === element) return false
+            var parent: Element? = element.parent()
+            while (parent != null) {
+                if (evaluator!!.matches(root, parent)) return true
+                if (parent === root) break
+                parent = parent.parent()
+            }
+            return false
+        }
+
+        public override fun toString(): String {
+            return "$evaluator "
+        }
+    }
+
+    internal class ImmediateParent constructor(evaluator: Evaluator?) : StructuralEvaluator() {
+        init {
+            this.evaluator = evaluator
+        }
+
+        public override fun matches(root: Element, element: Element): Boolean {
+            if (root === element) return false
+            val parent: Element? = element.parent()
+            return parent != null && evaluator!!.matches(root, parent)
+        }
+
+        public override fun toString(): String {
+            return "$evaluator > "
+        }
+    }
+
+    internal class PreviousSibling constructor(evaluator: Evaluator?) : StructuralEvaluator() {
+        init {
+            this.evaluator = evaluator
+        }
+
+        public override fun matches(root: Element, element: Element): Boolean {
+            if (root === element) return false
+            var prev: Element? = element.previousElementSibling()
+            while (prev != null) {
+                if (evaluator!!.matches(root, prev)) return true
+                prev = prev.previousElementSibling()
+            }
+            return false
+        }
+
+        public override fun toString(): String {
+            return "$evaluator ~ "
+        }
+    }
+
+    internal class ImmediatePreviousSibling constructor(evaluator: Evaluator?) : StructuralEvaluator() {
+        init {
+            this.evaluator = evaluator
+        }
+
+        public override fun matches(root: Element, element: Element): Boolean {
+            if (root === element) return false
+            val prev: Element? = element.previousElementSibling()
+            return prev != null && evaluator!!.matches(root, prev)
+        }
+
+        public override fun toString(): String {
+            return "$evaluator + "
+        }
+    }
+}

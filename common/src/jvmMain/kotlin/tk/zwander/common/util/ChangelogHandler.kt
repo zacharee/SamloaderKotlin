@@ -1,12 +1,12 @@
 package tk.zwander.common.util
 
 import io.ktor.util.*
-import org.jsoup.Jsoup
+import jsoup.Jsoup
 import tk.zwander.common.data.changelog.Changelog
 
 actual object PlatformChangelogHandler {
     actual suspend fun parseDocUrl(body: String): String? {
-        val doc = Jsoup.parse(body)
+        val doc = jsoup.Jsoup.parse(body)
         val selector = doc.selectFirst("#sel_lang_hidden")
         val engOption = selector?.children()?.run { find { it.attr("value") == "EN" } ?: first() }
 
@@ -15,7 +15,7 @@ actual object PlatformChangelogHandler {
 
     @OptIn(InternalAPI::class)
     actual suspend fun parseChangelogs(body: String): Map<String, Changelog> {
-        val doc = Jsoup.parse(body)
+        val doc = jsoup.Jsoup.parse(body)
         val container = doc.selectFirst(".container")
 
         val divs = container!!.children().apply {
