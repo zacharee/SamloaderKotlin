@@ -2,7 +2,6 @@ package org.jsoup.parser
 
 import org.jsoup.helper.Validate
 import org.jsoup.internal.StringUtil
-import java.util.*
 
 /**
  * A character queue with parsing helpers.

@@ -10,8 +10,6 @@ import org.jsoup.internal.StringUtil
 import org.jsoup.parser.Tag
 import org.jsoup.parser.Tag.Companion.valueOf
 import org.jsoup.select.*
-import java.util.*
-import kotlin.reflect.KClass
 
 /**
  * A HTML element consists of a tag name, attributes, and child nodes (including text nodes and
@@ -227,7 +225,7 @@ open class Element constructor(
 
 
     override fun parent(): Element? {
-        return parNode as Element
+        return parNode as Element?
     }
 
     /**
@@ -290,7 +288,7 @@ open class Element constructor(
      * @return a list of child elements
      */
     fun childElementsList(): List<Element> {
-        if (childNodeSize() == 0) return EmptyChildren // short circuit creating empty
+        if (childElements.size == 0) return EmptyChildren // short circuit creating empty
         var children: MutableList<Element> = mutableListOf()
         if (shadowChildrenRef == null || shadowChildrenRef?.also { children = it } == null) {
             val size = children.size
@@ -504,9 +502,9 @@ open class Element constructor(
      * @see .selectXpath
      * @since 1.14.3
      */
-    fun selectXpath(xpath: String?): Elements {
-        return Elements(NodeUtils.selectXpath(xpath, this, Element::class))
-    }
+//    fun selectXpath(xpath: String?): Elements {
+//        return Elements(NodeUtils.selectXpath(xpath, this, Element::class))
+//    }
 
     /**
      * Find Nodes that match the supplied XPath expression.
@@ -523,9 +521,9 @@ open class Element constructor(
      * @return a list of matching nodes
      * @since 1.14.3
      */
-    fun <T : Node> selectXpath(xpath: String?, nodeType: KClass<T>): List<T?>? {
-        return NodeUtils.selectXpath(xpath, this, nodeType)
-    }
+//    fun <T : Node> selectXpath(xpath: String?, nodeType: KClass<T>): List<T?>? {
+//        return NodeUtils.selectXpath(xpath, this, nodeType)
+//    }
 
     /**
      * Insert a node to the end of this Element's children. The incoming node will be re-parented.

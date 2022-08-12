@@ -366,7 +366,7 @@ abstract class Token private constructor() {
         }
 
         public override fun toString(): String {
-            return (data)!!
+            return data.toString()
         }
     }
 

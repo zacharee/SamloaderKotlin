@@ -2,15 +2,24 @@ package org.jsoup.helper
 
 import com.soywiz.korio.stream.SyncInputStream
 import com.soywiz.korio.stream.SyncOutputStream
+import com.soywiz.korio.stream.markable
 import io.ktor.utils.io.charsets.*
+import io.ktor.utils.io.core.*
 import io.ktor.utils.io.errors.*
+import okio.BufferedSource
+import okio.buffer
+import okio.Buffer
+import org.jsoup.UncheckedIOException
 import org.jsoup.internal.ConstrainableInputStream
 import org.jsoup.internal.Normalizer
 import org.jsoup.internal.StringUtil
 import org.jsoup.nodes.*
 import org.jsoup.parser.Parser
+import org.jsoup.parser.SourceMarker
+import org.jsoup.parser.source
 import org.jsoup.select.Elements
 import tk.zwander.common.data.File
+import kotlin.random.Random
 
 /**
  * Internal static utilities for handling data.
@@ -57,18 +66,18 @@ object DataUtil {
         baseUri: String?,
         parser: Parser? = Parser.htmlParser()
     ): Document? {
-        var stream = file.openInputStream()
+        val stream = file.openSyncInputStream()
         val name: String? = Normalizer.lowerCase(file.getName())
-        if (name!!.endsWith(".gz") || name.endsWith(".z")) {
-            // unfortunately file input streams don't support marks (why not?), so we will close and reopen after read
-            val zipped: Boolean
-            try {
-                zipped = (stream.read() == 0x1f && stream.read() == 0x8b) // gzip magic bytes
-            } finally {
-                stream.close()
-            }
-            stream = if (zipped) GZIPInputStream(FileInputStream(file)) else FileInputStream(file)
-        }
+//        if (name!!.endsWith(".gz") || name.endsWith(".z")) {
+//            // unfortunately file input streams don't support marks (why not?), so we will close and reopen after read
+//            val zipped: Boolean
+//            try {
+//                zipped = (stream.read() == 0x1f && stream.read() == 0x8b) // gzip magic bytes
+//            } finally {
+//                stream.close()
+//            }
+//            stream = if (zipped) GZIPInputStream(FileInputStream(file)) else FileInputStream(file)
+//        }
         return parseInputStream(stream, charsetName, baseUri, parser)
     }
 
@@ -126,37 +135,28 @@ object DataUtil {
         baseUri: String?,
         parser: Parser?
     ): Document? {
-        var input: SyncInputStream? = input
         var charsetName: String? = charsetName
-        if (input == null) // empty body
+        if (input == null) {
             return Document(baseUri)
-        input = ConstrainableInputStream.Companion.wrap(input, bufferSize, 0)
-         var doc: Document? = null
+        }
+        val input = SourceMarker(input.source())
+        var doc: Document? = null
 
         // read the start of the stream and look for a BOM or meta charset
         try {
-            input.mark(bufferSize)
-            val firstBytes: ByteBuffer? = readToByteBuffer(
-                input,
-                firstReadBufferSize - 1
-            ) // -1 because we read one more to see if completed. First read is < buffer size, so can't be invalid.
-            val fullyRead: Boolean = (input.read() == -1)
-            input.reset()
+            val reset = input.mark(bufferSize.toLong())
+            val firstBytes = Buffer().apply { input.source().buffer.copyTo(this, 0, (firstReadBufferSize - 1).toLong()) } // -1 because we read one more to see if completed. First read is < buffer size, so can't be invalid.
+            val fullyRead: Boolean = (input.source().exhausted())
+            input.reset(reset)
 
             // look for BOM - overrides any other header or input
             val bomCharset: BomCharset? = detectCharsetFromBom(firstBytes)
             if (bomCharset != null) charsetName = bomCharset.charset
             if (charsetName == null) { // determine from meta. safe first parse as UTF-8
                 try {
-                    val defaultDecoded: CharBuffer = UTF_8.decode(firstBytes)
-                    if (defaultDecoded.hasArray()) doc = parser!!.parseInput(
-                        CharArrayReader(
-                            defaultDecoded.array(),
-                            defaultDecoded.arrayOffset(),
-                            defaultDecoded.limit()
-                        ), baseUri
-                    ) else doc = parser!!.parseInput(defaultDecoded.toString(), baseUri)
-                } catch (e: jsoup.UncheckedIOException) {
+                    val defaultDecoded: Buffer = firstBytes.copy()
+                    doc = parser!!.parseInput(UTF_8.newDecoder().decode(ByteReadPacket(defaultDecoded.readByteArray())), baseUri)
+                } catch (e: UncheckedIOException) {
                     throw e.ioException()
                 }
 
@@ -201,34 +201,26 @@ object DataUtil {
             }
             if (doc == null) {
                 if (charsetName == null) charsetName = defaultCharsetName
-                val reader: BufferedReader = BufferedReader(
-                    InputStreamReader(input, Charset.forName(charsetName)),
-                    bufferSize
-                ) // Android level does not allow us try-with-resources
+                val reader: BufferedSource = input.source().buffer() // Android level does not allow us try-with-resources
                 try {
                     if (bomCharset != null && bomCharset.offset) { // creating the buffered reader ignores the input pos, so must skip here
-                        val skipped: Long = reader.skip(1)
-                        Validate.isTrue(skipped == 1L) // WTF if this fails.
+                        reader.skip(1)
                     }
                     try {
                         doc = parser!!.parseInput(reader, baseUri)
-                    } catch (e: jsoup.UncheckedIOException) {
+                    } catch (e: UncheckedIOException) {
                         // io exception when parsing (not seen before because reading the stream as we go)
                         throw e.ioException()
                     }
                     val charset: Charset =
                         if ((charsetName == defaultCharsetName)) UTF_8 else Charset.forName(charsetName)
                     doc!!.outputSettings()!!.charset(charset)
-                    if (!charset.canEncode()) {
-                        // some charsets can read but not encode; switch to an encodable charset and update the meta el
-                        doc.charset(UTF_8)
-                    }
                 } finally {
                     reader.close()
                 }
             }
         } finally {
-            input.close()
+            input.source().close()
         }
         return doc
     }
@@ -241,15 +233,15 @@ object DataUtil {
      * @return the filled byte buffer
      * @throws IOException if an exception occurs whilst reading from the input stream.
      */
-    @Throws(IOException::class)
-    fun readToByteBuffer(inStream: InputStream?, maxSize: Int): ByteBuffer? {
-        Validate.isTrue(maxSize >= 0, "maxSize must be 0 (unlimited) or larger")
-        val input: ConstrainableInputStream = ConstrainableInputStream.Companion.wrap(inStream, bufferSize, maxSize)
-        return input.readToByteBuffer(maxSize)
-    }
+//    @Throws(IOException::class)
+//    fun readToByteBuffer(inStream: SourceMarker, maxSize: Int): Buffer {
+//        Validate.isTrue(maxSize >= 0, "maxSize must be 0 (unlimited) or larger")
+//        val input: ConstrainableInputStream = ConstrainableInputStream.wrap(inStream, bufferSize, maxSize)
+//        return input.readToByteBuffer(maxSize)
+//    }
 
-    fun emptyByteBuffer(): ByteBuffer {
-        return ByteBuffer.allocate(0)
+    fun emptyByteBuffer(): Buffer {
+        return Buffer()
     }
 
     /**
@@ -261,9 +253,10 @@ object DataUtil {
 
     fun getCharsetFromContentType( contentType: String?): String? {
         if (contentType == null) return null
-        val m: Matcher = charsetPattern.matcher(contentType)
-        if (m.find()) {
-            var charset: String = m.group(1).trim({ it <= ' ' })
+        val m = charsetPattern.matchEntire(contentType)
+
+        if (m?.groups?.isNotEmpty() == true) {
+            var charset: String = m.groupValues[1].trim { it <= ' ' }
             charset = charset.replace("charset=", "")
             return validateCharset(charset)
         }
@@ -279,7 +272,7 @@ object DataUtil {
             if (Charset.isSupported(cs)) return cs
             cs = cs.uppercase()
             if (Charset.isSupported(cs)) return cs
-        } catch (e: IllegalCharsetNameException) {
+        } catch (e: Exception) {
             // if our this charset matching fails.... we just take the default
         }
         return null
@@ -290,7 +283,7 @@ object DataUtil {
      */
     fun mimeBoundary(): String? {
         val mime: StringBuilder? = StringUtil.borrowBuilder()
-        val rand: Random = Random()
+        val rand: Random = Random.Default
         for (i in 0 until boundaryLength) {
             mime!!.append(mimeBoundaryChars.get(rand.nextInt(mimeBoundaryChars.size)))
         }
@@ -298,13 +291,12 @@ object DataUtil {
     }
 
 
-    private fun detectCharsetFromBom(byteData: ByteBuffer?): BomCharset? {
-        val buffer: Buffer? =
-            byteData // .mark and rewind used to return Buffer, now ByteBuffer, so cast for backward compat
-        buffer!!.mark()
-        val bom: ByteArray = ByteArray(4)
-        if (byteData!!.remaining() >= bom.size) {
-            byteData.get(bom)
+    private fun detectCharsetFromBom(byteData: Buffer): BomCharset? {
+        val buffer = SourceMarker(byteData)
+        val reset = buffer.mark(0)
+        val bom = Buffer()
+        if (buffer.run { limit - mark } >= bom.size) {
+            byteData.copyTo(bom, 0, 4)
             buffer.rewind()
         }
         if ((bom.get(0).toInt() == 0x00) && (bom.get(1)

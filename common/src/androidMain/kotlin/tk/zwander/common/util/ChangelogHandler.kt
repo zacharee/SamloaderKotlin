@@ -7,7 +7,7 @@ import tk.zwander.common.data.changelog.Changelog
 actual object PlatformChangelogHandler {
     actual suspend fun parseDocUrl(body: String): String? {
         val doc = Jsoup.parse(body)
-        val selector = doc.selectFirst("#sel_lang_hidden")
+        val selector = doc?.selectFirst("#sel_lang_hidden")
         val engOption = selector?.children()?.run { find { it.attr("value") == "EN" } ?: first() }
 
         return engOption?.text()
@@ -16,10 +16,10 @@ actual object PlatformChangelogHandler {
     @OptIn(InternalAPI::class)
     actual suspend fun parseChangelogs(body: String): Map<String, Changelog> {
         val doc = Jsoup.parse(body)
-        val container = doc.selectFirst(".container")
+        val container = doc?.selectFirst(".container")
 
         val divs = container!!.children().apply {
-            removeIf { it.tagName() == "hr" }
+            removeAll { it.tagName() == "hr" }
         }
         val changelogs = LinkedHashMap<String, Changelog>()
 
@@ -55,7 +55,7 @@ actual object PlatformChangelogHandler {
                 }
             }
 
-            val logText = log.children()[0].childNodes().joinToString(separator = "", transform = { it.outerHtml() })
+            val logText = log.children()[0].childNodes().joinToString(separator = "", transform = { it.outerHtml()!! })
 
             if (build != null) {
                 changelogs[build] = Changelog(

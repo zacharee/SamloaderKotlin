@@ -211,7 +211,7 @@ class QueryParser private constructor(query: String?) {
             ) else if (cq.matchChomp("*=")) evals.add(
                 Evaluator.AttributeWithValueContaining(key, cq.remainder())
             ) else if (cq.matchChomp("~=")) evals.add(
-                Evaluator.AttributeWithValueMatching(key, Regex(cq.remainder()).pattern)
+                Evaluator.AttributeWithValueMatching(key, Regex(cq.remainder()))
             ) else throw Selector.SelectorParseException(
                 "Could not parse attribute query '%s': unexpected token at '%s'",
                 query,

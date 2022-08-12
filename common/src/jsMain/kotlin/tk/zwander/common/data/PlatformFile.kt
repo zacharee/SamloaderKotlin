@@ -1,9 +1,11 @@
 package tk.zwander.common.data
 
+import com.soywiz.korio.async.runBlockingNoSuspensions
 import com.soywiz.korio.file.*
 import com.soywiz.korio.jsRuntime
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
+import com.soywiz.korio.stream.SyncInputStream
 import tk.zwander.common.util.fileHandling.FileSystemFileHandle
 
 actual open class PlatformFile : File {
@@ -136,6 +138,12 @@ actual open class PlatformFile : File {
 
     override suspend fun openInputStream(): AsyncInputStream {
         return wrappedFile.open(VfsOpenMode.READ)
+    }
+
+    override fun openSyncInputStream(): SyncInputStream {
+        return runBlockingNoSuspensions {
+            wrappedFile.readAsSyncStream()
+        }
     }
 
     override fun hashCode(): Int {

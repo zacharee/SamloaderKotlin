@@ -3,60 +3,113 @@ package org.jsoup.helper
 /**
  * Implementation of ArrayList that watches out for changes to the contents.
  */
-abstract class ChangeNotifyingArrayList<E> constructor(initialCapacity: Int) : ArrayList<E>(initialCapacity) {
+abstract class ChangeNotifyingArrayList<E> constructor(initialCapacity: Int) : MutableList<E> {
+    private val wrapped = ArrayList<E>(initialCapacity)
+
     abstract fun onContentsChanged()
+
+    override val size: Int
+        get() = wrapped.size
+
+    override fun contains(element: E): Boolean {
+        return wrapped.contains(element)
+    }
+
+    override fun containsAll(elements: Collection<E>): Boolean {
+        return wrapped.containsAll(elements)
+    }
+
+    override fun get(index: Int): E {
+        return wrapped[index]
+    }
+
+    override fun indexOf(element: E): Int {
+        return wrapped.indexOf(element)
+    }
+
+    override fun isEmpty(): Boolean {
+        return wrapped.isEmpty()
+    }
+
+    override fun iterator(): MutableIterator<E> {
+        return wrapped.iterator()
+    }
+
+    override fun lastIndexOf(element: E): Int {
+        return wrapped.lastIndexOf(element)
+    }
+
+    override fun listIterator(): MutableListIterator<E> {
+        return wrapped.listIterator()
+    }
+
+    override fun subList(fromIndex: Int, toIndex: Int): MutableList<E> {
+        return wrapped.subList(fromIndex, toIndex)
+    }
+
+    override fun hashCode(): Int {
+        return wrapped.hashCode()
+    }
+
+    override fun toString(): String {
+        return wrapped.toString()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return wrapped == other
+    }
+
+    override fun listIterator(index: Int): MutableListIterator<E> {
+        return wrapped.listIterator(index)
+    }
+
     public override fun set(index: Int, element: E): E {
         onContentsChanged()
-        return super.set(index, element)
+        return wrapped.set(index, element)
     }
 
     public override fun add(e: E): Boolean {
         onContentsChanged()
-        return super.add(e)
+        return wrapped.add(e)
     }
 
     public override fun add(index: Int, element: E) {
         onContentsChanged()
-        super.add(index, element)
+        wrapped.add(index, element)
     }
 
     public override fun removeAt(index: Int): E {
         onContentsChanged()
-        return super.removeAt(index)
+        return wrapped.removeAt(index)
     }
 
     public override fun remove(element: E): Boolean {
         onContentsChanged()
-        return super.remove(element)
+        return wrapped.remove(element)
     }
 
     public override fun clear() {
         onContentsChanged()
-        super.clear()
+        wrapped.clear()
     }
 
     public override fun addAll(elements: Collection<E>): Boolean {
         onContentsChanged()
-        return super.addAll(elements)
+        return wrapped.addAll(elements)
     }
 
     public override fun addAll(index: Int, elements: Collection<E>): Boolean {
         onContentsChanged()
-        return super.addAll(index, elements)
-    }
-
-    override fun removeRange(fromIndex: Int, toIndex: Int) {
-        onContentsChanged()
-        super.removeRange(fromIndex, toIndex)
+        return wrapped.addAll(index, elements)
     }
 
     public override fun removeAll(elements: Collection<E>): Boolean {
         onContentsChanged()
-        return super.removeAll(elements.toSet())
+        return wrapped.removeAll(elements.toSet())
     }
 
     public override fun retainAll(c: Collection<E>): Boolean {
         onContentsChanged()
-        return super.retainAll(c.toSet())
+        return wrapped.retainAll(c.toSet())
     }
 }

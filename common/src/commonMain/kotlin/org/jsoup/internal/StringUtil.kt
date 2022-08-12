@@ -2,14 +2,10 @@ package org.jsoup.internal
 
 import com.soywiz.kds.Stack
 import com.soywiz.korio.lang.Charset.Companion.appendCodePointV
-import com.soywiz.korio.lang.forEachCodePoint
-import com.soywiz.korio.net.URL
 import io.ktor.http.*
 import org.jsoup.charCount
 import org.jsoup.helper.Validate
-import java.util.*
 import kotlin.math.min
-import kotlin.native.concurrent.ThreadLocal
 
 /**
  * A minimal String utility class. Designed for **internal** jsoup use only - the API and outcome may change without

@@ -3,7 +3,6 @@ package org.jsoup.select
 import com.soywiz.korio.lang.format
 import org.jsoup.helper.Validate
 import org.jsoup.nodes.Element
-import java.util.*
 
 /**
  * CSS-like element selector, that finds elements matching a query.

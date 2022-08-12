@@ -1,8 +1,8 @@
 package org.jsoup.nodes
 
+import io.ktor.utils.io.errors.*
 import org.jsoup.parser.ParseSettings
 import org.jsoup.parser.Parser
-import java.io.IOException
 
 /**
  * A comment node.
@@ -16,6 +16,10 @@ class Comment(data: String) : LeafNode() {
      */
     init {
         value = data
+    }
+
+    override fun newInstance(): Node {
+        return Comment(value.toString())
     }
 
     override fun nodeName(): String? {

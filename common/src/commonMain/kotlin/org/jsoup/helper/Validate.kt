@@ -82,7 +82,6 @@ object Validate {
      * @param objects the array to test
      * @throws IllegalArgumentException if the array contains a null element
      */
-    @JvmOverloads
     fun noNullElements(objects: Array<out Any?>, msg: String? = "Array must not contain any null objects") {
         for (obj: Any? in objects) if (obj == null) throw IllegalArgumentException(msg)
     }

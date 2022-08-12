@@ -6,7 +6,6 @@ import org.jsoup.format
 import org.jsoup.helper.Validate
 import org.jsoup.internal.StringUtil
 import org.jsoup.nodes.Entities
-import java.util.*
 
 /**
  * Readers the input stream into tokens.
@@ -195,7 +194,7 @@ class Tokeniser constructor(// html input
             return codeRef
         } else { // named
             // get as many letters as possible, and look for matching entities.
-            val nameRef: String? = reader.consumeLetterThenDigitSequence()
+            val nameRef: String = reader.consumeLetterThenDigitSequence()
             val looksLegit: Boolean = reader.matches(';')
             // found if a base named entity without a ;, or an extended entity with the ;.
             val found: Boolean =
@@ -261,7 +260,7 @@ class Tokeniser constructor(// html input
     }
 
     fun createTempBuffer() {
-        Token.Companion.reset(dataBuffer)
+        Token.reset(dataBuffer)
     }
 
     val isAppropriateEndTagToken: Boolean

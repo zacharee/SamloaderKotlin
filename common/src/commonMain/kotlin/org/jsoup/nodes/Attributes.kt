@@ -1,14 +1,11 @@
 package org.jsoup.nodes
 
-import jsoup.SerializationException
+import io.ktor.utils.io.errors.*
+import org.jsoup.SerializationException
 import org.jsoup.helper.Validate
 import org.jsoup.internal.Normalizer
 import org.jsoup.internal.StringUtil
 import org.jsoup.parser.ParseSettings
-import java.io.IOException
-import java.lang.UnsupportedOperationException
-import java.util.*
-import kotlin.collections.AbstractSet
 
 /**
  * The attributes of an Element.
@@ -25,7 +22,7 @@ import kotlin.collections.AbstractSet
  *
  * @author Jonathan Hedley, jonathan@hedley.net
  */
-class Attributes : Iterable<Attribute?>, Cloneable {
+class Attributes : Iterable<Attribute?> {
     // the number of instance fields is kept as low as possible giving an object size of 24 bytes
     private var size = 0 // number of slots used (not total capacity, which is keys.length)
     var keys = arrayOfNulls<String>(InitialCapacity)
@@ -39,8 +36,8 @@ class Attributes : Iterable<Attribute?>, Cloneable {
         if (curCap >= minNewSize) return
         var newCap = if (curCap >= InitialCapacity) size * GrowthFactor else InitialCapacity
         if (minNewSize > newCap) newCap = minNewSize
-        keys = Arrays.copyOf(keys, newCap)
-        vals = Arrays.copyOf(vals, newCap)
+        keys = keys.copyOf(newCap)
+        vals = vals.copyOf(newCap)
     }
 
     fun indexOfKey(key: String?): Int {
@@ -181,8 +178,8 @@ class Attributes : Iterable<Attribute?>, Cloneable {
         Validate.isFalse(index >= size)
         val shifted = size - index - 1
         if (shifted > 0) {
-            System.arraycopy(keys, index + 1, keys, index, shifted)
-            System.arraycopy(vals, index + 1, vals, index, shifted)
+            keys.copyInto(keys, index, index + 1, index + 1 + shifted)
+            vals.copyInto(vals, index, index + 1, index + 1 + shifted)
         }
         size--
         keys[size] = null // release hold
@@ -308,7 +305,7 @@ class Attributes : Iterable<Attribute?>, Cloneable {
             val attr = Attribute(keys[i], vals[i] as String?, this@Attributes)
             list.add(attr)
         }
-        return Collections.unmodifiableList(list)
+        return list.toList()
     }
 
     /**
@@ -329,7 +326,7 @@ class Attributes : Iterable<Attribute?>, Cloneable {
         try {
             html(sb, Document("").outputSettings()) // output settings a bit funky, but this html() seldom used
         } catch (e: IOException) { // ought never happen
-            throw jsoup.SerializationException(e)
+            throw SerializationException(e)
         }
         return StringUtil.releaseBuilder(sb)
     }
@@ -356,7 +353,7 @@ class Attributes : Iterable<Attribute?>, Cloneable {
      */
     override fun equals( o: Any?): Boolean {
         if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
+        if (o == null || this::class != o::class) return false
         val that = o as Attributes
         if (size != that.size) return false
         for (i in 0 until size) {
@@ -378,21 +375,16 @@ class Attributes : Iterable<Attribute?>, Cloneable {
      */
     override fun hashCode(): Int {
         var result = size
-        result = 31 * result + Arrays.hashCode(keys)
-        result = 31 * result + Arrays.hashCode(vals)
+        result = 31 * result + keys.contentHashCode()
+        result = 31 * result + vals.contentHashCode()
         return result
     }
 
-    public override fun clone(): Attributes {
-        val clone: Attributes
-        clone = try {
-            super.clone() as Attributes
-        } catch (e: CloneNotSupportedException) {
-            throw RuntimeException(e)
-        }
+    public fun clone(): Attributes {
+        val clone = Attributes()
         clone.size = size
-        clone.keys = Arrays.copyOf(keys, size)
-        clone.vals = Arrays.copyOf(vals, size)
+        clone.keys = keys.copyOf()
+        clone.vals = vals.copyOf()
         return clone
     }
 
@@ -429,7 +421,7 @@ class Attributes : Iterable<Attribute?>, Cloneable {
         return dupes
     }
 
-    private class Dataset(private val attributes: Attributes) : AbstractMap<String?, String?>() {
+    private class Dataset(private val attributes: Attributes) : AbstractMutableMap<String?, String?>() {
         override val entries: MutableSet<MutableMap.MutableEntry<String?, String?>>
             get() = EntrySet()
 

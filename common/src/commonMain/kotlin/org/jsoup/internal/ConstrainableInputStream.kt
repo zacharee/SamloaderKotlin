@@ -4,14 +4,18 @@ import com.soywiz.korio.stream.*
 import io.ktor.client.network.sockets.*
 import io.ktor.utils.io.errors.*
 import kotlinx.datetime.Clock
+import okio.Buffer
+import okio.BufferedSource
 import org.jsoup.helper.Validate
+import org.jsoup.parser.SourceMarker
+import org.jsoup.parser.source
 import kotlin.math.min
 
 /**
  * A jsoup internal class (so don't use it as there is no contract API) that enables constraints on an Input Stream,
  * namely a maximum read size, and the ability to Thread.interrupt() the read.
  */
-class ConstrainableInputStream private constructor(private val `in`: SyncInputStream, bufferSize: Int, maxSize: Int) : SyncInputStream {
+class ConstrainableInputStream private constructor(private val `in`: SyncInputStream, bufferSize: Int, maxSize: Int) : SourceMarker(`in`.source()), SyncInputStream {
     private val capped: Boolean
     private val maxSize: Int
     private var startTime: Long
@@ -24,7 +28,7 @@ class ConstrainableInputStream private constructor(private val `in`: SyncInputSt
         this.maxSize = maxSize
         remaining = maxSize
         capped = maxSize != 0
-        startTime = Clock.System.now().toEpochMilliseconds()
+        startTime = Clock.System.now().toEpochMilliseconds() * 1_000_000
     }
 
     override fun read(buffer: ByteArray, offset: Int, len: Int): Int {
@@ -51,13 +55,12 @@ class ConstrainableInputStream private constructor(private val `in`: SyncInputSt
      * reading just the first bytes.
      */
     @Throws(IOException::class)
-    fun readToByteBuffer(max: Int): ByteArray {
+    fun readToByteBuffer(max: Int): Buffer {
         Validate.isTrue(max >= 0, "maxSize must be 0 (unlimited) or larger")
         val localCapped: Boolean = max > 0 // still possibly capped in total stream
         val bufferSize: Int = if (localCapped && max < DefaultSize) max else DefaultSize
         val readBuffer: ByteArray = ByteArray(bufferSize)
-        val write = ByteArray(bufferSize)
-        val outStream: SyncOutputStream = write.openSync("w")
+        val write = Buffer()
         var read: Int
         var remaining: Int = max
         while (true) {
@@ -65,18 +68,19 @@ class ConstrainableInputStream private constructor(private val `in`: SyncInputSt
             if (read == -1) break
             if (localCapped) { // this local byteBuffer cap may be smaller than the overall maxSize (like when reading first bytes)
                 if (read >= remaining) {
-                    outStream.write(readBuffer, 0, remaining)
+                    write.write(readBuffer, 0, remaining)
                     break
                 }
                 remaining -= read
             }
-            outStream.write(readBuffer, 0, read)
+            write.write(readBuffer, 0, read)
         }
         return write
     }
 
-    public fun reset() {
-        remaining = maxSize
+    override fun reset(userOffset: Long) {
+        remaining = maxSize - userOffset.toInt()
+        super.reset(userOffset)
     }
 
     fun timeout(startTimeNanos: Long, timeoutMillis: Long): ConstrainableInputStream {
@@ -87,7 +91,7 @@ class ConstrainableInputStream private constructor(private val `in`: SyncInputSt
 
     private fun expired(): Boolean {
         if (timeout == 0L) return false
-        val now: Long = Clock.System.now().toEpochMilliseconds()
+        val now: Long = Clock.System.now().toEpochMilliseconds() * 1_000_000
         val dur: Long = now - startTime
         return (dur > timeout)
     }

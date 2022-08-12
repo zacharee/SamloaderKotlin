@@ -1,6 +1,5 @@
 package org.jsoup.nodes
 
-import com.soywiz.korio.lang.Charset
 import io.ktor.utils.io.charsets.*
 import org.jsoup.Connection
 import org.jsoup.Jsoup
@@ -38,15 +37,15 @@ class Document(private val location: String?) :
         return location
     }
 
-    /**
-     * Returns the Connection (Request/Response) object that was used to fetch this document, if any; otherwise, a new
-     * default Connection object. This can be used to continue a session, preserving settings and cookies, etc.
-     * @return the Connection (session) associated with this Document, or an empty one otherwise.
-     * @see Connection.newRequest
-     */
-    fun connection(): Connection? {
-        return if (connection == null) Jsoup.newSession() else connection
-    }
+//    /**
+//     * Returns the Connection (Request/Response) object that was used to fetch this document, if any; otherwise, a new
+//     * default Connection object. This can be used to continue a session, preserving settings and cookies, etc.
+//     * @return the Connection (session) associated with this Document, or an empty one otherwise.
+//     * @see Connection.newRequest
+//     */
+//    fun connection(): Connection? {
+//        return if (connection == null) Jsoup.newSession() else connection
+//    }
 
     /**
      * Returns this Document's doctype.
@@ -366,26 +365,23 @@ class Document(private val location: String?) :
     /**
      * A Document's output settings control the form of the text() and html() methods.
      */
-    class OutputSettings {
+    data class OutputSettings(
+        private var escapeMode: Entities.EscapeMode = Entities.EscapeMode.base(),
+        private var charset: Charset = DataUtil.UTF_8,
+        private var encoderThreadLocal: CharsetEncoder = charset.newEncoder(), // initialized by start of OuterHtmlVisitor
+        var coreCharset: Entities.CoreCharset? = null,
+        private var prettyPrint: Boolean = true,
+        private var outline: Boolean = false,
+        private var indentAmount: Int = 1,
+        private var maxPaddingWidth: Int = 30,
+        private var syntax: Syntax = Syntax.html,
+    ) {
         /**
          * The output serialization syntax.
          */
         enum class Syntax {
             html, xml
         }
-
-        private var escapeMode = Entities.EscapeMode.base
-        private var charset = DataUtil.UTF_8
-        private val encoderThreadLocal = charset.newEncoder() // initialized by start of OuterHtmlVisitor
-
-
-        var coreCharset // fast encoders for ascii and utf8
-                : Entities.CoreCharset? = null
-        private var prettyPrint = true
-        private var outline = false
-        private var indentAmount = 1
-        private var maxPaddingWidth = 30
-        private var syntax = Syntax.html
 
         /**
          * Get the document's current HTML escape mode: `base`, which provides a limited set of named HTML
@@ -439,7 +435,7 @@ class Document(private val location: String?) :
          * @param charset the new charset (by name) to use.
          * @return the document's output settings, for chaining
          */
-        fun charset(charset: String?): OutputSettings {
+        fun charset(charset: String): OutputSettings {
             charset(Charset.forName(charset))
             return this
         }
@@ -447,14 +443,14 @@ class Document(private val location: String?) :
         fun prepareEncoder(): CharsetEncoder {
             // created at start of OuterHtmlVisitor so each pass has own encoder, so OutputSettings can be shared among threads
             val encoder = charset.newEncoder()
-            encoderThreadLocal.set(encoder)
-            coreCharset = Entities.CoreCharset.Companion.byName(encoder.charset().name())
+            encoderThreadLocal = (encoder)
+            coreCharset = Entities.CoreCharset.Companion.byName(encoder.charset.name)
             return encoder
         }
 
         fun encoder(): CharsetEncoder {
-            val encoder = encoderThreadLocal.get()
-            return encoder ?: prepareEncoder()
+            val encoder = encoderThreadLocal
+            return encoder
         }
 
         /**
@@ -554,15 +550,10 @@ class Document(private val location: String?) :
             return this
         }
 
-        public override fun clone(): OutputSettings {
-            val clone: OutputSettings
-            clone = try {
-                super.clone() as OutputSettings
-            } catch (e: CloneNotSupportedException) {
-                throw RuntimeException(e)
-            }
-            clone.charset(charset.name()) // new charset and charset encoder
-            clone.escapeMode = Entities.EscapeMode.valueOf(escapeMode.name)
+        fun clone(): OutputSettings {
+            val clone = copy()
+            clone.charset(charset.name) // new charset and charset encoder
+            clone.escapeMode = escapeMode.copy()
             // indentAmount, maxPaddingWidth, and prettyPrint are primitives so object.clone() will handle
             return clone
         }
@@ -628,7 +619,7 @@ class Document(private val location: String?) :
      * @see Connection.newRequest
      * @since 1.14.1
      */
-    fun connection(connection: jsoup.Connection?): Document {
+    fun connection(connection: Connection?): Document {
         Validate.notNull(connection)
         this.connection = connection
         return this

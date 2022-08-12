@@ -1,11 +1,8 @@
 package org.jsoup
 
-import com.soywiz.korio.net.URL
 import com.soywiz.korio.stream.SyncInputStream
 import io.ktor.utils.io.errors.*
-import org.jsoup.helper.DataUtil
 import org.jsoup.helper.DataUtil.load
-import org.jsoup.helper.HttpConnection
 import org.jsoup.nodes.Document
 import org.jsoup.parser.Parser
 import org.jsoup.safety.Cleaner
@@ -26,8 +23,8 @@ object Jsoup {
      * before the HTML declares a `<base href>` tag.
      * @return sane HTML
      */
-    fun parse(html: String?, baseUri: String?): Document? {
-        return Parser.Companion.parse(html, baseUri)
+    fun parse(html: String, baseUri: String?): Document? {
+        return Parser.parse(html, baseUri)
     }
 
     /**
@@ -40,7 +37,7 @@ object Jsoup {
      * @param parser alternate [parser][Parser.xmlParser] to use.
      * @return sane HTML
      */
-    fun parse(html: String?, baseUri: String?, parser: Parser): Document? {
+    fun parse(html: String, baseUri: String?, parser: Parser): Document? {
         return parser.parseInput(html, baseUri)
     }
 
@@ -54,7 +51,7 @@ object Jsoup {
      * @param parser alternate [parser][Parser.xmlParser] to use.
      * @return sane HTML
      */
-    fun parse(html: String?, parser: Parser): Document? {
+    fun parse(html: String, parser: Parser): Document? {
         return parser.parseInput(html, "")
     }
 
@@ -66,54 +63,54 @@ object Jsoup {
      * @return sane HTML
      * @see .parse
      */
-    fun parse(html: String?): Document? {
-        return Parser.Companion.parse(html, "")
+    fun parse(html: String): Document? {
+        return Parser.parse(html, "")
     }
 
-    /**
-     * Creates a new [Connection] (session), with the defined request URL. Use to fetch and parse a HTML page.
-     *
-     *
-     * Use examples:
-     *
-     *  * `Document doc = Jsoup.connect("http://example.com").userAgent("Mozilla").data("name", "jsoup").get();`
-     *  * `Document doc = Jsoup.connect("http://example.com").cookie("auth", "token").post();`
-     *
-     * @param url URL to connect to. The protocol must be `http` or `https`.
-     * @return the connection. You can add data, cookies, and headers; set the user-agent, referrer, method; and then execute.
-     * @see .newSession
-     * @see Connection.newRequest
-     */
-    fun connect(url: String?): Connection {
-        return HttpConnection.Companion.connect(url)
-    }
+//    /**
+//     * Creates a new [Connection] (session), with the defined request URL. Use to fetch and parse a HTML page.
+//     *
+//     *
+//     * Use examples:
+//     *
+//     *  * `Document doc = Jsoup.connect("http://example.com").userAgent("Mozilla").data("name", "jsoup").get();`
+//     *  * `Document doc = Jsoup.connect("http://example.com").cookie("auth", "token").post();`
+//     *
+//     * @param url URL to connect to. The protocol must be `http` or `https`.
+//     * @return the connection. You can add data, cookies, and headers; set the user-agent, referrer, method; and then execute.
+//     * @see .newSession
+//     * @see Connection.newRequest
+//     */
+//    fun connect(url: String?): Connection {
+//        return HttpConnection.Companion.connect(url)
+//    }
 
-    /**
-     * Creates a new [Connection] to use as a session. Connection settings (user-agent, timeouts, URL, etc), and
-     * cookies will be maintained for the session. Use examples:
-     * <pre>`
-     * Connection session = Jsoup.newSession()
-     * .timeout(20 * 1000)
-     * .userAgent("FooBar 2000");
-     *
-     * Document doc1 = session.newRequest()
-     * .url("https://jsoup.org/").data("ref", "example")
-     * .get();
-     * Document doc2 = session.newRequest()
-     * .url("https://en.wikipedia.org/wiki/Main_Page")
-     * .get();
-     * Connection con3 = session.newRequest();
-    `</pre> *
-     *
-     *
-     * For multi-threaded requests, it is safe to use this session between threads, but take care to call [Connection.newRequest] per request and not share that instance between threads when executing or parsing.
-     *
-     * @return a connection
-     * @since 1.14.1
-     */
-    fun newSession(): Connection {
-        return HttpConnection()
-    }
+//    /**
+//     * Creates a new [Connection] to use as a session. Connection settings (user-agent, timeouts, URL, etc), and
+//     * cookies will be maintained for the session. Use examples:
+//     * <pre>`
+//     * Connection session = Jsoup.newSession()
+//     * .timeout(20 * 1000)
+//     * .userAgent("FooBar 2000");
+//     *
+//     * Document doc1 = session.newRequest()
+//     * .url("https://jsoup.org/").data("ref", "example")
+//     * .get();
+//     * Document doc2 = session.newRequest()
+//     * .url("https://en.wikipedia.org/wiki/Main_Page")
+//     * .get();
+//     * Connection con3 = session.newRequest();
+//    `</pre> *
+//     *
+//     *
+//     * For multi-threaded requests, it is safe to use this session between threads, but take care to call [Connection.newRequest] per request and not share that instance between threads when executing or parsing.
+//     *
+//     * @return a connection
+//     * @since 1.14.1
+//     */
+//    fun newSession(): Connection {
+//        return HttpConnection()
+//    }
 
     /**
      * Parse the contents of a file as HTML.
@@ -125,8 +122,7 @@ object Jsoup {
      * @return sane HTML
      * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      */
-    @Throws(IOException::class)
-    fun parse(file: File, charsetName: String?, baseUri: String?): Document? {
+    suspend fun parse(file: File, charsetName: String, baseUri: String?): Document? {
         return load(file, charsetName, baseUri)
     }
 
@@ -140,8 +136,7 @@ object Jsoup {
      * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      * @see .parse
      */
-    @Throws(IOException::class)
-    fun parse(file: File,  charsetName: String?): Document? {
+    suspend fun parse(file: File,  charsetName: String?): Document? {
         return load(file, charsetName, file.getAbsolutePath())
     }
 
@@ -159,8 +154,7 @@ object Jsoup {
      * @see .parse
      * @since 1.15.1
      */
-    @Throws(IOException::class)
-    fun parse(file: File): Document? {
+    suspend fun parse(file: File): Document? {
         return load(file, null, file.getAbsolutePath())
     }
 
@@ -176,9 +170,8 @@ object Jsoup {
      * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      * @since 1.14.2
      */
-    @Throws(IOException::class)
-    fun parse(file: File,  charsetName: String?, baseUri: String?, parser: Parser?): Document? {
-        return DataUtil.load(file, charsetName, baseUri, parser)
+    suspend fun parse(file: File,  charsetName: String?, baseUri: String?, parser: Parser?): Document? {
+        return load(file, charsetName, baseUri, parser)
     }
 
     /**
@@ -193,7 +186,7 @@ object Jsoup {
      */
     @Throws(IOException::class)
     fun parse(`in`: SyncInputStream?,  charsetName: String?, baseUri: String?): Document? {
-        return DataUtil.load(`in`, charsetName, baseUri)
+        return load(`in`, charsetName, baseUri)
     }
 
     /**
@@ -210,7 +203,7 @@ object Jsoup {
      */
     @Throws(IOException::class)
     fun parse(`in`: SyncInputStream?,  charsetName: String?, baseUri: String?, parser: Parser?): Document? {
-        return DataUtil.load(`in`, charsetName, baseUri, parser)
+        return load(`in`, charsetName, baseUri, parser)
     }
 
     /**
@@ -236,28 +229,28 @@ object Jsoup {
         return Parser.Companion.parseBodyFragment(bodyHtml, "")
     }
 
-    /**
-     * Fetch a URL, and parse it as HTML. Provided for compatibility; in most cases use [.connect] instead.
-     *
-     *
-     * The encoding character set is determined by the content-type header or http-equiv meta tag, or falls back to `UTF-8`.
-     *
-     * @param url           URL to fetch (with a GET). The protocol must be `http` or `https`.
-     * @param timeoutMillis Connection and read timeout, in milliseconds. If exceeded, IOException is thrown.
-     * @return The parsed HTML.
-     * @throws java.net.MalformedURLException if the request URL is not a HTTP or HTTPS URL, or is otherwise malformed
-     * @throws HttpStatusException if the response is not OK and HTTP response errors are not ignored
-     * @throws UnsupportedMimeTypeException if the response mime type is not supported and those errors are not ignored
-     * @throws java.net.SocketTimeoutException if the connection times out
-     * @throws IOException if a connection or read error occurs
-     * @see .connect
-     */
-    @Throws(IOException::class)
-    fun parse(url: URL?, timeoutMillis: Int): Document? {
-        val con: Connection = HttpConnection.Companion.connect(url)
-        con.timeout(timeoutMillis)
-        return con.get()
-    }
+//    /**
+//     * Fetch a URL, and parse it as HTML. Provided for compatibility; in most cases use [.connect] instead.
+//     *
+//     *
+//     * The encoding character set is determined by the content-type header or http-equiv meta tag, or falls back to `UTF-8`.
+//     *
+//     * @param url           URL to fetch (with a GET). The protocol must be `http` or `https`.
+//     * @param timeoutMillis Connection and read timeout, in milliseconds. If exceeded, IOException is thrown.
+//     * @return The parsed HTML.
+//     * @throws java.net.MalformedURLException if the request URL is not a HTTP or HTTPS URL, or is otherwise malformed
+//     * @throws HttpStatusException if the response is not OK and HTTP response errors are not ignored
+//     * @throws UnsupportedMimeTypeException if the response mime type is not supported and those errors are not ignored
+//     * @throws java.net.SocketTimeoutException if the connection times out
+//     * @throws IOException if a connection or read error occurs
+//     * @see .connect
+//     */
+//    @Throws(IOException::class)
+//    fun parse(url: URL?, timeoutMillis: Int): Document? {
+//        val con: Connection = HttpConnection.Companion.connect(url)
+//        con.timeout(timeoutMillis)
+//        return con.get()
+//    }
 
     /**
      * Get safe HTML from untrusted input HTML, by parsing input HTML and filtering it through an allow-list of safe

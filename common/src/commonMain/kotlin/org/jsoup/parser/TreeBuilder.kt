@@ -1,5 +1,7 @@
 package org.jsoup.parser
 
+import io.ktor.utils.io.core.*
+import okio.Buffer
 import org.jsoup.helper.Validate
 import org.jsoup.nodes.*
 
@@ -27,7 +29,7 @@ abstract class TreeBuilder constructor() {
     private var trackSourceRange // optionally tracks the source range of nodes
             : Boolean = false
 
-    protected open fun initialiseParse(input: String, baseUri: String?, parser: Parser) {
+    protected open fun initialiseParse(input: CharacterReader, baseUri: String, parser: Parser) {
         Validate.notNull(input, "String input must not be null")
         Validate.notNull(baseUri, "BaseURI must not be null")
         Validate.notNull(parser)
@@ -35,7 +37,7 @@ abstract class TreeBuilder constructor() {
         doc!!.parser(parser)
         this.parser = parser
         settings = parser.settings()
-        reader = CharacterReader(input)
+        reader = input
         trackSourceRange = parser.isTrackPosition
         reader!!.trackNewlines(parser.isTrackErrors || trackSourceRange) // when tracking errors or source ranges, enable newline tracking for better legibility
         currentToken = null
@@ -44,8 +46,21 @@ abstract class TreeBuilder constructor() {
         this.baseUri = baseUri
     }
 
-    fun parse(input: String, baseUri: String?, parser: Parser): Document? {
-        initialiseParse(input, baseUri, parser)
+    fun parse(input: Buffer, baseUri: String, parser: Parser): Document? {
+        initialiseParse(CharacterReader(input), baseUri, parser)
+
+        runParser()
+
+        // tidy up - as the Parser and Treebuilder are retained in document for settings / fragments
+        reader!!.close()
+        reader = null
+        tokeniser = null
+        seenTags = null
+        return doc
+    }
+
+    fun parse(input: String, baseUri: String, parser: Parser): Document? {
+        initialiseParse(CharacterReader(input), baseUri, parser)
         runParser()
 
         // tidy up - as the Parser and Treebuilder are retained in document for settings / fragments
@@ -74,7 +89,7 @@ abstract class TreeBuilder constructor() {
         while (true) {
             val token: Token? = tokeniser!!.read()
             process((token)!!)
-            token!!.reset()
+            token.reset()
             if (token.type == eof) break
         }
     }
@@ -112,8 +127,8 @@ abstract class TreeBuilder constructor() {
      * @return the last element on the stack, if any; or the root document
      */
     fun currentElement(): Element {
-        val size: Int = stack!!.size
-        return if (size > 0) stack!!.get(size - 1) else (doc)!!
+        val size: Int = stack.size
+        return if (size > 0) stack.last() else (doc)!!
     }
 
     /**
@@ -122,8 +137,8 @@ abstract class TreeBuilder constructor() {
      * @return true if there is a current element on the stack, and its name equals the supplied
      */
     fun currentElementIs(normalName: String): Boolean {
-        if (stack!!.size == 0) return false
-        val current: Element? = currentElement()
+        if (stack.size == 0) return false
+        val current: Element = currentElement()
         return current != null && (current.normalName() == normalName)
     }
 

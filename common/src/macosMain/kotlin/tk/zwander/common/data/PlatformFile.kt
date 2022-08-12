@@ -5,6 +5,8 @@ import com.soywiz.korio.file.*
 import com.soywiz.korio.file.std.rootLocalVfsNative
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
+import com.soywiz.korio.stream.SyncInputStream
+import kotlinx.coroutines.runBlocking
 
 /**
  * A File implementation that wraps macOS' file API.
@@ -145,6 +147,12 @@ actual open class PlatformFile : File {
 
     override suspend fun openInputStream(): AsyncInputStream {
         return wrappedFile.openInputStream()
+    }
+
+    override fun openSyncInputStream(): SyncInputStream {
+        return runBlocking {
+            wrappedFile.readAsSyncStream()
+        }
     }
 
     override fun hashCode(): Int {

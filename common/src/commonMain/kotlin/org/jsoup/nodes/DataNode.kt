@@ -1,6 +1,6 @@
 package org.jsoup.nodes
 
-import java.io.IOException
+import io.ktor.utils.io.errors.*
 
 /**
  * A data node, for contents of style, script tags etc, where contents should not show in text().
@@ -16,7 +16,11 @@ class DataNode(data: String) : LeafNode() {
         value = data
     }
 
-    override fun nodeName(): String? {
+    override fun newInstance(): Node {
+        return DataNode(value.toString())
+    }
+
+    override fun nodeName(): String {
         return "#data"
     }
 

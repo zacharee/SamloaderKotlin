@@ -1,9 +1,9 @@
 package org.jsoup.nodes
 
 import org.jsoup.helper.Validate
-import org.jsoup.helper.W3CDom
 import org.jsoup.parser.HtmlTreeBuilder
 import org.jsoup.parser.Parser
+import kotlin.reflect.KClass
 
 /**
  * Internal helpers for Nodes, to keep the actual node APIs relatively clean. A jsoup internal class, so don't use it as
@@ -33,14 +33,14 @@ internal object NodeUtils {
      * stashed them during conversion). This process could potentially be optimized by transpiling the compiled xpath
      * expression to a jsoup Evaluator when there's 1:1 support, thus saving the W3C document conversion stage.
      */
-    fun <T : Node?> selectXpath(xpath: String?, el: Element, nodeType: Class<T>): List<T> {
-        Validate.notEmpty(xpath)
-        Validate.notNull(el)
-        Validate.notNull(nodeType)
-        val w3c = W3CDom().namespaceAware(false)
-        val wDoc = w3c.fromJsoup(el)
-        val contextNode = w3c.contextNode(wDoc)
-        val nodeList = w3c.selectXpath(xpath, contextNode)
-        return w3c.sourceNodes(nodeList, nodeType)
-    }
+//    fun <T : Node> selectXpath(xpath: String?, el: Element, nodeType: KClass<T>): List<T> {
+//        Validate.notEmpty(xpath)
+//        Validate.notNull(el)
+//        Validate.notNull(nodeType)
+//        val w3c = W3CDom().namespaceAware(false)
+//        val wDoc = w3c.fromJsoup(el)
+//        val contextNode = w3c.contextNode(wDoc)
+//        val nodeList = w3c.selectXpath(xpath!!, contextNode)
+//        return w3c.sourceNodes(nodeList, nodeType)
+//    }
 }

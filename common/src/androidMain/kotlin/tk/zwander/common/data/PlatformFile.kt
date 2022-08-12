@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
+import com.soywiz.korio.stream.SyncInputStream
 import kotlinx.coroutines.CoroutineScope
 import tk.zwander.common.util.inputAsync
 import tk.zwander.common.util.flushingAsync
@@ -152,6 +153,10 @@ actual open class PlatformFile : File {
         return wrappedFile.openInputStream()
     }
 
+    override fun openSyncInputStream(): SyncInputStream {
+        return wrappedFile.openSyncInputStream()
+    }
+
     override fun compareTo(other: IPlatformFile): Int {
         return this.wrappedFile.compareTo(other)
     }
@@ -288,6 +293,20 @@ class PlatformFileFile : PlatformFile {
 
     override suspend fun openInputStream(): AsyncInputStream {
         return FileInputStream(wrappedFile).inputAsync()
+    }
+
+    override fun openSyncInputStream(): SyncInputStream {
+        val wrapped = FileInputStream(wrappedFile)
+
+        return object : SyncInputStream {
+            override fun read(buffer: ByteArray, offset: Int, len: Int): Int {
+                return wrapped.read(buffer, offset, len)
+            }
+
+            override fun close() {
+                wrapped.close()
+            }
+        }
     }
 
     override fun compareTo(other: IPlatformFile): Int {
@@ -440,6 +459,20 @@ class PlatformUriFile : IPlatformFile {
 
     override suspend fun openInputStream(): AsyncInputStream {
         return context.contentResolver.openInputStream(wrappedFile.uri)!!.inputAsync()
+    }
+
+    override fun openSyncInputStream(): SyncInputStream {
+        val wrapped = context.contentResolver.openInputStream(wrappedFile.uri)
+
+        return object : SyncInputStream {
+            override fun read(buffer: ByteArray, offset: Int, len: Int): Int {
+                return wrapped.read(buffer, offset, len)
+            }
+
+            override fun close() {
+                wrapped.close()
+            }
+        }
     }
 
     override fun compareTo(other: IPlatformFile): Int {

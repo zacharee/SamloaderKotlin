@@ -1,13 +1,14 @@
 package org.jsoup.nodes
 
-import jsoup.SerializationException
+import com.soywiz.kds.binarySearch
+import io.ktor.utils.io.charsets.*
+import io.ktor.utils.io.errors.*
+import org.jsoup.SerializationException
+import org.jsoup.charCount
 import org.jsoup.helper.Validate
 import org.jsoup.internal.StringUtil
 import org.jsoup.parser.CharacterReader
 import org.jsoup.parser.Parser
-import java.io.IOException
-import java.nio.charset.CharsetEncoder
-import java.util.*
 
 /**
  * HTML entities, and escape routines. Source: [W3C
@@ -28,7 +29,7 @@ object Entities {
      * @return true if a known named entity
      */
     fun isNamedEntity(name: String?): Boolean {
-        return EscapeMode.extended.codepointForName(name) != empty
+        return EscapeMode.extended().codepointForName(name) != empty
     }
 
     /**
@@ -39,7 +40,7 @@ object Entities {
      * @see .isNamedEntity
      */
     fun isBaseNamedEntity(name: String?): Boolean {
-        return EscapeMode.base.codepointForName(name) != empty
+        return EscapeMode.base().codepointForName(name) != empty
     }
 
     /**
@@ -51,18 +52,18 @@ object Entities {
     fun getByName(name: String?): String {
         val `val` = multipoints[name]
         if (`val` != null) return `val`
-        val codepoint = EscapeMode.extended.codepointForName(name)
-        return if (codepoint != empty) String(intArrayOf(codepoint), 0, 1) else emptyName
+        val codepoint = EscapeMode.extended().codepointForName(name)
+        return if (codepoint != empty) charArrayOf(codepoint.toChar()).concatToString(0, 0 + 1) else emptyName
     }
 
     fun codepointsForName(name: String?, codepoints: IntArray): Int {
         val `val` = multipoints[name]
         if (`val` != null) {
-            codepoints[0] = `val`.codePointAt(0)
-            codepoints[1] = `val`.codePointAt(1)
+            codepoints[0] = `val`[0].code
+            codepoints[1] = `val`[1].code
             return 2
         }
-        val codepoint = EscapeMode.extended.codepointForName(name)
+        val codepoint = EscapeMode.extended().codepointForName(name)
         if (codepoint != empty) {
             codepoints[0] = codepoint
             return 1
@@ -83,14 +84,13 @@ object Entities {
      * @param string the un-escaped string to escape
      * @return the escaped string
      */
-    @JvmOverloads
     fun escape(string: String?, out: Document.OutputSettings? = DefaultOutput): String? {
         if (string == null) return ""
         val accum = StringUtil.borrowBuilder()
         try {
             escape(accum, string, out, false, false, false, false)
         } catch (e: IOException) {
-            throw jsoup.SerializationException(e) // doesn't happen
+            throw SerializationException(e) // doesn't happen
         }
         return StringUtil.releaseBuilder(accum)
     }
@@ -111,25 +111,25 @@ object Entities {
         var skipped = false
         var offset = 0
         while (offset < length) {
-            codePoint = string.codePointAt(offset)
+            codePoint = string[offset].code
             if (normaliseWhite) {
                 if (StringUtil.isWhitespace(codePoint)) {
                     if (stripLeadingWhite && !reachedNonWhite) {
-                        offset += Character.charCount(codePoint)
+                        offset += codePoint.toChar().charCount
                         continue
                     }
                     if (lastWasWhite) {
-                        offset += Character.charCount(codePoint)
+                        offset += codePoint.toChar().charCount
                         continue
                     }
                     if (trimTrailing) {
                         skipped = true
-                        offset += Character.charCount(codePoint)
+                        offset += codePoint.toChar().charCount
                         continue
                     }
                     accum!!.append(' ')
                     lastWasWhite = true
-                    offset += Character.charCount(codePoint)
+                    offset += codePoint.toChar().charCount
                     continue
                 } else {
                     lastWasWhite = false
@@ -141,13 +141,13 @@ object Entities {
                 }
             }
             // surrogate pairs, split implementation for efficiency on single char common case (saves creating strings, char[]):
-            if (codePoint < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+            if (codePoint < 0x10000) {
                 val c = codePoint.toChar()
                 when (c.code) {
                     '&'.code -> accum!!.append("&amp;")
-                    0xA0 -> if (escapeMode != EscapeMode.xhtml) accum!!.append("&nbsp;") else accum!!.append("&#xa0;")
+                    0xA0 -> if (escapeMode != EscapeMode.xhtml()) accum!!.append("&nbsp;") else accum!!.append("&#xa0;")
                     '<'.code ->                         // escape when in character data or when in a xml attribute val or XML syntax; not needed in html attr val
-                        if (!inAttribute || escapeMode == EscapeMode.xhtml || out.syntax() == Document.OutputSettings.Syntax.xml) accum!!.append(
+                        if (!inAttribute || escapeMode == EscapeMode.xhtml() || out.syntax() == Document.OutputSettings.Syntax.xml) accum!!.append(
                             "&lt;"
                         ) else accum!!.append(c)
 
@@ -161,11 +161,9 @@ object Entities {
                     ) else accum!!.append(c)
                 }
             } else {
-                val c = String(Character.toChars(codePoint))
-                if (encoder.canEncode(c)) // uses fallback encoder for simplicity
-                    accum!!.append(c) else appendEncoded(accum, escapeMode, codePoint)
+                accum!!.append(codePoint.toChar())
             }
-            offset += Character.charCount(codePoint)
+            offset += codePoint.toChar().charCount
         }
     }
 
@@ -174,7 +172,7 @@ object Entities {
         val name = escapeMode!!.nameForCodepoint(codePoint)
         if (emptyName != name) // ok for identity check
             accum!!.append('&').append(name).append(';') else accum!!.append("&#x")
-            .append(Integer.toHexString(codePoint)).append(';')
+            .append(codePoint.toString(16)).append(';')
     }
 
     /**
@@ -195,7 +193,7 @@ object Entities {
      * @return unescaped string
      */
     fun unescape(string: String?, strict: Boolean): String? {
-        return Parser.Companion.unescapeEntities(string, strict)
+        return string?.let { Parser.Companion.unescapeEntities(it, strict) }
     }
 
     /*
@@ -216,65 +214,26 @@ object Entities {
         return when (charset) {
             CoreCharset.ascii -> c.code < 0x80
             CoreCharset.utf -> true // real is:!(Character.isLowSurrogate(c) || Character.isHighSurrogate(c)); - but already check above
-            else -> fallback!!.canEncode(c)
+            else -> fallback!!.encodeToByteArray(c.toString()).isNotEmpty()
         }
     }
 
-    private fun load(e: EscapeMode, pointsData: String?, size: Int) {
-        e.nameKeys = arrayOfNulls(size)
-        e.codeVals = IntArray(size)
-        e.codeKeys = IntArray(size)
-        e.nameVals = arrayOfNulls(size)
-        var i = 0
-        val reader = CharacterReader(pointsData)
-        try {
-            while (!reader.isEmpty) {
-                // NotNestedLessLess=10913,824;1887&
-                val name = reader.consumeTo('=')
-                reader.advance()
-                val cp1 = reader.consumeToAny(*codeDelims).toInt(codepointRadix)
-                val codeDelim = reader.current()
-                reader.advance()
-                val cp2: Int
-                if (codeDelim == ',') {
-                    cp2 = reader.consumeTo(';').toInt(codepointRadix)
-                    reader.advance()
-                } else {
-                    cp2 = empty
-                }
-                val indexS = reader.consumeTo('&')
-                val index = indexS!!.toInt(codepointRadix)
-                reader.advance()
-                e.nameKeys[i] = name
-                e.codeVals[i] = cp1
-                e.codeKeys[index] = cp1
-                e.nameVals[index] = name
-                if (cp2 != empty) {
-                    multipoints[name] = String(intArrayOf(cp1, cp2), 0, 2)
-                }
-                i++
+    sealed class EscapeMode(val file: String, private val size: Int) {
+        class xhtml : EscapeMode(EntitiesData.xmlPoints, 4) {
+            override fun copy(): EscapeMode {
+                return xhtml()
             }
-            Validate.isTrue(i == size, "Unexpected count of entities loaded")
-        } finally {
-            reader.close()
         }
-    }
-
-    enum class EscapeMode(file: String?, size: Int) {
-        /**
-         * Restricted entities suitable for XHTML output: lt, gt, amp, and quot only.
-         */
-        xhtml(EntitiesData.xmlPoints, 4),
-
-        /**
-         * Default HTML output entities.
-         */
-        base(EntitiesData.basePoints, 106),
-
-        /**
-         * Complete HTML entities.
-         */
-        extended(EntitiesData.fullPoints, 2125);
+        class base : EscapeMode(EntitiesData.basePoints, 106) {
+            override fun copy(): EscapeMode {
+                return base()
+            }
+        }
+        class extended : EscapeMode(EntitiesData.fullPoints, 2125) {
+            override fun copy(): EscapeMode {
+                return extended()
+            }
+        }
 
         // table of named references to their codepoints. sorted so we can binary search. built by BuildEntities.
         var nameKeys: Array<String?> = arrayOfNulls(0)
@@ -287,16 +246,58 @@ object Entities {
         var nameVals: Array<String?> = arrayOfNulls(0)
 
         init {
-            load(this, file, size)
+            load(file, size)
+        }
+
+        abstract fun copy(): EscapeMode
+
+        private fun load(pointsData: String, size: Int) {
+            nameKeys = arrayOfNulls(size)
+            codeVals = IntArray(size)
+            codeKeys = IntArray(size)
+            nameVals = arrayOfNulls(size)
+            var i = 0
+            val reader = CharacterReader(pointsData)
+            try {
+                while (!reader.isEmpty) {
+                    // NotNestedLessLess=10913,824;1887&
+                    val name = reader.consumeTo('=')
+                    reader.advance()
+                    val cp1 = reader.consumeToAny(*codeDelims).toIntOrNull(codepointRadix) ?: 0
+                    val codeDelim = reader.current()
+                    reader.advance()
+                    val cp2: Int
+                    if (codeDelim == ',') {
+                        cp2 = reader.consumeTo(';').toInt(codepointRadix)
+                        reader.advance()
+                    } else {
+                        cp2 = empty
+                    }
+                    val indexS = reader.consumeTo('&')
+                    val index = indexS.toInt(codepointRadix)
+                    reader.advance()
+                    nameKeys[i] = name
+                    codeVals[i] = cp1
+                    codeKeys[index] = cp1
+                    nameVals[index] = name
+                    if (cp2 != empty) {
+                        multipoints[name] = charArrayOf(cp1.toChar(), cp2.toChar()).concatToString(0, 0 + 2)
+                    }
+                    i++
+                }
+                Validate.isTrue(i == size, "Unexpected count of entities loaded")
+            } finally {
+                reader.close()
+            }
         }
 
         fun codepointForName(name: String?): Int {
-            val index = Arrays.binarySearch(nameKeys, name)
+            val index = nameKeys.map { it ?: "" }.binarySearch(name)
             return if (index >= 0) codeVals[index] else empty
         }
 
         fun nameForCodepoint(codepoint: Int): String? {
-            val index = Arrays.binarySearch(codeKeys, codepoint)
+            val index = codeKeys.binarySearch(codepoint).index
             return if (index >= 0) {
                 // the results are ordered so lower case versions of same codepoint come after uppercase, and we prefer to emit lower
                 // (and binary search for same item with multi results is undefined

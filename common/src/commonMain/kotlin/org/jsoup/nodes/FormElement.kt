@@ -1,7 +1,7 @@
 package org.jsoup.nodes
 
-import jsoup.Connection
-import jsoup.Jsoup
+import org.jsoup.Connection
+import org.jsoup.Jsoup
 import org.jsoup.helper.HttpConnection
 import org.jsoup.helper.Validate
 import org.jsoup.parser.Tag
@@ -45,39 +45,39 @@ class FormElement
         elements.remove(out)
     }
 
-    /**
-     * Prepare to submit this form. A Connection object is created with the request set up from the form values. This
-     * Connection will inherit the settings and the cookies (etc) of the connection/session used to request this Document
-     * (if any), as available in [Document.connection]
-     *
-     * You can then set up other options (like user-agent, timeout, cookies), then execute it.
-     *
-     * @return a connection prepared from the values of this form, in the same session as the one used to request it
-     * @throws IllegalArgumentException if the form's absolute action URL cannot be determined. Make sure you pass the
-     * document's base URI when parsing.
-     */
-    fun submit(): jsoup.Connection? {
-        val action = if (hasAttr("action")) absUrl("action") else baseUri()
-        Validate.notEmpty(
-            action,
-            "Could not determine a form action URL for submit. Ensure you set a base URI when parsing."
-        )
-        val method =
-            if (attr("method").equals("POST", ignoreCase = true)) jsoup.Connection.Method.POST else jsoup.Connection.Method.GET
-        val owner = ownerDocument()
-        val connection = if (owner != null) owner.connection()!!.newRequest() else jsoup.Jsoup.newSession()
-        return connection.url(action)
-            .data(formData())
-            .method(method)
-    }
+//    /**
+//     * Prepare to submit this form. A Connection object is created with the request set up from the form values. This
+//     * Connection will inherit the settings and the cookies (etc) of the connection/session used to request this Document
+//     * (if any), as available in [Document.connection]
+//     *
+//     * You can then set up other options (like user-agent, timeout, cookies), then execute it.
+//     *
+//     * @return a connection prepared from the values of this form, in the same session as the one used to request it
+//     * @throws IllegalArgumentException if the form's absolute action URL cannot be determined. Make sure you pass the
+//     * document's base URI when parsing.
+//     */
+//    fun submit(): Connection? {
+//        val action = if (hasAttr("action")) absUrl("action") else baseUri()
+//        Validate.notEmpty(
+//            action,
+//            "Could not determine a form action URL for submit. Ensure you set a base URI when parsing."
+//        )
+//        val method =
+//            if (attr("method").equals("POST", ignoreCase = true)) Connection.Method.POST else Connection.Method.GET
+//        val owner = ownerDocument()
+//        val connection = if (owner != null) owner.connection()!!.newRequest() else Jsoup.newSession()
+//        return connection.url(action)
+//            .data(formData())
+//            .method(method)
+//    }
 
     /**
      * Get the data that this form submits. The returned list is a copy of the data, and changes to the contents of the
      * list will not be reflected in the DOM.
      * @return a list of key vals
      */
-    fun formData(): List<jsoup.Connection.KeyVal?> {
-        val data = ArrayList<jsoup.Connection.KeyVal?>()
+    fun formData(): List<Connection.KeyVal?> {
+        val data = ArrayList<Connection.KeyVal?>()
 
         // iterate the form control elements and accumulate their values
         for (el in elements) {
@@ -91,7 +91,7 @@ class FormElement
                 val options = el.select("option[selected]")
                 var set = false
                 for (option in options!!) {
-                    data.add(HttpConnection.KeyVal.Companion.create(name, option.`val`()))
+                    data.add(HttpConnection.KeyVal.create(name, option.`val`()))
                     set = true
                 }
                 if (!set) {

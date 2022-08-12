@@ -3,6 +3,7 @@ package tk.zwander.common.data
 import com.soywiz.korio.file.VfsFile
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
+import com.soywiz.korio.stream.SyncInputStream
 import kotlinx.coroutines.CoroutineScope
 
 /**
@@ -85,6 +86,8 @@ interface IPlatformFile : Comparable<IPlatformFile> {
 
     suspend fun openOutputStream(append: Boolean = false): AsyncOutputStream
     suspend fun openInputStream(): AsyncInputStream
+
+    fun openSyncInputStream(): SyncInputStream
 
     override fun hashCode(): Int
     override fun equals(other: Any?): Boolean

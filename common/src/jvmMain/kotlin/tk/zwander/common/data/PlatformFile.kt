@@ -1,8 +1,6 @@
 package tk.zwander.common.data
 
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncOutputStream
-import com.soywiz.korio.stream.toAsync
+import com.soywiz.korio.stream.*
 import tk.zwander.common.util.flushingAsync
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -145,6 +143,10 @@ actual open class PlatformFile : File {
 
     override suspend fun openInputStream(): AsyncInputStream {
         return FileInputStream(wrappedFile).toAsync()
+    }
+
+    override fun openSyncInputStream(): SyncInputStream {
+        return FileInputStream(wrappedFile).toSyncStream()
     }
 
     override fun hashCode(): Int {

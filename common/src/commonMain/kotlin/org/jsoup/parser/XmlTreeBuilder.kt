@@ -16,12 +16,12 @@ class XmlTreeBuilder constructor() : TreeBuilder() {
         return ParseSettings.Companion.preserveCase
     }
 
-    override fun initialiseParse(input: String, baseUri: String?, parser: Parser) {
+    override fun initialiseParse(input: CharacterReader, baseUri: String?, parser: Parser) {
         super.initialiseParse(input, baseUri, parser)
         stack.add((doc)!!) // place the document onto the stack. differs from HtmlTreeBuilder (not on stack)
         doc!!.outputSettings()
             ?.syntax(Document.OutputSettings.Syntax.xml)
-            ?.escapeMode(Entities.EscapeMode.xhtml)
+            ?.escapeMode(Entities.EscapeMode.xhtml())
             ?.prettyPrint(false) // as XML, we don't understand what whitespace is significant or not
     }
 
@@ -128,7 +128,7 @@ class XmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun parseFragment(inputFragment: String, baseUri: String?, parser: Parser): List<Node> {
-        initialiseParse((inputFragment), baseUri, parser)
+        initialiseParse(CharacterReader(inputFragment), baseUri, parser)
         runParser()
         return doc!!.childNodes()
     }

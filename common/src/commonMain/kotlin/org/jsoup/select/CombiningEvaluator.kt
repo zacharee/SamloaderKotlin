@@ -2,7 +2,6 @@ package org.jsoup.select
 
 import org.jsoup.internal.StringUtil
 import org.jsoup.nodes.Element
-import java.util.*
 
 /**
  * Base combining (and, or) evaluator.

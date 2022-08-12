@@ -1,20 +1,19 @@
 package org.jsoup.parser
 
-import io.ktor.utils.io.*
-import io.ktor.utils.io.core.*
+import com.soywiz.korio.lang.toByteArray
 import io.ktor.utils.io.errors.*
+import okio.Buffer
 import org.jsoup.UncheckedIOException
 import org.jsoup.helper.Validate
-import java.util.*
 import kotlin.math.abs
 import kotlin.math.min
 
 /**
  * CharacterReader consumes tokens off a string. Used internally by jsoup. API subject to changes.
  */
-class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
-    private var charBuf: CharArray?
-    private var reader: String? = input
+class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
+    private var charBuf: ByteArray?
+    private var reader: SourceMarker? = SourceMarker(input)
     private var bufLength: Int = 0
     private var bufSplitPoint: Int = 0
     private var bufPos: Int = 0
@@ -27,11 +26,14 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         null // optionally track the pos() position of newlines - scans during bufferUp()
     private var lineNumberOffset: Int = 1 // line numbers start at 1; += newlinePosition[indexof(pos)]
 
-    constructor(input: String) : this((input), input!!.length) {}
+    constructor(input: String) : this(Buffer().apply { write(input.toByteArray()) }, input.length) {}
+
+    constructor(input: Buffer) : this(input, input.size.toInt())
 
     fun close() {
         if (reader == null) return
         try {
+            reader?.source()?.close()
         } catch (ignored: IOException) {
         } finally {
             reader = null
@@ -44,15 +46,41 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
             : Boolean = false
 
     private fun bufferUp() {
-        if (readFully) return
+        if (readFully || bufPos < bufSplitPoint) return
 
-        reader?.forEachIndexed { index, char ->
-            charBuf?.set(index, char)
+        val pos: Int
+        val offset: Int
+        if (bufMark != -1) {
+            pos = bufMark
+            offset = bufPos - bufMark
+        } else {
+            pos = bufPos
+            offset = 0
         }
 
-        readFully = true
-
+        try {
+            reader!!.source().skip(pos.toLong())
+            val reset = reader!!.mark(maxBufferLen.toLong())
+            var read = 0
+            while (read <= minReadAheadLen) {
+                val thisRead = reader!!.source().read(charBuf!!, read, charBuf!!.size - read)
+                if (thisRead == -1) readFully = true
+                if (thisRead <= 0) break
+                read += thisRead
+            }
+            reader!!.reset(reset)
+            if (read > 0) {
+                bufLength = read
+                readerPos += pos
+                bufPos = offset
+                if (bufMark != -1) bufMark = 0
+                bufSplitPoint = min(bufLength, readAheadLimit)
+            }
+        } catch (e: IOException) {
+            throw UncheckedIOException(e)
+        }
         scanBufferForNewlines() // if enabled, we index newline positions for line number tracking
+
         lastIcSeq = null // cache for last containsIgnoreCase(seq)
     }
 
@@ -158,7 +186,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
             newlinePositions!!.add(linePos) // roll the last read pos to first, for cursor num after buffer
         }
         for (i in bufPos until bufLength) {
-            if (charBuf!!.get(i) == '\n') newlinePositions!!.add(1 + readerPos + i)
+            if (charBuf!!.get(i) == '\n'.code.toByte()) newlinePositions!!.add(1 + readerPos + i)
         }
     }
 
@@ -182,12 +210,12 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
      */
     fun current(): Char {
         bufferUp()
-        return if (isEmptyNoBufferUp) EOF else charBuf!!.get(bufPos)
+        return if (isEmptyNoBufferUp) EOF else charBuf!!.get(bufPos).toInt().toChar()
     }
 
     fun consume(): Char {
         bufferUp()
-        val `val`: Char = if (isEmptyNoBufferUp) EOF else charBuf!!.get(bufPos)
+        val `val`: Char = if (isEmptyNoBufferUp) EOF else charBuf!!.get(bufPos).toInt().toChar()
         bufPos++
         return `val`
     }
@@ -233,7 +261,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         // doesn't handle scanning for surrogates
         bufferUp()
         for (i in bufPos until bufLength) {
-            if (c == charBuf!!.get(i)) return i - bufPos
+            if (c == charBuf!!.get(i).toInt().toChar()) return i - bufPos
         }
         return -1
     }
@@ -252,13 +280,13 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         while (offset < bufLength) {
 
             // scan to first instance of startchar:
-            if (startChar != charBuf!!.get(offset)) while (++offset < bufLength && startChar != charBuf!!.get(offset)) { /* empty */
+            if (startChar != charBuf!!.get(offset).toInt().toChar()) while (++offset < bufLength && startChar != charBuf!!.get(offset).toInt().toChar()) { /* empty */
             }
             var i: Int = offset + 1
             val last: Int = i + seq.length - 1
             if (offset < bufLength && last <= bufLength) {
                 var j: Int = 1
-                while (i < last && seq.get(j) == charBuf!!.get(i)) {
+                while (i < last && seq.get(j) == charBuf!!.get(i).toInt().toChar()) {
                     i++
                     j++
                 }
@@ -278,7 +306,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
     fun consumeTo(c: Char): String {
         val offset: Int = nextIndexOf(c)
         if (offset != -1) {
-            val consumed: String = cacheString(charBuf, stringCache, bufPos, offset)
+            val consumed: String = cacheString(charBuf!!, stringCache, bufPos, offset)
             bufPos += offset
             return consumed
         } else {
@@ -315,13 +343,13 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         var pos: Int = bufPos
         val start: Int = pos
         val remaining: Int = bufLength
-        val `val`: CharArray? = charBuf
+        val `val` = charBuf
         val charLen: Int = chars.size
         var i: Int
         OUTER@ while (pos < remaining) {
             i = 0
             while (i < charLen) {
-                if (`val`!!.get(pos) == chars.get(i)) break@OUTER
+                if (`val`!!.get(pos).toInt() == chars.get(i).code) break@OUTER
                 i++
             }
             pos++
@@ -335,9 +363,9 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         var pos: Int = bufPos
         val start: Int = pos
         val remaining: Int = bufLength
-        val `val`: CharArray? = charBuf
+        val `val` = charBuf
         while (pos < remaining) {
-            if (chars.toList().binarySearch(`val`!!.get(pos)) >= 0) break
+            if (chars.toList().binarySearch(`val`!!.get(pos).toInt().toChar()) >= 0) break
             pos++
         }
         bufPos = pos
@@ -350,9 +378,9 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         var pos: Int = bufPos
         val start: Int = pos
         val remaining: Int = bufLength
-        val `val`: CharArray? = charBuf
+        val `val` = charBuf
         OUTER@ while (pos < remaining) {
-            when (`val`!!.get(pos)) {
+            when (`val`!!.get(pos).toInt().toChar()) {
                 '&', '<', TokeniserState.Companion.nullChar -> break@OUTER
                 else -> pos++
             }
@@ -367,9 +395,9 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         var pos: Int = bufPos
         val start: Int = pos
         val remaining: Int = bufLength
-        val `val`: CharArray? = charBuf
+        val `val` = charBuf
         OUTER@ while (pos < remaining) {
-            when (`val`!!.get(pos)) {
+            when (`val`!!.get(pos).toInt().toChar()) {
                 '&', TokeniserState.Companion.nullChar -> break@OUTER
                 '\'' -> {
                     if (single) break@OUTER
@@ -395,9 +423,9 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         var pos: Int = bufPos
         val start: Int = pos
         val remaining: Int = bufLength
-        val `val`: CharArray? = charBuf
+        val `val` = charBuf
         OUTER@ while (pos < remaining) {
-            when (`val`!!.get(pos)) {
+            when (`val`!!.get(pos).toInt().toChar()) {
                 '<', TokeniserState.Companion.nullChar -> break@OUTER
                 else -> pos++
             }
@@ -413,9 +441,9 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         var pos: Int = bufPos
         val start: Int = pos
         val remaining: Int = bufLength
-        val `val`: CharArray? = charBuf
+        val `val` = charBuf
         OUTER@ while (pos < remaining) {
-            when (`val`!![pos]) {
+            when (`val`!![pos].toInt().toChar()) {
                 '\t', '\n', '\r', '\u000c', ' ', '/', '>', '<' -> break@OUTER
             }
             pos++
@@ -435,7 +463,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         bufferUp()
         val start: Int = bufPos
         while (bufPos < bufLength) {
-            val c: Char = charBuf!!.get(bufPos)
+            val c: Char = charBuf!!.get(bufPos).toInt().toChar()
             if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c.isLetter()) bufPos++ else break
         }
         return cacheString(charBuf, stringCache, start, bufPos - start)
@@ -445,11 +473,11 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         bufferUp()
         val start: Int = bufPos
         while (bufPos < bufLength) {
-            val c: Char = charBuf!!.get(bufPos)
+            val c: Char = charBuf!!.get(bufPos).toInt().toChar()
             if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c.isLetter()) bufPos++ else break
         }
         while (!isEmptyNoBufferUp) {
-            val c: Char = charBuf!!.get(bufPos)
+            val c: Char = charBuf!!.get(bufPos).toInt().toChar()
             if (c >= '0' && c <= '9') bufPos++ else break
         }
         return cacheString(charBuf, stringCache, start, bufPos - start)
@@ -459,7 +487,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         bufferUp()
         val start: Int = bufPos
         while (bufPos < bufLength) {
-            val c: Char = charBuf!!.get(bufPos)
+            val c: Char = charBuf!!.get(bufPos).toInt().toChar()
             if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f')) bufPos++ else break
         }
         return cacheString(charBuf, stringCache, start, bufPos - start)
@@ -469,21 +497,21 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         bufferUp()
         val start: Int = bufPos
         while (bufPos < bufLength) {
-            val c: Char = charBuf!!.get(bufPos)
+            val c: Char = charBuf!!.get(bufPos).toInt().toChar()
             if (c >= '0' && c <= '9') bufPos++ else break
         }
         return cacheString(charBuf, stringCache, start, bufPos - start)
     }
 
     fun matches(c: Char): Boolean {
-        return !isEmpty && charBuf!!.get(bufPos) == c
+        return !isEmpty && charBuf!!.get(bufPos).toInt().toChar() == c
     }
 
     fun matches(seq: String): Boolean {
         bufferUp()
         val scanLength: Int = seq.length
         if (scanLength > bufLength - bufPos) return false
-        for (offset in 0 until scanLength) if (seq.get(offset) != charBuf!!.get(bufPos + offset)) return false
+        for (offset in 0 until scanLength) if (seq.get(offset) != charBuf!!.get(bufPos + offset).toInt().toChar()) return false
         return true
     }
 
@@ -493,7 +521,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         if (scanLength > bufLength - bufPos) return false
         for (offset in 0 until scanLength) {
             val upScan: Char = seq.get(offset).uppercaseChar()
-            val upTarget: Char = charBuf!!.get(bufPos + offset).uppercaseChar()
+            val upTarget: Char = charBuf!!.get(bufPos + offset).toInt().toChar().uppercaseChar()
             if (upScan != upTarget) return false
         }
         return true
@@ -502,7 +530,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
     fun matchesAny(vararg seq: Char): Boolean {
         if (isEmpty) return false
         bufferUp()
-        val c: Char = charBuf!!.get(bufPos)
+        val c: Char = charBuf!!.get(bufPos).toInt().toChar()
         for (seek: Char in seq) {
             if (seek == c) return true
         }
@@ -511,12 +539,12 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
 
     fun matchesAnySorted(seq: CharArray?): Boolean {
         bufferUp()
-        return !isEmpty && (seq?.toList()?.binarySearch(charBuf!!.get(bufPos)) ?: 0) >= 0
+        return !isEmpty && (seq?.toList()?.binarySearch(charBuf!!.get(bufPos).toInt().toChar()) ?: 0) >= 0
     }
 
     fun matchesLetter(): Boolean {
         if (isEmpty) return false
-        val c: Char = charBuf!!.get(bufPos)
+        val c: Char = charBuf!!.get(bufPos).toInt().toChar()
         return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c.isLetter()
     }
 
@@ -526,13 +554,13 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
      */
     fun matchesAsciiAlpha(): Boolean {
         if (isEmpty) return false
-        val c: Char = charBuf!!.get(bufPos)
+        val c: Char = charBuf!!.get(bufPos).toInt().toChar()
         return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
     }
 
     fun matchesDigit(): Boolean {
         if (isEmpty) return false
-        val c: Char = charBuf!!.get(bufPos)
+        val c: Char = charBuf!!.get(bufPos).toInt().toChar()
         return (c >= '0' && c <= '9')
     }
 
@@ -566,8 +594,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
 
     init {
         Validate.notNull(input)
-        reader = input
-        charBuf = CharArray(min(sz, maxBufferLen))
+        charBuf = ByteArray(min(sz, maxBufferLen))
         bufferUp()
     }
 
@@ -618,7 +645,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
          * That saves both having to create objects as hash keys, and running through the entry list, at the expense of
          * some more duplicates.
          */
-        private fun cacheString(charBuf: CharArray?, stringCache: Array<String?>?, start: Int, count: Int): String {
+        private fun cacheString(charBuf: ByteArray?, stringCache: Array<String?>?, start: Int, count: Int): String {
             // limit (no cache):
             if (count > maxStringCacheLen) return (charBuf)!!.concatToString(start, start + count)
             if (count < 1) return ""
@@ -626,7 +653,7 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
             // calculate hash:
             var hash: Int = 0
             for (i in 0 until count) {
-                hash = 31 * hash + charBuf!!.get(start + i).code
+                hash = 31 * hash + charBuf!!.get(start + i).toInt()
             }
 
             // get from cache
@@ -644,17 +671,21 @@ class CharacterReader constructor(input: String, sz: Int = maxBufferLen) {
         /**
          * Check if the value of the provided range equals the string.
          */
-        fun rangeEquals(charBuf: CharArray?, start: Int, count: Int, cached: String): Boolean {
+        fun rangeEquals(charBuf: ByteArray?, start: Int, count: Int, cached: String): Boolean {
             var count: Int = count
             if (count == cached.length) {
                 var i: Int = start
                 var j: Int = 0
                 while (count-- != 0) {
-                    if (charBuf!!.get(i++) != cached.get(j++)) return false
+                    if (charBuf!!.get(i++).toInt().toChar() != cached.get(j++)) return false
                 }
                 return true
             }
             return false
         }
     }
+}
+
+fun ByteArray.concatToString(start: Int, end: Int): String {
+    return map { it.toInt().toChar() }.toTypedArray().toCharArray().concatToString(start, end)
 }

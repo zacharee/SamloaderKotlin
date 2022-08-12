@@ -9,7 +9,6 @@ import org.jsoup.internal.StringUtil
 import org.jsoup.select.NodeFilter
 import org.jsoup.select.NodeTraversor
 import org.jsoup.select.NodeVisitor
-import java.util.*
 
 /**
  * The base, abstract Node model. Elements, Documents, Comments etc are all Node instances.

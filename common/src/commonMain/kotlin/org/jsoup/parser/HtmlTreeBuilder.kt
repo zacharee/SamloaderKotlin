@@ -40,7 +40,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
             : Boolean = false
         private set
 
-    public override fun defaultSettings(): ParseSettings? {
+    public override fun defaultSettings(): ParseSettings {
         return ParseSettings.Companion.htmlDefault
     }
 
@@ -48,7 +48,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
         return HtmlTreeBuilder()
     }
 
-    override fun initialiseParse(input: String, baseUri: String?, parser: Parser) {
+    override fun initialiseParse(input: CharacterReader, baseUri: String?, parser: Parser) {
         super.initialiseParse(input, baseUri, parser)
 
         // this is a bit mucky. todo - probably just create new parser objects to ensure all reset.
@@ -74,7 +74,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     ): List<Node>? {
         // context may be null
         state = HtmlTreeBuilderState.Initial
-        initialiseParse((inputFragment!!), baseUri, parser)
+        initialiseParse(CharacterReader(inputFragment!!), baseUri, parser)
         contextElement = context
         isFragmentParsing = true
         var root: Element? = null
@@ -272,25 +272,26 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun insert(characterToken: Token.Character?) {
-        val node: Node
-        val el: Element =
-            currentElement() // will be doc if no current element; allows for whitespace to be inserted into the doc root object (not on the stack)
+        val el: Element = currentElement() // will be doc if no current element; allows for whitespace to be inserted into the doc root object (not on the stack)
         val tagName: String? = el.normalName()
         val data: String? = characterToken?.data
-        node = if (characterToken?.isCData == true) CDataNode(data) else if (isContentForTagData(tagName)) DataNode(
-            (data)!!
-        ) else TextNode((data)!!)
+        val node = if (characterToken?.isCData == true) CDataNode(data) else if (isContentForTagData(tagName)) DataNode((data)!!) else TextNode((data)!!)
         el.appendChild(node) // doesn't use insertNode, because we don't foster these; and will always have a stack.
         onNodeInserted(node, characterToken)
     }
 
     private fun insertNode(node: Node,  token: Token?) {
         // if the stack hasn't been set up yet, elements (doctype, comments) go into the doc
-        if (stack.isEmpty()) doc!!.appendChild(node) else if (isFosterInserts && StringUtil.inSorted(
+        if (stack.isEmpty()) {
+            doc!!.appendChild(node)
+        } else if (isFosterInserts && StringUtil.inSorted(
                 currentElement().normalName(),
                 HtmlTreeBuilderState.Constants.InTableFoster
-            )
-        ) insertInFosterParent(node) else currentElement().appendChild(node)
+        )) {
+            insertInFosterParent(node)
+        } else {
+            currentElement().appendChild(node)
+        }
 
         // connect form controls to their form element
         if (node is Element && node.tag()!!.isFormListed) {
@@ -307,14 +308,6 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     fun push(element: Element) {
         stack.add(element)
     }
-
-    override var stack: ArrayList<Element>
-        get() {
-            return super.stack
-        }
-        set(stack) {
-            super.stack = stack
-        }
 
     fun onStack(el: Element): Boolean {
         return onStack(stack as ArrayList<Element?>, el)

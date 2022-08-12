@@ -1,18 +1,19 @@
 package org.jsoup.nodes
 
-import jsoup.SerializationException
+import io.ktor.utils.io.errors.*
+import org.jsoup.SerializationException
 import org.jsoup.helper.Validate
 import org.jsoup.internal.Normalizer
 import org.jsoup.internal.StringUtil
-import java.io.IOException
-import java.util.*
-import java.util.regex.Pattern
 
 /**
  * A single key + value attribute. (Only used for presentation.)
  */
-class Attribute(key: String?, `val`: String?,  parent: Attributes?) :
-    MutableMap.MutableEntry<String?, String?>, Cloneable {
+data class Attribute(
+    var _key: String?,
+    var `val`: String?,
+    var parent: Attributes?
+) : MutableMap.MutableEntry<String?, String?> {
     override var key: String? = null
         set(value) {
             var key = value
@@ -25,11 +26,6 @@ class Attribute(key: String?, `val`: String?,  parent: Attributes?) :
             }
             field = key
         }
-
-    private var `val`: String?
-
-    var parent // used to update the holding Attributes when the key / value is changed via this interface
-            : Attributes?
 
     /**
      * Create a new attribute from unencoded (raw) key and value.
@@ -81,7 +77,7 @@ class Attribute(key: String?, `val`: String?,  parent: Attributes?) :
         try {
             html(sb, Document("").outputSettings())
         } catch (exception: IOException) {
-            throw jsoup.SerializationException(exception)
+            throw SerializationException(exception)
         }
         return StringUtil.releaseBuilder(sb)
     }
@@ -99,13 +95,11 @@ class Attribute(key: String?, `val`: String?,  parent: Attributes?) :
      * @see .createFromEncoded
      */
     init {
-        var key = key
+        var key = _key
         Validate.notNull(key)
         key = key!!.trim { it <= ' ' }
         Validate.notEmpty(key) // trimming could potentially make empty, so validate here
         this.key = key!!
-        this.`val` = `val`
-        this.parent = parent
     }
 
     /**
@@ -131,7 +125,7 @@ class Attribute(key: String?, `val`: String?,  parent: Attributes?) :
 
     override fun equals( o: Any?): Boolean { // note parent not considered
         if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
+        if (o == null || this::class != o::class) return false
         val attribute = o as Attribute
         if (if (key != null) key != attribute.key else attribute.key != null) return false
         return if (`val` != null) `val` == attribute.`val` else attribute.`val` == null
@@ -143,12 +137,8 @@ class Attribute(key: String?, `val`: String?,  parent: Attributes?) :
         return result
     }
 
-    public override fun clone(): Attribute {
-        return try {
-            super.clone() as Attribute
-        } catch (e: CloneNotSupportedException) {
-            throw RuntimeException(e)
-        }
+    public fun clone(): Attribute {
+        return copy()
     }
 
     companion object {
@@ -178,20 +168,20 @@ class Attribute(key: String?, `val`: String?,  parent: Attributes?) :
             }
         }
 
-        private val xmlKeyValid = Pattern.compile("[a-zA-Z_:][-a-zA-Z0-9_:.]*")
-        private val xmlKeyReplace = Pattern.compile("[^-a-zA-Z0-9_:.]")
-        private val htmlKeyValid = Pattern.compile("[^\\x00-\\x1f\\x7f-\\x9f \"'/=]+")
-        private val htmlKeyReplace = Pattern.compile("[\\x00-\\x1f\\x7f-\\x9f \"'/=]")
+        private val xmlKeyValid = Regex("[a-zA-Z_:][-a-zA-Z0-9_:.]*")
+        private val xmlKeyReplace = Regex("[^-a-zA-Z0-9_:.]")
+        private val htmlKeyValid = Regex("[^\\x00-\\x1f\\x7f-\\x9f \"'/=]+")
+        private val htmlKeyReplace = Regex("[\\x00-\\x1f\\x7f-\\x9f \"'/=]")
 
         fun getValidKey(key: String?, syntax: Document.OutputSettings.Syntax?): String? {
             // we consider HTML attributes to always be valid. XML checks key validity
             var key = key
-            if (syntax == Document.OutputSettings.Syntax.xml && !xmlKeyValid.matcher(key).matches()) {
-                key = xmlKeyReplace.matcher(key).replaceAll("")
-                return if (xmlKeyValid.matcher(key).matches()) key else null // null if could not be coerced
-            } else if (syntax == Document.OutputSettings.Syntax.html && !htmlKeyValid.matcher(key).matches()) {
-                key = htmlKeyReplace.matcher(key).replaceAll("")
-                return if (htmlKeyValid.matcher(key).matches()) key else null // null if could not be coerced
+            if (syntax == Document.OutputSettings.Syntax.xml && !xmlKeyValid.containsMatchIn(key!!)) {
+                key = xmlKeyReplace.replace(key, "")
+                return if (xmlKeyValid.containsMatchIn(key)) key else null // null if could not be coerced
+            } else if (syntax == Document.OutputSettings.Syntax.html && !htmlKeyValid.containsMatchIn(key!!)) {
+                key = htmlKeyReplace.replace(key, "")
+                return if (htmlKeyValid.containsMatchIn(key)) key else null // null if could not be coerced
             }
             return key
         }
@@ -227,7 +217,7 @@ class Attribute(key: String?, `val`: String?,  parent: Attributes?) :
          * Checks if this attribute name is defined as a boolean attribute in HTML5
          */
         fun isBooleanAttribute(key: String?): Boolean {
-            return Arrays.binarySearch(booleanAttributes, Normalizer.lowerCase(key)) >= 0
+            return booleanAttributes.toList().binarySearch(Normalizer.lowerCase(key)) >= 0
         }
     }
 }

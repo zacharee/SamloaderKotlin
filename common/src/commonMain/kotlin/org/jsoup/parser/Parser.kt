@@ -1,5 +1,6 @@
 package org.jsoup.parser
 
+import okio.BufferedSource
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
@@ -56,6 +57,10 @@ class Parser {
         errors = ParseErrorList(copy.errors) // only copies size, not contents
         settings = ParseSettings(copy.settings)
         isTrackPosition = copy.isTrackPosition
+    }
+
+    fun parseInput(input: BufferedSource, baseUri: String?): Document? {
+        return treeBuilder!!.parse(input.buffer, baseUri, this)
     }
 
     fun parseInput(inputHtml: String, baseUri: String?): Document? {
@@ -144,9 +149,9 @@ class Parser {
          *
          * @return parsed Document
          */
-        fun parse(html: String?, baseUri: String?): Document? {
+        fun parse(html: String, baseUri: String?): Document? {
             val treeBuilder: TreeBuilder = HtmlTreeBuilder()
-            return treeBuilder.parse((html!!), baseUri, Parser(treeBuilder))
+            return treeBuilder.parse(html, baseUri, Parser(treeBuilder))
         }
 
         /**

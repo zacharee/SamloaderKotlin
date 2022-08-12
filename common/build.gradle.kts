@@ -77,7 +77,7 @@ kotlin {
     }
 
     sourceSets {
-        val korlibsVersion = "3.0.0"
+        val korlibsVersion = "2.7.0"
         val ktorVersion = "2.0.3"
         val jsoupVersion = "1.14.3"
 
@@ -106,6 +106,7 @@ kotlin {
                 api("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
                 api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")
                 api("dev.icerock.moko:resources:0.20.1")
+                api("com.squareup.okio:okio:3.2.0")
             }
         }
 

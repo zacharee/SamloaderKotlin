@@ -1,12 +1,16 @@
 package org.jsoup.nodes
 
-import jsoup.UncheckedIOException
-import java.io.IOException
+import io.ktor.utils.io.errors.*
+import org.jsoup.UncheckedIOException
 
 /**
  * A Character Data node, to support CDATA sections.
  */
 class CDataNode(text: String?) : TextNode(text!!) {
+    override fun newInstance(): Node {
+        return CDataNode(text())
+    }
+
     override fun nodeName(): String? {
         return "#cdata"
     }
@@ -29,7 +33,7 @@ class CDataNode(text: String?) : TextNode(text!!) {
         try {
             accum!!.append("]]>")
         } catch (e: IOException) {
-            throw jsoup.UncheckedIOException(e)
+            throw UncheckedIOException(e)
         }
     }
 
