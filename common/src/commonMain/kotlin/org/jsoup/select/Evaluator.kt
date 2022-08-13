@@ -40,7 +40,7 @@ abstract class Evaluator protected constructor() {
      */
     class TagEndsWith constructor(private val tagName: String) : Evaluator() {
         override fun matches(root: Element, element: Element): Boolean {
-            return (element.normalName()!!.endsWith(tagName))
+            return (element.normalName().endsWith(tagName))
         }
 
         override fun toString(): String {
@@ -94,7 +94,7 @@ abstract class Evaluator protected constructor() {
         private val keyPrefix: String = Normalizer.lowerCase(keyPrefix)!!
 
         override fun matches(root: Element, element: Element): Boolean {
-            val values: List<org.jsoup.nodes.Attribute?> = element.attributes()!!.asList()
+            val values: List<org.jsoup.nodes.Attribute?> = element.attributes().asList()
             for (attribute: org.jsoup.nodes.Attribute? in values) {
                 if (Normalizer.lowerCase(attribute?.key)?.startsWith(keyPrefix) == true) return true
             }
@@ -109,9 +109,9 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for attribute name/value matching
      */
-    class AttributeWithValue constructor(key: String?, value: String?) : AttributeKeyPair(key, value) {
+    class AttributeWithValue constructor(key: String, value: String?) : AttributeKeyPair(key, value) {
         override fun matches(root: Element, element: Element): Boolean {
-            return element.hasAttr(key!!) && value.equals(element.attr(key)!!.trim { it <= ' ' }, ignoreCase = true)
+            return element.hasAttr(key) && value.equals(element.attr(key).trim { it <= ' ' }, ignoreCase = true)
         }
 
         override fun toString(): String {
@@ -122,7 +122,7 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for attribute name != value matching
      */
-    class AttributeWithValueNot constructor(key: String?, value: String?) : AttributeKeyPair(key, value) {
+    class AttributeWithValueNot constructor(key: String, value: String?) : AttributeKeyPair(key, value) {
         override fun matches(root: Element, element: Element): Boolean {
             return !value.equals(element.attr(key), ignoreCase = true)
         }
@@ -135,9 +135,9 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for attribute name/value matching (value prefix)
      */
-    class AttributeWithValueStarting constructor(key: String?, value: String?) : AttributeKeyPair(key, value, false) {
+    class AttributeWithValueStarting constructor(key: String, value: String?) : AttributeKeyPair(key, value, false) {
         override fun matches(root: Element, element: Element): Boolean {
-            return element.hasAttr(key!!) && Normalizer.lowerCase(element.attr(key))
+            return element.hasAttr(key) && Normalizer.lowerCase(element.attr(key))
                 ?.startsWith(value!!) == true // value is lower case already
         }
 
@@ -149,9 +149,9 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for attribute name/value matching (value ending)
      */
-    class AttributeWithValueEnding constructor(key: String?, value: String?) : AttributeKeyPair(key, value, false) {
+    class AttributeWithValueEnding constructor(key: String, value: String?) : AttributeKeyPair(key, value, false) {
         override fun matches(root: Element, element: Element): Boolean {
-            return element.hasAttr(key!!) && Normalizer.lowerCase(element.attr(key))
+            return element.hasAttr(key) && Normalizer.lowerCase(element.attr(key))
                 ?.endsWith(value!!) == true // value is lower case
         }
 
@@ -163,9 +163,9 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for attribute name/value matching (value containing)
      */
-    class AttributeWithValueContaining constructor(key: String?, value: String?) : AttributeKeyPair(key, value) {
+    class AttributeWithValueContaining constructor(key: String, value: String?) : AttributeKeyPair(key, value) {
         override fun matches(root: Element, element: Element): Boolean {
-            return element.hasAttr(key!!) && Normalizer.lowerCase(element.attr(key))
+            return element.hasAttr(key) && Normalizer.lowerCase(element.attr(key))
                 ?.contains(value!!) == true // value is lower case
         }
 
@@ -177,17 +177,17 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for attribute name/value matching (value regex matching)
      */
-    class AttributeWithValueMatching constructor(key: String?, pattern: Regex) : Evaluator() {
-        var key: String?
+    class AttributeWithValueMatching constructor(key: String, pattern: Regex) : Evaluator() {
+        var key: String
         var pattern: Regex
 
         init {
-            this.key = Normalizer.normalize(key)
+            this.key = Normalizer.normalize(key)!!
             this.pattern = pattern
         }
 
         override fun matches(root: Element, element: Element): Boolean {
-            return element.hasAttr(key!!) && pattern.containsMatchIn(element.attr(key) ?: "")
+            return element.hasAttr(key) && pattern.containsMatchIn(element.attr(key))
         }
 
         override fun toString(): String {
@@ -198,16 +198,16 @@ abstract class Evaluator protected constructor() {
     /**
      * Abstract evaluator for attribute name/value matching
      */
-    abstract class AttributeKeyPair constructor(key: String?, value: String?, trimValue: Boolean = true) :
+    abstract class AttributeKeyPair constructor(key: String, value: String?, trimValue: Boolean = true) :
         Evaluator() {
-        var key: String?
+        var key: String
         var value: String?
 
         init {
             var value: String? = value
             Validate.notEmpty(key)
             Validate.notEmpty(value)
-            this.key = Normalizer.normalize(key)
+            this.key = Normalizer.normalize(key)!!
             val isStringLiteral: Boolean = (value!!.startsWith("'") && value.endsWith("'")
                     || value.startsWith("\"") && value.endsWith("\""))
             if (isStringLiteral) {

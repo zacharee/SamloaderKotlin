@@ -24,14 +24,14 @@ class CDataNode(text: String?) : TextNode(text!!) {
     }
 
     @Throws(IOException::class)
-    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
-        accum?.append("<![CDATA[")
-            ?.append(wholeText)
+    override fun outerHtmlHead(accum: Appendable, depth: Int, out: Document.OutputSettings) {
+        accum.append("<![CDATA[")
+            .append(wholeText)
     }
 
-    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlTail(accum: Appendable, depth: Int, out: Document.OutputSettings) {
         try {
-            accum!!.append("]]>")
+            accum.append("]]>")
         } catch (e: IOException) {
             throw UncheckedIOException(e)
         }

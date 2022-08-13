@@ -197,7 +197,7 @@ class Safelist constructor() {
      * @param attributes List of invalid attributes for the tag
      * @return this (for chaining)
      */
-    fun removeAttributes(tag: String, vararg attributes: String?): Safelist {
+    fun removeAttributes(tag: String, vararg attributes: String): Safelist {
         Validate.notEmpty(tag)
         Validate.notNull(attributes)
         Validate.isTrue(attributes.isNotEmpty(), "No attribute names supplied.")
@@ -366,7 +366,7 @@ class Safelist constructor() {
         // make sure that what we're removing actually exists; otherwise can open the tag to any data and that can
         // be surprising
         Validate.isTrue(protocols.containsKey(tagName), "Cannot remove a protocol that is not set.")
-        val tagProtocols: MutableMap<AttributeKey, MutableSet<Protocol>> = protocols.get(tagName) ?: mutableMapOf()
+        val tagProtocols: MutableMap<AttributeKey, MutableSet<Protocol>> = protocols[tagName] ?: mutableMapOf()
         Validate.isTrue(tagProtocols.containsKey(attr), "Cannot remove a protocol that is not set.")
         val attrProtocols: MutableSet<Protocol> = tagProtocols[attr] ?: mutableSetOf()
         for (protocol: String in removeProtocols) {
@@ -399,7 +399,7 @@ class Safelist constructor() {
      */
     fun isSafeAttribute(tagName: String, el: Element, attr: Attribute): Boolean {
         val tag: TagName = TagName.valueOf(tagName)
-        val key: AttributeKey = AttributeKey.valueOf(attr.key!!)
+        val key: AttributeKey = AttributeKey.valueOf(attr.key)
         val okSet: Set<AttributeKey>? = attributes[tag]
         if (okSet != null && okSet.contains(key)) {
             if (protocols.containsKey(tag)) {
@@ -411,10 +411,10 @@ class Safelist constructor() {
             }
         }
         // might be an enforced attribute?
-        val enforcedSet: Map<AttributeKey, AttributeValue>? = enforcedAttributes.get(tag)
+        val enforcedSet: Map<AttributeKey, AttributeValue>? = enforcedAttributes[tag]
         if (enforcedSet != null) {
             val expect: Attributes = getEnforcedAttributes(tagName)
-            val attrKey: String? = attr.key
+            val attrKey: String = attr.key
             if (expect.hasKeyIgnoreCase(attrKey)) {
                 return (expect.getIgnoreCase(attrKey) == attr.value)
             }
@@ -455,7 +455,7 @@ class Safelist constructor() {
         val attrs = Attributes()
         val tag: TagName = TagName.valueOf(tagName)
         if (enforcedAttributes.containsKey(tag)) {
-            val keyVals: Map<AttributeKey, AttributeValue> = enforcedAttributes.get(tag) ?: mapOf()
+            val keyVals: Map<AttributeKey, AttributeValue> = enforcedAttributes[tag] ?: mapOf()
             for (entry: Map.Entry<AttributeKey, AttributeValue> in keyVals.entries) {
                 attrs.put(entry.key.toString(), entry.value.toString())
             }

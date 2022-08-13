@@ -19,7 +19,7 @@ object Entities {
     private const val emptyName = ""
     const val codepointRadix = 36
     private val codeDelims = charArrayOf(',', ';')
-    private val multipoints = HashMap<String?, String>() // name -> multiple character references
+    private val multipoints = HashMap<String, String>() // name -> multiple character references
     private val DefaultOutput = Document.OutputSettings()
 
     /**
@@ -28,7 +28,7 @@ object Entities {
      * @param name the possible entity name (e.g. "lt" or "amp")
      * @return true if a known named entity
      */
-    fun isNamedEntity(name: String?): Boolean {
+    fun isNamedEntity(name: String): Boolean {
         return EscapeMode.extended().codepointForName(name) != empty
     }
 
@@ -39,7 +39,7 @@ object Entities {
      * @return true if a known named entity in the base set
      * @see .isNamedEntity
      */
-    fun isBaseNamedEntity(name: String?): Boolean {
+    fun isBaseNamedEntity(name: String): Boolean {
         return EscapeMode.base().codepointForName(name) != empty
     }
 
@@ -49,14 +49,14 @@ object Entities {
      * @param name entity (e.g. "lt" or "amp")
      * @return the string value of the character(s) represented by this entity, or "" if not defined
      */
-    fun getByName(name: String?): String {
+    fun getByName(name: String): String {
         val `val` = multipoints[name]
         if (`val` != null) return `val`
         val codepoint = EscapeMode.extended().codepointForName(name)
         return if (codepoint != empty) charArrayOf(codepoint.toChar()).concatToString(0, 0 + 1) else emptyName
     }
 
-    fun codepointsForName(name: String?, codepoints: IntArray): Int {
+    fun codepointsForName(name: String, codepoints: IntArray): Int {
         val `val` = multipoints[name]
         if (`val` != null) {
             codepoints[0] = `val`[0].code
@@ -84,8 +84,7 @@ object Entities {
      * @param string the un-escaped string to escape
      * @return the escaped string
      */
-    fun escape(string: String?, out: Document.OutputSettings? = DefaultOutput): String {
-        if (string == null) return ""
+    fun escape(string: String, out: Document.OutputSettings = DefaultOutput): String {
         val accum = StringUtil.borrowBuilder()
         try {
             escape(accum, string, out,
@@ -103,14 +102,14 @@ object Entities {
     // this method does a lot, but other breakups cause rescanning and stringbuilder generations
     @Throws(IOException::class)
     fun escape(
-        accum: Appendable?, string: String?, out: Document.OutputSettings?,
+        accum: Appendable?, string: String?, out: Document.OutputSettings,
         inAttribute: Boolean, normaliseWhite: Boolean, stripLeadingWhite: Boolean, trimTrailing: Boolean
     ) {
         var lastWasWhite = false
         var reachedNonWhite = false
-        val escapeMode = out!!.escapeMode()
+        val escapeMode = out.escapeMode()
         val encoder = out.encoder()
-        val coreCharset = out.coreCharset // init in out.prepareEncoder()
+        val coreCharset = out.coreCharset!! // init in out.prepareEncoder()
         val length = string!!.length
         var codePoint: Int
         var skipped = false
@@ -214,7 +213,7 @@ object Entities {
      * Alterslash: 3013, 28
      * Jsoup: 167, 2
      */
-    private fun canEncode(charset: CoreCharset?, c: Char, fallback: CharsetEncoder?): Boolean {
+    private fun canEncode(charset: CoreCharset, c: Char, fallback: CharsetEncoder?): Boolean {
         // todo add more charset tests if impacted by Android's bad perf in canEncode
         return when (charset) {
             CoreCharset.ascii -> c.code < 0x80
@@ -223,7 +222,7 @@ object Entities {
         }
     }
 
-    sealed class EscapeMode(val file: String, private val size: Int) {
+    sealed class EscapeMode(val file: String, size: Int) {
         class xhtml : EscapeMode(EntitiesData.xmlPoints, 4) {
             override fun copy(): EscapeMode {
                 return xhtml()

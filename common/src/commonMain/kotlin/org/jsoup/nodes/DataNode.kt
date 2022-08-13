@@ -28,7 +28,7 @@ class DataNode(data: String) : LeafNode() {
      * Get the data contents of this node. Will be unescaped and with original new lines, space etc.
      * @return data
      */
-    val wholeData: String?
+    val wholeData: String
         get() = coreValue()
 
     /**
@@ -36,17 +36,17 @@ class DataNode(data: String) : LeafNode() {
      * @param data unencoded data
      * @return this node, for chaining
      */
-    fun setWholeData(data: String?): DataNode {
+    fun setWholeData(data: String): DataNode {
         coreValue(data)
         return this
     }
 
     @Throws(IOException::class)
-    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
-        accum!!.append(wholeData) // data is not escaped in return from data nodes, so " in script, style is plain
+    override fun outerHtmlHead(accum: Appendable, depth: Int, out: Document.OutputSettings) {
+        accum.append(wholeData) // data is not escaped in return from data nodes, so " in script, style is plain
     }
 
-    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable, depth: Int, out: Document.OutputSettings) {}
 
     override fun toString(): String {
         return outerHtml()!!

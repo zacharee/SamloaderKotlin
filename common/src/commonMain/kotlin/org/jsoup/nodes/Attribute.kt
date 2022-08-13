@@ -10,15 +10,21 @@ import org.jsoup.internal.StringUtil
  * A single key + value attribute. (Only used for presentation.)
  */
 data class Attribute(
-    var _key: String?,
+    var _key: String,
     var `val`: String?,
     var parent: Attributes?
-) : MutableMap.MutableEntry<String?, String?> {
-    final override var key: String? = null
+) : MutableMap.MutableEntry<String, String?> {
+    override var key: String = run {
+        var key = _key
+        Validate.notNull(key)
+        key = key.trim { it <= ' ' }
+        Validate.notEmpty(key) // trimming could potentially make empty, so validate here
+        key
+    }
         set(value) {
             var key = value
             Validate.notNull(key)
-            key = key?.trim { it <= ' ' }
+            key = key.trim { it <= ' ' }
             Validate.notEmpty(key) // trimming could potentially make empty, so validate here
             if (parent != null) {
                 val i = parent!!.indexOfKey(this.key)
@@ -33,7 +39,7 @@ data class Attribute(
      * @param value attribute value (may be null)
      * @see .createFromEncoded
      */
-    constructor(key: String?,  value: String?) : this(key, value, null) {}
+    constructor(key: String,  value: String?) : this(key, value, null) {}
 
     /**
      * Get the attribute value. Will return an empty string if the value is not set.
@@ -88,21 +94,6 @@ data class Attribute(
     }
 
     /**
-     * Create a new attribute from unencoded (raw) key and value.
-     * @param key attribute key; case is preserved.
-     * @param val attribute value (may be null)
-     * @param parent the containing Attributes (this Attribute is not automatically added to said Attributes)
-     * @see .createFromEncoded
-     */
-    init {
-        var key = _key
-        Validate.notNull(key)
-        key = key!!.trim { it <= ' ' }
-        Validate.notEmpty(key) // trimming could potentially make empty, so validate here
-        this.key = key!!
-    }
-
-    /**
      * Get the string representation of this attribute, implemented as [.html].
      * @return string
      */
@@ -119,7 +110,7 @@ data class Attribute(
      * @param out output settings
      * @return  Returns whether collapsible or not
      */
-    protected fun shouldCollapseAttribute(out: Document.OutputSettings?): Boolean {
+    private fun shouldCollapseAttribute(out: Document.OutputSettings?): Boolean {
         return shouldCollapseAttribute(key, `val`, out)
     }
 
@@ -127,17 +118,17 @@ data class Attribute(
         if (this === other) return true
         if (other == null || this::class != other::class) return false
         val attribute = other as Attribute
-        if (if (key != null) key != attribute.key else attribute.key != null) return false
+        if (key != attribute.key) return false
         return if (`val` != null) `val` == attribute.`val` else attribute.`val` == null
     }
 
     override fun hashCode(): Int { // note parent not considered
-        var result = if (key != null) key.hashCode() else 0
+        var result = key.hashCode()
         result = 31 * result + if (`val` != null) `val`.hashCode() else 0
         return result
     }
 
-    public fun clone(): Attribute {
+    fun clone(): Attribute {
         return copy()
     }
 
@@ -150,7 +141,7 @@ data class Attribute(
         )
 
         @Throws(IOException::class)
-        protected fun html(key: String?,  `val`: String?, accum: Appendable?, out: Document.OutputSettings?) {
+        private fun html(key: String?, `val`: String?, accum: Appendable?, out: Document.OutputSettings?) {
             var key = key
             key = getValidKey(key, out!!.syntax())
             if (key == null) return  // can't write it :(
@@ -158,7 +149,7 @@ data class Attribute(
         }
 
         @Throws(IOException::class)
-        fun htmlNoValidate(key: String?,  `val`: String?, accum: Appendable?, out: Document.OutputSettings?) {
+        fun htmlNoValidate(key: String, `val`: String?, accum: Appendable?, out: Document.OutputSettings) {
             // structured like this so that Attributes can check we can write first, so it can add whitespace correctly
             accum!!.append(key)
             if (!shouldCollapseAttribute(key, `val`, out)) {
@@ -197,17 +188,17 @@ data class Attribute(
          * @param encodedValue HTML attribute encoded value
          * @return attribute
          */
-        fun createFromEncoded(unencodedKey: String?, encodedValue: String?): Attribute {
+        fun createFromEncoded(unencodedKey: String, encodedValue: String?): Attribute {
             val value = Entities.unescape(encodedValue, true)
             return Attribute(unencodedKey, value, null) // parent will get set when Put
         }
 
-        protected fun isDataAttribute(key: String?): Boolean {
-            return key?.startsWith(Attributes.dataPrefix) == true && key.length > Attributes.dataPrefix.length
+        private fun isDataAttribute(key: String): Boolean {
+            return key.startsWith(Attributes.dataPrefix) && key.length > Attributes.dataPrefix.length
         }
 
         // collapse unknown foo=null, known checked=null, checked="", checked=checked; write out others
-        protected fun shouldCollapseAttribute(
+        private fun shouldCollapseAttribute(
             key: String?,
              `val`: String?,
             out: Document.OutputSettings?

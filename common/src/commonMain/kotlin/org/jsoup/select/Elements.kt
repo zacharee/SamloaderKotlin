@@ -33,9 +33,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * or if the no elements have the attribute, returns empty string.
      * @see .hasAttr
      */
-    fun attr(attributeKey: String?): String? {
-        if (attributeKey == null) return ""
-
+    fun attr(attributeKey: String): String {
         for (element: Element in this) {
             if (element.hasAttr(attributeKey)) return element.attr(attributeKey)
         }
@@ -91,7 +89,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param attributeKey The attribute to remove.
      * @return this (for chaining)
      */
-    fun removeAttr(attributeKey: String?): Elements {
+    fun removeAttr(attributeKey: String): Elements {
         for (element: Element in this) {
             element.removeAttr(attributeKey)
         }
@@ -274,7 +272,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return this, for chaining
      * @see Element.html
      */
-    fun html(html: String?): Elements {
+    fun html(html: String): Elements {
         for (element: Element in this) {
             element.html(html)
         }
@@ -287,7 +285,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return this, for chaining
      * @see Element.prepend
      */
-    fun prepend(html: String?): Elements {
+    fun prepend(html: String): Elements {
         for (element: Element in this) {
             element.prepend(html)
         }
@@ -300,7 +298,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return this, for chaining
      * @see Element.append
      */
-    fun append(html: String?): Elements {
+    fun append(html: String): Elements {
         for (element: Element in this) {
             element.append(html)
         }
@@ -342,7 +340,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return this (for chaining)
      * @see Element.wrap
      */
-    fun wrap(html: String?): Elements {
+    fun wrap(html: String): Elements {
         Validate.notEmpty(html)
         for (element: Element in this) {
             element.wrap(html)
@@ -421,7 +419,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query A [Selector] query
      * @return the filtered list of elements, or an empty list if none match.
      */
-    fun select(query: String?): Elements {
+    fun select(query: String): Elements {
         return Selector.select(query, this)
     }
 
@@ -437,7 +435,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query the selector query whose results should be removed from these elements
      * @return a new elements list that contains only the filtered results
      */
-    fun not(query: String?): Elements {
+    fun not(query: String): Elements {
         val out: Elements = Selector.select(query, this)
         return Selector.filterOut(this, out)
     }
@@ -459,8 +457,8 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query A selector
      * @return true if at least one element in the list matches the query.
      */
-    fun `is`(query: String?): Boolean {
-        val eval: Evaluator? = QueryParser.parse(query)
+    fun `is`(query: String): Boolean {
+        val eval: Evaluator = QueryParser.parse(query)
         for (e: Element in this) {
             if (e.`is`(eval)) return true
         }
@@ -480,7 +478,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query CSS query to match siblings against
      * @return next element siblings.
      */
-    fun next(query: String?): Elements {
+    fun next(query: String): Elements {
         return siblings(query, next = true, all = false)
     }
 
@@ -497,7 +495,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query CSS query to match siblings against
      * @return all following element siblings.
      */
-    fun nextAll(query: String?): Elements {
+    fun nextAll(query: String): Elements {
         return siblings(query, next = true, all = true)
     }
 
@@ -514,7 +512,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query CSS query to match siblings against
      * @return previous element siblings.
      */
-    fun prev(query: String?): Elements {
+    fun prev(query: String): Elements {
         return siblings(query, next = false, all = false)
     }
 
@@ -531,7 +529,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query CSS query to match siblings against
      * @return all previous element siblings.
      */
-    fun prevAll(query: String?): Elements {
+    fun prevAll(query: String): Elements {
         return siblings(query, next = false, all = true)
     }
 

@@ -19,7 +19,7 @@ class Document(private val location: String?) :
     Element(Tag.valueOf("#root", ParseSettings.htmlDefault), location) {
     private var connection // the connection this doc was fetched from, if any
             : Connection? = null
-    private var outputSettings: OutputSettings? = OutputSettings()
+    private var outputSettings: OutputSettings = OutputSettings()
     private var parser // the parser used to parse this document
             : Parser = Parser.htmlParser()
     private var quirksMode: QuirksMode? = QuirksMode.noQuirks
@@ -239,7 +239,7 @@ class Document(private val location: String?) :
      */
     fun charset(charset: Charset) {
         updateMetaCharsetElement(true)
-        outputSettings!!.charset(charset)
+        outputSettings.charset(charset)
         ensureMetaCharsetElement()
     }
 
@@ -252,7 +252,7 @@ class Document(private val location: String?) :
      * @see OutputSettings.charset
      */
     fun charset(): Charset {
-        return outputSettings!!.charset()
+        return outputSettings.charset()
     }
 
     /**
@@ -285,14 +285,14 @@ class Document(private val location: String?) :
 
     override fun clone(): Document {
         val clone = super.clone() as Document
-        clone.outputSettings = outputSettings!!.clone()
+        clone.outputSettings = outputSettings.clone()
         return clone
     }
 
     override fun shallowClone(): Document {
         val clone = Document(baseUri())
         if (attrs != null) clone.attrs = attrs!!.clone()
-        clone.outputSettings = outputSettings!!.clone()
+        clone.outputSettings = outputSettings.clone()
         return clone
     }
 
@@ -318,7 +318,7 @@ class Document(private val location: String?) :
      */
     private fun ensureMetaCharsetElement() {
         if (updateMetaCharset) {
-            val syntax = outputSettings()!!.syntax()
+            val syntax = outputSettings().syntax()
             if (syntax == OutputSettings.Syntax.html) {
                 val metaCharset = selectFirst("meta[charset]")
                 if (metaCharset != null) {
@@ -326,7 +326,7 @@ class Document(private val location: String?) :
                 } else {
                     head().appendElement("meta").attr("charset", charset().name)
                 }
-                select("meta[name=charset]")!!.remove() // Remove obsolete elements
+                select("meta[name=charset]").remove() // Remove obsolete elements
             } else if (syntax == OutputSettings.Syntax.xml) {
                 val node = ensureChildNodes()[0]
                 if (node is XmlDeclaration) {
@@ -550,7 +550,7 @@ class Document(private val location: String?) :
      * Get the document's current output settings.
      * @return the document's current output settings.
      */
-    fun outputSettings(): OutputSettings? {
+    fun outputSettings(): OutputSettings {
         return outputSettings
     }
 
@@ -559,7 +559,7 @@ class Document(private val location: String?) :
      * @param outputSettings new output settings.
      * @return this document, for chaining.
      */
-    fun outputSettings(outputSettings: OutputSettings?): Document {
+    fun outputSettings(outputSettings: OutputSettings): Document {
         Validate.notNull(outputSettings)
         this.outputSettings = outputSettings
         return this

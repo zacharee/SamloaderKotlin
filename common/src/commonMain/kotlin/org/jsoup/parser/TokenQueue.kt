@@ -8,8 +8,8 @@ import org.jsoup.internal.StringUtil
  *
  * @author Jonathan Hedley
  */
-class TokenQueue constructor(data: String?) {
-    private var queue: String?
+class TokenQueue constructor(data: String) {
+    private var queue: String
     private var pos: Int = 0
 
     /**
@@ -31,7 +31,7 @@ class TokenQueue constructor(data: String?) {
         }
 
     private fun remainingLength(): Int {
-        return queue!!.length - pos
+        return queue.length - pos
     }
 
     /**
@@ -40,7 +40,7 @@ class TokenQueue constructor(data: String?) {
      */
     fun addFirst(seq: String) {
         // not very performant, but an edge case
-        queue = seq + queue!!.substring(pos)
+        queue = seq + queue.substring(pos)
         pos = 0
     }
 
@@ -50,7 +50,7 @@ class TokenQueue constructor(data: String?) {
      * @return true if the next characters match.
      */
     fun matches(seq: String): Boolean {
-        return queue!!.regionMatches(pos, seq, 0, seq.length, ignoreCase = true)
+        return queue.regionMatches(pos, seq, 0, seq.length, ignoreCase = true)
     }
 
     /**
@@ -68,7 +68,7 @@ class TokenQueue constructor(data: String?) {
     fun matchesAny(vararg seq: Char): Boolean {
         if (isEmpty) return false
         for (c: Char in seq) {
-            if (queue!![pos] == c) return true
+            if (queue[pos] == c) return true
         }
         return false
     }
@@ -93,7 +93,7 @@ class TokenQueue constructor(data: String?) {
      * @return if starts with whitespace
      */
     fun matchesWhitespace(): Boolean {
-        return !isEmpty && StringUtil.isWhitespace(queue!![pos].code)
+        return !isEmpty && StringUtil.isWhitespace(queue[pos].code)
     }
 
     /**
@@ -101,7 +101,7 @@ class TokenQueue constructor(data: String?) {
      * @return if matches a word character
      */
     fun matchesWord(): Boolean {
-        return !isEmpty && queue!![pos].isLetterOrDigit()
+        return !isEmpty && queue[pos].isLetterOrDigit()
     }
 
     /**
@@ -116,7 +116,7 @@ class TokenQueue constructor(data: String?) {
      * @return first character on queue.
      */
     fun consume(): Char {
-        return queue!![pos++]
+        return queue[pos++]
     }
 
     /**
@@ -140,9 +140,9 @@ class TokenQueue constructor(data: String?) {
      * @return The matched data consumed from queue.
      */
     fun consumeTo(seq: String?): String {
-        val offset: Int = queue!!.indexOf((seq)!!, pos)
+        val offset: Int = queue.indexOf((seq)!!, pos)
         return if (offset != -1) {
-            val consumed: String = queue!!.substring(pos, offset)
+            val consumed: String = queue.substring(pos, offset)
             pos += consumed.length
             consumed
         } else {
@@ -158,13 +158,13 @@ class TokenQueue constructor(data: String?) {
         while (!isEmpty) {
             if (matches(seq)) break
             if (canScan) {
-                val skip: Int = queue!!.indexOf(first, pos) - pos
+                val skip: Int = queue.indexOf(first, pos) - pos
                 if (skip == 0) // this char is the skip char, but not match, so force advance of pos
                     pos++ else if (skip < 0) // no chance of finding, grab to end
-                    pos = queue!!.length else pos += skip
+                    pos = queue.length else pos += skip
             } else pos++
         }
-        return queue!!.substring(start, pos)
+        return queue.substring(start, pos)
     }
 
     /**
@@ -179,7 +179,7 @@ class TokenQueue constructor(data: String?) {
         while (!isEmpty && !matchesAny(*seq)) {
             pos++
         }
-        return queue!!.substring(start, pos)
+        return queue.substring(start, pos)
     }
 
     /**
@@ -242,7 +242,7 @@ class TokenQueue constructor(data: String?) {
             if (depth > 0 && last.code != 0) end = pos // don't include the outer match pair in the return
             last = c
         } while (depth > 0)
-        val out: String = if ((end >= 0)) queue!!.substring(start, end) else ""
+        val out: String = if ((end >= 0)) queue.substring(start, end) else ""
         if (depth > 0) { // ran out of queue before seeing enough )
             Validate.fail("Did not find balanced marker at '$out'")
         }
@@ -269,7 +269,7 @@ class TokenQueue constructor(data: String?) {
     fun consumeWord(): String {
         val start: Int = pos
         while (matchesWord()) pos++
-        return queue!!.substring(start, pos)
+        return queue.substring(start, pos)
     }
 
     /**
@@ -280,7 +280,7 @@ class TokenQueue constructor(data: String?) {
     fun consumeElementSelector(): String {
         val start: Int = pos
         while (!isEmpty && (matchesWord() || matchesAny("*|", "|", "_", "-"))) pos++
-        return queue!!.substring(start, pos)
+        return queue.substring(start, pos)
     }
 
     /**
@@ -291,7 +291,7 @@ class TokenQueue constructor(data: String?) {
     fun consumeCssIdentifier(): String {
         val start: Int = pos
         while (!isEmpty && (matchesWord() || matchesAny('-', '_'))) pos++
-        return queue!!.substring(start, pos)
+        return queue.substring(start, pos)
     }
 
     /**
@@ -299,13 +299,13 @@ class TokenQueue constructor(data: String?) {
      * @return remained of queue.
      */
     fun remainder(): String {
-        val remainder: String = queue!!.substring(pos)
-        pos = queue!!.length
+        val remainder: String = queue.substring(pos)
+        pos = queue.length
         return remainder
     }
 
     override fun toString(): String {
-        return queue!!.substring(pos)
+        return queue.substring(pos)
     }
 
     companion object {

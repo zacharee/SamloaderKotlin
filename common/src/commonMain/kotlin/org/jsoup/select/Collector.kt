@@ -15,7 +15,7 @@ object Collector {
      * @param root root of tree to descend
      * @return list of matches; empty if none
      */
-    fun collect(eval: Evaluator?, root: Element?): Elements {
+    fun collect(eval: Evaluator, root: Element): Elements {
         val elements = Elements()
         NodeTraversor.traverse(Accumulator(root, elements, eval), root)
         return elements
@@ -28,20 +28,20 @@ object Collector {
      * @param root root of tree to descend
      * @return the first match; `null` if none
      */
-    fun findFirst(eval: Evaluator?, root: Element): Element? {
+    fun findFirst(eval: Evaluator, root: Element): Element? {
         val finder = FirstFinder(eval)
         return finder.find(root, root)
     }
 
     private class Accumulator(
-        private val root: Element?,
+        private val root: Element,
         private val elements: Elements,
-        private val eval: Evaluator?
+        private val eval: Evaluator
     ) : NodeVisitor {
         override fun head(node: Node, depth: Int) {
             if (node is Element) {
                 val el: Element = node
-                if (eval!!.matches(root!!, el)) elements.add(el)
+                if (eval.matches(root, el)) elements.add(el)
             }
         }
 

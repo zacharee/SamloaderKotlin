@@ -43,7 +43,7 @@ class DocumentType(name: String?, publicId: String?, systemId: String?) : LeafNo
      * Get this doctype's name (when set, or empty string)
      * @return doctype name
      */
-    fun name(): String? {
+    fun name(): String {
         return attr(NAME)
     }
 
@@ -51,7 +51,7 @@ class DocumentType(name: String?, publicId: String?, systemId: String?) : LeafNo
      * Get this doctype's Public ID (when set, or empty string)
      * @return doctype Public ID
      */
-    fun publicId(): String? {
+    fun publicId(): String {
         return attr(PUBLIC_ID)
     }
 
@@ -59,7 +59,7 @@ class DocumentType(name: String?, publicId: String?, systemId: String?) : LeafNo
      * Get this doctype's System ID (when set, or empty string)
      * @return doctype System ID
      */
-    fun systemId(): String? {
+    fun systemId(): String {
         return attr(SYSTEM_ID)
     }
 
@@ -68,14 +68,14 @@ class DocumentType(name: String?, publicId: String?, systemId: String?) : LeafNo
     }
 
     @Throws(IOException::class)
-    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable, depth: Int, out: Document.OutputSettings) {
         // add a newline if the doctype has a preceding node (which must be a comment)
-        if (sibIndex > 0 && out!!.prettyPrint()) accum!!.append('\n')
-        if (out!!.syntax() == Document.OutputSettings.Syntax.html && !has(PUBLIC_ID) && !has(SYSTEM_ID)) {
+        if (sibIndex > 0 && out.prettyPrint()) accum.append('\n')
+        if (out.syntax() == Document.OutputSettings.Syntax.html && !has(PUBLIC_ID) && !has(SYSTEM_ID)) {
             // looks like a html5 doctype, go lowercase for aesthetics
-            accum!!.append("<!doctype")
+            accum.append("<!doctype")
         } else {
-            accum!!.append("<!DOCTYPE")
+            accum.append("<!DOCTYPE")
         }
         if (has(NAME)) accum.append(" ").append(attr(NAME))
         if (has(PUB_SYS_KEY)) accum.append(" ").append(attr(PUB_SYS_KEY))
@@ -84,7 +84,7 @@ class DocumentType(name: String?, publicId: String?, systemId: String?) : LeafNo
         accum.append('>')
     }
 
-    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable, depth: Int, out: Document.OutputSettings) {}
 
     private fun has(attribute: String): Boolean {
         return !StringUtil.isBlank(attr(attribute))

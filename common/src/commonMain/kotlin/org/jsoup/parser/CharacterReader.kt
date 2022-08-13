@@ -316,7 +316,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
     fun consumeTo(seq: String): String {
         val offset: Int = nextIndexOf(seq)
         return if (offset != -1) {
-            val consumed: String = cacheString(charBuf, stringCache, bufPos, offset)
+            val consumed: String = cacheString(charBuf!!, stringCache, bufPos, offset)
             bufPos += offset
             consumed
         } else if (bufLength - bufPos < seq.length) {
@@ -326,7 +326,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             // the string we're looking for may be straddling a buffer boundary, so keep (length - 1) characters
             // unread in case they contain the beginning of the search string
             val endPos: Int = bufLength - seq.length + 1
-            val consumed: String = cacheString(charBuf, stringCache, bufPos, endPos - bufPos)
+            val consumed: String = cacheString(charBuf!!, stringCache, bufPos, endPos - bufPos)
             bufPos = endPos
             consumed
         }
@@ -354,7 +354,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             pos++
         }
         bufPos = pos
-        return if (pos > start) cacheString(charBuf, stringCache, start, pos - start) else ""
+        return if (pos > start) cacheString(charBuf!!, stringCache, start, pos - start) else ""
     }
 
     fun consumeToAnySorted(vararg chars: Char): String {
@@ -368,7 +368,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             pos++
         }
         bufPos = pos
-        return if (bufPos > start) cacheString(charBuf, stringCache, start, pos - start) else ""
+        return if (bufPos > start) cacheString(charBuf!!, stringCache, start, pos - start) else ""
     }
 
     fun consumeData(): String {
@@ -385,7 +385,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             }
         }
         bufPos = pos
-        return if (pos > start) cacheString(charBuf, stringCache, start, pos - start) else ""
+        return if (pos > start) cacheString(charBuf!!, stringCache, start, pos - start) else ""
     }
 
     fun consumeAttributeQuoted(single: Boolean): String {
@@ -413,7 +413,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             }
         }
         bufPos = pos
-        return if (pos > start) cacheString(charBuf, stringCache, start, pos - start) else ""
+        return if (pos > start) cacheString(charBuf!!, stringCache, start, pos - start) else ""
     }
 
     fun consumeRawData(): String {
@@ -430,7 +430,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             }
         }
         bufPos = pos
-        return if (pos > start) cacheString(charBuf, stringCache, start, pos - start) else ""
+        return if (pos > start) cacheString(charBuf!!, stringCache, start, pos - start) else ""
     }
 
     fun consumeTagName(): String {
@@ -448,12 +448,12 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             pos++
         }
         bufPos = pos
-        return if (pos > start) cacheString(charBuf, stringCache, start, pos - start) else ""
+        return if (pos > start) cacheString(charBuf!!, stringCache, start, pos - start) else ""
     }
 
     fun consumeToEnd(): String {
         bufferUp()
-        val data: String = cacheString(charBuf, stringCache, bufPos, bufLength - bufPos)
+        val data: String = cacheString(charBuf!!, stringCache, bufPos, bufLength - bufPos)
         bufPos = bufLength
         return data
     }
@@ -465,7 +465,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             val c: Char = charBuf!![bufPos].toInt().toChar()
             if ((c in 'A'..'Z') || (c in 'a'..'z') || c.isLetter()) bufPos++ else break
         }
-        return cacheString(charBuf, stringCache, start, bufPos - start)
+        return cacheString(charBuf!!, stringCache, start, bufPos - start)
     }
 
     fun consumeLetterThenDigitSequence(): String {
@@ -479,7 +479,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             val c: Char = charBuf!![bufPos].toInt().toChar()
             if (c in '0'..'9') bufPos++ else break
         }
-        return cacheString(charBuf, stringCache, start, bufPos - start)
+        return cacheString(charBuf!!, stringCache, start, bufPos - start)
     }
 
     fun consumeHexSequence(): String {
@@ -489,7 +489,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             val c: Char = charBuf!![bufPos].toInt().toChar()
             if ((c in '0'..'9') || (c in 'A'..'F') || (c in 'a'..'f')) bufPos++ else break
         }
-        return cacheString(charBuf, stringCache, start, bufPos - start)
+        return cacheString(charBuf!!, stringCache, start, bufPos - start)
     }
 
     fun consumeDigitSequence(): String {
@@ -499,7 +499,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             val c: Char = charBuf!![bufPos].toInt().toChar()
             if (c in '0'..'9') bufPos++ else break
         }
-        return cacheString(charBuf, stringCache, start, bufPos - start)
+        return cacheString(charBuf!!, stringCache, start, bufPos - start)
     }
 
     fun matches(c: Char): Boolean {
@@ -624,7 +624,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
 
     // just used for testing
     fun rangeEquals(start: Int, count: Int, cached: String): Boolean {
-        return rangeEquals(charBuf, start, count, cached)
+        return rangeEquals(charBuf!!, start, count, cached)
     }
 
     companion object {
@@ -644,15 +644,15 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
          * That saves both having to create objects as hash keys, and running through the entry list, at the expense of
          * some more duplicates.
          */
-        private fun cacheString(charBuf: ByteArray?, stringCache: Array<String?>?, start: Int, count: Int): String {
+        private fun cacheString(charBuf: ByteArray, stringCache: Array<String?>?, start: Int, count: Int): String {
             // limit (no cache):
-            if (count > maxStringCacheLen) return (charBuf)!!.concatToString(start, start + count)
+            if (count > maxStringCacheLen) return (charBuf).concatToString(start, start + count)
             if (count < 1) return ""
 
             // calculate hash:
             var hash = 0
             for (i in 0 until count) {
-                hash = 31 * hash + charBuf!![start + i].toInt()
+                hash = 31 * hash + charBuf[start + i].toInt()
             }
 
             // get from cache
@@ -660,7 +660,7 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
             var cached: String? = stringCache!![index]
             if (cached != null && rangeEquals(charBuf, start, count, cached)) // positive hit
                 return cached else {
-                cached = (charBuf)!!.concatToString(start, start + count)
+                cached = (charBuf).concatToString(start, start + count)
                 stringCache[index] =
                     cached // add or replace, assuming most recently used are most likely to recur next
             }
@@ -670,13 +670,13 @@ class CharacterReader constructor(input: Buffer, sz: Int = maxBufferLen) {
         /**
          * Check if the value of the provided range equals the string.
          */
-        fun rangeEquals(charBuf: ByteArray?, start: Int, count: Int, cached: String): Boolean {
+        fun rangeEquals(charBuf: ByteArray, start: Int, count: Int, cached: String): Boolean {
             var count: Int = count
             if (count == cached.length) {
                 var i: Int = start
                 var j = 0
                 while (count-- != 0) {
-                    if (charBuf!![i++].toInt().toChar() != cached[j++]) return false
+                    if (charBuf[i++].toInt().toChar() != cached[j++]) return false
                 }
                 return true
             }

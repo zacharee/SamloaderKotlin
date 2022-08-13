@@ -25,11 +25,8 @@ class HtmlTreeBuilder : TreeBuilder() {
             : Element? = null
     private var formattingElements // active (open) formatting elements
             : ArrayList<Element?> = arrayListOf()
-    private var tmplInsertMode // stack of Template Insertion modes
-            : ArrayList<HtmlTreeBuilderState>? = null
-    var pendingTableCharacters // chars in table to be shifted out
-            : MutableList<String?>? = null
-        private set
+    private var tmplInsertMode = ArrayList<HtmlTreeBuilderState>()
+    var pendingTableCharacters = ArrayList<String>()
     private var emptyEnd // reused empty end tag
             : Token.EndTag? = null
     private var framesetOk // if ok to go into frameset
@@ -58,8 +55,6 @@ class HtmlTreeBuilder : TreeBuilder() {
         headElement = null
         formElement = null
         contextElement = null
-        tmplInsertMode = ArrayList()
-        pendingTableCharacters = ArrayList()
         emptyEnd = Token.EndTag()
         framesetOk = true
         isFosterInserts = false
@@ -83,7 +78,7 @@ class HtmlTreeBuilder : TreeBuilder() {
                 doc!!.quirksMode(context.ownerDocument()!!.quirksMode())
 
             // initialise the tokeniser state:
-            val contextTag: String? = context.normalName()
+            val contextTag: String = context.normalName()
             when (contextTag) {
                 "title", "textarea" -> tokeniser!!.transition(TokeniserState.Rcdata)
                 "iframe", "noembed", "noframes", "style", "xml" -> tokeniser!!.transition(TokeniserState.Rawtext)
@@ -97,7 +92,7 @@ class HtmlTreeBuilder : TreeBuilder() {
 
                 else -> tokeniser!!.transition(TokeniserState.Data)
             }
-            root = Element(tagFor((contextTag)!!, settings), baseUri)
+            root = Element(tagFor((contextTag), settings), baseUri)
             doc!!.appendChild(root)
             stack.add(root)
             resetInsertionMode()
@@ -443,7 +438,7 @@ class HtmlTreeBuilder : TreeBuilder() {
                 last = true
                 if (isFragmentParsing) node = contextElement
             }
-            when (if (node != null) node.normalName() else "") {
+            when (node?.normalName() ?: "") {
                 "select" -> {
                     transition(HtmlTreeBuilderState.InSelect)
                     // todo - should loop up (with some limit) and check for table or template hits
@@ -540,7 +535,7 @@ class HtmlTreeBuilder : TreeBuilder() {
         val top: Int = if (bottom > MaxScopeSearchDepth) bottom - MaxScopeSearchDepth else 0
         // don't walk too far up the tree
         for (pos in bottom downTo top) {
-            val elName: String? = stack[pos].normalName()
+            val elName: String = stack[pos].normalName()
             if (StringUtil.inSorted(elName, targetNames)) return true
             if (StringUtil.inSorted(elName, baseTypes)) return false
             if (extraTypes != null && StringUtil.inSorted(elName, extraTypes)) return false
@@ -574,7 +569,7 @@ class HtmlTreeBuilder : TreeBuilder() {
     fun inSelectScope(targetName: String): Boolean {
         for (pos in stack.indices.reversed()) {
             val el: Element = (stack[pos])
-            val elName: String? = el.normalName()
+            val elName: String = el.normalName()
             if ((elName == targetName)) return true
             if (!StringUtil.inSorted(elName, TagSearchSelectScope)) // all elements except
                 return false
@@ -709,7 +704,7 @@ class HtmlTreeBuilder : TreeBuilder() {
             // 8. create new element from element, 9 insert into current node, onto stack
             skip = false // can only skip increment from 4.
             val newEl = Element(
-                tagFor((entry!!.normalName())!!, settings), null, entry.attributes()!!
+                tagFor((entry!!.normalName()), settings), null, entry.attributes()
                     .clone()
             )
             insert(newEl)
@@ -780,25 +775,25 @@ class HtmlTreeBuilder : TreeBuilder() {
 
     // Template Insertion Mode stack
     fun pushTemplateMode(state: HtmlTreeBuilderState) {
-        tmplInsertMode!!.add(state)
+        tmplInsertMode.add(state)
     }
 
 
     fun popTemplateMode(): HtmlTreeBuilderState? {
-        return if (tmplInsertMode!!.size > 0) {
-            tmplInsertMode!!.removeAt(tmplInsertMode!!.size - 1)
+        return if (tmplInsertMode.size > 0) {
+            tmplInsertMode.removeAt(tmplInsertMode.size - 1)
         } else {
             null
         }
     }
 
     fun templateModeSize(): Int {
-        return tmplInsertMode!!.size
+        return tmplInsertMode.size
     }
 
 
     fun currentTemplateMode(): HtmlTreeBuilderState? {
-        return if ((tmplInsertMode!!.size > 0)) tmplInsertMode!![tmplInsertMode!!.size - 1] else null
+        return if ((tmplInsertMode.size > 0)) tmplInsertMode[tmplInsertMode.size - 1] else null
     }
 
     override fun toString(): String {

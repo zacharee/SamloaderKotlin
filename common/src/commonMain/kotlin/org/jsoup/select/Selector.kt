@@ -103,7 +103,7 @@ object Selector {
      * @return matching elements, empty if none
      * @throws SelectorParseException (unchecked) on an invalid CSS query.
      */
-    fun select(query: String?, root: Element?): Elements {
+    fun select(query: String, root: Element): Elements {
         Validate.notEmpty(query)
         return select(QueryParser.parse(query), root)
     }
@@ -115,7 +115,7 @@ object Selector {
      * @param root root element to descend into
      * @return matching elements, empty if none
      */
-    fun select(evaluator: Evaluator?, root: Element?): Elements {
+    fun select(evaluator: Evaluator, root: Element): Elements {
         Validate.notNull(evaluator)
         Validate.notNull(root)
         return Collector.collect(evaluator, root)
@@ -128,14 +128,14 @@ object Selector {
      * @param roots root elements to descend into
      * @return matching elements, empty if none
      */
-    fun select(query: String?, roots: Iterable<Element?>): Elements {
+    fun select(query: String, roots: Iterable<Element>): Elements {
         Validate.notEmpty(query)
         Validate.notNull(roots)
-        val evaluator: Evaluator? = QueryParser.parse(query)
+        val evaluator: Evaluator = QueryParser.parse(query)
         val elements = Elements()
         val seenElements: HashMap<Element, Element?> = HashMap()
         // dedupe elements by identity, not equality
-        for (root: Element? in roots) {
+        for (root: Element in roots) {
             val found: Elements = select(evaluator, root)
             for (el: Element in found) {
                 if (seenElements[el] === el || seenElements.put(el, el) == null) {
@@ -168,7 +168,7 @@ object Selector {
      * @param root root element to descend into
      * @return the matching element, or **null** if none.
      */
-    fun selectFirst(cssQuery: String?, root: Element): Element? {
+    fun selectFirst(cssQuery: String, root: Element): Element? {
         Validate.notEmpty(cssQuery)
         return Collector.findFirst(QueryParser.parse(cssQuery), root)
     }

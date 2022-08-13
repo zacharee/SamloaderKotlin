@@ -309,7 +309,7 @@ object StringUtil {
      * local string builder.
      *
      * @param separator the token to insert between strings
-     */ constructor(val separator: String?) {
+     */ constructor(private val separator: String?) {
         var sb: StringBuilder? = borrowBuilder() // sets null on builder release so can't accidentally be reused
         var first: Boolean = true
 

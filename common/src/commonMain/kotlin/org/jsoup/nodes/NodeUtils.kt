@@ -12,16 +12,16 @@ internal object NodeUtils {
      * Get the output setting for this node,  or if this node has no document (or parent), retrieve the default output
      * settings
      */
-    fun outputSettings(node: Node): Document.OutputSettings? {
+    fun outputSettings(node: Node): Document.OutputSettings {
         val owner = node.ownerDocument()
-        return if (owner != null) owner.outputSettings() else Document("").outputSettings()
+        return owner?.outputSettings() ?: Document("").outputSettings()
     }
 
     /**
      * Get the parser that was used to make this node, or the default HTML parser if it has no parent.
      */
-    fun parser(node: Node?): Parser {
-        val doc = node!!.ownerDocument()
+    fun parser(node: Node): Parser {
+        val doc = node.ownerDocument()
         return if (doc?.parser() != null) doc.parser() else Parser(HtmlTreeBuilder())
     }
 

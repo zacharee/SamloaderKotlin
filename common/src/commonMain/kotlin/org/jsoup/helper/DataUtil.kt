@@ -132,7 +132,7 @@ object DataUtil {
         charsetName: String?,
         baseUri: String,
         parser: Parser?
-    ): Document? {
+    ): Document {
         var charsetName: String? = charsetName
         if (input == null) {
             return Document(baseUri)
@@ -159,10 +159,10 @@ object DataUtil {
                 }
 
                 // look for <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">
-                val metaElements: Elements? = doc!!.select("meta[http-equiv=content-type], meta[charset]")
+                val metaElements: Elements = doc.select("meta[http-equiv=content-type], meta[charset]")
                 var foundCharset: String? = null // if not found, will keep utf-8 as best attempt
 
-                metaElements?.forEach { meta ->
+                metaElements.forEach { meta ->
                     if (meta.hasAttr("http-equiv")) foundCharset = getCharsetFromContentType(meta.attr("content"))
                     if (foundCharset == null && meta.hasAttr("charset")) foundCharset = meta.attr("charset")
                 }
@@ -199,7 +199,7 @@ object DataUtil {
             }
             if (doc == null) {
                 if (charsetName == null) charsetName = defaultCharsetName
-                val reader: BufferedSource = input.source().buffer() // Android level does not allow us try-with-resources
+                val reader: BufferedSource = input.source().buffer // Android level does not allow us try-with-resources
                 try {
                     if (bomCharset != null && bomCharset.offset) { // creating the buffered reader ignores the input pos, so must skip here
                         reader.skip(1)
@@ -212,7 +212,7 @@ object DataUtil {
                     }
                     val charset: Charset =
                         if ((charsetName == defaultCharsetName)) UTF_8 else Charset.forName(charsetName)
-                    doc!!.outputSettings()!!.charset(charset)
+                    doc.outputSettings().charset(charset)
                 } finally {
                     reader.close()
                 }
@@ -220,7 +220,7 @@ object DataUtil {
         } finally {
             input.source().close()
         }
-        return doc
+        return doc!!
     }
 
     /**

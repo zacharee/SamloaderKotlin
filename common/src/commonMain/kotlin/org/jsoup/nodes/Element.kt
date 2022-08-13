@@ -28,7 +28,6 @@ open class Element constructor(
             : MutableList<Element>? = null
     var childElements: MutableList<Node> = EmptyNodes
 
-
     var attrs // field is nullable but all methods for attributes are non-null
             : Attributes?
 
@@ -81,10 +80,10 @@ open class Element constructor(
         return attrs != null
     }
 
-    override fun attributes(): Attributes? {
+    override fun attributes(): Attributes {
         if (attrs == null) // not using hasAttributes, as doesn't clear warning
             attrs = Attributes()
-        return attrs
+        return attrs!!
     }
 
     override fun baseUri(): String {
@@ -92,7 +91,7 @@ open class Element constructor(
     }
 
     override fun doSetBaseUri(baseUri: String?) {
-        attributes()!!.put(BaseUriKey, baseUri)
+        attributes().put(BaseUriKey, baseUri)
     }
 
     override fun nodeName(): String {
@@ -191,8 +190,8 @@ open class Element constructor(
      *
      * @return this element
      */
-    fun attr(attributeKey: String?, attributeValue: Boolean): Element {
-        attributes()!!.put(attributeKey, attributeValue)
+    fun attr(attributeKey: String, attributeValue: Boolean): Element {
+        attributes().put(attributeKey, attributeValue)
         return this
     }
 
@@ -212,8 +211,8 @@ open class Element constructor(
      * You can find elements that have data attributes using the `[^data-]` attribute key prefix selector.
      * @return a map of `key=value` custom data attributes.
      */
-    fun dataset(): Map<String?, String?> {
-        return attributes()!!.dataset()
+    fun dataset(): Map<String, String?> {
+        return attributes().dataset()
     }
 
 
@@ -368,7 +367,7 @@ open class Element constructor(
      * @see QueryParser.parse
      * @throws Selector.SelectorParseException (unchecked) on an invalid CSS query.
      */
-    fun select(cssQuery: String?): Elements {
+    fun select(cssQuery: String): Elements {
         return Selector.select(cssQuery, this)
     }
 
@@ -379,7 +378,7 @@ open class Element constructor(
      * @param evaluator an element evaluator
      * @return an [Elements] list containing elements that match the query (empty if none match)
      */
-    fun select(evaluator: Evaluator?): Elements {
+    fun select(evaluator: Evaluator): Elements {
         return Selector.select(evaluator, this)
     }
 
@@ -395,7 +394,7 @@ open class Element constructor(
      * @see .expectFirst
      */
 
-    fun selectFirst(cssQuery: String?): Element? {
+    fun selectFirst(cssQuery: String): Element? {
         return Selector.selectFirst(cssQuery, this)
     }
 
@@ -408,7 +407,7 @@ open class Element constructor(
      * match.
      */
 
-    fun selectFirst(evaluator: Evaluator?): Element? {
+    fun selectFirst(evaluator: Evaluator): Element? {
         return Collector.findFirst(evaluator, this)
     }
 
@@ -420,7 +419,7 @@ open class Element constructor(
      * @throws IllegalArgumentException if no match is found
      * @since 1.15.2
      */
-    fun expectFirst(cssQuery: String?): Element {
+    fun expectFirst(cssQuery: String): Element {
         return Validate.ensureNotNull(Selector.selectFirst(cssQuery, this)) as Element
     }
 
@@ -431,7 +430,7 @@ open class Element constructor(
      * @param cssQuery a [Selector] CSS query
      * @return if this element matches the query
      */
-    fun `is`(cssQuery: String?): Boolean {
+    fun `is`(cssQuery: String): Boolean {
         return `is`(QueryParser.parse(cssQuery))
     }
 
@@ -440,8 +439,8 @@ open class Element constructor(
      * @param evaluator an element evaluator
      * @return if this element matches
      */
-    fun `is`(evaluator: Evaluator?): Boolean {
-        return evaluator!!.matches(root()!!, this)
+    fun `is`(evaluator: Evaluator): Boolean {
+        return evaluator.matches(root()!!, this)
     }
 
     /**
@@ -452,7 +451,7 @@ open class Element constructor(
      * found.
      */
 
-    fun closest(cssQuery: String?): Element? {
+    fun closest(cssQuery: String): Element? {
         return closest(QueryParser.parse(cssQuery))
     }
 
@@ -464,12 +463,12 @@ open class Element constructor(
      * found.
      */
 
-    fun closest(evaluator: Evaluator?): Element? {
+    fun closest(evaluator: Evaluator): Element? {
         Validate.notNull(evaluator)
         var el: Element? = this
         val root = root()
         do {
-            if (evaluator!!.matches(root!!, el!!)) return el
+            if (evaluator.matches(root!!, el!!)) return el
             el = el.parent()
         } while (el != null)
         return null
@@ -544,7 +543,7 @@ open class Element constructor(
      * @return this Element, for chaining
      * @see .insertChildren
      */
-    fun appendChildren(children: Collection<Node>?): Element {
+    fun appendChildren(children: Collection<Node>): Element {
         insertChildren(-1, children)
         return this
     }
@@ -567,9 +566,9 @@ open class Element constructor(
      * @param child node to add.
      * @return this element, so that you can add more child nodes or elements.
      */
-    fun prependChild(child: Node?): Element {
+    fun prependChild(child: Node): Element {
         Validate.notNull(child)
-        addChildren(0, child!!)
+        addChildren(0, child)
         return this
     }
 
@@ -580,7 +579,7 @@ open class Element constructor(
      * @return this Element, for chaining
      * @see .insertChildren
      */
-    fun prependChildren(children: Collection<Node>?): Element {
+    fun prependChildren(children: Collection<Node>): Element {
         insertChildren(0, children)
         return this
     }
@@ -594,13 +593,13 @@ open class Element constructor(
      * @param children child nodes to insert
      * @return this element, for chaining.
      */
-    fun insertChildren(index: Int, children: Collection<Node>?): Element {
+    fun insertChildren(index: Int, children: Collection<Node>): Element {
         var index = index
         Validate.notNull(children, "Children collection to be inserted must not be null.")
         val currentSize = childNodeSize()
         if (index < 0) index += currentSize + 1 // roll around
         Validate.isTrue(index in 0..currentSize, "Insert position out of bounds.")
-        val nodes = ArrayList(children!!)
+        val nodes = ArrayList(children)
         val nodeArray = nodes.toTypedArray()
         addChildren(index, *nodeArray)
         return this
@@ -689,7 +688,7 @@ open class Element constructor(
      * @return this element
      * @see .html
      */
-    fun append(html: String?): Element {
+    fun append(html: String): Element {
         Validate.notNull(html)
         val nodes = NodeUtils.parser(this)
             .parseFragmentInput(html, this, baseUri())
@@ -703,7 +702,7 @@ open class Element constructor(
      * @return this element
      * @see .html
      */
-    fun prepend(html: String?): Element {
+    fun prepend(html: String): Element {
         Validate.notNull(html)
         val nodes = NodeUtils.parser(this)
             .parseFragmentInput(html, this, baseUri())
@@ -718,7 +717,7 @@ open class Element constructor(
      * @return this element, for chaining
      * @see .after
      */
-    override fun before(html: String): Element? {
+    override fun before(html: String): Element {
         return super.before(html) as Element
     }
 
@@ -728,7 +727,7 @@ open class Element constructor(
      * @return this Element, for chaining
      * @see .after
      */
-    override fun before(node: Node?): Element? {
+    override fun before(node: Node): Element {
         return super.before(node) as Element
     }
 
@@ -739,7 +738,7 @@ open class Element constructor(
      * @return this element, for chaining
      * @see .before
      */
-    override fun after(html: String): Element? {
+    override fun after(html: String): Element {
         return super.after(html) as Element
     }
 
@@ -749,7 +748,7 @@ open class Element constructor(
      * @return this element, for chaining
      * @see .before
      */
-    override fun after(node: Node?): Element? {
+    override fun after(node: Node): Element {
         return super.after(node) as Element
     }
 
@@ -768,7 +767,7 @@ open class Element constructor(
      * @param html HTML to wrap around this element, e.g. `<div class="head"></div>`. Can be arbitrarily deep.
      * @return this element, for chaining.
      */
-    override fun wrap(html: String?): Element? {
+    override fun wrap(html: String): Element {
         return super.wrap(html) as Element
     }
 
@@ -1033,7 +1032,7 @@ open class Element constructor(
      * @param value value of the attribute
      * @return elements that have this attribute with this value, empty if none
      */
-    fun getElementsByAttributeValue(key: String?, value: String?): Elements {
+    fun getElementsByAttributeValue(key: String, value: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValue(key, value), this)
     }
 
@@ -1044,7 +1043,7 @@ open class Element constructor(
      * @param value value of the attribute
      * @return elements that do not have a matching attribute
      */
-    fun getElementsByAttributeValueNot(key: String?, value: String?): Elements {
+    fun getElementsByAttributeValueNot(key: String, value: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValueNot(key, value), this)
     }
 
@@ -1055,7 +1054,7 @@ open class Element constructor(
      * @param valuePrefix start of attribute value
      * @return elements that have attributes that start with the value prefix
      */
-    fun getElementsByAttributeValueStarting(key: String?, valuePrefix: String?): Elements {
+    fun getElementsByAttributeValueStarting(key: String, valuePrefix: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValueStarting(key, valuePrefix), this)
     }
 
@@ -1066,7 +1065,7 @@ open class Element constructor(
      * @param valueSuffix end of the attribute value
      * @return elements that have attributes that end with the value suffix
      */
-    fun getElementsByAttributeValueEnding(key: String?, valueSuffix: String?): Elements {
+    fun getElementsByAttributeValueEnding(key: String, valueSuffix: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValueEnding(key, valueSuffix), this)
     }
 
@@ -1077,7 +1076,7 @@ open class Element constructor(
      * @param match substring of value to search for
      * @return elements that have attributes containing this text
      */
-    fun getElementsByAttributeValueContaining(key: String?, match: String?): Elements {
+    fun getElementsByAttributeValueContaining(key: String, match: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValueContaining(key, match), this)
     }
 
@@ -1087,7 +1086,7 @@ open class Element constructor(
      * @param pattern compiled regular expression to match against attribute values
      * @return elements that have attributes matching this regular expression
      */
-    fun getElementsByAttributeValueMatching(key: String?, pattern: Regex): Elements {
+    fun getElementsByAttributeValueMatching(key: String, pattern: Regex): Elements {
         return Collector.collect(Evaluator.AttributeWithValueMatching(key, pattern), this)
     }
 
@@ -1097,7 +1096,7 @@ open class Element constructor(
      * @param regex regular expression to match against attribute values. You can use [embedded flags](http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded) (such as (?i) and (?m) to control regex options.
      * @return elements that have attributes matching this regular expression
      */
-    fun getElementsByAttributeValueMatching(key: String?, regex: String): Elements {
+    fun getElementsByAttributeValueMatching(key: String, regex: String): Elements {
         val pattern = try {
             Regex(regex)
         } catch (e: Exception) {
@@ -1373,17 +1372,25 @@ open class Element constructor(
     fun data(): String {
         val sb = StringUtil.borrowBuilder()
         for (childNode in childElements) {
-            if (childNode is DataNode) {
-                sb.append(childNode.wholeData)
-            } else if (childNode is Comment) {
-                sb.append(childNode.data)
-            } else if (childNode is Element) {
-                val elementData = childNode.data()
-                sb.append(elementData)
-            } else if (childNode is CDataNode) {
-                // this shouldn't really happen because the html parser won't see the cdata as anything special when parsing script.
-                // but incase another type gets through.
-                sb.append(childNode.wholeText)
+            when (childNode) {
+                is DataNode -> {
+                    sb.append(childNode.wholeData)
+                }
+
+                is Comment -> {
+                    sb.append(childNode.data)
+                }
+
+                is Element -> {
+                    val elementData = childNode.data()
+                    sb.append(elementData)
+                }
+
+                is CDataNode -> {
+                    // this shouldn't really happen because the html parser won't see the cdata as anything special when parsing script.
+                    // but incase another type gets through.
+                    sb.append(childNode.wholeText)
+                }
             }
         }
         return StringUtil.releaseBuilder(sb)
@@ -1395,7 +1402,7 @@ open class Element constructor(
      * @return The literal class attribute, or **empty string** if no class attribute set.
      */
     fun className(): String {
-        return attr("class")!!.trim { it <= ' ' }
+        return attr("class").trim { it <= ' ' }
     }
 
     /**
@@ -1419,9 +1426,9 @@ open class Element constructor(
     fun classNames(classNames: Set<String>): Element {
         Validate.notNull(classNames)
         if (classNames.isEmpty()) {
-            attributes()!!.remove("class")
+            attributes().remove("class")
         } else {
-            attributes()!!.put("class", StringUtil.join(classNames, " "))
+            attributes().put("class", StringUtil.join(classNames, " "))
         }
         return this
     }
@@ -1550,37 +1557,37 @@ open class Element constructor(
         return Range.of(this, false)
     }
 
-    fun shouldIndent(out: Document.OutputSettings?): Boolean {
-        return out!!.prettyPrint() && isFormatAsBlock(out) && !isInlineable(out)
+    fun shouldIndent(out: Document.OutputSettings): Boolean {
+        return out.prettyPrint() && isFormatAsBlock(out) && !isInlineable(out)
     }
 
     @Throws(IOException::class)
-    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable, depth: Int, out: Document.OutputSettings) {
         if (shouldIndent(out)) {
             if (accum is StringBuilder) {
-                if (accum.length > 0) indent(accum, depth, out!!)
+                if (accum.length > 0) indent(accum, depth, out)
             } else {
-                indent(accum!!, depth, out!!)
+                indent(accum, depth, out)
             }
         }
-        accum!!.append('<').append(tagName())
+        accum.append('<').append(tagName())
         if (attrs != null) attrs!!.html(accum, out)
 
         // selfclosing includes unknown tags, isEmpty defines tags that are always empty
         if (childElements.isEmpty() && tag.isSelfClosing()) {
-            if (out!!.syntax() == Document.OutputSettings.Syntax.html && tag.isEmpty) accum.append('>') else accum.append(
+            if (out.syntax() == Document.OutputSettings.Syntax.html && tag.isEmpty) accum.append('>') else accum.append(
                 " />"
             ) // <img> in html, <img /> in xml
         } else accum.append('>')
     }
 
     @Throws(IOException::class)
-    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlTail(accum: Appendable, depth: Int, out: Document.OutputSettings) {
         if (!(childElements.isEmpty() && tag.isSelfClosing())) {
-            if (out!!.prettyPrint() && childElements.isNotEmpty() && (tag.formatAsBlock() || out.outline()) && (childElements.size > 1 || childElements.size == 1) && childElements[0] is Element) indent(
-                accum!!, depth, out
+            if (out.prettyPrint() && childElements.isNotEmpty() && (tag.formatAsBlock() || out.outline()) && (childElements.size > 1 || childElements.size == 1) && childElements[0] is Element) indent(
+                accum, depth, out
             )
-            accum!!.append("</").append(tagName()).append('>')
+            accum.append("</").append(tagName()).append('>')
         }
     }
 
@@ -1595,10 +1602,10 @@ open class Element constructor(
         val accum = StringUtil.borrowBuilder()
         html(accum)
         val html = StringUtil.releaseBuilder(accum)
-        return if (NodeUtils.outputSettings(this)!!.prettyPrint()) html.trim { it <= ' ' } else html
+        return if (NodeUtils.outputSettings(this).prettyPrint()) html.trim { it <= ' ' } else html
     }
 
-    override fun <T : Appendable?> html(appendable: T): T {
+    override fun <T : Appendable> html(appendable: T): T {
         val size = childElements.size
         for (i in 0 until size) childElements[i].outerHtml(appendable)
         return appendable
@@ -1610,7 +1617,7 @@ open class Element constructor(
      * @return this element
      * @see .append
      */
-    fun html(html: String?): Element {
+    fun html(html: String): Element {
         empty()
         append(html)
         return this
@@ -1625,7 +1632,7 @@ open class Element constructor(
         return Element(tag, baseUri(), if (attrs == null) null else attrs!!.clone())
     }
 
-    override fun doClone( parent: Node?): Element {
+    override fun doClone(parent: Node?): Element {
         val clone = super.doClone(parent) as Element
         clone.attrs = if (attrs != null) attrs!!.clone() else null
         clone.childElements = NodeList(clone, childElements.size)
@@ -1642,7 +1649,7 @@ open class Element constructor(
         return this
     }
 
-    override fun removeAttr(attributeKey: String?): Element? {
+    override fun removeAttr(attributeKey: String): Element {
         return super.removeAttr(attributeKey) as Element
     }
 
@@ -1650,7 +1657,7 @@ open class Element constructor(
         return super.root() as Element // probably a document, but always at least an element
     }
 
-    override fun traverse(nodeVisitor: NodeVisitor): Element? {
+    override fun traverse(nodeVisitor: NodeVisitor): Element {
         return super.traverse(nodeVisitor) as Element
     }
 
@@ -1678,7 +1685,7 @@ open class Element constructor(
         return this
     }
 
-    override fun filter(nodeFilter: NodeFilter): Element? {
+    override fun filter(nodeFilter: NodeFilter): Element {
         return super.filter(nodeFilter) as Element
     }
 

@@ -39,7 +39,7 @@ class Cleaner constructor(private val safelist: Safelist) {
         Validate.notNull(dirtyDocument)
         val clean: Document = Document.createShell(dirtyDocument.baseUri())
         copySafeNodes(dirtyDocument.body(), clean.body())
-        clean.outputSettings(dirtyDocument.outputSettings()?.clone())
+        clean.outputSettings(dirtyDocument.outputSettings().clone())
         return clean
     }
 
@@ -62,7 +62,7 @@ class Cleaner constructor(private val safelist: Safelist) {
         return (numDiscarded == 0 && dirtyDocument.head().childNodes().isEmpty()) // because we only look at the body, but we start from a shell, make sure there's nothing in the head
     }
 
-    fun isValidBodyHtml(bodyHtml: String?): Boolean {
+    fun isValidBodyHtml(bodyHtml: String): Boolean {
         val clean: Document = Document.createShell("")
         val dirty: Document = Document.createShell("")
         val errorList: ParseErrorList = ParseErrorList.tracking(1)
@@ -99,11 +99,11 @@ class Cleaner constructor(private val safelist: Safelist) {
                 }
             } else if (node is TextNode) {
                 val sourceText: TextNode = node
-                val destText = TextNode(sourceText.wholeText!!)
+                val destText = TextNode(sourceText.wholeText)
                 destination?.appendChild(destText)
             } else if (node is DataNode && safelist.isSafeTag(node.parent()!!.nodeName())) {
                 val sourceData: DataNode = node
-                val destData = DataNode(sourceData.wholeData!!)
+                val destData = DataNode(sourceData.wholeData)
                 destination?.appendChild(destData)
             } else { // else, we don't care about comments, xml proc instructions, etc
                 numDiscarded++
@@ -128,8 +128,8 @@ class Cleaner constructor(private val safelist: Safelist) {
         val destAttrs = Attributes()
         val dest = Element(valueOf(sourceTag), sourceEl.baseUri(), destAttrs)
         var numDiscarded = 0
-        val sourceAttrs: Attributes? = sourceEl.attributes()
-        sourceAttrs?.forEach { sourceAttr ->
+        val sourceAttrs: Attributes = sourceEl.attributes()
+        sourceAttrs.forEach { sourceAttr ->
             if (safelist.isSafeAttribute(sourceTag, sourceEl, sourceAttr!!)) destAttrs.put(sourceAttr) else numDiscarded++
         }
         val enforcedAttrs: Attributes = safelist.getEnforcedAttributes(sourceTag)

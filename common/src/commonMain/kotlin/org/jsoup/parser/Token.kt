@@ -119,13 +119,10 @@ abstract class Token private constructor() {
             if (attributes == null) attributes = Attributes()
             if (hasAttrName && attributes!!.size() < MaxAttributes) {
                 // the tokeniser has skipped whitespace control chars, but trimming could collapse to empty for other control codes, so verify here
-                var name: String = if (attrName.length > 0) attrName.toString() else (attrNameS)!!
+                var name: String = if (attrName.isNotEmpty()) attrName.toString() else (attrNameS)!!
                 name = name.trim { it <= ' ' }
                 if (name.isNotEmpty()) {
-                    val value: String?
-                    if (hasAttrValue) value =
-                        if (attrValue.isNotEmpty()) attrValue.toString() else attrValueS else if (hasEmptyAttrValue) value =
-                        "" else value = null
+                    val value = if (hasAttrValue) if (attrValue.isNotEmpty()) attrValue.toString() else attrValueS else if (hasEmptyAttrValue) "" else null
                     // note that we add, not put. So that the first is kept, and rest are deduped, once in a context where case sensitivity is known (the appropriate tree builder).
                     attributes!!.add(name, value)
                 }
@@ -282,7 +279,7 @@ abstract class Token private constructor() {
         }
 
         override fun toString(): String {
-            if (hasAttributes() && attributes!!.size() > 0) return "<" + toStringName() + " " + attributes.toString() + ">" else return "<" + toStringName() + ">"
+            return if (hasAttributes() && attributes!!.size() > 0) "<" + toStringName() + " " + attributes.toString() + ">" else "<" + toStringName() + ">"
         }
     }
 
@@ -360,7 +357,7 @@ abstract class Token private constructor() {
             return this
         }
 
-        fun data(data: String?): Character {
+        fun data(data: String): Character {
             this.data = data
             return this
         }
@@ -370,7 +367,7 @@ abstract class Token private constructor() {
         }
     }
 
-    internal class CData constructor(data: String?) : Character() {
+    internal class CData constructor(data: String) : Character() {
         init {
             data(data)
         }

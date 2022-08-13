@@ -20,12 +20,12 @@ class XmlTreeBuilder : TreeBuilder() {
         super.initialiseParse(input, baseUri, parser)
         stack.add((doc)!!) // place the document onto the stack. differs from HtmlTreeBuilder (not on stack)
         doc!!.outputSettings()
-            ?.syntax(Document.OutputSettings.Syntax.xml)
-            ?.escapeMode(Entities.EscapeMode.xhtml())
-            ?.prettyPrint(false) // as XML, we don't understand what whitespace is significant or not
+            .syntax(Document.OutputSettings.Syntax.xml)
+            .escapeMode(Entities.EscapeMode.xhtml())
+            .prettyPrint(false) // as XML, we don't understand what whitespace is significant or not
     }
 
-    fun parse(input: String, baseUri: String): Document? {
+    fun parse(input: String, baseUri: String): Document {
         return parse((input), baseUri, Parser(this))
     }
 
@@ -86,8 +86,8 @@ class XmlTreeBuilder : TreeBuilder() {
     }
 
     fun insert(token: Token.Character) {
-        val data: String? = token.data
-        insertNode(if (token.isCData) CDataNode(data) else TextNode((data)!!), token)
+        val data: String = token.data!!
+        insertNode(if (token.isCData) CDataNode(data) else TextNode((data)), token)
     }
 
     fun insert(d: Token.Doctype?) {

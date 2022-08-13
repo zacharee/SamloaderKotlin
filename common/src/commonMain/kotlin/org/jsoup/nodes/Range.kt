@@ -44,7 +44,7 @@ class Range
      * @param start if this is the starting range. `false` for Element end tags.
      */
     fun track(node: Node, start: Boolean) {
-        node.attributes()!!.putUserData(if (start) RangeKey else EndRangeKey, this)
+        node.attributes().putUserData(if (start) RangeKey else EndRangeKey, this)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -153,7 +153,7 @@ class Range
         fun of(node: Node, start: Boolean): Range {
             val key = if (start) RangeKey else EndRangeKey
             return if (!node.hasAttr(key)) Untracked else Validate.ensureNotNull(
-                node.attributes()!!.getUserData(key)
+                node.attributes().getUserData(key)
             ) as Range
         }
     }

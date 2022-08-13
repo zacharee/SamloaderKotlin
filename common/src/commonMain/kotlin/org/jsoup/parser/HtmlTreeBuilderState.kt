@@ -368,7 +368,7 @@ enum class HtmlTreeBuilderState {
                         val html: Element = tb.stack[0]
                         if (startTag.hasAttributes()) {
                             for (attribute: Attribute in startTag.attributes!!) {
-                                if (!html.hasAttr(attribute.key ?: "")) html.attributes()!!.put(attribute)
+                                if (!html.hasAttr(attribute.key)) html.attributes().put(attribute)
                             }
                         }
                     }
@@ -389,7 +389,7 @@ enum class HtmlTreeBuilderState {
                                 .also { body = (it) }) != null
                         ) { // we only ever put one body on stack
                             for (attribute: Attribute in startTag.attributes!!) {
-                                if (!body!!.hasAttr(attribute.key ?: "")) body!!.attributes()!!.put(attribute)
+                                if (!body!!.hasAttr(attribute.key)) body!!.attributes().put(attribute)
                             }
                         }
                     }
@@ -489,8 +489,7 @@ enum class HtmlTreeBuilderState {
                         val form: Element? = tb.formElement
                         if (form != null && startTag.hasAttribute("action")) {
                             val action: String = startTag.attributes!!["action"]
-                            form.attributes()!!
-                                .put("action", action) // always LC, so don't need to scan up for ownerdoc
+                            form.attributes().put("action", action) // always LC, so don't need to scan up for ownerdoc
                         }
                     }
                     tb.processStartTag("hr")
@@ -800,7 +799,7 @@ enum class HtmlTreeBuilderState {
                 val node: Element = stack[pos]
                 if ((node.normalName() == name)) {
                     tb.generateImpliedEndTags(name)
-                    if (!tb.currentElementIs((name)!!)) tb.error(this)
+                    if (!tb.currentElementIs((name))) tb.error(this)
                     tb.popStackToClose(name)
                     break
                 } else {
@@ -888,7 +887,7 @@ enum class HtmlTreeBuilderState {
                     }
                 }
                 val adopter = Element(formatEl.tag(), tb.baseUri)
-                adopter.attributes()!!.addAll(formatEl.attributes())
+                adopter.attributes().addAll(formatEl.attributes())
                 adopter.appendChildren(furthestBlock.childNodes())
                 furthestBlock.appendChild(adopter)
                 tb.removeFromActiveFormattingElements(formatEl)
@@ -1030,11 +1029,11 @@ enum class HtmlTreeBuilderState {
                     tb.error(this)
                     return false
                 } else {
-                    tb.pendingTableCharacters?.add(c.data)
+                    tb.pendingTableCharacters.add(c.data!!)
                 }
             } else { // todo - don't really like the way these table character data lists are built
-                if (tb.pendingTableCharacters!!.size > 0) {
-                    for (character: String? in tb.pendingTableCharacters!!) {
+                if (tb.pendingTableCharacters.size > 0) {
+                    for (character in tb.pendingTableCharacters) {
                         if (!isWhitespace(character)) {
                             // InTable anything else section:
                             tb.error(this)

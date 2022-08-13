@@ -99,12 +99,12 @@ class Attributes : Iterable<Attribute?> {
      * Adds a new attribute. Will produce duplicates if the key already exists.
      * @see Attributes.put
      */
-    fun add(key: String?,  value: String?): Attributes {
+    fun add(key: String,  value: String?): Attributes {
         addObject(key, value)
         return this
     }
 
-    private fun addObject(key: String?,  value: Any?) {
+    private fun addObject(key: String,  value: Any?) {
         checkCapacity(size + 1)
         keys[size] = key
         vals[size] = value
@@ -117,7 +117,7 @@ class Attributes : Iterable<Attribute?> {
      * @param value attribute value (may be null, to set a boolean attribute)
      * @return these attributes, for chaining
      */
-    fun put(key: String?,  value: String?): Attributes {
+    fun put(key: String,  value: String?): Attributes {
         Validate.notNull(key)
         val i = indexOfKey(key)
         if (i != NotFound) vals[i] = value else add(key, value)
@@ -141,7 +141,7 @@ class Attributes : Iterable<Attribute?> {
         return this
     }
 
-    fun putIgnoreCase(key: String?,  value: String?) {
+    fun putIgnoreCase(key: String,  value: String?) {
         val i = indexOfKeyIgnoreCase(key)
         if (i != NotFound) {
             vals[i] = value
@@ -156,7 +156,7 @@ class Attributes : Iterable<Attribute?> {
      * @param value attribute value
      * @return these attributes, for chaining
      */
-    fun put(key: String?, value: Boolean): Attributes {
+    fun put(key: String, value: Boolean): Attributes {
         if (value) putIgnoreCase(key, null) else remove(key)
         return this
     }
@@ -283,7 +283,7 @@ class Attributes : Iterable<Attribute?> {
             }
 
             override fun next(): Attribute {
-                val attr = Attribute(keys[i], vals[i] as String?, this@Attributes)
+                val attr = Attribute(keys[i]!!, vals[i] as String?, this@Attributes)
                 i++
                 return attr
             }
@@ -302,7 +302,7 @@ class Attributes : Iterable<Attribute?> {
         val list = ArrayList<Attribute>(size)
         for (i in 0 until size) {
             if (isInternalKey(keys[i])) continue  // skip internal keys
-            val attr = Attribute(keys[i], vals[i] as String?, this@Attributes)
+            val attr = Attribute(keys[i]!!, vals[i] as String?, this@Attributes)
             list.add(attr)
         }
         return list.toList()
@@ -313,7 +313,7 @@ class Attributes : Iterable<Attribute?> {
      * starting with `data-`.
      * @return map of custom data attributes.
      */
-    fun dataset(): Map<String?, String?> {
+    fun dataset(): Map<String, String?> {
         return Dataset(this)
     }
 
@@ -421,23 +421,23 @@ class Attributes : Iterable<Attribute?> {
         return dupes
     }
 
-    private class Dataset(private val attributes: Attributes) : AbstractMutableMap<String?, String?>() {
-        override val entries: MutableSet<MutableMap.MutableEntry<String?, String?>>
+    private class Dataset(private val attributes: Attributes) : AbstractMutableMap<String, String?>() {
+        override val entries: MutableSet<MutableMap.MutableEntry<String, String?>>
             get() = EntrySet()
 
-        override fun put(key: String?, value: String?): String? {
+        override fun put(key: String, value: String?): String? {
             val dataKey = dataKey(key)
             val oldValue = if (attributes.hasKey(dataKey)) attributes[dataKey] else null
             attributes.put(dataKey, value)
             return oldValue
         }
 
-        private inner class EntrySet : AbstractMutableSet<MutableMap.MutableEntry<String?, String?>>() {
-            override fun iterator(): MutableIterator<MutableMap.MutableEntry<String?, String?>> {
+        private inner class EntrySet : AbstractMutableSet<MutableMap.MutableEntry<String, String?>>() {
+            override fun iterator(): MutableIterator<MutableMap.MutableEntry<String, String?>> {
                 return DatasetIterator()
             }
 
-            override fun add(element: MutableMap.MutableEntry<String?, String?>): Boolean {
+            override fun add(element: MutableMap.MutableEntry<String, String?>): Boolean {
                 throw UnsupportedOperationException("Not supported")
             }
 
@@ -450,7 +450,7 @@ class Attributes : Iterable<Attribute?> {
                 }
         }
 
-        private inner class DatasetIterator : MutableIterator<MutableMap.MutableEntry<String?, String?>> {
+        private inner class DatasetIterator : MutableIterator<MutableMap.MutableEntry<String, String?>> {
             private val attrIter: Iterator<Attribute> = attributes.iterator()
             private var attr: Attribute? = null
             override fun hasNext(): Boolean {
@@ -461,8 +461,8 @@ class Attributes : Iterable<Attribute?> {
                 return false
             }
 
-            override fun next(): MutableMap.MutableEntry<String?, String?> {
-                return Attribute(attr!!.key?.substring(dataPrefix.length), attr!!.value)
+            override fun next(): MutableMap.MutableEntry<String, String?> {
+                return Attribute(attr!!.key.substring(dataPrefix.length), attr!!.value)
             }
 
             override fun remove() {

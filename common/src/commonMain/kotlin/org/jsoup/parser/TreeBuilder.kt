@@ -24,7 +24,7 @@ abstract class TreeBuilder {
             : MutableMap<String, Tag?>? = null
     private val start: Token.StartTag = Token.StartTag() // start tag to process
     private val end: Token.EndTag = Token.EndTag()
-    abstract fun defaultSettings(): ParseSettings?
+    abstract fun defaultSettings(): ParseSettings
     private var trackSourceRange // optionally tracks the source range of nodes
             : Boolean = false
 
@@ -45,7 +45,7 @@ abstract class TreeBuilder {
         this.baseUri = baseUri
     }
 
-    fun parse(input: Buffer, baseUri: String, parser: Parser): Document? {
+    fun parse(input: Buffer, baseUri: String, parser: Parser): Document {
         initialiseParse(CharacterReader(input), baseUri, parser)
 
         runParser()
@@ -55,10 +55,10 @@ abstract class TreeBuilder {
         reader = null
         tokeniser = null
         seenTags = null
-        return doc
+        return doc!!
     }
 
-    fun parse(input: String, baseUri: String, parser: Parser): Document? {
+    fun parse(input: String, baseUri: String, parser: Parser): Document {
         initialiseParse(CharacterReader(input), baseUri, parser)
         runParser()
 
@@ -67,7 +67,7 @@ abstract class TreeBuilder {
         reader = null
         tokeniser = null
         seenTags = null
-        return doc
+        return doc!!
     }
 
     /**

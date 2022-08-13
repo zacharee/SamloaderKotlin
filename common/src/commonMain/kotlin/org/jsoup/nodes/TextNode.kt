@@ -42,7 +42,7 @@ open class TextNode(text: String) : LeafNode() {
      * @param text unencoded text
      * @return this, for chaining
      */
-    fun text(text: String?): TextNode {
+    fun text(text: String): TextNode {
         coreValue(text)
         return this
     }
@@ -51,7 +51,7 @@ open class TextNode(text: String) : LeafNode() {
      * Get the (unencoded) text of this text node, including any newlines and spaces present in the original.
      * @return text
      */
-    val wholeText: String?
+    val wholeText: String
         get() = coreValue()
 
     /**
@@ -70,7 +70,7 @@ open class TextNode(text: String) : LeafNode() {
     fun splitText(offset: Int): TextNode {
         val text = coreValue()
         Validate.isTrue(offset >= 0, "Split offset must be not be negative")
-        Validate.isTrue(offset < text!!.length, "Split offset must not be greater than current text length")
+        Validate.isTrue(offset < text.length, "Split offset must not be greater than current text length")
         val head = text.substring(0, offset)
         val tail = text.substring(offset)
         text(head)
@@ -80,8 +80,8 @@ open class TextNode(text: String) : LeafNode() {
     }
 
     @Throws(IOException::class)
-    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
-        val prettyPrint = out!!.prettyPrint()
+    override fun outerHtmlHead(accum: Appendable, depth: Int, out: Document.OutputSettings) {
+        val prettyPrint = out.prettyPrint()
         val parent = if (parNode is Element) parNode as Element else null
         val normaliseWhite = prettyPrint && !Element.preserveWhitespace(parNode)
         var trimLeading = false
@@ -99,13 +99,13 @@ open class TextNode(text: String) : LeafNode() {
             if (sibIndex == 0 && parent != null && parent.tag()
                     .formatAsBlock() && !isBlank || out.outline() && siblingNodes().isNotEmpty() && !isBlank
             ) indent(
-                accum!!, depth, out
+                accum, depth, out
             )
         }
         Entities.escape(accum, coreValue(), out, false, normaliseWhite, trimLeading, trimTrailing)
     }
 
-    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable, depth: Int, out: Document.OutputSettings) {}
 
     override fun toString(): String {
         return outerHtml()!!

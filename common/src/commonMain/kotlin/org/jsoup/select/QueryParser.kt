@@ -13,13 +13,13 @@ import org.jsoup.select.Evaluator.*
 class QueryParser private constructor(query: String?) {
     private val tq: TokenQueue
     private val query: String
-    private val evals: MutableList<Evaluator?> = ArrayList()
+    private val evals: MutableList<Evaluator> = ArrayList()
 
     /**
      * Parse the query
      * @return Evaluator
      */
-    fun parse(): Evaluator? {
+    fun parse(): Evaluator {
         tq.consumeWhitespace()
         if (tq.matchesAny(*combinators)) { // if starts with a combinator, use root as elements
             evals.add(StructuralEvaluator.Root())
@@ -47,7 +47,7 @@ class QueryParser private constructor(query: String?) {
         val subQuery: String = consumeSubQuery() // support multi > childs
         var rootEval: Evaluator? // the new topmost evaluator
         var currentEval: Evaluator? // the evaluator the new eval will be combined to. could be root, or rightmost or.
-        val newEval: Evaluator? = parse(subQuery) // the evaluator to add into target evaluator
+        val newEval: Evaluator = parse(subQuery) // the evaluator to add into target evaluator
         var replaceRightMost = false
         if (evals.size == 1) {
             currentEval = evals[0]
@@ -349,7 +349,7 @@ class QueryParser private constructor(query: String?) {
          * @return Evaluator
          * @see Selector selector query syntax
          */
-        fun parse(query: String?): Evaluator? {
+        fun parse(query: String): Evaluator {
             try {
                 val p = QueryParser(query)
                 return p.parse()

@@ -56,10 +56,10 @@ class XmlDeclaration(name: String, isProcessingInstruction: Boolean) : LeafNode(
         }
 
     @Throws(IOException::class)
-    private fun getWholeDeclaration(accum: Appendable?, out: Document.OutputSettings?) {
-        for (attribute: Attribute in attributes()!!) {
+    private fun getWholeDeclaration(accum: Appendable, out: Document.OutputSettings) {
+        for (attribute: Attribute in attributes()) {
             if (attribute.key != nodeName()) { // skips coreValue (name)
-                accum!!.append(' ')
+                accum.append(' ')
                 // basically like Attribute, but skip empty vals in XML
                 accum.append(attribute.key)
                 if (attribute.value.isNotEmpty()) {
@@ -72,18 +72,18 @@ class XmlDeclaration(name: String, isProcessingInstruction: Boolean) : LeafNode(
     }
 
     @Throws(IOException::class)
-    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable, depth: Int, out: Document.OutputSettings) {
         accum
-            ?.append("<")
-            ?.append(if (isProcessingInstruction) "!" else "?")
-            ?.append(coreValue())
+            .append("<")
+            .append(if (isProcessingInstruction) "!" else "?")
+            .append(coreValue())
         getWholeDeclaration(accum, out)
         accum
-            ?.append(if (isProcessingInstruction) "!" else "?")
-            ?.append(">")
+            .append(if (isProcessingInstruction) "!" else "?")
+            .append(">")
     }
 
-    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable, depth: Int, out: Document.OutputSettings) {}
 
     override fun toString(): String {
         return outerHtml()!!

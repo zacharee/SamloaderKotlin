@@ -56,7 +56,7 @@ class Tokeniser constructor(// html input
             charsString = null
             token
         } else if (charsString != null) {
-            val token: Token? = charPending.data(charsString)
+            val token: Token = charPending.data(charsString!!)
             charsString = null
             token
         } else {

@@ -64,18 +64,18 @@ protected constructor() {
      * @see .hasAttr
      * @see .absUrl
      */
-    open fun attr(attributeKey: String?): String? {
+    open fun attr(attributeKey: String): String {
         Validate.notNull(attributeKey)
         if (!hasAttributes()) return EmptyString
-        val `val` = attributes()!!.getIgnoreCase(attributeKey)
-        return if (`val`.isNotEmpty()) `val` else if (attributeKey!!.startsWith("abs:")) absUrl(attributeKey.substring("abs:".length)) else ""
+        val `val` = attributes().getIgnoreCase(attributeKey)
+        return if (`val`.isNotEmpty()) `val` else if (attributeKey.startsWith("abs:")) absUrl(attributeKey.substring("abs:".length))!! else ""
     }
 
     /**
      * Get all of the element's attributes.
      * @return attributes (which implements iterable, in same order as presented in original HTML).
      */
-    abstract fun attributes(): Attributes?
+    abstract fun attributes(): Attributes
 
     /**
      * Get the number of attributes that this Node has.
@@ -84,7 +84,7 @@ protected constructor() {
      */
     fun attributesSize(): Int {
         // added so that we can test how many attributes exist without implicitly creating the Attributes object
-        return if (hasAttributes()) attributes()!!.size() else 0
+        return if (hasAttributes()) attributes().size() else 0
     }
 
     /**
@@ -96,8 +96,8 @@ protected constructor() {
      */
     open fun attr(attributeKey: String, attributeValue: String?): Node {
         var attributeKey = attributeKey
-        attributeKey = NodeUtils.parser(this).settings()!!.normalizeAttribute(attributeKey)
-        attributes()!!.putIgnoreCase(attributeKey, attributeValue)
+        attributeKey = NodeUtils.parser(this).settings().normalizeAttribute(attributeKey)
+        attributes().putIgnoreCase(attributeKey, attributeValue)
         return this
     }
 
@@ -111,9 +111,9 @@ protected constructor() {
         if (!hasAttributes()) return false
         if (attributeKey.startsWith("abs:")) {
             val key = attributeKey.substring("abs:".length)
-            if (attributes()!!.hasKeyIgnoreCase(key) && !absUrl(key).isNullOrEmpty()) return true
+            if (attributes().hasKeyIgnoreCase(key) && !absUrl(key).isNullOrEmpty()) return true
         }
-        return attributes()!!.hasKeyIgnoreCase(attributeKey)
+        return attributes().hasKeyIgnoreCase(attributeKey)
     }
 
     /**
@@ -121,9 +121,9 @@ protected constructor() {
      * @param attributeKey The attribute to remove.
      * @return this (for chaining)
      */
-    open fun removeAttr(attributeKey: String?): Node? {
+    open fun removeAttr(attributeKey: String): Node {
         Validate.notNull(attributeKey)
-        if (hasAttributes()) attributes()!!.removeIgnoreCase(attributeKey)
+        if (hasAttributes()) attributes().removeIgnoreCase(attributeKey)
         return this
     }
 
@@ -133,7 +133,7 @@ protected constructor() {
      */
     open fun clearAttributes(): Node {
         if (hasAttributes()) {
-            val it = attributes()!!.iterator()
+            val it = attributes().iterator()
             while (it.hasNext()) {
                 it.next()
                 it.remove()
@@ -193,11 +193,11 @@ protected constructor() {
      *
      * @see java.net.URL.URL
      */
-    open fun absUrl(attributeKey: String?): String? {
+    open fun absUrl(attributeKey: String): String? {
         Validate.notEmpty(attributeKey)
-        return if (!(hasAttributes() && attributes()!!.hasKeyIgnoreCase(attributeKey))) "" else StringUtil.resolve(
+        return if (!(hasAttributes() && attributes().hasKeyIgnoreCase(attributeKey))) null else StringUtil.resolve(
             baseUri(),
-            attributes()!!.getIgnoreCase(attributeKey)
+            attributes().getIgnoreCase(attributeKey)
         )
     }
 
@@ -308,7 +308,7 @@ protected constructor() {
      * @return this node, for chaining
      * @see .after
      */
-    open fun before(html: String): Node? {
+    open fun before(html: String): Node {
         addSiblingHtml(sibIndex, html)
         return this
     }
@@ -319,10 +319,10 @@ protected constructor() {
      * @return this node, for chaining
      * @see .after
      */
-    open fun before(node: Node?): Node? {
+    open fun before(node: Node): Node {
         Validate.notNull(node)
         Validate.notNull(parNode)
-        parNode!!.addChildren(sibIndex, node!!)
+        parNode!!.addChildren(sibIndex, node)
         return this
     }
 
@@ -332,7 +332,7 @@ protected constructor() {
      * @return this node, for chaining
      * @see .before
      */
-    open fun after(html: String): Node? {
+    open fun after(html: String): Node {
         addSiblingHtml(sibIndex + 1, html)
         return this
     }
@@ -343,10 +343,10 @@ protected constructor() {
      * @return this node, for chaining
      * @see .before
      */
-    open fun after(node: Node?): Node? {
+    open fun after(node: Node): Node {
         Validate.notNull(node)
         Validate.notNull(parNode)
-        parNode!!.addChildren(sibIndex + 1, node!!)
+        parNode!!.addChildren(sibIndex + 1, node)
         return this
     }
 
@@ -366,7 +366,7 @@ protected constructor() {
      * the input HTML does not parse to a result starting with an Element, this will be a no-op.
      * @return this node, for chaining.
      */
-    open fun wrap(html: String?): Node? {
+    open fun wrap(html: String): Node {
         Validate.notEmpty(html)
 
         // Parse context - parent (because wrapping), this, or null
@@ -600,7 +600,7 @@ protected constructor() {
      * @param nodeVisitor the visitor callbacks to perform on each node
      * @return this node, for chaining
      */
-    open fun traverse(nodeVisitor: NodeVisitor): Node? {
+    open fun traverse(nodeVisitor: NodeVisitor): Node {
         Validate.notNull(nodeVisitor)
         NodeTraversor.traverse(nodeVisitor, this)
         return this
@@ -631,7 +631,7 @@ protected constructor() {
      * @param nodeFilter the filter callbacks to perform on each node
      * @return this node, for chaining
      */
-    open fun filter(nodeFilter: NodeFilter): Node? {
+    open fun filter(nodeFilter: NodeFilter): Node {
         Validate.notNull(nodeFilter)
         NodeTraversor.filter(nodeFilter, this)
         return this
@@ -649,7 +649,7 @@ protected constructor() {
         return StringUtil.releaseBuilder(accum)
     }
 
-    fun outerHtml(accum: Appendable?) {
+    fun outerHtml(accum: Appendable) {
         NodeTraversor.traverse(OuterHtmlVisitor(accum, NodeUtils.outputSettings(this)), this)
     }
 
@@ -659,9 +659,9 @@ protected constructor() {
      * @throws IOException if appending to the given accumulator fails.
      */
     @Throws(IOException::class)
-    abstract fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?)
+    abstract fun outerHtmlHead(accum: Appendable, depth: Int, out: Document.OutputSettings)
     @Throws(IOException::class)
-    abstract fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?)
+    abstract fun outerHtmlTail(accum: Appendable, depth: Int, out: Document.OutputSettings)
 
     /**
      * Write this node and its children to the given [Appendable].
@@ -669,7 +669,7 @@ protected constructor() {
      * @param appendable the [Appendable] to write to.
      * @return the supplied [Appendable], for chaining.
      */
-    open fun <T : Appendable?> html(appendable: T): T {
+    open fun <T : Appendable> html(appendable: T): T {
         outerHtml(appendable)
         return appendable
     }
@@ -796,11 +796,11 @@ protected constructor() {
     }
 
     private class OuterHtmlVisitor(
-        private val accum: Appendable?,
-        private val out: Document.OutputSettings?
+        private val accum: Appendable,
+        private val out: Document.OutputSettings
     ) : NodeVisitor {
         init {
-            out!!.prepareEncoder()
+            out.prepareEncoder()
         }
 
         override fun head(node: Node, depth: Int) {

@@ -23,7 +23,7 @@ object Jsoup {
      * before the HTML declares a `<base href>` tag.
      * @return sane HTML
      */
-    fun parse(html: String, baseUri: String): Document? {
+    fun parse(html: String, baseUri: String): Document {
         return Parser.parse(html, baseUri)
     }
 
@@ -37,7 +37,7 @@ object Jsoup {
      * @param parser alternate [parser][Parser.xmlParser] to use.
      * @return sane HTML
      */
-    fun parse(html: String, baseUri: String, parser: Parser): Document? {
+    fun parse(html: String, baseUri: String, parser: Parser): Document {
         return parser.parseInput(html, baseUri)
     }
 
@@ -51,7 +51,7 @@ object Jsoup {
      * @param parser alternate [parser][Parser.xmlParser] to use.
      * @return sane HTML
      */
-    fun parse(html: String, parser: Parser): Document? {
+    fun parse(html: String, parser: Parser): Document {
         return parser.parseInput(html, "")
     }
 
@@ -63,7 +63,7 @@ object Jsoup {
      * @return sane HTML
      * @see .parse
      */
-    fun parse(html: String): Document? {
+    fun parse(html: String): Document {
         return Parser.parse(html, "")
     }
 
@@ -214,7 +214,7 @@ object Jsoup {
      * @return sane HTML document
      * @see Document.body
      */
-    fun parseBodyFragment(bodyHtml: String?, baseUri: String): Document {
+    fun parseBodyFragment(bodyHtml: String, baseUri: String): Document {
         return Parser.parseBodyFragment(bodyHtml, baseUri)
     }
 
@@ -225,7 +225,7 @@ object Jsoup {
      * @return sane HTML document
      * @see Document.body
      */
-    fun parseBodyFragment(bodyHtml: String?): Document {
+    fun parseBodyFragment(bodyHtml: String): Document {
         return Parser.parseBodyFragment(bodyHtml, "")
     }
 
@@ -262,7 +262,7 @@ object Jsoup {
      * @return safe HTML (body fragment)
      * @see Cleaner.clean
      */
-    fun clean(bodyHtml: String?, baseUri: String, safelist: Safelist): String {
+    fun clean(bodyHtml: String, baseUri: String, safelist: Safelist): String {
         val dirty: Document = parseBodyFragment(bodyHtml, baseUri)
         val cleaner = Cleaner(safelist)
         val clean: Document = cleaner.clean(dirty)
@@ -284,7 +284,7 @@ object Jsoup {
      * @return safe HTML (body fragment)
      * @see Cleaner.clean
      */
-    fun clean(bodyHtml: String?, safelist: Safelist): String {
+    fun clean(bodyHtml: String, safelist: Safelist): String {
         return clean(bodyHtml, "", safelist)
     }
 
@@ -304,10 +304,10 @@ object Jsoup {
      * @see Cleaner.clean
      */
     fun clean(
-        bodyHtml: String?,
+        bodyHtml: String,
         baseUri: String,
         safelist: Safelist,
-        outputSettings: Document.OutputSettings?
+        outputSettings: Document.OutputSettings
     ): String {
         val dirty: Document = parseBodyFragment(bodyHtml, baseUri)
         val cleaner = Cleaner(safelist)
@@ -327,7 +327,7 @@ object Jsoup {
      * @return true if no tags or attributes were removed; false otherwise
      * @see .clean
      */
-    fun isValid(bodyHtml: String?, safelist: Safelist): Boolean {
+    fun isValid(bodyHtml: String, safelist: Safelist): Boolean {
         return Cleaner(safelist).isValidBodyHtml(bodyHtml)
     }
 }

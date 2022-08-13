@@ -8,6 +8,6 @@ import org.jsoup.parser.Tag
  */
 class PseudoTextElement constructor(tag: Tag, baseUri: String?, attributes: Attributes?) :
     Element(tag, baseUri, attributes) {
-    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
-    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlHead(accum: Appendable, depth: Int, out: Document.OutputSettings) {}
+    override fun outerHtmlTail(accum: Appendable, depth: Int, out: Document.OutputSettings) {}
 }

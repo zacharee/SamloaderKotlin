@@ -37,7 +37,7 @@ abstract class HttpConnection : Connection {
 //
 //    private var res: Connection.Response? = null
 //
-//    public override fun newRequest(): Connection {
+//    override fun newRequest(): Connection {
 //        // copy the prototype request for the different settings, cookie manager, etc
 //        return HttpConnection(req)
 //    }
@@ -48,12 +48,12 @@ abstract class HttpConnection : Connection {
 //        this.res = res
 //    }
 //
-//    public override fun url(url: Url?): Connection {
+//    override fun url(url: Url?): Connection {
 //        req.url(url)
 //        return this
 //    }
 //
-//    public override fun url(url: String?): Connection {
+//    override fun url(url: String?): Connection {
 //        Validate.notEmpty(url, "Must supply a valid Url")
 //        try {
 //            req.url(Url(encodeUrl(url)))
@@ -63,74 +63,74 @@ abstract class HttpConnection : Connection {
 //        return this
 //    }
 //
-//    public override fun proxy( proxy: Proxy?): Connection {
+//    override fun proxy( proxy: Proxy?): Connection {
 //        req.proxy(proxy)
 //        return this
 //    }
 //
-//    public override fun proxy(host: String?, port: Int): Connection {
+//    override fun proxy(host: String?, port: Int): Connection {
 //        req.proxy(host, port)
 //        return this
 //    }
 //
-//    public override fun userAgent(userAgent: String?): Connection {
+//    override fun userAgent(userAgent: String?): Connection {
 //        Validate.notNull(userAgent, "User agent must not be null")
 //        req.header(USER_AGENT, userAgent)
 //        return this
 //    }
 //
-//    public override fun timeout(millis: Int): Connection {
+//    override fun timeout(millis: Int): Connection {
 //        req.timeout(millis)
 //        return this
 //    }
 //
-//    public override fun maxBodySize(bytes: Int): Connection {
+//    override fun maxBodySize(bytes: Int): Connection {
 //        req.maxBodySize(bytes)
 //        return this
 //    }
 //
-//    public override fun followRedirects(followRedirects: Boolean): Connection {
+//    override fun followRedirects(followRedirects: Boolean): Connection {
 //        req.followRedirects(followRedirects)
 //        return this
 //    }
 //
-//    public override fun referrer(referrer: String?): Connection {
+//    override fun referrer(referrer: String?): Connection {
 //        Validate.notNull(referrer, "Referrer must not be null")
 //        req.header("Referer", referrer)
 //        return this
 //    }
 //
-//    public override fun method(method: Connection.Method?): Connection {
+//    override fun method(method: Connection.Method?): Connection {
 //        req.method((method)!!)
 //        return this
 //    }
 //
-//    public override fun ignoreHttpErrors(ignoreHttpErrors: Boolean): Connection {
+//    override fun ignoreHttpErrors(ignoreHttpErrors: Boolean): Connection {
 //        req.ignoreHttpErrors(ignoreHttpErrors)
 //        return this
 //    }
 //
-//    public override fun ignoreContentType(ignoreContentType: Boolean): Connection {
+//    override fun ignoreContentType(ignoreContentType: Boolean): Connection {
 //        req.ignoreContentType(ignoreContentType)
 //        return this
 //    }
 //
-//    public override fun data(key: String?, value: String?): Connection {
+//    override fun data(key: String?, value: String?): Connection {
 //        req.data(KeyVal.create(key, value))
 //        return this
 //    }
 //
-//    public override fun sslSocketFactory(sslSocketFactory: SSLSocketFactory?): Connection {
+//    override fun sslSocketFactory(sslSocketFactory: SSLSocketFactory?): Connection {
 //        req.sslSocketFactory(sslSocketFactory)
 //        return this
 //    }
 //
-//    public override fun data(key: String?, filename: String?, inputStream: InputStream?): Connection {
+//    override fun data(key: String?, filename: String?, inputStream: InputStream?): Connection {
 //        req.data(KeyVal.create(key, filename, inputStream))
 //        return this
 //    }
 //
-//    public override fun data(
+//    override fun data(
 //        key: String?,
 //        filename: String?,
 //        inputStream: InputStream?,
@@ -140,7 +140,7 @@ abstract class HttpConnection : Connection {
 //        return this
 //    }
 //
-//    public override fun data(data: Map<String?, String?>): Connection {
+//    override fun data(data: Map<String?, String?>): Connection {
 //        Validate.notNull(data, "Data map must not be null")
 //        for (entry: Map.Entry<String?, String?> in data.entries) {
 //            req.data(KeyVal.create(entry.key, entry.value))
@@ -148,7 +148,7 @@ abstract class HttpConnection : Connection {
 //        return this
 //    }
 //
-//    public override fun data(vararg keyvals: String?): Connection {
+//    override fun data(vararg keyvals: String?): Connection {
 //        Validate.notNull(keyvals, "Data key value pairs must not be null")
 //        Validate.isTrue(keyvals.size % 2 == 0, "Must supply an even number of key value pairs")
 //        var i: Int = 0
@@ -163,7 +163,7 @@ abstract class HttpConnection : Connection {
 //        return this
 //    }
 //
-//    public override fun data(data: Collection<Connection.KeyVal?>): Connection {
+//    override fun data(data: Collection<Connection.KeyVal?>): Connection {
 //        Validate.notNull(data, "Data collection must not be null")
 //        for (entry: Connection.KeyVal? in data) {
 //            req.data(entry)
@@ -171,7 +171,7 @@ abstract class HttpConnection : Connection {
 //        return this
 //    }
 //
-//    public override fun data(key: String): Connection.KeyVal? {
+//    override fun data(key: String): Connection.KeyVal? {
 //        Validate.notEmpty(key, "Data key must not be empty")
 //        for (keyVal: Connection.KeyVal? in request().data()) {
 //            if ((keyVal!!.key() == key)) return keyVal
@@ -179,17 +179,17 @@ abstract class HttpConnection : Connection {
 //        return null
 //    }
 //
-//    public override fun requestBody(body: String?): Connection {
+//    override fun requestBody(body: String?): Connection {
 //        req.requestBody(body)
 //        return this
 //    }
 //
-//    public override fun header(name: String?, value: String?): Connection {
+//    override fun header(name: String?, value: String?): Connection {
 //        req.header((name)!!, value)
 //        return this
 //    }
 //
-//    public override fun headers(headers: Map<String?, String?>): Connection {
+//    override fun headers(headers: Map<String?, String?>): Connection {
 //        Validate.notNull(headers, "Header map must not be null")
 //        for (entry: Map.Entry<String?, String?> in headers.entries) {
 //            req.header((entry.key)!!, entry.value)
@@ -197,12 +197,12 @@ abstract class HttpConnection : Connection {
 //        return this
 //    }
 //
-//    public override fun cookie(name: String?, value: String?): Connection {
+//    override fun cookie(name: String?, value: String?): Connection {
 //        req.cookie((name)!!, (value)!!)
 //        return this
 //    }
 //
-//    public override fun cookies(cookies: Map<String?, String?>): Connection {
+//    override fun cookies(cookies: Map<String?, String?>): Connection {
 //        Validate.notNull(cookies, "Cookie map must not be null")
 //        for (entry: Map.Entry<String?, String?> in cookies.entries) {
 //            req.cookie((entry.key)!!, (entry.value)!!)
@@ -210,23 +210,23 @@ abstract class HttpConnection : Connection {
 //        return this
 //    }
 //
-//    public override fun cookieStore(cookieStore: CookieStore?): Connection {
+//    override fun cookieStore(cookieStore: CookieStore?): Connection {
 //        // create a new cookie manager using the new store
 //        req.cookieManager = CookieManager(cookieStore, null)
 //        return this
 //    }
 //
-//    public override fun cookieStore(): CookieStore? {
+//    override fun cookieStore(): CookieStore? {
 //        return req.cookieManager.cookieStore
 //    }
 //
-//    public override fun parser(parser: Parser?): Connection {
+//    override fun parser(parser: Parser?): Connection {
 //        req.parser(parser)
 //        return this
 //    }
 //
 //    @Throws(IOException::class)
-//    public override fun get(): Document? {
+//    override fun get(): Document? {
 //        req.method(Connection.Method.GET)
 //        execute()
 //        Validate.notNull(res)
@@ -234,7 +234,7 @@ abstract class HttpConnection : Connection {
 //    }
 //
 //    @Throws(IOException::class)
-//    public override fun post(): Document? {
+//    override fun post(): Document? {
 //        req.method(Connection.Method.POST)
 //        execute()
 //        Validate.notNull(res)
@@ -242,34 +242,34 @@ abstract class HttpConnection : Connection {
 //    }
 //
 //    @Throws(IOException::class)
-//    public override fun execute(): Connection.Response? {
+//    override fun execute(): Connection.Response? {
 //        res = Response.execute(req)
 //        return res
 //    }
 //
-//    public override fun request(): Connection.Request {
+//    override fun request(): Connection.Request {
 //        return req
 //    }
 //
-//    public override fun request(request: Connection.Request): Connection {
+//    override fun request(request: Connection.Request): Connection {
 //        req =
 //            request as Request // will throw a class-cast exception if the user has extended some but not all of Connection; that's desired
 //        return this
 //    }
 //
-//    public override fun response(): Connection.Response {
+//    override fun response(): Connection.Response {
 //        if (res == null) {
 //            throw IllegalArgumentException("You must execute the request before getting a response.")
 //        }
 //        return res!!
 //    }
 //
-//    public override fun response(response: Connection.Response?): Connection {
+//    override fun response(response: Connection.Response?): Connection {
 //        res = response
 //        return this
 //    }
 //
-//    public override fun postDataCharset(charset: String?): Connection {
+//    override fun postDataCharset(charset: String?): Connection {
 //        req.postDataCharset(charset)
 //        return this
 //    }
@@ -296,29 +296,29 @@ abstract class HttpConnection : Connection {
 //            cookies.putAll(copy.cookies) // just holds strings
 //        }
 //
-//        public override fun url(): Url? {
+//        override fun url(): Url? {
 //            if (url === UnsetUrl) throw IllegalArgumentException("Url not set. Make sure to call #url(...) before executing the request.")
 //            return url
 //        }
 //
-//        public override fun url(url: Url?): T {
+//        override fun url(url: Url?): T {
 //            Validate.notNull(url, "Url must not be null")
 //            this.url =
 //                punyUrl(url) // if calling url(url) directly, does not go through encodeUrl, so we punycode it explicitly. todo - should we encode here as well?
 //            return this as T
 //        }
 //
-//        public override fun method(): Connection.Method {
+//        override fun method(): Connection.Method {
 //            return method
 //        }
 //
-//        public override fun method(method: Connection.Method): T {
+//        override fun method(method: Connection.Method): T {
 //            Validate.notNull(method, "Method must not be null")
 //            this.method = method
 //            return this as T
 //        }
 //
-//        public override fun header(name: String): String? {
+//        override fun header(name: String): String? {
 //            Validate.notNull(name, "Header name must not be null")
 //            val vals: List<String> = getHeadersCaseInsensitive(name)
 //            if (vals.isNotEmpty()) {
@@ -328,7 +328,7 @@ abstract class HttpConnection : Connection {
 //            return null
 //        }
 //
-//        public override fun addHeader(name: String, value: String?): T {
+//        override fun addHeader(name: String, value: String?): T {
 //            var value: String? = value
 //            Validate.notEmpty(name)
 //            value = value ?: ""
@@ -341,19 +341,19 @@ abstract class HttpConnection : Connection {
 //            return this as T
 //        }
 //
-//        public override fun headers(name: String): MutableList<String> {
+//        override fun headers(name: String): MutableList<String> {
 //            Validate.notEmpty(name)
 //            return getHeadersCaseInsensitive(name)
 //        }
 //
-//        public override fun header(name: String, value: String?): T {
+//        override fun header(name: String, value: String?): T {
 //            Validate.notEmpty(name, "Header name must not be empty")
 //            removeHeader(name) // ensures we don't get an "accept-encoding" and a "Accept-Encoding"
 //            addHeader(name, value)
 //            return this as T
 //        }
 //
-//        public override fun hasHeader(name: String): Boolean {
+//        override fun hasHeader(name: String): Boolean {
 //            Validate.notEmpty(name, "Header name must not be empty")
 //            return !getHeadersCaseInsensitive(name).isEmpty()
 //        }
@@ -361,7 +361,7 @@ abstract class HttpConnection : Connection {
 //        /**
 //         * Test if the request has a header with this value (case insensitive).
 //         */
-//        public override fun hasHeaderWithValue(name: String, value: String): Boolean {
+//        override fun hasHeaderWithValue(name: String, value: String): Boolean {
 //            Validate.notEmpty(name)
 //            Validate.notEmpty(value)
 //            val values: List<String> = headers(name)
@@ -371,14 +371,14 @@ abstract class HttpConnection : Connection {
 //            return false
 //        }
 //
-//        public override fun removeHeader(name: String?): T {
+//        override fun removeHeader(name: String?): T {
 //            Validate.notEmpty(name, "Header name must not be empty")
 //            val entry: Map.Entry<String, List<String>>? = scanHeaders(name) // remove is case insensitive too
 //            if (entry != null) headers.remove(entry.key) // ensures correct case
 //            return this as T
 //        }
 //
-//        public override fun headers(): Map<String, String> {
+//        override fun headers(): Map<String, String> {
 //            val map: LinkedHashMap<String, String> = LinkedHashMap(headers.size)
 //            for (entry: Map.Entry<String, List<String>> in headers.entries) {
 //                val header: String = entry.key
@@ -388,7 +388,7 @@ abstract class HttpConnection : Connection {
 //            return map
 //        }
 //
-//        public override fun multiHeaders(): Map<String, List<String>> {
+//        override fun multiHeaders(): Map<String, List<String>> {
 //            return headers
 //        }
 //
@@ -409,30 +409,30 @@ abstract class HttpConnection : Connection {
 //            return null
 //        }
 //
-//        public override fun cookie(name: String): String? {
+//        override fun cookie(name: String): String? {
 //            Validate.notEmpty(name, "Cookie name must not be empty")
 //            return cookies.get(name)
 //        }
 //
-//        public override fun cookie(name: String, value: String): T {
+//        override fun cookie(name: String, value: String): T {
 //            Validate.notEmpty(name, "Cookie name must not be empty")
 //            Validate.notNull(value, "Cookie value must not be null")
 //            cookies.put(name, value)
 //            return this as T
 //        }
 //
-//        public override fun hasCookie(name: String): Boolean {
+//        override fun hasCookie(name: String): Boolean {
 //            Validate.notEmpty(name, "Cookie name must not be empty")
 //            return cookies.containsKey(name)
 //        }
 //
-//        public override fun removeCookie(name: String): T {
+//        override fun removeCookie(name: String): T {
 //            Validate.notEmpty(name, "Cookie name must not be empty")
 //            cookies.remove(name)
 //            return this as T
 //        }
 //
-//        public override fun cookies(): Map<String, String> {
+//        override fun cookies(): Map<String, String> {
 //            return cookies
 //        }
 //
@@ -549,98 +549,98 @@ abstract class HttpConnection : Connection {
 //            executing = false
 //        }
 //
-//        public override fun timeout(): Int {
+//        override fun timeout(): Int {
 //            return timeoutMilliseconds
 //        }
 //
-//        public override fun timeout(millis: Int): Request {
+//        override fun timeout(millis: Int): Request {
 //            Validate.isTrue(millis >= 0, "Timeout milliseconds must be 0 (infinite) or greater")
 //            timeoutMilliseconds = millis
 //            return this
 //        }
 //
-//        public override fun maxBodySize(): Int {
+//        override fun maxBodySize(): Int {
 //            return maxBodySizeBytes
 //        }
 //
-//        public override fun maxBodySize(bytes: Int): Connection.Request {
+//        override fun maxBodySize(bytes: Int): Connection.Request {
 //            Validate.isTrue(bytes >= 0, "maxSize must be 0 (unlimited) or larger")
 //            maxBodySizeBytes = bytes
 //            return this
 //        }
 //
-//        public override fun followRedirects(): Boolean {
+//        override fun followRedirects(): Boolean {
 //            return followRedirects
 //        }
 //
-//        public override fun followRedirects(followRedirects: Boolean): Connection.Request {
+//        override fun followRedirects(followRedirects: Boolean): Connection.Request {
 //            this.followRedirects = followRedirects
 //            return this
 //        }
 //
-//        public override fun ignoreHttpErrors(): Boolean {
+//        override fun ignoreHttpErrors(): Boolean {
 //            return ignoreHttpErrors
 //        }
 //
-//        public override fun sslSocketFactory(): SSLSocketFactory? {
+//        override fun sslSocketFactory(): SSLSocketFactory? {
 //            return sslSocketFactory
 //        }
 //
-//        public override fun sslSocketFactory(sslSocketFactory: SSLSocketFactory?) {
+//        override fun sslSocketFactory(sslSocketFactory: SSLSocketFactory?) {
 //            this.sslSocketFactory = sslSocketFactory
 //        }
 //
-//        public override fun ignoreHttpErrors(ignoreHttpErrors: Boolean): Connection.Request {
+//        override fun ignoreHttpErrors(ignoreHttpErrors: Boolean): Connection.Request {
 //            this.ignoreHttpErrors = ignoreHttpErrors
 //            return this
 //        }
 //
-//        public override fun ignoreContentType(): Boolean {
+//        override fun ignoreContentType(): Boolean {
 //            return ignoreContentType
 //        }
 //
-//        public override fun ignoreContentType(ignoreContentType: Boolean): Connection.Request {
+//        override fun ignoreContentType(ignoreContentType: Boolean): Connection.Request {
 //            this.ignoreContentType = ignoreContentType
 //            return this
 //        }
 //
-//        public override fun data(keyval: Connection.KeyVal?): Request {
+//        override fun data(keyval: Connection.KeyVal?): Request {
 //            Validate.notNull(keyval, "Key val must not be null")
 //            data.add(keyval)
 //            return this
 //        }
 //
-//        public override fun data(): MutableCollection<Connection.KeyVal?> {
+//        override fun data(): MutableCollection<Connection.KeyVal?> {
 //            return data
 //        }
 //
-//        public override fun requestBody( body: String?): Connection.Request {
+//        override fun requestBody( body: String?): Connection.Request {
 //            this.body = body
 //            return this
 //        }
 //
-//        public override fun requestBody(): String? {
+//        override fun requestBody(): String? {
 //            return body
 //        }
 //
-//        public override fun parser(parser: Parser?): Request {
+//        override fun parser(parser: Parser?): Request {
 //            this.parser = parser
 //            parserDefined = true
 //            return this
 //        }
 //
-//        public override fun parser(): Parser? {
+//        override fun parser(): Parser? {
 //            return parser
 //        }
 //
-//        public override fun postDataCharset(charset: String?): Connection.Request {
+//        override fun postDataCharset(charset: String?): Connection.Request {
 //            Validate.notNull(charset, "Charset must not be null")
 //            if (!Charset.isSupported(charset)) throw IllegalCharsetNameException(charset)
 //            postDataCharset = charset
 //            return this
 //        }
 //
-//        public override fun postDataCharset(): String? {
+//        override fun postDataCharset(): String? {
 //            return postDataCharset
 //        }
 //
@@ -690,29 +690,29 @@ abstract class HttpConnection : Connection {
 //            contentType = null
 //        }
 //
-//        public override fun statusCode(): Int {
+//        override fun statusCode(): Int {
 //            return statusCode
 //        }
 //
-//        public override fun statusMessage(): String {
+//        override fun statusMessage(): String {
 //            return statusMessage
 //        }
 //
-//        public override fun charset(): String? {
+//        override fun charset(): String? {
 //            return charset
 //        }
 //
-//        public override fun charset(charset: String?): Response {
+//        override fun charset(charset: String?): Response {
 //            this.charset = charset
 //            return this
 //        }
 //
-//        public override fun contentType(): String? {
+//        override fun contentType(): String? {
 //            return contentType
 //        }
 //
 //        @Throws(IOException::class)
-//        public override fun parse(): Document? {
+//        override fun parse(): Document? {
 //            Validate.isTrue(
 //                executed,
 //                "Request must be executed (with .execute(), .get(), or .post() before parsing response"
@@ -753,7 +753,7 @@ abstract class HttpConnection : Connection {
 //            }
 //        }
 //
-//        public override fun body(): String {
+//        override fun body(): String {
 //            prepareByteData()
 //            Validate.notNull(byteData)
 //            // charset gets set from header on execute, and from meta-equiv on parse. parse may not have happened yet
@@ -763,18 +763,18 @@ abstract class HttpConnection : Connection {
 //            return body
 //        }
 //
-//        public override fun bodyAsBytes(): ByteArray {
+//        override fun bodyAsBytes(): ByteArray {
 //            prepareByteData()
 //            Validate.notNull(byteData)
 //            return byteData!!.array()
 //        }
 //
-//        public override fun bufferUp(): Connection.Response {
+//        override fun bufferUp(): Connection.Response {
 //            prepareByteData()
 //            return this
 //        }
 //
-//        public override fun bodyStream(): BufferedInputStream {
+//        override fun bodyStream(): BufferedInputStream {
 //            Validate.isTrue(
 //                executed,
 //                "Request must be executed (with .execute(), .get(), or .post() before getting response body"
@@ -1138,51 +1138,51 @@ abstract class HttpConnection : Connection {
             this.value = value
         }
 
-        public override fun key(key: String?): KeyVal {
+        override fun key(key: String?): KeyVal {
             Validate.notEmpty(key, "Data key must not be empty")
             this.key = key
             return this
         }
 
-        public override fun key(): String? {
+        override fun key(): String? {
             return key
         }
 
-        public override fun value(value: String?): KeyVal {
+        override fun value(value: String?): KeyVal {
             Validate.notNull(value, "Data value must not be null")
             this.value = value
             return this
         }
 
-        public override fun value(): String? {
+        override fun value(): String? {
             return value
         }
 
-        public override fun inputStream(inputStream: SyncInputStream?): KeyVal {
+        override fun inputStream(inputStream: SyncInputStream?): KeyVal {
             Validate.notNull(value, "Data input stream must not be null")
             stream = inputStream
             return this
         }
 
-        public override fun inputStream(): SyncInputStream? {
+        override fun inputStream(): SyncInputStream? {
             return stream
         }
 
-        public override fun hasInputStream(): Boolean {
+        override fun hasInputStream(): Boolean {
             return stream != null
         }
 
-        public override fun contentType(contentType: String?): Connection.KeyVal {
+        override fun contentType(contentType: String?): Connection.KeyVal {
             Validate.notEmpty(contentType)
             this.contentType = contentType
             return this
         }
 
-        public override fun contentType(): String? {
+        override fun contentType(): String? {
             return contentType
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return key + "=" + value
         }
 
@@ -1199,20 +1199,20 @@ abstract class HttpConnection : Connection {
     }
 
     companion object {
-        val CONTENT_ENCODING: String = "Content-Encoding"
+        const val CONTENT_ENCODING: String = "Content-Encoding"
 
         /**
          * Many users would get caught by not setting a user-agent and therefore getting different responses on their desktop
          * vs in jsoup, which would otherwise default to `Java`. So by default, use a desktop UA.
          */
-        val DEFAULT_UA: String =
+        const val DEFAULT_UA: String =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"
-        private val USER_AGENT: String = "User-Agent"
-        val CONTENT_TYPE: String = "Content-Type"
-        val MULTIPART_FORM_DATA: String = "multipart/form-data"
-        val FORM_Url_ENCODED: String = "application/x-www-form-urlencoded"
-        private val HTTP_TEMP_REDIR: Int = 307 // http/1.1 temporary redirect, not in Java's set.
-        private val DefaultUploadType: String = "application/octet-stream"
+        private const val USER_AGENT: String = "User-Agent"
+        const val CONTENT_TYPE: String = "Content-Type"
+        const val MULTIPART_FORM_DATA: String = "multipart/form-data"
+        const val FORM_Url_ENCODED: String = "application/x-www-form-urlencoded"
+        private const val HTTP_TEMP_REDIR: Int = 307 // http/1.1 temporary redirect, not in Java's set.
+        private const val DefaultUploadType: String = "application/octet-stream"
         private val UTF_8: Charset = Charset.forName("UTF-8") // Don't use StandardCharsets, not in Android API 10.
         private val ISO_8859_1: Charset = Charset.forName("ISO-8859-1")
 

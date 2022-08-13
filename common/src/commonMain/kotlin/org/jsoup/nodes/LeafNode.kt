@@ -8,9 +8,9 @@ abstract class LeafNode : Node() {
         return value is Attributes
     }
 
-    override fun attributes(): Attributes? {
+    override fun attributes(): Attributes {
         ensureAttributes()
-        return value as Attributes?
+        return value as Attributes
     }
 
     private fun ensureAttributes() {
@@ -22,17 +22,17 @@ abstract class LeafNode : Node() {
         }
     }
 
-    fun coreValue(): String? {
+    fun coreValue(): String {
         return attr(nodeName())
     }
 
-    fun coreValue(value: String?) {
+    fun coreValue(value: String) {
         attr(nodeName(), value)
     }
 
-    override fun attr(attributeKey: String?): String? {
+    override fun attr(attributeKey: String): String {
         return if (!hasAttributes()) {
-            if (nodeName() == attributeKey) value as String? else EmptyString
+            if (nodeName() == attributeKey) value as String else EmptyString
         } else super.attr(attributeKey)
     }
 
@@ -51,12 +51,12 @@ abstract class LeafNode : Node() {
         return super.hasAttr(attributeKey)
     }
 
-    override fun removeAttr(attributeKey: String?): Node? {
+    override fun removeAttr(attributeKey: String): Node {
         ensureAttributes()
         return super.removeAttr(attributeKey)
     }
 
-    override fun absUrl(attributeKey: String?): String? {
+    override fun absUrl(attributeKey: String): String? {
         ensureAttributes()
         return super.absUrl(attributeKey)
     }

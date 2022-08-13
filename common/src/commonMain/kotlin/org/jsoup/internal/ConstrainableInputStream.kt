@@ -41,12 +41,12 @@ class ConstrainableInputStream private constructor(private val `in`: SyncInputSt
 //        }
         if (expired()) throw SocketTimeoutException("Read timeout")
         if (capped && len > remaining) len = remaining // don't read more than desired, even if available
-        try {
+        return try {
             val read: Int = `in`.read(buffer, offset, len)
             remaining -= read
-            return read
+            read
         } catch (e: SocketTimeoutException) {
-            return 0
+            0
         }
     }
 
@@ -59,7 +59,7 @@ class ConstrainableInputStream private constructor(private val `in`: SyncInputSt
         Validate.isTrue(max >= 0, "maxSize must be 0 (unlimited) or larger")
         val localCapped: Boolean = max > 0 // still possibly capped in total stream
         val bufferSize: Int = if (localCapped && max < DefaultSize) max else DefaultSize
-        val readBuffer: ByteArray = ByteArray(bufferSize)
+        val readBuffer = ByteArray(bufferSize)
         val write = Buffer()
         var read: Int
         var remaining: Int = max
@@ -97,7 +97,7 @@ class ConstrainableInputStream private constructor(private val `in`: SyncInputSt
     }
 
     companion object {
-        private val DefaultSize: Int = 1024 * 32
+        private const val DefaultSize: Int = 1024 * 32
 
         /**
          * If this InputStream is not already a ConstrainableInputStream, let it be one.

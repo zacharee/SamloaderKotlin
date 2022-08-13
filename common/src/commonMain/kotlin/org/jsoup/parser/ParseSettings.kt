@@ -26,7 +26,7 @@ class ParseSettings
         return preserveAttributeCase
     }
 
-    internal constructor(copy: ParseSettings?) : this(copy!!.preserveTagCase, copy.preserveAttributeCase)
+    internal constructor(copy: ParseSettings) : this(copy.preserveTagCase, copy.preserveAttributeCase)
 
     /**
      * Normalizes a tag name according to the case preservation setting.
