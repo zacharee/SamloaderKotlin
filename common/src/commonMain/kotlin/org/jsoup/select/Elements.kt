@@ -21,8 +21,8 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * Creates a deep copy of these elements.
      * @return a deep copy
      */
-    public fun clone(): Elements {
-        val clone: Elements = Elements()
+    fun clone(): Elements {
+        val clone = Elements()
         for (e: Element in this) clone.add(e.clone())
         return clone
     }
@@ -250,7 +250,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @see .text
      * @see .html
      */
-    public override fun toString(): String {
+    override fun toString(): String {
         return outerHtml()
     }
 
@@ -422,7 +422,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query A [Selector] query
      * @return the filtered list of elements, or an empty list if none match.
      */
-    fun select(query: String?): Elements? {
+    fun select(query: String?): Elements {
         return Selector.select(query, this)
     }
 
@@ -438,8 +438,8 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param query the selector query whose results should be removed from these elements
      * @return a new elements list that contains only the filtered results
      */
-    fun not(query: String?): Elements? {
-        val out: Elements? = Selector.select(query, this)
+    fun not(query: String?): Elements {
+        val out: Elements = Selector.select(query, this)
         return Selector.filterOut(this, out)
     }
 
@@ -461,7 +461,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return true if at least one element in the list matches the query.
      */
     fun `is`(query: String?): Boolean {
-        val eval: Evaluator? = QueryParser.Companion.parse(query)
+        val eval: Evaluator? = QueryParser.parse(query)
         for (e: Element in this) {
             if (e.`is`(eval)) return true
         }
@@ -473,7 +473,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return next element siblings.
      */
     operator fun next(): Elements {
-        return siblings(null, true, false)
+        return siblings(null, next = true, all = false)
     }
 
     /**
@@ -482,7 +482,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return next element siblings.
      */
     fun next(query: String?): Elements {
-        return siblings(query, true, false)
+        return siblings(query, next = true, all = false)
     }
 
     /**
@@ -490,7 +490,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return all following element siblings.
      */
     fun nextAll(): Elements {
-        return siblings(null, true, true)
+        return siblings(null, next = true, all = true)
     }
 
     /**
@@ -499,7 +499,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return all following element siblings.
      */
     fun nextAll(query: String?): Elements {
-        return siblings(query, true, true)
+        return siblings(query, next = true, all = true)
     }
 
     /**
@@ -507,7 +507,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return previous element siblings.
      */
     fun prev(): Elements {
-        return siblings(null, false, false)
+        return siblings(null, next = false, all = false)
     }
 
     /**
@@ -516,7 +516,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return previous element siblings.
      */
     fun prev(query: String?): Elements {
-        return siblings(query, false, false)
+        return siblings(query, next = false, all = false)
     }
 
     /**
@@ -524,7 +524,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return all previous element siblings.
      */
     fun prevAll(): Elements {
-        return siblings(null, false, true)
+        return siblings(null, next = false, all = true)
     }
 
     /**
@@ -533,12 +533,12 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return all previous element siblings.
      */
     fun prevAll(query: String?): Elements {
-        return siblings(query, false, true)
+        return siblings(query, next = false, all = true)
     }
 
     private fun siblings(query: String?, next: Boolean, all: Boolean): Elements {
-        val els: Elements = Elements()
-        val eval: Evaluator? = if (query != null) QueryParser.Companion.parse(query) else null
+        val els = Elements()
+        val eval: Evaluator? = if (query != null) QueryParser.parse(query) else null
         for (e: Element in this) {
             var e: Element = e
             do {
@@ -607,7 +607,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      */
     fun forms(): List<FormElement> {
         val forms: ArrayList<FormElement> = ArrayList()
-        for (el: Element? in this) if (el is FormElement) forms.add(el as FormElement)
+        for (el: Element? in this) if (el is FormElement) forms.add(el)
         return forms
     }
 
@@ -640,7 +640,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
         val nodes: ArrayList<T> = ArrayList()
         for (el: Element in this) {
             for (i in 0 until el.childNodeSize()) {
-                val node: Node? = el.childNode(i)
+                val node: Node = el.childNode(i)
                 if (tClass.isInstance(node)) nodes.add(tClass.cast(node))
             }
         }

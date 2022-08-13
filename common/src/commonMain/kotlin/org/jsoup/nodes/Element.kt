@@ -38,7 +38,7 @@ open class Element constructor(
      * Create a new, standalone element.
      * @param tag tag name
      */
-    constructor(tag: String?) : this(valueOf(tag), "", null) {}
+    constructor(tag: String?) : this(valueOf(tag), "", null)
     /**
      * Create a new, standalone Element. (Standalone in that is has no parent.)
      *
@@ -57,7 +57,7 @@ open class Element constructor(
      */
     init {
         Validate.notNull(tag)
-        childElements = Node.Companion.EmptyNodes
+        childElements = EmptyNodes
         this.attrs = attributes
         this.tag = tag
         if (baseUri != null) setBaseUri(baseUri)
@@ -71,11 +71,11 @@ open class Element constructor(
      * Internal test to check if a nodelist object has been created.
      */
     protected fun hasChildNodes(): Boolean {
-        return childElements !== Node.Companion.EmptyNodes
+        return childElements !== EmptyNodes
     }
 
-    public override fun ensureChildNodes(): MutableList<Node> {
-        if (childElements === Node.EmptyNodes) {
+    override fun ensureChildNodes(): MutableList<Node> {
+        if (childElements === EmptyNodes) {
             childElements = NodeList(this, 4)
         }
         return childElements
@@ -162,7 +162,7 @@ open class Element constructor(
      *
      * @return The id attribute, if present, or an empty string if not.
      */
-    fun id(): String? {
+    fun id(): String {
         return if (attrs != null) attrs!!.getIgnoreCase("id") else ""
     }
 
@@ -305,7 +305,7 @@ open class Element constructor(
     /**
      * Clears the cached shadow child elements.
      */
-    public override fun nodelistChanged() {
+    override fun nodelistChanged() {
         super.nodelistChanged()
         shadowChildrenRef = null
     }
@@ -350,7 +350,7 @@ open class Element constructor(
         for (node in childElements) {
             if (node is DataNode) dataNodes.add(node)
         }
-        return return dataNodes.toList()
+        return dataNodes.toList()
     }
 
     /**
@@ -427,7 +427,7 @@ open class Element constructor(
      * @throws IllegalArgumentException if no match is found
      * @since 1.15.2
      */
-    fun expectFirst(cssQuery: String?): Element? {
+    fun expectFirst(cssQuery: String?): Element {
         return Validate.ensureNotNull(Selector.selectFirst(cssQuery, this)) as Element
     }
 
@@ -439,7 +439,7 @@ open class Element constructor(
      * @return if this element matches the query
      */
     fun `is`(cssQuery: String?): Boolean {
-        return `is`(QueryParser.Companion.parse(cssQuery))
+        return `is`(QueryParser.parse(cssQuery))
     }
 
     /**
@@ -460,7 +460,7 @@ open class Element constructor(
      */
 
     fun closest(cssQuery: String?): Element? {
-        return closest(QueryParser.Companion.parse(cssQuery))
+        return closest(QueryParser.parse(cssQuery))
     }
 
     /**
@@ -477,7 +477,7 @@ open class Element constructor(
         val root = root()
         do {
             if (evaluator!!.matches(root!!, el!!)) return el
-            el = el!!.parent()
+            el = el.parent()
         } while (el != null)
         return null
     }
@@ -641,7 +641,7 @@ open class Element constructor(
      */
     fun appendElement(tagName: String?): Element {
         val child = Element(
-            Tag.Companion.valueOf(
+            valueOf(
                 tagName, NodeUtils.parser(this)!!
                     .settings()
             ), baseUri()
@@ -659,7 +659,7 @@ open class Element constructor(
      */
     fun prependElement(tagName: String?): Element {
         val child = Element(
-            Tag.Companion.valueOf(
+            valueOf(
                 tagName, NodeUtils.parser(this)!!
                     .settings()
             ), baseUri()
@@ -795,7 +795,7 @@ open class Element constructor(
      * @return the CSS Path that can be used to retrieve the element in a selector.
      */
     fun cssSelector(): String {
-        if (id()!!.isNotEmpty()) {
+        if (id().isNotEmpty()) {
             // prefer to return the ID - but check that it's actually unique first!
             val idSel = "#" + id()
             val doc = ownerDocument()
@@ -886,7 +886,7 @@ open class Element constructor(
         return nextElementSiblings(false)
     }
 
-    private fun nextElementSiblings(next: Boolean): Elements? {
+    private fun nextElementSiblings(next: Boolean): Elements {
         val els = Elements()
         if (parNode == null) return els
         els.add(this)
@@ -897,7 +897,7 @@ open class Element constructor(
      * Gets the first Element sibling of this element. That may be this element.
      * @return the first sibling that is an element (aka the parent's first element child)
      */
-    fun firstElementSibling(): Element? {
+    fun firstElementSibling(): Element {
         return if (parent() != null) {
             val siblings = parent()!!.childElementsList()
             if (siblings.size > 1) siblings[0] else this
@@ -970,7 +970,7 @@ open class Element constructor(
      * @param tagName The tag name to search for (case insensitively).
      * @return a matching unmodifiable list of elements. Will be empty if this element and none of its children match.
      */
-    fun getElementsByTag(tagName: String?): Elements? {
+    fun getElementsByTag(tagName: String?): Elements {
         var tagName = tagName
         Validate.notEmpty(tagName)
         tagName = Normalizer.normalize(tagName)
@@ -1006,7 +1006,7 @@ open class Element constructor(
      * @see .hasClass
      * @see .classNames
      */
-    fun getElementsByClass(className: String): Elements? {
+    fun getElementsByClass(className: String): Elements {
         Validate.notEmpty(className)
         return Collector.collect(Evaluator.Class(className), this)
     }
@@ -1017,7 +1017,7 @@ open class Element constructor(
      * @param key name of the attribute, e.g. `href`
      * @return elements that have this attribute, empty if none
      */
-    fun getElementsByAttribute(key: String): Elements? {
+    fun getElementsByAttribute(key: String): Elements {
         var key = key
         Validate.notEmpty(key)
         key = key.trim { it <= ' ' }
@@ -1030,7 +1030,7 @@ open class Element constructor(
      * @param keyPrefix name prefix of the attribute e.g. `data-`
      * @return elements that have attribute names that start with with the prefix, empty if none.
      */
-    fun getElementsByAttributeStarting(keyPrefix: String): Elements? {
+    fun getElementsByAttributeStarting(keyPrefix: String): Elements {
         var keyPrefix = keyPrefix
         Validate.notEmpty(keyPrefix)
         keyPrefix = keyPrefix.trim { it <= ' ' }
@@ -1044,7 +1044,7 @@ open class Element constructor(
      * @param value value of the attribute
      * @return elements that have this attribute with this value, empty if none
      */
-    fun getElementsByAttributeValue(key: String?, value: String?): Elements? {
+    fun getElementsByAttributeValue(key: String?, value: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValue(key, value), this)
     }
 
@@ -1055,7 +1055,7 @@ open class Element constructor(
      * @param value value of the attribute
      * @return elements that do not have a matching attribute
      */
-    fun getElementsByAttributeValueNot(key: String?, value: String?): Elements? {
+    fun getElementsByAttributeValueNot(key: String?, value: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValueNot(key, value), this)
     }
 
@@ -1066,7 +1066,7 @@ open class Element constructor(
      * @param valuePrefix start of attribute value
      * @return elements that have attributes that start with the value prefix
      */
-    fun getElementsByAttributeValueStarting(key: String?, valuePrefix: String?): Elements? {
+    fun getElementsByAttributeValueStarting(key: String?, valuePrefix: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValueStarting(key, valuePrefix), this)
     }
 
@@ -1077,7 +1077,7 @@ open class Element constructor(
      * @param valueSuffix end of the attribute value
      * @return elements that have attributes that end with the value suffix
      */
-    fun getElementsByAttributeValueEnding(key: String?, valueSuffix: String?): Elements? {
+    fun getElementsByAttributeValueEnding(key: String?, valueSuffix: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValueEnding(key, valueSuffix), this)
     }
 
@@ -1088,7 +1088,7 @@ open class Element constructor(
      * @param match substring of value to search for
      * @return elements that have attributes containing this text
      */
-    fun getElementsByAttributeValueContaining(key: String?, match: String?): Elements? {
+    fun getElementsByAttributeValueContaining(key: String?, match: String?): Elements {
         return Collector.collect(Evaluator.AttributeWithValueContaining(key, match), this)
     }
 
@@ -1098,7 +1098,7 @@ open class Element constructor(
      * @param pattern compiled regular expression to match against attribute values
      * @return elements that have attributes matching this regular expression
      */
-    fun getElementsByAttributeValueMatching(key: String?, pattern: Regex): Elements? {
+    fun getElementsByAttributeValueMatching(key: String?, pattern: Regex): Elements {
         return Collector.collect(Evaluator.AttributeWithValueMatching(key, pattern), this)
     }
 
@@ -1109,8 +1109,7 @@ open class Element constructor(
      * @return elements that have attributes matching this regular expression
      */
     fun getElementsByAttributeValueMatching(key: String?, regex: String): Elements? {
-        val pattern: Regex
-        pattern = try {
+        val pattern = try {
             Regex(regex)
         } catch (e: Exception) {
             throw IllegalArgumentException("Pattern syntax error: $regex", e)
@@ -1123,7 +1122,7 @@ open class Element constructor(
      * @param index 0-based index
      * @return elements less than index
      */
-    fun getElementsByIndexLessThan(index: Int): Elements? {
+    fun getElementsByIndexLessThan(index: Int): Elements {
         return Collector.collect(Evaluator.IndexLessThan(index), this)
     }
 
@@ -1132,7 +1131,7 @@ open class Element constructor(
      * @param index 0-based index
      * @return elements greater than index
      */
-    fun getElementsByIndexGreaterThan(index: Int): Elements? {
+    fun getElementsByIndexGreaterThan(index: Int): Elements {
         return Collector.collect(Evaluator.IndexGreaterThan(index), this)
     }
 
@@ -1141,7 +1140,7 @@ open class Element constructor(
      * @param index 0-based index
      * @return elements equal to index
      */
-    fun getElementsByIndexEquals(index: Int): Elements? {
+    fun getElementsByIndexEquals(index: Int): Elements {
         return Collector.collect(Evaluator.IndexEquals(index), this)
     }
 
@@ -1152,7 +1151,7 @@ open class Element constructor(
      * @return elements that contain the string, case insensitive.
      * @see Element.text
      */
-    fun getElementsContainingText(searchText: String?): Elements? {
+    fun getElementsContainingText(searchText: String?): Elements {
         return Collector.collect(Evaluator.ContainsText(searchText), this)
     }
 
@@ -1163,7 +1162,7 @@ open class Element constructor(
      * @return elements that contain the string, case insensitive.
      * @see Element.ownText
      */
-    fun getElementsContainingOwnText(searchText: String?): Elements? {
+    fun getElementsContainingOwnText(searchText: String?): Elements {
         return Collector.collect(Evaluator.ContainsOwnText(searchText), this)
     }
 
@@ -1173,7 +1172,7 @@ open class Element constructor(
      * @return elements matching the supplied regular expression.
      * @see Element.text
      */
-    fun getElementsMatchingText(pattern: Regex): Elements? {
+    fun getElementsMatchingText(pattern: Regex): Elements {
         return Collector.collect(Evaluator.Matches(pattern), this)
     }
 
@@ -1198,7 +1197,7 @@ open class Element constructor(
      * @return elements matching the supplied regular expression.
      * @see Element.ownText
      */
-    fun getElementsMatchingOwnText(pattern: Regex): Elements? {
+    fun getElementsMatchingOwnText(pattern: Regex): Elements {
         return Collector.collect(Evaluator.MatchesOwn(pattern), this)
     }
 
@@ -1208,7 +1207,7 @@ open class Element constructor(
      * @return elements matching the supplied regular expression.
      * @see Element.ownText
      */
-    fun getElementsMatchingOwnText(regex: String): Elements? {
+    fun getElementsMatchingOwnText(regex: String): Elements {
         val pattern = try {
             Regex(regex)
         } catch (e: Exception) {
@@ -1222,7 +1221,7 @@ open class Element constructor(
      *
      * @return all elements
      */
-    val allElements: Elements?
+    val allElements: Elements
         get() = Collector.collect(Evaluator.AllElements(), this)
 
     /**
@@ -1260,9 +1259,7 @@ open class Element constructor(
             override fun tail(node: Node?, depth: Int) {
                 // make sure there is a space between block tags and immediately following text nodes <div>One</div>Two should be "One Two".
                 if (node is Element) {
-                    if (node.isBlock && node.nextSibling() is TextNode && !TextNode.lastCharIsWhitespace(accum)) accum!!.append(
-                        ' '
-                    )
+                    if (node.isBlock && node.nextSibling() is TextNode && !TextNode.lastCharIsWhitespace(accum)) accum.append(' ')
                 }
             }
         }, this)
@@ -1384,7 +1381,7 @@ open class Element constructor(
      *
      * @see .dataNodes
      */
-    fun data(): String? {
+    fun data(): String {
         val sb = StringUtil.borrowBuilder()
         for (childNode in childElements) {
             if (childNode is DataNode) {
@@ -1393,7 +1390,7 @@ open class Element constructor(
                 sb.append(childNode.data)
             } else if (childNode is Element) {
                 val elementData = childNode.data()
-                sb!!.append(elementData)
+                sb.append(elementData)
             } else if (childNode is CDataNode) {
                 // this shouldn't really happen because the html parser won't see the cdata as anything special when parsing script.
                 // but incase another type gets through.
@@ -1561,7 +1558,7 @@ open class Element constructor(
      * @since 1.15.2
      */
     fun endSourceRange(): Range? {
-        return Range.Companion.of(this, false)
+        return Range.of(this, false)
     }
 
     fun shouldIndent(out: Document.OutputSettings?): Boolean {
@@ -1569,7 +1566,7 @@ open class Element constructor(
     }
 
     @Throws(IOException::class)
-    public override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         if (shouldIndent(out)) {
             if (accum is StringBuilder) {
                 if (accum.length > 0) indent(accum, depth, out!!)
@@ -1589,7 +1586,7 @@ open class Element constructor(
     }
 
     @Throws(IOException::class)
-    public override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         if (!(childElements.isEmpty() && tag!!.isSelfClosing())) {
             if (out!!.prettyPrint() && childElements.isNotEmpty() && (tag!!.formatAsBlock() || out.outline()) && (childElements.size > 1 || childElements.size == 1) && childElements[0] is Element) indent(
                 accum!!, depth, out
@@ -1609,12 +1606,12 @@ open class Element constructor(
         val accum = StringUtil.borrowBuilder()
         html(accum)
         val html = StringUtil.releaseBuilder(accum)
-        return if (NodeUtils.outputSettings(this)!!.prettyPrint()) html!!.trim { it <= ' ' } else html!!
+        return if (NodeUtils.outputSettings(this)!!.prettyPrint()) html.trim { it <= ' ' } else html
     }
 
     override fun <T : Appendable?> html(appendable: T): T {
         val size = childElements.size
-        for (i in 0 until size) childElements[i]!!.outerHtml(appendable)
+        for (i in 0 until size) childElements[i].outerHtml(appendable)
         return appendable
     }
 
@@ -1696,7 +1693,7 @@ open class Element constructor(
         return super.filter(nodeFilter) as Element
     }
 
-    private class NodeList internal constructor(private val owner: Element, initialCapacity: Int) : ChangeNotifyingArrayList<Node>(initialCapacity) {
+    private class NodeList(private val owner: Element, initialCapacity: Int) : ChangeNotifyingArrayList<Node>(initialCapacity) {
         override fun onContentsChanged() {
             owner.nodelistChanged()
         }
@@ -1714,7 +1711,7 @@ open class Element constructor(
     companion object {
         private val EmptyChildren: MutableList<Element> = mutableListOf()
         private val ClassSplit = Regex("\\s+")
-        private val BaseUriKey: String = Attributes.Companion.internalKey("baseUri")
+        private val BaseUriKey: String = Attributes.internalKey("baseUri")
         private fun searchUpForAttribute(start: Element, key: String): String {
             var el: Element? = start
             while (el != null) {
@@ -1753,13 +1750,13 @@ open class Element constructor(
             if (preserveWhitespace(textNode.parNode) || textNode is CDataNode) accum!!.append(text) else StringUtil.appendNormalisedWhitespace(
                 accum,
                 text,
-                TextNode.Companion.lastCharIsWhitespace(accum)
+                TextNode.lastCharIsWhitespace(accum)
             )
         }
 
         /** For normalized text, treat a br element as a space, if there is not already a space.  */
         private fun appendWhitespaceIfBr(element: Element, accum: StringBuilder?) {
-            if (element.tag!!.normalName() == "br" && !TextNode.Companion.lastCharIsWhitespace(accum)) accum!!.append(" ")
+            if (element.tag!!.normalName() == "br" && !TextNode.lastCharIsWhitespace(accum)) accum!!.append(" ")
         }
 
         /** For WholeText, treat a br element as a newline.  */

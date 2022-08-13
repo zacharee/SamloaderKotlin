@@ -1,9 +1,7 @@
 package org.jsoup.nodes
 
 import org.jsoup.Connection
-import org.jsoup.Jsoup
 import org.jsoup.helper.HttpConnection
-import org.jsoup.helper.Validate
 import org.jsoup.parser.Tag
 import org.jsoup.select.Elements
 
@@ -84,7 +82,7 @@ class FormElement
             if (!el.tag()!!.isFormSubmittable) continue  // contents are form listable, superset of submitable
             if (el.hasAttr("disabled")) continue  // skip disabled form inputs
             val name = el.attr("name")
-            if (name!!.length == 0) continue
+            if (name.isNullOrEmpty()) continue
             val type = el.attr("type")
             if (type.equals("button", ignoreCase = true)) continue  // browsers don't submit these
             if ("select" == el.normalName()) {
@@ -96,16 +94,16 @@ class FormElement
                 }
                 if (!set) {
                     val option = el.selectFirst("option")
-                    if (option != null) data.add(HttpConnection.KeyVal.Companion.create(name, option.`val`()))
+                    if (option != null) data.add(HttpConnection.KeyVal.create(name, option.`val`()))
                 }
             } else if ("checkbox".equals(type, ignoreCase = true) || "radio".equals(type, ignoreCase = true)) {
                 // only add checkbox or radio if they have the checked attribute
                 if (el.hasAttr("checked")) {
-                    val `val` = if (el.`val`()!!.length > 0) el.`val`() else "on"
-                    data.add(HttpConnection.KeyVal.Companion.create(name, `val`))
+                    val `val` = if (!el.`val`().isNullOrEmpty()) el.`val`() else "on"
+                    data.add(HttpConnection.KeyVal.create(name, `val`))
                 }
             } else {
-                data.add(HttpConnection.KeyVal.Companion.create(name, el.`val`()))
+                data.add(HttpConnection.KeyVal.create(name, el.`val`()))
             }
         }
         return data

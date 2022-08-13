@@ -33,7 +33,7 @@ class ParseSettings
      */
     fun normalizeTag(name: String?): String? {
         var name: String? = name
-        name = name!!.trim({ it <= ' ' })
+        name = name?.trim { it <= ' ' }
         if (!preserveTagCase) name = Normalizer.lowerCase(name)
         return name
     }
@@ -41,9 +41,9 @@ class ParseSettings
     /**
      * Normalizes an attribute according to the case preservation setting.
      */
-    fun normalizeAttribute(name: String?): String? {
-        var name: String? = name
-        name = name!!.trim({ it <= ' ' })
+    fun normalizeAttribute(name: String): String {
+        var name: String = name
+        name = name.trim { it <= ' ' }
         if (!preserveAttributeCase) name = Normalizer.lowerCase(name)
         return name
     }
@@ -59,16 +59,16 @@ class ParseSettings
         /**
          * HTML default settings: both tag and attribute names are lower-cased during parsing.
          */
-        val htmlDefault: ParseSettings = ParseSettings(false, false)
+        val htmlDefault: ParseSettings = ParseSettings(preserveTagCase = false, preserveAttributeCase = false)
 
         /**
          * Preserve both tag and attribute case.
          */
-        val preserveCase: ParseSettings = ParseSettings(true, true)
+        val preserveCase: ParseSettings = ParseSettings(true, preserveAttributeCase = true)
 
         /** Returns the normal name that a Tag will have (trimmed and lower-cased)  */
         fun normalName(name: String?): String? {
-            return Normalizer.lowerCase(name!!.trim({ it <= ' ' }))
+            return Normalizer.lowerCase(name?.trim { it <= ' ' })
         }
     }
 }

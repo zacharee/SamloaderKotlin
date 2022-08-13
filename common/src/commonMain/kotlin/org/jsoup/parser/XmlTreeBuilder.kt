@@ -11,12 +11,12 @@ import org.jsoup.nodes.*
  *
  * @author Jonathan Hedley
  */
-class XmlTreeBuilder constructor() : TreeBuilder() {
-    public override fun defaultSettings(): ParseSettings? {
-        return ParseSettings.Companion.preserveCase
+class XmlTreeBuilder : TreeBuilder() {
+    override fun defaultSettings(): ParseSettings {
+        return ParseSettings.preserveCase
     }
 
-    override fun initialiseParse(input: CharacterReader, baseUri: String?, parser: Parser) {
+    override fun initialiseParse(input: CharacterReader, baseUri: String, parser: Parser) {
         super.initialiseParse(input, baseUri, parser)
         stack.add((doc)!!) // place the document onto the stack. differs from HtmlTreeBuilder (not on stack)
         doc!!.outputSettings()
@@ -25,11 +25,11 @@ class XmlTreeBuilder constructor() : TreeBuilder() {
             ?.prettyPrint(false) // as XML, we don't understand what whitespace is significant or not
     }
 
-    fun parse(input: String, baseUri: String?): Document? {
+    fun parse(input: String, baseUri: String): Document? {
         return parse((input), baseUri, Parser(this))
     }
 
-    public override fun newInstance(): XmlTreeBuilder {
+    override fun newInstance(): XmlTreeBuilder {
         return XmlTreeBuilder()
     }
 
@@ -47,24 +47,24 @@ class XmlTreeBuilder constructor() : TreeBuilder() {
         return true
     }
 
-    protected fun insertNode(node: Node) {
-        currentElement().appendChild(node)
+    private fun insertNode(node: Node) {
+        currentElement()?.appendChild(node)
         onNodeInserted((node), null)
     }
 
-    protected fun insertNode(node: Node, token: Token?) {
-        currentElement().appendChild(node)
+    private fun insertNode(node: Node, token: Token?) {
+        currentElement()?.appendChild(node)
         onNodeInserted((node), token)
     }
 
-    fun insert(startTag: Token.StartTag?): Element {
-        val tag: Tag? = tagFor((startTag!!.name())!!, settings)
+    private fun insert(startTag: Token.StartTag?): Element {
+        val tag: Tag = tagFor((startTag!!.name())!!, settings)
         // todo: wonder if for xml parsing, should treat all tags as unknown? because it's not html.
         if (startTag.hasAttributes()) startTag.attributes!!.deduplicate((settings)!!)
-        val el: Element = Element(tag, null, settings!!.normalizeAttributes(startTag.attributes))
+        val el = Element(tag, null, settings!!.normalizeAttributes(startTag.attributes))
         insertNode(el, startTag)
         if (startTag.isSelfClosing) {
-            if (!tag!!.isKnownTag) // unknown tag, remember this is self closing for output. see above.
+            if (!tag.isKnownTag) // unknown tag, remember this is self closing for output. see above.
                 tag.setSelfClosing()
         } else {
             stack.add(el)
@@ -73,7 +73,7 @@ class XmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun insert(commentToken: Token.Comment) {
-        val comment: Comment = Comment(commentToken!!.getData())
+        val comment = Comment(commentToken.getData())
         var insert: Node = comment
         if (commentToken.bogus && comment.isXmlDeclaration) {
             // xml declarations are emitted as bogus comments (which is right for html, but not xml)
@@ -91,7 +91,7 @@ class XmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun insert(d: Token.Doctype?) {
-        val doctypeNode: DocumentType =
+        val doctypeNode =
             DocumentType(settings!!.normalizeTag(d!!.getName()), d.getPublicIdentifier(), d.getSystemIdentifier())
         doctypeNode.setPubSysKey(d.pubSysKey)
         insertNode(doctypeNode, d)
@@ -103,23 +103,23 @@ class XmlTreeBuilder constructor() : TreeBuilder() {
      *
      * @param endTag tag to close
      */
-    protected fun popStackToClose(endTag: Token.EndTag?) {
+    private fun popStackToClose(endTag: Token.EndTag?) {
         // like in HtmlTreeBuilder - don't scan up forever for very (artificially) deeply nested stacks
-        val elName: String? = settings!!.normalizeTag(endTag!!.tagName)
+        val elName: String? = settings?.normalizeTag(endTag!!.tagName)
         var firstFound: Element? = null
-        val bottom: Int = stack!!.size - 1
+        val bottom: Int = stack.size - 1
         val upper: Int = if (bottom >= maxQueueDepth) bottom - maxQueueDepth else 0
-        for (pos in stack!!.size - 1 downTo upper) {
-            val next: Element = stack!!.get(pos)
+        for (pos in stack.size - 1 downTo upper) {
+            val next: Element = stack[pos]
             if ((next.nodeName() == elName)) {
                 firstFound = next
                 break
             }
         }
         if (firstFound == null) return  // not found, skip
-        for (pos in stack!!.indices.reversed()) {
-            val next: Element = stack!!.get(pos)
-            stack!!.removeAt(pos)
+        for (pos in stack.indices.reversed()) {
+            val next: Element = stack[pos]
+            stack.removeAt(pos)
             if (next === firstFound) {
                 onNodeClosed(next, endTag)
                 break
@@ -127,22 +127,22 @@ class XmlTreeBuilder constructor() : TreeBuilder() {
         }
     }
 
-    fun parseFragment(inputFragment: String, baseUri: String?, parser: Parser): List<Node> {
+    fun parseFragment(inputFragment: String, baseUri: String, parser: Parser): List<Node> {
         initialiseParse(CharacterReader(inputFragment), baseUri, parser)
         runParser()
         return doc!!.childNodes()
     }
 
-    public override fun parseFragment(
+    override fun parseFragment(
         inputFragment: String?,
         context: Element?,
-        baseUri: String?,
+        baseUri: String,
         parser: Parser
     ): List<Node> {
         return parseFragment(inputFragment ?: "", baseUri, parser)
     }
 
     companion object {
-        private val maxQueueDepth: Int = 256 // an arbitrary tension point between real XML and crafted pain
+        private const val maxQueueDepth: Int = 256 // an arbitrary tension point between real XML and crafted pain
     }
 }

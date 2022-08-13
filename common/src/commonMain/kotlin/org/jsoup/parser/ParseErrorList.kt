@@ -20,7 +20,7 @@ class ParseErrorList internal constructor(private val initialCapacity: Int, val 
     }
 
     companion object {
-        private val INITIAL_CAPACITY: Int = 16
+        private const val INITIAL_CAPACITY: Int = 16
         fun noTracking(): ParseErrorList {
             return ParseErrorList(0, 0)
         }

@@ -1,9 +1,7 @@
 package org.jsoup.nodes
 
-import org.jsoup.helper.Validate
 import org.jsoup.parser.HtmlTreeBuilder
 import org.jsoup.parser.Parser
-import kotlin.reflect.KClass
 
 /**
  * Internal helpers for Nodes, to keep the actual node APIs relatively clean. A jsoup internal class, so don't use it as

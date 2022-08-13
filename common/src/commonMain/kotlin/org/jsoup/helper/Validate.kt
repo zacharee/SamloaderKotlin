@@ -92,7 +92,7 @@ object Validate {
      * @throws IllegalArgumentException if the string is null or empty
      */
     fun notEmpty( string: String?) {
-        if (string == null || string.length == 0) throw IllegalArgumentException("String must not be empty")
+        if (string.isNullOrEmpty()) throw IllegalArgumentException("String must not be empty")
     }
 
     /**
@@ -102,7 +102,7 @@ object Validate {
      * @throws IllegalArgumentException if the string is null or empty
      */
     fun notEmpty( string: String?, msg: String?) {
-        if (string == null || string.length == 0) throw IllegalArgumentException(msg)
+        if (string.isNullOrEmpty()) throw IllegalArgumentException(msg)
     }
 
     /**

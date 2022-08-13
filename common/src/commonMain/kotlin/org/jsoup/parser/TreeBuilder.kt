@@ -1,6 +1,5 @@
 package org.jsoup.parser
 
-import io.ktor.utils.io.core.*
 import okio.Buffer
 import org.jsoup.helper.Validate
 import org.jsoup.nodes.*
@@ -8,7 +7,7 @@ import org.jsoup.nodes.*
 /**
  * @author Jonathan Hedley
  */
-abstract class TreeBuilder constructor() {
+abstract class TreeBuilder {
     var parser: Parser? = null
     var reader: CharacterReader? = null
     var tokeniser: Tokeniser? = null
@@ -21,7 +20,7 @@ abstract class TreeBuilder constructor() {
     protected var currentToken // currentToken is used only for error tracking.
             : Token? = null
     var settings: ParseSettings? = null
-    protected var seenTags // tags we've used in this parse; saves tag GC for custom tags.
+    private var seenTags // tags we've used in this parse; saves tag GC for custom tags.
             : MutableMap<String, Tag?>? = null
     private val start: Token.StartTag = Token.StartTag() // start tag to process
     private val end: Token.EndTag = Token.EndTag()
@@ -79,9 +78,9 @@ abstract class TreeBuilder constructor() {
     abstract fun parseFragment(
         inputFragment: String?,
         context: Element?,
-        baseUri: String?,
+        baseUri: String,
         parser: Parser
-    ): List<Node>?
+    ): List<Node>
 
     protected fun runParser() {
         val tokeniser: Tokeniser? = tokeniser
@@ -126,9 +125,9 @@ abstract class TreeBuilder constructor() {
      * (which might not actually be on the stack; use stack.size() == 0 to test if required.
      * @return the last element on the stack, if any; or the root document
      */
-    fun currentElement(): Element {
+    fun currentElement(): Element? {
         val size: Int = stack.size
-        return if (size > 0) stack.last() else (doc)!!
+        return if (size > 0) stack.last() else doc
     }
 
     /**
@@ -138,7 +137,7 @@ abstract class TreeBuilder constructor() {
      */
     fun currentElementIs(normalName: String): Boolean {
         if (stack.size == 0) return false
-        val current: Element = currentElement()
+        val current = currentElement()
         return current != null && (current.normalName() == normalName)
     }
 
@@ -168,12 +167,12 @@ abstract class TreeBuilder constructor() {
         return false
     }
 
-    fun tagFor(tagName: String, settings: ParseSettings?): Tag? {
+    fun tagFor(tagName: String, settings: ParseSettings?): Tag {
         var tag: Tag? =
-            seenTags!!.get(tagName) // note that we don't normalize the cache key. But tag via valueOf may be normalized.
+            seenTags!![tagName] // note that we don't normalize the cache key. But tag via valueOf may be normalized.
         if (tag == null) {
-            tag = Tag.Companion.valueOf(tagName, settings)
-            seenTags!!.put(tagName, tag)
+            tag = Tag.valueOf(tagName, settings)
+            seenTags!![tagName] = tag
         }
         return tag
     }
@@ -201,13 +200,13 @@ abstract class TreeBuilder constructor() {
     private fun trackNodePosition(node: Node, token: Token?, start: Boolean) {
         if (trackSourceRange && token != null) {
             val startPos: Int = token.startPos()
-            if (startPos == Token.Companion.Unset) return  // untracked, virtual token
+            if (startPos == Token.Unset) return  // untracked, virtual token
             val startRange: Range.Position =
                 Range.Position(startPos, reader!!.lineNumber(startPos), reader!!.columnNumber(startPos))
             val endPos: Int = token.endPos()
             val endRange: Range.Position =
                 Range.Position(endPos, reader!!.lineNumber(endPos), reader!!.columnNumber(endPos))
-            val range: Range = Range(startRange, endRange)
+            val range = Range(startRange, endRange)
             range.track(node, start)
         }
     }

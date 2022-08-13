@@ -14,7 +14,7 @@ data class Attribute(
     var `val`: String?,
     var parent: Attributes?
 ) : MutableMap.MutableEntry<String?, String?> {
-    override var key: String? = null
+    final override var key: String? = null
         set(value) {
             var key = value
             Validate.notNull(key)
@@ -40,7 +40,7 @@ data class Attribute(
      * @return the attribute value
      */
     override val value: String
-        get() = Attributes.Companion.checkNotNull(`val`)
+        get() = Attributes.checkNotNull(`val`)
 
     /**
      * Check if this Attribute has a value. Set boolean attributes have no value.
@@ -52,27 +52,27 @@ data class Attribute(
 
     /**
      * Set the attribute value.
-     * @param val the new attribute value; may be null (to set an enabled boolean attribute)
+     * @param newValue the new attribute value; may be null (to set an enabled boolean attribute)
      * @return the previous value (if was null; an empty string)
      */
-    override fun setValue( `val`: String?): String? {
+    override fun setValue(newValue: String?): String {
         var oldVal = this.`val`
         if (parent != null) {
             val i = parent!!.indexOfKey(key)
-            if (i != Attributes.Companion.NotFound) {
+            if (i != Attributes.NotFound) {
                 oldVal = parent!![key] // trust the container more
-                parent!!.vals[i] = `val`
+                parent!!.vals[i] = newValue
             }
         }
-        this.`val` = `val`
-        return Attributes.Companion.checkNotNull(oldVal)
+        this.`val` = newValue
+        return Attributes.checkNotNull(oldVal)
     }
 
     /**
      * Get the HTML representation of this attribute; e.g. `href="index.html"`.
      * @return HTML
      */
-    fun html(): String? {
+    fun html(): String {
         val sb = StringUtil.borrowBuilder()
         try {
             html(sb, Document("").outputSettings())
@@ -83,7 +83,7 @@ data class Attribute(
     }
 
     @Throws(IOException::class)
-    protected fun html(accum: Appendable?, out: Document.OutputSettings?) {
+    fun html(accum: Appendable?, out: Document.OutputSettings?) {
         html(key, `val`, accum, out)
     }
 
@@ -107,7 +107,7 @@ data class Attribute(
      * @return string
      */
     override fun toString(): String {
-        return html()!!
+        return html()
     }
 
     val isDataAttribute: Boolean
@@ -123,10 +123,10 @@ data class Attribute(
         return shouldCollapseAttribute(key, `val`, out)
     }
 
-    override fun equals( o: Any?): Boolean { // note parent not considered
-        if (this === o) return true
-        if (o == null || this::class != o::class) return false
-        val attribute = o as Attribute
+    override fun equals(other: Any?): Boolean { // note parent not considered
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+        val attribute = other as Attribute
         if (if (key != null) key != attribute.key else attribute.key != null) return false
         return if (`val` != null) `val` == attribute.`val` else attribute.`val` == null
     }
@@ -163,7 +163,12 @@ data class Attribute(
             accum!!.append(key)
             if (!shouldCollapseAttribute(key, `val`, out)) {
                 accum.append("=\"")
-                Entities.escape(accum, Attributes.Companion.checkNotNull(`val`), out, true, false, false, false)
+                Entities.escape(accum, Attributes.checkNotNull(`val`), out,
+                    inAttribute = true,
+                    normaliseWhite = false,
+                    stripLeadingWhite = false,
+                    trimTrailing = false
+                )
                 accum.append('"')
             }
         }

@@ -49,20 +49,20 @@ class Tokeniser constructor(// html input
 
         // if emit is pending, a non-character token was found: return any chars in buffer, and leave token for next read:
         val cb: StringBuilder = charsBuilder
-        if (cb.length != 0) {
+        return if (cb.isNotEmpty()) {
             val str: String = cb.toString()
             cb.removeRange(cb.indices)
-            val token: Token? = charPending.data(str)
+            val token: Token = charPending.data(str)
             charsString = null
-            return token
+            token
         } else if (charsString != null) {
             val token: Token? = charPending.data(charsString)
             charsString = null
-            return token
+            token
         } else {
             isEmitPending = false
             assert(emitPending != null)
-            return emitPending
+            emitPending
         }
     }
 
@@ -89,7 +89,7 @@ class Tokeniser constructor(// html input
         if (charsString == null) {
             charsString = str
         } else {
-            if (charsBuilder.length == 0) { // switching to string builder as more than one emit before read
+            if (charsBuilder.isEmpty()) { // switching to string builder as more than one emit before read
                 charsBuilder.append(charsString)
             }
             charsBuilder.append(str)
@@ -103,7 +103,7 @@ class Tokeniser constructor(// html input
         if (charsString == null) {
             charsString = str.toString()
         } else {
-            if (charsBuilder.length == 0) {
+            if (charsBuilder.isEmpty()) {
                 charsBuilder.append(charsString)
             }
             charsBuilder.append(str)
@@ -116,7 +116,7 @@ class Tokeniser constructor(// html input
         if (charsString == null) {
             charsString = c.toString()
         } else {
-            if (charsBuilder.length == 0) {
+            if (charsBuilder.isEmpty()) {
                 charsBuilder.append(charsString)
             }
             charsBuilder.append(c)
@@ -160,8 +160,8 @@ class Tokeniser constructor(// html input
         reader.mark()
         if (reader.matchConsume("#")) { // numbered
             val isHexMode: Boolean = reader.matchConsumeIgnoreCase("X")
-            val numRef: String? = if (isHexMode) reader.consumeHexSequence() else reader.consumeDigitSequence()
-            if (numRef!!.isEmpty()) { // didn't match anything
+            val numRef: String = if (isHexMode) reader.consumeHexSequence() else reader.consumeDigitSequence()
+            if (numRef.isEmpty()) { // didn't match anything
                 characterReferenceError("numeric reference with no numerals")
                 reader.rewindToMark()
                 return null
@@ -177,14 +177,14 @@ class Tokeniser constructor(// html input
                 charval = numRef.toInt(base)
             } catch (ignored: NumberFormatException) {
             } // skip
-            if ((charval == -1) || (charval >= 0xD800 && charval <= 0xDFFF) || (charval > 0x10FFFF)) {
+            if ((charval == -1) || (charval in 0xD800..0xDFFF) || (charval > 0x10FFFF)) {
                 characterReferenceError("character [%s] outside of valid range", charval)
                 codeRef[0] = replacementChar.code
             } else {
                 // fix illegal unicode characters to match browser behavior
                 if (charval >= win1252ExtensionsStart && charval < win1252ExtensionsStart + win1252Extensions.size) {
                     characterReferenceError("character [%s] is not a valid unicode code point", charval)
-                    charval = win1252Extensions.get(charval - win1252ExtensionsStart)
+                    charval = win1252Extensions[charval - win1252ExtensionsStart]
                 }
 
                 // todo: implement number replacement table
@@ -202,7 +202,7 @@ class Tokeniser constructor(// html input
             if (!found) {
                 reader.rewindToMark()
                 if (looksLegit) // named with semicolon
-                    characterReferenceError("invalid named reference [%s]", (nameRef)!!)
+                    characterReferenceError("invalid named reference [%s]", (nameRef))
                 return null
             }
             if (inAttribute && (reader.matchesLetter() || reader.matchesDigit() || reader.matchesAny('=', '-', '_'))) {
@@ -213,17 +213,20 @@ class Tokeniser constructor(// html input
             reader.unmark()
             if (!reader.matchConsume(";")) characterReferenceError(
                 "missing semicolon on [&%s]",
-                (nameRef)!!
+                (nameRef)
             ) // missing semi
-            val numChars: Int = Entities.codepointsForName(nameRef, multipointHolder)
-            if (numChars == 1) {
-                codeRef[0] = multipointHolder.get(0)
-                return codeRef
-            } else if (numChars == 2) {
-                return multipointHolder
-            } else {
-                Validate.fail("Unexpected characters returned for " + nameRef)
-                return multipointHolder
+            return when (Entities.codepointsForName(nameRef, multipointHolder)) {
+                1 -> {
+                    codeRef[0] = multipointHolder[0]
+                    codeRef
+                }
+                2 -> {
+                    multipointHolder
+                }
+                else -> {
+                    Validate.fail("Unexpected characters returned for $nameRef")
+                    multipointHolder
+                }
             }
         }
     }
@@ -276,7 +279,7 @@ class Tokeniser constructor(// html input
     /** Returns the closer sequence `</lastStart`  */
     fun appropriateEndTagSeq(): String {
         if (lastStartCloseSeq == null) // reset on start tag emit
-            lastStartCloseSeq = "</" + lastStartTag
+            lastStartCloseSeq = "</$lastStartTag"
         return lastStartCloseSeq!!
     }
 
@@ -305,7 +308,7 @@ class Tokeniser constructor(// html input
         if (errors!!.canAddError()) errors.add(
             ParseError(
                 reader,
-                String.format("Invalid character reference: " + message, *args)
+                String.format("Invalid character reference: $message", *args)
             )
         )
     }
@@ -330,7 +333,7 @@ class Tokeniser constructor(// html input
      * @param inAttribute if the text to be unescaped is in an attribute
      * @return unescaped string from reader
      */
-    fun unescapeEntities(inAttribute: Boolean): String? {
+    fun unescapeEntities(inAttribute: Boolean): String {
         val builder: StringBuilder = StringUtil.borrowBuilder()
         while (!reader.isEmpty) {
             builder.append(reader.consumeTo('&'))
@@ -347,12 +350,12 @@ class Tokeniser constructor(// html input
     }
 
     companion object {
-        val replacementChar: Char = '\uFFFD' // replaces null character
+        const val replacementChar: Char = '\uFFFD' // replaces null character
         private val notCharRefCharsSorted: CharArray = charArrayOf('\t', '\n', '\r', '\u000c', ' ', '<', '&')
 
         // Some illegal character escapes are parsed by browsers as windows-1252 instead. See issue #1034
         // https://html.spec.whatwg.org/multipage/parsing.html#numeric-character-reference-end-state
-        val win1252ExtensionsStart: Int = 0x80
+        const val win1252ExtensionsStart: Int = 0x80
         val win1252Extensions: IntArray =
             intArrayOf( // we could build this manually, but Windows-1252 is not a standard java charset so that could break on
                 // some platforms - this table is verified with a test
@@ -366,6 +369,6 @@ class Tokeniser constructor(// html input
             notCharRefCharsSorted.sort()
         }
 
-        private val Unset: Int = -1
+        private const val Unset: Int = -1
     }
 }

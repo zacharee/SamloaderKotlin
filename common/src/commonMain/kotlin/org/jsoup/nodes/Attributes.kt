@@ -321,7 +321,7 @@ class Attributes : Iterable<Attribute?> {
      * Get the HTML representation of these attributes.
      * @return HTML
      */
-    fun html(): String? {
+    fun html(): String {
         val sb = StringUtil.borrowBuilder()
         try {
             html(sb, Document("").outputSettings()) // output settings a bit funky, but this html() seldom used
@@ -342,19 +342,19 @@ class Attributes : Iterable<Attribute?> {
     }
 
     override fun toString(): String {
-        return html()!!
+        return html()
     }
 
     /**
      * Checks if these attributes are equal to another set of attributes, by comparing the two sets. Note that the order
      * of the attributes does not impact this equality (as per the Map interface equals()).
-     * @param o attributes to compare with
+     * @param other attributes to compare with
      * @return if both sets of attributes have the same content
      */
-    override fun equals( o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || this::class != o::class) return false
-        val that = o as Attributes
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+        val that = other as Attributes
         if (size != that.size) return false
         for (i in 0 until size) {
             val key = keys[i]
@@ -380,7 +380,7 @@ class Attributes : Iterable<Attribute?> {
         return result
     }
 
-    public fun clone(): Attributes {
+    fun clone(): Attributes {
         val clone = Attributes()
         clone.size = size
         clone.keys = keys.copyOf()

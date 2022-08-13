@@ -26,17 +26,7 @@ import org.jsoup.select.NodeVisitor
  * Rather than interacting directly with a Cleaner object, generally see the `clean` methods in [org.jsoup.Jsoup].
  *
  */
-class Cleaner constructor(safelist: Safelist) {
-    private val safelist: Safelist
-
-    /**
-     * Create a new cleaner, that sanitizes documents using the supplied safelist.
-     * @param safelist safe-list to clean with
-     */
-    init {
-        Validate.notNull(safelist)
-        this.safelist = safelist
-    }
+class Cleaner constructor(private val safelist: Safelist) {
 
     /**
      * Creates a new, clean document, from the original dirty document, containing only elements allowed by the safelist.
@@ -67,20 +57,17 @@ class Cleaner constructor(safelist: Safelist) {
      */
     fun isValid(dirtyDocument: Document): Boolean {
         Validate.notNull(dirtyDocument)
-        val clean: Document = Document.Companion.createShell(dirtyDocument.baseUri())
+        val clean: Document = Document.createShell(dirtyDocument.baseUri())
         val numDiscarded: Int = copySafeNodes(dirtyDocument.body(), clean.body())
-        return (numDiscarded == 0
-                && dirtyDocument.head()?.childNodes()
-            ?.isEmpty() == true // because we only look at the body, but we start from a shell, make sure there's nothing in the head
-                )
+        return (numDiscarded == 0 && dirtyDocument.head().childNodes().isEmpty()) // because we only look at the body, but we start from a shell, make sure there's nothing in the head
     }
 
     fun isValidBodyHtml(bodyHtml: String?): Boolean {
-        val clean: Document = Document.Companion.createShell("")
-        val dirty: Document = Document.Companion.createShell("")
-        val errorList: ParseErrorList = ParseErrorList.Companion.tracking(1)
-        val nodes: List<Node>? = Parser.Companion.parseFragment(bodyHtml, dirty.body(), "", errorList)
-        dirty.body()?.insertChildren(0, nodes)
+        val clean: Document = Document.createShell("")
+        val dirty: Document = Document.createShell("")
+        val errorList: ParseErrorList = ParseErrorList.tracking(1)
+        val nodes: List<Node> = Parser.parseFragment(bodyHtml, dirty.body(), "", errorList)
+        dirty.body().insertChildren(0, nodes)
         val numDiscarded: Int = copySafeNodes(dirty.body(), clean.body())
         return numDiscarded == 0 && errorList.isEmpty()
     }
@@ -98,49 +85,49 @@ class Cleaner constructor(safelist: Safelist) {
             this.destination = destination
         }
 
-        public override fun head(source: Node, depth: Int) {
-            if (source is Element) {
-                val sourceEl: Element = source as Element
+        override fun head(node: Node, depth: Int) {
+            if (node is Element) {
+                val sourceEl: Element = node
                 if (safelist.isSafeTag(sourceEl.normalName()!!)) { // safe, clone and copy safe attrs
                     val meta: ElementMeta = createSafeElement(sourceEl)
                     val destChild: Element = meta.el
                     destination?.appendChild(destChild)
                     numDiscarded += meta.numAttribsDiscarded
                     destination = destChild
-                } else if (source !== root) { // not a safe tag, so don't add. don't count root against discarded.
+                } else if (node !== root) { // not a safe tag, so don't add. don't count root against discarded.
                     numDiscarded++
                 }
-            } else if (source is TextNode) {
-                val sourceText: TextNode = source as TextNode
-                val destText: TextNode = TextNode(sourceText.wholeText!!)
+            } else if (node is TextNode) {
+                val sourceText: TextNode = node
+                val destText = TextNode(sourceText.wholeText!!)
                 destination?.appendChild(destText)
-            } else if (source is DataNode && safelist.isSafeTag(source.parent()!!.nodeName()!!)) {
-                val sourceData: DataNode = source as DataNode
-                val destData: DataNode = DataNode(sourceData.wholeData!!)
+            } else if (node is DataNode && safelist.isSafeTag(node.parent()!!.nodeName()!!)) {
+                val sourceData: DataNode = node
+                val destData = DataNode(sourceData.wholeData!!)
                 destination?.appendChild(destData)
             } else { // else, we don't care about comments, xml proc instructions, etc
                 numDiscarded++
             }
         }
 
-        public override fun tail(source: Node?, depth: Int) {
-            if (source is Element && safelist.isSafeTag(source.nodeName()!!)) {
+        override fun tail(node: Node?, depth: Int) {
+            if (node is Element && safelist.isSafeTag(node.nodeName()!!)) {
                 destination = destination?.parent() // would have descended, so pop destination stack
             }
         }
     }
 
     private fun copySafeNodes(source: Element?, dest: Element?): Int {
-        val cleaningVisitor: CleaningVisitor = CleaningVisitor(source, dest)
+        val cleaningVisitor = CleaningVisitor(source, dest)
         NodeTraversor.traverse(cleaningVisitor, source)
         return cleaningVisitor.numDiscarded
     }
 
     private fun createSafeElement(sourceEl: Element): ElementMeta {
         val sourceTag: String? = sourceEl.tagName()
-        val destAttrs: Attributes = Attributes()
-        val dest: Element = Element(valueOf(sourceTag), sourceEl.baseUri(), destAttrs)
-        var numDiscarded: Int = 0
+        val destAttrs = Attributes()
+        val dest = Element(valueOf(sourceTag), sourceEl.baseUri(), destAttrs)
+        var numDiscarded = 0
         val sourceAttrs: Attributes? = sourceEl.attributes()
         sourceAttrs?.forEach { sourceAttr ->
             if (safelist.isSafeAttribute(sourceTag!!, sourceEl, sourceAttr!!)) destAttrs.put(sourceAttr) else numDiscarded++
@@ -155,5 +142,5 @@ class Cleaner constructor(safelist: Safelist) {
         return ElementMeta(dest, numDiscarded)
     }
 
-    private class ElementMeta internal constructor(var el: Element, var numAttribsDiscarded: Int)
+    private class ElementMeta(var el: Element, var numAttribsDiscarded: Int)
 }

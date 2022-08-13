@@ -63,53 +63,53 @@ abstract class ChangeNotifyingArrayList<E> constructor(initialCapacity: Int) : M
         return wrapped.listIterator(index)
     }
 
-    public override fun set(index: Int, element: E): E {
+    override fun set(index: Int, element: E): E {
         onContentsChanged()
         return wrapped.set(index, element)
     }
 
-    public override fun add(e: E): Boolean {
+    override fun add(element: E): Boolean {
         onContentsChanged()
-        return wrapped.add(e)
+        return wrapped.add(element)
     }
 
-    public override fun add(index: Int, element: E) {
+    override fun add(index: Int, element: E) {
         onContentsChanged()
         wrapped.add(index, element)
     }
 
-    public override fun removeAt(index: Int): E {
+    override fun removeAt(index: Int): E {
         onContentsChanged()
         return wrapped.removeAt(index)
     }
 
-    public override fun remove(element: E): Boolean {
+    override fun remove(element: E): Boolean {
         onContentsChanged()
         return wrapped.remove(element)
     }
 
-    public override fun clear() {
+    override fun clear() {
         onContentsChanged()
         wrapped.clear()
     }
 
-    public override fun addAll(elements: Collection<E>): Boolean {
+    override fun addAll(elements: Collection<E>): Boolean {
         onContentsChanged()
         return wrapped.addAll(elements)
     }
 
-    public override fun addAll(index: Int, elements: Collection<E>): Boolean {
+    override fun addAll(index: Int, elements: Collection<E>): Boolean {
         onContentsChanged()
         return wrapped.addAll(index, elements)
     }
 
-    public override fun removeAll(elements: Collection<E>): Boolean {
+    override fun removeAll(elements: Collection<E>): Boolean {
         onContentsChanged()
         return wrapped.removeAll(elements.toSet())
     }
 
-    public override fun retainAll(c: Collection<E>): Boolean {
+    override fun retainAll(elements: Collection<E>): Boolean {
         onContentsChanged()
-        return wrapped.retainAll(c.toSet())
+        return wrapped.retainAll(elements.toSet())
     }
 }

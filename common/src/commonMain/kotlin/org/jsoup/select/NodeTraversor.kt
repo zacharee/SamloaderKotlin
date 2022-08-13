@@ -22,10 +22,10 @@ object NodeTraversor {
         Validate.notNull(visitor)
         Validate.notNull(root)
         var node: Node? = root
-        var depth: Int = 0
+        var depth = 0
         while (node != null) {
             val parent: Node? = node.parentNode() // remember parent to find nodes that get replaced in .head
-            val origSize: Int = if (parent != null) parent.childNodeSize() else 0
+            val origSize: Int = parent?.childNodeSize() ?: 0
             val next: Node? = node.nextSibling()
             visitor.head(node, depth) // visit current node
             if (parent != null && !node.hasParent()) { // removed or replaced
@@ -40,7 +40,7 @@ object NodeTraversor {
                     continue  // don't tail removed
                 }
             }
-            if (node!!.childNodeSize() > 0) { // descend
+            if (node.childNodeSize() > 0) { // descend
                 node = node.childNode(0)
                 depth++
             } else {
@@ -79,7 +79,7 @@ object NodeTraversor {
      */
     fun filter(filter: NodeFilter, root: Node): NodeFilter.FilterResult? {
         var node: Node? = root
-        var depth: Int = 0
+        var depth = 0
         while (node != null) {
             var result: NodeFilter.FilterResult? = filter.head(node, depth)
             if (result == NodeFilter.FilterResult.STOP) return result
@@ -100,10 +100,10 @@ object NodeTraversor {
                     result = filter.tail(node, depth)
                     if (result == NodeFilter.FilterResult.STOP) return result
                 }
-                val prev: Node? = node // In case we need to remove it below.
+                val prev: Node = node // In case we need to remove it below.
                 node = node.parentNode()
                 depth--
-                if (result == NodeFilter.FilterResult.REMOVE) prev!!.remove() // Remove AFTER finding parent.
+                if (result == NodeFilter.FilterResult.REMOVE) prev.remove() // Remove AFTER finding parent.
                 result = NodeFilter.FilterResult.CONTINUE // Parent was not pruned.
             }
             // 'tail' current node, then proceed with siblings:

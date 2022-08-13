@@ -28,7 +28,7 @@ class XmlDeclaration(name: String, isProcessingInstruction: Boolean) : LeafNode(
         return XmlDeclaration(value.toString(), isProcessingInstruction)
     }
 
-    override fun nodeName(): String? {
+    override fun nodeName(): String {
         return "#declaration"
     }
 
@@ -72,7 +72,7 @@ class XmlDeclaration(name: String, isProcessingInstruction: Boolean) : LeafNode(
     }
 
     @Throws(IOException::class)
-    public override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         accum
             ?.append("<")
             ?.append(if (isProcessingInstruction) "!" else "?")
@@ -83,7 +83,8 @@ class XmlDeclaration(name: String, isProcessingInstruction: Boolean) : LeafNode(
             ?.append(">")
     }
 
-    public override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+
     override fun toString(): String {
         return outerHtml()!!
     }

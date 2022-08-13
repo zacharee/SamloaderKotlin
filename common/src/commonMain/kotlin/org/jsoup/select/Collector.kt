@@ -16,7 +16,7 @@ object Collector {
      * @return list of matches; empty if none
      */
     fun collect(eval: Evaluator?, root: Element?): Elements {
-        val elements: Elements = Elements()
+        val elements = Elements()
         NodeTraversor.traverse(Accumulator(root, elements, eval), root)
         return elements
     }
@@ -29,23 +29,23 @@ object Collector {
      * @return the first match; `null` if none
      */
     fun findFirst(eval: Evaluator?, root: Element): Element? {
-        val finder: FirstFinder = FirstFinder(eval)
+        val finder = FirstFinder(eval)
         return finder.find(root, root)
     }
 
-    private class Accumulator internal constructor(
+    private class Accumulator(
         private val root: Element?,
         private val elements: Elements,
         private val eval: Evaluator?
     ) : NodeVisitor {
-        public override fun head(node: Node, depth: Int) {
+        override fun head(node: Node, depth: Int) {
             if (node is Element) {
-                val el: Element = node as Element
+                val el: Element = node
                 if (eval!!.matches(root!!, el)) elements.add(el)
             }
         }
 
-        public override fun tail(node: Node?, depth: Int) {
+        override fun tail(node: Node?, depth: Int) {
             // void
         }
     }
@@ -61,7 +61,7 @@ object Collector {
             return match
         }
 
-        public override fun head(node: Node?, depth: Int): NodeFilter.FilterResult? {
+        override fun head(node: Node?, depth: Int): NodeFilter.FilterResult {
             if (node is Element) {
                 val el: Element = node
                 if (eval!!.matches(evalRoot!!, el)) {
@@ -72,7 +72,7 @@ object Collector {
             return NodeFilter.FilterResult.CONTINUE
         }
 
-        public override fun tail(node: Node?, depth: Int): NodeFilter.FilterResult? {
+        override fun tail(node: Node?, depth: Int): NodeFilter.FilterResult {
             return NodeFilter.FilterResult.CONTINUE
         }
     }

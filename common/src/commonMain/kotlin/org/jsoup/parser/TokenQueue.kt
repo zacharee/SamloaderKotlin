@@ -68,7 +68,7 @@ class TokenQueue constructor(data: String?) {
     fun matchesAny(vararg seq: Char): Boolean {
         if (isEmpty) return false
         for (c: Char in seq) {
-            if (queue!!.get(pos) == c) return true
+            if (queue!![pos] == c) return true
         }
         return false
     }
@@ -80,11 +80,11 @@ class TokenQueue constructor(data: String?) {
      * @return true if found and removed, false if not found.
      */
     fun matchChomp(seq: String): Boolean {
-        if (matches(seq)) {
+        return if (matches(seq)) {
             pos += seq.length
-            return true
+            true
         } else {
-            return false
+            false
         }
     }
 
@@ -93,7 +93,7 @@ class TokenQueue constructor(data: String?) {
      * @return if starts with whitespace
      */
     fun matchesWhitespace(): Boolean {
-        return !isEmpty && StringUtil.isWhitespace(queue!!.get(pos).code)
+        return !isEmpty && StringUtil.isWhitespace(queue!![pos].code)
     }
 
     /**
@@ -101,7 +101,7 @@ class TokenQueue constructor(data: String?) {
      * @return if matches a word character
      */
     fun matchesWord(): Boolean {
-        return !isEmpty && queue!!.get(pos).isLetterOrDigit()
+        return !isEmpty && queue!![pos].isLetterOrDigit()
     }
 
     /**
@@ -116,7 +116,7 @@ class TokenQueue constructor(data: String?) {
      * @return first character on queue.
      */
     fun consume(): Char {
-        return queue!!.get(pos++)
+        return queue!![pos++]
     }
 
     /**
@@ -141,12 +141,12 @@ class TokenQueue constructor(data: String?) {
      */
     fun consumeTo(seq: String?): String {
         val offset: Int = queue!!.indexOf((seq)!!, pos)
-        if (offset != -1) {
+        return if (offset != -1) {
             val consumed: String = queue!!.substring(pos, offset)
             pos += consumed.length
-            return consumed
+            consumed
         } else {
-            return remainder()
+            remainder()
         }
     }
 
@@ -215,11 +215,11 @@ class TokenQueue constructor(data: String?) {
     fun chompBalanced(open: Char, close: Char): String {
         var start: Int = -1
         var end: Int = -1
-        var depth: Int = 0
+        var depth = 0
         var last: Char = 0.toChar()
-        var inSingleQuote: Boolean = false
-        var inDoubleQuote: Boolean = false
-        var inRegexQE: Boolean = false // regex \Q .. \E escapes from Pattern.quote()
+        var inSingleQuote = false
+        var inDoubleQuote = false
+        var inRegexQE = false // regex \Q .. \E escapes from Pattern.quote()
         do {
             if (isEmpty) break
             val c: Char = consume()
@@ -244,7 +244,7 @@ class TokenQueue constructor(data: String?) {
         } while (depth > 0)
         val out: String = if ((end >= 0)) queue!!.substring(start, end) else ""
         if (depth > 0) { // ran out of queue before seeing enough )
-            Validate.fail("Did not find balanced marker at '" + out + "'")
+            Validate.fail("Did not find balanced marker at '$out'")
         }
         return out
     }
@@ -254,7 +254,7 @@ class TokenQueue constructor(data: String?) {
      * @return Whether consuming whitespace or not
      */
     fun consumeWhitespace(): Boolean {
-        var seen: Boolean = false
+        var seen = false
         while (matchesWhitespace()) {
             pos++
             seen = true
@@ -304,25 +304,25 @@ class TokenQueue constructor(data: String?) {
         return remainder
     }
 
-    public override fun toString(): String {
+    override fun toString(): String {
         return queue!!.substring(pos)
     }
 
     companion object {
-        private val ESC: Char = '\\' // escape char for chomp balanced.
+        private const val ESC: Char = '\\' // escape char for chomp balanced.
 
         /**
          * Unescape a \ escaped string.
          * @param in backslash escaped string
          * @return unescaped string
          */
-        fun unescape(`in`: String?): String? {
-            val out: StringBuilder? = StringUtil.borrowBuilder()
+        fun unescape(`in`: String?): String {
+            val out: StringBuilder = StringUtil.borrowBuilder()
             var last: Char = 0.toChar()
             for (c: Char in `in`!!.toCharArray()) {
                 if (c == ESC) {
-                    if (last == ESC) out!!.append(c)
-                } else out!!.append(c)
+                    if (last == ESC) out.append(c)
+                } else out.append(c)
                 last = c
             }
             return StringUtil.releaseBuilder(out)

@@ -80,10 +80,10 @@ open class TextNode(text: String) : LeafNode() {
     }
 
     @Throws(IOException::class)
-    public override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         val prettyPrint = out!!.prettyPrint()
         val parent = if (parNode is Element) parNode as Element else null
-        val normaliseWhite = prettyPrint && !Element.Companion.preserveWhitespace(parNode)
+        val normaliseWhite = prettyPrint && !Element.preserveWhitespace(parNode)
         var trimLeading = false
         var trimTrailing = false
         if (normaliseWhite) {
@@ -97,7 +97,7 @@ open class TextNode(text: String) : LeafNode() {
                 next is Element && next.shouldIndent(out) || next is TextNode && next.isBlank // next is blank text, from re-parenting
             if (couldSkip && isBlank) return
             if (sibIndex == 0 && parent != null && parent.tag()!!
-                    .formatAsBlock() && !isBlank || out.outline() && siblingNodes().size > 0 && !isBlank
+                    .formatAsBlock() && !isBlank || out.outline() && siblingNodes().isNotEmpty() && !isBlank
             ) indent(
                 accum!!, depth, out
             )
@@ -105,7 +105,8 @@ open class TextNode(text: String) : LeafNode() {
         Entities.escape(accum, coreValue(), out, false, normaliseWhite, trimLeading, trimTrailing)
     }
 
-    public override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+
     override fun toString(): String {
         return outerHtml()!!
     }
@@ -125,7 +126,7 @@ open class TextNode(text: String) : LeafNode() {
             return TextNode(text!!)
         }
 
-        fun normaliseWhitespace(text: String?): String? {
+        fun normaliseWhitespace(text: String?): String {
             var text = text
             text = StringUtil.normaliseWhitespace(text)
             return text
@@ -136,7 +137,7 @@ open class TextNode(text: String) : LeafNode() {
         }
 
         fun lastCharIsWhitespace(sb: StringBuilder?): Boolean {
-            return sb!!.length != 0 && sb[sb.length - 1] == ' '
+            return sb!!.isNotEmpty() && sb[sb.length - 1] == ' '
         }
     }
 }

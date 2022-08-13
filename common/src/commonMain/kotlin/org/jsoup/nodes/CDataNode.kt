@@ -11,7 +11,7 @@ class CDataNode(text: String?) : TextNode(text!!) {
         return CDataNode(text())
     }
 
-    override fun nodeName(): String? {
+    override fun nodeName(): String {
         return "#cdata"
     }
 
@@ -24,12 +24,12 @@ class CDataNode(text: String?) : TextNode(text!!) {
     }
 
     @Throws(IOException::class)
-    public override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         accum?.append("<![CDATA[")
             ?.append(wholeText)
     }
 
-    public override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         try {
             accum!!.append("]]>")
         } catch (e: IOException) {

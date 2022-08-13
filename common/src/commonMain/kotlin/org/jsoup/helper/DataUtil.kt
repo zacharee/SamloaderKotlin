@@ -2,7 +2,6 @@ package org.jsoup.helper
 
 import com.soywiz.korio.stream.SyncInputStream
 import com.soywiz.korio.stream.SyncOutputStream
-import com.soywiz.korio.stream.markable
 import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.errors.*
@@ -10,7 +9,6 @@ import okio.BufferedSource
 import okio.buffer
 import okio.Buffer
 import org.jsoup.UncheckedIOException
-import org.jsoup.internal.ConstrainableInputStream
 import org.jsoup.internal.Normalizer
 import org.jsoup.internal.StringUtil
 import org.jsoup.nodes.*
@@ -29,12 +27,13 @@ object DataUtil {
     private val charsetPattern: Regex = Regex("(?i)\\bcharset=\\s*(?:[\"'])?([^\\s,;\"']*)")
     val UTF_8: Charset =
         Charset.forName("UTF-8") // Don't use StandardCharsets, as those only appear in Android API 19, and we target 10.
-    val defaultCharsetName: String = UTF_8.name // used if not found in header or meta charset
-    private val firstReadBufferSize: Int = 1024 * 5
-    val bufferSize: Int = 1024 * 32
+    private val defaultCharsetName: String = UTF_8.name // used if not found in header or meta charset
+    private const val firstReadBufferSize: Int = 1024 * 5
+    const val bufferSize: Int = 1024 * 32
     private val mimeBoundaryChars: CharArray =
         "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()
-    val boundaryLength: Int = 32
+    const val boundaryLength: Int = 32
+
     /**
      * Loads and parses a file to a Document. Files that are compressed with gzip (and end in `.gz` or `.z`)
      * are supported in addition to uncompressed files.
@@ -60,14 +59,14 @@ object DataUtil {
      * @return Document
      * @throws IOException on IO error
      */
-    suspend fun load(
+    fun load(
         file: File,
         charsetName: String?,
         baseUri: String?,
         parser: Parser? = Parser.htmlParser()
     ): Document? {
         val stream = file.openSyncInputStream()
-        val name: String? = Normalizer.lowerCase(file.getName())
+//        val name: String = Normalizer.lowerCase(file.getName())
 //        if (name!!.endsWith(".gz") || name.endsWith(".z")) {
 //            // unfortunately file input streams don't support marks (why not?), so we will close and reopen after read
 //            val zipped: Boolean
@@ -91,7 +90,7 @@ object DataUtil {
      */
     @Throws(IOException::class)
     fun load(`in`: SyncInputStream?,  charsetName: String?, baseUri: String?): Document? {
-        return parseInputStream(`in`, charsetName, baseUri, Parser.Companion.htmlParser())
+        return parseInputStream(`in`, charsetName, baseUri, Parser.htmlParser())
     }
 
     /**
@@ -165,8 +164,8 @@ object DataUtil {
                 var foundCharset: String? = null // if not found, will keep utf-8 as best attempt
 
                 metaElements?.forEach { meta ->
-                    if (meta?.hasAttr("http-equiv") == true) foundCharset = getCharsetFromContentType(meta.attr("content"))
-                    if (foundCharset == null && meta?.hasAttr("charset") == true) foundCharset = meta.attr("charset")
+                    if (meta.hasAttr("http-equiv")) foundCharset = getCharsetFromContentType(meta.attr("content"))
+                    if (foundCharset == null && meta.hasAttr("charset")) foundCharset = meta.attr("charset")
                 }
 
                 // look for <?xml encoding='ISO-8859-1'?>
@@ -251,7 +250,7 @@ object DataUtil {
      * @return "EUC-JP", or null if not found. Charset is trimmed and uppercased.
      */
 
-    fun getCharsetFromContentType( contentType: String?): String? {
+    private fun getCharsetFromContentType( contentType: String?): String? {
         if (contentType == null) return null
         val m = charsetPattern.matchEntire(contentType)
 
@@ -264,10 +263,10 @@ object DataUtil {
     }
 
 
-    private fun validateCharset( cs: String?): String? {
+    private fun validateCharset(cs: String?): String? {
         var cs: String? = cs
-        if (cs == null || cs.length == 0) return null
-        cs = cs.trim({ it <= ' ' }).replace("[\"']".toRegex(), "")
+        if (cs.isNullOrEmpty()) return null
+        cs = cs.trim { it <= ' ' }.replace("[\"']".toRegex(), "")
         try {
             if (Charset.isSupported(cs)) return cs
             cs = cs.uppercase()
@@ -281,11 +280,11 @@ object DataUtil {
     /**
      * Creates a random string, suitable for use as a mime boundary
      */
-    fun mimeBoundary(): String? {
-        val mime: StringBuilder? = StringUtil.borrowBuilder()
+    fun mimeBoundary(): String {
+        val mime: StringBuilder = StringUtil.borrowBuilder()
         val rand: Random = Random.Default
         for (i in 0 until boundaryLength) {
-            mime!!.append(mimeBoundaryChars.get(rand.nextInt(mimeBoundaryChars.size)))
+            mime.append(mimeBoundaryChars[rand.nextInt(mimeBoundaryChars.size)])
         }
         return StringUtil.releaseBuilder(mime)
     }
@@ -293,23 +292,23 @@ object DataUtil {
 
     private fun detectCharsetFromBom(byteData: Buffer): BomCharset? {
         val buffer = SourceMarker(byteData)
-        val reset = buffer.mark(0)
+        buffer.mark(0)
         val bom = Buffer()
         if (buffer.run { limit - mark } >= bom.size) {
             byteData.copyTo(bom, 0, 4)
             buffer.rewind()
         }
-        if ((bom.get(0).toInt() == 0x00) && (bom.get(1)
-                .toInt() == 0x00) && (bom.get(2) == 0xFE.toByte()) && (bom.get(3) == 0xFF.toByte()) ||  // BE
-            (bom.get(0) == 0xFF.toByte()) && (bom.get(1) == 0xFE.toByte()) && (bom.get(2)
-                .toInt() == 0x00) && (bom.get(3).toInt() == 0x00)
+        if ((bom[0].toInt() == 0x00) && (bom[1]
+                .toInt() == 0x00) && (bom[2] == 0xFE.toByte()) && (bom[3] == 0xFF.toByte()) ||  // BE
+            (bom[0] == 0xFF.toByte()) && (bom[1] == 0xFE.toByte()) && (bom[2]
+                .toInt() == 0x00) && (bom[3].toInt() == 0x00)
         ) { // LE
             return BomCharset("UTF-32", false) // and I hope it's on your system
-        } else if (bom.get(0) == 0xFE.toByte() && bom.get(1) == 0xFF.toByte() ||  // BE
-            bom.get(0) == 0xFF.toByte() && bom.get(1) == 0xFE.toByte()
+        } else if (bom[0] == 0xFE.toByte() && bom[1] == 0xFF.toByte() ||  // BE
+            bom[0] == 0xFF.toByte() && bom[1] == 0xFE.toByte()
         ) {
             return BomCharset("UTF-16", false) // in all Javas
-        } else if ((bom.get(0) == 0xEF.toByte()) && (bom.get(1) == 0xBB.toByte()) && (bom.get(2) == 0xBF.toByte())) {
+        } else if ((bom[0] == 0xEF.toByte()) && (bom[1] == 0xBB.toByte()) && (bom[2] == 0xBF.toByte())) {
             return BomCharset("UTF-8", true) // in all Javas
             // 16 and 32 decoders consume the BOM to determine be/le; utf-8 should be consumed here
         }

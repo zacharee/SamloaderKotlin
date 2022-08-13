@@ -8,7 +8,7 @@ import org.jsoup.nodes.*
 /**
  * HTML Tree Builder; creates a DOM from Tokens.
  */
-class HtmlTreeBuilder constructor() : TreeBuilder() {
+class HtmlTreeBuilder : TreeBuilder() {
     private var state // the current state
             : HtmlTreeBuilderState? = null
     private var originalState // original / marked state
@@ -40,15 +40,15 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
             : Boolean = false
         private set
 
-    public override fun defaultSettings(): ParseSettings {
-        return ParseSettings.Companion.htmlDefault
+    override fun defaultSettings(): ParseSettings {
+        return ParseSettings.htmlDefault
     }
 
-    public override fun newInstance(): HtmlTreeBuilder {
+    override fun newInstance(): HtmlTreeBuilder {
         return HtmlTreeBuilder()
     }
 
-    override fun initialiseParse(input: CharacterReader, baseUri: String?, parser: Parser) {
+    override fun initialiseParse(input: CharacterReader, baseUri: String, parser: Parser) {
         super.initialiseParse(input, baseUri, parser)
 
         // this is a bit mucky. todo - probably just create new parser objects to ensure all reset.
@@ -66,12 +66,12 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
         isFragmentParsing = false
     }
 
-    public override fun parseFragment(
+    override fun parseFragment(
         inputFragment: String?,
          context: Element?,
-        baseUri: String?,
+        baseUri: String,
         parser: Parser
-    ): List<Node>? {
+    ): List<Node> {
         // context may be null
         state = HtmlTreeBuilderState.Initial
         initialiseParse(CharacterReader(inputFragment!!), baseUri, parser)
@@ -114,16 +114,16 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
             }
         }
         runParser()
-        if (context != null) {
+        return if (context != null) {
             // depending on context and the input html, content may have been added outside of the root el
             // e.g. context=p, input=div, the div will have been pushed out.
             val nodes: List<Node> = root!!.siblingNodes()
             if (nodes.isNotEmpty()) root.insertChildren(-1, nodes)
-            return root.childNodes()
-        } else return doc!!.childNodes()
+            root.childNodes()
+        } else doc!!.childNodes()
     }
 
-    public override fun process(token: Token): Boolean {
+    override fun process(token: Token): Boolean {
         currentToken = token
         return state!!.process(token, this)
     }
@@ -173,8 +173,8 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     fun maybeSetBaseUri(base: Element?) {
         if (baseUriSetFromDoc) // only listen to the first <base href> in parse
             return
-        val href: String? = base!!.absUrl("href")
-        if (href!!.length != 0) { // ignore <base target> etc
+        val href: String? = base?.absUrl("href")
+        if (!href.isNullOrEmpty()) { // ignore <base target> etc
             baseUri = (href)
             baseUriSetFromDoc = true
             doc!!.setBaseUri(href) // set on the doc so doc.createElement(Tag) will get updated base, and to update all descendants
@@ -210,7 +210,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
             ) // ensure we get out of whatever state we are in. emitted for yielded processing
             return el
         }
-        val el: Element = Element(
+        val el = Element(
             tagFor((startTag.name())!!, settings), null, settings!!.normalizeAttributes(
                 startTag.attributes
             )
@@ -220,7 +220,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun insertStartTag(startTagName: String?): Element {
-        val el: Element = Element(tagFor((startTagName)!!, settings), null)
+        val el = Element(tagFor((startTagName)!!, settings), null)
         insert(el)
         return el
     }
@@ -237,7 +237,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
     fun insertEmpty(startTag: Token.StartTag?): Element {
         val tag: Tag? = tagFor((startTag!!.name())!!, settings)
-        val el: Element = Element(tag, null, settings!!.normalizeAttributes(startTag.attributes))
+        val el = Element(tag, null, settings!!.normalizeAttributes(startTag.attributes))
         insertNode(el, startTag)
         if (startTag.isSelfClosing) {
             if (tag!!.isKnownTag) {
@@ -253,7 +253,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
     fun insertForm(startTag: Token.StartTag?, onStack: Boolean, checkTemplateStack: Boolean): FormElement {
         val tag: Tag? = tagFor((startTag!!.name())!!, settings)
-        val el: FormElement = FormElement(
+        val el = FormElement(
             tag, null, settings!!.normalizeAttributes(
                 startTag.attributes
             )
@@ -267,16 +267,16 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun insert(commentToken: Token.Comment?) {
-        val comment: Comment = Comment(commentToken!!.getData())
+        val comment = Comment(commentToken!!.getData())
         insertNode(comment, commentToken)
     }
 
     fun insert(characterToken: Token.Character?) {
-        val el: Element = currentElement() // will be doc if no current element; allows for whitespace to be inserted into the doc root object (not on the stack)
-        val tagName: String? = el.normalName()
+        val el = currentElement() // will be doc if no current element; allows for whitespace to be inserted into the doc root object (not on the stack)
+        val tagName: String? = el?.normalName()
         val data: String? = characterToken?.data
         val node = if (characterToken?.isCData == true) CDataNode(data) else if (isContentForTagData(tagName)) DataNode((data)!!) else TextNode((data)!!)
-        el.appendChild(node) // doesn't use insertNode, because we don't foster these; and will always have a stack.
+        el?.appendChild(node) // doesn't use insertNode, because we don't foster these; and will always have a stack.
         onNodeInserted(node, characterToken)
     }
 
@@ -285,12 +285,12 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
         if (stack.isEmpty()) {
             doc!!.appendChild(node)
         } else if (isFosterInserts && StringUtil.inSorted(
-                currentElement().normalName(),
+                currentElement()?.normalName(),
                 HtmlTreeBuilderState.Constants.InTableFoster
         )) {
             insertInFosterParent(node)
         } else {
-            currentElement().appendChild(node)
+            currentElement()?.appendChild(node)
         }
 
         // connect form controls to their form element
@@ -310,7 +310,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun onStack(el: Element): Boolean {
-        return onStack(stack as ArrayList<Element?>, el)
+        return onStack(stack, el)
     }
 
     fun onStack(elName: String?): Boolean {
@@ -322,7 +322,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
         val bottom: Int = stack.size - 1
         val upper: Int = if (bottom >= maxQueueDepth) bottom - maxQueueDepth else 0
         for (pos in bottom downTo upper) {
-            val next: Element = (stack.get(pos))!!
+            val next: Element = (stack[pos])
             if ((next.normalName() == elName)) {
                 return next
             }
@@ -332,7 +332,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
     fun removeFromStack(el: Element?): Boolean {
         for (pos in stack.indices.reversed()) {
-            val next: Element = (stack.get(pos))!!
+            val next: Element = (stack[pos])
             if (next === el) {
                 stack.removeAt(pos)
                 return true
@@ -344,7 +344,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
     fun popStackToClose(elName: String?): Element? {
         for (pos in stack.indices.reversed()) {
-            val el: Element = (stack.get(pos))
+            val el: Element = (stack[pos])
             stack.removeAt(pos)
             if ((el.normalName() == elName)) {
                 if (currentToken is Token.EndTag) onNodeClosed(el, currentToken)
@@ -357,7 +357,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     // elnames is sorted, comes from Constants
     fun popStackToClose(vararg elNames: String?) {
         for (pos in stack.indices.reversed()) {
-            val next: Element = (stack.get(pos))!!
+            val next: Element = (stack[pos])
             stack.removeAt(pos)
             if (StringUtil.inSorted(next.normalName(), elNames)) break
         }
@@ -365,7 +365,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
     fun popStackToBefore(elName: String) {
         for (pos in stack.indices.reversed()) {
-            val next: Element = (stack.get(pos))!!
+            val next: Element = (stack[pos])
             if ((next.normalName() == elName)) {
                 break
             } else {
@@ -388,7 +388,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
     private fun clearStackToContext(vararg nodeNames: String) {
         for (pos in stack.indices.reversed()) {
-            val next: Element = (stack.get(pos))
+            val next: Element = (stack[pos])
             if (StringUtil.`in`(
                     next.normalName(),
                     *nodeNames
@@ -398,12 +398,14 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
 
-    fun aboveOnStack(el: Element): Element? {
+    fun aboveOnStack(el: Element?): Element? {
+        if (el == null) return null
+
         assert(onStack(el))
         for (pos in stack.indices.reversed()) {
-            val next: Element = (stack.get(pos))
+            val next: Element = (stack[pos])
             if (next === el) {
-                return stack.get(pos - 1)
+                return stack[pos - 1]
             }
         }
         return null
@@ -416,13 +418,13 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun replaceOnStack(out: Element, `in`: Element) {
-        replaceInQueue(stack as ArrayList<Element?>, out, `in`)
+        replaceInQueue(stack, out, `in`)
     }
 
-    private fun replaceInQueue(queue: ArrayList<Element?>?, out: Element?, `in`: Element) {
-        val i: Int = queue!!.lastIndexOf(out)
+    private fun <T : Element?> replaceInQueue(queue: ArrayList<T>, out: T?, `in`: T) {
+        val i: Int = queue.lastIndexOf(out)
         Validate.isTrue(i != -1)
-        queue.set(i, `in`)
+        queue[i] = `in`
     }
 
     /**
@@ -432,7 +434,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
      */
     fun resetInsertionMode(): Boolean {
         // https://html.spec.whatwg.org/multipage/parsing.html#the-insertion-mode
-        var last: Boolean = false
+        var last = false
         val bottom: Int = stack.size - 1
         val upper: Int = if (bottom >= maxQueueDepth) bottom - maxQueueDepth else 0
         val origState: HtmlTreeBuilderState? = state
@@ -440,13 +442,12 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
             transition(HtmlTreeBuilderState.InBody)
         }
         LOOP@ for (pos in bottom downTo upper) {
-            var node: Element? = stack.get(pos)
+            var node: Element? = stack[pos]
             if (pos == upper) {
                 last = true
                 if (isFragmentParsing) node = contextElement
             }
-            val name: String? = if (node != null) node.normalName() else ""
-            when (name) {
+            when (if (node != null) node.normalName() else "") {
                 "select" -> {
                     transition(HtmlTreeBuilderState.InSelect)
                     // todo - should loop up (with some limit) and check for table or template hits
@@ -521,7 +522,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     /** Places the body back onto the stack and moves to InBody, for cases in AfterBody / AfterAfterBody when more content comes  */
     fun resetBody() {
         if (!onStack("body")) {
-            stack.add(doc!!.body()!!)
+            stack.add(doc!!.body())
         }
         transition(HtmlTreeBuilderState.InBody)
     }
@@ -534,7 +535,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     private fun inSpecificScope(
-        targetNames: Array<String?>,
+        targetNames: Array<out String?>,
         baseTypes: Array<String>,
         extraTypes: Array<String>?
     ): Boolean {
@@ -543,7 +544,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
         val top: Int = if (bottom > MaxScopeSearchDepth) bottom - MaxScopeSearchDepth else 0
         // don't walk too far up the tree
         for (pos in bottom downTo top) {
-            val elName: String? = stack.get(pos)!!.normalName()
+            val elName: String? = stack[pos].normalName()
             if (StringUtil.inSorted(elName, targetNames)) return true
             if (StringUtil.inSorted(elName, baseTypes)) return false
             if (extraTypes != null && StringUtil.inSorted(elName, extraTypes)) return false
@@ -552,7 +553,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
         return false
     }
 
-    fun inScope(targetNames: Array<String?>): Boolean {
+    fun inScope(targetNames: Array<out String?>): Boolean {
         return inSpecificScope(targetNames, TagsSearchInScope, null)
     }
 
@@ -576,7 +577,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
     fun inSelectScope(targetName: String): Boolean {
         for (pos in stack.indices.reversed()) {
-            val el: Element = (stack.get(pos))!!
+            val el: Element = (stack[pos])
             val elName: String? = el.normalName()
             if ((elName == targetName)) return true
             if (!StringUtil.inSorted(elName, TagSearchSelectScope)) // all elements except
@@ -602,7 +603,7 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
      * process, then the UA must perform the above steps as if that element was not in the above list.
      */
     fun generateImpliedEndTags(excludeTag: String?) {
-        while (StringUtil.inSorted(currentElement().normalName(), TagSearchEndTags)) {
+        while (StringUtil.inSorted(currentElement()?.normalName(), TagSearchEndTags)) {
             if (excludeTag != null && currentElementIs(excludeTag)) break
             pop()
         }
@@ -614,14 +615,14 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
      */
     fun generateImpliedEndTags(thorough: Boolean = false) {
         val search: Array<String> = if (thorough) TagThoroughSearchEndTags else TagSearchEndTags
-        while (StringUtil.inSorted(currentElement().normalName(), search)) {
+        while (StringUtil.inSorted(currentElement()?.normalName(), search)) {
             pop()
         }
     }
 
     fun closeElement(name: String) {
         generateImpliedEndTags(name)
-        if (!(name == currentElement().normalName())) error(state())
+        if (name != currentElement()?.normalName()) error(state())
         popStackToClose(name)
     }
 
@@ -633,49 +634,47 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun lastFormattingElement(): Element? {
-        return if (formattingElements!!.size > 0) formattingElements!!.get(formattingElements!!.size - 1) else null
+        return if (formattingElements.size > 0) formattingElements[formattingElements.size - 1] else null
     }
 
     fun positionOfElement(el: Element?): Int {
-        for (i in formattingElements!!.indices) {
-            if (el === formattingElements!!.get(i)) return i
+        for (i in formattingElements.indices) {
+            if (el === formattingElements[i]) return i
         }
         return -1
     }
 
     fun removeLastFormattingElement(): Element? {
-        val size: Int = formattingElements!!.size
-        if (size > 0) return formattingElements!!.removeAt(size - 1) else return null
+        val size: Int = formattingElements.size
+        if (size > 0) return formattingElements.removeAt(size - 1) else return null
     }
 
     // active formatting elements
     fun pushActiveFormattingElements(`in`: Element?) {
         checkActiveFormattingElements(`in`)
-        formattingElements!!.add(`in`)
+        formattingElements.add(`in`)
     }
 
     fun pushWithBookmark(`in`: Element?, bookmark: Int) {
         checkActiveFormattingElements(`in`)
         // catch any range errors and assume bookmark is incorrect - saves a redundant range check.
         try {
-            formattingElements!!.add(bookmark, `in`)
+            formattingElements.add(bookmark, `in`)
         } catch (e: IndexOutOfBoundsException) {
-            formattingElements!!.add(`in`)
+            formattingElements.add(`in`)
         }
     }
 
     fun checkActiveFormattingElements(`in`: Element?) {
-        var numSeen: Int = 0
-        val size: Int = formattingElements!!.size - 1
+        var numSeen = 0
+        val size: Int = formattingElements.size - 1
         var ceil: Int = size - maxUsedFormattingElements
         if (ceil < 0) ceil = 0
         for (pos in size downTo ceil) {
-            val el: Element? = formattingElements!!.get(pos)
-            if (el == null) // marker
-                break
+            val el: Element = formattingElements[pos] ?: break
             if (isSameFormattingElement(`in`, el)) numSeen++
             if (numSeen == 3) {
-                formattingElements!!.removeAt(pos)
+                formattingElements.removeAt(pos)
                 break
             }
         }
@@ -692,35 +691,35 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
         val last: Element? = lastFormattingElement()
         if (last == null || onStack(last)) return
         var entry: Element? = last
-        val size: Int = formattingElements!!.size
+        val size: Int = formattingElements.size
         var ceil: Int = size - maxUsedFormattingElements
         if (ceil < 0) ceil = 0
         var pos: Int = size - 1
-        var skip: Boolean = false
+        var skip = false
         while (true) {
             if (pos == ceil) { // step 4. if none before, skip to 8
                 skip = true
                 break
             }
-            entry = formattingElements!!.get(--pos) // step 5. one earlier than entry
+            entry = formattingElements[--pos] // step 5. one earlier than entry
             if (entry == null || onStack(entry)) // step 6 - neither marker nor on stack
                 break // jump to 8, else continue back to 4
         }
         while (true) {
             if (!skip) // step 7: on later than entry
-                entry = formattingElements!!.get(++pos)
+                entry = formattingElements[++pos]
             Validate.notNull(entry) // should not occur, as we break at last element
 
             // 8. create new element from element, 9 insert into current node, onto stack
             skip = false // can only skip increment from 4.
-            val newEl: Element = Element(
+            val newEl = Element(
                 tagFor((entry!!.normalName())!!, settings), null, entry.attributes()!!
                     .clone()
             )
             insert(newEl)
 
             // 10. replace entry with new entry
-            formattingElements!!.set(pos, newEl)
+            formattingElements[pos] = newEl
 
             // 11
             if (pos == size - 1) // if not last entry in list, jump to 7
@@ -729,29 +728,28 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun clearFormattingElementsToLastMarker() {
-        while (!formattingElements!!.isEmpty()) {
-            val el: Element? = removeLastFormattingElement()
-            if (el == null) break
+        while (!formattingElements.isEmpty()) {
+            removeLastFormattingElement() ?: break
         }
     }
 
     fun removeFromActiveFormattingElements(el: Element) {
-        for (pos in formattingElements!!.indices.reversed()) {
-            val next: Element? = formattingElements!!.get(pos)
+        for (pos in formattingElements.indices.reversed()) {
+            val next: Element? = formattingElements[pos]
             if (next === el) {
-                formattingElements!!.removeAt(pos)
+                formattingElements.removeAt(pos)
                 break
             }
         }
     }
 
     fun isInActiveFormattingElements(el: Element?): Boolean {
-        return onStack(formattingElements!!, el)
+        return onStack(formattingElements, el)
     }
 
     fun getActiveFormattingElement(nodeName: String?): Element? {
-        for (pos in formattingElements!!.indices.reversed()) {
-            val next: Element? = formattingElements!!.get(pos)
+        for (pos in formattingElements.indices.reversed()) {
+            val next: Element? = formattingElements[pos]
             if (next == null) // scope marker
                 break else if ((next.normalName() == nodeName)) return next
         }
@@ -763,20 +761,20 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
     }
 
     fun insertMarkerToFormattingElements() {
-        formattingElements!!.add(null)
+        formattingElements.add(null)
     }
 
     fun insertInFosterParent(`in`: Node) {
         val fosterParent: Element?
         val lastTable: Element? = getFromStack("table")
-        var isLastTableParent: Boolean = false
+        var isLastTableParent = false
         if (lastTable != null) {
             if (lastTable.parent() != null) {
                 fosterParent = lastTable.parent()
                 isLastTableParent = true
             } else fosterParent = aboveOnStack(lastTable)
         } else { // no table == frag
-            fosterParent = stack.get(0)
+            fosterParent = stack[0]
         }
         if (isLastTableParent) {
             Validate.notNull(lastTable) // last table cannot be null by this point.
@@ -791,10 +789,10 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
 
     fun popTemplateMode(): HtmlTreeBuilderState? {
-        if (tmplInsertMode!!.size > 0) {
-            return tmplInsertMode!!.removeAt(tmplInsertMode!!.size - 1)
+        return if (tmplInsertMode!!.size > 0) {
+            tmplInsertMode!!.removeAt(tmplInsertMode!!.size - 1)
         } else {
-            return null
+            null
         }
     }
 
@@ -804,10 +802,10 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
 
 
     fun currentTemplateMode(): HtmlTreeBuilderState? {
-        return if ((tmplInsertMode!!.size > 0)) tmplInsertMode!!.get(tmplInsertMode!!.size - 1) else null
+        return if ((tmplInsertMode!!.size > 0)) tmplInsertMode!![tmplInsertMode!!.size - 1] else null
     }
 
-    public override fun toString(): String {
+    override fun toString(): String {
         return ("TreeBuilder{" +
                 "currentToken=" + currentToken +
                 ", state=" + state +
@@ -859,13 +857,13 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
             "section", "select", "style", "summary", "table", "tbody", "td", "textarea", "tfoot", "th", "thead",
             "title", "tr", "ul", "wbr", "xmp"
         )
-        val MaxScopeSearchDepth: Int = 100 // prevents the parser bogging down in exceptionally broken pages
-        private val maxQueueDepth: Int = 256 // an arbitrary tension point between real HTML and crafted pain
-        private fun onStack(queue: ArrayList<Element?>, element: Element?): Boolean {
-            val bottom: Int = queue!!.size - 1
+        const val MaxScopeSearchDepth: Int = 100 // prevents the parser bogging down in exceptionally broken pages
+        private const val maxQueueDepth: Int = 256 // an arbitrary tension point between real HTML and crafted pain
+        private fun <T : Element?> onStack(queue: ArrayList<T>, element: T?): Boolean {
+            val bottom: Int = queue.size - 1
             val upper: Int = if (bottom >= maxQueueDepth) bottom - maxQueueDepth else 0
             for (pos in bottom downTo upper) {
-                val next: Element? = queue.get(pos)
+                val next: Element? = queue[pos]
                 if (next === element) {
                     return true
                 }
@@ -873,6 +871,6 @@ class HtmlTreeBuilder constructor() : TreeBuilder() {
             return false
         }
 
-        private val maxUsedFormattingElements: Int = 12 // limit how many elements get recreated
+        private const val maxUsedFormattingElements: Int = 12 // limit how many elements get recreated
     }
 }

@@ -30,35 +30,35 @@ abstract class LeafNode : Node() {
         attr(nodeName(), value)
     }
 
-    override fun attr(key: String?): String? {
+    override fun attr(attributeKey: String?): String? {
         return if (!hasAttributes()) {
-            if (nodeName() == key) value as String? else Node.Companion.EmptyString
-        } else super.attr(key)
+            if (nodeName() == attributeKey) value as String? else EmptyString
+        } else super.attr(attributeKey)
     }
 
-    override fun attr(key: String?, value: String?): Node {
-        if (!hasAttributes() && key == nodeName()) {
-            this.value = value
+    override fun attr(attributeKey: String?, attributeValue: String?): Node {
+        if (!hasAttributes() && attributeKey == nodeName()) {
+            this.value = attributeValue
         } else {
             ensureAttributes()
-            super.attr(key, value)
+            super.attr(attributeKey, attributeValue)
         }
         return this
     }
 
-    override fun hasAttr(key: String): Boolean {
+    override fun hasAttr(attributeKey: String): Boolean {
         ensureAttributes()
-        return super.hasAttr(key)
+        return super.hasAttr(attributeKey)
     }
 
-    override fun removeAttr(key: String?): Node? {
+    override fun removeAttr(attributeKey: String?): Node? {
         ensureAttributes()
-        return super.removeAttr(key)
+        return super.removeAttr(attributeKey)
     }
 
-    override fun absUrl(key: String?): String? {
+    override fun absUrl(attributeKey: String?): String? {
         ensureAttributes()
-        return super.absUrl(key)
+        return super.absUrl(attributeKey)
     }
 
     override fun baseUri(): String? {

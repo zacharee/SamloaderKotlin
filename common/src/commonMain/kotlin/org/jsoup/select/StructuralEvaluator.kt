@@ -6,41 +6,41 @@ import org.jsoup.nodes.Node
 /**
  * Base structural evaluator.
  */
-internal abstract class StructuralEvaluator constructor() : Evaluator() {
+internal abstract class StructuralEvaluator : Evaluator() {
     open var evaluator: Evaluator? = null
 
-    internal class Root constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+    internal class Root : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
             return root === element
         }
     }
 
     internal class Has constructor(override var evaluator: Evaluator?) : StructuralEvaluator() {
-        val finder = Collector.FirstFinder(evaluator)
+        private val finder = Collector.FirstFinder(evaluator)
 
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             // for :has, we only want to match children (or below), not the input element. And we want to minimize GCs
             for (i in 0 until element.childNodeSize()) {
-                val node: Node? = element.childNode(i)
+                val node: Node = element.childNode(i)
                 if (node is Element) {
-                    val match: Element? = finder.find(element, node as Element)
+                    val match: Element? = finder.find(element, node)
                     if (match != null) return true
                 }
             }
             return false
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":has($evaluator)"
         }
     }
 
     internal class Not constructor(override var evaluator: Evaluator?) : StructuralEvaluator() {
-        public override fun matches(root: Element, node: Element): Boolean {
-            return !evaluator!!.matches(root, node)
+        override fun matches(root: Element, element: Element): Boolean {
+            return !evaluator!!.matches(root, element)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":not($evaluator)"
         }
     }
@@ -50,7 +50,7 @@ internal abstract class StructuralEvaluator constructor() : Evaluator() {
             this.evaluator = evaluator
         }
 
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             if (root === element) return false
             var parent: Element? = element.parent()
             while (parent != null) {
@@ -61,7 +61,7 @@ internal abstract class StructuralEvaluator constructor() : Evaluator() {
             return false
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return "$evaluator "
         }
     }
@@ -71,13 +71,13 @@ internal abstract class StructuralEvaluator constructor() : Evaluator() {
             this.evaluator = evaluator
         }
 
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             if (root === element) return false
             val parent: Element? = element.parent()
             return parent != null && evaluator!!.matches(root, parent)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return "$evaluator > "
         }
     }
@@ -87,7 +87,7 @@ internal abstract class StructuralEvaluator constructor() : Evaluator() {
             this.evaluator = evaluator
         }
 
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             if (root === element) return false
             var prev: Element? = element.previousElementSibling()
             while (prev != null) {
@@ -97,7 +97,7 @@ internal abstract class StructuralEvaluator constructor() : Evaluator() {
             return false
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return "$evaluator ~ "
         }
     }
@@ -107,13 +107,13 @@ internal abstract class StructuralEvaluator constructor() : Evaluator() {
             this.evaluator = evaluator
         }
 
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             if (root === element) return false
             val prev: Element? = element.previousElementSibling()
             return prev != null && evaluator!!.matches(root, prev)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return "$evaluator + "
         }
     }

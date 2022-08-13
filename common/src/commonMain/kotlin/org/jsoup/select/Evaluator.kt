@@ -26,11 +26,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for tag name
      */
     class Tag constructor(private val tagName: String?) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return ((element.normalName() == tagName))
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("%s", tagName)
         }
     }
@@ -39,11 +39,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for tag name that ends with
      */
     class TagEndsWith constructor(private val tagName: String) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return (element.normalName()!!.endsWith(tagName))
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("%s", tagName)
         }
     }
@@ -52,11 +52,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for element id
      */
     class Id constructor(private val id: String?) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return ((id == element.id()))
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("#%s", id)
         }
     }
@@ -65,11 +65,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for element class
      */
     class Class constructor(private val className: String) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return (element.hasClass(className))
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format(".%s", className)
         }
     }
@@ -78,11 +78,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for attribute name matching
      */
     class Attribute constructor(private val key: String?) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.hasAttr(key ?: return false)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("[%s]", key)
         }
     }
@@ -91,22 +91,17 @@ abstract class Evaluator protected constructor() {
      * Evaluator for attribute name prefix matching
      */
     class AttributeStarting constructor(keyPrefix: String?) : Evaluator() {
-        private val keyPrefix: String?
+        private val keyPrefix: String = Normalizer.lowerCase(keyPrefix)!!
 
-        init {
-            Validate.notEmpty(keyPrefix)
-            this.keyPrefix = Normalizer.lowerCase(keyPrefix)
-        }
-
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             val values: List<org.jsoup.nodes.Attribute?> = element.attributes()!!.asList()
             for (attribute: org.jsoup.nodes.Attribute? in values) {
-                if (Normalizer.lowerCase(attribute?.key).startsWith(keyPrefix!!)) return true
+                if (Normalizer.lowerCase(attribute?.key)?.startsWith(keyPrefix) == true) return true
             }
             return false
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("[^%s]", keyPrefix)
         }
     }
@@ -115,11 +110,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for attribute name/value matching
      */
     class AttributeWithValue constructor(key: String?, value: String?) : AttributeKeyPair(key, value) {
-        public override fun matches(root: Element, element: Element): Boolean {
-            return element.hasAttr(key!!) && value.equals(element.attr(key)!!.trim({ it <= ' ' }), ignoreCase = true)
+        override fun matches(root: Element, element: Element): Boolean {
+            return element.hasAttr(key!!) && value.equals(element.attr(key)!!.trim { it <= ' ' }, ignoreCase = true)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("[%s=%s]", key, value)
         }
     }
@@ -128,11 +123,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for attribute name != value matching
      */
     class AttributeWithValueNot constructor(key: String?, value: String?) : AttributeKeyPair(key, value) {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return !value.equals(element.attr(key), ignoreCase = true)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("[%s!=%s]", key, value)
         }
     }
@@ -141,12 +136,12 @@ abstract class Evaluator protected constructor() {
      * Evaluator for attribute name/value matching (value prefix)
      */
     class AttributeWithValueStarting constructor(key: String?, value: String?) : AttributeKeyPair(key, value, false) {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.hasAttr(key!!) && Normalizer.lowerCase(element.attr(key))
-                .startsWith(value!!) // value is lower case already
+                ?.startsWith(value!!) == true // value is lower case already
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("[%s^=%s]", key, value)
         }
     }
@@ -155,12 +150,12 @@ abstract class Evaluator protected constructor() {
      * Evaluator for attribute name/value matching (value ending)
      */
     class AttributeWithValueEnding constructor(key: String?, value: String?) : AttributeKeyPair(key, value, false) {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.hasAttr(key!!) && Normalizer.lowerCase(element.attr(key))
-                .endsWith(value!!) // value is lower case
+                ?.endsWith(value!!) == true // value is lower case
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("[%s$=%s]", key, value)
         }
     }
@@ -169,12 +164,12 @@ abstract class Evaluator protected constructor() {
      * Evaluator for attribute name/value matching (value containing)
      */
     class AttributeWithValueContaining constructor(key: String?, value: String?) : AttributeKeyPair(key, value) {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.hasAttr(key!!) && Normalizer.lowerCase(element.attr(key))
-                .contains(value!!) // value is lower case
+                ?.contains(value!!) == true // value is lower case
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("[%s*=%s]", key, value)
         }
     }
@@ -191,11 +186,11 @@ abstract class Evaluator protected constructor() {
             this.pattern = pattern
         }
 
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.hasAttr(key!!) && pattern.containsMatchIn(element.attr(key) ?: "")
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format("[%s~=%s]", key, pattern.toString())
         }
     }
@@ -213,10 +208,10 @@ abstract class Evaluator protected constructor() {
             Validate.notEmpty(key)
             Validate.notEmpty(value)
             this.key = Normalizer.normalize(key)
-            val isStringLiteral: Boolean = (value!!.startsWith("'") && value!!.endsWith("'")
-                    || value!!.startsWith("\"") && value!!.endsWith("\""))
+            val isStringLiteral: Boolean = (value!!.startsWith("'") && value.endsWith("'")
+                    || value.startsWith("\"") && value.endsWith("\""))
             if (isStringLiteral) {
-                value = value!!.substring(1, value!!.length - 1)
+                value = value.substring(1, value.length - 1)
             }
             this.value = if (trimValue) Normalizer.normalize(value) else Normalizer.normalize(value, isStringLiteral)
         }
@@ -225,12 +220,12 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for any / all element matching
      */
-    class AllElements constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+    class AllElements : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
             return true
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return "*"
         }
     }
@@ -239,11 +234,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for matching by sibling index number (e &lt; idx)
      */
     class IndexLessThan constructor(index: Int) : IndexEvaluator(index) {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return root !== element && element.elementSiblingIndex() < index
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format(":lt(%d)", index)
         }
     }
@@ -252,11 +247,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for matching by sibling index number (e &gt; idx)
      */
     class IndexGreaterThan constructor(index: Int) : IndexEvaluator(index) {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.elementSiblingIndex() > index
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format(":gt(%d)", index)
         }
     }
@@ -265,11 +260,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for matching by sibling index number (e = idx)
      */
     class IndexEquals constructor(index: Int) : IndexEvaluator(index) {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.elementSiblingIndex() == index
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return String.format(":eq(%d)", index)
         }
     }
@@ -277,33 +272,33 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for matching the last sibling (css :last-child)
      */
-    class IsLastChild constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+    class IsLastChild : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
             val p: Element? = element.parent()
-            return (p != null) && !(p is Document) && (element.elementSiblingIndex() == p.children().size - 1)
+            return (p != null) && p !is Document && (element.elementSiblingIndex() == p.children().size - 1)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":last-child"
         }
     }
 
-    class IsFirstOfType constructor() : IsNthOfType(0, 1) {
-        public override fun toString(): String {
+    class IsFirstOfType : IsNthOfType(0, 1) {
+        override fun toString(): String {
             return ":first-of-type"
         }
     }
 
-    class IsLastOfType constructor() : IsNthLastOfType(0, 1) {
-        public override fun toString(): String {
+    class IsLastOfType : IsNthLastOfType(0, 1) {
+        override fun toString(): String {
             return ":last-of-type"
         }
     }
 
     abstract class CssNthEvaluator constructor(protected val a: Int, protected val b: Int) : Evaluator() {
-        constructor(b: Int) : this(0, b) {}
+        constructor(b: Int) : this(0, b)
 
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             val p: Element? = element.parent()
             if (p == null || (p is Document)) return false
             val pos: Int = calculatePosition(root, element)
@@ -311,7 +306,7 @@ abstract class Evaluator protected constructor() {
             return (pos - b) * a >= 0 && (pos - b) % a == 0
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             if (a == 0) return String.format(":%s(%d)", pseudoClass, b)
             if (b == 0) return String.format(":%s(%dn)", pseudoClass, a)
             return String.format(":%s(%dn%+d)", pseudoClass, a, b)
@@ -326,13 +321,13 @@ abstract class Evaluator protected constructor() {
      *
      * @see IndexEquals
      */
-    class IsNthChild constructor(a: Int, b: Int) : CssNthEvaluator(a, b) {
+    open class IsNthChild constructor(a: Int, b: Int) : CssNthEvaluator(a, b) {
         override fun calculatePosition(root: Element?, element: Element?): Int {
             return element!!.elementSiblingIndex() + 1
         }
 
-        protected override val pseudoClass: String
-            protected get() {
+        override val pseudoClass: String
+            get() {
                 return "nth-child"
             }
     }
@@ -342,14 +337,14 @@ abstract class Evaluator protected constructor() {
      *
      * @see IndexEquals
      */
-    class IsNthLastChild constructor(a: Int, b: Int) : CssNthEvaluator(a, b) {
+    open class IsNthLastChild constructor(a: Int, b: Int) : CssNthEvaluator(a, b) {
         override fun calculatePosition(root: Element?, element: Element?): Int {
             if (element!!.parent() == null) return 0
             return element.parent()!!.children().size - element.elementSiblingIndex()
         }
 
         override val pseudoClass: String?
-            protected get() {
+            get() {
                 return "nth-last-child"
             }
     }
@@ -360,7 +355,7 @@ abstract class Evaluator protected constructor() {
      */
     open class IsNthOfType constructor(a: Int, b: Int) : CssNthEvaluator(a, b) {
         override fun calculatePosition(root: Element?, element: Element?): Int {
-            var pos: Int = 0
+            var pos = 0
             if (element?.parent() == null) return 0
             val family: Elements = element.parent()!!.children()
             for (el: Element in family) {
@@ -371,24 +366,24 @@ abstract class Evaluator protected constructor() {
         }
 
         override val pseudoClass: String?
-            protected get() {
+            get() {
                 return "nth-of-type"
             }
     }
 
     open class IsNthLastOfType constructor(a: Int, b: Int) : CssNthEvaluator(a, b) {
         override fun calculatePosition(root: Element?, element: Element?): Int {
-            var pos: Int = 0
+            var pos = 0
             if (element?.parent() == null) return 0
             val family: Elements = element.parent()!!.children()
             for (i in element.elementSiblingIndex() until family.size) {
-                if ((family.get(i).tag() == element.tag())) pos++
+                if ((family[i].tag() == element.tag())) pos++
             }
             return pos
         }
 
         override val pseudoClass: String?
-            protected get() {
+            get() {
                 return "nth-last-of-type"
             }
     }
@@ -396,13 +391,13 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for matching the first sibling (css :first-child)
      */
-    class IsFirstChild constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+    class IsFirstChild : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
             val p: Element? = element.parent()
-            return (p != null) && !(p is Document) && (element.elementSiblingIndex() == 0)
+            return (p != null) && p !is Document && (element.elementSiblingIndex() == 0)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":first-child"
         }
     }
@@ -411,33 +406,33 @@ abstract class Evaluator protected constructor() {
      * css3 pseudo-class :root
      * @see [:root selector](http://www.w3.org/TR/selectors/.root-pseudo)
      */
-    class IsRoot constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
-            val r: Element? = if (root is Document) root.child(0) else root
+    class IsRoot : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
+            val r: Element = if (root is Document) root.child(0) else root
             return element === r
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":root"
         }
     }
 
-    class IsOnlyChild constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+    class IsOnlyChild : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
             val p: Element? = element.parent()
             return (p != null) && p !is Document && element.siblingElements().isEmpty()
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":only-child"
         }
     }
 
-    class IsOnlyOfType constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+    class IsOnlyOfType : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
             val p: Element? = element.parent()
             if (p == null || p is Document) return false
-            var pos: Int = 0
+            var pos = 0
             val family: Elements = p.children()
             for (el: Element in family) {
                 if ((el.tag() == element.tag())) pos++
@@ -445,13 +440,13 @@ abstract class Evaluator protected constructor() {
             return pos == 1
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":only-of-type"
         }
     }
 
-    class IsEmpty constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+    class IsEmpty : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
             val family: List<Node?> = element.childNodes()
             for (n: Node? in family) {
                 if (!(n is Comment || n is XmlDeclaration || n is DocumentType)) return false
@@ -459,7 +454,7 @@ abstract class Evaluator protected constructor() {
             return true
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":empty"
         }
     }
@@ -474,19 +469,15 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for matching Element (and its descendants) text
      */
-    class ContainsText constructor(searchText: String?) : Evaluator() {
-        private val searchText: String
+    class ContainsText constructor(searchText: String) : Evaluator() {
+        private val searchText: String = Normalizer.lowerCase(StringUtil.normaliseWhitespace(searchText))!!
 
-        init {
-            this.searchText = Normalizer.lowerCase(StringUtil.normaliseWhitespace(searchText))
+        override fun matches(root: Element, element: Element): Boolean {
+            return Normalizer.lowerCase(element.text())!!.contains(searchText)
         }
 
-        public override fun matches(root: Element, element: Element): Boolean {
-            return Normalizer.lowerCase(element.text()).contains(searchText)
-        }
-
-        public override fun toString(): String {
-            return ":contains(%s)".format(searchText.toString())
+        override fun toString(): String {
+            return ":contains(%s)".format(searchText)
         }
     }
 
@@ -496,11 +487,11 @@ abstract class Evaluator protected constructor() {
      * @since 1.15.1.
      */
     class ContainsWholeText constructor(private val searchText: String?) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.wholeText().contains(searchText!!)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":containsWholeText(%s)".format(searchText.toString())
         }
     }
@@ -511,11 +502,11 @@ abstract class Evaluator protected constructor() {
      * @since 1.15.1.
      */
     class ContainsWholeOwnText constructor(private val searchText: String?) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return element.wholeOwnText().contains(searchText!!)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":containsWholeOwnText(%s)".format(searchText.toString())
         }
     }
@@ -530,11 +521,11 @@ abstract class Evaluator protected constructor() {
             this.searchText = Normalizer.lowerCase(searchText)
         }
 
-        public override fun matches(root: Element, element: Element): Boolean {
-            return Normalizer.lowerCase(element.data()).contains(searchText!!) // not whitespace normalized
+        override fun matches(root: Element, element: Element): Boolean {
+            return Normalizer.lowerCase(element.data())!!.contains(searchText!!) // not whitespace normalized
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":containsData(%s)".format(searchText.toString())
         }
     }
@@ -542,19 +533,19 @@ abstract class Evaluator protected constructor() {
     /**
      * Evaluator for matching Element's own text
      */
-    class ContainsOwnText constructor(searchText: String?) : Evaluator() {
-        private val searchText: String?
+    class ContainsOwnText constructor(searchText: String) : Evaluator() {
+        private val searchText: String
 
         init {
-            this.searchText = Normalizer.lowerCase(StringUtil.normaliseWhitespace(searchText))
+            this.searchText = Normalizer.lowerCase(StringUtil.normaliseWhitespace(searchText))!!
         }
 
-        public override fun matches(root: Element, element: Element): Boolean {
-            return Normalizer.lowerCase(element.ownText()).contains(searchText!!)
+        override fun matches(root: Element, element: Element): Boolean {
+            return Normalizer.lowerCase(element.ownText())!!.contains(searchText)
         }
 
-        public override fun toString(): String {
-            return ":containsOwn(%s)".format(searchText.toString())
+        override fun toString(): String {
+            return ":containsOwn(%s)".format(searchText)
         }
     }
 
@@ -562,11 +553,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for matching Element (and its descendants) text with regex
      */
     class Matches constructor(private val pattern: Regex) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return pattern.containsMatchIn(element.text())
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":matches(%s)".format(pattern)
         }
     }
@@ -575,11 +566,11 @@ abstract class Evaluator protected constructor() {
      * Evaluator for matching Element's own text with regex
      */
     class MatchesOwn constructor(private val pattern: Regex) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return pattern.containsMatchIn(element.ownText())
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":matchesOwn(%s)".format(pattern)
         }
     }
@@ -589,11 +580,11 @@ abstract class Evaluator protected constructor() {
      * @since 1.15.1.
      */
     class MatchesWholeText constructor(private val pattern: Regex) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return pattern.containsMatchIn(element.wholeText())
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":matchesWholeText(%s)".format(pattern)
         }
     }
@@ -603,21 +594,21 @@ abstract class Evaluator protected constructor() {
      * @since 1.15.1.
      */
     class MatchesWholeOwnText constructor(private val pattern: Regex) : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             return pattern.containsMatchIn(element.wholeOwnText())
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":matchesWholeOwnText(%s)".format(pattern)
         }
     }
 
-    class MatchText constructor() : Evaluator() {
-        public override fun matches(root: Element, element: Element): Boolean {
+    class MatchText : Evaluator() {
+        override fun matches(root: Element, element: Element): Boolean {
             if (element is PseudoTextElement) return true
             val textNodes: List<TextNode?> = element.textNodes()
             for (textNode: TextNode? in textNodes) {
-                val pel: PseudoTextElement = PseudoTextElement(
+                val pel = PseudoTextElement(
                     valueOf(element.tagName()), element.baseUri(), element.attributes()
                 )
                 textNode?.replaceWith(pel)
@@ -626,7 +617,7 @@ abstract class Evaluator protected constructor() {
             return false
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return ":matchText"
         }
     }

@@ -47,10 +47,10 @@ class Range
         node.attributes()!!.putUserData(if (start) RangeKey else EndRangeKey, this)
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || this::class != o::class) return false
-        val range = o as Range
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+        val range = other as Range
         return if (start != range.start) false else end == range.end
     }
 
@@ -122,10 +122,10 @@ class Range
             return "$lineNumber,$columnNumber:$pos"
         }
 
-        override fun equals(o: Any?): Boolean {
-            if (this === o) return true
-            if (o == null || this::class != o::class) return false
-            val position = o as Position
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other == null || this::class != other::class) return false
+            val position = other as Position
             if (pos != position.pos) return false
             return if (lineNumber != position.lineNumber) false else columnNumber == position.columnNumber
         }
@@ -139,8 +139,8 @@ class Range
     }
 
     companion object {
-        private val RangeKey: String = Attributes.Companion.internalKey("jsoup.sourceRange")
-        private val EndRangeKey: String = Attributes.Companion.internalKey("jsoup.endSourceRange")
+        private val RangeKey: String = Attributes.internalKey("jsoup.sourceRange")
+        private val EndRangeKey: String = Attributes.internalKey("jsoup.endSourceRange")
         private val UntrackedPos = Position(-1, -1, -1)
         private val Untracked = Range(UntrackedPos, UntrackedPos)
 
@@ -150,7 +150,7 @@ class Range
          * @param start if this is the starting range. `false` for Element end tags.
          * @return the Range, or the Untracked (-1) position if tracking is disabled.
          */
-        fun of(node: Node, start: Boolean): Range? {
+        fun of(node: Node, start: Boolean): Range {
             val key = if (start) RangeKey else EndRangeKey
             return if (!node.hasAttr(key)) Untracked else Validate.ensureNotNull(
                 node.attributes()!!.getUserData(key)

@@ -22,7 +22,7 @@ class Comment(data: String) : LeafNode() {
         return Comment(value.toString())
     }
 
-    override fun nodeName(): String? {
+    override fun nodeName(): String {
         return "#comment"
     }
 
@@ -39,16 +39,19 @@ class Comment(data: String) : LeafNode() {
     }
 
     @Throws(IOException::class)
-    public override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         if (out!!.prettyPrint() && (siblingIndex() == 0 && parNode is Element && (parNode as Element).tag()!!
                 .formatAsBlock() || out.outline())
-        ) indent(accum!!, depth, out)
+        ) {
+            indent(accum!!, depth, out)
+        }
         accum?.append("<!--")
             ?.append(data)
             ?.append("-->")
     }
 
-    public override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+
     override fun toString(): String {
         return outerHtml()!!
     }
@@ -84,7 +87,7 @@ class Comment(data: String) : LeafNode() {
         if (doc?.body()!!.children().size > 0) {
             val el = doc.body()!!.child(0)
             decl = XmlDeclaration(
-                NodeUtils.parser(doc)!!.settings()!!.normalizeTag(el!!.tagName())!!,
+                NodeUtils.parser(doc)!!.settings()!!.normalizeTag(el.tagName())!!,
                 data.startsWith("!")
             )
             decl.attributes()!!.addAll(el.attributes())

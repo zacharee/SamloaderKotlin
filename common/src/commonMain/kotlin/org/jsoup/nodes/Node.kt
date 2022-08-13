@@ -68,7 +68,7 @@ protected constructor() {
         Validate.notNull(attributeKey)
         if (!hasAttributes()) return EmptyString
         val `val` = attributes()!!.getIgnoreCase(attributeKey)
-        return if (`val`.length > 0) `val` else if (attributeKey!!.startsWith("abs:")) absUrl(attributeKey.substring("abs:".length)) else ""
+        return if (`val`.isNotEmpty()) `val` else if (attributeKey!!.startsWith("abs:")) absUrl(attributeKey.substring("abs:".length)) else ""
     }
 
     /**
@@ -111,7 +111,7 @@ protected constructor() {
         if (!hasAttributes()) return false
         if (attributeKey.startsWith("abs:")) {
             val key = attributeKey.substring("abs:".length)
-            if (attributes()!!.hasKeyIgnoreCase(key) && !absUrl(key)!!.isEmpty()) return true
+            if (attributes()!!.hasKeyIgnoreCase(key) && !absUrl(key).isNullOrEmpty()) return true
         }
         return attributes()!!.hasKeyIgnoreCase(attributeKey)
     }
@@ -208,7 +208,7 @@ protected constructor() {
      * @param index index of child node
      * @return the child node at this index. Throws a `IndexOutOfBoundsException` if the index is out of bounds.
      */
-    fun childNode(index: Int): Node? {
+    fun childNode(index: Int): Node {
         return ensureChildNodes()[index]
     }
 
@@ -235,7 +235,7 @@ protected constructor() {
         val nodes = ensureChildNodes()
         val children = ArrayList<Node>(nodes.size)
         for (node in nodes) {
-            children.add(node!!.clone())
+            children.add(node.clone())
         }
         return children
     }
@@ -245,7 +245,7 @@ protected constructor() {
      * @return the number of child nodes that this node holds.
      */
     abstract fun childNodeSize(): Int
-    protected fun childNodesAsArray(): Array<Node> {
+    private fun childNodesAsArray(): Array<Node> {
         return ensureChildNodes().toTypedArray()
     }
 
@@ -376,19 +376,18 @@ protected constructor() {
             .parseFragmentInput(html, context, baseUri())
         val wrapNode = wrapChildren!![0] as? Element // nothing to wrap with; noop
             ?: return this
-        val wrap = wrapNode
-        val deepest = getDeepChild(wrap)
-        if (parNode != null) parNode!!.replaceChild(this, wrap)
+        val deepest = getDeepChild(wrapNode)
+        if (parNode != null) parNode!!.replaceChild(this, wrapNode)
         deepest.addChildren(this) // side effect of tricking wrapChildren to lose first
 
         // remainder (unbalanced wrap, like <div></div><p></p> -- The <p> is remainder
-        if (wrapChildren.size > 0) {
+        if (wrapChildren.isNotEmpty()) {
             for (i in wrapChildren.indices) {
                 val remainder = wrapChildren[i]
                 // if no parent, this could be the wrap node, so skip
-                if (wrap === remainder) continue
-                if (remainder!!.parNode != null) remainder.parNode!!.removeChild(remainder)
-                wrap.after(remainder)
+                if (wrapNode === remainder) continue
+                if (remainder.parNode != null) remainder.parNode!!.removeChild(remainder)
+                wrapNode.after(remainder)
             }
         }
         return this
@@ -440,12 +439,12 @@ protected constructor() {
         parNode!!.replaceChild(this, `in`)
     }
 
-    protected fun replaceChild(out: Node, `in`: Node) {
+    private fun replaceChild(out: Node, `in`: Node) {
         Validate.isTrue(out.parNode === this)
         Validate.notNull(`in`)
         if (`in`.parNode != null) `in`.parNode!!.removeChild(`in`)
         val index = out.sibIndex
-        ensureChildNodes().set(index, `in`)
+        ensureChildNodes()[index] = `in`
         `in`.parNode = this
         `in`.sibIndex = (index)
         out.parNode = null
@@ -529,7 +528,7 @@ protected constructor() {
      * @return node siblings. If the node has no parent, returns an empty list.
      */
     fun siblingNodes(): List<Node> {
-        if (parNode == null) return emptyList<Node>()
+        if (parNode == null) return emptyList()
         val nodes = parNode!!.ensureChildNodes()
         val siblings: MutableList<Node> = ArrayList(nodes.size - 1)
         for (node in nodes) if (node !== this) siblings.add(node)
@@ -684,7 +683,7 @@ protected constructor() {
      * @since 1.15.2
      */
     fun sourceRange(): Range? {
-        return Range.Companion.of(this, true)
+        return Range.of(this, true)
     }
 
     /**
@@ -705,13 +704,13 @@ protected constructor() {
      * Check if this node is the same instance of another (object identity test).
      *
      * For an node value equality check, see [.hasSameValue]
-     * @param o other object to compare to
+     * @param other other object to compare to
      * @return true if the content of this node is the same as the other
      * @see Node.hasSameValue
      */
-    override fun equals( o: Any?): Boolean {
+    override fun equals(other: Any?): Boolean {
         // implemented just so that javadoc is clear this is an identity test
-        return this === o
+        return this === other
     }
 
     /**
@@ -745,7 +744,7 @@ protected constructor() {
      * @return a stand-alone cloned node, including clones of any children
      * @see .shallowClone
      */
-    public open fun clone(): Node {
+    open fun clone(): Node {
         val thisClone = doClone(null) // splits for orphan
 
         // Queue up nodes that need their children cloned (BFS).
@@ -796,7 +795,7 @@ protected constructor() {
         return clone
     }
 
-    private class OuterHtmlVisitor internal constructor(
+    private class OuterHtmlVisitor(
         private val accum: Appendable?,
         private val out: Document.OutputSettings?
     ) : NodeVisitor {

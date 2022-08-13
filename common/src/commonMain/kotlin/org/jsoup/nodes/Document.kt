@@ -17,7 +17,7 @@ import org.jsoup.select.Evaluator
  * @author Jonathan Hedley, jonathan@hedley.net
  */
 class Document(private val location: String?) :
-    Element(Tag.Companion.valueOf("#root", ParseSettings.Companion.htmlDefault), location) {
+    Element(Tag.Companion.valueOf("#root", ParseSettings.htmlDefault), location) {
     private var connection // the connection this doc was fetched from, if any
             : Connection? = null
     private var outputSettings: OutputSettings? = OutputSettings()
@@ -65,9 +65,9 @@ class Document(private val location: String?) :
      * Find the root HTML element, or create it if it doesn't exist.
      * @return the root HTML element.
      */
-    private fun htmlEl(): Element? {
+    private fun htmlEl(): Element {
         for (el in childElementsList()) {
-            if (el!!.normalName() == "html") return el
+            if (el.normalName() == "html") return el
         }
         return appendElement("html")
     }
@@ -81,10 +81,10 @@ class Document(private val location: String?) :
      *
      * @return `head` element.
      */
-    fun head(): Element? {
+    fun head(): Element {
         val html = htmlEl()
-        for (el in html!!.childElementsList()) {
-            if (el!!.normalName() == "head") return el
+        for (el in html.childElementsList()) {
+            if (el.normalName() == "head") return el
         }
         return html.prependElement("head")
     }
@@ -98,10 +98,10 @@ class Document(private val location: String?) :
      * @return `body` element for documents with a `<body>`, a new `<body>` element if the document
      * had no contents, or the outermost `<frameset> element` for frameset documents.
      */
-    fun body(): Element? {
+    fun body(): Element {
         val html = htmlEl()
-        for (el in html!!.childElementsList()) {
-            if ("body" == el!!.normalName() || "frameset" == el.normalName()) return el
+        for (el in html.childElementsList()) {
+            if ("body" == el.normalName() || "frameset" == el.normalName()) return el
         }
         return html.appendElement("body")
     }
@@ -112,7 +112,7 @@ class Document(private val location: String?) :
      */
     fun title(): String {
         // title is a preserve whitespace tag (for document output), but normalised here
-        val titleEl = head()!!.selectFirst(titleEval)
+        val titleEl = head().selectFirst(titleEval)
         return if (titleEl != null) StringUtil.normaliseWhitespace(titleEl.text()).trim { it <= ' ' } else ""
     }
 
@@ -123,7 +123,7 @@ class Document(private val location: String?) :
      * @see .createShell
      */
     init {
-        parser = Parser.Companion.htmlParser() // default, but overridable
+        parser = Parser.htmlParser() // default, but overridable
     }
 
     /**
@@ -133,9 +133,9 @@ class Document(private val location: String?) :
      */
     fun title(title: String) {
         Validate.notNull(title)
-        var titleEl = head()!!.selectFirst(titleEval)
+        var titleEl = head().selectFirst(titleEval)
         if (titleEl == null) // add to head
-            titleEl = head()!!.appendElement("title")
+            titleEl = head().appendElement("title")
         titleEl.text(title)
     }
 
@@ -145,7 +145,7 @@ class Document(private val location: String?) :
      * @return new element
      */
     fun createElement(tagName: String?): Element {
-        return Element(Tag.Companion.valueOf(tagName, ParseSettings.Companion.preserveCase), baseUri())
+        return Element(Tag.valueOf(tagName, ParseSettings.preserveCase), baseUri())
     }
 
     /**
@@ -174,15 +174,14 @@ class Document(private val location: String?) :
         val toMove: MutableList<Node> = ArrayList()
         for (node in element!!.childElements) {
             if (node is TextNode) {
-                val tn = node
-                if (!tn.isBlank) toMove.add(tn)
+                if (!node.isBlank) toMove.add(node)
             }
         }
         for (i in toMove.indices.reversed()) {
             val node = toMove[i]
             element.removeChild(node)
-            body()!!.prependChild(TextNode(" "))
-            body()!!.prependChild(node)
+            body().prependChild(TextNode(" "))
+            body().prependChild(node)
         }
     }
 
@@ -193,8 +192,8 @@ class Document(private val location: String?) :
         if (elements.size > 1) { // dupes, move contents to master
             val toMove: MutableList<Node?> = ArrayList()
             for (i in 1 until elements.size) {
-                val dupe: Node? = elements[i]
-                toMove.addAll(dupe!!.ensureChildNodes())
+                val dupe: Node = elements[i]
+                toMove.addAll(dupe.ensureChildNodes())
                 dupe.remove()
             }
             for (dupe in toMove) master!!.appendChild(dupe!!)
@@ -205,7 +204,7 @@ class Document(private val location: String?) :
         }
     }
 
-    override fun outerHtml(): String? {
+    override fun outerHtml(): String {
         return super.html() // no outer wrapper tag
     }
 
@@ -215,7 +214,7 @@ class Document(private val location: String?) :
      * @return this document
      */
     override fun text(text: String): Element {
-        body()!!.text(text) // overridden to not nuke doc structure
+        body().text(text) // overridden to not nuke doc structure
         return this
     }
 
@@ -334,28 +333,28 @@ class Document(private val location: String?) :
             if (syntax == OutputSettings.Syntax.html) {
                 val metaCharset = selectFirst("meta[charset]")
                 if (metaCharset != null) {
-                    metaCharset.attr("charset", charset()!!.name)
+                    metaCharset.attr("charset", charset().name)
                 } else {
-                    head()!!.appendElement("meta").attr("charset", charset()!!.name)
+                    head().appendElement("meta").attr("charset", charset().name)
                 }
                 select("meta[name=charset]")!!.remove() // Remove obsolete elements
             } else if (syntax == OutputSettings.Syntax.xml) {
-                val node = ensureChildNodes()[0]!!
+                val node = ensureChildNodes()[0]
                 if (node is XmlDeclaration) {
                     var decl = node
                     if (decl.name() == "xml") {
-                        decl.attr("encoding", charset()!!.name)
+                        decl.attr("encoding", charset().name)
                         if (decl.hasAttr("version")) decl.attr("version", "1.0")
                     } else {
                         decl = XmlDeclaration("xml", false)
                         decl.attr("version", "1.0")
-                        decl.attr("encoding", charset()!!.name)
+                        decl.attr("encoding", charset().name)
                         prependChild(decl)
                     }
                 } else {
                     val decl = XmlDeclaration("xml", false)
                     decl.attr("version", "1.0")
-                    decl.attr("encoding", charset()!!.name)
+                    decl.attr("encoding", charset().name)
                     prependChild(decl)
                 }
             }
@@ -444,13 +443,12 @@ class Document(private val location: String?) :
             // created at start of OuterHtmlVisitor so each pass has own encoder, so OutputSettings can be shared among threads
             val encoder = charset.newEncoder()
             encoderThreadLocal = (encoder)
-            coreCharset = Entities.CoreCharset.Companion.byName(encoder.charset.name)
+            coreCharset = Entities.CoreCharset.byName(encoder.charset.name)
             return encoder
         }
 
         fun encoder(): CharsetEncoder {
-            val encoder = encoderThreadLocal
-            return encoder
+            return encoderThreadLocal
         }
 
         /**

@@ -14,7 +14,7 @@ data class Tag private constructor(
      *
      * @return the tag's name
      */
-    var name: String,
+    var name: String?,
     var isBlock: Boolean = true,
     private var formatAsBlock: Boolean = true,
     var isEmpty: Boolean = true,
@@ -24,7 +24,7 @@ data class Tag private constructor(
     var isFormSubmittable: Boolean = false // a control that can be submitted in a form: input etc
 ) {
     private val normalName // always the lower case version of this tag, regardless of case preservation mode
-            : String?
+            : String? = Normalizer.lowerCase(name)
 
     /**
      * Get this tag's normalized (lowercased) name.
@@ -86,11 +86,11 @@ data class Tag private constructor(
         return this
     }
 
-    public override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (!(o is Tag)) return false
-        val tag: Tag = o
-        if (!(name == tag.name)) return false
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Tag) return false
+        val tag: Tag = other
+        if (name != tag.name) return false
         if (isEmpty != tag.isEmpty) return false
         if (formatAsBlock != tag.formatAsBlock) return false
         if (isBlock != tag.isBlock) return false
@@ -100,7 +100,7 @@ data class Tag private constructor(
         return isFormSubmittable == tag.isFormSubmittable
     }
 
-    public override fun hashCode(): Int {
+    override fun hashCode(): Int {
         var result: Int = name.hashCode()
         result = 31 * result + (if (isBlock) 1 else 0)
         result = 31 * result + (if (formatAsBlock) 1 else 0)
@@ -112,12 +112,8 @@ data class Tag private constructor(
         return result
     }
 
-    public override fun toString(): String {
-        return name
-    }
-
-    init {
-        normalName = Normalizer.lowerCase(name)
+    override fun toString(): String {
+        return name.toString()
     }
 
     companion object {
@@ -143,22 +139,22 @@ data class Tag private constructor(
          * @param tagName Name of tag, e.g. "p". **Case sensitive**.
          * @return The tag, either defined or new generic.
          */
-        fun valueOf(tagName: String?, settings: ParseSettings? = ParseSettings.Companion.preserveCase): Tag? {
+        fun valueOf(tagName: String?, settings: ParseSettings? = ParseSettings.preserveCase): Tag {
             var tagName: String? = tagName
             Validate.notNull(tagName)
-            var tag: Tag? = tags.get(tagName)
+            var tag: Tag? = tags[tagName]
             if (tag == null) {
                 tagName = settings!!.normalizeTag(tagName) // the name we'll use
                 Validate.notEmpty(tagName)
-                val normalName: String? = Normalizer.lowerCase(tagName) // the lower-case name to get tag settings off
-                tag = tags.get(normalName)
+                val normalName = Normalizer.lowerCase(tagName) // the lower-case name to get tag settings off
+                tag = tags[normalName]
                 if (tag == null) {
                     // not defined: create default; go anywhere, do anything! (incl be inside a <p>)
-                    tag = Tag((tagName)!!)
+                    tag = Tag(tagName)
                     tag.isBlock = false
-                } else if (settings.preserveTagCase() && !(tagName == normalName)) {
+                } else if (settings.preserveTagCase() && tagName != normalName) {
                     tag = tag.copy() // get a new version vs the static one, so name update doesn't reset all
-                    tag.name = (tagName)!!
+                    tag.name = (tagName)
                 }
             }
             return tag
@@ -170,7 +166,7 @@ data class Tag private constructor(
          * @param tagName name of tag
          * @return if known HTML tag
          */
-        fun isKnownTag(tagName: String?): Boolean {
+        fun isKnownTag(tagName: String): Boolean {
             return tags.containsKey(tagName)
         }
 
@@ -362,11 +358,11 @@ data class Tag private constructor(
         init {
             // creates
             for (tagName: String in blockTags) {
-                val tag: Tag = Tag(tagName)
+                val tag = Tag(tagName)
                 register(tag)
             }
             for (tagName: String in inlineTags) {
-                val tag: Tag = Tag(tagName)
+                val tag = Tag(tagName)
                 tag.isBlock = false
                 tag.formatAsBlock = false
                 register(tag)
@@ -374,34 +370,34 @@ data class Tag private constructor(
 
             // mods:
             for (tagName: String? in emptyTags) {
-                val tag: Tag? = tags.get(tagName)
+                val tag: Tag? = tags[tagName]
                 Validate.notNull(tag)
                 tag?.isEmpty = true
             }
             for (tagName: String? in formatAsInlineTags) {
-                val tag: Tag? = tags.get(tagName)
+                val tag: Tag? = tags[tagName]
                 Validate.notNull(tag)
                 tag?.formatAsBlock = false
             }
             for (tagName: String? in preserveWhitespaceTags) {
-                val tag: Tag? = tags.get(tagName)
+                val tag: Tag? = tags[tagName]
                 Validate.notNull(tag)
                 tag?.preserveWhitespace = true
             }
             for (tagName: String? in formListedTags) {
-                val tag: Tag? = tags.get(tagName)
+                val tag: Tag? = tags[tagName]
                 Validate.notNull(tag)
                 tag?.isFormListed = true
             }
             for (tagName: String? in formSubmitTags) {
-                val tag: Tag? = tags.get(tagName)
+                val tag: Tag? = tags[tagName]
                 Validate.notNull(tag)
                 tag?.isFormSubmittable = true
             }
         }
 
         private fun register(tag: Tag) {
-            tags.put(tag.name, tag)
+            tags[tag.name] = tag
         }
     }
 }

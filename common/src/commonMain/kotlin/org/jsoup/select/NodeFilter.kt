@@ -26,7 +26,7 @@ import org.jsoup.select.NodeFilter.FilterResult
  * Within [NodeFilter.tail], both are equivalent to [FilterResult.CONTINUE].
  *
  */
-open interface NodeFilter {
+interface NodeFilter {
     /**
      * Filter decision.
      */
@@ -53,7 +53,7 @@ open interface NodeFilter {
      * @param depth the depth of the node, relative to the root node. E.g., the root node has depth 0, and a child node of that will have depth 1.
      * @return Filter decision
      */
-    open fun head(node: Node?, depth: Int): FilterResult?
+    fun head(node: Node?, depth: Int): FilterResult
 
     /**
      * Callback for when a node is last visited, after all of its descendants have been visited.
@@ -63,7 +63,7 @@ open interface NodeFilter {
      * @param depth the depth of the node, relative to the root node. E.g., the root node has depth 0, and a child node of that will have depth 1.
      * @return Filter decision
      */
-    fun tail(node: Node?, depth: Int): FilterResult? {
+    fun tail(node: Node?, depth: Int): FilterResult {
         return FilterResult.CONTINUE
     }
 }

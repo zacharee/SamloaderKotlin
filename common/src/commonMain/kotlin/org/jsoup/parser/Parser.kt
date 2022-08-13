@@ -59,15 +59,15 @@ class Parser {
         isTrackPosition = copy.isTrackPosition
     }
 
-    fun parseInput(input: BufferedSource, baseUri: String?): Document? {
+    fun parseInput(input: BufferedSource, baseUri: String): Document? {
         return treeBuilder!!.parse(input.buffer, baseUri, this)
     }
 
-    fun parseInput(inputHtml: String, baseUri: String?): Document? {
+    fun parseInput(inputHtml: String, baseUri: String): Document? {
         return treeBuilder!!.parse(inputHtml, baseUri, this)
     }
 
-    fun parseFragmentInput(fragment: String?, context: Element?, baseUri: String?): List<Node>? {
+    fun parseFragmentInput(fragment: String?, context: Element?, baseUri: String): List<Node> {
         return treeBuilder!!.parseFragment(fragment, context, baseUri, this)
     }
     // gets & sets
@@ -98,7 +98,7 @@ class Parser {
      */
     fun setTrackErrors(maxErrors: Int): Parser {
         errors =
-            if (maxErrors > 0) ParseErrorList.Companion.tracking(maxErrors) else ParseErrorList.Companion.noTracking()
+            if (maxErrors > 0) ParseErrorList.tracking(maxErrors) else ParseErrorList.noTracking()
         return this
     }
 
@@ -149,7 +149,7 @@ class Parser {
          *
          * @return parsed Document
          */
-        fun parse(html: String, baseUri: String?): Document? {
+        fun parse(html: String, baseUri: String): Document? {
             val treeBuilder: TreeBuilder = HtmlTreeBuilder()
             return treeBuilder.parse(html, baseUri, Parser(treeBuilder))
         }
@@ -164,8 +164,8 @@ class Parser {
          *
          * @return list of nodes parsed from the input HTML. Note that the context element, if supplied, is not modified.
          */
-        fun parseFragment(fragmentHtml: String?, context: Element?, baseUri: String?): List<Node>? {
-            val treeBuilder: HtmlTreeBuilder = HtmlTreeBuilder()
+        fun parseFragment(fragmentHtml: String?, context: Element?, baseUri: String): List<Node> {
+            val treeBuilder = HtmlTreeBuilder()
             return treeBuilder.parseFragment(fragmentHtml, context, baseUri, Parser(treeBuilder))
         }
 
@@ -183,11 +183,11 @@ class Parser {
         fun parseFragment(
             fragmentHtml: String?,
             context: Element?,
-            baseUri: String?,
+            baseUri: String,
             errorList: ParseErrorList
-        ): List<Node>? {
-            val treeBuilder: HtmlTreeBuilder = HtmlTreeBuilder()
-            val parser: Parser = Parser(treeBuilder)
+        ): List<Node> {
+            val treeBuilder = HtmlTreeBuilder()
+            val parser = Parser(treeBuilder)
             parser.errors = errorList
             return treeBuilder.parseFragment(fragmentHtml, context, baseUri, parser)
         }
@@ -199,8 +199,8 @@ class Parser {
          * @param baseUri base URI of document (i.e. original fetch location), for resolving relative URLs.
          * @return list of nodes parsed from the input XML.
          */
-        fun parseXmlFragment(fragmentXml: String, baseUri: String?): List<Node?>? {
-            val treeBuilder: XmlTreeBuilder = XmlTreeBuilder()
+        fun parseXmlFragment(fragmentXml: String, baseUri: String): List<Node?> {
+            val treeBuilder = XmlTreeBuilder()
             return treeBuilder.parseFragment(fragmentXml, baseUri, Parser(treeBuilder))
         }
 
@@ -212,16 +212,16 @@ class Parser {
          *
          * @return Document, with empty head, and HTML parsed into body
          */
-        fun parseBodyFragment(bodyHtml: String?, baseUri: String?): Document {
-            val doc: Document = Document.Companion.createShell(baseUri)
-            val body: Element? = doc.body()
-            val nodeList: List<Node>? = parseFragment(bodyHtml, body, baseUri)
-            val nodes: Array<Node> = nodeList!!.toTypedArray() // the node list gets modified when re-parented
+        fun parseBodyFragment(bodyHtml: String?, baseUri: String): Document {
+            val doc: Document = Document.createShell(baseUri)
+            val body: Element = doc.body()
+            val nodeList: List<Node> = parseFragment(bodyHtml, body, baseUri)
+            val nodes: Array<Node> = nodeList.toTypedArray() // the node list gets modified when re-parented
             for (i in nodes.size - 1 downTo 1) {
-                nodes.get(i).remove()
+                nodes[i].remove()
             }
             for (node in nodes) {
-                body!!.appendChild(node)
+                body.appendChild(node)
             }
             return doc
         }
@@ -233,7 +233,7 @@ class Parser {
          * @return an unescaped string
          */
         fun unescapeEntities(string: String, inAttribute: Boolean): String? {
-            val tokeniser: Tokeniser = Tokeniser(CharacterReader(string), ParseErrorList.Companion.noTracking())
+            val tokeniser = Tokeniser(CharacterReader(string), ParseErrorList.noTracking())
             return tokeniser.unescapeEntities(inAttribute)
         }
         // builders

@@ -38,19 +38,19 @@ class QueryParser private constructor(query: String?) {
                 findElements() // take next el, #. etc off queue
             }
         }
-        if (evals.size == 1) return evals.get(0)
+        if (evals.size == 1) return evals[0]
         return CombiningEvaluator.And(evals)
     }
 
     private fun combinator(combinator: Char) {
         tq.consumeWhitespace()
-        val subQuery: String? = consumeSubQuery() // support multi > childs
+        val subQuery: String = consumeSubQuery() // support multi > childs
         var rootEval: Evaluator? // the new topmost evaluator
         var currentEval: Evaluator? // the evaluator the new eval will be combined to. could be root, or rightmost or.
         val newEval: Evaluator? = parse(subQuery) // the evaluator to add into target evaluator
-        var replaceRightMost: Boolean = false
+        var replaceRightMost = false
         if (evals.size == 1) {
-            currentEval = evals.get(0)
+            currentEval = evals[0]
             rootEval = currentEval
             // make sure OR (,) has precedence:
             if (rootEval is CombiningEvaluator.Or && combinator != ',') {
@@ -75,7 +75,7 @@ class QueryParser private constructor(query: String?) {
             ',' -> {
                 val or: CombiningEvaluator.Or
                 if (currentEval is CombiningEvaluator.Or) {
-                    or = currentEval as CombiningEvaluator.Or
+                    or = currentEval
                 } else {
                     or = CombiningEvaluator.Or()
                     or.add(currentEval)
@@ -91,12 +91,12 @@ class QueryParser private constructor(query: String?) {
         evals.add(rootEval)
     }
 
-    private fun consumeSubQuery(): String? {
-        val sq: StringBuilder? = StringUtil.borrowBuilder()
+    private fun consumeSubQuery(): String {
+        val sq: StringBuilder = StringUtil.borrowBuilder()
         while (!tq.isEmpty) {
-            if (tq.matches("(")) sq?.append("(")?.append(tq.chompBalanced('(', ')'))
-                ?.append(")") else if (tq.matches("[")) sq?.append("[")?.append(tq.chompBalanced('[', ']'))
-                ?.append("]") else if (tq.matchesAny(*combinators)) if ((sq?.length ?: 0) > 0) break else tq.consume() else sq?.append(
+            if (tq.matches("(")) sq.append("(").append(tq.chompBalanced('(', ')'))
+                .append(")") else if (tq.matches("[")) sq.append("[").append(tq.chompBalanced('[', ']'))
+                    .append("]") else if (tq.matchesAny(*combinators)) if (sq.isNotEmpty()) break else tq.consume() else sq.append(
                 tq.consume()
             )
         }
@@ -123,25 +123,25 @@ class QueryParser private constructor(query: String?) {
         ) else if (tq.matches(":matchesWholeOwnText(")) matchesWholeText(true) else if (tq.matches(":not(")) not() else if (tq.matchChomp(
                 ":nth-child("
             )
-        ) cssNthChild(false, false) else if (tq.matchChomp(":nth-last-child(")) cssNthChild(
-            true,
-            false
+        ) cssNthChild(backwards = false, ofType = false) else if (tq.matchChomp(":nth-last-child(")) cssNthChild(
+            backwards = true,
+            ofType = false
         ) else if (tq.matchChomp(":nth-of-type(")) cssNthChild(
-            false,
-            true
+            backwards = false,
+            ofType = true
         ) else if (tq.matchChomp(":nth-last-of-type(")) cssNthChild(
-            true,
-            true
+            backwards = true,
+            ofType = true
         ) else if (tq.matchChomp(":first-child")) evals.add(
-            Evaluator.IsFirstChild()
-        ) else if (tq.matchChomp(":last-child")) evals.add(Evaluator.IsLastChild()) else if (tq.matchChomp(":first-of-type")) evals.add(
-            Evaluator.IsFirstOfType()
-        ) else if (tq.matchChomp(":last-of-type")) evals.add(Evaluator.IsLastOfType()) else if (tq.matchChomp(":only-child")) evals.add(
-            Evaluator.IsOnlyChild()
-        ) else if (tq.matchChomp(":only-of-type")) evals.add(Evaluator.IsOnlyOfType()) else if (tq.matchChomp(":empty")) evals.add(
-            Evaluator.IsEmpty()
-        ) else if (tq.matchChomp(":root")) evals.add(Evaluator.IsRoot()) else if (tq.matchChomp(":matchText")) evals.add(
-            Evaluator.MatchText()
+            IsFirstChild()
+        ) else if (tq.matchChomp(":last-child")) evals.add(IsLastChild()) else if (tq.matchChomp(":first-of-type")) evals.add(
+            IsFirstOfType()
+        ) else if (tq.matchChomp(":last-of-type")) evals.add(IsLastOfType()) else if (tq.matchChomp(":only-child")) evals.add(
+            IsOnlyChild()
+        ) else if (tq.matchChomp(":only-of-type")) evals.add(IsOnlyOfType()) else if (tq.matchChomp(":empty")) evals.add(
+            IsEmpty()
+        ) else if (tq.matchChomp(":root")) evals.add(IsRoot()) else if (tq.matchChomp(":matchText")) evals.add(
+            MatchText()
         ) else throw Selector.SelectorParseException(
             "Could not parse query '%s': unexpected token at '%s'",
             query,
@@ -150,22 +150,22 @@ class QueryParser private constructor(query: String?) {
     }
 
     private fun byId() {
-        val id: String? = tq.consumeCssIdentifier()
+        val id: String = tq.consumeCssIdentifier()
         Validate.notEmpty(id)
-        evals.add(Evaluator.Id(id))
+        evals.add(Id(id))
     }
 
     private fun byClass() {
         val className: String = tq.consumeCssIdentifier()
         Validate.notEmpty(className)
-        evals.add(Evaluator.Class(className.trim({ it <= ' ' })))
+        evals.add(Class(className.trim { it <= ' ' }))
     }
 
     private fun byTag() {
         // todo - these aren't dealing perfectly with case sensitivity. For case sensitive parsers, we should also make
         // the tag in the selector case-sensitive (and also attribute names). But for now, normalize (lower-case) for
         // consistency - both the selector and the element tag
-        var tagName: String = Normalizer.normalize(tq.consumeElementSelector())
+        var tagName: String = Normalizer.normalize(tq.consumeElementSelector())!!
         Validate.notEmpty(tagName)
 
         // namespaces: wildcard match equals(tagName) or ending in ":"+tagName
@@ -173,45 +173,39 @@ class QueryParser private constructor(query: String?) {
             val plainTag: String = tagName.substring(2) // strip *|
             evals.add(
                 CombiningEvaluator.Or(
-                    Evaluator.Tag(plainTag),
-                    Evaluator.TagEndsWith(tagName.replace("*|", ":"))
+                    Tag(plainTag),
+                    TagEndsWith(tagName.replace("*|", ":"))
                 )
             )
         } else {
             // namespaces: if element name is "abc:def", selector must be "abc|def", so flip:
             if (tagName.contains("|")) tagName = tagName.replace("|", ":")
-            evals.add(Evaluator.Tag(tagName))
+            evals.add(Tag(tagName))
         }
     }
 
     private fun byAttribute() {
-        val cq: TokenQueue = TokenQueue(tq.chompBalanced('[', ']')) // content queue
+        val cq = TokenQueue(tq.chompBalanced('[', ']')) // content queue
         val key: String = cq.consumeToAny(*AttributeEvals) // eq, not, start, end, contain, match, (no val)
         Validate.notEmpty(key)
         cq.consumeWhitespace()
         if (cq.isEmpty) {
-            if (key.startsWith("^")) evals.add(Evaluator.AttributeStarting(key.substring(1))) else evals.add(
-                Evaluator.Attribute(
-                    key
-                )
-            )
+            if (key.startsWith("^")) evals.add(AttributeStarting(key.substring(1))) else evals.add(Attribute(key))
         } else {
-            if (cq.matchChomp("=")) evals.add(Evaluator.AttributeWithValue(key, cq.remainder())) else if (cq.matchChomp(
-                    "!="
-                )
+            if (cq.matchChomp("=")) evals.add(AttributeWithValue(key, cq.remainder())) else if (cq.matchChomp("!=")
             ) evals.add(
-                Evaluator.AttributeWithValueNot(key, cq.remainder())
+                AttributeWithValueNot(key, cq.remainder())
             ) else if (cq.matchChomp("^=")) evals.add(
-                Evaluator.AttributeWithValueStarting(
+                AttributeWithValueStarting(
                     key,
                     cq.remainder()
                 )
             ) else if (cq.matchChomp("$=")) evals.add(
-                Evaluator.AttributeWithValueEnding(key, cq.remainder())
+                AttributeWithValueEnding(key, cq.remainder())
             ) else if (cq.matchChomp("*=")) evals.add(
-                Evaluator.AttributeWithValueContaining(key, cq.remainder())
+                AttributeWithValueContaining(key, cq.remainder())
             ) else if (cq.matchChomp("~=")) evals.add(
-                Evaluator.AttributeWithValueMatching(key, Regex(cq.remainder()))
+                AttributeWithValueMatching(key, Regex(cq.remainder()))
             ) else throw Selector.SelectorParseException(
                 "Could not parse attribute query '%s': unexpected token at '%s'",
                 query,
@@ -221,20 +215,20 @@ class QueryParser private constructor(query: String?) {
     }
 
     private fun allElements() {
-        evals.add(Evaluator.AllElements())
+        evals.add(AllElements())
     }
 
     // pseudo selectors :lt, :gt, :eq
     private fun indexLessThan() {
-        evals.add(Evaluator.IndexLessThan(consumeIndex()))
+        evals.add(IndexLessThan(consumeIndex()))
     }
 
     private fun indexGreaterThan() {
-        evals.add(Evaluator.IndexGreaterThan(consumeIndex()))
+        evals.add(IndexGreaterThan(consumeIndex()))
     }
 
     private fun indexEquals() {
-        evals.add(Evaluator.IndexEquals(consumeIndex()))
+        evals.add(IndexEquals(consumeIndex()))
     }
 
     /**
@@ -244,13 +238,13 @@ class QueryParser private constructor(query: String?) {
     init {
         var query: String? = query
         Validate.notEmpty(query)
-        query = query!!.trim({ it <= ' ' })
+        query = query!!.trim { it <= ' ' }
         this.query = query
         tq = TokenQueue(query)
     }
 
     private fun cssNthChild(backwards: Boolean, ofType: Boolean) {
-        val argS: String = Normalizer.normalize(tq.chompTo(")"))
+        val argS: String = Normalizer.normalize(tq.chompTo(")"))!!
         val mAB = NTH_AB.matchEntire(argS)
         val mB = NTH_B.matchEntire(argS)
         val a: Int
@@ -270,18 +264,14 @@ class QueryParser private constructor(query: String?) {
         } else {
             throw Selector.SelectorParseException("Could not parse nth-index '%s': unexpected format", argS)
         }
-        if (ofType) if (backwards) evals.add(Evaluator.IsNthLastOfType(a, b)) else evals.add(
-            Evaluator.IsNthOfType(
-                a,
-                b
-            )
+        if (ofType) if (backwards) evals.add(IsNthLastOfType(a, b)) else evals.add(IsNthOfType(a, b)
         ) else {
-            if (backwards) evals.add(Evaluator.IsNthLastChild(a, b)) else evals.add(Evaluator.IsNthChild(a, b))
+            if (backwards) evals.add(IsNthLastChild(a, b)) else evals.add(IsNthChild(a, b))
         }
     }
 
     private fun consumeIndex(): Int {
-        val indexS: String = tq.chompTo(")").trim({ it <= ' ' })
+        val indexS: String = tq.chompTo(")").trim { it <= ' ' }
         Validate.isTrue(StringUtil.isNumeric(indexS), "Index must be numeric")
         return indexS.toInt()
     }
@@ -289,7 +279,7 @@ class QueryParser private constructor(query: String?) {
     // pseudo selector :has(el)
     private fun has() {
         tq.consume(":has")
-        val subQuery: String? = tq.chompBalanced('(', ')')
+        val subQuery: String = tq.chompBalanced('(', ')')
         Validate.notEmpty(subQuery, ":has(selector) subselect must not be empty")
         evals.add(StructuralEvaluator.Has(parse(subQuery)))
     }
@@ -298,25 +288,25 @@ class QueryParser private constructor(query: String?) {
     private fun contains(own: Boolean) {
         val query: String = if (own) ":containsOwn" else ":contains"
         tq.consume(query)
-        val searchText: String? = TokenQueue.Companion.unescape(tq.chompBalanced('(', ')'))
-        Validate.notEmpty(searchText, query + "(text) query must not be empty")
-        evals.add(if (own) Evaluator.ContainsOwnText(searchText) else Evaluator.ContainsText(searchText))
+        val searchText: String = TokenQueue.unescape(tq.chompBalanced('(', ')'))
+        Validate.notEmpty(searchText, "$query(text) query must not be empty")
+        evals.add(if (own) ContainsOwnText(searchText) else ContainsText(searchText))
     }
 
     private fun containsWholeText(own: Boolean) {
         val query: String = if (own) ":containsWholeOwnText" else ":containsWholeText"
         tq.consume(query)
-        val searchText: String? = TokenQueue.Companion.unescape(tq.chompBalanced('(', ')'))
-        Validate.notEmpty(searchText, query + "(text) query must not be empty")
+        val searchText: String = TokenQueue.unescape(tq.chompBalanced('(', ')'))
+        Validate.notEmpty(searchText, "$query(text) query must not be empty")
         evals.add(if (own) ContainsWholeOwnText(searchText) else ContainsWholeText(searchText))
     }
 
     // pseudo selector :containsData(data)
     private fun containsData() {
         tq.consume(":containsData")
-        val searchText: String? = TokenQueue.Companion.unescape(tq.chompBalanced('(', ')'))
+        val searchText: String = TokenQueue.unescape(tq.chompBalanced('(', ')'))
         Validate.notEmpty(searchText, ":containsData(text) query must not be empty")
-        evals.add(Evaluator.ContainsData(searchText))
+        evals.add(ContainsData(searchText))
     }
 
     // :matches(regex), matchesOwn(regex)
@@ -325,7 +315,7 @@ class QueryParser private constructor(query: String?) {
         tq.consume(query)
         val regex: String = tq.chompBalanced('(', ')') // don't unescape, as regex bits will be escaped
         Validate.notEmpty(regex, "$query(regex) query must not be empty")
-        evals.add(if (own) Evaluator.MatchesOwn(Regex(regex)) else Evaluator.Matches(Regex(regex)))
+        evals.add(if (own) MatchesOwn(Regex(regex)) else Matches(Regex(regex)))
     }
 
     // :matches(regex), matchesOwn(regex)
@@ -340,12 +330,12 @@ class QueryParser private constructor(query: String?) {
     // :not(selector)
     private operator fun not() {
         tq.consume(":not")
-        val subQuery: String? = tq.chompBalanced('(', ')')
+        val subQuery: String = tq.chompBalanced('(', ')')
         Validate.notEmpty(subQuery, ":not(selector) subselect must not be empty")
         evals.add(StructuralEvaluator.Not(parse(subQuery)))
     }
 
-    public override fun toString(): String {
+    override fun toString(): String {
         return query
     }
 
@@ -361,7 +351,7 @@ class QueryParser private constructor(query: String?) {
          */
         fun parse(query: String?): Evaluator? {
             try {
-                val p: QueryParser = QueryParser(query)
+                val p = QueryParser(query)
                 return p.parse()
             } catch (e: IllegalArgumentException) {
                 throw Selector.SelectorParseException(e.message)

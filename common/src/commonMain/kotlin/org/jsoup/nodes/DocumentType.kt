@@ -63,12 +63,12 @@ class DocumentType(name: String?, publicId: String?, systemId: String?) : LeafNo
         return attr(SYSTEM_ID)
     }
 
-    override fun nodeName(): String? {
+    override fun nodeName(): String {
         return "#doctype"
     }
 
     @Throws(IOException::class)
-    public override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         // add a newline if the doctype has a preceding node (which must be a comment)
         if (sibIndex > 0 && out!!.prettyPrint()) accum!!.append('\n')
         if (out!!.syntax() == Document.OutputSettings.Syntax.html && !has(PUBLIC_ID) && !has(SYSTEM_ID)) {
@@ -84,7 +84,8 @@ class DocumentType(name: String?, publicId: String?, systemId: String?) : LeafNo
         accum.append('>')
     }
 
-    public override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+
     private fun has(attribute: String): Boolean {
         return !StringUtil.isBlank(attr(attribute))
     }

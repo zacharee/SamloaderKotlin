@@ -40,7 +40,7 @@ object StringUtil {
         val start: String = strings.next().toString()
         if (!strings.hasNext()) // only one, avoid builder
             return start
-        val j: StringJoiner = StringJoiner(sep)
+        val j = StringJoiner(sep)
         j.add(start)
         while (strings.hasNext()) {
             j.add(strings.next())
@@ -74,8 +74,8 @@ object StringUtil {
         Validate.isTrue(width >= 0, "width must be >= 0")
         Validate.isTrue(maxPaddingWidth >= -1)
         if (maxPaddingWidth != -1) width = min(width, maxPaddingWidth)
-        if (width < padding.size) return padding.get(width)
-        val out: CharArray = CharArray(width)
+        if (width < padding.size) return padding[width]
+        val out = CharArray(width)
         for (i in 0 until width) out[i] = ' '
         return out.concatToString()
     }
@@ -86,7 +86,7 @@ object StringUtil {
      * @return if string is blank
      */
     fun isBlank(string: String?): Boolean {
-        if (string == null || string.length == 0) return true
+        if (string.isNullOrEmpty()) return true
         val l: Int = string.length
         for (i in 0 until l) {
             if (!isWhitespace(string[i].code)) return false
@@ -100,8 +100,8 @@ object StringUtil {
      * @return if its first character is a newline
      */
     fun startsWithNewline(string: String?): Boolean {
-        if (string == null || string.length == 0) return false
-        return string.get(0) == '\n'
+        if (string.isNullOrEmpty()) return false
+        return string[0] == '\n'
     }
 
     /**
@@ -110,7 +110,7 @@ object StringUtil {
      * @return true if only digit chars, false if empty or null or contains non-digit chars
      */
     fun isNumeric(string: String?): Boolean {
-        if (string == null || string.isEmpty()) return false
+        if (string.isNullOrEmpty()) return false
         val l: Int = string.length
         for (i in 0 until l) {
             if (!string[i].isDigit()) return false
@@ -162,11 +162,11 @@ object StringUtil {
      * @param stripLeading set to true if you wish to remove any leading whitespace
      */
     fun appendNormalisedWhitespace(accum: StringBuilder?, string: String?, stripLeading: Boolean) {
-        var lastWasWhite: Boolean = false
-        var reachedNonWhite: Boolean = false
+        var lastWasWhite = false
+        var reachedNonWhite = false
         val len: Int = string?.length ?: return
         var c: Char
-        var i: Int = 0
+        var i = 0
         while (i < len) {
             c = string[i]
             if (isActuallyWhitespace(c.code)) {
@@ -296,8 +296,8 @@ object StringUtil {
         return string
     }
 
-    private val MaxCachedBuilderSize: Int = 8 * 1024
-    private val MaxIdleBuilders: Int = 8
+    private const val MaxCachedBuilderSize: Int = 8 * 1024
+    private const val MaxIdleBuilders: Int = 8
 
     /**
      * A StringJoiner allows incremental / filtered joining of a set of stringable objects.

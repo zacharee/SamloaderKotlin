@@ -8,7 +8,7 @@ import org.jsoup.nodes.*
  */
 enum class HtmlTreeBuilderState {
     Initial {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (isWhitespace(t)) {
                 return true // ignore whitespace until we get the first content
             } else if (t.isComment) {
@@ -16,9 +16,9 @@ enum class HtmlTreeBuilderState {
             } else if (t.isDoctype) {
                 // todo: parse error check on expected doctypes
                 // todo: quirk state check on doctype ids
-                val d: Token.Doctype? = t.asDoctype()
-                val doctype: DocumentType = DocumentType(
-                    tb.settings!!.normalizeTag(d!!.getName()), d.getPublicIdentifier(), d.getSystemIdentifier()
+                val d: Token.Doctype = t.asDoctype()
+                val doctype = DocumentType(
+                    tb.settings!!.normalizeTag(d.getName()), d.getPublicIdentifier(), d.getSystemIdentifier()
                 )
                 doctype.setPubSysKey(d.pubSysKey)
                 tb.document.appendChild(doctype)
@@ -34,7 +34,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     BeforeHtml {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.isDoctype) {
                 tb.error(this)
                 return false
@@ -63,7 +63,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     BeforeHead {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (isWhitespace(t)) {
                 tb.insert(t.asCharacter()) // out of spec - include whitespace
             } else if (t.isComment) {
@@ -91,7 +91,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     InHead {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (isWhitespace(t)) {
                 tb.insert(t.asCharacter()) // out of spec - include whitespace
                 return true
@@ -104,14 +104,14 @@ enum class HtmlTreeBuilderState {
                 }
 
                 Token.TokenType.StartTag -> {
-                    val start: Token.StartTag? = t.asStartTag()
-                    val name: String? = start!!.normalName()
+                    val start: Token.StartTag = t.asStartTag()
+                    val name: String? = start.normalName()
                     if ((name == "html")) {
                         return InBody.process(t, tb)
                     } else if (StringUtil.inSorted(name, Constants.InHeadEmpty)) {
-                        val el: Element? = tb.insertEmpty(start)
+                        val el: Element = tb.insertEmpty(start)
                         // jsoup special: update base the first time it is seen
-                        if ((name == "base") && el!!.hasAttr("href")) tb.maybeSetBaseUri(el)
+                        if ((name == "base") && el.hasAttr("href")) tb.maybeSetBaseUri(el)
                     } else if ((name == "meta")) {
                         tb.insertEmpty(start)
                         // todo: charset switches
@@ -144,8 +144,8 @@ enum class HtmlTreeBuilderState {
                 }
 
                 Token.TokenType.EndTag -> {
-                    val end: Token.EndTag? = t.asEndTag()
-                    val name = (end!!.normalName())!!
+                    val end: Token.EndTag = t.asEndTag()
+                    val name = (end.normalName())!!
                     if ((name == "head")) {
                         tb.pop()
                         tb.transition(AfterHead)
@@ -156,7 +156,7 @@ enum class HtmlTreeBuilderState {
                             tb.error(this)
                         } else {
                             tb.generateImpliedEndTags(true)
-                            if (!(name == tb.currentElement().normalName())) tb.error(this)
+                            if (name != tb.currentElement()?.normalName()) tb.error(this)
                             tb.popStackToClose(name)
                             tb.clearFormattingElementsToLastMarker()
                             tb.popTemplateMode()
@@ -179,7 +179,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     InHeadNoscript {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.isDoctype) {
                 tb.error(this)
             } else if (t.isStartTag && (t.asStartTag().normalName() == "html")) {
@@ -218,7 +218,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     AfterHead {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (isWhitespace(t)) {
                 tb.insert(t.asCharacter())
             } else if (t.isComment) {
@@ -226,8 +226,8 @@ enum class HtmlTreeBuilderState {
             } else if (t.isDoctype) {
                 tb.error(this)
             } else if (t.isStartTag) {
-                val startTag: Token.StartTag? = t.asStartTag()
-                val name: String? = startTag!!.normalName()
+                val startTag: Token.StartTag = t.asStartTag()
+                val name: String? = startTag.normalName()
                 if ((name == "html")) {
                     return tb.process(t, InBody)
                 } else if ((name == "body")) {
@@ -272,7 +272,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     InBody {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             when (t.type) {
                 Token.TokenType.Character -> {
                     val c: Token.Character = t.asCharacter()
@@ -309,8 +309,8 @@ enum class HtmlTreeBuilderState {
         }
 
         private fun inBodyStartTag(t: Token, tb: HtmlTreeBuilder): Boolean {
-            val startTag: Token.StartTag? = t.asStartTag()
-            val name: String? = startTag!!.normalName()
+            val startTag: Token.StartTag = t.asStartTag()
+            val name: String? = startTag.normalName()
             var el: Element?
             when (name) {
                 "a" -> {
@@ -339,10 +339,10 @@ enum class HtmlTreeBuilderState {
                 "li" -> {
                     tb.framesetOk(false)
                     val stack = tb.stack
-                    var i: Int = stack!!.size - 1
+                    var i: Int = stack.size - 1
                     while (i > 0) {
-                        el = stack.get(i)
-                        if ((el!!.normalName() == "li")) {
+                        el = stack[i]
+                        if ((el.normalName() == "li")) {
                             tb.processEndTag("li")
                             break
                         }
@@ -364,11 +364,11 @@ enum class HtmlTreeBuilderState {
                     if (tb.onStack("template")) return false // ignore
                     // otherwise, merge attributes onto real html (if present)
                     val stack = tb.stack
-                    if (stack!!.size > 0) {
-                        val html: Element? = tb.stack.get(0)
+                    if (stack.size > 0) {
+                        val html: Element = tb.stack[0]
                         if (startTag.hasAttributes()) {
                             for (attribute: Attribute in startTag.attributes!!) {
-                                if (!html!!.hasAttr(attribute.key ?: "")) html.attributes()!!.put(attribute)
+                                if (!html.hasAttr(attribute.key ?: "")) html.attributes()!!.put(attribute)
                             }
                         }
                     }
@@ -377,8 +377,7 @@ enum class HtmlTreeBuilderState {
                 "body" -> {
                     tb.error(this)
                     val stack = tb.stack
-                    if ((stack!!.size == 1) || (stack.size > 2 && !(stack.get(1)!!
-                            .normalName() == "body")) || tb.onStack("template")
+                    if ((stack.size == 1) || (stack.size > 2 && stack[1].normalName() != "body") || tb.onStack("template")
                     ) {
                         // only in fragment case
                         return false // ignore
@@ -387,7 +386,7 @@ enum class HtmlTreeBuilderState {
                         // will be on stack if this is a nested body. won't be if closed (which is a variance from spec, which leaves it on)
                         var body: Element? = null
                         if (startTag.hasAttributes() && (tb.getFromStack("body")
-                                .also({ body = (it)!! })) != null
+                                .also { body = (it) }) != null
                         ) { // we only ever put one body on stack
                             for (attribute: Attribute in startTag.attributes!!) {
                                 if (!body!!.hasAttr(attribute.key ?: "")) body!!.attributes()!!.put(attribute)
@@ -399,14 +398,14 @@ enum class HtmlTreeBuilderState {
                 "frameset" -> {
                     tb.error(this)
                     val stack = tb.stack
-                    if (stack!!.size == 1 || (stack.size > 2 && !(stack.get(1)!!.normalName() == "body"))) {
+                    if (stack.size == 1 || (stack.size > 2 && stack[1].normalName() != "body")) {
                         // only in fragment case
                         return false // ignore
                     } else if (!tb.framesetOk()) {
                         return false // ignore frameset
                     } else {
-                        val second: Element? = stack.get(1)
-                        if (second!!.parent() != null) second.remove()
+                        val second: Element = stack[1]
+                        if (second.parent() != null) second.remove()
                         // pop up to html element
                         while (stack.size > 1) stack.removeAt(stack.size - 1)
                         tb.insert(startTag)
@@ -422,7 +421,7 @@ enum class HtmlTreeBuilderState {
                     if (tb.inButtonScope("p")) {
                         tb.closeElement("p")
                     }
-                    tb.insertForm(startTag, true, true) // won't associate to any template
+                    tb.insertForm(startTag, onStack = true, checkTemplateStack = true) // won't associate to any template
                 }
 
                 "plaintext" -> {
@@ -489,7 +488,7 @@ enum class HtmlTreeBuilderState {
                     if (startTag.hasAttribute("action")) {
                         val form: Element? = tb.formElement
                         if (form != null && startTag.hasAttribute("action")) {
-                            val action: String? = startTag.attributes!!.get("action")
+                            val action: String = startTag.attributes!!["action"]
                             form.attributes()!!
                                 .put("action", action) // always LC, so don't need to scan up for ownerdoc
                         }
@@ -497,12 +496,12 @@ enum class HtmlTreeBuilderState {
                     tb.processStartTag("hr")
                     tb.processStartTag("label")
                     // hope you like english.
-                    val prompt: String? =
-                        if (startTag.hasAttribute("prompt")) startTag.attributes!!.get("prompt") else "This is a searchable index. Enter search keywords: "
+                    val prompt: String =
+                        if (startTag.hasAttribute("prompt")) startTag.attributes!!["prompt"] else "This is a searchable index. Enter search keywords: "
                     tb.process(Token.Character().data(prompt))
 
                     // input
-                    val inputAttribs: Attributes = Attributes()
+                    val inputAttribs = Attributes()
                     if (startTag.hasAttributes()) {
                         for (attr: Attribute in startTag.attributes!!) {
                             if (!StringUtil.inSorted(
@@ -575,7 +574,7 @@ enum class HtmlTreeBuilderState {
                     if (tb.inButtonScope("p")) {
                         tb.processEndTag("p")
                     }
-                    if (StringUtil.inSorted(tb.currentElement().normalName(), Constants.Headings)) {
+                    if (StringUtil.inSorted(tb.currentElement()?.normalName(), Constants.Headings)) {
                         tb.error(this)
                         tb.pop()
                     }
@@ -594,12 +593,12 @@ enum class HtmlTreeBuilderState {
                 "dd", "dt" -> {
                     tb.framesetOk(false)
                     val stack = tb.stack
-                    val bottom: Int = stack!!.size - 1
+                    val bottom: Int = stack.size - 1
                     val upper: Int = if (bottom >= MaxStackScan) bottom - MaxStackScan else 0
                     var i: Int = bottom
                     while (i >= upper) {
-                        el = stack.get(i)
-                        if (StringUtil.inSorted(el!!.normalName(), Constants.DdDt)) {
+                        el = stack[i]
+                        if (StringUtil.inSorted(el.normalName(), Constants.DdDt)) {
                             tb.processEndTag(el.normalName())
                             break
                         }
@@ -644,7 +643,7 @@ enum class HtmlTreeBuilderState {
                 }
 
                 else ->                     // todo - bring scan groups in if desired
-                    if (!Tag.Companion.isKnownTag(name)) { // no special rules for custom tags
+                    if (!Tag.isKnownTag(name)) { // no special rules for custom tags
                         tb.insert(startTag)
                     } else if (StringUtil.inSorted(name, Constants.InBodyStartPClosers)) {
                         if (tb.inButtonScope("p")) {
@@ -670,11 +669,10 @@ enum class HtmlTreeBuilderState {
             }
             return true
         }
-        val MaxStackScan: Int = 24 // used for DD / DT scan, prevents runaway
+        private val MaxStackScan: Int = 24 // used for DD / DT scan, prevents runaway
         private fun inBodyEndTag(t: Token, tb: HtmlTreeBuilder): Boolean {
-            val endTag: Token.EndTag? = t.asEndTag()
-            val name: String? = endTag!!.normalName()
-            when (name) {
+            val endTag: Token.EndTag = t.asEndTag()
+            when (val name: String? = endTag.normalName()) {
                 "template" -> tb.process(t, InHead)
                 "sarcasm", "span" ->                     // same as final fall through, but saves short circuit
                     return anyOtherEndTag(t, tb)
@@ -799,9 +797,9 @@ enum class HtmlTreeBuilderState {
                 tb.error(this)
                 return false
             }
-            for (pos in stack!!.indices.reversed()) {
-                val node: Element? = stack.get(pos)
-                if ((node!!.normalName() == name)) {
+            for (pos in stack.indices.reversed()) {
+                val node: Element = stack[pos]
+                if ((node.normalName() == name)) {
                     tb.generateImpliedEndTags(name)
                     if (!tb.currentElementIs((name)!!)) tb.error(this)
                     tb.popStackToClose(name)
@@ -834,17 +832,17 @@ enum class HtmlTreeBuilderState {
                 } else if (tb.currentElement() !== formatEl) tb.error(this)
                 var furthestBlock: Element? = null
                 var commonAncestor: Element? = null
-                var seenFormattingElement: Boolean = false
+                var seenFormattingElement = false
                 // the spec doesn't limit to < 64, but in degenerate cases (9000+ stack depth) this prevents run-aways
-                val stackSize: Int = stack!!.size
+                val stackSize: Int = stack.size
                 var bookmark: Int = -1
-                var si: Int = 1
+                var si = 1
                 while (si < stackSize && si < 64) {
 
                     // TODO: this no longer matches the current spec at https://html.spec.whatwg.org/#adoption-agency-algorithm and should be updated
-                    el = stack.get(si)
+                    el = stack[si]
                     if (el === formatEl) {
-                        commonAncestor = stack.get(si - 1)
+                        commonAncestor = stack[si - 1]
                         seenFormattingElement = true
                         // Let a bookmark note the position of the formatting element in the list of active formatting elements relative to the elements on either side of it in the list.
                         bookmark = tb.positionOfElement(el)
@@ -867,8 +865,7 @@ enum class HtmlTreeBuilderState {
                         tb.removeFromStack(node)
                         continue
                     } else if (node === formatEl) break
-                    val replacement: Element =
-                        Element(tb.tagFor((node!!.nodeName())!!, ParseSettings.Companion.preserveCase), tb.baseUri)
+                    val replacement = Element(tb.tagFor((node!!.nodeName())!!, ParseSettings.preserveCase), tb.baseUri)
                     // case will follow the original node (so honours ParseSettings)
                     tb.replaceActiveFormattingElement(node, replacement)
                     tb.replaceOnStack(node, replacement)
@@ -891,7 +888,7 @@ enum class HtmlTreeBuilderState {
                         commonAncestor.appendChild(lastNode)
                     }
                 }
-                val adopter: Element = Element(formatEl.tag(), tb.baseUri)
+                val adopter = Element(formatEl.tag(), tb.baseUri)
                 adopter.attributes()!!.addAll(formatEl.attributes())
                 adopter.appendChildren(furthestBlock.childNodes())
                 furthestBlock.appendChild(adopter)
@@ -906,7 +903,7 @@ enum class HtmlTreeBuilderState {
     },
     Text {
         // in script, style etc. normally treated as data tags
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.isCharacter) {
                 tb.insert(t.asCharacter())
             } else if (t.isEOF) {
@@ -924,8 +921,8 @@ enum class HtmlTreeBuilderState {
         }
     },
     InTable {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
-            if (t.isCharacter && StringUtil.inSorted(tb.currentElement().normalName(), Constants.InTableFoster)) {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+            if (t.isCharacter && StringUtil.inSorted(tb.currentElement()?.normalName(), Constants.InTableFoster)) {
                 tb.newPendingTableCharacters()
                 tb.markInsertionMode()
                 tb.transition(InTableText)
@@ -937,8 +934,8 @@ enum class HtmlTreeBuilderState {
                 tb.error(this)
                 return false
             } else if (t.isStartTag) {
-                val startTag: Token.StartTag? = t.asStartTag()
-                val name: String? = startTag!!.normalName()
+                val startTag: Token.StartTag = t.asStartTag()
+                val name: String? = startTag.normalName()
                 if ((name == "caption")) {
                     tb.clearStackToTableContext()
                     tb.insertMarkerToFormattingElements()
@@ -976,9 +973,8 @@ enum class HtmlTreeBuilderState {
                 } else if (StringUtil.inSorted(name, Constants.InTableToHead)) {
                     return tb.process(t, InHead)
                 } else if ((name == "input")) {
-                    if (!(startTag.hasAttributes() && startTag.attributes!!.get("type")
-                            .equals("hidden", ignoreCase = true))
-                    ) {
+                    if (!(startTag.hasAttributes() && startTag.attributes!!["type"]
+                            .equals("hidden", ignoreCase = true))) {
                         return anythingElse(t, tb)
                     } else {
                         tb.insertEmpty(startTag)
@@ -986,15 +982,15 @@ enum class HtmlTreeBuilderState {
                 } else if ((name == "form")) {
                     tb.error(this)
                     if (tb.formElement != null || tb.onStack("template")) return false else {
-                        tb.insertForm(startTag, false, false) // not added to stack. can associate to template
+                        tb.insertForm(startTag, onStack = false, checkTemplateStack = false) // not added to stack. can associate to template
                     }
                 } else {
                     return anythingElse(t, tb)
                 }
                 return true // todo: check if should return processed http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#parsing-main-intable
             } else if (t.isEndTag) {
-                val endTag: Token.EndTag? = t.asEndTag()
-                val name: String? = endTag!!.normalName()
+                val endTag: Token.EndTag = t.asEndTag()
+                val name: String? = endTag.normalName()
                 if ((name == "table")) {
                     if (!tb.inTableScope(name)) {
                         tb.error(this)
@@ -1028,7 +1024,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     InTableText {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.type == Token.TokenType.Character) {
                 val c: Token.Character = t.asCharacter()
                 if ((c.data == nullString)) {
@@ -1043,7 +1039,7 @@ enum class HtmlTreeBuilderState {
                         if (!isWhitespace(character)) {
                             // InTable anything else section:
                             tb.error(this)
-                            if (StringUtil.inSorted(tb.currentElement().normalName(), Constants.InTableFoster)) {
+                            if (StringUtil.inSorted(tb.currentElement()?.normalName(), Constants.InTableFoster)) {
                                 tb.isFosterInserts = (true)
                                 tb.process(Token.Character().data(character), InBody)
                                 tb.isFosterInserts = (false)
@@ -1061,10 +1057,10 @@ enum class HtmlTreeBuilderState {
         }
     },
     InCaption {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.isEndTag && (t.asEndTag().normalName() == "caption")) {
-                val endTag: Token.EndTag? = t.asEndTag()
-                val name: String? = endTag!!.normalName()
+                val endTag: Token.EndTag = t.asEndTag()
+                val name: String? = endTag.normalName()
                 if (!tb.inTableScope(name)) {
                     tb.error(this)
                     return false
@@ -1091,7 +1087,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     InColumnGroup {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (isWhitespace(t)) {
                 tb.insert(t.asCharacter())
                 return true
@@ -1100,8 +1096,8 @@ enum class HtmlTreeBuilderState {
                 Token.TokenType.Comment -> tb.insert(t.asComment())
                 Token.TokenType.Doctype -> tb.error(this)
                 Token.TokenType.StartTag -> {
-                    val startTag: Token.StartTag? = t.asStartTag()
-                    when (startTag!!.normalName()) {
+                    val startTag: Token.StartTag = t.asStartTag()
+                    when (startTag.normalName()) {
                         "html" -> return tb.process(t, InBody)
                         "col" -> tb.insertEmpty(startTag)
                         "template" -> tb.process(t, InHead)
@@ -1110,9 +1106,8 @@ enum class HtmlTreeBuilderState {
                 }
 
                 Token.TokenType.EndTag -> {
-                    val endTag: Token.EndTag? = t.asEndTag()
-                    val name: String? = endTag!!.normalName()
-                    when (name) {
+                    val endTag: Token.EndTag = t.asEndTag()
+                    when (val name: String? = endTag.normalName()) {
                         "colgroup" -> if (!tb.currentElementIs(name)) {
                             tb.error(this)
                             return false
@@ -1126,8 +1121,8 @@ enum class HtmlTreeBuilderState {
                     }
                 }
 
-                Token.TokenType.EOF -> if (tb.currentElementIs("html")) return true // stop parsing; frag case
-                else return anythingElse(t, tb)
+                Token.TokenType.EOF -> return if (tb.currentElementIs("html")) true // stop parsing; frag case
+                else anythingElse(t, tb)
 
                 else -> return anythingElse(t, tb)
             }
@@ -1146,11 +1141,11 @@ enum class HtmlTreeBuilderState {
         }
     },
     InTableBody {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             when (t.type) {
                 Token.TokenType.StartTag -> {
-                    val startTag: Token.StartTag? = t.asStartTag()
-                    val name: String? = startTag!!.normalName()
+                    val startTag: Token.StartTag = t.asStartTag()
+                    val name: String? = startTag.normalName()
                     if ((name == "tr")) {
                         tb.clearStackToTableBodyContext()
                         tb.insert(startTag)
@@ -1165,8 +1160,8 @@ enum class HtmlTreeBuilderState {
                 }
 
                 Token.TokenType.EndTag -> {
-                    val endTag: Token.EndTag? = t.asEndTag()
-                    val name = (endTag!!.normalName())!!
+                    val endTag: Token.EndTag = t.asEndTag()
+                    val name = (endTag.normalName())!!
                     if (StringUtil.inSorted(name, Constants.InTableEndIgnore)) {
                         if (!tb.inTableScope(name)) {
                             tb.error(this)
@@ -1196,7 +1191,7 @@ enum class HtmlTreeBuilderState {
                 return false
             }
             tb.clearStackToTableBodyContext()
-            tb.processEndTag(tb.currentElement().normalName()) // tbody, tfoot, thead
+            tb.processEndTag(tb.currentElement()?.normalName()) // tbody, tfoot, thead
             return tb.process(t)
         }
 
@@ -1205,10 +1200,10 @@ enum class HtmlTreeBuilderState {
         }
     },
     InRow {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.isStartTag) {
                 val startTag: Token.StartTag = t.asStartTag()
-                val name: String? = startTag!!.normalName()
+                val name: String? = startTag.normalName()
                 if (StringUtil.inSorted(name, Constants.InCellNames)) {
                     tb.clearStackToTableRowContext()
                     tb.insert(startTag)
@@ -1221,7 +1216,7 @@ enum class HtmlTreeBuilderState {
                 }
             } else if (t.isEndTag) {
                 val endTag: Token.EndTag = t.asEndTag()
-                val name: String? = endTag!!.normalName()
+                val name: String? = endTag.normalName()
                 if ((name == "tr")) {
                     if (!tb.inTableScope(name)) {
                         tb.error(this) // frag
@@ -1258,14 +1253,14 @@ enum class HtmlTreeBuilderState {
 
         private fun handleMissingTr(t: Token, tb: TreeBuilder): Boolean {
             val processed: Boolean = tb.processEndTag("tr")
-            if (processed) return tb.process(t) else return false
+            return if (processed) tb.process(t) else false
         }
     },
     InCell {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.isEndTag) {
-                val endTag: Token.EndTag? = t.asEndTag()
-                val name: String? = endTag!!.normalName()
+                val endTag: Token.EndTag = t.asEndTag()
+                val name: String? = endTag.normalName()
                 if (StringUtil.inSorted(name, Constants.InCellNames)) {
                     if (!tb.inTableScope(name)) {
                         tb.error(this)
@@ -1290,9 +1285,7 @@ enum class HtmlTreeBuilderState {
                 } else {
                     return anythingElse(t, tb)
                 }
-            } else if (t.isStartTag &&
-                StringUtil.inSorted(t.asStartTag().normalName(), Constants.InCellCol)
-            ) {
+            } else if (t.isStartTag && StringUtil.inSorted(t.asStartTag().normalName(), Constants.InCellCol)) {
                 if (!(tb.inTableScope("td") || tb.inTableScope("th"))) {
                     tb.error(this)
                     return false
@@ -1314,7 +1307,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     InSelect {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             when (t.type) {
                 Token.TokenType.Character -> {
                     val c: Token.Character = t.asCharacter()
@@ -1333,8 +1326,8 @@ enum class HtmlTreeBuilderState {
                 }
 
                 Token.TokenType.StartTag -> {
-                    val start: Token.StartTag? = t.asStartTag()
-                    val name: String? = start!!.normalName()
+                    val start: Token.StartTag = t.asStartTag()
+                    val name: String? = start.normalName()
                     if ((name == "html")) return tb.process((start), InBody) else if ((name == "option")) {
                         if (tb.currentElementIs("option")) tb.processEndTag("option")
                         tb.insert(start)
@@ -1358,15 +1351,13 @@ enum class HtmlTreeBuilderState {
                 }
 
                 Token.TokenType.EndTag -> {
-                    val end: Token.EndTag? = t.asEndTag()
-                    val name = (end!!.normalName())!!
-                    when (name) {
+                    val end: Token.EndTag = t.asEndTag()
+                    when (val name = (end.normalName())!!) {
                         "optgroup" -> {
-                            if (tb.currentElementIs("option") && (tb.aboveOnStack(tb.currentElement()) != null) && (tb.aboveOnStack(
-                                    tb.currentElement()
-                                )!!
-                                    .normalName() == "optgroup")
-                            ) tb.processEndTag("option")
+                            if (tb.currentElementIs("option")
+                                && (tb.aboveOnStack(tb.currentElement())?.normalName() == "optgroup")) {
+                                tb.processEndTag("option")
+                            }
                             if (tb.currentElementIs("optgroup")) tb.pop() else tb.error(this)
                         }
 
@@ -1396,35 +1387,33 @@ enum class HtmlTreeBuilderState {
         }
     },
     InSelectInTable {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
-            if (t.isStartTag && StringUtil.inSorted(t.asStartTag().normalName(), Constants.InSelectTableEnd)) {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+            return if (t.isStartTag && StringUtil.inSorted(t.asStartTag().normalName(), Constants.InSelectTableEnd)) {
                 tb.error(this)
                 tb.popStackToClose("select")
                 tb.resetInsertionMode()
-                return tb.process(t)
+                tb.process(t)
             } else if (t.isEndTag && StringUtil.inSorted(t.asEndTag().normalName(), Constants.InSelectTableEnd)) {
                 tb.error(this)
                 if (tb.inTableScope(t.asEndTag().normalName())) {
                     tb.popStackToClose("select")
                     tb.resetInsertionMode()
-                    return (tb.process(t))
-                } else return false
+                    (tb.process(t))
+                } else false
             } else {
-                return tb.process(t, InSelect)
+                tb.process(t, InSelect)
             }
         }
     },
     InTemplate {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
-            val name: String?
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             when (t.type) {
                 Token.TokenType.Character, Token.TokenType.Comment, Token.TokenType.Doctype -> tb.process(t, InBody)
                 Token.TokenType.StartTag -> {
-                    name = t.asStartTag().normalName()
-                    if (StringUtil.inSorted(name, Constants.InTemplateToHead)) tb.process(
-                        t,
-                        InHead
-                    ) else if (StringUtil.inSorted(name, Constants.InTemplateToTable)) {
+                    val name = t.asStartTag().normalName()
+                    if (StringUtil.inSorted(name, Constants.InTemplateToHead)) {
+                        tb.process(t, InHead)
+                    } else if (StringUtil.inSorted(name, Constants.InTemplateToTable)) {
                         tb.popTemplateMode()
                         tb.pushTemplateMode(InTable)
                         tb.transition(InTable)
@@ -1453,7 +1442,7 @@ enum class HtmlTreeBuilderState {
                 }
 
                 Token.TokenType.EndTag -> {
-                    name = t.asEndTag().normalName()
+                    val name = t.asEndTag().normalName()
                     if ((name == "template")) tb.process(t, InHead) else {
                         tb.error(this)
                         return false
@@ -1471,7 +1460,7 @@ enum class HtmlTreeBuilderState {
                     tb.resetInsertionMode()
                     // spec deviation - if we did not break out of Template, stop processing, and don't worry about cleaning up ultra-deep template stacks
                     // limited depth because this can recurse and will blow stack if too deep
-                    if (tb.state() !== InTemplate && tb.templateModeSize() < 12) return tb.process(t) else return true
+                    return if (tb.state() !== InTemplate && tb.templateModeSize() < 12) tb.process(t) else true
                 }
                 else -> {}
             }
@@ -1479,7 +1468,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     AfterBody {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (isWhitespace(t)) {
                 tb.insert(t.asCharacter()) // out of spec - include whitespace. spec would move into body
             } else if (t.isComment) {
@@ -1508,7 +1497,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     InFrameset {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (isWhitespace(t)) {
                 tb.insert(t.asCharacter())
             } else if (t.isComment) {
@@ -1517,8 +1506,8 @@ enum class HtmlTreeBuilderState {
                 tb.error(this)
                 return false
             } else if (t.isStartTag) {
-                val start: Token.StartTag? = t.asStartTag()
-                when (start!!.normalName()) {
+                val start: Token.StartTag = t.asStartTag()
+                when (start.normalName()) {
                     "html" -> return tb.process((start), InBody)
                     "frameset" -> tb.insert(start)
                     "frame" -> tb.insertEmpty(start)
@@ -1551,7 +1540,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     AfterFrameset {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (isWhitespace(t)) {
                 tb.insert(t.asCharacter())
             } else if (t.isComment) {
@@ -1575,7 +1564,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     AfterAfterBody {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.isComment) {
                 tb.insert(t.asComment())
             } else if (t.isDoctype || (t.isStartTag && (t.asStartTag().normalName() == "html"))) {
@@ -1593,7 +1582,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     AfterAfterFrameset {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             if (t.isComment) {
                 tb.insert(t.asComment())
             } else if (t.isDoctype || isWhitespace(t) || (t.isStartTag && (t.asStartTag()
@@ -1612,7 +1601,7 @@ enum class HtmlTreeBuilderState {
         }
     },
     ForeignContent {
-        public override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
+        override fun process(t: Token, tb: HtmlTreeBuilder): Boolean {
             return true
             // todo: implement. Also; how do we get here?
         }
@@ -1622,13 +1611,13 @@ enum class HtmlTreeBuilderState {
 
     // lists of tags to search through
     internal object Constants {
-        val InHeadEmpty: Array<String?> = arrayOf("base", "basefont", "bgsound", "command", "link")
-        val InHeadRaw: Array<String?> = arrayOf("noframes", "style")
-        val InHeadEnd: Array<String?> = arrayOf("body", "br", "html")
-        val AfterHeadBody: Array<String?> = arrayOf("body", "br", "html")
-        val BeforeHtmlToHead: Array<String?> = arrayOf("body", "br", "head", "html")
-        val InHeadNoScriptHead: Array<String?> = arrayOf("basefont", "bgsound", "link", "meta", "noframes", "style")
-        val InBodyStartToHead: Array<String?> = arrayOf(
+        val InHeadEmpty: Array<String> = arrayOf("base", "basefont", "bgsound", "command", "link")
+        val InHeadRaw: Array<String> = arrayOf("noframes", "style")
+        val InHeadEnd: Array<String> = arrayOf("body", "br", "html")
+        val AfterHeadBody: Array<String> = arrayOf("body", "br", "html")
+        val BeforeHtmlToHead: Array<String> = arrayOf("body", "br", "head", "html")
+        val InHeadNoScriptHead: Array<String> = arrayOf("basefont", "bgsound", "link", "meta", "noframes", "style")
+        val InBodyStartToHead: Array<String> = arrayOf(
             "base",
             "basefont",
             "bgsound",
@@ -1641,56 +1630,56 @@ enum class HtmlTreeBuilderState {
             "template",
             "title"
         )
-        val InBodyStartPClosers: Array<String?> = arrayOf(
+        val InBodyStartPClosers: Array<String> = arrayOf(
             "address", "article", "aside", "blockquote", "center", "details", "dir", "div", "dl",
             "fieldset", "figcaption", "figure", "footer", "header", "hgroup", "menu", "nav", "ol",
             "p", "section", "summary", "ul"
         )
-        val Headings: Array<String?> = arrayOf("h1", "h2", "h3", "h4", "h5", "h6")
-        val InBodyStartLiBreakers: Array<String?> = arrayOf("address", "div", "p")
-        val DdDt: Array<String?> = arrayOf("dd", "dt")
-        val InBodyStartApplets: Array<String?> = arrayOf("applet", "marquee", "object")
-        val InBodyStartMedia: Array<String?> = arrayOf("param", "source", "track")
-        val InBodyStartInputAttribs: Array<String?> = arrayOf("action", "name", "prompt")
-        val InBodyStartDrop: Array<String?> =
+        val Headings: Array<String> = arrayOf("h1", "h2", "h3", "h4", "h5", "h6")
+        val InBodyStartLiBreakers: Array<String> = arrayOf("address", "div", "p")
+        val DdDt: Array<String> = arrayOf("dd", "dt")
+        val InBodyStartApplets: Array<String> = arrayOf("applet", "marquee", "object")
+        val InBodyStartMedia: Array<String> = arrayOf("param", "source", "track")
+        val InBodyStartInputAttribs: Array<String> = arrayOf("action", "name", "prompt")
+        val InBodyStartDrop: Array<String> =
             arrayOf("caption", "col", "colgroup", "frame", "head", "tbody", "td", "tfoot", "th", "thead", "tr")
-        val InBodyEndClosers: Array<String?> = arrayOf(
+        val InBodyEndClosers: Array<String> = arrayOf(
             "address", "article", "aside", "blockquote", "button", "center", "details", "dir", "div",
             "dl", "fieldset", "figcaption", "figure", "footer", "header", "hgroup", "listing", "menu",
             "nav", "ol", "pre", "section", "summary", "ul"
         )
-        val InBodyEndAdoptionFormatters: Array<String?> =
+        val InBodyEndAdoptionFormatters: Array<String> =
             arrayOf("a", "b", "big", "code", "em", "font", "i", "nobr", "s", "small", "strike", "strong", "tt", "u")
-        val InBodyEndTableFosters: Array<String?> = arrayOf("table", "tbody", "tfoot", "thead", "tr")
-        val InTableToBody: Array<String?> = arrayOf("tbody", "tfoot", "thead")
-        val InTableAddBody: Array<String?> = arrayOf("td", "th", "tr")
-        val InTableToHead: Array<String?> = arrayOf("script", "style", "template")
-        val InCellNames: Array<String?> = arrayOf("td", "th")
-        val InCellBody: Array<String?> = arrayOf("body", "caption", "col", "colgroup", "html")
-        val InCellTable: Array<String?> = arrayOf("table", "tbody", "tfoot", "thead", "tr")
-        val InCellCol: Array<String?> =
+        val InBodyEndTableFosters: Array<String> = arrayOf("table", "tbody", "tfoot", "thead", "tr")
+        val InTableToBody: Array<String> = arrayOf("tbody", "tfoot", "thead")
+        val InTableAddBody: Array<String> = arrayOf("td", "th", "tr")
+        val InTableToHead: Array<String> = arrayOf("script", "style", "template")
+        val InCellNames: Array<String> = arrayOf("td", "th")
+        val InCellBody: Array<String> = arrayOf("body", "caption", "col", "colgroup", "html")
+        val InCellTable: Array<String> = arrayOf("table", "tbody", "tfoot", "thead", "tr")
+        val InCellCol: Array<String> =
             arrayOf("caption", "col", "colgroup", "tbody", "td", "tfoot", "th", "thead", "tr")
-        val InTableEndErr: Array<String?> =
+        val InTableEndErr: Array<String> =
             arrayOf("body", "caption", "col", "colgroup", "html", "tbody", "td", "tfoot", "th", "thead", "tr")
         val InTableFoster: Array<String> = arrayOf("table", "tbody", "tfoot", "thead", "tr")
-        val InTableBodyExit: Array<String?> = arrayOf("caption", "col", "colgroup", "tbody", "tfoot", "thead")
-        val InTableBodyEndIgnore: Array<String?> =
+        val InTableBodyExit: Array<String> = arrayOf("caption", "col", "colgroup", "tbody", "tfoot", "thead")
+        val InTableBodyEndIgnore: Array<String> =
             arrayOf("body", "caption", "col", "colgroup", "html", "td", "th", "tr")
-        val InRowMissing: Array<String?> = arrayOf("caption", "col", "colgroup", "tbody", "tfoot", "thead", "tr")
-        val InRowIgnore: Array<String?> = arrayOf("body", "caption", "col", "colgroup", "html", "td", "th")
-        val InSelectEnd: Array<String?> = arrayOf("input", "keygen", "textarea")
-        val InSelectTableEnd: Array<String?> = arrayOf("caption", "table", "tbody", "td", "tfoot", "th", "thead", "tr")
-        val InTableEndIgnore: Array<String?> = arrayOf("tbody", "tfoot", "thead")
-        val InHeadNoscriptIgnore: Array<String?> = arrayOf("head", "noscript")
-        val InCaptionIgnore: Array<String?> =
+        val InRowMissing: Array<String> = arrayOf("caption", "col", "colgroup", "tbody", "tfoot", "thead", "tr")
+        val InRowIgnore: Array<String> = arrayOf("body", "caption", "col", "colgroup", "html", "td", "th")
+        val InSelectEnd: Array<String> = arrayOf("input", "keygen", "textarea")
+        val InSelectTableEnd: Array<String> = arrayOf("caption", "table", "tbody", "td", "tfoot", "th", "thead", "tr")
+        val InTableEndIgnore: Array<String> = arrayOf("tbody", "tfoot", "thead")
+        val InHeadNoscriptIgnore: Array<String> = arrayOf("head", "noscript")
+        val InCaptionIgnore: Array<String> =
             arrayOf("body", "col", "colgroup", "html", "tbody", "td", "tfoot", "th", "thead", "tr")
-        val InTemplateToHead: Array<String?> =
+        val InTemplateToHead: Array<String> =
             arrayOf("base", "basefont", "bgsound", "link", "meta", "noframes", "script", "style", "template", "title")
-        val InTemplateToTable: Array<String?> = arrayOf("caption", "colgroup", "tbody", "tfoot", "thead")
+        val InTemplateToTable: Array<String> = arrayOf("caption", "colgroup", "tbody", "tfoot", "thead")
     }
 
     companion object {
-        private val nullString: String = '\u0000'.toString()
+        private const val nullString: String = '\u0000'.toString()
         private fun isWhitespace(t: Token?): Boolean {
             if (t!!.isCharacter) {
                 val data: String? = t.asCharacter().data

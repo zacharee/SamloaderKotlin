@@ -51,7 +51,7 @@ class ParseError {
         errorMessage = String.format((errorFormat)!!, *args)
     }
 
-    public override fun toString(): String {
-        return "<" + cursorPos + ">: " + errorMessage
+    override fun toString(): String {
+        return "<$cursorPos>: $errorMessage"
     }
 }

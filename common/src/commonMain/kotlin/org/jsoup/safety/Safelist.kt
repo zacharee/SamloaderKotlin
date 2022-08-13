@@ -93,17 +93,17 @@ class Safelist constructor() {
     constructor(copy: Safelist) : this() {
         tagNames.addAll(copy.tagNames)
         for (copyTagAttributes: Map.Entry<TagName, Set<AttributeKey>> in copy.attributes.entries) {
-            attributes.put(copyTagAttributes.key, HashSet(copyTagAttributes.value))
+            attributes[copyTagAttributes.key] = HashSet(copyTagAttributes.value)
         }
         for (enforcedEntry: Map.Entry<TagName, Map<AttributeKey, AttributeValue>> in copy.enforcedAttributes.entries) {
-            enforcedAttributes.put(enforcedEntry.key, HashMap(enforcedEntry.value))
+            enforcedAttributes[enforcedEntry.key] = HashMap(enforcedEntry.value)
         }
         for (protocolsEntry: Map.Entry<TagName, Map<AttributeKey, Set<Protocol>>> in copy.protocols.entries) {
             val attributeProtocolsCopy: MutableMap<AttributeKey, MutableSet<Protocol>> = HashMap()
             for (attributeProtocols: Map.Entry<AttributeKey, Set<Protocol>> in protocolsEntry.value.entries) {
-                attributeProtocolsCopy.put(attributeProtocols.key, HashSet(attributeProtocols.value))
+                attributeProtocolsCopy[attributeProtocols.key] = HashSet(attributeProtocols.value)
             }
-            protocols.put(protocolsEntry.key, attributeProtocolsCopy)
+            protocols[protocolsEntry.key] = attributeProtocolsCopy
         }
         preserveRelativeLinks = copy.preserveRelativeLinks
     }
@@ -163,7 +163,7 @@ class Safelist constructor() {
     fun addAttributes(tag: String, vararg attributes: String?): Safelist {
         Validate.notEmpty(tag)
         Validate.notNull(attributes)
-        Validate.isTrue(attributes.size > 0, "No attribute names supplied.")
+        Validate.isTrue(attributes.isNotEmpty(), "No attribute names supplied.")
         val tagName: TagName = TagName.valueOf(tag)
         tagNames.add(tagName)
         val attributeSet: MutableSet<AttributeKey> = HashSet()
@@ -172,10 +172,10 @@ class Safelist constructor() {
             attributeSet.add(AttributeKey.valueOf(key!!))
         }
         if (this.attributes.containsKey(tagName)) {
-            val currentSet: MutableSet<AttributeKey> = this.attributes.get(tagName) ?: mutableSetOf()
+            val currentSet: MutableSet<AttributeKey> = this.attributes[tagName] ?: mutableSetOf()
             currentSet.addAll(attributeSet)
         } else {
-            this.attributes.put(tagName, attributeSet)
+            this.attributes[tagName] = attributeSet
         }
         return this
     }
@@ -200,7 +200,7 @@ class Safelist constructor() {
     fun removeAttributes(tag: String, vararg attributes: String?): Safelist {
         Validate.notEmpty(tag)
         Validate.notNull(attributes)
-        Validate.isTrue(attributes.size > 0, "No attribute names supplied.")
+        Validate.isTrue(attributes.isNotEmpty(), "No attribute names supplied.")
         val tagName: TagName = TagName.valueOf(tag)
         val attributeSet: MutableSet<AttributeKey> = HashSet()
         for (key: String? in attributes) {
@@ -208,14 +208,14 @@ class Safelist constructor() {
             attributeSet.add(AttributeKey.valueOf(key!!))
         }
         if (tagNames.contains(tagName) && this.attributes.containsKey(tagName)) { // Only look in sub-maps if tag was allowed
-            val currentSet: MutableSet<AttributeKey> = this.attributes.get(tagName) ?: mutableSetOf()
+            val currentSet: MutableSet<AttributeKey> = this.attributes[tagName] ?: mutableSetOf()
             currentSet.removeAll(attributeSet)
             if (currentSet.isEmpty()) // Remove tag from attribute map if no attributes are allowed for tag
                 this.attributes.remove(tagName)
         }
         if ((tag == ":all")) // Attribute needs to be removed from all individually set tags
             for (name: TagName in this.attributes.keys) {
-                val currentSet: MutableSet<AttributeKey> = this.attributes.get(name) ?: mutableSetOf()
+                val currentSet: MutableSet<AttributeKey> = this.attributes[name] ?: mutableSetOf()
                 currentSet.removeAll(attributeSet)
                 if (currentSet.isEmpty()) // Remove tag from attribute map if no attributes are allowed for tag
                     this.attributes.remove(name)
@@ -246,11 +246,11 @@ class Safelist constructor() {
         val attrKey: AttributeKey = AttributeKey.valueOf(attribute)
         val attrVal: AttributeValue = AttributeValue.valueOf(value)
         if (enforcedAttributes.containsKey(tagName)) {
-            enforcedAttributes.get(tagName)?.put(attrKey, attrVal)
+            enforcedAttributes[tagName]?.put(attrKey, attrVal)
         } else {
             val attrMap: MutableMap<AttributeKey, AttributeValue> = HashMap()
-            attrMap.put(attrKey, attrVal)
-            enforcedAttributes.put(tagName, attrMap)
+            attrMap[attrKey] = attrVal
+            enforcedAttributes[tagName] = attrMap
         }
         return this
     }
@@ -268,7 +268,7 @@ class Safelist constructor() {
         val tagName: TagName = TagName.valueOf(tag)
         if (tagNames.contains(tagName) && enforcedAttributes.containsKey(tagName)) {
             val attrKey: AttributeKey = AttributeKey.valueOf(attribute)
-            val attrMap: MutableMap<AttributeKey, AttributeValue> = enforcedAttributes.get(tagName) ?: mutableMapOf()
+            val attrMap: MutableMap<AttributeKey, AttributeValue> = enforcedAttributes[tagName] ?: mutableMapOf()
             attrMap.remove(attrKey)
             if (attrMap.isEmpty()) // Remove tag from enforced attribute map if no enforced attributes are present
                 enforcedAttributes.remove(tagName)
@@ -324,16 +324,16 @@ class Safelist constructor() {
         val attrMap: MutableMap<AttributeKey, MutableSet<Protocol>>
         val protSet: MutableSet<Protocol>
         if (this.protocols.containsKey(tagName)) {
-            attrMap = this.protocols.get(tagName) ?: mutableMapOf()
+            attrMap = this.protocols[tagName] ?: mutableMapOf()
         } else {
             attrMap = HashMap()
-            this.protocols.put(tagName, attrMap)
+            this.protocols[tagName] = attrMap
         }
         if (attrMap.containsKey(attrKey)) {
-            protSet = attrMap.get(attrKey) ?: mutableSetOf()
+            protSet = attrMap[attrKey] ?: mutableSetOf()
         } else {
             protSet = HashSet()
-            attrMap.put(attrKey, protSet)
+            attrMap[attrKey] = protSet
         }
         for (protocol: String in protocols) {
             Validate.notEmpty(protocol)
@@ -368,7 +368,7 @@ class Safelist constructor() {
         Validate.isTrue(protocols.containsKey(tagName), "Cannot remove a protocol that is not set.")
         val tagProtocols: MutableMap<AttributeKey, MutableSet<Protocol>> = protocols.get(tagName) ?: mutableMapOf()
         Validate.isTrue(tagProtocols.containsKey(attr), "Cannot remove a protocol that is not set.")
-        val attrProtocols: MutableSet<Protocol> = tagProtocols.get(attr) ?: mutableSetOf()
+        val attrProtocols: MutableSet<Protocol> = tagProtocols[attr] ?: mutableSetOf()
         for (protocol: String in removeProtocols) {
             Validate.notEmpty(protocol)
             attrProtocols.remove(Protocol.valueOf(protocol))
@@ -400,12 +400,12 @@ class Safelist constructor() {
     fun isSafeAttribute(tagName: String, el: Element, attr: Attribute): Boolean {
         val tag: TagName = TagName.valueOf(tagName)
         val key: AttributeKey = AttributeKey.valueOf(attr.key!!)
-        val okSet: Set<AttributeKey>? = attributes.get(tag)
+        val okSet: Set<AttributeKey>? = attributes[tag]
         if (okSet != null && okSet.contains(key)) {
             if (protocols.containsKey(tag)) {
-                val attrProts: Map<AttributeKey, MutableSet<Protocol>> = protocols.get(tag) ?: mapOf()
+                val attrProts: Map<AttributeKey, MutableSet<Protocol>> = protocols[tag] ?: mapOf()
                 // ok if not defined protocol; otherwise test
-                return !attrProts.containsKey(key) || testValidProtocol(el, attr, attrProts.get(key) ?: mutableSetOf())
+                return !attrProts.containsKey(key) || testValidProtocol(el, attr, attrProts[key] ?: mutableSetOf())
             } else { // attribute found, no protocols defined, so OK
                 return true
             }
@@ -420,7 +420,7 @@ class Safelist constructor() {
             }
         }
         // no attributes defined for tag, try :all tag
-        return !(tagName == ":all") && isSafeAttribute(":all", el, attr)
+        return tagName != ":all" && isSafeAttribute(":all", el, attr)
     }
 
     private fun testValidProtocol(el: Element, attr: Attribute, protocols: Set<Protocol>): Boolean {
@@ -440,7 +440,7 @@ class Safelist constructor() {
                 }
             }
             prot += ":"
-            if (Normalizer.lowerCase(value).startsWith(prot)) {
+            if (Normalizer.lowerCase(value)?.startsWith(prot) == true) {
                 return true
             }
         }
@@ -448,11 +448,11 @@ class Safelist constructor() {
     }
 
     private fun isValidAnchor(value: String?): Boolean {
-        return value?.startsWith("#") == true && value.matches(Regex(".*\\s.*")) == false
+        return value?.startsWith("#") == true && !value.matches(Regex(".*\\s.*"))
     }
 
     fun getEnforcedAttributes(tagName: String): Attributes {
-        val attrs: Attributes = Attributes()
+        val attrs = Attributes()
         val tag: TagName = TagName.valueOf(tagName)
         if (enforcedAttributes.containsKey(tag)) {
             val keyVals: Map<AttributeKey, AttributeValue> = enforcedAttributes.get(tag) ?: mapOf()
@@ -504,22 +504,21 @@ class Safelist constructor() {
             this.value = value
         }
 
-        public override fun hashCode(): Int {
-            val prime: Int = 31
-            var result: Int = 1
-            result = prime * result + (if ((value == null)) 0 else value.hashCode())
+        override fun hashCode(): Int {
+            val prime = 31
+            var result = 1
+            result = prime * result + (value.hashCode())
             return result
         }
 
-        public override fun equals(obj: Any?): Boolean {
-            if (this === obj) return true
-            if (obj == null) return false
-            if (this::class != obj::class) return false
-            val other: TypedValue = obj as TypedValue
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other == null) return false
+            if (other !is TypedValue) return false
             return (value == other.value)
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return value
         }
     }

@@ -103,9 +103,9 @@ object Selector {
      * @return matching elements, empty if none
      * @throws SelectorParseException (unchecked) on an invalid CSS query.
      */
-    fun select(query: String?, root: Element?): Elements? {
+    fun select(query: String?, root: Element?): Elements {
         Validate.notEmpty(query)
-        return select(QueryParser.Companion.parse(query), root)
+        return select(QueryParser.parse(query), root)
     }
 
     /**
@@ -115,7 +115,7 @@ object Selector {
      * @param root root element to descend into
      * @return matching elements, empty if none
      */
-    fun select(evaluator: Evaluator?, root: Element?): Elements? {
+    fun select(evaluator: Evaluator?, root: Element?): Elements {
         Validate.notNull(evaluator)
         Validate.notNull(root)
         return Collector.collect(evaluator, root)
@@ -131,13 +131,13 @@ object Selector {
     fun select(query: String?, roots: Iterable<Element?>): Elements {
         Validate.notEmpty(query)
         Validate.notNull(roots)
-        val evaluator: Evaluator? = QueryParser.Companion.parse(query)
-        val elements: Elements = Elements()
+        val evaluator: Evaluator? = QueryParser.parse(query)
+        val elements = Elements()
         val seenElements: HashMap<Element, Element?> = HashMap()
         // dedupe elements by identity, not equality
         for (root: Element? in roots) {
-            val found: Elements? = select(evaluator, root)
-            for (el: Element in found!!) {
+            val found: Elements = select(evaluator, root)
+            for (el: Element in found) {
                 if (seenElements[el] === el || seenElements.put(el, el) == null) {
                     elements.add(el)
                 }
@@ -148,9 +148,9 @@ object Selector {
 
     // exclude set. package open so that Elements can implement .not() selector.
     fun filterOut(elements: Collection<Element>, outs: Collection<Element>?): Elements {
-        val output: Elements = Elements()
+        val output = Elements()
         for (el: Element in elements) {
-            var found: Boolean = false
+            var found = false
             for (out: Element in outs!!) {
                 if ((el == out)) {
                     found = true
@@ -170,11 +170,11 @@ object Selector {
      */
     fun selectFirst(cssQuery: String?, root: Element): Element? {
         Validate.notEmpty(cssQuery)
-        return Collector.findFirst(QueryParser.Companion.parse(cssQuery), root)
+        return Collector.findFirst(QueryParser.parse(cssQuery), root)
     }
 
     class SelectorParseException : IllegalStateException {
-        constructor(msg: String?) : super(msg) {}
-        constructor(msg: String?, vararg params: Any?) : super(msg?.format(params)) {}
+        constructor(msg: String?) : super(msg)
+        constructor(msg: String?, vararg params: Any?) : super(msg?.format(params))
     }
 }

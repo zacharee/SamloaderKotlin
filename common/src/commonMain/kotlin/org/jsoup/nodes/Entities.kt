@@ -84,11 +84,16 @@ object Entities {
      * @param string the un-escaped string to escape
      * @return the escaped string
      */
-    fun escape(string: String?, out: Document.OutputSettings? = DefaultOutput): String? {
+    fun escape(string: String?, out: Document.OutputSettings? = DefaultOutput): String {
         if (string == null) return ""
         val accum = StringUtil.borrowBuilder()
         try {
-            escape(accum, string, out, false, false, false, false)
+            escape(accum, string, out,
+                inAttribute = false,
+                normaliseWhite = false,
+                stripLeadingWhite = false,
+                trimTrailing = false
+            )
         } catch (e: IOException) {
             throw SerializationException(e) // doesn't happen
         }
@@ -193,7 +198,7 @@ object Entities {
      * @return unescaped string
      */
     fun unescape(string: String?, strict: Boolean): String? {
-        return string?.let { Parser.Companion.unescapeEntities(it, strict) }
+        return string?.let { Parser.unescapeEntities(it, strict) }
     }
 
     /*

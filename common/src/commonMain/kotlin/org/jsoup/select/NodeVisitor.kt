@@ -11,7 +11,7 @@ import org.jsoup.nodes.Node
  * emit a start tag for a node, and `tail` to create the end tag.
  *
  */
-open interface NodeVisitor {
+interface NodeVisitor {
     /**
      * Callback for when a node is first visited.
      *
@@ -23,7 +23,7 @@ open interface NodeVisitor {
      * @param depth the depth of the node, relative to the root node. E.g., the root node has depth 0, and a child node
      * of that will have depth 1.
      */
-    open fun head(node: Node, depth: Int)
+    fun head(node: Node, depth: Int)
 
     /**
      * Callback for when a node is last visited, after all of its descendants have been visited.

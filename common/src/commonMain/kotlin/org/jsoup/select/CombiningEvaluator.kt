@@ -7,12 +7,8 @@ import org.jsoup.nodes.Element
  * Base combining (and, or) evaluator.
  */
 abstract class CombiningEvaluator internal constructor() : Evaluator() {
-    val evaluators: ArrayList<Evaluator?>
+    val evaluators: ArrayList<Evaluator?> = ArrayList()
     var num: Int = 0
-
-    init {
-        evaluators = ArrayList()
-    }
 
     internal constructor(evaluators: Collection<Evaluator?>) : this() {
         this.evaluators.addAll(evaluators)
@@ -20,11 +16,11 @@ abstract class CombiningEvaluator internal constructor() : Evaluator() {
     }
 
     fun rightMostEvaluator(): Evaluator? {
-        return if (num > 0) evaluators.get(num - 1) else null
+        return if (num > 0) evaluators[num - 1] else null
     }
 
     fun replaceRightMostEvaluator(replacement: Evaluator?) {
-        evaluators.set(num - 1, replacement)
+        evaluators[num - 1] = replacement
     }
 
     fun updateNumEvaluators() {
@@ -33,17 +29,17 @@ abstract class CombiningEvaluator internal constructor() : Evaluator() {
     }
 
     class And internal constructor(evaluators: Collection<Evaluator?>) : CombiningEvaluator(evaluators) {
-        internal constructor(vararg evaluators: Evaluator?) : this(evaluators.toList()) {}
+        internal constructor(vararg evaluators: Evaluator?) : this(evaluators.toList())
 
-        public override fun matches(root: Element, node: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             for (i in num - 1 downTo 0) { // process backwards so that :matchText is evaled earlier, to catch parent query. todo - should redo matchText to virtually expand during match, not pre-match (see SelectorTest#findBetweenSpan)
-                val s: Evaluator? = evaluators.get(i)
-                if (!s!!.matches(root, node)) return false
+                val s: Evaluator? = evaluators[i]
+                if (!s!!.matches(root, element)) return false
             }
             return true
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return StringUtil.join(evaluators, "")
         }
     }
@@ -59,23 +55,23 @@ abstract class CombiningEvaluator internal constructor() : Evaluator() {
             updateNumEvaluators()
         }
 
-        internal constructor(vararg evaluators: Evaluator?) : this(evaluators = evaluators.toList()) {}
-        internal constructor() : super() {}
+        internal constructor(vararg evaluators: Evaluator?) : this(evaluators = evaluators.toList())
+        internal constructor() : super()
 
         fun add(e: Evaluator?) {
             evaluators.add(e)
             updateNumEvaluators()
         }
 
-        public override fun matches(root: Element, node: Element): Boolean {
+        override fun matches(root: Element, element: Element): Boolean {
             for (i in 0 until num) {
-                val s: Evaluator? = evaluators.get(i)
-                if (s!!.matches(root, node)) return true
+                val s: Evaluator? = evaluators[i]
+                if (s!!.matches(root, element)) return true
             }
             return false
         }
 
-        public override fun toString(): String {
+        override fun toString(): String {
             return StringUtil.join(evaluators, ", ")
         }
     }

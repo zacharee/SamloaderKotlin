@@ -8,7 +8,7 @@ class SerializationException : RuntimeException {
     /**
      * Creates and initializes a new serialization exception with no error message and cause.
      */
-    constructor() : super() {}
+    constructor() : super()
 
     /**
      * Creates and initializes a new serialization exception with the given error message and no cause.
@@ -16,7 +16,7 @@ class SerializationException : RuntimeException {
      * @param message
      * the error message of the new serialization exception (may be `null`).
      */
-    constructor(message: String?) : super(message) {}
+    constructor(message: String?) : super(message)
 
     /**
      * Creates and initializes a new serialization exception with the specified cause and an error message of
@@ -26,7 +26,7 @@ class SerializationException : RuntimeException {
      * @param cause
      * the cause of the new serialization exception (may be `null`).
      */
-    constructor(cause: Throwable?) : super(cause) {}
+    constructor(cause: Throwable?) : super(cause)
 
     /**
      * Creates and initializes a new serialization exception with the given error message and cause.
@@ -36,5 +36,5 @@ class SerializationException : RuntimeException {
      * @param cause
      * the cause of the new serialization exception.
      */
-    constructor(message: String?, cause: Throwable?) : super(message, cause) {}
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
 }

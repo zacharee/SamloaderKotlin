@@ -42,11 +42,12 @@ class DataNode(data: String) : LeafNode() {
     }
 
     @Throws(IOException::class)
-    public override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
+    override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
         accum!!.append(wholeData) // data is not escaped in return from data nodes, so " in script, style is plain
     }
 
-    public override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+    override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {}
+
     override fun toString(): String {
         return outerHtml()!!
     }
