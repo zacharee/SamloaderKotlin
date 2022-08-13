@@ -40,7 +40,7 @@ class Comment(data: String) : LeafNode() {
 
     @Throws(IOException::class)
     override fun outerHtmlHead(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
-        if (out!!.prettyPrint() && (siblingIndex() == 0 && parNode is Element && (parNode as Element).tag()!!
+        if (out!!.prettyPrint() && (siblingIndex() == 0 && parNode is Element && (parNode as Element).tag()
                 .formatAsBlock() || out.outline())
         ) {
             indent(accum!!, depth, out)
@@ -85,9 +85,9 @@ class Comment(data: String) : LeafNode() {
         val doc: Document? =
             Parser.htmlParser().settings(ParseSettings.preserveCase).parseInput(fragment, baseUri())
         if (doc?.body()!!.children().size > 0) {
-            val el = doc.body()!!.child(0)
+            val el = doc.body().child(0)
             decl = XmlDeclaration(
-                NodeUtils.parser(doc)!!.settings()!!.normalizeTag(el.tagName())!!,
+                NodeUtils.parser(doc).settings()!!.normalizeTag(el.tagName())!!,
                 data.startsWith("!")
             )
             decl.attributes()!!.addAll(el.attributes())

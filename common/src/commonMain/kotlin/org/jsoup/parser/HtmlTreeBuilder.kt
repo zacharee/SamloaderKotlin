@@ -236,11 +236,11 @@ class HtmlTreeBuilder : TreeBuilder() {
     }
 
     fun insertEmpty(startTag: Token.StartTag?): Element {
-        val tag: Tag? = tagFor((startTag!!.name())!!, settings)
+        val tag: Tag = tagFor((startTag!!.name())!!, settings)
         val el = Element(tag, null, settings!!.normalizeAttributes(startTag.attributes))
         insertNode(el, startTag)
         if (startTag.isSelfClosing) {
-            if (tag!!.isKnownTag) {
+            if (tag.isKnownTag) {
                 if (!tag.isEmpty) tokeniser!!.error(
                     "Tag [%s] cannot be self closing; not a void tag",
                     tag.normalName()
@@ -252,12 +252,8 @@ class HtmlTreeBuilder : TreeBuilder() {
     }
 
     fun insertForm(startTag: Token.StartTag?, onStack: Boolean, checkTemplateStack: Boolean): FormElement {
-        val tag: Tag? = tagFor((startTag!!.name())!!, settings)
-        val el = FormElement(
-            tag, null, settings!!.normalizeAttributes(
-                startTag.attributes
-            )
-        )
+        val tag: Tag = tagFor((startTag!!.name())!!, settings)
+        val el = FormElement(tag, null, settings!!.normalizeAttributes(startTag.attributes))
         if (checkTemplateStack) {
             if (!onStack("template")) formElement = el
         } else formElement = el
@@ -294,7 +290,7 @@ class HtmlTreeBuilder : TreeBuilder() {
         }
 
         // connect form controls to their form element
-        if (node is Element && node.tag()!!.isFormListed) {
+        if (node is Element && node.tag().isFormListed) {
             if (formElement != null) formElement!!.addElement(node)
         }
         onNodeInserted(node, token)

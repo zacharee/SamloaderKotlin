@@ -26,7 +26,7 @@ class ParseSettings
         return preserveAttributeCase
     }
 
-    internal constructor(copy: ParseSettings?) : this(copy!!.preserveTagCase, copy.preserveAttributeCase) {}
+    internal constructor(copy: ParseSettings?) : this(copy!!.preserveTagCase, copy.preserveAttributeCase)
 
     /**
      * Normalizes a tag name according to the case preservation setting.
@@ -44,7 +44,7 @@ class ParseSettings
     fun normalizeAttribute(name: String): String {
         var name: String = name
         name = name.trim { it <= ' ' }
-        if (!preserveAttributeCase) name = Normalizer.lowerCase(name)
+        if (!preserveAttributeCase) name = Normalizer.lowerCase(name)!!
         return name
     }
 

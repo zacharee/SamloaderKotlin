@@ -36,7 +36,7 @@ abstract class LeafNode : Node() {
         } else super.attr(attributeKey)
     }
 
-    override fun attr(attributeKey: String?, attributeValue: String?): Node {
+    override fun attr(attributeKey: String, attributeValue: String?): Node {
         if (!hasAttributes() && attributeKey == nodeName()) {
             this.value = attributeValue
         } else {
@@ -61,7 +61,7 @@ abstract class LeafNode : Node() {
         return super.absUrl(attributeKey)
     }
 
-    override fun baseUri(): String? {
+    override fun baseUri(): String {
         return if (hasParent()) parent()!!.baseUri() else ""
     }
 

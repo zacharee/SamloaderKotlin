@@ -20,12 +20,10 @@ import org.jsoup.select.*
  * @author Jonathan Hedley, jonathan@hedley.net
  */
 open class Element constructor(
-    tag: Tag?,
-     baseUri: String?,
-     attributes: Attributes? = null
+    private var tag: Tag,
+    baseUri: String?,
+    attributes: Attributes? = null
 ) : Node() {
-    private var tag: Tag?
-
     private var shadowChildrenRef // points to child elements shadowed from node children
             : MutableList<Element>? = null
     var childElements: MutableList<Node> = EmptyNodes
@@ -38,7 +36,7 @@ open class Element constructor(
      * Create a new, standalone element.
      * @param tag tag name
      */
-    constructor(tag: String?) : this(valueOf(tag), "", null)
+    constructor(tag: String) : this(valueOf(tag), "", null)
     /**
      * Create a new, standalone Element. (Standalone in that is has no parent.)
      *
@@ -56,10 +54,8 @@ open class Element constructor(
      * @see Tag.valueOf
      */
     init {
-        Validate.notNull(tag)
         childElements = EmptyNodes
         this.attrs = attributes
-        this.tag = tag
         if (baseUri != null) setBaseUri(baseUri)
     }
 
@@ -91,7 +87,7 @@ open class Element constructor(
         return attrs
     }
 
-    override fun baseUri(): String? {
+    override fun baseUri(): String {
         return searchUpForAttribute(this, BaseUriKey)
     }
 
@@ -99,8 +95,8 @@ open class Element constructor(
         attributes()!!.put(BaseUriKey, baseUri)
     }
 
-    override fun nodeName(): String? {
-        return tag?.name
+    override fun nodeName(): String {
+        return tag.name
     }
 
     /**
@@ -108,8 +104,8 @@ open class Element constructor(
      *
      * @return the tag name
      */
-    fun tagName(): String? {
-        return tag?.name
+    fun tagName(): String {
+        return tag.name
     }
 
     /**
@@ -118,8 +114,8 @@ open class Element constructor(
      * normal name of `div`.
      * @return normal name
      */
-    fun normalName(): String? {
-        return tag!!.normalName()
+    fun normalName(): String {
+        return tag.normalName()
     }
 
     /**
@@ -130,12 +126,9 @@ open class Element constructor(
      * @return this element, for chaining
      * @see Elements.tagName
      */
-    fun tagName(tagName: String?): Element {
+    fun tagName(tagName: String): Element {
         Validate.notEmpty(tagName, "Tag name must not be empty.")
-        tag = Tag.Companion.valueOf(
-            tagName,
-            NodeUtils.parser(this)!!.settings()
-        ) // maintains the case option of the original parse
+        tag = valueOf(tagName, NodeUtils.parser(this).settings()) // maintains the case option of the original parse
         return this
     }
 
@@ -144,7 +137,7 @@ open class Element constructor(
      *
      * @return the tag object
      */
-    fun tag(): Tag? {
+    fun tag(): Tag {
         return tag
     }
 
@@ -155,7 +148,7 @@ open class Element constructor(
      * @return true if block, false if not (and thus inline)
      */
     val isBlock: Boolean
-        get() = tag!!.isBlock
+        get() = tag.isBlock
 
     /**
      * Get the `id` attribute of this element.
@@ -183,7 +176,7 @@ open class Element constructor(
      *
      * @return this element
      */
-    override fun attr(attributeKey: String?, attributeValue: String?): Element {
+    override fun attr(attributeKey: String, attributeValue: String?): Element {
         super.attr(attributeKey, attributeValue)
         return this
     }
@@ -375,7 +368,7 @@ open class Element constructor(
      * @see QueryParser.parse
      * @throws Selector.SelectorParseException (unchecked) on an invalid CSS query.
      */
-    fun select(cssQuery: String?): Elements? {
+    fun select(cssQuery: String?): Elements {
         return Selector.select(cssQuery, this)
     }
 
@@ -386,7 +379,7 @@ open class Element constructor(
      * @param evaluator an element evaluator
      * @return an [Elements] list containing elements that match the query (empty if none match)
      */
-    fun select(evaluator: Evaluator?): Elements? {
+    fun select(evaluator: Evaluator?): Elements {
         return Selector.select(evaluator, this)
     }
 
@@ -639,12 +632,9 @@ open class Element constructor(
      * @return the new element, to allow you to add content to it, e.g.:
      * `parent.appendElement("h1").attr("id", "header").text("Welcome");`
      */
-    fun appendElement(tagName: String?): Element {
+    fun appendElement(tagName: String): Element {
         val child = Element(
-            valueOf(
-                tagName, NodeUtils.parser(this)!!
-                    .settings()
-            ), baseUri()
+            valueOf(tagName, NodeUtils.parser(this).settings()), baseUri()
         )
         appendChild(child)
         return child
@@ -657,11 +647,10 @@ open class Element constructor(
      * @return the new element, to allow you to add content to it, e.g.:
      * `parent.prependElement("h1").attr("id", "header").text("Welcome");`
      */
-    fun prependElement(tagName: String?): Element {
+    fun prependElement(tagName: String): Element {
         val child = Element(
             valueOf(
-                tagName, NodeUtils.parser(this)!!
-                    .settings()
+                tagName, NodeUtils.parser(this).settings()
             ), baseUri()
         )
         prependChild(child)
@@ -702,9 +691,9 @@ open class Element constructor(
      */
     fun append(html: String?): Element {
         Validate.notNull(html)
-        val nodes = NodeUtils.parser(this)!!
+        val nodes = NodeUtils.parser(this)
             .parseFragmentInput(html, this, baseUri())
-        addChildren(*nodes!!.toTypedArray())
+        addChildren(*nodes.toTypedArray())
         return this
     }
 
@@ -716,9 +705,9 @@ open class Element constructor(
      */
     fun prepend(html: String?): Element {
         Validate.notNull(html)
-        val nodes = NodeUtils.parser(this)!!
+        val nodes = NodeUtils.parser(this)
             .parseFragmentInput(html, this, baseUri())
-        addChildren(0, *nodes!!.toTypedArray())
+        addChildren(0, *nodes.toTypedArray())
         return this
     }
 
@@ -801,7 +790,7 @@ open class Element constructor(
             val doc = ownerDocument()
             if (doc != null) {
                 val els = doc.select(idSel)
-                if (els!!.size == 1 && els[0] === this) // otherwise, continue to the nth-child impl
+                if (els.size == 1 && els[0] === this) // otherwise, continue to the nth-child impl
                     return idSel
             } else {
                 return idSel // no ownerdoc, return the ID selector
@@ -809,14 +798,14 @@ open class Element constructor(
         }
 
         // Translate HTML namespace ns:tag to CSS namespace syntax ns|tag
-        val tagName = tagName()!!.replace(':', '|')
+        val tagName = tagName().replace(':', '|')
         val selector = StringBuilder(tagName)
         val classes = StringUtil.join(classNames(), ".")
         if (classes.isNotEmpty()) selector.append('.').append(classes)
         if (parent() == null || parent() is Document) // don't add Document to selector, as will always have a html node
             return selector.toString()
         selector.insert(0, " > ")
-        if (parent()!!.select(selector.toString())!!.size > 1) selector.append(
+        if (parent()!!.select(selector.toString()).size > 1) selector.append(
             String.format(
                 ":nth-child(%d)", elementSiblingIndex() + 1
             )
@@ -860,7 +849,7 @@ open class Element constructor(
      *
      * @return each of the element siblings after this element, or an empty list if there are no next sibling elements
      */
-    fun nextElementSiblings(): Elements? {
+    fun nextElementSiblings(): Elements {
         return nextElementSiblings(true)
     }
 
@@ -882,7 +871,7 @@ open class Element constructor(
      *
      * @return the previous element siblings, or an empty list if there are none.
      */
-    fun previousElementSiblings(): Elements? {
+    fun previousElementSiblings(): Elements {
         return nextElementSiblings(false)
     }
 
@@ -1108,7 +1097,7 @@ open class Element constructor(
      * @param regex regular expression to match against attribute values. You can use [embedded flags](http://java.sun.com/docs/books/tutorial/essential/regex/pattern.html#embedded) (such as (?i) and (?m) to control regex options.
      * @return elements that have attributes matching this regular expression
      */
-    fun getElementsByAttributeValueMatching(key: String?, regex: String): Elements? {
+    fun getElementsByAttributeValueMatching(key: String?, regex: String): Elements {
         val pattern = try {
             Regex(regex)
         } catch (e: Exception) {
@@ -1151,7 +1140,7 @@ open class Element constructor(
      * @return elements that contain the string, case insensitive.
      * @see Element.text
      */
-    fun getElementsContainingText(searchText: String?): Elements {
+    fun getElementsContainingText(searchText: String): Elements {
         return Collector.collect(Evaluator.ContainsText(searchText), this)
     }
 
@@ -1162,7 +1151,7 @@ open class Element constructor(
      * @return elements that contain the string, case insensitive.
      * @see Element.ownText
      */
-    fun getElementsContainingOwnText(searchText: String?): Elements {
+    fun getElementsContainingOwnText(searchText: String): Elements {
         return Collector.collect(Evaluator.ContainsOwnText(searchText), this)
     }
 
@@ -1182,7 +1171,7 @@ open class Element constructor(
      * @return elements matching the supplied regular expression.
      * @see Element.text
      */
-    fun getElementsMatchingText(regex: String): Elements? {
+    fun getElementsMatchingText(regex: String): Elements {
         val pattern: Regex = try {
             Regex(regex)
         } catch (e: Exception) {
@@ -1250,7 +1239,7 @@ open class Element constructor(
                 if (node is TextNode) {
                     appendNormalisedText(accum, node)
                 } else if (node is Element) {
-                    if (accum.isNotEmpty() && (node.isBlock || node.tag!!.normalName() == "br") &&
+                    if (accum.isNotEmpty() && (node.isBlock || node.tag.normalName() == "br") &&
                         !TextNode.lastCharIsWhitespace(accum)
                     ) accum.append(' ')
                 }
@@ -1349,7 +1338,7 @@ open class Element constructor(
         // special case for script/style in HTML: should be data node
         val owner = ownerDocument()
         // an alternate impl would be to run through the parser
-        if (owner != null && owner.parser()!!
+        if (owner != null && owner.parser()
                 .isContentForTagData(normalName())
         ) appendChild(DataNode(text)) else appendChild(
             TextNode(text)
@@ -1557,7 +1546,7 @@ open class Element constructor(
      * @see Node.sourceRange
      * @since 1.15.2
      */
-    fun endSourceRange(): Range? {
+    fun endSourceRange(): Range {
         return Range.of(this, false)
     }
 
@@ -1578,8 +1567,8 @@ open class Element constructor(
         if (attrs != null) attrs!!.html(accum, out)
 
         // selfclosing includes unknown tags, isEmpty defines tags that are always empty
-        if (childElements.isEmpty() && tag!!.isSelfClosing()) {
-            if (out!!.syntax() == Document.OutputSettings.Syntax.html && tag!!.isEmpty) accum.append('>') else accum.append(
+        if (childElements.isEmpty() && tag.isSelfClosing()) {
+            if (out!!.syntax() == Document.OutputSettings.Syntax.html && tag.isEmpty) accum.append('>') else accum.append(
                 " />"
             ) // <img> in html, <img /> in xml
         } else accum.append('>')
@@ -1587,8 +1576,8 @@ open class Element constructor(
 
     @Throws(IOException::class)
     override fun outerHtmlTail(accum: Appendable?, depth: Int, out: Document.OutputSettings?) {
-        if (!(childElements.isEmpty() && tag!!.isSelfClosing())) {
-            if (out!!.prettyPrint() && childElements.isNotEmpty() && (tag!!.formatAsBlock() || out.outline()) && (childElements.size > 1 || childElements.size == 1) && childElements[0] is Element) indent(
+        if (!(childElements.isEmpty() && tag.isSelfClosing())) {
+            if (out!!.prettyPrint() && childElements.isNotEmpty() && (tag.formatAsBlock() || out.outline()) && (childElements.size > 1 || childElements.size == 1) && childElements[0] is Element) indent(
                 accum!!, depth, out
             )
             accum!!.append("</").append(tagName()).append('>')
@@ -1700,11 +1689,11 @@ open class Element constructor(
     }
 
     private fun isFormatAsBlock(out: Document.OutputSettings?): Boolean {
-        return tag!!.formatAsBlock() || parent() != null && parent()!!.tag()!!.formatAsBlock() || out!!.outline()
+        return tag.formatAsBlock() || parent() != null && parent()!!.tag().formatAsBlock() || out!!.outline()
     }
 
     private fun isInlineable(out: Document.OutputSettings?): Boolean {
-        return (tag()!!.isInline
+        return (tag().isInline
                 && (parent() == null || parent()!!.isBlock)) && previousSibling() != null && !out!!.outline()
     }
 
@@ -1756,12 +1745,12 @@ open class Element constructor(
 
         /** For normalized text, treat a br element as a space, if there is not already a space.  */
         private fun appendWhitespaceIfBr(element: Element, accum: StringBuilder?) {
-            if (element.tag!!.normalName() == "br" && !TextNode.lastCharIsWhitespace(accum)) accum!!.append(" ")
+            if (element.tag.normalName() == "br" && !TextNode.lastCharIsWhitespace(accum)) accum!!.append(" ")
         }
 
         /** For WholeText, treat a br element as a newline.  */
         private fun appendNewlineIfBr(element: Element, accum: StringBuilder?) {
-            if (element.tag!!.normalName() == "br") accum!!.append("\n")
+            if (element.tag.normalName() == "br") accum!!.append("\n")
         }
 
         fun preserveWhitespace(node: Node?): Boolean {
@@ -1770,7 +1759,7 @@ open class Element constructor(
                 var el = node as Element?
                 var i = 0
                 do {
-                    if (el!!.tag!!.preserveWhitespace()) return true
+                    if (el!!.tag.preserveWhitespace()) return true
                     el = el.parent()
                     i++
                 } while (i < 6 && el != null)

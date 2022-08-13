@@ -37,7 +37,7 @@ class Cleaner constructor(private val safelist: Safelist) {
      */
     fun clean(dirtyDocument: Document): Document {
         Validate.notNull(dirtyDocument)
-        val clean: Document = Document.Companion.createShell(dirtyDocument.baseUri())
+        val clean: Document = Document.createShell(dirtyDocument.baseUri())
         copySafeNodes(dirtyDocument.body(), clean.body())
         clean.outputSettings(dirtyDocument.outputSettings()?.clone())
         return clean
@@ -88,7 +88,7 @@ class Cleaner constructor(private val safelist: Safelist) {
         override fun head(node: Node, depth: Int) {
             if (node is Element) {
                 val sourceEl: Element = node
-                if (safelist.isSafeTag(sourceEl.normalName()!!)) { // safe, clone and copy safe attrs
+                if (safelist.isSafeTag(sourceEl.normalName())) { // safe, clone and copy safe attrs
                     val meta: ElementMeta = createSafeElement(sourceEl)
                     val destChild: Element = meta.el
                     destination?.appendChild(destChild)
@@ -101,7 +101,7 @@ class Cleaner constructor(private val safelist: Safelist) {
                 val sourceText: TextNode = node
                 val destText = TextNode(sourceText.wholeText!!)
                 destination?.appendChild(destText)
-            } else if (node is DataNode && safelist.isSafeTag(node.parent()!!.nodeName()!!)) {
+            } else if (node is DataNode && safelist.isSafeTag(node.parent()!!.nodeName())) {
                 val sourceData: DataNode = node
                 val destData = DataNode(sourceData.wholeData!!)
                 destination?.appendChild(destData)
@@ -111,7 +111,7 @@ class Cleaner constructor(private val safelist: Safelist) {
         }
 
         override fun tail(node: Node?, depth: Int) {
-            if (node is Element && safelist.isSafeTag(node.nodeName()!!)) {
+            if (node is Element && safelist.isSafeTag(node.nodeName())) {
                 destination = destination?.parent() // would have descended, so pop destination stack
             }
         }
@@ -124,21 +124,21 @@ class Cleaner constructor(private val safelist: Safelist) {
     }
 
     private fun createSafeElement(sourceEl: Element): ElementMeta {
-        val sourceTag: String? = sourceEl.tagName()
+        val sourceTag: String = sourceEl.tagName()
         val destAttrs = Attributes()
         val dest = Element(valueOf(sourceTag), sourceEl.baseUri(), destAttrs)
         var numDiscarded = 0
         val sourceAttrs: Attributes? = sourceEl.attributes()
         sourceAttrs?.forEach { sourceAttr ->
-            if (safelist.isSafeAttribute(sourceTag!!, sourceEl, sourceAttr!!)) destAttrs.put(sourceAttr) else numDiscarded++
+            if (safelist.isSafeAttribute(sourceTag, sourceEl, sourceAttr!!)) destAttrs.put(sourceAttr) else numDiscarded++
         }
-        val enforcedAttrs: Attributes = safelist.getEnforcedAttributes(sourceTag!!)
+        val enforcedAttrs: Attributes = safelist.getEnforcedAttributes(sourceTag)
         destAttrs.addAll(enforcedAttrs)
 
         // Copy the original start and end range, if set
         // TODO - might be good to make a generic Element#userData set type interface, and copy those all over
-        if (sourceEl.sourceRange()!!.isTracked) sourceEl.sourceRange()?.track(dest, true)
-        if (sourceEl.endSourceRange()!!.isTracked) sourceEl.endSourceRange()?.track(dest, false)
+        if (sourceEl.sourceRange().isTracked) sourceEl.sourceRange().track(dest, true)
+        if (sourceEl.endSourceRange().isTracked) sourceEl.endSourceRange().track(dest, false)
         return ElementMeta(dest, numDiscarded)
     }
 

@@ -122,7 +122,7 @@ object Jsoup {
      * @return sane HTML
      * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      */
-    fun parse(file: File, charsetName: String, baseUri: String?): Document? {
+    fun parse(file: File, charsetName: String, baseUri: String): Document? {
         return load(file, charsetName, baseUri)
     }
 
@@ -136,7 +136,7 @@ object Jsoup {
      * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      * @see .parse
      */
-    fun parse(file: File,  charsetName: String?): Document? {
+    fun parse(file: File, charsetName: String?): Document? {
         return load(file, charsetName, file.getAbsolutePath())
     }
 
@@ -170,7 +170,7 @@ object Jsoup {
      * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      * @since 1.14.2
      */
-    fun parse(file: File,  charsetName: String?, baseUri: String?, parser: Parser?): Document? {
+    fun parse(file: File,  charsetName: String?, baseUri: String, parser: Parser?): Document? {
         return load(file, charsetName, baseUri, parser)
     }
 
@@ -185,7 +185,7 @@ object Jsoup {
      * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      */
     @Throws(IOException::class)
-    fun parse(`in`: SyncInputStream?,  charsetName: String?, baseUri: String?): Document? {
+    fun parse(`in`: SyncInputStream?,  charsetName: String?, baseUri: String): Document? {
         return load(`in`, charsetName, baseUri)
     }
 
@@ -202,7 +202,7 @@ object Jsoup {
      * @throws IOException if the file could not be found, or read, or if the charsetName is invalid.
      */
     @Throws(IOException::class)
-    fun parse(`in`: SyncInputStream?,  charsetName: String?, baseUri: String?, parser: Parser?): Document? {
+    fun parse(`in`: SyncInputStream?,  charsetName: String?, baseUri: String, parser: Parser?): Document? {
         return load(`in`, charsetName, baseUri, parser)
     }
 
@@ -263,7 +263,7 @@ object Jsoup {
      * @see Cleaner.clean
      */
     fun clean(bodyHtml: String?, baseUri: String, safelist: Safelist): String {
-        val dirty: Document = Jsoup.parseBodyFragment(bodyHtml, baseUri)
+        val dirty: Document = parseBodyFragment(bodyHtml, baseUri)
         val cleaner = Cleaner(safelist)
         val clean: Document = cleaner.clean(dirty)
         return clean.body().html()
@@ -308,8 +308,8 @@ object Jsoup {
         baseUri: String,
         safelist: Safelist,
         outputSettings: Document.OutputSettings?
-    ): String? {
-        val dirty: Document = Jsoup.parseBodyFragment(bodyHtml, baseUri)
+    ): String {
+        val dirty: Document = parseBodyFragment(bodyHtml, baseUri)
         val cleaner = Cleaner(safelist)
         val clean: Document = cleaner.clean(dirty)
         clean.outputSettings(outputSettings)

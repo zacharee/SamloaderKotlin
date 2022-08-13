@@ -608,9 +608,7 @@ abstract class Evaluator protected constructor() {
             if (element is PseudoTextElement) return true
             val textNodes: List<TextNode?> = element.textNodes()
             for (textNode: TextNode? in textNodes) {
-                val pel = PseudoTextElement(
-                    valueOf(element.tagName()), element.baseUri(), element.attributes()
-                )
+                val pel = PseudoTextElement(valueOf(element.tagName()), element.baseUri(), element.attributes())
                 textNode?.replaceWith(pel)
                 pel.appendChild(textNode!!)
             }

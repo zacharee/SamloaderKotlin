@@ -2,7 +2,6 @@ package org.jsoup.nodes
 
 import io.ktor.utils.io.charsets.*
 import org.jsoup.Connection
-import org.jsoup.Jsoup
 import org.jsoup.helper.DataUtil
 import org.jsoup.helper.Validate
 import org.jsoup.internal.StringUtil
@@ -17,12 +16,12 @@ import org.jsoup.select.Evaluator
  * @author Jonathan Hedley, jonathan@hedley.net
  */
 class Document(private val location: String?) :
-    Element(Tag.Companion.valueOf("#root", ParseSettings.htmlDefault), location) {
+    Element(Tag.valueOf("#root", ParseSettings.htmlDefault), location) {
     private var connection // the connection this doc was fetched from, if any
             : Connection? = null
     private var outputSettings: OutputSettings? = OutputSettings()
     private var parser // the parser used to parse this document
-            : Parser?
+            : Parser = Parser.htmlParser()
     private var quirksMode: QuirksMode? = QuirksMode.noQuirks
     private var updateMetaCharset = false
 
@@ -117,16 +116,6 @@ class Document(private val location: String?) :
     }
 
     /**
-     * Create a new, empty Document.
-     * @param baseUri base URI of document
-     * @see Jsoup.parse
-     * @see .createShell
-     */
-    init {
-        parser = Parser.htmlParser() // default, but overridable
-    }
-
-    /**
      * Set the document's `title` element. Updates the existing element, or adds `title` to `head` if
      * not present
      * @param title string to set as title
@@ -144,7 +133,7 @@ class Document(private val location: String?) :
      * @param tagName element tag name (e.g. `a`)
      * @return new element
      */
-    fun createElement(tagName: String?): Element {
+    fun createElement(tagName: String): Element {
         return Element(Tag.valueOf(tagName, ParseSettings.preserveCase), baseUri())
     }
 
@@ -188,7 +177,7 @@ class Document(private val location: String?) :
     // merge multiple <head> or <body> contents into one, delete the remainder, and ensure they are owned by <html>
     private fun normaliseStructure(tag: String, htmlEl: Element?) {
         val elements = getElementsByTag(tag)
-        val master = elements!!.first() // will always be available as created above if not existent
+        val master = elements.first() // will always be available as created above if not existent
         if (elements.size > 1) { // dupes, move contents to master
             val toMove: MutableList<Node?> = ArrayList()
             for (i in 1 until elements.size) {
@@ -218,7 +207,7 @@ class Document(private val location: String?) :
         return this
     }
 
-    override fun nodeName(): String? {
+    override fun nodeName(): String {
         return "#document"
     }
 
@@ -593,7 +582,7 @@ class Document(private val location: String?) :
      * Get the parser that was used to parse this document.
      * @return the parser
      */
-    fun parser(): Parser? {
+    fun parser(): Parser {
         return parser
     }
 
@@ -603,7 +592,7 @@ class Document(private val location: String?) :
      * @param parser the configured parser to use when further parsing is required for this document.
      * @return this document, for chaining.
      */
-    fun parser(parser: Parser?): Document {
+    fun parser(parser: Parser): Document {
         this.parser = parser
         return this
     }

@@ -24,7 +24,7 @@ open class TextNode(text: String) : LeafNode() {
         return TextNode(value.toString())
     }
 
-    override fun nodeName(): String? {
+    override fun nodeName(): String {
         return "#text"
     }
 
@@ -87,16 +87,16 @@ open class TextNode(text: String) : LeafNode() {
         var trimLeading = false
         var trimTrailing = false
         if (normaliseWhite) {
-            trimLeading = sibIndex == 0 && parent != null && parent.tag()!!.isBlock ||
+            trimLeading = sibIndex == 0 && parent != null && parent.tag().isBlock ||
                     parNode is Document
-            trimTrailing = nextSibling() == null && parent != null && parent.tag()!!.isBlock
+            trimTrailing = nextSibling() == null && parent != null && parent.tag().isBlock
 
             // if this text is just whitespace, and the next node will cause an indent, skip this text:
             val next = nextSibling()
             val couldSkip =
                 next is Element && next.shouldIndent(out) || next is TextNode && next.isBlank // next is blank text, from re-parenting
             if (couldSkip && isBlank) return
-            if (sibIndex == 0 && parent != null && parent.tag()!!
+            if (sibIndex == 0 && parent != null && parent.tag()
                     .formatAsBlock() && !isBlank || out.outline() && siblingNodes().isNotEmpty() && !isBlank
             ) indent(
                 accum!!, depth, out

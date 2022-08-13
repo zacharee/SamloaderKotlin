@@ -310,7 +310,7 @@ enum class HtmlTreeBuilderState {
 
         private fun inBodyStartTag(t: Token, tb: HtmlTreeBuilder): Boolean {
             val startTag: Token.StartTag = t.asStartTag()
-            val name: String? = startTag.normalName()
+            val name: String = startTag.normalName()!!
             var el: Element?
             when (name) {
                 "a" -> {
@@ -641,7 +641,6 @@ enum class HtmlTreeBuilderState {
                     el = tb.insert(startTag)
                     tb.pushActiveFormattingElements(el)
                 }
-
                 else ->                     // todo - bring scan groups in if desired
                     if (!Tag.isKnownTag(name)) { // no special rules for custom tags
                         tb.insert(startTag)
@@ -865,7 +864,7 @@ enum class HtmlTreeBuilderState {
                         tb.removeFromStack(node)
                         continue
                     } else if (node === formatEl) break
-                    val replacement = Element(tb.tagFor((node!!.nodeName())!!, ParseSettings.preserveCase), tb.baseUri)
+                    val replacement = Element(tb.tagFor((node!!.nodeName()), ParseSettings.preserveCase), tb.baseUri)
                     // case will follow the original node (so honours ParseSettings)
                     tb.replaceActiveFormattingElement(node, replacement)
                     tb.replaceOnStack(node, replacement)

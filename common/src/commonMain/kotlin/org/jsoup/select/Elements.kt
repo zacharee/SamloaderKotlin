@@ -1,6 +1,5 @@
 package org.jsoup.select
 
-import com.soywiz.kds.fastCastTo
 import org.jsoup.helper.Validate
 import org.jsoup.internal.StringUtil
 import org.jsoup.nodes.*
@@ -80,7 +79,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @param attributeValue attribute value
      * @return this
      */
-    fun attr(attributeKey: String?, attributeValue: String?): Elements {
+    fun attr(attributeKey: String, attributeValue: String?): Elements {
         for (element: Element in this) {
             element.attr(attributeKey, attributeValue)
         }
@@ -262,7 +261,7 @@ class Elements(elements: Collection<Element> = listOf()) : MutableList<Element> 
      * @return this, for chaining
      * @see Element.tagName
      */
-    fun tagName(tagName: String?): Elements {
+    fun tagName(tagName: String): Elements {
         for (element: Element in this) {
             element.tagName(tagName)
         }

@@ -17,7 +17,7 @@ class FormElement
  * @param baseUri    the base URI
  * @param attributes initial attributes
  */
-    (tag: Tag?, baseUri: String?, attributes: Attributes?) : Element(tag, baseUri, attributes) {
+    (tag: Tag, baseUri: String?, attributes: Attributes?) : Element(tag, baseUri, attributes) {
     private val elements = Elements()
 
     /**
@@ -79,7 +79,7 @@ class FormElement
 
         // iterate the form control elements and accumulate their values
         for (el in elements) {
-            if (!el.tag()!!.isFormSubmittable) continue  // contents are form listable, superset of submitable
+            if (!el.tag().isFormSubmittable) continue  // contents are form listable, superset of submitable
             if (el.hasAttr("disabled")) continue  // skip disabled form inputs
             val name = el.attr("name")
             if (name.isNullOrEmpty()) continue
@@ -88,7 +88,7 @@ class FormElement
             if ("select" == el.normalName()) {
                 val options = el.select("option[selected]")
                 var set = false
-                for (option in options!!) {
+                for (option in options) {
                     data.add(HttpConnection.KeyVal.create(name, option.`val`()))
                     set = true
                 }

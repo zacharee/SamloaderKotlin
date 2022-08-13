@@ -14,7 +14,7 @@ data class Tag private constructor(
      *
      * @return the tag's name
      */
-    var name: String?,
+    var name: String,
     var isBlock: Boolean = true,
     private var formatAsBlock: Boolean = true,
     var isEmpty: Boolean = true,
@@ -24,13 +24,13 @@ data class Tag private constructor(
     var isFormSubmittable: Boolean = false // a control that can be submitted in a form: input etc
 ) {
     private val normalName // always the lower case version of this tag, regardless of case preservation mode
-            : String? = Normalizer.lowerCase(name)
+            : String = Normalizer.lowerCase(name)!!
 
     /**
      * Get this tag's normalized (lowercased) name.
      * @return the tag's normal name.
      */
-    fun normalName(): String? {
+    fun normalName(): String {
         return normalName
     }
 
@@ -113,7 +113,7 @@ data class Tag private constructor(
     }
 
     override fun toString(): String {
-        return name.toString()
+        return name
     }
 
     companion object {
@@ -139,12 +139,12 @@ data class Tag private constructor(
          * @param tagName Name of tag, e.g. "p". **Case sensitive**.
          * @return The tag, either defined or new generic.
          */
-        fun valueOf(tagName: String?, settings: ParseSettings? = ParseSettings.preserveCase): Tag {
-            var tagName: String? = tagName
+        fun valueOf(tagName: String, settings: ParseSettings? = ParseSettings.preserveCase): Tag {
+            var tagName: String = tagName
             Validate.notNull(tagName)
             var tag: Tag? = tags[tagName]
             if (tag == null) {
-                tagName = settings!!.normalizeTag(tagName) // the name we'll use
+                tagName = settings!!.normalizeTag(tagName)!! // the name we'll use
                 Validate.notEmpty(tagName)
                 val normalName = Normalizer.lowerCase(tagName) // the lower-case name to get tag settings off
                 tag = tags[normalName]

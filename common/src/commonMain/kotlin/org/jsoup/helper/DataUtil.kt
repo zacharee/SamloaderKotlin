@@ -9,7 +9,6 @@ import okio.BufferedSource
 import okio.buffer
 import okio.Buffer
 import org.jsoup.UncheckedIOException
-import org.jsoup.internal.Normalizer
 import org.jsoup.internal.StringUtil
 import org.jsoup.nodes.*
 import org.jsoup.parser.Parser
@@ -62,7 +61,7 @@ object DataUtil {
     fun load(
         file: File,
         charsetName: String?,
-        baseUri: String?,
+        baseUri: String,
         parser: Parser? = Parser.htmlParser()
     ): Document? {
         val stream = file.openSyncInputStream()
@@ -89,7 +88,7 @@ object DataUtil {
      * @throws IOException on IO error
      */
     @Throws(IOException::class)
-    fun load(`in`: SyncInputStream?,  charsetName: String?, baseUri: String?): Document? {
+    fun load(`in`: SyncInputStream?,  charsetName: String?, baseUri: String): Document? {
         return parseInputStream(`in`, charsetName, baseUri, Parser.htmlParser())
     }
 
@@ -106,7 +105,7 @@ object DataUtil {
     fun load(
         `in`: SyncInputStream?,
          charsetName: String?,
-        baseUri: String?,
+        baseUri: String,
         parser: Parser?
     ): Document? {
         return parseInputStream(`in`, charsetName, baseUri, parser)
@@ -131,7 +130,7 @@ object DataUtil {
     fun parseInputStream(
         input: SyncInputStream?,
         charsetName: String?,
-        baseUri: String?,
+        baseUri: String,
         parser: Parser?
     ): Document? {
         var charsetName: String? = charsetName
@@ -170,7 +169,7 @@ object DataUtil {
 
                 // look for <?xml encoding='ISO-8859-1'?>
                 if (foundCharset == null && doc.childNodeSize() > 0) {
-                    val first: Node? = doc.childNode(0)
+                    val first: Node = doc.childNode(0)
                     var decl: XmlDeclaration? = null
                     if (first is XmlDeclaration) decl = first else if (first is Comment) {
                         val comment: Comment = first

@@ -20,7 +20,7 @@ internal object NodeUtils {
     /**
      * Get the parser that was used to make this node, or the default HTML parser if it has no parent.
      */
-    fun parser(node: Node?): Parser? {
+    fun parser(node: Node?): Parser {
         val doc = node!!.ownerDocument()
         return if (doc?.parser() != null) doc.parser() else Parser(HtmlTreeBuilder())
     }

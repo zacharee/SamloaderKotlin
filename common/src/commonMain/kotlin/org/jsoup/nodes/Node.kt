@@ -32,7 +32,7 @@ protected constructor() {
      * Get the node name of this node. Use for debugging purposes and not logic switching (for that, use instanceof).
      * @return node name
      */
-    abstract fun nodeName(): String?
+    abstract fun nodeName(): String
 
     /**
      * Check if this Node has an actual Attributes object.
@@ -94,9 +94,9 @@ protected constructor() {
      * @param attributeValue The attribute value.
      * @return this (for chaining)
      */
-    open fun attr(attributeKey: String?, attributeValue: String?): Node {
+    open fun attr(attributeKey: String, attributeValue: String?): Node {
         var attributeKey = attributeKey
-        attributeKey = NodeUtils.parser(this)!!.settings()!!.normalizeAttribute(attributeKey)
+        attributeKey = NodeUtils.parser(this).settings()!!.normalizeAttribute(attributeKey)
         attributes()!!.putIgnoreCase(attributeKey, attributeValue)
         return this
     }
@@ -149,7 +149,7 @@ protected constructor() {
      * @return base URI
      * @see .absUrl
      */
-    abstract fun baseUri(): String?
+    abstract fun baseUri(): String
 
     /**
      * Set the baseUri for just this node (not its descendants), if this Node tracks base URIs.
@@ -196,7 +196,7 @@ protected constructor() {
     open fun absUrl(attributeKey: String?): String? {
         Validate.notEmpty(attributeKey)
         return if (!(hasAttributes() && attributes()!!.hasKeyIgnoreCase(attributeKey))) "" else StringUtil.resolve(
-            baseUri()!!,
+            baseUri(),
             attributes()!!.getIgnoreCase(attributeKey)
         )
     }
@@ -354,9 +354,9 @@ protected constructor() {
         Validate.notNull(html)
         Validate.notNull(parNode)
         val context = if (parent() is Element) parent() as Element? else null
-        val nodes = NodeUtils.parser(this)!!
+        val nodes = NodeUtils.parser(this)
             .parseFragmentInput(html, context, baseUri())
-        parNode?.addChildren(index, *nodes!!.toTypedArray())
+        parNode?.addChildren(index, *nodes.toTypedArray())
     }
 
     /**
@@ -372,9 +372,9 @@ protected constructor() {
         // Parse context - parent (because wrapping), this, or null
         val context =
             if (parNode != null && parNode is Element) parNode as Element else (if (this is Element) this else null)!!
-        val wrapChildren = NodeUtils.parser(this)!!
+        val wrapChildren = NodeUtils.parser(this)
             .parseFragmentInput(html, context, baseUri())
-        val wrapNode = wrapChildren!![0] as? Element // nothing to wrap with; noop
+        val wrapNode = wrapChildren[0] as? Element // nothing to wrap with; noop
             ?: return this
         val deepest = getDeepChild(wrapNode)
         if (parNode != null) parNode!!.replaceChild(this, wrapNode)
@@ -682,7 +682,7 @@ protected constructor() {
      * @see Element.endSourceRange
      * @since 1.15.2
      */
-    fun sourceRange(): Range? {
+    fun sourceRange(): Range {
         return Range.of(this, true)
     }
 
