@@ -161,7 +161,7 @@ sealed class Token {
             type = TokenType.StartTag
         }
 
-        override fun reset(): Token {
+        override fun reset(): StartTag {
             super.reset()
             attributes = Attributes()
 
@@ -187,6 +187,11 @@ sealed class Token {
     class EndTag : Tag() {
         init {
             type = TokenType.EndTag
+        }
+
+        override fun reset(): EndTag {
+            super.reset()
+            return this
         }
 
         override fun toString(): String {

@@ -1,8 +1,5 @@
 package swiftsoup
 
-import com.soywiz.korio.lang.substr
-import io.ktor.util.Attributes
-
 class Attributes {
     companion object {
         const val dataPrefix = "data-"
@@ -15,7 +12,7 @@ class Attributes {
 
     val html: String
         get() = StringBuilder().apply {
-            html(this, Document("").outputSettings())
+            html(this, Document("").outputSettings)
         }.toString()
 
     operator fun get(key: String): String {
@@ -57,7 +54,7 @@ class Attributes {
         return attributes.any { it.key.equals(key, ignoreCase) }
     }
 
-    fun addAll(incoming: swiftsoup.Attributes?) {
+    fun addAll(incoming: Attributes?) {
         incoming?.attributes?.forEach {
             set(it)
         }
@@ -90,8 +87,18 @@ class Attributes {
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is swiftsoup.Attributes
+        return other is Attributes
                 && attributes.containsAll(other.attributes)
                 && other.attributes.containsAll(attributes)
+    }
+
+    override fun hashCode(): Int {
+        return attributes.hashCode()
+    }
+
+    fun copy(): Attributes {
+        return Attributes().also {
+            it.attributes.addAll(attributes)
+        }
     }
 }
