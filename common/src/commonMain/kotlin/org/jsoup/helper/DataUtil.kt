@@ -205,7 +205,7 @@ object DataUtil {
                         reader.skip(1)
                     }
                     try {
-                        doc = parser!!.parseInput(reader, baseUri)
+                        doc = parser!!.parseInput(reader.readUtf8(), baseUri)
                     } catch (e: UncheckedIOException) {
                         // io exception when parsing (not seen before because reading the stream as we go)
                         throw e.ioException()

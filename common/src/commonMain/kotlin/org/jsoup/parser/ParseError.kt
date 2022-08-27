@@ -17,8 +17,8 @@ class ParseError {
      * Get the formatted line:column cursor position where the error occurred.
      * @return line:number cursor position
      */
-    var cursorPos: String?
-        private set
+    //var cursorPos: String?
+        //private set
 
     /**
      * Retrieve the error message.
@@ -28,30 +28,30 @@ class ParseError {
         private set
 
     internal constructor(reader: CharacterReader, errorMsg: String) {
-        position = reader.pos()
-        cursorPos = reader.cursorPos()
+        position = reader.pos
+        //cursorPos = reader.cursorPos()
         errorMessage = errorMsg
     }
 
     internal constructor(reader: CharacterReader?, errorFormat: String?, vararg args: Any?) {
-        position = reader!!.pos()
-        cursorPos = reader.cursorPos()
+        position = reader!!.pos
+        //cursorPos = reader.cursorPos()
         errorMessage = String.format((errorFormat)!!, *args)
     }
 
     internal constructor(pos: Int, errorMsg: String) {
         position = pos
-        cursorPos = pos.toString()
+        //cursorPos = pos.toString()
         errorMessage = errorMsg
     }
 
     internal constructor(pos: Int, errorFormat: String?, vararg args: Any?) {
         position = pos
-        cursorPos = pos.toString()
+        //cursorPos = pos.toString()
         errorMessage = String.format((errorFormat)!!, *args)
     }
 
     override fun toString(): String {
-        return "<$cursorPos>: $errorMessage"
+        return "<$position>: $errorMessage"
     }
 }

@@ -9,7 +9,7 @@ enum class TokeniserState {
     Data {
         // in data state, gather characters until a character reference or tag is found
         override fun read(t: Tokeniser, r: CharacterReader) {
-            when (r.current()) {
+            when (r.current) {
                 '&' -> t.advanceTransition(CharacterReferenceInData)
                 '<' -> t.advanceTransition(TagOpen)
                 nullChar -> {
@@ -34,7 +34,7 @@ enum class TokeniserState {
     Rcdata {
         /// handles data in title, textarea etc
         override fun read(t: Tokeniser, r: CharacterReader) {
-            when (r.current()) {
+            when (r.current) {
                 '&' -> t.advanceTransition(CharacterReferenceInRcdata)
                 '<' -> t.advanceTransition(RcdataLessthanSign)
                 nullChar -> {
@@ -68,7 +68,7 @@ enum class TokeniserState {
     },
     PLAINTEXT {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            when (r.current()) {
+            when (r.current) {
                 nullChar -> {
                     t.error(this)
                     r.advance()
@@ -86,7 +86,7 @@ enum class TokeniserState {
     TagOpen {
         // from < in data
         override fun read(t: Tokeniser, r: CharacterReader) {
-            when (r.current()) {
+            when (r.current) {
                 '!' -> t.advanceTransition(MarkupDeclarationOpen)
                 '/' -> t.advanceTransition(EndTagOpen)
                 '?' -> {
@@ -94,7 +94,7 @@ enum class TokeniserState {
                     t.transition(BogusComment)
                 }
 
-                else -> if (r.matchesAsciiAlpha()) {
+                else -> if (r.matchesLetter()) {
                     t.createTagPending(true)
                     t.transition(TagName)
                 } else {
@@ -111,7 +111,7 @@ enum class TokeniserState {
                 t.eofError(this)
                 t.emit("</")
                 t.transition(Data)
-            } else if (r.matchesAsciiAlpha()) {
+            } else if (r.matchesLetter()) {
                 t.createTagPending(false)
                 t.transition(TagName)
             } else if (r.matches('>')) {
@@ -162,7 +162,7 @@ enum class TokeniserState {
             if (r.matches('/')) {
                 t.createTempBuffer()
                 t.advanceTransition(RCDATAEndTagOpen)
-            } else if (r.matchesAsciiAlpha() && (t.appropriateEndTagName() != null) && !r.containsIgnoreCase(t.appropriateEndTagSeq())) {
+            } else if (r.matchesLetter() && (t.appropriateEndTagName() != null) && !r.containsIgnoreCase(t.appropriateEndTagSeq())) {
                 // diverge from spec: got a start tag, but there's no appropriate end tag (</title>), so rather than
                 // consuming to EOF; break out here
                 t.tagPending = t.createTagPending(false)!!.name(t.appropriateEndTagName())
@@ -176,10 +176,10 @@ enum class TokeniserState {
     },
     RCDATAEndTagOpen {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            if (r.matchesAsciiAlpha()) {
+            if (r.matchesLetter()) {
                 t.createTagPending(false)
-                t.tagPending!!.appendTagName(r.current())
-                t.dataBuffer.append(r.current())
+                t.tagPending!!.appendTagName(r.current)
+                t.dataBuffer.append(r.current)
                 t.advanceTransition(RCDATAEndTagName)
             } else {
                 t.emit("</")
@@ -189,7 +189,7 @@ enum class TokeniserState {
     },
     RCDATAEndTagName {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            if (r.matchesAsciiAlpha()) {
+            if (r.matchesLetter()) {
                 val name: String = r.consumeLetterSequence()
                 t.tagPending?.appendTagName(name)
                 t.dataBuffer.append(name)
@@ -303,7 +303,7 @@ enum class TokeniserState {
                 t.transition(Data)
                 return
             }
-            when (r.current()) {
+            when (r.current) {
                 '-' -> {
                     t.emit('-')
                     t.advanceTransition(ScriptDataEscapedDash)
@@ -317,7 +317,7 @@ enum class TokeniserState {
                 }
 
                 else -> {
-                    val data: String = r.consumeToAny('-', '<', nullChar)
+                    val data: String = r.consumeToAny(charArrayOf('-', '<', nullChar))
                     t.emit(data)
                 }
             }
@@ -380,11 +380,11 @@ enum class TokeniserState {
     },
     ScriptDataEscapedLessthanSign {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            if (r.matchesAsciiAlpha()) {
+            if (r.matchesLetter()) {
                 t.createTempBuffer()
-                t.dataBuffer.append(r.current())
+                t.dataBuffer.append(r.current)
                 t.emit("<")
-                t.emit(r.current())
+                t.emit(r.current)
                 t.advanceTransition(ScriptDataDoubleEscapeStart)
             } else if (r.matches('/')) {
                 t.createTempBuffer()
@@ -397,10 +397,10 @@ enum class TokeniserState {
     },
     ScriptDataEscapedEndTagOpen {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            if (r.matchesAsciiAlpha()) {
+            if (r.matchesLetter()) {
                 t.createTagPending(false)
-                t.tagPending!!.appendTagName(r.current())
-                t.dataBuffer.append(r.current())
+                t.tagPending!!.appendTagName(r.current)
+                t.dataBuffer.append(r.current)
                 t.advanceTransition(ScriptDataEscapedEndTagName)
             } else {
                 t.emit("</")
@@ -420,7 +420,7 @@ enum class TokeniserState {
     },
     ScriptDataDoubleEscaped {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            when (val c: Char = r.current()) {
+            when (val c: Char = r.current) {
                 '-' -> {
                     t.emit(c)
                     t.advanceTransition(ScriptDataDoubleEscapedDash)
@@ -443,7 +443,7 @@ enum class TokeniserState {
                 }
 
                 else -> {
-                    val data: String = r.consumeToAny('-', '<', nullChar)
+                    val data: String = r.consumeToAny(charArrayOf('-', '<', nullChar))
                     t.emit(data)
                 }
             }
@@ -577,7 +577,7 @@ enum class TokeniserState {
         // from before attribute name
         override fun read(t: Tokeniser, r: CharacterReader) {
             val name: String =
-                r.consumeToAnySorted(*attributeNameCharsSorted) // spec deviate - consume and emit nulls in one hit vs stepping
+                r.consumeToAny(attributeNameCharsSorted) // spec deviate - consume and emit nulls in one hit vs stepping
             t.tagPending?.appendAttributeName(name)
             when (val c: Char = r.consume()) {
                 '\t', '\n', '\r', '\u000c', ' ' -> t.transition(AfterAttributeName)
@@ -737,7 +737,7 @@ enum class TokeniserState {
     },
     AttributeValue_unquoted {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            val value: String = r.consumeToAnySorted(*attributeValueUnquoted)
+            val value: String = r.consumeToAny(attributeValueUnquoted)
             if (value.isNotEmpty()) t.tagPending!!.appendAttributeValue(value)
             when (val c: Char = r.consume()) {
                 '\t', '\n', '\r', '\u000c', ' ' -> t.transition(BeforeAttributeName)
@@ -822,7 +822,7 @@ enum class TokeniserState {
             // todo: handle bogus comment starting from eof. when does that trigger?
             t.commentPending.append(r.consumeTo('>'))
             // todo: replace nullChar with replaceChar
-            val next: Char = r.current()
+            val next: Char = r.current
             if (next == '>' || next == eof) {
                 r.consume()
                 t.emitCommentPending()
@@ -832,12 +832,12 @@ enum class TokeniserState {
     },
     MarkupDeclarationOpen {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            if (r.matchConsume("--")) {
+            if (r.matches("--", consume = true)) {
                 t.createCommentPending()
                 t.transition(CommentStart)
-            } else if (r.matchConsumeIgnoreCase("DOCTYPE")) {
+            } else if (r.matches("DOCTYPE", consume = true, ignoreCase = true)) {
                 t.transition(Doctype)
-            } else if (r.matchConsume("[CDATA[")) {
+            } else if (r.matches("[CDATA[", consume = true)) {
                 // todo: should actually check current namespace, and only non-html allows cdata. until namespace
                 // is implemented properly, keep handling as cdata
                 //} else if (!t.currentNodeInHtmlNS() && r.matchConsume("[CDATA[")) {
@@ -910,7 +910,7 @@ enum class TokeniserState {
     },
     Comment {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            when (r.current()) {
+            when (r.current) {
                 '-' -> t.advanceTransition(CommentEndDash)
                 nullChar -> {
                     t.error(this)
@@ -924,7 +924,7 @@ enum class TokeniserState {
                     t.transition(Data)
                 }
 
-                else -> t.commentPending.append(r.consumeToAny('-', nullChar))
+                else -> t.commentPending.append(r.consumeToAny(charArrayOf('-', nullChar)))
             }
         }
     },
@@ -1042,7 +1042,7 @@ enum class TokeniserState {
     },
     BeforeDoctypeName {
         override fun read(t: Tokeniser, r: CharacterReader) {
-            if (r.matchesAsciiAlpha()) {
+            if (r.matchesLetter()) {
                 t.createDoctypePending()
                 t.transition(DoctypeName)
                 return
@@ -1111,14 +1111,14 @@ enum class TokeniserState {
                 t.transition(Data)
                 return
             }
-            if (r.matchesAny('\t', '\n', '\r', '\u000c', ' ')) r.advance() // ignore whitespace
+            if (r.matchesAny(charArrayOf('\t', '\n', '\r', '\u000c', ' '))) r.advance() // ignore whitespace
             else if (r.matches('>')) {
                 t.emitDoctypePending()
                 t.advanceTransition(Data)
-            } else if (r.matchConsumeIgnoreCase(DocumentType.PUBLIC_KEY)) {
+            } else if (r.matches(DocumentType.PUBLIC_KEY, ignoreCase = true, consume = true)) {
                 t.doctypePending.pubSysKey = DocumentType.PUBLIC_KEY
                 t.transition(AfterDoctypePublicKeyword)
-            } else if (r.matchConsumeIgnoreCase(DocumentType.SYSTEM_KEY)) {
+            } else if (r.matches(DocumentType.SYSTEM_KEY, ignoreCase = true, consume = true)) {
                 t.doctypePending.pubSysKey = DocumentType.SYSTEM_KEY
                 t.transition(AfterDoctypeSystemKeyword)
             } else {
@@ -1492,7 +1492,7 @@ enum class TokeniserState {
         override fun read(t: Tokeniser, r: CharacterReader) {
             val data: String = r.consumeTo("]]>")
             t.dataBuffer.append(data)
-            if (r.matchConsume("]]>") || r.isEmpty) {
+            if (r.matches("]]>", consume = true) || r.isEmpty) {
                 t.emit(Token.CData(t.dataBuffer.toString()))
                 t.transition(Data)
             } // otherwise, buffer underrun, stay in data section
@@ -1550,7 +1550,7 @@ enum class TokeniserState {
         }
 
         private fun readRawData(t: Tokeniser, r: CharacterReader, current: TokeniserState, advance: TokeniserState) {
-            when (r.current()) {
+            when (r.current) {
                 '<' -> t.advanceTransition(advance)
                 nullChar -> {
                     t.error(current)
@@ -1573,7 +1573,7 @@ enum class TokeniserState {
         }
 
         private fun readEndTag(t: Tokeniser, r: CharacterReader, a: TokeniserState, b: TokeniserState) {
-            if (r.matchesAsciiAlpha()) {
+            if (r.matchesLetter()) {
                 t.createTagPending(false)
                 t.transition(a)
             } else {

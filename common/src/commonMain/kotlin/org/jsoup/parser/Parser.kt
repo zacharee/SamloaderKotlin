@@ -59,10 +59,6 @@ class Parser {
         isTrackPosition = copy.isTrackPosition
     }
 
-    fun parseInput(input: BufferedSource, baseUri: String): Document {
-        return treeBuilder!!.parse(input.buffer, baseUri, this)
-    }
-
     fun parseInput(inputHtml: String, baseUri: String): Document {
         return treeBuilder!!.parse(inputHtml, baseUri, this)
     }

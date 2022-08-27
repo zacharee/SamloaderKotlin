@@ -1,6 +1,5 @@
 package org.jsoup.parser
 
-import okio.Buffer
 import org.jsoup.helper.Validate
 import org.jsoup.nodes.*
 
@@ -38,32 +37,18 @@ abstract class TreeBuilder {
         settings = parser.settings()
         reader = input
         trackSourceRange = parser.isTrackPosition
-        reader!!.trackNewlines(parser.isTrackErrors || trackSourceRange) // when tracking errors or source ranges, enable newline tracking for better legibility
+        //reader!!.trackNewlines(parser.isTrackErrors || trackSourceRange) // when tracking errors or source ranges, enable newline tracking for better legibility
         currentToken = null
         tokeniser = Tokeniser(reader!!, parser.errors)
         seenTags = HashMap()
         this.baseUri = baseUri
     }
-
-    fun parse(input: Buffer, baseUri: String, parser: Parser): Document {
-        initialiseParse(CharacterReader(input), baseUri, parser)
-
-        runParser()
-
-        // tidy up - as the Parser and Treebuilder are retained in document for settings / fragments
-        reader!!.close()
-        reader = null
-        tokeniser = null
-        seenTags = null
-        return doc!!
-    }
-
     fun parse(input: String, baseUri: String, parser: Parser): Document {
         initialiseParse(CharacterReader(input), baseUri, parser)
         runParser()
 
         // tidy up - as the Parser and Treebuilder are retained in document for settings / fragments
-        reader!!.close()
+        //reader!!.close()
         reader = null
         tokeniser = null
         seenTags = null
@@ -184,7 +169,7 @@ abstract class TreeBuilder {
      * @param token the (optional) token that created this node
      */
     fun onNodeInserted(node: Node, token: Token?) {
-        trackNodePosition(node, token, true)
+        //trackNodePosition(node, token, true)
     }
 
     /**
@@ -194,10 +179,10 @@ abstract class TreeBuilder {
      * @param token the end-tag token that closed this node
      */
     protected fun onNodeClosed(node: Node, token: Token?) {
-        trackNodePosition(node, token, false)
+        //trackNodePosition(node, token, false)
     }
 
-    private fun trackNodePosition(node: Node, token: Token?, start: Boolean) {
+    /*private fun trackNodePosition(node: Node, token: Token?, start: Boolean) {
         if (trackSourceRange && token != null) {
             val startPos: Int = token.startPos()
             if (startPos == Token.Unset) return  // untracked, virtual token
@@ -209,5 +194,5 @@ abstract class TreeBuilder {
             val range = Range(startRange, endRange)
             range.track(node, start)
         }
-    }
+    }*/
 }

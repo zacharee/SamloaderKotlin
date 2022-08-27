@@ -139,7 +139,7 @@ fun AbsolutePopup(
             isFocusable = focusable,
             onDismissRequest = onDismissRequest,
             onPreviewKeyEvent = onPreviewKeyEvent,
-            onKeyEvent = onKeyEvent
+            onKeyEvent = onKeyEvent,
         )
         scene.attach(owner)
 

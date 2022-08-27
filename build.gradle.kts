@@ -27,9 +27,9 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev750")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.2.0-alpha01-dev755")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.android.tools.build:gradle:7.2.1")
+        classpath("com.android.tools.build:gradle:7.2.2")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
         classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("dev.icerock.moko:resources-generator:0.20.1")

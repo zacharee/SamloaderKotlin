@@ -71,7 +71,7 @@ class Tokeniser constructor(// html input
         emitPending = token
         isEmitPending = true
         token!!.startPos(markupStartPos)
-        token.endPos(reader.pos())
+        token.endPos(reader.pos)
         charStartPos = Unset
         if (token.type == Token.TokenType.StartTag) {
             val startTag: Token.StartTag? = token as Token.StartTag?
@@ -95,7 +95,7 @@ class Tokeniser constructor(// html input
             charsBuilder.append(str)
         }
         charPending.startPos(charStartPos)
-        charPending.endPos(reader.pos())
+        charPending.endPos(reader.pos)
     }
 
     // variations to limit need to create temp strings
@@ -109,7 +109,7 @@ class Tokeniser constructor(// html input
             charsBuilder.append(str)
         }
         charPending.startPos(charStartPos)
-        charPending.endPos(reader.pos())
+        charPending.endPos(reader.pos)
     }
 
     fun emit(c: Char) {
@@ -122,7 +122,7 @@ class Tokeniser constructor(// html input
             charsBuilder.append(c)
         }
         charPending.startPos(charStartPos)
-        charPending.endPos(reader.pos())
+        charPending.endPos(reader.pos)
     }
 
     fun emit(chars: CharArray?) {
@@ -136,9 +136,9 @@ class Tokeniser constructor(// html input
     fun transition(newState: TokeniserState) {
         // track markup / data position on state transitions
         when (newState) {
-            TokeniserState.TagOpen -> markupStartPos = reader.pos()
+            TokeniserState.TagOpen -> markupStartPos = reader.pos
             TokeniserState.Data -> if (charStartPos == Unset) // don't reset when we are jumping between e.g data -> char ref -> data
-                charStartPos = reader.pos()
+                charStartPos = reader.pos
             else -> {}
         }
         state = newState
@@ -154,20 +154,20 @@ class Tokeniser constructor(// html input
 
     fun consumeCharacterReference( additionalAllowedCharacter: Char?, inAttribute: Boolean): IntArray? {
         if (reader.isEmpty) return null
-        if (additionalAllowedCharacter != null && additionalAllowedCharacter == reader.current()) return null
-        if (reader.matchesAnySorted(notCharRefCharsSorted)) return null
+        if (additionalAllowedCharacter != null && additionalAllowedCharacter == reader.current) return null
+        if (reader.matchesAny(notCharRefCharsSorted)) return null
         val codeRef: IntArray = codepointHolder
-        reader.mark()
-        if (reader.matchConsume("#")) { // numbered
-            val isHexMode: Boolean = reader.matchConsumeIgnoreCase("X")
+        reader.markPos()
+        if (reader.matches("#", consume = true)) { // numbered
+            val isHexMode: Boolean = reader.matches("X", consume = true, ignoreCase = true)
             val numRef: String = if (isHexMode) reader.consumeHexSequence() else reader.consumeDigitSequence()
             if (numRef.isEmpty()) { // didn't match anything
                 characterReferenceError("numeric reference with no numerals")
                 reader.rewindToMark()
                 return null
             }
-            reader.unmark()
-            if (!reader.matchConsume(";")) characterReferenceError(
+            //reader.unmark()
+            if (!reader.matches(";", consume = true)) characterReferenceError(
                 "missing semicolon on [&#%s]",
                 (numRef)
             ) // missing semi
@@ -205,13 +205,13 @@ class Tokeniser constructor(// html input
                     characterReferenceError("invalid named reference [%s]", (nameRef))
                 return null
             }
-            if (inAttribute && (reader.matchesLetter() || reader.matchesDigit() || reader.matchesAny('=', '-', '_'))) {
+            if (inAttribute && (reader.matchesLetter() || reader.matchesDigit() || reader.matchesAny(charArrayOf('=', '-', '_')))) {
                 // don't want that to match
                 reader.rewindToMark()
                 return null
             }
-            reader.unmark()
-            if (!reader.matchConsume(";")) characterReferenceError(
+            //reader.unmark()
+            if (!reader.matches(";", consume = true)) characterReferenceError(
                 "missing semicolon on [&%s]",
                 (nameRef)
             ) // missing semi
@@ -288,7 +288,7 @@ class Tokeniser constructor(// html input
             ParseError(
                 reader,
                 "Unexpected character '%s' in input state [%s]",
-                reader.current(),
+                reader.current,
                 state
             )
         )

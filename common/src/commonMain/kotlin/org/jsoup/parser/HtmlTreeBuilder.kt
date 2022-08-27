@@ -63,7 +63,7 @@ class HtmlTreeBuilder : TreeBuilder() {
 
     override fun parseFragment(
         inputFragment: String?,
-         context: Element?,
+        context: Element?,
         baseUri: String,
         parser: Parser
     ): List<Node> {

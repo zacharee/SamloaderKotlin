@@ -585,7 +585,7 @@ enum class HtmlTreeBuilderState {
                         tb.processEndTag("p")
                     }
                     tb.insert(startTag)
-                    tb.reader!!.matchConsume("\n") // ignore LF if next token
+                    tb.reader!!.matches("\n", consume = true) // ignore LF if next token
                     tb.framesetOk(false)
                 }
 

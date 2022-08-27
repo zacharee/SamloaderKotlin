@@ -29,7 +29,7 @@ object Entities {
      * @return true if a known named entity
      */
     fun isNamedEntity(name: String): Boolean {
-        return EscapeMode.extended().codepointForName(name) != empty
+        return EscapeMode.extended().codepointForName(name).run { this != null && code != empty }
     }
 
     /**
@@ -40,7 +40,7 @@ object Entities {
      * @see .isNamedEntity
      */
     fun isBaseNamedEntity(name: String): Boolean {
-        return EscapeMode.base().codepointForName(name) != empty
+        return EscapeMode.base().codepointForName(name).run { this != null && code != empty }
     }
 
     /**
@@ -53,7 +53,7 @@ object Entities {
         val `val` = multipoints[name]
         if (`val` != null) return `val`
         val codepoint = EscapeMode.extended().codepointForName(name)
-        return if (codepoint != empty) charArrayOf(codepoint.toChar()).concatToString(0, 0 + 1) else emptyName
+        return if (codepoint != null && codepoint.code != empty) charArrayOf(codepoint.toChar()).concatToString() else emptyName
     }
 
     fun codepointsForName(name: String, codepoints: IntArray): Int {
@@ -64,8 +64,8 @@ object Entities {
             return 2
         }
         val codepoint = EscapeMode.extended().codepointForName(name)
-        if (codepoint != empty) {
-            codepoints[0] = codepoint
+        if (codepoint != null && codepoint.code != empty) {
+            codepoints[0] = codepoint.code
             return 1
         }
         return 0
@@ -173,7 +173,7 @@ object Entities {
 
     @Throws(IOException::class)
     private fun appendEncoded(accum: Appendable?, escapeMode: EscapeMode?, codePoint: Int) {
-        val name = escapeMode!!.nameForCodepoint(codePoint)
+        val name = escapeMode!!.nameForCodepoint(codePoint.toChar())
         if (emptyName != name) // ok for identity check
             accum!!.append('&').append(name).append(';') else accum!!.append("&#x")
             .append(codePoint.toString(16)).append(';')
@@ -239,7 +239,12 @@ object Entities {
             }
         }
 
-        // table of named references to their codepoints. sorted so we can binary search. built by BuildEntities.
+        data class NamedCodepoint(
+            val scalar: Char,
+            val name: String
+        )
+
+        /*// table of named references to their codepoints. sorted so we can binary search. built by BuildEntities.
         var nameKeys: Array<String?> = arrayOfNulls(0)
         var codeVals // limitation is the few references with multiple characters; those go into multipoints.
                 : IntArray = intArrayOf()
@@ -247,7 +252,11 @@ object Entities {
         // table of codepoints to named entities.
         var codeKeys // we don't support multicodepoints to single named value currently
                 : IntArray = intArrayOf()
-        var nameVals: Array<String?> = arrayOfNulls(0)
+        var nameVals: Array<String?> = arrayOfNulls(0)*/
+
+        private val entitiesByName = arrayListOf<NamedCodepoint>()
+
+        private val entitiesByCodepoint by lazy { entitiesByName.sortedBy { it.scalar } }
 
         init {
             load(file, size)
@@ -256,61 +265,81 @@ object Entities {
         abstract fun copy(): EscapeMode
 
         private fun load(pointsData: String, size: Int) {
-            nameKeys = arrayOfNulls(size)
+            /*nameKeys = arrayOfNulls(size)
             codeVals = IntArray(size)
             codeKeys = IntArray(size)
-            nameVals = arrayOfNulls(size)
+            nameVals = arrayOfNulls(size)*/
             var i = 0
             val reader = CharacterReader(pointsData)
             try {
                 while (!reader.isEmpty) {
                     // NotNestedLessLess=10913,824;1887&
-                    val name = reader.consumeTo('=')
+                    val name = reader.consumeTo("=")
                     reader.advance()
-                    val cp1 = reader.consumeToAny(*codeDelims).toIntOrNull(codepointRadix) ?: 0
-                    val codeDelim = reader.current()
+                    val cp1 = reader.consumeToAny(codeDelims).toIntOrNull(codepointRadix) ?: 0
+                    val codeDelim = reader.current
                     reader.advance()
                     val cp2: Int
                     if (codeDelim == ',') {
-                        cp2 = reader.consumeTo(';').toInt(codepointRadix)
+                        cp2 = reader.consumeTo(";").toIntOrNull(codepointRadix) ?: 0
                         reader.advance()
                     } else {
                         cp2 = empty
                     }
-                    val indexS = reader.consumeTo('&')
-                    val index = indexS.toInt(codepointRadix)
+                    val indexS = reader.consumeTo("\n")
+                    //val index = indexS.toIntOrNull(codepointRadix) ?: 0
                     reader.advance()
-                    nameKeys[i] = name
+
+                    entitiesByName.add(NamedCodepoint(cp1.toChar(), name))
+
+                    /*nameKeys[i] = name
                     codeVals[i] = cp1
                     codeKeys[index] = cp1
-                    nameVals[index] = name
+                    nameVals[index] = name*/
                     if (cp2 != empty) {
-                        multipoints[name] = charArrayOf(cp1.toChar(), cp2.toChar()).concatToString(0, 0 + 2)
+                        multipoints[name] = charArrayOf(cp1.toChar(), cp2.toChar()).concatToString()
                     }
                     i++
                 }
-                Validate.isTrue(i == size, "Unexpected count of entities loaded")
+                //Validate.isTrue(i == size, "Unexpected count of entities loaded")
             } finally {
-                reader.close()
+
             }
+
+            entitiesByName.sortBy { it.name }
         }
 
-        fun codepointForName(name: String?): Int {
-            val index = nameKeys.map { it ?: "" }.binarySearch(name)
-            return if (index >= 0) codeVals[index] else empty
+        fun codepointForName(name: String): Char? {
+            /*val index = nameKeys.map { it ?: "" }.binarySearch(name)
+            return if (index >= 0) codeVals[index] else empty*/
+
+            val ix = entitiesByName.binarySearch { it.name.compareTo(name) }
+            if (ix >= entitiesByName.size) return null
+            val entity = entitiesByName[ix]
+            if (entity.name != name) return null
+            return entity.scalar
         }
 
-        fun nameForCodepoint(codepoint: Int): String? {
-            val index = codeKeys.binarySearch(codepoint).index
+        fun nameForCodepoint(codepoint: Char): String? {
+            var ix = entitiesByCodepoint.binarySearch { it.scalar.compareTo(codepoint) }
+            val matches = arrayListOf<String>()
+            while (ix < entitiesByCodepoint.size && entitiesByCodepoint[ix].scalar == codepoint) {
+                matches.add(entitiesByCodepoint[ix].name)
+                ix++
+            }
+
+            return if (matches.isEmpty()) null else matches.maxOf { it }
+
+            /*val index = codeKeys.binarySearch(codepoint).index
             return if (index >= 0) {
                 // the results are ordered so lower case versions of same codepoint come after uppercase, and we prefer to emit lower
                 // (and binary search for same item with multi results is undefined
                 if (index < nameVals.size - 1 && codeKeys[index + 1] == codepoint) nameVals[index + 1] else nameVals[index]
-            } else emptyName
+            } else emptyName*/
         }
 
         private fun size(): Int {
-            return nameKeys.size
+            return entitiesByName.size
         }
     }
 
