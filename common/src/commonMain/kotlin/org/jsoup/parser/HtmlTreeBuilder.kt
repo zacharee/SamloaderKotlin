@@ -10,7 +10,7 @@ import org.jsoup.nodes.*
  */
 class HtmlTreeBuilder : TreeBuilder() {
     private var state // the current state
-            : HtmlTreeBuilderState? = null
+            : HtmlTreeBuilderState = HtmlTreeBuilderState.Initial
     private var originalState // original / marked state
             : HtmlTreeBuilderState? = null
     private var baseUriSetFromDoc: Boolean = false
@@ -120,7 +120,7 @@ class HtmlTreeBuilder : TreeBuilder() {
 
     override fun process(token: Token): Boolean {
         currentToken = token
-        return state!!.process(token, this)
+        return state.process(token, this)
     }
 
     fun process(token: Token, state: HtmlTreeBuilderState): Boolean {
@@ -128,11 +128,11 @@ class HtmlTreeBuilder : TreeBuilder() {
         return state.process(token, this)
     }
 
-    fun transition(state: HtmlTreeBuilderState?) {
+    fun transition(state: HtmlTreeBuilderState) {
         this.state = state
     }
 
-    fun state(): HtmlTreeBuilderState? {
+    fun state(): HtmlTreeBuilderState {
         return state
     }
 
@@ -478,7 +478,7 @@ class HtmlTreeBuilder : TreeBuilder() {
                 "template" -> {
                     val tmplState: HtmlTreeBuilderState? = currentTemplateMode()
                     Validate.notNull(tmplState, "Bug: no template insertion mode on stack!")
-                    transition(tmplState)
+                    transition(tmplState!!)
                     break@LOOP
                 }
 
