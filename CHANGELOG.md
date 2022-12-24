@@ -1,3 +1,10 @@
+# 1.12.0
+- Allow continuing download if Bifrost detects a version mismatch.
+- Improve version mismatch checking.
+- Improve dialog appearance.
+- Work on native macOS version.
+- Update dependencies.
+
 # 1.0.11
 - Another fix for Windows resources.
 
