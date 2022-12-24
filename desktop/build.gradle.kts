@@ -1,4 +1,3 @@
-import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -76,4 +75,19 @@ compose.desktop {
 
 multiplatformResources {
     multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.desktop"
+}
+
+tasks.findByPath(":common:jvmProcessResources")?.apply {
+    dependsOn(":common:generateMRcommonMain")
+    dependsOn("generateMRjvmMain")
+}
+
+tasks.findByPath(":commonCompose:jvmProcessResources")?.apply {
+    dependsOn(":commonCompose:generateMRcommonMain")
+    dependsOn("generateMRjvmMain")
+}
+
+tasks.findByPath(":desktop:jvmProcessResources")?.apply {
+    dependsOn(":desktop:generateMRcommonMain")
+    dependsOn("generateMRjvmMain")
 }

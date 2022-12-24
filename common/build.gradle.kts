@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 repositories {
@@ -221,7 +220,9 @@ i18n4k {
     sourceCodeLocales = listOf("en", "ru_RU", "th_TH")
 }
 
-tasks.named("jvmProcessResources").dependsOn(tasks.named("generateI18n4kFiles"))
+tasks.named("jvmProcessResources") {
+    dependsOn(tasks.named("generateI18n4kFiles"))
+}
 
 tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
