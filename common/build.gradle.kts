@@ -1,12 +1,6 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
-buildscript {
-    dependencies {
-        classpath("org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.17.0")
-    }
-}
-
 repositories {
     google()
     mavenCentral()
@@ -24,6 +18,7 @@ plugins {
     id("de.comahe.i18n4k")
     id("dev.icerock.mobile.multiplatform-resources")
     kotlin("native.cocoapods")
+    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.0-RC2"
 }
 
 apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
@@ -68,7 +63,7 @@ kotlin {
             isStatic = false
         }
 
-        pod("HTMLReader")
+//        pod("HTMLReader")
 
 //        pod("HTMLKit") {
 //            version = "~> 4.2"
@@ -79,14 +74,14 @@ kotlin {
     sourceSets {
         val korlibsVersion = "2.7.0"
         val ktorVersion = "2.0.3"
-        val jsoupVersion = "1.14.3"
+        val jsoupVersion = "1.15.3"
 
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
 //                api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
@@ -127,19 +122,19 @@ kotlin {
             dependsOn(nonWebMain)
 
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
-                api("androidx.appcompat:appcompat:1.4.2")
-                api("androidx.fragment:fragment-ktx:1.5.0")
-                api("androidx.activity:activity-compose:1.5.0")
-                api("androidx.core:core-ktx:1.8.0")
+                api("androidx.appcompat:appcompat:1.5.1")
+                api("androidx.fragment:fragment-ktx:1.5.5")
+                api("androidx.activity:activity-compose:1.6.1")
+                api("androidx.core:core-ktx:1.9.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
                 // Remove this once JB Compose gets the updated version.
-                api("androidx.compose.foundation:foundation-layout:1.3.0-alpha01")
+                api("androidx.compose.foundation:foundation-layout:1.4.0-alpha03")
                 api("com.caverock:androidsvg-aar:1.4")
             }
         }
@@ -178,14 +173,14 @@ kotlin {
         val macosArm64Main by getting {
             dependsOn(macosMain)
             dependencies {
-                api("org.jetbrains.skiko:skiko-macosarm64:0.7.26")
+                api("org.jetbrains.skiko:skiko-macosarm64:0.7.44")
             }
         }
 
         val macosX64Main by getting {
             dependsOn(macosMain)
             dependencies {
-                api("org.jetbrains.skiko:skiko-macosx64:0.7.26")
+                api("org.jetbrains.skiko:skiko-macosx64:0.7.44")
             }
         }
     }
@@ -256,4 +251,4 @@ compose.experimental {
 //    settings.compilerOpts("-DNS_FORMAT_ARGUMENT(A)=")
 //}
 
-apply(plugin = "kotlinx-atomicfu")
+//apply(plugin = "kotlinx-atomicfu")

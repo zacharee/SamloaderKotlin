@@ -47,7 +47,6 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 api(compose.ui)
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3")
                 api("moe.tlaster:precompose:1.4.0")
             }
         }
