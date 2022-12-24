@@ -9,6 +9,8 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.onClick
@@ -37,10 +39,10 @@ import kotlin.jvm.JvmName
 actual fun CAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
-    buttons: @Composable() () -> Unit,
+    buttons: @Composable() RowScope.() -> Unit,
     modifier: Modifier,
     title: (@Composable() () -> Unit)?,
-    text: (@Composable() () -> Unit)?,
+    text: (@Composable() ColumnScope.() -> Unit)?,
     shape: Shape,
     backgroundColor: Color,
     contentColor: Color
@@ -134,7 +136,6 @@ fun AbsolutePopup(
         val owner = SkiaBasedOwner(
             platform = scene.platform,
             pointerPositionUpdater = scene.pointerPositionUpdater,
-            density = density,
             bounds = popupBounds,
             isFocusable = focusable,
             onDismissRequest = onDismissRequest,
