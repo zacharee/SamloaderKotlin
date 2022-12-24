@@ -7,6 +7,7 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
+import tk.zwander.common.data.exception.VersionMismatchException
 import tk.zwander.samloaderkotlin.strings
 
 /**
@@ -214,6 +215,10 @@ object Request {
                 return fileSplit.indexOfFirst { it.startsWith(modelSuffix) }
             }
 
+            fun getSuffix(str: String): String? {
+                return str.split("_").getOrNull(1)
+            }
+
             val dataFile = responseXml.child("FUSBody")
                 ?.child("Put")
                 ?.child("DEVICE_USER_DATA_FILE")
@@ -264,17 +269,29 @@ object Request {
             val pdaIndex = getIndex(pdaFile)
 
             dataFile?.let { f ->
-                val split = f.split("_")
-                val version = split[dataIndex!!]
+                val (fwVersion, fwCsc, fwCp, fwPda) = fw.split("/")
+                val fwVersionSuffix = getSuffix(fwVersion)
+                val fwCscSuffix = getSuffix(fwCsc)
+                val fwCpSuffix = getSuffix(fwCp)
+                val fwPdaSuffix = getSuffix(fwPda)
 
-                val servedCsc = cscFile!!.split("_")[cscIndex!!]
-                val servedCp = cpFile?.split("_")?.getOrNull(cpIndex ?: -1)
-                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex ?: -1)
+                val split = f.split("_")
+                val (version, versionSuffix) = split[dataIndex!!] to split.getOrNull(dataIndex + 1)
+
+                val (servedCsc, cscSuffix) = cscFile!!.split("_").run { get(cscIndex!!) to getOrNull(cscIndex + 1) }
+                val (servedCp, cpSuffix) = cpFile?.split("_").run { this?.getOrNull(cpIndex ?: -1) to this?.getOrNull(cpIndex?.plus(1) ?: - 1) }
+                val (servedPda, pdaSuffix) = pdaFile?.split("_").run { this?.getOrNull(pdaIndex ?: -1) to this?.getOrNull(pdaIndex?.plus(1) ?: -1) }
+
                 val served = "$version/$servedCsc/${servedCp ?: version}/${servedPda ?: version}"
 
-                if (served != fw) {
+                val versionSuffixMatch = fwVersionSuffix == versionSuffix
+                val cscSuffixMatch = fwCscSuffix == cscSuffix
+                val cpSuffixMatch = fwCpSuffix == (cpSuffix ?: versionSuffix)
+                val pdaSuffixMatch = fwPdaSuffix == (pdaSuffix ?: versionSuffix)
+
+                if (served != fw && !versionSuffixMatch && !cscSuffixMatch && !cpSuffixMatch && !pdaSuffixMatch) {
                     return FetchResult.GetBinaryFileResult(
-                        error = Exception(strings.versionMismatch(fw, served))
+                        error = VersionMismatchException(strings.versionMismatch(fw, served))
                     )
                 }
             }

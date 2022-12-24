@@ -22,7 +22,9 @@ import com.soywiz.korio.async.launch
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.GradleConfig
+import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.DownloadFileInfo
+import tk.zwander.common.data.exception.VersionMismatchException
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
@@ -54,8 +56,26 @@ expect object PlatformDownloadView {
     fun onProgress(status: String, current: Long, max: Long)
 }
 
-@OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
-private suspend fun onDownload(model: DownloadModel, client: FusClient) {
+interface DownloadErrorCallback {
+    fun onError(info: DownloadErrorInfo)
+}
+
+data class DownloadErrorInfo(
+    val message: String,
+    val callback: DownloadErrorConfirmCallback,
+)
+
+data class DownloadErrorConfirmCallback(
+    val onAccept: suspend () -> Unit,
+    val onCancel: suspend () -> Unit,
+)
+
+@OptIn(DangerousInternalIoApi::class)
+private suspend fun onDownload(
+    model: DownloadModel,
+    client: FusClient,
+    confirmCallback: DownloadErrorCallback
+) {
     PlatformDownloadView.onStart()
     model.statusText = strings.downloading()
 
@@ -66,110 +86,133 @@ private suspend fun onDownload(model: DownloadModel, client: FusClient) {
         model.region
     )
 
-    if (error != null) {
+    if (error != null && error !is VersionMismatchException) {
         error.printStackTrace()
         model.endJob("${error.message ?: strings.error()}\n\n${output}")
+        PlatformDownloadView.onFinish()
     } else {
-        val (path, fileName, size, crc32, v4Key) = info!!
-        val request = Request.createBinaryInit(fileName, client.getNonce())
-
-        client.makeReq(FusClient.Request.BINARY_INIT, request)
-
-        val fullFileName = fileName.replace(
-            ".zip",
-            "_${model.fw.replace("/", "_")}_${model.region}.zip"
-        )
-
-        PlatformDownloadView.getInput(fullFileName) { inputInfo ->
-            if (inputInfo != null) {
-                val (response, md5) = client.downloadFile(
-                    path + fileName,
-                    inputInfo.downloadFile.getLength()
+        if (error is VersionMismatchException) {
+            confirmCallback.onError(
+                info = DownloadErrorInfo(
+                    message = error.message!!,
+                    callback = DownloadErrorConfirmCallback(
+                        onAccept = {
+                            performDownload(info!!, model, client)
+                        },
+                        onCancel = {
+                            model.endJob("")
+                            PlatformDownloadView.onFinish()
+                        }
+                    )
                 )
+            )
+        } else {
+            performDownload(info!!, model, client)
+        }
+    }
+}
 
-                Downloader.download(
-                    response,
-                    size,
-                    inputInfo.downloadFile.openOutputStream(true),
-                    inputInfo.downloadFile.getLength()
-                ) { current, max, bps ->
-                    model.progress = current to max
-                    model.speed = bps
+@OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
+private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, client: FusClient) {
+    val (path, fileName, size, crc32, v4Key) = info
+    val request = Request.createBinaryInit(fileName, client.getNonce())
 
-                    PlatformDownloadView.onProgress(strings.downloading(), current, max)
-                }
+    client.makeReq(FusClient.Request.BINARY_INIT, request)
 
-                if (crc32 != null) {
-                    model.speed = 0L
-                    model.statusText = strings.checkingCRC()
-                    val result = CryptUtils.checkCrc32(
-                        inputInfo.downloadFile.openInputStream(),
-                        size,
-                        crc32
-                    ) { current, max, bps ->
-                        model.progress = current to max
-                        model.speed = bps
+    val fullFileName = fileName.replace(
+        ".zip",
+        "_${model.fw.replace("/", "_")}_${model.region}.zip"
+    )
 
-                        PlatformDownloadView.onProgress(
-                            strings.checkingCRC(),
-                            current,
-                            max
-                        )
-                    }
+    PlatformDownloadView.getInput(fullFileName) { inputInfo ->
+        if (inputInfo != null) {
+            val (response, md5) = client.downloadFile(
+                path + fileName,
+                inputInfo.downloadFile.getLength()
+            )
 
-                    if (!result) {
-                        model.endJob(strings.crcCheckFailed())
-                        return@getInput
-                    }
-                }
+            Downloader.download(
+                response,
+                size,
+                inputInfo.downloadFile.openOutputStream(true),
+                inputInfo.downloadFile.getLength()
+            ) { current, max, bps ->
+                model.progress = current to max
+                model.speed = bps
 
-                if (md5 != null) {
-                    model.speed = 0L
-                    model.statusText = strings.checkingMD5()
-
-                    PlatformDownloadView.onProgress(strings.checkingMD5(), 0, 1)
-
-                    val result = withContext(Dispatchers.Default) {
-                        CryptUtils.checkMD5(
-                            md5,
-                            inputInfo.downloadFile.openInputStream()
-                        )
-                    }
-
-                    if (!result) {
-                        model.endJob(strings.md5CheckFailed())
-                        return@getInput
-                    }
-                }
-
-                model.speed = 0L
-                model.statusText = strings.decrypting()
-
-                val key =
-                    if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
-                        model.fw,
-                        model.model,
-                        model.region
-                    ) else {
-                        v4Key ?: CryptUtils.getV4Key(client, model.fw, model.model, model.region)
-                    }
-
-                CryptUtils.decryptProgress(
-                    inputInfo.downloadFile.openInputStream(),
-                    inputInfo.decryptFile.openOutputStream(),
-                    key,
-                    size
-                ) { current, max, bps ->
-                    model.progress = current to max
-                    model.speed = bps
-
-                    PlatformDownloadView.onProgress(strings.decrypting(), current, max)
-                }
-
-                model.endJob(strings.done())
-            } else {
-                model.endJob("")
+                PlatformDownloadView.onProgress(strings.downloading(), current, max)
             }
+
+            if (crc32 != null) {
+                model.speed = 0L
+                model.statusText = strings.checkingCRC()
+                val result = CryptUtils.checkCrc32(
+                    inputInfo.downloadFile.openInputStream(),
+                    size,
+                    crc32
+                ) { current, max, bps ->
+                    model.progress = current to max
+                    model.speed = bps
+
+                    PlatformDownloadView.onProgress(
+                        strings.checkingCRC(),
+                        current,
+                        max
+                    )
+                }
+
+                if (!result) {
+                    model.endJob(strings.crcCheckFailed())
+                    return@getInput
+                }
+            }
+
+            if (md5 != null) {
+                model.speed = 0L
+                model.statusText = strings.checkingMD5()
+
+                PlatformDownloadView.onProgress(strings.checkingMD5(), 0, 1)
+
+                val result = withContext(Dispatchers.Default) {
+                    CryptUtils.checkMD5(
+                        md5,
+                        inputInfo.downloadFile.openInputStream()
+                    )
+                }
+
+                if (!result) {
+                    model.endJob(strings.md5CheckFailed())
+                    return@getInput
+                }
+            }
+
+            model.speed = 0L
+            model.statusText = strings.decrypting()
+
+            val key =
+                if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
+                    model.fw,
+                    model.model,
+                    model.region
+                ) else {
+                    v4Key ?: CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+                }
+
+            CryptUtils.decryptProgress(
+                inputInfo.downloadFile.openInputStream(),
+                inputInfo.decryptFile.openOutputStream(),
+                key,
+                size
+            ) { current, max, bps ->
+                model.progress = current to max
+                model.speed = bps
+
+                PlatformDownloadView.onProgress(strings.decrypting(), current, max)
+            }
+
+            model.endJob(strings.done())
+        } else {
+            model.endJob("")
         }
     }
 
@@ -210,6 +253,10 @@ fun DownloadView(scrollState: ScrollState) {
 
     val canChangeOption = model.job == null
 
+    var downloadErrorInfo by remember {
+        mutableStateOf<DownloadErrorInfo?>(null)
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
             .verticalScroll(scrollState),
@@ -224,7 +271,14 @@ fun DownloadView(scrollState: ScrollState) {
                 HybridButton(
                     onClick = {
                         model.job = model.scope.launch {
-                            onDownload(model, client)
+                            onDownload(
+                                model, client,
+                                confirmCallback = object : DownloadErrorCallback {
+                                    override fun onError(info: DownloadErrorInfo) {
+                                        downloadErrorInfo = info
+                                    }
+                                }
+                            )
                         }
                     },
                     enabled = canDownload,
@@ -450,5 +504,49 @@ fun DownloadView(scrollState: ScrollState) {
         ) {
             ChangelogDisplay(model.changelog!!)
         }
+
+        AlertDialogDef(
+            showing = downloadErrorInfo != null,
+            onDismissRequest = {
+                model.scope.launch {
+                    downloadErrorInfo?.callback?.onCancel?.invoke()
+                    downloadErrorInfo = null
+                }
+            },
+            title = {
+                Text(text = strings.warning())
+            },
+            text = {
+                Text(text = downloadErrorInfo?.message ?: "")
+            },
+            buttons = {
+                Spacer(Modifier.weight(1f))
+
+                TextButton(
+                    onClick = {
+                        model.scope.launch {
+                            downloadErrorInfo?.callback?.onCancel?.invoke()
+                            downloadErrorInfo = null
+                        }
+                    }
+                ) {
+                    Text(text = strings.no())
+                }
+
+                TextButton(
+                    onClick = {
+                        model.scope.launch {
+                            downloadErrorInfo?.callback?.onAccept?.invoke()
+                            downloadErrorInfo = null
+                        }
+                    }
+                ) {
+                    Text(
+                        text = strings.yes(),
+                        color = MaterialTheme.colors.error
+                    )
+                }
+            }
+        )
     }
 }

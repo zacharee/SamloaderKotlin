@@ -1,6 +1,5 @@
 package tk.zwander.common.util
 
-import io.ktor.util.*
 import org.jsoup.Jsoup
 import tk.zwander.common.data.changelog.Changelog
 
@@ -13,7 +12,6 @@ actual object PlatformChangelogHandler {
         return engOption?.text()
     }
 
-    @OptIn(InternalAPI::class)
     actual suspend fun parseChangelogs(body: String): Map<String, Changelog> {
         val doc = Jsoup.parse(body)
         val container = doc.selectFirst(".container")

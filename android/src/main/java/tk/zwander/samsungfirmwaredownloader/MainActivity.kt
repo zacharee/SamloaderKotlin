@@ -98,5 +98,4 @@ class MainActivity : PreComposeActivity(), CoroutineScope by MainScope() {
             )
         }
     }
-
 }
