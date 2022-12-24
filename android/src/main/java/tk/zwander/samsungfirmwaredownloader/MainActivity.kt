@@ -2,6 +2,7 @@ package tk.zwander.samsungfirmwaredownloader
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -65,8 +66,17 @@ class MainActivity : PreComposeActivity(), CoroutineScope by MainScope() {
         openCallback?.onOpen(it)
     }
 
+    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkCallingOrSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+                permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
 
         //Start the DownloaderService.
         DownloaderService.start(this, object : IMainActivity.Stub() {
