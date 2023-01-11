@@ -3,11 +3,16 @@ package tk.zwander.commonCompose.view.pages
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -30,7 +35,6 @@ import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
-import tk.zwander.commonCompose.view.components.StaggeredVerticalGrid
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 
@@ -146,6 +150,7 @@ private suspend fun onFetch(model: HistoryModel) {
  * @param onDownload a callback for when the user hits the "Download" button on an item.
  * @param onDecrypt a callback for when the user hits the "Decrypt" button on an item.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryView(
     onDownload: (model: String, region: String, fw: String) -> Unit,
@@ -243,6 +248,10 @@ fun HistoryView(
 
         Spacer(Modifier.height(8.dp))
 
+        val expanded = remember {
+            mutableStateMapOf<String, Boolean>()
+        }
+
         Column(
             modifier = Modifier.weight(1f)
         ) {
@@ -257,22 +266,23 @@ fun HistoryView(
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-                LazyColumn {
-                    item {
-                        StaggeredVerticalGrid(
-                            modifier = Modifier.fillMaxWidth(),
-                            maxColumnWidth = 400.dp
-                        ) {
-                            (model.historyItems).forEachIndexed { index, historyInfo ->
-                                HistoryItem(
-                                    index,
-                                    historyInfo,
-                                    model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
-                                    { onDownload(model.model, model.region, it) },
-                                    { onDecrypt(model.model, model.region, it) }
-                                )
-                            }
-                        }
+                LazyVerticalStaggeredGrid(
+                    modifier = Modifier.fillMaxWidth(),
+                    columns = StaggeredGridCells.Adaptive(minSize = 350.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(4.dp)
+                ) {
+                    itemsIndexed(model.historyItems, { _, item -> item.toString() }) { index, historyInfo ->
+                        HistoryItem(
+                            index = index,
+                            info = historyInfo,
+                            changelog = model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
+                            changelogExpanded = expanded[historyInfo.toString()] ?: false,
+                            onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
+                            onDownload = { onDownload(model.model, model.region, it) },
+                            onDecrypt = { onDecrypt(model.model, model.region, it) }
+                        )
                     }
                 }
             }

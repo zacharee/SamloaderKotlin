@@ -26,12 +26,12 @@ fun HistoryItem(
     index: Int,
     info: HistoryInfo,
     changelog: Changelog?,
+    changelogExpanded: Boolean,
+    onChangelogExpanded: (Boolean) -> Unit,
     onDownload: (fw: String) -> Unit,
     onDecrypt: (fw: String) -> Unit
 ) {
-    Box(
-        modifier = Modifier.padding(4.dp)
-    ) {
+    Box {
         Card(
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -115,8 +115,6 @@ fun HistoryItem(
                 }
 
                 if (changelog != null) {
-                    var changelogExpanded by remember { mutableStateOf(false) }
-
                     Spacer(Modifier.height(8.dp))
 
                     Row(
@@ -128,7 +126,7 @@ fun HistoryItem(
                             ExpandButton(
                                 changelogExpanded,
                                 strings.changelog()
-                            ) { changelogExpanded = it }
+                            ) { onChangelogExpanded(it) }
 
                             AnimatedVisibility(
                                 visible = changelogExpanded
