@@ -17,10 +17,10 @@ plugins {
     id("de.comahe.i18n4k")
     id("dev.icerock.mobile.multiplatform-resources")
     kotlin("native.cocoapods")
-    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.0-RC2"
+    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.0"
+    kotlin("plugin.serialization") version "1.8.0"
 }
 
-apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
 group = rootProject.extra["groupName"].toString()
 version = rootProject.extra["versionName"].toString()
@@ -93,7 +93,7 @@ kotlin {
                 api("io.ktor:ktor-client-auth:$ktorVersion")
                 api("io.fluidsonic.i18n:fluid-i18n:0.11.0")
                 api("io.fluidsonic.country:fluid-country:0.11.0")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
                 api("com.russhwolf:multiplatform-settings:0.8.1")
                 api("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
                 api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")

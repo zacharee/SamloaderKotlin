@@ -12,7 +12,7 @@ val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
 buildscript {
-    val kotlinVersion by rootProject.extra("1.7.20")
+    val kotlinVersion by rootProject.extra("1.8.0")
     val i18n4kVersion by extra("0.5.0")
 
     repositories {
@@ -31,7 +31,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.android.tools.build:gradle:7.3.1")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
         classpath("dev.icerock.moko:resources-generator:0.20.1")
         classpath("de.comahe.i18n4k:i18n4k-gradle-plugin:$i18n4kVersion")
     }

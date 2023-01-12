@@ -1,48 +1,14 @@
 package tk.zwander.common.util
 
-//import cocoapods.HTMLReader.HTMLDocument
-//import cocoapods.HTMLReader.HTMLElement
-//import cocoapods.HTMLReader.HTMLNode
-//import cocoapods.HTMLReader.firstNodeMatchingSelector
-import kotlinx.cinterop.convert
-import platform.Foundation.NSCoder
-import platform.Foundation.NSData
-import platform.Foundation.NSOrderedSet
-import platform.Foundation.NSString
-import platform.Foundation.NSUTF8StringEncoding
-import platform.Foundation.dataUsingEncoding
+import com.soywiz.korio.serialization.xml.Xml
 import platform.WebKit.*
 import tk.zwander.common.data.changelog.Changelog
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-private fun DOMNodeList.toList(): List<DOMNode> {
-    return arrayListOf<DOMNode>().apply {
-        for (i in 0u until this@toList.length) {
-            item(i)?.let {
-                add(it)
-            }
-        }
-    }
-}
-
-//private fun NSOrderedSet.toList(): List<HTMLNode> {
-//    return arrayListOf<HTMLNode>().apply {
-//        for (i in 0 until count.toInt()) {
-//            (this@toList.objectAtIndex(i.convert()) as? HTMLNode)?.let {
-//                add(it)
-//            }
-//        }
-//    }
-//}
-
 actual object PlatformChangelogHandler {
     actual suspend fun parseDocUrl(body: String): String? {
-//        val doc = DOMHTMLDocument.alloc()!!
-//        doc.write(body)
-
         val wv = WKWebView()
-//        wv.loadHTMLString(body, null)
 
         val doc = suspendCoroutine { continuation ->
             wv.evaluateJavaScript(
@@ -54,14 +20,15 @@ actual object PlatformChangelogHandler {
 
         println("doc $doc")
 
-//        val selector = doc.querySelector("#sel_lang_hidden")
-//
-//        val engOption = selector?.childNodes?.toList()?.run {
-//            find { it.attributes?.getNamedItem("value")?.toString() == "EN" } ?: first()
-//        }
-//
-//        return engOption?.textContent
-        return null
+        val xml = Xml(body)
+        val selector = xml.descendants.find { it.attribute("id") == "sel_lang_hidden" }
+        val engOption = selector?.allChildren?.run {
+            find { it.attribute("value") == "EN" } ?: first()
+        }
+
+        return engOption?.text.also {
+            println("Found option $it")
+        }
     }
 
     actual suspend fun parseChangelogs(body: String): Map<String, Changelog> {

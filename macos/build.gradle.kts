@@ -1,11 +1,6 @@
-import org.jetbrains.compose.desktop.application.tasks.AbstractNativeMacApplicationPackageAppDirTask
-import org.jetbrains.kotlin.gradle.plugin.mpp.AbstractExecutable
-import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBinary
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeLink
-import org.jetbrains.kotlin.library.impl.KotlinLibraryLayoutImpl
 import java.io.File
-import java.io.FileFilter
-import org.jetbrains.kotlin.konan.file.File as KonanFile
+import kotlin.reflect.full.declaredMemberProperties
 
 plugins {
     kotlin("multiplatform")
@@ -78,63 +73,78 @@ multiplatformResources {
     multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.resources.macos" // required
 }
 
+// copy .bundle from all .klib to .kexe
 tasks.withType<KotlinNativeLink>()
-    .matching { linkTask -> linkTask.binary is AbstractExecutable }
     .configureEach {
-        val task: KotlinNativeLink = this
+        val linkTask: KotlinNativeLink = this
+        val outputDir: File = this.outputFile.get().parentFile
 
-        doLast {
-            val binary: NativeBinary = task.binary
-            val outputDir: File = task.outputFile.get().parentFile
-            task.libraries
-                .filter { library -> library.extension == "klib" }
-                .filter(File::exists)
-                .forEach { inputFile ->
-                    val klibKonan = KonanFile(inputFile.path)
-                    val klib = KotlinLibraryLayoutImpl(
-                        klib = klibKonan,
-                        component = "default"
-                    )
-                    val layout = klib.extractingToTemp
+        @Suppress("ObjectLiteralToLambda") // lambda broke up-to-date
+        val action = object : Action<Task> {
+            override fun execute(t: Task) {
+                (linkTask.libraries + linkTask.sources)
+                    .filter { library -> library.extension == "klib" }
+                    .filter(File::exists)
+                    .forEach { inputFile ->
+                        val klibKonan = org.jetbrains.kotlin.konan.file.File(inputFile.path)
+                        val klib = org.jetbrains.kotlin.library.impl.KotlinLibraryLayoutImpl(
+                            klib = klibKonan,
+                            component = "default"
+                        )
+                        val layout = klib.extractingToTemp
 
-                    // extracting bundles
-                    layout
-                        .resourcesDir
-                        .absolutePath
-                        .let(::File)
-                        .listFiles(FileFilter { it.extension == "bundle" })
-                        // copying bundles to app
-                        ?.forEach { bundleFile ->
-                            logger.info("${bundleFile.absolutePath} copying to $outputDir")
-                            bundleFile.copyRecursively(
-                                target = File(outputDir, bundleFile.name),
-                                overwrite = true
-                            )
-                        }
-                }
-        }
-    }
-
-tasks.withType<AbstractNativeMacApplicationPackageAppDirTask> {
-    val task: AbstractNativeMacApplicationPackageAppDirTask = this
-
-    doLast {
-        val execFile: File = task.executable.get().asFile
-        val execDir: File = execFile.parentFile
-        val destDir: File = task.destinationDir.asFile.get()
-        val bundleID: String = task.bundleID.get()
-
-        val outputDir = File(destDir, "$bundleID.app/Contents/Resources")
-        outputDir.mkdirs()
-
-        execDir.listFiles().orEmpty()
-            .filter { it.extension == "bundle" }
-            .forEach { bundleFile ->
-                logger.info("${bundleFile.absolutePath} copying to $outputDir")
-                bundleFile.copyRecursively(
-                    target = File(outputDir, bundleFile.name),
-                    overwrite = true
-                )
+                        // extracting bundles
+                        layout
+                            .resourcesDir
+                            .absolutePath
+                            .let(::File)
+                            .listFiles { file: File -> file.extension == "bundle" }
+                            // copying bundles to app
+                            ?.forEach {
+                                logger.info("${it.absolutePath} copying to $outputDir")
+                                it.copyRecursively(
+                                    target = File(outputDir, it.name),
+                                    overwrite = true
+                                )
+                            }
+                    }
             }
+        }
+        doLast(action)
     }
-}
+
+// copy .bundle from .kexe to .app
+tasks.withType<org.jetbrains.compose.experimental.uikit.tasks.ExperimentalPackComposeApplicationForXCodeTask>()
+    .configureEach {
+        val packTask: org.jetbrains.compose.experimental.uikit.tasks.ExperimentalPackComposeApplicationForXCodeTask = this
+
+        val kclass = org.jetbrains.compose.experimental.uikit.tasks.ExperimentalPackComposeApplicationForXCodeTask::class
+        val kotlinBinaryField =
+            kclass.declaredMemberProperties.single { it.name == "kotlinBinary" }
+        val destinationDirField =
+            kclass.declaredMemberProperties.single { it.name == "destinationDir" }
+        val executablePathField =
+            kclass.declaredMemberProperties.single { it.name == "executablePath" }
+
+        @Suppress("ObjectLiteralToLambda") // lambda broke up-to-date
+        val action = object : Action<Task> {
+            override fun execute(t: Task) {
+                val kotlinBinary: RegularFile =
+                    (kotlinBinaryField.get(packTask) as RegularFileProperty).get()
+                val destinationDir: Directory =
+                    (destinationDirField.get(packTask) as DirectoryProperty).get()
+                val executablePath: String =
+                    (executablePathField.get(packTask) as Provider<String>).get()
+
+                val outputDir: File = File(destinationDir.asFile, executablePath).parentFile
+
+                val bundleSearchDir: File = kotlinBinary.asFile.parentFile
+                bundleSearchDir
+                    .listFiles { file: File -> file.extension == "bundle" }
+                    ?.forEach { file ->
+                        file.copyRecursively(File(outputDir, file.name), true)
+                    }
+            }
+        }
+        doLast(action)
+    }
