@@ -79,8 +79,12 @@ fun ColorScheme.toNullableColorScheme(): NullableColorScheme {
     return NullableColorScheme(
         primary, onPrimary, primaryContainer,
         onPrimaryContainer, inversePrimary, secondary,
-        onSecondary, secondaryContainer
+        onSecondary, secondaryContainer, onSecondaryContainer,
+        tertiary, onTertiary, tertiaryContainer, onTertiaryContainer, background, onBackground, surface, onSurface,
+        surfaceVariant, onSurfaceVariant, surfaceTint, inverseSurface, inverseOnSurface, error, onError, errorContainer,
+        onError, outline, outlineVariant, scrim
     )
+
 }
 
 @Composable
