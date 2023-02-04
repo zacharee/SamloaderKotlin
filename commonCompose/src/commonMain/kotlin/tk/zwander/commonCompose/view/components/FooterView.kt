@@ -108,7 +108,6 @@ fun FooterView(
 
             LazyRow(
                 modifier = Modifier.align(Alignment.Bottom),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
                     IconButton(
