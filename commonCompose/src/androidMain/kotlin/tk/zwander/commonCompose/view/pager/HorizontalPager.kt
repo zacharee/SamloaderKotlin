@@ -5,11 +5,17 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import tk.zwander.commonCompose.view.components.Page
+import kotlin.jvm.internal.DefaultConstructorMarker
+
+private val constructor = Class.forName("androidx.compose.material.TabPosition")
+    .getDeclaredConstructor(Float::class.java, Float::class.java)
+    .apply { isAccessible = true }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -40,10 +46,7 @@ actual fun HorizontalPager(
     return { tabPositions ->
         TabRowDefaults.Indicator(
             Modifier.pagerTabIndicatorOffset(pState, tabPositions.map {
-                Class.forName("androidx.compose.material.TabPosition")
-                    .getConstructor(Dp::class.java, Dp::class.java)
-                    .apply { isAccessible = true }
-                    .newInstance(it.left, it.right) as androidx.compose.material.TabPosition
+                constructor.newInstance(it.left.value, it.width.value) as androidx.compose.material.TabPosition
             })
         )
     }

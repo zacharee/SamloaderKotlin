@@ -72,6 +72,8 @@ fun AlertDialogContents(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
+                Spacer(Modifier.weight(1f))
+
                 buttons()
             }
         }

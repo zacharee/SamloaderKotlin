@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     implementation(project(":commonCompose"))
+    implementation("com.google.android.material:material:1.8.0")
 }
 
 android {

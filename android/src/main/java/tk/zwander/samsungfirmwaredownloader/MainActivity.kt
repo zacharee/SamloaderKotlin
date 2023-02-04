@@ -11,7 +11,10 @@ import android.provider.DocumentsContract
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.Modifier
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import kotlinx.coroutines.*
 import moe.tlaster.precompose.lifecycle.PreComposeActivity
 import moe.tlaster.precompose.lifecycle.setContent
@@ -98,13 +101,14 @@ class MainActivity : PreComposeActivity(), CoroutineScope by MainScope() {
 
         //Set up windowing stuff.
         actionBar?.hide()
-        window.statusBarColor = Color.parseColor("#${primary}")
-        window.navigationBarColor = Color.parseColor("#${background}")
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         //Set the Compose content.
         setContent {
             MainView(
                 Modifier.imePadding()
+                    .systemBarsPadding()
             )
         }
     }

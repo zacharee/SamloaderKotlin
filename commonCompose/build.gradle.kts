@@ -126,6 +126,12 @@ android {
         this.targetSdk = targetSdk
     }
 
+    compileOptions {
+        val javaVersionEnum: JavaVersion by rootProject.extra
+        sourceCompatibility = javaVersionEnum
+        targetCompatibility = javaVersionEnum
+    }
+
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 }
 

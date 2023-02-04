@@ -42,6 +42,7 @@ kotlin {
         compilations.forEach {
             it.kotlinOptions {
                 freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
+                jvmTarget = rootProject.extra["javaVerionEnum"].toString()
             }
         }
     }
@@ -196,6 +197,12 @@ android {
 
         this.minSdk = minSdk
         this.targetSdk = targetSdk
+    }
+
+    compileOptions {
+        val javaVersionEnum: JavaVersion by rootProject.extra
+        sourceCompatibility = javaVersionEnum
+        targetCompatibility = javaVersionEnum
     }
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")

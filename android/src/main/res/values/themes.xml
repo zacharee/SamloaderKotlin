@@ -1,6 +1,7 @@
 <resources xmlns:tk.zwander.common.tools="http://schemas.android.com/tk.zwander.common.tools">
-    <style name="Theme.SamloaderKotlin" parent="Theme.AppCompat">
+    <style name="Theme.SamloaderKotlin" parent="Theme.Material3.DynamicColors.DayNight">
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 </resources>
