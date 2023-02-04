@@ -32,8 +32,10 @@ fun SplitComponent(
         val constraints = this.constraints
         val density = LocalDensity.current
 
-        val (horizontalSpacingPx, verticalSpacingPx) = with(density) {
-            horizontalSpacing.toPx() to verticalSpacing.toPx()
+        val (horizontalSpacingPx, verticalSpacingPx) = rememberSaveable(horizontalSpacing, verticalSpacing) {
+            with(density) {
+                horizontalSpacing.toPx() to verticalSpacing.toPx()
+            }
         }
 
         val isOverThreshold = rememberSaveable(density, constraints.maxWidth) {
@@ -41,24 +43,40 @@ fun SplitComponent(
         }
         val transition = updateTransition(isOverThreshold)
 
+        var initialLayoutDone by rememberSaveable(density) { mutableStateOf(false) }
         var fieldHeight by rememberSaveable(density) { mutableStateOf(0) }
 
-        val layoutHeight by animateIntAsState(if (isOverThreshold) fieldHeight else (2 * fieldHeight + verticalSpacingPx).toInt())
+        val layoutHeight by if (fieldHeight == 0 || !initialLayoutDone) derivedStateOf {
+            fieldHeight.also {
+                if (fieldHeight != 0) {
+                    initialLayoutDone = true
+                }
+            }
+        } else animateIntAsState(if (isOverThreshold) fieldHeight else (2 * fieldHeight + verticalSpacingPx).toInt())
 
         val startComponentWidth by derivedStateOf { constraints.maxWidth * startRatio - (horizontalSpacingPx / 2.0) }
         val endComponentWidth by derivedStateOf { constraints.maxWidth * endRatio - (horizontalSpacingPx / 2.0) }
 
-        val endComponentOffset by transition.animateIntOffset {
+        val endComponentOffset by if (!initialLayoutDone) derivedStateOf {
+            IntOffset(
+                x = if (isOverThreshold) (startComponentWidth + horizontalSpacingPx).toInt() else 0,
+                y = if (isOverThreshold) 0 else (fieldHeight + verticalSpacingPx).toInt()
+            )
+        } else transition.animateIntOffset {
             IntOffset(
                 x = if (it) (startComponentWidth + horizontalSpacingPx).toInt() else 0,
                 y = if (it) 0 else (fieldHeight + verticalSpacingPx).toInt()
             )
         }
 
-        val startComponentAnimWidth by transition.animateInt {
+        val startComponentAnimWidth by if (!initialLayoutDone) derivedStateOf {
+            if (isOverThreshold) startComponentWidth.toInt() else constraints.maxWidth
+        } else transition.animateInt {
             if (it) startComponentWidth.toInt() else constraints.maxWidth
         }
-        val endComponentAnimWidth by transition.animateInt {
+        val endComponentAnimWidth by if (!initialLayoutDone) derivedStateOf {
+            if (isOverThreshold) endComponentWidth.toInt() else constraints.maxWidth
+        } else transition.animateInt {
             if (it) endComponentWidth.toInt() else constraints.maxWidth
         }
 

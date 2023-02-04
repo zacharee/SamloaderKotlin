@@ -30,9 +30,10 @@ fun HistoryItem(
     changelogExpanded: Boolean,
     onChangelogExpanded: (Boolean) -> Unit,
     onDownload: (fw: String) -> Unit,
-    onDecrypt: (fw: String) -> Unit
+    onDecrypt: (fw: String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Box {
+    Box(modifier) {
         Card(
             modifier = Modifier.fillMaxWidth(),
         ) {

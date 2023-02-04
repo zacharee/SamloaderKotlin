@@ -3,6 +3,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.formdev.flatlaf.FlatDarkLaf
 import com.github.weisj.darklaf.DarkLaf
@@ -16,6 +18,7 @@ import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.samloaderkotlin.strings
 import java.awt.Desktop
+import java.awt.Dimension
 import javax.swing.*
 import kotlin.time.ExperimentalTime
 
@@ -50,6 +53,12 @@ fun main() {
             icon = getImage("icon.png").toPainter(),
             state = mainWindowState
         ) {
+            with (LocalDensity.current) {
+                val minWidth = 200.dp
+                val minHeight = 250.dp
+                window.minimumSize = Dimension(minWidth.roundToPx(), minHeight.roundToPx())
+            }
+
             UIManager.setLookAndFeel(FlatDarkLaf())
             FilePicker.init(window)
 
