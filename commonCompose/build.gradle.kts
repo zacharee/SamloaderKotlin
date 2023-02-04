@@ -61,8 +61,8 @@ kotlin {
 
             dependencies {
                 api(project(":common"))
-                api("com.google.accompanist:accompanist-pager:0.29.1-alpha")
-                api("com.google.accompanist:accompanist-pager-indicators:0.29.1-alpha")
+                // TODO: Remove this once JB Compose updates to 1.4.x
+                api("androidx.compose.foundation:foundation:1.4.0-alpha05")
             }
         }
 

@@ -41,7 +41,11 @@ fun HybridButton(
                     Text(text)
                 }
             } else {
-                IconButton(modifier = modifier, onClick = onClick, enabled = enabled) {
+                IconButton(
+                    modifier = modifier,
+                    onClick = onClick,
+                    enabled = enabled,
+                ) {
                     when {
                         icon != null -> {
                             Icon(
