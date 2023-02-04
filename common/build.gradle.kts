@@ -17,7 +17,7 @@ plugins {
     id("de.comahe.i18n4k")
     id("dev.icerock.mobile.multiplatform-resources")
     kotlin("native.cocoapods")
-    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.0"
+    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.10"
     kotlin("plugin.serialization") version "1.8.0"
 }
 
@@ -72,7 +72,7 @@ kotlin {
 
     sourceSets {
         val korlibsVersion = "2.7.0"
-        val ktorVersion = "2.0.3"
+        val ktorVersion = "2.2.3"
         val jsoupVersion = "1.15.3"
 
         val commonMain by getting {
@@ -81,7 +81,7 @@ kotlin {
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 //                api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
                 api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
@@ -124,7 +124,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
-                api("androidx.appcompat:appcompat:1.5.1")
+                api("androidx.appcompat:appcompat:1.6.0")
                 api("androidx.fragment:fragment-ktx:1.5.5")
                 api("androidx.activity:activity-compose:1.6.1")
                 api("androidx.core:core-ktx:1.9.0")
@@ -133,7 +133,7 @@ kotlin {
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
                 // Remove this once JB Compose gets the updated version.
-                api("androidx.compose.foundation:foundation-layout:1.4.0-alpha03")
+                api("androidx.compose.foundation:foundation-layout:1.4.0-alpha05")
                 api("com.caverock:androidsvg-aar:1.4")
             }
         }
@@ -172,14 +172,14 @@ kotlin {
         val macosArm64Main by getting {
             dependsOn(macosMain)
             dependencies {
-                api("org.jetbrains.skiko:skiko-macosarm64:0.7.44")
+                api("org.jetbrains.skiko:skiko-macosarm64:0.7.50")
             }
         }
 
         val macosX64Main by getting {
             dependsOn(macosMain)
             dependencies {
-                api("org.jetbrains.skiko:skiko-macosx64:0.7.44")
+                api("org.jetbrains.skiko:skiko-macosx64:0.7.50")
             }
         }
     }
