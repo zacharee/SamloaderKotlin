@@ -33,19 +33,17 @@ fun CustomMaterialTheme(block: @Composable()() -> Unit) {
 
 @Composable
 private fun ColorScheme.setColors(themeInfo: ThemeInfo): ColorScheme {
-    val base = copy(
-        primary = themeInfo.primaryColor ?: primary,
-        secondary = themeInfo.accentColor ?: secondary,
-        background = themeInfo.backgroundColor ?: background
-    )
+    val base = themeInfo.colors?.mergeWithColorScheme(this) ?: this
 
-    val onPrimary = themeInfo.onPrimaryColor ?: Color.White
-    val onSecondary = themeInfo.onSecondaryColor ?: Color.White
-    val onBackground = themeInfo.onBackgroundColor ?: base.onBackground
+    val onPrimary = themeInfo.colors?.onPrimary ?: Color.White
+    val onSecondary = themeInfo.colors?.onSecondary ?: Color.White
+    val onBackground = themeInfo.colors?.onBackground ?: base.onBackground
+    val onSurface = themeInfo.colors?.onSurface ?: base.onSurface
 
     return base.copy(
         onPrimary = onPrimary,
         onSecondary = onSecondary,
         onBackground = onBackground,
+        onSurface = onSurface,
     )
 }

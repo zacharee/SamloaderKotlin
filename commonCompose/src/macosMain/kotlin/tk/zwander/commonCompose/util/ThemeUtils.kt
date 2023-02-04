@@ -64,7 +64,9 @@ actual fun getThemeInfo(): ThemeInfo {
 
     return ThemeInfo(
         isDarkMode = dark,
-        primaryColor = accent,
-        accentColor = selectionColor,
+        colors = NullableColorScheme(
+            primary = accent,
+            secondary = selectionColor,
+        ),
     )
 }

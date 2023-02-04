@@ -1,3 +1,5 @@
+@file:JvmName("ThemeUtilsJVM")
+
 package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable
@@ -12,11 +14,13 @@ actual fun getThemeInfo(): ThemeInfo {
 
     return ThemeInfo(
         isDarkMode = dark,
-        primaryColor = manager.accentColorRule.accentColor.let {
-            Color(it.red, it.green, it.blue, it.alpha)
-        },
-        accentColor = manager.accentColorRule.selectionColor.let {
-            Color(it.red, it.green, it.blue, it.alpha)
-        }
+        colors = NullableColorScheme(
+            primary = manager.accentColorRule.accentColor.let {
+                Color(it.red, it.green, it.blue, it.alpha)
+            },
+            secondary = manager.accentColorRule.selectionColor.let {
+                Color(it.red, it.green, it.blue, it.alpha)
+            },
+        ),
     )
 }

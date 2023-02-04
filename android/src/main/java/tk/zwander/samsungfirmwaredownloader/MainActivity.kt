@@ -8,8 +8,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
+import android.view.View
+import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.Modifier
@@ -106,8 +109,14 @@ class MainActivity : PreComposeActivity(), CoroutineScope by MainScope() {
 
         //Set the Compose content.
         setContent {
+            WindowCompat.getInsetsController(window, window.decorView).apply {
+                isAppearanceLightStatusBars = !isSystemInDarkTheme()
+                isAppearanceLightNavigationBars = isAppearanceLightStatusBars
+            }
+
             MainView(
-                Modifier.imePadding()
+                Modifier
+                    .imePadding()
                     .systemBarsPadding()
             )
         }
