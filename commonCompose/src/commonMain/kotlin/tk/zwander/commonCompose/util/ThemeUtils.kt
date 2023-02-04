@@ -80,8 +80,10 @@ fun ColorScheme.toNullableColorScheme(): NullableColorScheme {
         primary, onPrimary, primaryContainer,
         onPrimaryContainer, inversePrimary, secondary,
         onSecondary, secondaryContainer, onSecondaryContainer,
-        tertiary, onTertiary, tertiaryContainer, onTertiaryContainer, background, onBackground, surface, onSurface,
-        surfaceVariant, onSurfaceVariant, surfaceTint, inverseSurface, inverseOnSurface, error, onError, errorContainer,
+        tertiary, onTertiary, tertiaryContainer, onTertiaryContainer,
+        background, onBackground, surface, onSurface,
+        surfaceVariant, onSurfaceVariant, surfaceTint, inverseSurface,
+        inverseOnSurface, error, onError, errorContainer,
         onError, outline, outlineVariant, scrim
     )
 
