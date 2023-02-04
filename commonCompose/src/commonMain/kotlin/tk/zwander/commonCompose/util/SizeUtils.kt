@@ -2,6 +2,7 @@ package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalDensity
 
 @Composable
@@ -14,7 +15,7 @@ fun rememberScaledSize(parentSize: Int): Float {
     val fontScale = LocalDensity.current.fontScale
     val density = LocalDensity.current.density
 
-    return remember(key1 = fontScale, key2 = density, key3 = parentSize) {
+    return rememberSaveable(fontScale, density, parentSize) {
         parentSize / (fontScale * density)
     }
 }
