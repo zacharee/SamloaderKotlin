@@ -94,8 +94,8 @@ kotlin {
                 api("io.fluidsonic.i18n:fluid-i18n:0.11.0")
                 api("io.fluidsonic.country:fluid-country:0.11.0")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-                api("com.russhwolf:multiplatform-settings:0.8.1")
-                api("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
+                api("com.russhwolf:multiplatform-settings:1.0.0")
+                api("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
                 api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")
                 api("dev.icerock.moko:resources:0.20.1")
             }
