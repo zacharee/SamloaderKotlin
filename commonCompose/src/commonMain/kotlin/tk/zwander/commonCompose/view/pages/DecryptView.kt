@@ -3,8 +3,7 @@ package tk.zwander.commonCompose.view.pages
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
-import androidx.compose.material.OutlinedTextField
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -33,7 +32,7 @@ expect object PlatformDecryptView {
     fun onProgress(status: String, current: Long, max: Long)
 }
 
-@OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
+@OptIn(DangerousInternalIoApi::class, ExperimentalTime::class, ExperimentalMaterial3Api::class)
 private suspend fun onDecrypt(model: DecryptModel) {
     PlatformDecryptView.onStart()
     val info = model.fileToDecrypt!!
@@ -88,6 +87,7 @@ private suspend fun onOpenFile(model: DecryptModel) {
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 fun DecryptView(scrollState: ScrollState) {
     val model = LocalDecryptModel.current
     val canDecrypt = model.fileToDecrypt != null && model.job == null

@@ -2,7 +2,7 @@ package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +21,7 @@ import tk.zwander.samloaderkotlin.strings
  * @param onDownload called when the user hits the "Download" button.
  * @param onDecrypt called when the user hits the "Decrypt" button.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryItem(
     index: Int,

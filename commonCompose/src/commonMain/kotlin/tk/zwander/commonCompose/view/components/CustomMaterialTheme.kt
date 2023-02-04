@@ -1,33 +1,51 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.material.darkColors
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwitchColors
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import tk.zwander.common.data.*
+import tk.zwander.commonCompose.util.ThemeInfo
+import tk.zwander.commonCompose.util.getThemeInfo
 
 /**
  * A Material theme with custom colors and such.
  */
 @Composable
 fun CustomMaterialTheme(block: @Composable()() -> Unit) {
+    val themeInfo = getThemeInfo()
+
+    val colorScheme = if (themeInfo.isDarkMode) {
+        darkColorScheme().setColors(themeInfo)
+    } else {
+        lightColorScheme().setColors(themeInfo)
+    }
+
     MaterialTheme(
-        colors = darkColors(
-            primary = Color(primary.toLong(16)),
-            primaryVariant = Color(primaryVariant.toLong(16)),
-            secondary = Color(secondary.toLong(16)),
-            secondaryVariant = Color(secondaryVariant.toLong(16)),
-            background = Color(background.toLong(16)),
-        ),
-        shapes = Shapes(
-            small = RoundedCornerShape(8.dp),
-            medium = RoundedCornerShape(12.dp),
-            large = RoundedCornerShape(16.dp)
-        )
+        colorScheme = colorScheme,
     ) {
         block()
     }
+}
+
+@Composable
+private fun ColorScheme.setColors(themeInfo: ThemeInfo): ColorScheme {
+    val base = copy(
+        primary = themeInfo.primaryColor ?: primary,
+        secondary = themeInfo.accentColor ?: secondary,
+        background = themeInfo.backgroundColor ?: background
+    )
+
+    val onPrimary = themeInfo.onPrimaryColor ?: Color.White
+    val onSecondary = themeInfo.onSecondaryColor ?: Color.White
+    val onBackground = themeInfo.onBackgroundColor ?: base.onBackground
+
+    return base.copy(
+        onPrimary = onPrimary,
+        onSecondary = onSecondary,
+        onBackground = onBackground,
+    )
 }

@@ -1,8 +1,11 @@
 package tk.zwander.commonCompose.view.pager
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.material.TabPosition
+import androidx.compose.material3.TabPosition
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import tk.zwander.commonCompose.view.components.Page
 
 @Composable
@@ -18,5 +21,9 @@ actual fun HorizontalPager(
         eval(Page.values()[it])
     }
 
-    return {}
+    return { tabPositions ->
+        TabRowDefaults.Indicator(
+            Modifier.tabIndicatorOffset(tabPositions[currentPage])
+        )
+    }
 }

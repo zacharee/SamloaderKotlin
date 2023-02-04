@@ -45,7 +45,8 @@ kotlin {
                 api(project(":common"))
                 api(compose.runtime)
                 api(compose.foundation)
-                api(compose.material)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                api(compose.material3)
                 api(compose.ui)
                 api("moe.tlaster:precompose:1.4.0")
             }
@@ -60,8 +61,8 @@ kotlin {
 
             dependencies {
                 api(project(":common"))
-                api("com.google.accompanist:accompanist-pager:0.24.12-rc")
-                api("com.google.accompanist:accompanist-pager-indicators:0.24.11-rc")
+                api("com.google.accompanist:accompanist-pager:0.29.1-alpha")
+                api("com.google.accompanist:accompanist-pager-indicators:0.29.1-alpha")
             }
         }
 

@@ -5,6 +5,8 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.window.*
 import com.formdev.flatlaf.FlatDarkLaf
+import com.github.weisj.darklaf.DarkLaf
+import com.github.weisj.darklaf.LafManager
 import moe.tlaster.precompose.PreComposeWindow
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs

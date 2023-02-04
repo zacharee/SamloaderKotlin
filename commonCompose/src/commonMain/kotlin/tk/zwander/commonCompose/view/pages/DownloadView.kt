@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -344,7 +344,7 @@ fun DownloadView(scrollState: ScrollState) {
                     modifier = Modifier.align(Alignment.CenterVertically),
                     enabled = canChangeOption,
                     colors = CheckboxDefaults.colors(
-                        checkedColor = MaterialTheme.colors.primary,
+                        checkedColor = MaterialTheme.colorScheme.primary,
                     ),
                     interactionSource = boxSource
                 )
@@ -366,13 +366,13 @@ fun DownloadView(scrollState: ScrollState) {
                 var showingRequestWarningDialog by remember { mutableStateOf(false) }
 
                 val textStyle =
-                    LocalTextStyle.current.copy(LocalContentColor.current.copy(alpha = LocalContentAlpha.current))
+                    LocalTextStyle.current.copy(LocalContentColor.current)
 
                 Row {
                     Spacer(Modifier.width(32.dp))
 
                     val info = buildAnnotatedString {
-                        pushStyle(SpanStyle(color = MaterialTheme.colors.error))
+                        pushStyle(SpanStyle(color = MaterialTheme.colorScheme.error))
                         append("${strings.manualWarning()} ")
                         pushStringAnnotation(
                             "MoreInfo",
@@ -399,11 +399,7 @@ fun DownloadView(scrollState: ScrollState) {
                 AlertDialogDef(
                     showing = showingRequestWarningDialog,
                     title = {
-                        Text(
-                            text = strings.moreInfo(),
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        Text(text = strings.moreInfo())
                     },
                     text = {
                         val info = buildAnnotatedString {
@@ -543,7 +539,7 @@ fun DownloadView(scrollState: ScrollState) {
                 ) {
                     Text(
                         text = strings.yes(),
-                        color = MaterialTheme.colors.error
+                        color = MaterialTheme.colorScheme.error
                     )
                 }
             }

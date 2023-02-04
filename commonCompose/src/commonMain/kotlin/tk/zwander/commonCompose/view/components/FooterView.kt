@@ -3,10 +3,10 @@ package tk.zwander.commonCompose.view.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,7 +54,7 @@ fun FooterView(
                     append(strings.version("${GradleConfig.versionName} © "))
                     pushStyle(
                         SpanStyle(
-                            color = MaterialTheme.colors.primary,
+                            color = MaterialTheme.colorScheme.primary,
                             textDecoration = TextDecoration.Underline
                         )
                     )
@@ -74,7 +74,7 @@ fun FooterView(
                     append(" ")
                     pushStyle(
                         SpanStyle(
-                            color = MaterialTheme.colors.primary,
+                            color = MaterialTheme.colorScheme.primary,
                             textDecoration = TextDecoration.Underline
                         )
                     )

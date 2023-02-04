@@ -2,8 +2,10 @@ package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,10 +20,10 @@ fun ChangelogDisplay(
     changelog: Changelog
 ) {
     Card(
-        backgroundColor = Color.Transparent,
-        elevation = 0.dp,
+        elevation = CardDefaults.cardElevation(),
         border = BorderStroke(1.dp, Color(255, 255, 255, 100)),
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier.padding(4.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()

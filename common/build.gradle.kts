@@ -114,6 +114,7 @@ kotlin {
                 api("com.formdev:flatlaf:2.1")
                 api("io.github.vincenzopalazzo:material-ui-swing:1.1.2")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
+                api("com.github.weisj:darklaf-core:2.7.2")
             }
         }
 

@@ -1,11 +1,11 @@
 package tk.zwander.commonCompose.view.pager
 
-import androidx.compose.material.TabPosition
-import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.TabPosition
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -39,7 +39,12 @@ actual fun HorizontalPager(
 
     return { tabPositions ->
         TabRowDefaults.Indicator(
-            Modifier.pagerTabIndicatorOffset(pState, tabPositions)
+            Modifier.pagerTabIndicatorOffset(pState, tabPositions.map {
+                Class.forName("androidx.compose.material.TabPosition")
+                    .getConstructor(Dp::class.java, Dp::class.java)
+                    .apply { isAccessible = true }
+                    .newInstance(it.left, it.right) as androidx.compose.material.TabPosition
+            })
         )
     }
 }

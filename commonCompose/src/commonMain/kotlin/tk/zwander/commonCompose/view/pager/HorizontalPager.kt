@@ -1,6 +1,6 @@
 package tk.zwander.commonCompose.view.pager
 
-import androidx.compose.material.TabPosition
+import androidx.compose.material3.TabPosition
 import androidx.compose.runtime.Composable
 import tk.zwander.commonCompose.view.components.Page
 

@@ -2,8 +2,8 @@ package tk.zwander.commonCompose
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material.Surface
-import androidx.compose.material.TabPosition
+import androidx.compose.material3.Surface
+import androidx.compose.material3.TabPosition
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
