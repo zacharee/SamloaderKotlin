@@ -51,10 +51,11 @@ Run the `package` Gradle task.
 3. Once it finishes building, check the output log to see where the executable was saved.
 
 ### GUI:
-1. Open the Gradle view in Android Studio (top-right).
-2. Expand the project, then expand "desktop".
-3. Expand "Tasks," then "build," and double-click "createDistributable" on Windows and Linux, or "packageDmg" on macOS.
-4. Once it finishes building, check the output log to see where the executable was saved.
+1. Go to Android Studio's settings (Ctrl+Alt+S on Windows and Linux, CMD+, on macOS), go to "Experimental", and uncheck "Only include test tasks in the Gradle task list generated during Gradle Sync".
+2. Open the Gradle view in Android Studio (top-right).
+3. Expand the project, then expand "desktop".
+4. Expand "Tasks", then "compose desktop" and double-click "createDistributable" on Windows and Linux, or "packageDmg" on macOS.
+5. Once it finishes building, check the output log to see where the executable was saved.
 
 ## Android:
 
