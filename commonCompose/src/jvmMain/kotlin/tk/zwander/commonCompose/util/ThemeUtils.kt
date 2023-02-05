@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.github.weisj.darklaf.LafManager
 import com.github.weisj.darklaf.theme.info.ColorToneRule
+import tk.zwander.commonCompose.monet.ColorScheme
 
 @Composable
 internal actual fun getThemeInfo(): ThemeInfo {
@@ -14,13 +15,9 @@ internal actual fun getThemeInfo(): ThemeInfo {
 
     return ThemeInfo(
         isDarkMode = dark,
-        colors = NullableColorScheme(
-            primary = manager.accentColorRule.accentColor.let {
-                Color(it.red, it.green, it.blue, it.alpha)
-            },
-            secondary = manager.accentColorRule.selectionColor.let {
-                Color(it.red, it.green, it.blue, it.alpha)
-            },
-        ),
+        colors = ColorScheme(
+            manager.accentColorRule.accentColor.rgb,
+            dark
+        ).toComposeColorScheme().toNullableColorScheme(),
     )
 }

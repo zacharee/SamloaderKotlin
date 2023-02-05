@@ -266,25 +266,25 @@ internal fun HistoryView(
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
-//                LazyVerticalStaggeredGrid(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    columns = StaggeredGridCells.Adaptive(minSize = 350.dp),
-//                    verticalArrangement = Arrangement.spacedBy(8.dp),
-//                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-//                    contentPadding = PaddingValues(4.dp)
-//                ) {
-//                    itemsIndexed(model.historyItems, { _, item -> item.toString() }) { index, historyInfo ->
-//                        HistoryItem(
-//                            index = index,
-//                            info = historyInfo,
-//                            changelog = model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
-//                            changelogExpanded = expanded[historyInfo.toString()] ?: false,
-//                            onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
-//                            onDownload = { onDownload(model.model, model.region, it) },
-//                            onDecrypt = { onDecrypt(model.model, model.region, it) }
-//                        )
-//                    }
-//                }
+                LazyVerticalStaggeredGrid(
+                    modifier = Modifier.fillMaxWidth(),
+                    columns = StaggeredGridCells.Adaptive(minSize = 350.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(4.dp)
+                ) {
+                    itemsIndexed(model.historyItems, { _, item -> item.toString() }) { index, historyInfo ->
+                        HistoryItem(
+                            index = index,
+                            info = historyInfo,
+                            changelog = model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
+                            changelogExpanded = expanded[historyInfo.toString()] ?: false,
+                            onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
+                            onDownload = { onDownload(model.model, model.region, it) },
+                            onDecrypt = { onDecrypt(model.model, model.region, it) }
+                        )
+                    }
+                }
             }
         }
     }
