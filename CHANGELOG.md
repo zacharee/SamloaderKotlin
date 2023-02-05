@@ -1,3 +1,15 @@
+# 1.13.0
+- The History view now uses LazyVerticalStaggeredGrid instead of a manual non-lazy implementation.
+- Upgrade to Kotlin 1.8.0 and Compose 1.3.x.
+- Add dynamic theming for Android, Windows, and macOS.
+- Move to Material Design 3.
+- Set minimum window dimensions to 200x300dp.
+- Work on pager performance on Android.
+- Decrease spacing between icon buttons in footer.
+- Show a loading indicator when fetching version info in the Download view.
+- Fix the last card in the History view being cut off.
+- Update dependencies.
+
 # 1.12.0
 - Allow continuing download if Bifrost detects a version mismatch.
 - Improve version mismatch checking.
