@@ -264,7 +264,8 @@ internal fun HistoryView(
             AnimatedVisibility(
                 visible = model.historyItems.isNotEmpty(),
                 enter = fadeIn(),
-                exit = fadeOut()
+                exit = fadeOut(),
+                modifier = Modifier.weight(1f)
             ) {
                 LazyVerticalStaggeredGrid(
                     modifier = Modifier.fillMaxWidth(),
