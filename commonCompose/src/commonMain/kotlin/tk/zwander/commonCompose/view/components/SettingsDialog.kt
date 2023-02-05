@@ -16,7 +16,7 @@ import com.soywiz.korio.util.OS
 import tk.zwander.samloaderkotlin.strings
 
 @Composable
-fun SettingsDialog(
+internal fun SettingsDialog(
     showing: Boolean,
     options: List<Pair<String, String>>,
     modifier: Modifier = Modifier,

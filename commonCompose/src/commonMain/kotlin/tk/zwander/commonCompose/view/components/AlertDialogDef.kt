@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AlertDialogDef(
+internal fun AlertDialogDef(
     showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable() RowScope.() -> Unit,
@@ -30,7 +30,7 @@ fun AlertDialogDef(
 }
 
 @Composable
-fun AlertDialogContents(
+internal fun AlertDialogContents(
     buttons: @Composable() RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     title: (@Composable() () -> Unit)?,

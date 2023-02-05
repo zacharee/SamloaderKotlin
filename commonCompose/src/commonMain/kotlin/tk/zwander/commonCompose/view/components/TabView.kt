@@ -22,7 +22,7 @@ enum class Page(val index: Int) {
  * Allows the user to switch among the different app pages.
  */
 @Composable
-fun TabView(
+internal fun TabView(
     selectedPage: Page,
     onPageSelected: (Page) -> Unit,
     indicator: @Composable() ((List<TabPosition>) -> Unit)?

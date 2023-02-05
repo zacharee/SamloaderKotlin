@@ -36,7 +36,7 @@ import kotlin.jvm.JvmName
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-actual fun CAlertDialog(
+internal actual fun CAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable() RowScope.() -> Unit,
@@ -91,7 +91,7 @@ actual fun CAlertDialog(
 }
 
 @Composable
-fun AbsolutePopup(
+internal fun AbsolutePopup(
     alignment: Alignment = Alignment.TopStart,
     offset: IntOffset = IntOffset(0, 0),
     focusable: Boolean = false,
@@ -118,7 +118,7 @@ fun AbsolutePopup(
 }
 
 @Composable
-fun AbsolutePopup(
+internal fun AbsolutePopup(
     provider: PopupPositionProvider,
     focusable: Boolean = false,
     onDismissRequest: (() -> Unit)? = null,

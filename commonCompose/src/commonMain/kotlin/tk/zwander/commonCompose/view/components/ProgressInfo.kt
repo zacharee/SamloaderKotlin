@@ -30,7 +30,7 @@ import kotlin.math.roundToInt
  * @param model the view model to use as a data source.
  */
 @Composable
-fun ProgressInfo(model: BaseModel) {
+internal fun ProgressInfo(model: BaseModel) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {

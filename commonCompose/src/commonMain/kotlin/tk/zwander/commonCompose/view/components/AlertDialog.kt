@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 
 @Composable
-expect fun CAlertDialog(
+internal expect fun CAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable RowScope.() -> Unit,

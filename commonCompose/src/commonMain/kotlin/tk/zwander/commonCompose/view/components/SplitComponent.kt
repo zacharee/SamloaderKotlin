@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SplitComponent(
+internal fun SplitComponent(
     startComponent: @Composable () -> Unit,
     endComponent: @Composable () -> Unit,
     threshold: Dp = 400.dp,

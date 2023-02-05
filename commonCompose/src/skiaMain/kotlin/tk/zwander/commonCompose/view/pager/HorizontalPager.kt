@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import tk.zwander.commonCompose.view.components.Page
 
 @Composable
-actual fun HorizontalPager(
+internal actual fun HorizontalPager(
     count: Int,
     currentPage: Int,
     onPageChanged: (Int) -> Unit,

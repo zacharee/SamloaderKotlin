@@ -90,4 +90,4 @@ fun ColorScheme.toNullableColorScheme(): NullableColorScheme {
 }
 
 @Composable
-expect fun getThemeInfo(): ThemeInfo
+internal expect fun getThemeInfo(): ThemeInfo

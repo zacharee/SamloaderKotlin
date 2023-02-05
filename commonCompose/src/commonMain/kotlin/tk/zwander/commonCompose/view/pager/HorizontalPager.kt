@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import tk.zwander.commonCompose.view.components.Page
 
 @Composable
-expect fun HorizontalPager(
+internal expect fun HorizontalPager(
     count: Int,
     currentPage: Int,
     onPageChanged: (Int) -> Unit,

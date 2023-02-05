@@ -19,7 +19,7 @@ import tk.zwander.commonCompose.view.components.PatreonSupportersList
 import tk.zwander.samloaderkotlin.strings
 
 @Composable
-fun PatreonSupportersWindow(
+internal fun PatreonSupportersWindow(
     showing: Boolean,
     onDismiss: () -> Unit
 ) {

@@ -20,7 +20,7 @@ import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
  * and an image button otherwise.
  */
 @Composable
-fun HybridButton(
+internal fun HybridButton(
     icon: ImageBitmap? = null,
     vectorIcon: Painter? = null,
     description: String?,

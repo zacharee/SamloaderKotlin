@@ -23,7 +23,7 @@ import tk.zwander.samloaderkotlin.strings
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryItem(
+internal fun HistoryItem(
     index: Int,
     info: HistoryInfo,
     changelog: Changelog?,

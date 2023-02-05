@@ -11,7 +11,7 @@ import tk.zwander.common.util.SupporterInfo
 import tk.zwander.samloaderkotlin.strings
 
 @Composable
-fun PatreonSupportersDialog(
+internal fun PatreonSupportersDialog(
     showing: Boolean,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit

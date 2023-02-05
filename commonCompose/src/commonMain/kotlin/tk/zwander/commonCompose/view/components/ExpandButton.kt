@@ -16,7 +16,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ExpandButton(
+internal fun ExpandButton(
     expanded: Boolean,
     text: String,
     onExpandChange: (Boolean) -> Unit

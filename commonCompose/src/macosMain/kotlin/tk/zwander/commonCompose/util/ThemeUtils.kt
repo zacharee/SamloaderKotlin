@@ -9,7 +9,7 @@ import platform.Foundation.NSProcessInfo
 import platform.Foundation.NSUserDefaults
 
 @Composable
-actual fun getThemeInfo(): ThemeInfo {
+internal actual fun getThemeInfo(): ThemeInfo {
     val defaults = NSUserDefaults.standardUserDefaults()
     val osVersion = NSProcessInfo.processInfo().operatingSystemVersion()
     val switchesAutomatically = if (osVersion.useContents { this.majorVersion >= 11 || (this.majorVersion >= 10 && this.minorVersion >= 15) }) {

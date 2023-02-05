@@ -64,3 +64,18 @@ afterEvaluate {
         nodeVersion = "16.0.0"
     }
 }
+
+tasks.findByPath(":common:jsProcessResources")?.apply {
+    dependsOn(":common:generateMRcommonMain")
+    dependsOn("generateMRjsMain")
+}
+
+tasks.findByPath(":commonCompose:jsProcessResources")?.apply {
+    dependsOn(":commonCompose:generateMRcommonMain")
+    dependsOn("generateMRjsMain")
+}
+
+tasks.findByPath(":browser:jsProcessResources")?.apply {
+    dependsOn(":browser:generateMRcommonMain")
+    dependsOn("generateMRjsMain")
+}

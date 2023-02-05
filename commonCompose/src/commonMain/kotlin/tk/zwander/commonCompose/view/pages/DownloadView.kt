@@ -242,7 +242,7 @@ private suspend fun onFetch(model: DownloadModel) {
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-fun DownloadView(scrollState: ScrollState) {
+internal fun DownloadView(scrollState: ScrollState) {
     val model = LocalDownloadModel.current
 
     val canCheckVersion = !model.manual && model.model.isNotBlank()

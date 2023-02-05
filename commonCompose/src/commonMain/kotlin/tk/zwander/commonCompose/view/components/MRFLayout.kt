@@ -25,7 +25,7 @@ import tk.zwander.samloaderkotlin.strings
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
+internal fun MRFLayout(model: BaseModel, canChangeOption: Boolean, canChangeFirmware: Boolean, showFirmware: Boolean = true) {
     SplitComponent(
         startComponent = {
             OutlinedTextField(

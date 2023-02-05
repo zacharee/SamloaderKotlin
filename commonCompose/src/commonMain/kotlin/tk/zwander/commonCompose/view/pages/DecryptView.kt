@@ -88,7 +88,7 @@ private suspend fun onOpenFile(model: DecryptModel) {
 @ExperimentalTime
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun DecryptView(scrollState: ScrollState) {
+internal fun DecryptView(scrollState: ScrollState) {
     val model = LocalDecryptModel.current
     val canDecrypt = model.fileToDecrypt != null && model.job == null
             && model.fw.isNotBlank() && model.model.isNotBlank() && model.region.isNotBlank()

@@ -21,7 +21,7 @@ import tk.zwander.commonCompose.view.components.FooterView
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AboutDialog(
+internal fun AboutDialog(
     visible: Boolean,
     onDismiss: () -> Unit
 ) {

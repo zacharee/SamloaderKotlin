@@ -12,7 +12,7 @@ import tk.zwander.commonCompose.view.components.Page
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-actual fun HorizontalPager(
+internal actual fun HorizontalPager(
     count: Int,
     currentPage: Int,
     onPageChanged: (Int) -> Unit,

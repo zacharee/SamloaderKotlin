@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.window.Dialog
 
 @Composable
-actual fun CAlertDialog(
+internal actual fun CAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable() RowScope.() -> Unit,

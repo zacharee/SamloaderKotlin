@@ -16,7 +16,7 @@ import tk.zwander.commonCompose.util.parseHtml
 import tk.zwander.samloaderkotlin.strings
 
 @Composable
-fun ChangelogDisplay(
+internal fun ChangelogDisplay(
     changelog: Changelog
 ) {
     Card(

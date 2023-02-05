@@ -8,7 +8,7 @@ import com.github.weisj.darklaf.LafManager
 import com.github.weisj.darklaf.theme.info.ColorToneRule
 
 @Composable
-actual fun getThemeInfo(): ThemeInfo {
+internal actual fun getThemeInfo(): ThemeInfo {
     val manager = LafManager.getPreferredThemeStyle()
     val dark = manager.colorToneRule == ColorToneRule.DARK
 

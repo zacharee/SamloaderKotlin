@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FormatText(
+internal fun FormatText(
     text: String,
     textFormat: Any?,
     modifier: Modifier = Modifier,

@@ -11,7 +11,7 @@ import dev.icerock.moko.resources.AssetResource
  */
 
 @Composable
-fun vectorResource(resource: AssetResource): Painter {
+internal fun vectorResource(resource: AssetResource): Painter {
     var painter by remember(resource) { mutableStateOf<Painter?>(null) }
 
     vectorResourceImpl(resource) {

@@ -44,7 +44,7 @@ import kotlin.math.max
  * @param lastLineMainAxisAlignment Overrides the main axis alignment of the last row.
  */
 @Composable
-public fun FlowRow(
+internal fun FlowRow(
     modifier: Modifier = Modifier,
     mainAxisSize: SizeMode = SizeMode.Wrap,
     mainAxisAlignment: FlowMainAxisAlignment = FlowMainAxisAlignment.Start,
@@ -82,7 +82,7 @@ public fun FlowRow(
  * @param lastLineMainAxisAlignment Overrides the main axis alignment of the last column.
  */
 @Composable
-public fun FlowColumn(
+internal fun FlowColumn(
     modifier: Modifier = Modifier,
     mainAxisSize: SizeMode = SizeMode.Wrap,
     mainAxisAlignment: FlowMainAxisAlignment = FlowMainAxisAlignment.Start,

@@ -17,7 +17,7 @@ plugins {
     id("de.comahe.i18n4k")
     id("dev.icerock.mobile.multiplatform-resources")
     kotlin("native.cocoapods")
-    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.10"
+    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.0"
     kotlin("plugin.serialization") version "1.8.0"
 }
 
@@ -229,6 +229,10 @@ i18n4k {
 }
 
 tasks.named("jvmProcessResources") {
+    dependsOn(tasks.named("generateI18n4kFiles"))
+}
+
+tasks.named("jsProcessResources") {
     dependsOn(tasks.named("generateI18n4kFiles"))
 }
 
