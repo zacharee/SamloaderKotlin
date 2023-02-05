@@ -466,7 +466,7 @@ internal fun DownloadView(scrollState: ScrollState) {
         }
 
         AnimatedVisibility(
-            visible = model.progress.first > 0 || model.progress.second > 0 || model.statusText.isNotBlank(),
+            visible = model.job != null || model.progress.first > 0 || model.progress.second > 0 || model.statusText.isNotBlank(),
         ) {
             Column {
                 Spacer(Modifier.height(16.dp))

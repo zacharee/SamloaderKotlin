@@ -34,11 +34,14 @@ internal fun ProgressInfo(model: BaseModel) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = model.statusText
-        )
+        if (model.statusText.isNotBlank()) {
+            Text(
+                text = model.statusText
+            )
+        }
 
-        val hasProgress = model.progress.first > 0 && model.progress.second > 0
+        val isIndeterminate = model.progress.first <= 0 || model.progress.second <= 0
+        val hasProgress = model.job != null || (model.progress.first > 0 && model.progress.second > 0)
 
         AnimatedVisibility(
             visible = hasProgress
@@ -46,58 +49,63 @@ internal fun ProgressInfo(model: BaseModel) {
             Column {
                 Spacer(Modifier.size(8.dp))
 
-                val newProgress = (model.progress.first.toFloat() / model.progress.second)
+                if (isIndeterminate) {
+                    LinearProgressIndicator(
+                        modifier = Modifier.height(16.dp)
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp)),
+                    )
+                } else {
+                    val newProgress = (model.progress.first.toFloat() / model.progress.second)
 
-                val animatedProgress by animateFloatAsState(
-                    targetValue = ceil(newProgress * 100f) / 100f, // Get rid of some precision to reduce lag.
-                    animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
-                )
+                    val animatedProgress by animateFloatAsState(
+                        targetValue = ceil(newProgress * 100f) / 100f, // Get rid of some precision to reduce lag.
+                        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+                    )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
                     LinearProgressIndicator(
                         progress = animatedProgress,
-                        modifier = Modifier.height(16.dp).weight(1f).align(Alignment.CenterVertically)
-                            .clip(RoundedCornerShape(8.dp))
-                    )
-                }
-
-                Spacer(Modifier.size(8.dp))
-
-                FlowRow(
-                    modifier = Modifier.fillMaxWidth(),
-                    mainAxisAlignment = FlowMainAxisAlignment.SpaceEvenly,
-                    mainAxisSize = SizeMode.Expand,
-                    mainAxisSpacing = 16.dp,
-                    crossAxisSpacing = 16.dp
-                ) {
-                    FormatText(
-                        text = "%",
-                        textFormat = try {
-                            (model.progress.first.toFloat() / model.progress.second * 100 * 100.0).roundToInt() / 100.0
-                        } catch (e: IllegalArgumentException) {
-                            0.0
-                        }.toStringDecimal(2),
+                        modifier = Modifier.height(16.dp)
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(8.dp)),
                     )
 
-                    val speedKBps = model.speed / 1024.0
-                    val shouldUseMB = speedKBps >= 1 * 1024
-                    val finalSpeed =
-                        (((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0).toStringDecimal(2)
+                    Spacer(Modifier.size(8.dp))
 
-                    FormatText(
-                        text = if (shouldUseMB) strings.mibs() else strings.kibs(),
-                        textFormat = finalSpeed,
-                    )
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        mainAxisAlignment = FlowMainAxisAlignment.SpaceEvenly,
+                        mainAxisSize = SizeMode.Expand,
+                        mainAxisSpacing = 16.dp,
+                        crossAxisSpacing = 16.dp
+                    ) {
+                        FormatText(
+                            text = "%",
+                            textFormat = try {
+                                (model.progress.first.toFloat() / model.progress.second * 100 * 100.0).roundToInt() / 100.0
+                            } catch (e: IllegalArgumentException) {
+                                0.0
+                            }.toStringDecimal(2),
+                        )
 
-                    val currentMB = ((model.progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0).toStringDecimal(2)
-                    val totalMB = ((model.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0).toStringDecimal(2)
+                        val speedKBps = model.speed / 1024.0
+                        val shouldUseMB = speedKBps >= 1 * 1024
+                        val finalSpeed =
+                            (((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0).toStringDecimal(2)
 
-                    FormatText(
-                        text = strings.mib(),
-                        textFormat = "$currentMB / $totalMB",
-                    )
+                        FormatText(
+                            text = if (shouldUseMB) strings.mibs() else strings.kibs(),
+                            textFormat = finalSpeed,
+                        )
+
+                        val currentMB = ((model.progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0).toStringDecimal(2)
+                        val totalMB = ((model.progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0).toStringDecimal(2)
+
+                        FormatText(
+                            text = strings.mib(),
+                            textFormat = "$currentMB / $totalMB",
+                        )
+                    }
                 }
             }
         }
