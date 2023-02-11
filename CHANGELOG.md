@@ -1,3 +1,6 @@
+# 1.13.1
+- Fix crashes and UI issues on Android.
+
 # 1.13.0
 - The History view now uses LazyVerticalStaggeredGrid instead of a manual non-lazy implementation.
 - Upgrade to Kotlin 1.8.0 and Compose 1.3.x.
