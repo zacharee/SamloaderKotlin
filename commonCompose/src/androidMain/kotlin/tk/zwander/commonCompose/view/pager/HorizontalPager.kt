@@ -25,7 +25,9 @@ internal actual fun HorizontalPager(
     }
 
     LaunchedEffect(key1 = pState.currentPage) {
-        onPageChanged(pState.currentPage)
+        if (!pState.isScrollInProgress) {
+            onPageChanged(pState.currentPage)
+        }
     }
 
     androidx.compose.foundation.pager.HorizontalPager(
