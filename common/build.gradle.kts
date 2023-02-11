@@ -126,7 +126,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
-                api("androidx.appcompat:appcompat:1.6.0")
+                api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.fragment:fragment-ktx:1.5.5")
                 api("androidx.activity:activity-compose:1.6.1")
                 api("androidx.core:core-ktx:1.9.0")
@@ -135,7 +135,7 @@ kotlin {
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
                 // Remove this once JB Compose gets the updated version.
-                api("androidx.compose.foundation:foundation-layout:1.4.0-alpha05")
+                api("androidx.compose.foundation:foundation-layout:1.4.0-beta01")
                 api("com.caverock:androidsvg-aar:1.4")
             }
         }

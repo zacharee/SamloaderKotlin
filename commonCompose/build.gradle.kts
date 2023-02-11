@@ -62,7 +62,7 @@ kotlin {
             dependencies {
                 api(project(":common"))
                 // TODO: Remove this once JB Compose updates to 1.4.x
-                api("androidx.compose.foundation:foundation:1.4.0-alpha05")
+                api("androidx.compose.foundation:foundation:1.4.0-beta01")
             }
         }
 
