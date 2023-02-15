@@ -28,7 +28,10 @@ internal fun PatreonSupportersWindow(
 
         LaunchedEffect(key1 = null) {
             supporters.clear()
-            supporters.addAll(PatreonSupportersParser.getInstance().parseSupporters())
+
+            try {
+                supporters.addAll(PatreonSupportersParser.getInstance().parseSupporters())
+            } catch (_: Exception) {}
         }
 
         Window(
