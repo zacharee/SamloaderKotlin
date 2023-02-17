@@ -56,6 +56,7 @@ internal actual fun CAlertDialog(
         AbsolutePopup(
             alignment = Alignment.Center,
             onDismissRequest = onDismissRequest,
+            focusable = true,
         ) {
             BoxWithConstraints(
                 modifier = Modifier

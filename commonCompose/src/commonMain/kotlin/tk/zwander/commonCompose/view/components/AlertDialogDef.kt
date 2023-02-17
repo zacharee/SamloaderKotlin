@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -61,7 +62,9 @@ internal fun AlertDialogContents(
             }
 
             text?.let {
-                Column {
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
                     it()
                 }
 
@@ -69,7 +72,8 @@ internal fun AlertDialogContents(
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(Modifier.weight(1f))
 
