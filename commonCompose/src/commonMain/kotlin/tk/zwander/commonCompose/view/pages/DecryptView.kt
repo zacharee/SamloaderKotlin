@@ -33,7 +33,7 @@ expect object PlatformDecryptView {
     fun onProgress(status: String, current: Long, max: Long)
 }
 
-@OptIn(DangerousInternalIoApi::class, ExperimentalTime::class, ExperimentalMaterial3Api::class)
+@OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
 private suspend fun onDecrypt(model: DecryptModel) {
     PlatformDecryptView.onStart()
     val info = model.fileToDecrypt.value!!
