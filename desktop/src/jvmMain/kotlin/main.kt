@@ -102,6 +102,13 @@ fun main() {
                         )
 
                         Item(
+                            text = strings.mastodon(),
+                            onClick = {
+                                UrlHandler.launchUrl("https://androiddev.social/@wander1236")
+                            }
+                        )
+
+                        Item(
                             text = strings.twitter(),
                             onClick = {
                                 UrlHandler.launchUrl("https://twitter.com/wander1236")

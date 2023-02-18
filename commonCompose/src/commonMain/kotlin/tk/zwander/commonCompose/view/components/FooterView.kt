@@ -138,6 +138,19 @@ fun FooterView(
                 item {
                     IconButton(
                         onClick = {
+                            UrlHandler.launchUrl("https://androiddev.social/@wander1236")
+                        },
+                    ) {
+                        Icon(
+                            vectorResource(MR.assets.mastodon), strings.mastodon(),
+                            modifier = Modifier.padding(8.dp).size(24.dp)
+                        )
+                    }
+                }
+
+                item {
+                    IconButton(
+                        onClick = {
                             UrlHandler.launchUrl("https://twitter.com/wander1236")
                         },
                     ) {
