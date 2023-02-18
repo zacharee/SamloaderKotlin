@@ -39,6 +39,8 @@ internal fun MRFLayout(
         mutableStateOf(false)
     }
 
+    val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
+
     SplitComponent(
         startComponent = {
             OutlinedTextField(
@@ -106,6 +108,10 @@ internal fun MRFLayout(
     CSCChooserDialog(
         showing = showingCscChooser,
         onDismissRequest = { showingCscChooser = false },
-        onCscSelected = { model.region.value = it }
+        onCscSelected = {
+            if (!hasRunningJobs) {
+                model.region.value = it
+            }
+        }
     )
 }
