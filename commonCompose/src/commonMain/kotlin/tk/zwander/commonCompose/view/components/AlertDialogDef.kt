@@ -23,7 +23,7 @@ internal fun AlertDialogDef(
     modifier: Modifier = Modifier,
     title: (@Composable() () -> Unit)?,
     text: (@Composable() ColumnScope.() -> Unit)?,
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = MaterialTheme.shapes.extraLarge,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(backgroundColor)
 ) {

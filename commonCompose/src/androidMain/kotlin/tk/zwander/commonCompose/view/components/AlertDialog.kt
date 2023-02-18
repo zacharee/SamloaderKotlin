@@ -2,11 +2,14 @@ package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 
 @Composable
 internal actual fun CAlertDialog(
@@ -23,9 +26,18 @@ internal actual fun CAlertDialog(
     if (showing) {
         Dialog(
             onDismissRequest = onDismissRequest,
+            properties = DialogProperties(
+                decorFitsSystemWindows = false
+            )
         ) {
             AlertDialogContents(
-                buttons, modifier, title, text, shape, backgroundColor, contentColor
+                buttons,
+                modifier.imePadding().systemBarsPadding(),
+                title,
+                text,
+                shape,
+                backgroundColor,
+                contentColor
             )
         }
     }
