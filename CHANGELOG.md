@@ -1,3 +1,9 @@
+# 1.14.1
+- Add some more CSCs.
+- Fix an issue with version checking preventing downloads.
+- Replace a bunch of model states with flows.
+- Don't allow the CSC picker dialog to change the current CSC while an operation is running.
+
 # 1.14.0
 - Avoid a crash when parsing Patreon supporters fails.
 - Add a CSC picker dialog to make it easier to choose the right CSC or pick an alternative CSC.
