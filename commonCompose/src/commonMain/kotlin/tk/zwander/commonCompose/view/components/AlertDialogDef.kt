@@ -48,7 +48,8 @@ internal fun AlertDialogContents(
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             title?.let {
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
@@ -57,18 +58,10 @@ internal fun AlertDialogContents(
                         it()
                     }
                 }
-
-                Spacer(Modifier.size(8.dp))
             }
 
             text?.let {
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    it()
-                }
-
-                Spacer(Modifier.size(8.dp))
+                it()
             }
 
             Row(

@@ -35,10 +35,10 @@ val options = arrayListOf<Pair<String, String>>().apply {
 fun FooterView(
     modifier: Modifier = Modifier
 ) {
-    Box {
-        var showingSupportersDialog by remember { mutableStateOf(false) }
-        var showingSettings by remember { mutableStateOf(false) }
+    var showingSupportersDialog by remember { mutableStateOf(false) }
+    var showingSettings by remember { mutableStateOf(false) }
 
+    Box {
         Row(
             modifier = modifier.fillMaxWidth()
                 .padding(8.dp)
@@ -178,13 +178,13 @@ fun FooterView(
                 }
             }
         }
+    }
 
-        PatreonSupportersDialog(showingSupportersDialog) {
-            showingSupportersDialog = false
-        }
+    PatreonSupportersDialog(showingSupportersDialog) {
+        showingSupportersDialog = false
+    }
 
-        SettingsDialog(showingSettings, options) {
-            showingSettings = false
-        }
+    SettingsDialog(showingSettings, options) {
+        showingSettings = false
     }
 }

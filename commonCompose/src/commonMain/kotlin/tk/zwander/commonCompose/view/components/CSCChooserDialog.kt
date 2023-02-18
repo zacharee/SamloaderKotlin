@@ -120,7 +120,8 @@ fun CSCChooserDialog(
             Spacer(Modifier.size(8.dp))
 
             LazyColumn(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
