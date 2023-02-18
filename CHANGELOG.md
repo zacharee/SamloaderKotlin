@@ -1,3 +1,11 @@
+# 1.14.0
+- Avoid a crash when parsing Patreon supporters fails.
+- Add a CSC picker dialog to make it easier to choose the right CSC or pick an alternative CSC.
+- Add Material You icon for Android 12+.
+- Tweak dialog behavior and UI.
+- Add Mastodon social link.
+- Move version info to dialog if screen width is below 600dp.
+
 # 1.13.1
 - Fix crashes and UI issues on Android.
 

@@ -19,7 +19,7 @@ Binaries are available for 64-bit versions Windows, Linux, macOS, and Android. J
 
 Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) page for the downloads.
 
-# Troubleshooting
+# FAQ & Troubleshooting
 
 ## Bifrost is returning error 400/401 when downloading
 These errors are on Samsung's end. If you can, try using a different region/CSC.
@@ -34,6 +34,21 @@ If you have switchable graphics, try using a different GPU.
 
 ## Download speeds are slow
 Samsung's servers sometimes throttle downloads to about 3MiB/s. For older devices, you may see even slower speeds. Different regions/CSCs may have faster downloads.
+
+## How do I know which CSC to use?
+On your device, do the following:
+1. Open the Settings app.
+2. Scroll down to "About phone" or "About tablet" and tap it.
+3. Tap "Software information".
+4. Scroll down to "Service provider software version".
+5. You'll see something like "XAA/XAA,XAA/XAU/TMB" or "XAR/XAR/" on the second line.
+
+The first three letters there are your current CSC. The last three letters are the original/firmware CSC of your device.  
+Using the above examples, the first has a current CSC of XAA and a firmware CSC of TMB. The second has a current CSC of XAR and a firmware CSC of XAR.
+
+## How do I choose an alternative CSC if mine isn't working?
+Use the CSC picker dialog (the button that looks like a list inside the "Region" text field).  
+You can search for your country or region in there and see the different CSCs used. If there are specific carriers associated with a CSC, they'll also be shown.
 
 # Building
 Building this project should be fairly easy.
