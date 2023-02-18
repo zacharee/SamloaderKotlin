@@ -6,8 +6,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalDensity
 
 @Composable
-internal fun rememberIsOverScaledThreshold(parentSize: Int): Boolean {
-    return rememberScaledSize(parentSize) >= 400
+internal fun rememberIsOverScaledThreshold(parentSize: Int, threshold: Int = 400): Boolean {
+    return rememberScaledSize(parentSize) >= threshold
 }
 
 @Composable

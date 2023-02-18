@@ -1,23 +1,32 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.soywiz.korio.util.OS
-import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
+import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
@@ -37,78 +46,48 @@ fun FooterView(
 ) {
     var showingSupportersDialog by remember { mutableStateOf(false) }
     var showingSettings by remember { mutableStateOf(false) }
+    var showingAboutDialog by remember { mutableStateOf(false) }
 
-    Box {
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        val overThreshold = rememberIsOverScaledThreshold(constraints.maxWidth, 600)
+
         Row(
             modifier = modifier.fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Column {
-                val copyrightAnnotated = buildAnnotatedString {
-                    pushStyle(
-                        SpanStyle(
-                            color = LocalContentColor.current,
-                            fontSize = 16.sp
-                        )
-                    )
-                    append(strings.version("${GradleConfig.versionName} © "))
-                    pushStyle(
-                        SpanStyle(
-                            color = MaterialTheme.colorScheme.primary,
-                            textDecoration = TextDecoration.Underline
-                        )
-                    )
-                    pushStringAnnotation("WebsiteLink", "https://zwander.dev")
-                    append(strings.zacharyWander())
-                    pop()
-                }
+            if (overThreshold) {
+                AboutInfo()
 
-                val samloaderAnnotated = buildAnnotatedString {
-                    pushStyle(
-                        SpanStyle(
-                            color = LocalContentColor.current,
-                            fontSize = 16.sp
-                        )
-                    )
-                    append(strings.basedOn())
-                    append(" ")
-                    pushStyle(
-                        SpanStyle(
-                            color = MaterialTheme.colorScheme.primary,
-                            textDecoration = TextDecoration.Underline
-                        )
-                    )
-                    pushStringAnnotation("SamloaderLink", "https://github.com/nlscc/samloader")
-                    append(strings.samloader())
-                    pop()
-                }
-
-                ClickableText(
-                    text = copyrightAnnotated,
-                    onClick = {
-                        copyrightAnnotated.getStringAnnotations("WebsiteLink", it, it)
-                            .firstOrNull()?.let { item ->
-                                UrlHandler.launchUrl(item.item)
-                            }
-                    }
-                )
-                Spacer(Modifier.height(4.dp))
-                ClickableText(
-                    text = samloaderAnnotated,
-                    onClick = {
-                        samloaderAnnotated.getStringAnnotations("SamloaderLink", it, it)
-                            .firstOrNull()?.let { item ->
-                                UrlHandler.launchUrl(item.item)
-                            }
-                    }
-                )
+                Spacer(Modifier.weight(1f))
             }
 
-            Spacer(Modifier.weight(1f))
-
             LazyRow(
-                modifier = Modifier.align(Alignment.Bottom),
+                modifier = Modifier.align(Alignment.Bottom).then(
+                    if (overThreshold) {
+                        Modifier
+                    } else {
+                        Modifier.fillMaxWidth()
+                    }
+                ),
+                horizontalArrangement = if (overThreshold) Arrangement.Start else Arrangement.SpaceEvenly
             ) {
+                if (!overThreshold) {
+                    item {
+                        IconButton(
+                            onClick = {
+                                showingAboutDialog = true
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Info,
+                                contentDescription = strings.about()
+                            )
+                        }
+                    }
+                }
+
                 item {
                     IconButton(
                         onClick = {
@@ -200,4 +179,20 @@ fun FooterView(
     SettingsDialog(showingSettings, options) {
         showingSettings = false
     }
+
+    AlertDialogDef(
+        showing = showingAboutDialog,
+        onDismissRequest = { showingAboutDialog = false },
+        title = {
+            Text(text = strings.about())
+        },
+        text = {
+            AboutInfo()
+        },
+        buttons = {
+            TextButton(onClick = { showingAboutDialog = false }) {
+                Text(text = strings.ok())
+            }
+        }
+    )
 }
