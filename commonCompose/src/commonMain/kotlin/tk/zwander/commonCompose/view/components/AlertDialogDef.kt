@@ -1,5 +1,6 @@
 package tk.zwander.commonCompose.view.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
@@ -61,7 +62,9 @@ internal fun AlertDialogContents(
             }
 
             text?.let {
-                it()
+                Column(modifier = Modifier.weight(1f, false)) {
+                    it()
+                }
             }
 
             Row(

@@ -2,6 +2,7 @@ package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
@@ -27,12 +28,15 @@ internal actual fun CAlertDialog(
         Dialog(
             onDismissRequest = onDismissRequest,
             properties = DialogProperties(
-                decorFitsSystemWindows = false
+                decorFitsSystemWindows = false,
+                usePlatformDefaultWidth = false,
             )
         ) {
             AlertDialogContents(
                 buttons,
-                modifier.imePadding().systemBarsPadding(),
+                modifier.imePadding()
+                    .systemBarsPadding()
+                    .fillMaxWidth(0.9f),
                 title,
                 text,
                 shape,
