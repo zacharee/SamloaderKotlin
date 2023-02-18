@@ -238,7 +238,6 @@ object CSCDB {
         CSCItem("VDF", "NL", "Vodafone"),
         CSCItem("VDP", "NL"),
         CSCItem("XEN", "NL"),
-        CSCItem("VNZ", "NZ"),
         CSCItem("ECT", "NG"),
         CSCItem("GCR", "NG"),
         CSCItem("MML", "NG"),
