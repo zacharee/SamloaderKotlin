@@ -518,6 +518,7 @@ object CSCDB {
         CSCItem("FKR", "US"),
         CSCItem("XAG", "US"),
         CSCItem("ATC", "US"),
+        CSCItem("KDI", "JP", "KDDI au")
     ).sortedBy { it.code }
 
     fun getAll(): List<CSCItem> {
