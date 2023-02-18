@@ -117,8 +117,6 @@ fun CSCChooserDialog(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(Modifier.size(8.dp))
-
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
