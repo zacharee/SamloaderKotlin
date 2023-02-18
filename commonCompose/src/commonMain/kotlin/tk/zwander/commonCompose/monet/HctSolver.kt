@@ -20,7 +20,7 @@ import kotlin.math.sqrt
  */
 object HctSolver {
     // Matrix used when converting from linear RGB to CAM16.
-    val SCALED_DISCOUNT_FROM_LINRGB = arrayOf(
+    private val SCALED_DISCOUNT_FROM_LINRGB = arrayOf(
         doubleArrayOf(
             0.001200833568784504, 0.002389694492170889, 0.0002795742885861124
         ), doubleArrayOf(
@@ -31,7 +31,7 @@ object HctSolver {
     )
 
     // Matrix used when converting from CAM16 to linear RGB.
-    val LINRGB_FROM_SCALED_DISCOUNT = arrayOf(
+    private val LINRGB_FROM_SCALED_DISCOUNT = arrayOf(
         doubleArrayOf(
             1373.2198709594231, -1100.4251190754821, -7.278681089101213
         ), doubleArrayOf(
@@ -42,13 +42,13 @@ object HctSolver {
     )
 
     // Weights for transforming a set of linear RGB coordinates to Y in XYZ.
-    val Y_FROM_LINRGB = doubleArrayOf(0.2126, 0.7152, 0.0722)
+    private val Y_FROM_LINRGB = doubleArrayOf(0.2126, 0.7152, 0.0722)
 
     // Lookup table for plane in XYZ's Y axis (relative luminance) that corresponds to a given
     // L* in L*a*b*. HCT's T is L*, and XYZ's Y is directly correlated to linear RGB, this table
     // allows us to thus find the intersection between HCT and RGB, giving a solution to the
     // RGB coordinates that correspond to a given set of HCT coordinates.
-    val CRITICAL_PLANES = doubleArrayOf(
+    private val CRITICAL_PLANES = doubleArrayOf(
         0.015176349177441876,
         0.045529047532325624,
         0.07588174588720938,
@@ -324,8 +324,7 @@ object HctSolver {
      */
     fun trueDelinearized(rgbComponent: Double): Double {
         val normalized = rgbComponent / 100.0
-        val delinearized: Double
-        delinearized = if (normalized <= 0.0031308) {
+        val delinearized = if (normalized <= 0.0031308) {
             normalized * 12.92
         } else {
             1.055 * pow(normalized, 1.0 / 2.4) - 0.055
@@ -429,7 +428,7 @@ object HctSolver {
 
     /** Ensure X is between 0 and 100.  */
     fun isBounded(x: Double): Boolean {
-        return 0.0 <= x && x <= 100.0
+        return x in 0.0..100.0
     }
 
     /**
@@ -536,8 +535,8 @@ object HctSolver {
         var right = segment[1]
         for (axis in 0..2) {
             if (left[axis] != right[axis]) {
-                var lPlane = -1
-                var rPlane = 255
+                var lPlane: Int
+                var rPlane: Int
                 if (left[axis] < right[axis]) {
                     lPlane = criticalPlaneBelow(trueDelinearized(left[axis]))
                     rPlane = criticalPlaneAbove(trueDelinearized(right[axis]))
@@ -649,7 +648,7 @@ object HctSolver {
             }
             // Iterates with Newton method,
             // Using 2 * fn(j) / j as the approximation of fn'(j)
-            j = j - (fnj - y) * j / (2 * fnj)
+            j -= (fnj - y) * j / (2 * fnj)
         }
         return 0
     }
@@ -665,12 +664,12 @@ object HctSolver {
      * sufficiently close, and chroma will be maximized.
      */
     fun solveToInt(hueDegrees: Double, chroma: Double, lstar: Double): Int {
-        var hueDegrees = hueDegrees
+        var mutableHueDegrees = hueDegrees
         if (chroma < 0.0001 || lstar < 0.0001 || lstar > 99.9999) {
             return CamUtils.argbFromLstar(lstar)
         }
-        hueDegrees = sanitizeDegreesDouble(hueDegrees)
-        val hueRadians: Double = hueDegrees * PI / 180.0
+        mutableHueDegrees = sanitizeDegreesDouble(mutableHueDegrees)
+        val hueRadians: Double = mutableHueDegrees * PI / 180.0
         val y = CamUtils.yFromLstar(lstar)
         val exactAnswer = findResultByJ(hueRadians, chroma, y)
         return if (exactAnswer != 0) {
@@ -684,12 +683,12 @@ object HctSolver {
      * @return a degree measure between 0.0 (inclusive) and 360.0 (exclusive).
      */
     fun sanitizeDegreesDouble(degrees: Double): Double {
-        var degrees = degrees
-        degrees = degrees % 360.0
-        if (degrees < 0) {
-            degrees = degrees + 360.0
+        var mutableDegrees = degrees
+        mutableDegrees %= 360.0
+        if (mutableDegrees < 0) {
+            mutableDegrees += 360.0
         }
-        return degrees
+        return mutableDegrees
     }
 
     /**

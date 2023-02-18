@@ -58,12 +58,12 @@ object CamUtils {
     // used. It was derived using Schlomer's technique of transforming the xyY
     // primaries to XYZ, then applying a correction to ensure mapping from sRGB
     // 1, 1, 1 to the reference white point, D65.
-    val SRGB_TO_XYZ = arrayOf(
+    private val SRGB_TO_XYZ = arrayOf(
         doubleArrayOf(0.41233895, 0.35762064, 0.18051042),
         doubleArrayOf(0.2126, 0.7152, 0.0722),
         doubleArrayOf(0.01932141, 0.11916382, 0.95034478)
     )
-    val XYZ_TO_SRGB = arrayOf(
+    private val XYZ_TO_SRGB = arrayOf(
         doubleArrayOf(
             3.2413774792388685, -1.5376652402851851, -0.49885366846268053
         ), doubleArrayOf(
@@ -140,8 +140,7 @@ object CamUtils {
      */
     fun delinearized(rgbComponent: Double): Int {
         val normalized = rgbComponent / 100.0
-        var delinearized = 0.0
-        delinearized = if (normalized <= 0.0031308) {
+        val delinearized = if (normalized <= 0.0031308) {
             normalized * 12.92
         } else {
             1.055 * normalized.pow(1.0 / 2.4) - 0.055
@@ -188,8 +187,7 @@ object CamUtils {
         val zT = if (cubeExceedEpsilon) fy * fy * fy else (116f * fy - 16f) / kappa
         return ColorUtils.XYZToColor(
             (xT * WHITE_POINT_D65[0]).toDouble(),
-            (
-                    yT * WHITE_POINT_D65[1]).toDouble(), (zT * WHITE_POINT_D65[2]).toDouble()
+            (yT * WHITE_POINT_D65[1]).toDouble(), (zT * WHITE_POINT_D65[2]).toDouble()
         )
     }
 
@@ -200,10 +198,9 @@ object CamUtils {
 
     fun lstarFromY(y: Float): Float {
         var y = y
-        y = y / 100.0f
+        y /= 100.0f
         val e = 216f / 24389f
-        val yIntermediate: Float
-        yIntermediate = if (y <= e) {
+        val yIntermediate = if (y <= e) {
             return 24389f / 27f * y
         } else {
             cbrt(y.toDouble()).toFloat()

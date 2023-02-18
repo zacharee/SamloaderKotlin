@@ -20,7 +20,7 @@ object Shades {
      * lstar 49.6 is the smallest lstar that will lead to a contrast ratio >= 4.5 with lstar 100,
      * and it also contrasts >= 4.5 with lstar 100.
      */
-    const val MIDDLE_LSTAR = 49.6f
+    private const val MIDDLE_LSTAR = 49.6f
 
     /**
      * Generate shades of a color. Ordered in lightness _descending_.

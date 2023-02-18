@@ -223,9 +223,9 @@ class Cam internal constructor(
             val bT = xyz[0] * matrix[2][0] + xyz[1] * matrix[2][1] + xyz[2] * matrix[2][2]
 
             // Discount illuminant
-            val rD: Float = frame.rgbD.get(0) * rT
-            val gD: Float = frame.rgbD.get(1) * gT
-            val bD: Float = frame.rgbD.get(2) * bT
+            val rD: Float = frame.rgbD[0] * rT
+            val gD: Float = frame.rgbD[1] * gT
+            val bD: Float = frame.rgbD[2] * bT
 
             // Chromatic adaptation
             val rAF: Float =
@@ -392,13 +392,13 @@ class Cam internal constructor(
             // Yellows are very chromatic at L = 100, and blues are very chromatic at L = 0. All the
             // other hues are white at L = 100, and black at L = 0. To preserve consistency for users of
             // this system, it is better to simply return white at L* > 99, and black and L* < 0.
-            var hue = hue
+            var mutableHue = hue
             if (frame == Frame.DEFAULT) {
                 // If the viewing conditions are the same as the default sRGB-like viewing conditions,
                 // skip to using HctSolver: it uses geometrical insights to find the closest in-gamut
                 // match to hue/chroma/lstar.
                 return HctSolver.solveToInt(
-                    hue.toDouble(),
+                    mutableHue.toDouble(),
                     chroma.toDouble(),
                     lstar.toDouble()
                 )
@@ -406,7 +406,7 @@ class Cam internal constructor(
             if (chroma < 1.0 || round(lstar) <= 0.0 || round(lstar) >= 100.0) {
                 return CamUtils.intFromLstar(lstar)
             }
-            hue = if (hue < 0) 0f else min(360f, hue)
+            mutableHue = if (mutableHue < 0) 0f else min(360f, mutableHue)
 
             // The highest chroma possible. Updated as binary search proceeds.
             var high = chroma
@@ -420,7 +420,7 @@ class Cam internal constructor(
             while (abs(low - high) >= CHROMA_SEARCH_ENDPOINT) {
                 // Given the current chroma guess, mid, and the desired hue, find J, lightness in
                 // CAM16 color space, that creates a color with L* = `lstar` in the L*a*b* color space.
-                val possibleAnswer = findCamByJ(hue, mid, lstar)
+                val possibleAnswer = findCamByJ(mutableHue, mid, lstar)
                 if (isFirstLoop) {
                     return if (possibleAnswer != null) {
                         possibleAnswer.viewed(frame)
@@ -462,7 +462,7 @@ class Cam internal constructor(
         private fun findCamByJ(hue: Float, chroma: Float, lstar: Float): Cam? {
             var low = 0.0f
             var high = 100.0f
-            var mid = 0.0f
+            var mid: Float
             var bestdL = 1000.0f
             var bestdE = 1000.0f
             var bestCam: Cam? = null

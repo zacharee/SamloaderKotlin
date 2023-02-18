@@ -58,7 +58,7 @@ internal class HueSubtract(val amountDegrees: Double) : Hue {
     }
 }
 
-internal class HueVibrantSecondary() : Hue {
+internal class HueVibrantSecondary : Hue {
     val hueToRotations = listOf(Pair(0, 18), Pair(41, 15), Pair(61, 10), Pair(101, 12),
             Pair(131, 15), Pair(181, 18), Pair(251, 15), Pair(301, 12), Pair(360, 12))
     override fun get(sourceColor: Cam): Double {
@@ -74,7 +74,7 @@ internal class HueVibrantTertiary() : Hue {
     }
 }
 
-internal class HueExpressiveSecondary() : Hue {
+internal class HueExpressiveSecondary : Hue {
     val hueToRotations = listOf(Pair(0, 45), Pair(21, 95), Pair(51, 45), Pair(121, 20),
             Pair(151, 45), Pair(191, 90), Pair(271, 45), Pair(321, 45), Pair(360, 45))
     override fun get(sourceColor: Cam): Double {
@@ -82,7 +82,7 @@ internal class HueExpressiveSecondary() : Hue {
     }
 }
 
-internal class HueExpressiveTertiary() : Hue {
+internal class HueExpressiveTertiary : Hue {
     val hueToRotations = listOf(Pair(0, 120), Pair(21, 120), Pair(51, 20), Pair(121, 45),
             Pair(151, 20), Pair(191, 15), Pair(271, 20), Pair(321, 120), Pair(360, 120))
     override fun get(sourceColor: Cam): Double {
@@ -265,7 +265,6 @@ class ColorScheme(
         val paletteSize = accent1.size
 
         fun getColor(type: Type, paletteIndex: Int, num: Int): Color {
-            val i = paletteIndex * (paletteSize + 1)
             val shades = when (type) {
                 Type.Accent -> allAccentColors
                 Type.Neutral -> allNeutralColors
@@ -278,7 +277,7 @@ class ColorScheme(
             }
 
             return Color(
-                shades.filterIndexed { index, i ->
+                shades.filterIndexed { index, _ ->
                     val l = index % paletteSize
                     val idx = index / paletteSize + 1
 
