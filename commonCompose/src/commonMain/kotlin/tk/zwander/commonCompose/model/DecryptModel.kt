@@ -1,6 +1,6 @@
 package tk.zwander.commonCompose.model
 
-import androidx.compose.runtime.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import tk.zwander.common.data.DecryptFileInfo
 
 /**
@@ -10,9 +10,9 @@ class DecryptModel : BaseModel() {
     /**
      * Contains the encrypted file and decrypted target.
      */
-    var fileToDecrypt by mutableStateOf<DecryptFileInfo?>(null)
+    val fileToDecrypt = MutableStateFlow<DecryptFileInfo?>(null)
 
     override fun onEnd(text: String) {
-        fileToDecrypt = null
+        fileToDecrypt.value = null
     }
 }

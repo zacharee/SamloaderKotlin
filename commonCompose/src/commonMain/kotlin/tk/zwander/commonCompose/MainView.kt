@@ -58,20 +58,20 @@ fun MainView(modifier: Modifier = Modifier) {
                             .align(Alignment.CenterHorizontally)
                     ) {
                         val historyDownloadCallback = { model: String, region: String, fw: String ->
-                            downloadModel.manual = true
-                            downloadModel.osCode = ""
-                            downloadModel.model = model
-                            downloadModel.region = region
-                            downloadModel.fw = fw
+                            downloadModel.manual.value = true
+                            downloadModel.osCode.value = ""
+                            downloadModel.model.value = model
+                            downloadModel.region.value = region
+                            downloadModel.fw.value = fw
 
                             currentPage = Page.DOWNLOADER
                         }
 
                         val historyDecryptCallback = { model: String, region: String, fw: String ->
-                            decryptModel.fileToDecrypt = null
-                            decryptModel.model = model
-                            decryptModel.region = region
-                            decryptModel.fw = fw
+                            decryptModel.fileToDecrypt.value = null
+                            decryptModel.model.value = model
+                            decryptModel.region.value = region
+                            decryptModel.fw.value = fw
 
                             currentPage = Page.DECRYPTER
                         }

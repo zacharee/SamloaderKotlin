@@ -6,7 +6,14 @@ import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import moe.tlaster.precompose.viewmodel.ViewModel
 
 /**
@@ -16,81 +23,68 @@ open class BaseModel : ViewModel() {
     /**
      * Device model.
      */
-    var model by mutableStateOf("")
+    val model = MutableStateFlow("")
 
     /**
      * Device region.
      */
-    var region by mutableStateOf("")
+    val region = MutableStateFlow("")
 
     /**
      * Firmware string, if available.
      */
-    var fw by mutableStateOf("")
+    val fw = MutableStateFlow("")
 
     /**
      * Current status, if available.
      */
-    var statusText by mutableStateOf("")
+    val statusText = MutableStateFlow("")
 
     /**
      * The current speed of the operation.
      */
-    var speed by mutableStateOf(0L)
+    val speed = MutableStateFlow(0L)
 
     /**
      * The current progress of the operation,
      * based on Pair(current, max).
      */
-    var progress by mutableStateOf(0L to 0L)
+    val progress = MutableStateFlow(0L to 0L)
 
-    /**
-     * Any Job currently running.
-     */
-    var job: Job?
-        get() = _job
-        set(value) {
-            onFinish()
-            _job = value
-            if (value != null) {
-                onStart()
-            }
-        }
+    private val _jobs = MutableStateFlow(listOf<Job>())
 
-    private var _job by mutableStateOf<Job?>(null)
+    val jobs: StateFlow<List<Job>> = _jobs.asStateFlow()
+
+    val hasRunningJobs: Flow<Boolean>
+        get() = jobs.map { it.any { j -> j.isActive } }
 
     /**
      * A coroutine scope.
      */
     @OptIn(InternalAPI::class)
-    var scope = CoroutineScope(Dispatchers.clientDispatcher(5, "Background${this::class.simpleName}"))
+    private val scope = CoroutineScope(Dispatchers.clientDispatcher(5, "Background${this::class.simpleName}"))
 
     /**
      * Called when a Job should be ended.
      * @param text the text to show in the status message.
      */
     open val endJob = { text: String ->
-        job?.apply {
-            cancelChildren()
-            cancel()
+        _jobs.value.forEach {
+            it.cancelChildren()
+            it.cancel()
         }
-        job = null
-        progress = 0L to 0L
-        speed = 0L
-        statusText = text
+        _jobs.value = listOf()
+
+        progress.value = 0L to 0L
+        speed.value = 0L
+        statusText.value = text
 
         onEnd(text)
     }
 
-    /**
-     * Called when a new Job is set.
-     */
-    protected open fun onStart() {}
-
-    /**
-     * Called when the Job is cleared.
-     */
-    protected open fun onFinish() {}
+    fun launchJob(block: suspend CoroutineScope.() -> Unit) {
+        _jobs.value = _jobs.value + scope.launch(block = block)
+    }
 
     /**
      * Sub-classes can override this to perform

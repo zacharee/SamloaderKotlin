@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -107,8 +109,8 @@ private fun parseHistoryXml(xml: String): List<HistoryInfo> {
 }
 
 private suspend fun onFetch(model: HistoryModel) {
-    val historyString = getFirmwareHistoryString(model.model, model.region)
-    val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model, model.region)
+    val historyString = getFirmwareHistoryString(model.model.value, model.region.value)
+    val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value, model.region.value)
 
     if (historyString == null && historyStringXml == null) {
         model.endJob(strings.historyError())
@@ -129,14 +131,14 @@ private suspend fun onFetch(model: HistoryModel) {
                 }
             }
 
-            model.changelogs = try {
-                ChangelogHandler.getChangelogs(model.model, model.region)
+            model.changelogs.value = try {
+                ChangelogHandler.getChangelogs(model.model.value, model.region.value)
             } catch (e: Exception) {
                 println("Error retrieving changelogs")
                 e.printStackTrace()
                 null
             }
-            model.historyItems = parsed
+            model.historyItems.value = parsed
             model.endJob("")
         } catch (e: Exception) {
             e.printStackTrace()
@@ -157,8 +159,12 @@ internal fun HistoryView(
     onDecrypt: (model: String, region: String, fw: String) -> Unit
 ) {
     val model = LocalHistoryModel.current
-    val canCheckHistory = model.model.isNotBlank()
-            && model.region.isNotBlank() && model.job == null
+    val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
+    val modelModel by model.model.collectAsState()
+    val region by model.region.collectAsState()
+    val statusText by model.statusText.collectAsState()
+    val canCheckHistory = modelModel.isNotBlank()
+            && region.isNotBlank() && !hasRunningJobs
 
     val odinRomSource = buildAnnotatedString {
         pushStyle(
@@ -193,9 +199,9 @@ internal fun HistoryView(
             ) {
                 HybridButton(
                     onClick = {
-                        model.historyItems = listOf()
+                        model.historyItems.value = listOf()
 
-                        model.job = model.scope.launch {
+                        model.launchJob {
                             onFetch(model)
                         }
                     },
@@ -206,7 +212,7 @@ internal fun HistoryView(
                     parentSize = constraints.maxWidth
                 )
 
-                if (model.job != null) {
+                if (hasRunningJobs) {
                     Spacer(Modifier.width(8.dp))
 
                     CircularProgressIndicator(
@@ -222,7 +228,7 @@ internal fun HistoryView(
                     onClick = {
                         model.endJob("")
                     },
-                    enabled = model.job != null,
+                    enabled = hasRunningJobs,
                     text = strings.cancel(),
                     description = strings.cancel(),
                     vectorIcon = vectorResource(MR.assets.cancel),
@@ -233,7 +239,7 @@ internal fun HistoryView(
 
         Spacer(Modifier.height(8.dp))
 
-        MRFLayout(model, model.job == null, model.job == null, false)
+        MRFLayout(model, !hasRunningJobs, !hasRunningJobs, false)
 
         ClickableText(
             text = odinRomSource,
@@ -255,14 +261,17 @@ internal fun HistoryView(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            if (model.statusText.isNotBlank()) {
+            if (statusText.isNotBlank()) {
                 Text(
-                    text = model.statusText,
+                    text = statusText,
                 )
             }
 
+            val historyItems by model.historyItems.collectAsState()
+            val changelogs by model.changelogs.collectAsState()
+
             AnimatedVisibility(
-                visible = model.historyItems.isNotEmpty(),
+                visible = historyItems.isNotEmpty(),
                 enter = fadeIn(),
                 exit = fadeOut(),
                 modifier = Modifier.weight(1f)
@@ -274,15 +283,15 @@ internal fun HistoryView(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(4.dp)
                 ) {
-                    itemsIndexed(model.historyItems, { _, item -> item.toString() }) { index, historyInfo ->
+                    itemsIndexed(historyItems, { _, item -> item.toString() }) { index, historyInfo ->
                         HistoryItem(
                             index = index,
                             info = historyInfo,
-                            changelog = model.changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
+                            changelog = changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
                             changelogExpanded = expanded[historyInfo.toString()] ?: false,
                             onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
-                            onDownload = { onDownload(model.model, model.region, it) },
-                            onDecrypt = { onDecrypt(model.model, model.region, it) }
+                            onDownload = { onDownload(model.model.value, model.region.value, it) },
+                            onDecrypt = { onDecrypt(model.model.value, model.region.value, it) }
                         )
                     }
                 }

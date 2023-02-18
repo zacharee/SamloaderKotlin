@@ -14,22 +14,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.soywiz.korio.async.launch
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.DownloadFileInfo
-import tk.zwander.common.data.exception.VersionMismatchException
-import tk.zwander.commonCompose.model.DownloadModel
+import tk.zwander.common.data.exception.VersionException
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.locals.LocalDownloadModel
+import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.*
 import tk.zwander.samloaderkotlin.resources.MR
@@ -77,21 +75,21 @@ private suspend fun onDownload(
     confirmCallback: DownloadErrorCallback
 ) {
     PlatformDownloadView.onStart()
-    model.statusText = strings.downloading()
+    model.statusText.value = strings.downloading()
 
     val (info, error, output) = Request.getBinaryFile(
         client,
-        model.fw,
-        model.model,
-        model.region
+        model.fw.value,
+        model.model.value,
+        model.region.value
     )
 
-    if (error != null && error !is VersionMismatchException) {
+    if (error != null && error !is VersionException) {
         error.printStackTrace()
         model.endJob("${error.message ?: strings.error()}\n\n${output}")
         PlatformDownloadView.onFinish()
     } else {
-        if (error is VersionMismatchException) {
+        if (error is VersionException) {
             confirmCallback.onError(
                 info = DownloadErrorInfo(
                     message = error.message!!,
@@ -121,7 +119,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
 
     val fullFileName = fileName.replace(
         ".zip",
-        "_${model.fw.replace("/", "_")}_${model.region}.zip"
+        "_${model.fw.value.replace("/", "_")}_${model.region.value}.zip"
     )
 
     PlatformDownloadView.getInput(fullFileName) { inputInfo ->
@@ -137,22 +135,22 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                 inputInfo.downloadFile.openOutputStream(true),
                 inputInfo.downloadFile.getLength()
             ) { current, max, bps ->
-                model.progress = current to max
-                model.speed = bps
+                model.progress.value = current to max
+                model.speed.value = bps
 
                 PlatformDownloadView.onProgress(strings.downloading(), current, max)
             }
 
             if (crc32 != null) {
-                model.speed = 0L
-                model.statusText = strings.checkingCRC()
+                model.speed.value = 0L
+                model.statusText.value = strings.checkingCRC()
                 val result = CryptUtils.checkCrc32(
                     inputInfo.downloadFile.openInputStream(),
                     size,
                     crc32
                 ) { current, max, bps ->
-                    model.progress = current to max
-                    model.speed = bps
+                    model.progress.value = current to max
+                    model.speed.value = bps
 
                     PlatformDownloadView.onProgress(
                         strings.checkingCRC(),
@@ -168,8 +166,8 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
             }
 
             if (md5 != null) {
-                model.speed = 0L
-                model.statusText = strings.checkingMD5()
+                model.speed.value = 0L
+                model.statusText.value = strings.checkingMD5()
 
                 PlatformDownloadView.onProgress(strings.checkingMD5(), 0, 1)
 
@@ -186,16 +184,16 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                 }
             }
 
-            model.speed = 0L
-            model.statusText = strings.decrypting()
+            model.speed.value = 0L
+            model.statusText.value = strings.decrypting()
 
             val key =
                 if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
-                    model.fw,
-                    model.model,
-                    model.region
+                    model.fw.value,
+                    model.model.value,
+                    model.region.value
                 ) else {
-                    v4Key ?: CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+                    v4Key ?: CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value)
                 }
 
             CryptUtils.decryptProgress(
@@ -204,8 +202,8 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                 key,
                 size
             ) { current, max, bps ->
-                model.progress = current to max
-                model.speed = bps
+                model.progress.value = current to max
+                model.speed.value = bps
 
                 PlatformDownloadView.onProgress(strings.decrypting(), current, max)
             }
@@ -220,17 +218,17 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
 }
 
 private suspend fun onFetch(model: DownloadModel) {
-    val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model, model.region)
+    val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model.value, model.region.value)
 
     if (error != null) {
         model.endJob(strings.firmwareCheckError(error.message.toString(), output))
         return
     }
 
-    model.changelog = ChangelogHandler.getChangelog(model.model, model.region, fw.split("/")[0])
+    model.changelog.value = ChangelogHandler.getChangelog(model.model.value, model.region.value, fw.split("/")[0])
 
-    model.fw = fw
-    model.osCode = os
+    model.fw.value = fw
+    model.osCode.value = os
 
     model.endJob("")
 }
@@ -245,13 +243,24 @@ private suspend fun onFetch(model: DownloadModel) {
 internal fun DownloadView(scrollState: ScrollState) {
     val model = LocalDownloadModel.current
 
-    val canCheckVersion = !model.manual && model.model.isNotBlank()
-            && model.region.isNotBlank() && model.job == null
+    val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
+    val manual by model.manual.collectAsState()
+    val modelModel by model.model.collectAsState()
+    val region by model.region.collectAsState()
+    val fw by model.fw.collectAsState()
+    val osCode by model.osCode.collectAsState()
+    val progress by model.progress.collectAsState()
+    val statusText by model.statusText.collectAsState()
+    val changelog by model.changelog.collectAsState()
+    val changelogExpanded by model.changelogExpanded.collectAsState()
 
-    val canDownload = model.model.isNotBlank() && model.region.isNotBlank() && model.fw.isNotBlank()
-            && model.job == null
+    val canCheckVersion = !manual && modelModel.isNotBlank()
+            && region.isNotBlank() && !hasRunningJobs
 
-    val canChangeOption = model.job == null
+    val canDownload = modelModel.isNotBlank() && region.isNotBlank() && fw.isNotBlank()
+            && !hasRunningJobs
+
+    val canChangeOption = !hasRunningJobs
 
     var downloadErrorInfo by remember {
         mutableStateOf<DownloadErrorInfo?>(null)
@@ -270,7 +279,7 @@ internal fun DownloadView(scrollState: ScrollState) {
             ) {
                 HybridButton(
                     onClick = {
-                        model.job = model.scope.launch {
+                        model.launchJob {
                             onDownload(
                                 model, client,
                                 confirmCallback = object : DownloadErrorCallback {
@@ -292,7 +301,7 @@ internal fun DownloadView(scrollState: ScrollState) {
 
                 HybridButton(
                     onClick = {
-                        model.job = model.scope.launch {
+                        model.launchJob {
                             onFetch(model)
                         }
                     },
@@ -310,7 +319,7 @@ internal fun DownloadView(scrollState: ScrollState) {
                         PlatformDownloadView.onFinish()
                         model.endJob("")
                     },
-                    enabled = model.job != null,
+                    enabled = hasRunningJobs,
                     text = strings.cancel(),
                     description = strings.cancel(),
                     vectorIcon = vectorResource(MR.assets.cancel),
@@ -332,14 +341,14 @@ internal fun DownloadView(scrollState: ScrollState) {
                     interactionSource = boxSource,
                     indication = null
                 ) {
-                    model.manual = !model.manual
+                    model.manual.value = !model.manual.value
                 }
                     .padding(4.dp)
             ) {
                 Checkbox(
-                    checked = model.manual,
+                    checked = manual,
                     onCheckedChange = {
-                        model.manual = it
+                        model.manual.value = it
                     },
                     modifier = Modifier.align(Alignment.CenterVertically),
                     enabled = canChangeOption,
@@ -359,7 +368,7 @@ internal fun DownloadView(scrollState: ScrollState) {
             }
 
             AnimatedVisibility(
-                visible = model.manual,
+                visible = manual,
                 enter = fadeIn(),
                 exit = fadeOut()
             ) {
@@ -449,10 +458,10 @@ internal fun DownloadView(scrollState: ScrollState) {
 
         Spacer(Modifier.height(8.dp))
 
-        MRFLayout(model, canChangeOption, model.manual && canChangeOption)
+        MRFLayout(model, canChangeOption, manual && canChangeOption)
 
         AnimatedVisibility(
-            visible = !model.manual && model.osCode.isNotEmpty(),
+            visible = !manual && osCode.isNotEmpty(),
             enter = fadeIn(),
             exit = fadeOut()
         ) {
@@ -460,13 +469,13 @@ internal fun DownloadView(scrollState: ScrollState) {
                 Spacer(Modifier.height(4.dp))
 
                 Text(
-                    text = strings.osVersion(model.osCode)
+                    text = strings.osVersion(osCode)
                 )
             }
         }
 
         AnimatedVisibility(
-            visible = model.job != null || model.progress.first > 0 || model.progress.second > 0 || model.statusText.isNotBlank(),
+            visible = hasRunningJobs || progress.first > 0 || progress.second > 0 || statusText.isNotBlank(),
         ) {
             Column {
                 Spacer(Modifier.height(16.dp))
@@ -476,7 +485,7 @@ internal fun DownloadView(scrollState: ScrollState) {
         }
 
         val changelogCondition =
-            model.changelog != null && !model.manual && model.job == null && model.fw.isNotBlank()
+            changelog != null && !manual && !hasRunningJobs && fw.isNotBlank()
 
         AnimatedVisibility(
             visible = changelogCondition,
@@ -487,24 +496,24 @@ internal fun DownloadView(scrollState: ScrollState) {
                 Spacer(Modifier.height(8.dp))
 
                 ExpandButton(
-                    model.changelogExpanded,
+                    changelogExpanded,
                     strings.changelog()
-                ) { model.changelogExpanded = it }
+                ) { model.changelogExpanded.value = it }
 
                 Spacer(Modifier.height(8.dp))
             }
         }
 
         AnimatedVisibility(
-            visible = model.changelogExpanded && changelogCondition,
+            visible = changelogExpanded && changelogCondition,
         ) {
-            ChangelogDisplay(model.changelog!!)
+            ChangelogDisplay(changelog!!)
         }
 
         AlertDialogDef(
             showing = downloadErrorInfo != null,
             onDismissRequest = {
-                model.scope.launch {
+                model.launchJob {
                     downloadErrorInfo?.callback?.onCancel?.invoke()
                     downloadErrorInfo = null
                 }
@@ -520,9 +529,10 @@ internal fun DownloadView(scrollState: ScrollState) {
 
                 TextButton(
                     onClick = {
-                        model.scope.launch {
-                            downloadErrorInfo?.callback?.onCancel?.invoke()
+                        model.launchJob {
+                            val info = downloadErrorInfo
                             downloadErrorInfo = null
+                            info?.callback?.onCancel?.invoke()
                         }
                     }
                 ) {
@@ -531,9 +541,10 @@ internal fun DownloadView(scrollState: ScrollState) {
 
                 TextButton(
                     onClick = {
-                        model.scope.launch {
-                            downloadErrorInfo?.callback?.onAccept?.invoke()
+                        model.launchJob {
+                            val info = downloadErrorInfo
                             downloadErrorInfo = null
+                            info?.callback?.onAccept?.invoke()
                         }
                     }
                 ) {

@@ -1,6 +1,6 @@
 package tk.zwander.commonCompose.model
 
-import androidx.compose.runtime.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import tk.zwander.common.data.changelog.Changelog
 
 /**
@@ -10,21 +10,21 @@ class DownloadModel : BaseModel() {
     /**
      * Whether the user is manually inputting firmware.
      */
-    var manual by mutableStateOf(false)
+    val manual = MutableStateFlow(false)
 
     /**
      * The Android version of automatically-retrieved
      * firmware.
      */
-    var osCode by mutableStateOf("")
+    val osCode = MutableStateFlow("")
 
     /**
      * The changelog for the auto-retrieved firmware.
      */
-    var changelog by mutableStateOf<Changelog?>(null)
+    val changelog = MutableStateFlow<Changelog?>(null)
 
     /**
      * Whether the changelog is expanded.
      */
-    var changelogExpanded by mutableStateOf(false)
+    val changelogExpanded = MutableStateFlow(false)
 }

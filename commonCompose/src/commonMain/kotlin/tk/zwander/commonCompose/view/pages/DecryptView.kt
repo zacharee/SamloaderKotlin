@@ -5,15 +5,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
-import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.commonCompose.locals.LocalDecryptModel
+import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
@@ -35,17 +36,17 @@ expect object PlatformDecryptView {
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class, ExperimentalMaterial3Api::class)
 private suspend fun onDecrypt(model: DecryptModel) {
     PlatformDecryptView.onStart()
-    val info = model.fileToDecrypt!!
+    val info = model.fileToDecrypt.value!!
     val inputFile = info.encFile
     val outputFile = info.decFile
 
     val key = if (inputFile.getName().endsWith(".enc2")) CryptUtils.getV2Key(
-        model.fw,
-        model.model,
-        model.region
+        model.fw.value,
+        model.model.value,
+        model.region.value
     ) else {
         try {
-            CryptUtils.getV4Key(client, model.fw, model.model, model.region)
+            CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value)
         } catch (e: Throwable) {
             model.endJob(strings.decryptError(e.message.toString()))
             return
@@ -53,8 +54,8 @@ private suspend fun onDecrypt(model: DecryptModel) {
     }
 
     CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
-        model.progress = current to max
-        model.speed = bps
+        model.progress.value = current to max
+        model.speed.value = bps
         PlatformDecryptView.onProgress(strings.decrypting(), current, max)
     }
 
@@ -72,7 +73,7 @@ private suspend fun onOpenFile(model: DecryptModel) {
                 model.endJob(strings.selectEncrypted())
             } else {
                 model.endJob("")
-                model.fileToDecrypt = info
+                model.fileToDecrypt.value = info
             }
         } else {
             model.endJob("")
@@ -90,10 +91,17 @@ private suspend fun onOpenFile(model: DecryptModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 internal fun DecryptView(scrollState: ScrollState) {
     val model = LocalDecryptModel.current
-    val canDecrypt = model.fileToDecrypt != null && model.job == null
-            && model.fw.isNotBlank() && model.model.isNotBlank() && model.region.isNotBlank()
 
-    val canChangeOption = model.job == null
+    val fw by model.fw.collectAsState()
+    val modelModel by model.model.collectAsState()
+    val region by model.region.collectAsState()
+    val fileToDecrypt by model.fileToDecrypt.collectAsState()
+
+    val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
+    val canDecrypt = fileToDecrypt != null && !hasRunningJobs
+            && fw.isNotBlank() && modelModel.isNotBlank() && region.isNotBlank()
+
+    val canChangeOption = !hasRunningJobs
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -109,7 +117,7 @@ internal fun DecryptView(scrollState: ScrollState) {
             ) {
                 HybridButton(
                     onClick = {
-                        model.job = model.scope.launch {
+                        model.launchJob {
                             onDecrypt(model)
                         }
                     },
@@ -122,7 +130,7 @@ internal fun DecryptView(scrollState: ScrollState) {
                 Spacer(Modifier.width(8.dp))
                 HybridButton(
                     onClick = {
-                        model.scope.launch {
+                        model.launchJob {
                             onOpenFile(model)
                         }
                     },
@@ -138,7 +146,7 @@ internal fun DecryptView(scrollState: ScrollState) {
                         PlatformDecryptView.onFinish()
                         model.endJob("")
                     },
-                    enabled = model.job != null,
+                    enabled = hasRunningJobs,
                     text = strings.cancel(),
                     description = strings.cancel(),
                     vectorIcon = vectorResource(MR.assets.cancel),
@@ -157,7 +165,7 @@ internal fun DecryptView(scrollState: ScrollState) {
             modifier = Modifier.fillMaxWidth()
         ) {
             OutlinedTextField(
-                value = model.fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
+                value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
                 onValueChange = {},
                 label = { Text(strings.file()) },
                 modifier = Modifier.weight(1f),

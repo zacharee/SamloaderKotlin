@@ -1,6 +1,6 @@
 package tk.zwander.commonCompose.model
 
-import androidx.compose.runtime.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelogs
 
@@ -11,10 +11,10 @@ class HistoryModel : BaseModel() {
     /**
      * The historical firmware versions available.
      */
-    var historyItems by mutableStateOf(listOf<HistoryInfo>())
+    val historyItems = MutableStateFlow(listOf<HistoryInfo>())
 
     /**
      * The changelog items for this history lookup.
      */
-    var changelogs by mutableStateOf<Changelogs?>(null)
+    val changelogs = MutableStateFlow<Changelogs?>(null)
 }

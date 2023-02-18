@@ -42,12 +42,12 @@ internal fun MRFLayout(
     SplitComponent(
         startComponent = {
             OutlinedTextField(
-                value = model.model,
+                value = model.model.collectAsState().value,
                 onValueChange = {
-                    model.model = it.uppercase().trim()
-                    if ((model is DownloadModel && !model.manual)) {
-                        model.fw = ""
-                        model.osCode = ""
+                    model.model.value = it.uppercase().trim()
+                    if ((model is DownloadModel && !model.manual.value)) {
+                        model.fw.value = ""
+                        model.osCode.value = ""
                     }
                 },
                 modifier = Modifier,
@@ -59,12 +59,12 @@ internal fun MRFLayout(
         },
         endComponent = {
             OutlinedTextField(
-                value = model.region,
+                value = model.region.collectAsState().value,
                 onValueChange = {
-                    model.region = it.uppercase().trim()
-                    if ((model is DownloadModel && !model.manual)) {
-                        model.fw = ""
-                        model.osCode = ""
+                    model.region.value = it.uppercase().trim()
+                    if ((model is DownloadModel && !model.manual.value)) {
+                        model.fw.value = ""
+                        model.osCode.value = ""
                     }
                 },
                 modifier = Modifier,
@@ -93,8 +93,8 @@ internal fun MRFLayout(
         Spacer(Modifier.size(8.dp))
 
         OutlinedTextField(
-            value = model.fw,
-            onValueChange = { model.fw = it.uppercase().trim() },
+            value = model.fw.collectAsState().value,
+            onValueChange = { model.fw.value = it.uppercase().trim() },
             label = { Text(strings.firmwareHint()) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmware,
@@ -106,6 +106,6 @@ internal fun MRFLayout(
     CSCChooserDialog(
         showing = showingCscChooser,
         onDismissRequest = { showingCscChooser = false },
-        onCscSelected = { model.region = it }
+        onCscSelected = { model.region.value = it }
     )
 }

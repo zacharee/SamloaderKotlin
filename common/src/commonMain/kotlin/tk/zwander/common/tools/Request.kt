@@ -7,6 +7,7 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
+import tk.zwander.common.data.exception.VersionCheckException
 import tk.zwander.common.data.exception.VersionMismatchException
 import tk.zwander.samloaderkotlin.strings
 
@@ -212,28 +213,72 @@ object Request {
                 val fileSplit = file.split("_")
                 val modelSuffix = model.split("-")[1]
 
-                return fileSplit.indexOfFirst { it.startsWith(modelSuffix) }
+                return fileSplit.indexOfFirst {
+                    it.startsWith(modelSuffix) ||
+                            it.startsWith(model.replace("-", ""))
+                }
+            }
+
+            fun generateInfo(): BinaryFileInfo {
+                val path = responseXml.child("FUSBody")
+                    ?.child("Put")
+                    ?.child("MODEL_PATH")
+                    ?.child("Data")
+                    ?.text!!
+
+                val crc32 = responseXml.child("FUSBody")
+                    ?.child("Put")
+                    ?.child("BINARY_CRC")
+                    ?.child("Data")
+                    ?.text?.toLong()
+
+                val v4Key = try {
+                    val fwVer = responseXml.child("FUSBody")
+                        ?.child("Results")
+                        ?.child("LATEST_FW_VERSION")
+                        ?.child("Data")
+                        ?.text!!
+
+                    val logicVal = responseXml.child("FUSBody")
+                        ?.child("Put")
+                        ?.child("LOGIC_VALUE_FACTORY")
+                        ?.child("Data")
+                        ?.text!!
+
+                    val decKey = getLogicCheck(fwVer, logicVal)
+
+                    MD5.digest(decKey.toByteArray()).bytes
+                } catch (e: Exception) {
+                    null
+                }
+
+                return BinaryFileInfo(path, fileName, size, crc32, v4Key)
             }
 
             fun getSuffix(str: String): String? {
                 return str.split("_").getOrNull(1)
             }
 
-            val dataFile = responseXml.child("FUSBody")
-                ?.child("Put")
-                ?.child("DEVICE_USER_DATA_FILE")
-                ?.child("Data")
-                ?.text.run {
-                    if (isNullOrBlank()) {
-                        responseXml.child("FUSBody")
-                            ?.child("Put")
-                            ?.child("DEVICE_BOOT_FILE")
-                            ?.child("Data")
-                            ?.text
-                    } else {
-                        this
-                    }
-                }
+            val dataKeys = arrayOf(
+                "DEVICE_USER_DATA_FILE",
+                "DEVICE_BOOT_FILE",
+                "DEVICE_PDA_CODE1_FILE"
+            )
+
+            val dataFile = dataKeys.firstNotNullOfOrNull {
+                responseXml.child("FUSBody")
+                    ?.child("Put")
+                    ?.child(it)
+                    ?.child("Data")
+                    ?.text.run { if (isNullOrBlank()) null else this }
+            }
+
+            if (dataFile.isNullOrBlank()) {
+                return FetchResult.GetBinaryFileResult(
+                    info = generateInfo(),
+                    error = VersionCheckException(strings.versionCheckError())
+                )
+            }
 
             val dataIndex = getIndex(dataFile)
 
@@ -268,7 +313,7 @@ object Request {
 
             val pdaIndex = getIndex(pdaFile)
 
-            dataFile?.let { f ->
+            dataFile.let { f ->
                 val (fwVersion, fwCsc, fwCp, fwPda) = fw.split("/")
                 val fwVersionSuffix = getSuffix(fwVersion)
                 val fwCscSuffix = getSuffix(fwCsc)
@@ -291,45 +336,14 @@ object Request {
 
                 if (served != fw && !versionSuffixMatch && !cscSuffixMatch && !cpSuffixMatch && !pdaSuffixMatch) {
                     return FetchResult.GetBinaryFileResult(
+                        info = generateInfo(),
                         error = VersionMismatchException(strings.versionMismatch(fw, served))
                     )
                 }
             }
 
-            val path = responseXml.child("FUSBody")
-                ?.child("Put")
-                ?.child("MODEL_PATH")
-                ?.child("Data")
-                ?.text!!
-
-            val crc32 = responseXml.child("FUSBody")
-                ?.child("Put")
-                ?.child("BINARY_CRC")
-                ?.child("Data")
-                ?.text?.toLong()
-
-            val v4Key = try {
-                val fwVer = responseXml.child("FUSBody")
-                    ?.child("Results")
-                    ?.child("LATEST_FW_VERSION")
-                    ?.child("Data")
-                    ?.text!!
-
-                val logicVal = responseXml.child("FUSBody")
-                    ?.child("Put")
-                    ?.child("LOGIC_VALUE_FACTORY")
-                    ?.child("Data")
-                    ?.text!!
-
-                val decKey = getLogicCheck(fwVer, logicVal)
-
-                MD5.digest(decKey.toByteArray()).bytes
-            } catch (e: Exception) {
-                null
-            }
-
             return FetchResult.GetBinaryFileResult(
-                info = BinaryFileInfo(path, fileName, size, crc32, v4Key)
+                info = generateInfo()
             )
         } catch (e: Exception) {
             return FetchResult.GetBinaryFileResult(
