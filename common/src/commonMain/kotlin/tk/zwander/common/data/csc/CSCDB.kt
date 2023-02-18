@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import io.fluidsonic.country.Country
 import io.fluidsonic.i18n.name
 
+@Suppress("MemberVisibilityCanBePrivate")
 object CSCDB {
     // Most of these are from:
     // https://tsar3000.com/list-of-samsung-csc-codes-samsung-firmware-csc-codes/
@@ -552,8 +553,7 @@ object CSCDB {
         return items.filter { item ->
             item.countries.any { getCountryName(it).contains(query, true) }
                     || item.code.contains(query, true)
-                    || (item.carriers != null
-                        && item.carriers.any { it.contains(query, true) })
+                    || item.carriers?.any { it.contains(query, true) } == true
         }
     }
 
