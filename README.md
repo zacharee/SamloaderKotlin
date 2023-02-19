@@ -53,6 +53,16 @@ Using the above examples, the first has a current CSC of XAA and a firmware CSC 
 Use the CSC picker dialog (the button that looks like a list inside the "Region" text field).  
 You can search for your country or region in there and see the different CSCs used. If there are specific carriers associated with a CSC, they'll also be shown.
 
+## Why is my antivirus flagging the app?
+Certain antivirus programs may flag Bifrost as malware. This is (hopefully obviously) a false positive.
+
+There's a trojan horse malware family named Bifrost, which is part of the greater Bifrose family.  
+Antivirus programs flagging Bifrost (this app) seem to be doing it solely based on this app having the same name as the malware.
+
+Bifrost (the malware) only affects Windows systems and has limited functionality after Windows XP. For more information, see [this Wikipedia article](https://en.wikipedia.org/wiki/Bifrost_(Trojan_horse)).
+
+Bifrost (this app) does not contain malware. You can verify this by browsing through the source code or by compiling it yourself using the instructions below.
+
 # Building
 Building this project should be fairly easy.
 
