@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 internal fun SplitComponent(
     startComponent: @Composable () -> Unit,
     endComponent: @Composable () -> Unit,
-    threshold: Dp = 400.dp,
+    threshold: Dp = 600.dp,
     modifier: Modifier = Modifier,
     startRatio: Double = 0.5,
     endRatio: Double = 0.5,
