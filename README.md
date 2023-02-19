@@ -19,6 +19,9 @@ Binaries are available for 64-bit versions Windows, Linux, macOS, and Android. J
 
 Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) page for the downloads.
 
+# Changelog
+Release notes are available in [CHANGELOG.md](CHANGELOG.md).
+
 # FAQ & Troubleshooting
 
 ## Bifrost is returning error 400/401 when downloading
