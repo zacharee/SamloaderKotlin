@@ -31,7 +31,7 @@ object CSCDB {
         CSCItem("VAU", "AU", "Vodafone"),
         CSCItem("TEL", "AU", "Telus"),
         CSCItem("HUT", "AU", arrayOf("Three", "Vodafone")),
-        CSCItem("ATO", "AT", "Open Austria"),
+        CSCItem("ATO", "AT"),
         CSCItem("AOM", "AT"),
         CSCItem("DRE", "AT", "3 Hutchinson"),
         CSCItem("MAX", "AT", "T-Mobile"),
@@ -255,7 +255,7 @@ object CSCDB {
         CSCItem("FAM", "PH"),
         CSCItem("GLB", "PH", "Globe"),
         CSCItem("SMA", "PH", "Smart"),
-        CSCItem("XTC", "PH", "Open Line"),
+        CSCItem("XTC", "PH"),
         CSCItem("XTE", "PH", "Sun Cellular"),
         CSCItem("ERA", "PL", "T-Mobile"),
         CSCItem("IDE", "PL", "Orange"),
@@ -519,7 +519,11 @@ object CSCDB {
         CSCItem("FKR", "US"),
         CSCItem("XAG", "US"),
         CSCItem("ATC", "US"),
-        CSCItem("KDI", "JP", "KDDI au")
+        CSCItem("KDI", "JP", "KDDI au"),
+        CSCItem("XJP", "JP"),
+        CSCItem("XSP", "SK"),
+        CSCItem("OAR", "AM"),
+        CSCItem("SAC", "DZ"),
     ).sortedBy { it.code }
 
     fun getAll(): List<CSCItem> {
