@@ -197,13 +197,12 @@ object CamUtils {
     }
 
     fun lstarFromY(y: Float): Float {
-        var y = y
-        y /= 100.0f
+        val yMutable = y / 100.0f
         val e = 216f / 24389f
-        val yIntermediate = if (y <= e) {
-            return 24389f / 27f * y
+        val yIntermediate = if (yMutable <= e) {
+            return 24389f / 27f * yMutable
         } else {
-            cbrt(y.toDouble()).toFloat()
+            cbrt(yMutable.toDouble()).toFloat()
         }
         return 116f * yIntermediate - 16f
     }
