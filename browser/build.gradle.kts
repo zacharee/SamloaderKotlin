@@ -12,7 +12,7 @@ val resourcesDir = "$buildDir/resources/"
 val skikoWasm by configurations.creating
 
 dependencies {
-    skikoWasm("org.jetbrains.skiko:skiko-js-wasm-runtime:0.7.50")
+    skikoWasm("org.jetbrains.skiko:skiko-js-wasm-runtime:${rootProject.extra["skikoVersion"]}")
 }
 
 val unzipTask = tasks.register("unzipWasm", Copy::class) {
@@ -34,9 +34,9 @@ kotlin {
         named("jsMain") {
             dependencies {
                 implementation(project(":commonCompose"))
-                implementation("org.jetbrains.skiko:skiko:0.7.50")
+                implementation("org.jetbrains.skiko:skiko:${rootProject.extra["skikoVersion"]}")
 
-                api("dev.icerock.moko:resources:0.20.1")
+                api("dev.icerock.moko:resources:${rootProject.extra["mokoVersion"]}")
             }
 
             resources.setSrcDirs(resources.srcDirs)

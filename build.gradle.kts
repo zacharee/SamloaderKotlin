@@ -11,9 +11,12 @@ val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
+val skikoVersion by extra("0.7.52")
+
 buildscript {
-    val kotlinVersion by rootProject.extra("1.8.0")
+    val kotlinVersion by rootProject.extra("1.8.10")
     val i18n4kVersion by extra("0.5.0")
+    val mokoVersion by extra("0.20.1")
 
     repositories {
         google()
@@ -31,7 +34,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.android.tools.build:gradle:7.4.1")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
-        classpath("dev.icerock.moko:resources-generator:0.20.1")
+        classpath("dev.icerock.moko:resources-generator:$mokoVersion")
         classpath("de.comahe.i18n4k:i18n4k-gradle-plugin:$i18n4kVersion")
         classpath("com.bugsnag:bugsnag-android-gradle-plugin:7.4.0")
     }

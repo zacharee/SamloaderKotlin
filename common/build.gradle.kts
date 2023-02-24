@@ -99,7 +99,7 @@ kotlin {
                 api("com.russhwolf:multiplatform-settings:1.0.0")
                 api("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
                 api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")
-                api("dev.icerock.moko:resources:0.20.1")
+                api("dev.icerock.moko:resources:${rootProject.extra["mokoVersion"]}")
             }
         }
 
@@ -177,14 +177,14 @@ kotlin {
         val macosArm64Main by getting {
             dependsOn(macosMain)
             dependencies {
-                api("org.jetbrains.skiko:skiko-macosarm64:0.7.50")
+                api("org.jetbrains.skiko:skiko-macosarm64:${rootProject.extra["skikoVersion"]}")
             }
         }
 
         val macosX64Main by getting {
             dependsOn(macosMain)
             dependencies {
-                api("org.jetbrains.skiko:skiko-macosx64:0.7.50")
+                api("org.jetbrains.skiko:skiko-macosx64:${rootProject.extra["skikoVersion"]}")
             }
         }
     }
