@@ -1,4 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.jetbrains.kotlin.gradle.plugin.extraProperties
 
 repositories {
     google()
@@ -17,8 +18,8 @@ plugins {
     id("de.comahe.i18n4k")
     id("dev.icerock.mobile.multiplatform-resources")
     kotlin("native.cocoapods")
-    id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.0"
-    kotlin("plugin.serialization") version "1.8.0"
+    id("org.jetbrains.kotlin.plugin.atomicfu")
+    kotlin("plugin.serialization")
     id("com.bugsnag.android.gradle")
 }
 
@@ -76,28 +77,32 @@ kotlin {
         val korlibsVersion = "2.7.0"
         val ktorVersion = "2.2.3"
         val jsoupVersion = "1.15.3"
+        val coroutinesVersion = "1.6.4"
+        val fluidVersion = "0.12.0"
+        val statelyVersion = "1.2.1"
+        val settingsVersion = "1.0.0"
 
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 //                api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
                 api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                 api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
                 api("com.soywiz.korlibs.klock:klock:$korlibsVersion")
-                api("co.touchlab:stately-common:1.2.1")
-                api("co.touchlab:stately-isolate:1.2.1")
+                api("co.touchlab:stately-common:$statelyVersion")
+                api("co.touchlab:stately-isolate:$statelyVersion")
                 api("io.ktor:ktor-client-core:$ktorVersion")
                 api("io.ktor:ktor-client-auth:$ktorVersion")
-                api("io.fluidsonic.i18n:fluid-i18n:0.12.0")
-                api("io.fluidsonic.country:fluid-country:0.12.0")
+                api("io.fluidsonic.i18n:fluid-i18n:$fluidVersion")
+                api("io.fluidsonic.country:fluid-country:$fluidVersion")
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-                api("com.russhwolf:multiplatform-settings:1.0.0")
-                api("com.russhwolf:multiplatform-settings-no-arg:1.0.0")
+                api("com.russhwolf:multiplatform-settings:$settingsVersion")
+                api("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
                 api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")
                 api("dev.icerock.moko:resources:${rootProject.extra["mokoVersion"]}")
             }
@@ -125,7 +130,7 @@ kotlin {
             dependsOn(nonWebMain)
 
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
                 api("androidx.appcompat:appcompat:1.6.1")
@@ -137,7 +142,7 @@ kotlin {
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
                 // Remove this once JB Compose gets the updated version.
-                api("androidx.compose.foundation:foundation-layout:1.4.0-beta02")
+                api("androidx.compose.foundation:foundation-layout:${rootProject.extra["androidComposeVersion"]}")
                 api("com.caverock:androidsvg-aar:1.4")
                 api("com.bugsnag:bugsnag-android:5.28.4")
             }

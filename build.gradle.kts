@@ -12,6 +12,10 @@ val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
 val skikoVersion by extra("0.7.52")
+val androidComposeVersion by extra("1.4.0-beta02")
+
+val nodeVersion by extra("16.0.0")
+val webpackVersion by extra("4.10.0")
 
 buildscript {
     val kotlinVersion by rootProject.extra("1.8.10")
@@ -37,11 +41,13 @@ buildscript {
         classpath("dev.icerock.moko:resources-generator:$mokoVersion")
         classpath("de.comahe.i18n4k:i18n4k-gradle-plugin:$i18n4kVersion")
         classpath("com.bugsnag:bugsnag-android-gradle-plugin:7.4.0")
+        classpath("org.jetbrains.kotlin:atomicfu:$kotlinVersion")
+        classpath(kotlin("serialization", version = kotlinVersion))
     }
 }
 
 rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
-    rootProject.the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().nodeVersion = "16.0.0"
+    rootProject.the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().nodeVersion = nodeVersion
 }
 
 group = groupName
