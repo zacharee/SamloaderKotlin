@@ -2,6 +2,7 @@ package tk.zwander.samsungfirmwaredownloader
 
 import android.annotation.SuppressLint
 import android.app.Application
+import com.bugsnag.android.Bugsnag
 
 class App : Application() {
     companion object {
@@ -12,5 +13,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        Bugsnag.start(this)
     }
 }

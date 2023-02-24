@@ -19,6 +19,7 @@ plugins {
     kotlin("native.cocoapods")
     id("org.jetbrains.kotlin.plugin.atomicfu") version "1.8.0"
     kotlin("plugin.serialization") version "1.8.0"
+    id("com.bugsnag.android.gradle")
 }
 
 
@@ -116,6 +117,7 @@ kotlin {
                 api("io.github.vincenzopalazzo:material-ui-swing:1.1.2")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
                 api("com.github.weisj:darklaf-core:2.7.2")
+                api("com.bugsnag:bugsnag:3.6.4")
             }
         }
 
@@ -135,8 +137,9 @@ kotlin {
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
                 // Remove this once JB Compose gets the updated version.
-                api("androidx.compose.foundation:foundation-layout:1.4.0-beta01")
+                api("androidx.compose.foundation:foundation-layout:1.4.0-beta02")
                 api("com.caverock:androidsvg-aar:1.4")
+                api("com.bugsnag:bugsnag-android:5.28.4")
             }
         }
 

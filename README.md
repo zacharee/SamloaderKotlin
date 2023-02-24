@@ -165,3 +165,8 @@ Note: Make sure to keep any other formatting characters as-is (e.g., `\n` should
 ![Android Download Progress](/screenshots/AndroidDownloaderProgress.png)
 ![Android Decrypter Progress](/screenshots/AndroidDecrypterProgress.png)
 ![Android History Populated](/screenshots/AndroidHistoryPopulated.png)
+
+# Error Reporting
+Bifrost uses Bugsnag for error reporting.
+
+<a href="https://www.bugsnag.com"><img src="https://assets-global.website-files.com/607f4f6df411bd01527dc7d5/63bc40cd9d502eda8ea74ce7_Bugsnag%20Full%20Color.svg" width="200"></a>

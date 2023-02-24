@@ -1,3 +1,6 @@
+# ???
+- Add Bugsnag error reporting.
+
 # 1.14.1
 - Add some more CSCs.
 - Fix an issue with version checking preventing downloads.

@@ -6,9 +6,8 @@ import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import com.bugsnag.Bugsnag
 import com.formdev.flatlaf.FlatDarkLaf
-import com.github.weisj.darklaf.DarkLaf
-import com.github.weisj.darklaf.LafManager
 import moe.tlaster.precompose.PreComposeWindow
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
@@ -22,6 +21,7 @@ import java.awt.Dimension
 import javax.swing.*
 import kotlin.time.ExperimentalTime
 
+
 @ExperimentalTime
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
@@ -32,6 +32,13 @@ fun main() {
     // Some GPUs don't like Direct3D
     if (com.soywiz.korio.util.OS.isWindows) {
         System.setProperty("skiko.renderApi", "OPENGL")
+    }
+
+    val bugsnag = Bugsnag("a5b9774e86bc615c2e49a572b8313489")
+    bugsnag.setAppVersion(GradleConfig.versionName)
+    bugsnag.addCallback {
+        it.addToTab("app", "version_code", GradleConfig.versionCode)
+        it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
     }
 
     application {
