@@ -1,5 +1,6 @@
 # ???
 - Add Bugsnag error reporting.
+- Update Compose to 1.3.1-rc01
 
 # 1.14.1
 - Add some more CSCs.
