@@ -1,6 +1,5 @@
 package tk.zwander.commonCompose.util
 
-import com.russhwolf.settings.ExperimentalSettingsImplementation
 import com.russhwolf.settings.Settings
 import tk.zwander.common.data.PlatformFile
 import java.awt.FileDialog
@@ -9,7 +8,6 @@ import java.io.File
 import javax.swing.JFileChooser
 
 object FilePicker {
-    @OptIn(ExperimentalSettingsImplementation::class)
     private val settings by lazy { Settings() }
     private val useNativeDialog: Boolean
         get() = settings.getBoolean("useNativeFileDialog", false)
