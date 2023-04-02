@@ -1,14 +1,14 @@
 package tk.zwander.commonCompose.view.pages
 
 import com.soywiz.klock.DateFormat
-import korlibs.io.serialization.xml.Xml
-import korlibs.io.serialization.xml.allChildren
+import com.soywiz.korio.serialization.xml.Xml
+import com.soywiz.korio.serialization.xml.allChildren
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.makeFirmwareString
 
 actual object PlatformHistoryView {
     actual suspend fun parseHistory(body: String): List<HistoryInfo> {
-        val doc = Xml(body)
+        val doc = Xml.parse(body)
 
         val listItems = doc.descendants.filter { it.attribute("class") == "index_list" }.toMutableList().apply {
             removeAt(0)

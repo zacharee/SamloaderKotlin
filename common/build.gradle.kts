@@ -137,8 +137,6 @@ kotlin {
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
-                // Remove this once JB Compose gets the updated version.
-//                api("androidx.compose.foundation:foundation-layout:${rootProject.extra["androidComposeVersion"]}")
                 api("com.caverock:androidsvg-aar:1.4")
                 api("com.bugsnag:bugsnag-android:5.29.0")
             }

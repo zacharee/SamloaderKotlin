@@ -1,6 +1,6 @@
 package tk.zwander.common.util
 
-import korlibs.io.serialization.xml.Xml
+import com.soywiz.korio.serialization.xml.Xml
 import platform.WebKit.*
 import tk.zwander.common.data.changelog.Changelog
 import kotlin.coroutines.resume
@@ -20,7 +20,7 @@ actual object PlatformChangelogHandler {
 
         println("doc $doc")
 
-        val xml = Xml(body)
+        val xml = Xml.parse(body)
         val selector = xml.descendants.find { it.attribute("id") == "sel_lang_hidden" }
         val engOption = selector?.allChildren?.run {
             find { it.attribute("value") == "EN" } ?: first()
