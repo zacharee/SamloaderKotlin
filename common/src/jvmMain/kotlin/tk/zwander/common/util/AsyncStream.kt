@@ -1,9 +1,8 @@
 package tk.zwander.common.util
 
-import korlibs.io.lang.unsupported
-import korlibs.io.stream.AsyncInputStream
-import korlibs.io.stream.AsyncLengthStream
-import korlibs.io.stream.AsyncOutputStream
+import com.soywiz.korio.stream.AsyncInputStream
+import com.soywiz.korio.stream.AsyncLengthStream
+import com.soywiz.korio.stream.AsyncOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 
@@ -26,7 +25,7 @@ fun OutputStream.flushingAsync(length: Long? = null): AsyncOutputStream {
             }
 
             override suspend fun setLength(value: Long) {
-                unsupported("Can't set length")
+                error("Can't set length")
             }
 
             override suspend fun getLength(): Long {
@@ -59,7 +58,7 @@ fun InputStream.inputAsync(length: Long? = null): AsyncInputStream {
             override suspend fun read(): Int = syncIS.read()
             override suspend fun close() = syncIS.close()
             override suspend fun setLength(value: Long) {
-                unsupported("Can't set length")
+                error("Can't set length")
             }
 
             override suspend fun getLength(): Long = length

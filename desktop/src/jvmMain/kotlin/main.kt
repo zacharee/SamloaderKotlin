@@ -8,7 +8,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.bugsnag.Bugsnag
 import com.formdev.flatlaf.FlatDarkLaf
-import korlibs.memory.Platform
+import com.soywiz.kmem.Platform
+import com.soywiz.kmem.isWindows
 import moe.tlaster.precompose.PreComposeWindow
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs

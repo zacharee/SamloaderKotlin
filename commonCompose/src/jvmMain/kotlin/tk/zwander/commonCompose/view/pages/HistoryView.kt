@@ -1,6 +1,6 @@
 package tk.zwander.commonCompose.view.pages
 
-import korlibs.time.DateFormat
+import com.soywiz.klock.DateFormat
 import org.jsoup.Jsoup
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.makeFirmwareString

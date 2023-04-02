@@ -1,8 +1,8 @@
 package tk.zwander.common.data
 
-import korlibs.io.stream.AsyncInputStream
-import korlibs.io.stream.AsyncOutputStream
-import korlibs.io.stream.toAsync
+import com.soywiz.korio.stream.AsyncInputStream
+import com.soywiz.korio.stream.AsyncOutputStream
+import com.soywiz.korio.stream.toAsync
 import tk.zwander.common.util.flushingAsync
 import java.io.FileInputStream
 import java.io.FileOutputStream
