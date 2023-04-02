@@ -292,7 +292,7 @@ object CSCDB {
         CSCItem("TOP", arrayOf("RS", "ME"), "VIP"),
         CSCItem("TSR", arrayOf("RS", "ME"), "Telekom"),
         CSCItem("MM1", "SG"),
-        CSCItem("XSP", "SG"),
+        CSCItem("XSP", arrayOf("SG", "SK")),
         CSCItem("SIN", "SG", "Singtel"),
         CSCItem("STG", "SG", "Starhub"),
         CSCItem("BGD", "SG"),
@@ -521,7 +521,6 @@ object CSCDB {
         CSCItem("ATC", "US"),
         CSCItem("KDI", "JP", "KDDI au"),
         CSCItem("XJP", "JP"),
-        CSCItem("XSP", "SK"),
         CSCItem("OAR", "AM"),
         CSCItem("SAC", "DZ"),
     ).sortedBy { it.code }
