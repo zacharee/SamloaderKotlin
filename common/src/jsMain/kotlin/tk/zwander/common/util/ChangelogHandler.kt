@@ -1,6 +1,6 @@
 package tk.zwander.common.util
 
-import com.soywiz.korio.toList
+import korlibs.io.toList
 import io.ktor.util.*
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLHRElement

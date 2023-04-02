@@ -22,9 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.soywiz.korio.util.OS
+import com.soywiz.kmem.Platform
+import com.soywiz.kmem.isAndroid
+import com.soywiz.kmem.isJvm
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.commonCompose.util.vectorResource
@@ -32,7 +33,7 @@ import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 
 val options = arrayListOf<Pair<String, String>>().apply {
-    if (OS.isJvm && !OS.isAndroid) {
+    if (Platform.isJvm && !Platform.isAndroid) {
         add(strings.useNativeFilePicker() to "useNativeFileDialog")
     }
 }

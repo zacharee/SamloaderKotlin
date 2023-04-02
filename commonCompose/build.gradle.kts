@@ -48,7 +48,7 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 api(compose.material3)
                 api(compose.ui)
-                api("moe.tlaster:precompose:1.4.0")
+                api("moe.tlaster:precompose:1.3.15")
             }
         }
 
@@ -62,7 +62,7 @@ kotlin {
             dependencies {
                 api(project(":common"))
                 // TODO: Remove this once JB Compose updates to 1.4.x
-                api("androidx.compose.foundation:foundation:${rootProject.extra["androidComposeVersion"]}")
+//                api("androidx.compose.foundation:foundation:${rootProject.extra["androidComposeVersion"]}")
             }
         }
 

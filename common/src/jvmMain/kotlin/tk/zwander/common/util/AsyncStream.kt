@@ -1,9 +1,9 @@
 package tk.zwander.common.util
 
-import com.soywiz.korio.lang.unsupported
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncLengthStream
-import com.soywiz.korio.stream.AsyncOutputStream
+import korlibs.io.lang.unsupported
+import korlibs.io.stream.AsyncInputStream
+import korlibs.io.stream.AsyncLengthStream
+import korlibs.io.stream.AsyncOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 

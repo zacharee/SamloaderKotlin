@@ -1,8 +1,8 @@
 package tk.zwander.commonCompose.view.pages
 
 import com.soywiz.klock.DateFormat
-import com.soywiz.korio.serialization.xml.Xml
-import com.soywiz.korio.serialization.xml.allChildren
+import korlibs.io.serialization.xml.Xml
+import korlibs.io.serialization.xml.allChildren
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.makeFirmwareString
 

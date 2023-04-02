@@ -22,17 +22,15 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.soywiz.korio.async.launch
-import com.soywiz.korio.lang.substr
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.serialization.xml.firstDescendant
 import tk.zwander.common.data.HistoryInfo
-import tk.zwander.commonCompose.model.HistoryModel
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
 import tk.zwander.commonCompose.locals.LocalHistoryModel
+import tk.zwander.commonCompose.model.HistoryModel
 import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
@@ -48,7 +46,7 @@ expect object PlatformHistoryView {
 }
 
 private fun parseHistoryXml(xml: String): List<HistoryInfo> {
-    val doc = Xml(xml)
+    val doc = Xml.parse(xml)
 
     val latest = doc.firstDescendant("firmware")?.firstDescendant("version")?.firstDescendant("latest")
     val historical = doc.firstDescendant("firmware")?.firstDescendant("version")?.firstDescendant("upgrade")
@@ -99,7 +97,7 @@ private fun parseHistoryXml(xml: String): List<HistoryInfo> {
                 }
             }.sortedByDescending {
                 it.firmwareString.let { f ->
-                    f.substr(f.lastIndex - 3)
+                    f.substring(f.lastIndex - 3)
                 }
             }
         )
@@ -249,7 +247,8 @@ internal fun HistoryView(
                     .firstOrNull()?.let { item ->
                         UrlHandler.launchUrl(item.item)
                     }
-            }
+            },
+            style = LocalTextStyle.current.copy(LocalContentColor.current),
         )
 
         Spacer(Modifier.height(8.dp))
@@ -279,7 +278,7 @@ internal fun HistoryView(
                 LazyVerticalStaggeredGrid(
                     modifier = Modifier.fillMaxWidth(),
                     columns = StaggeredGridCells.Adaptive(minSize = 350.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalItemSpacing = 8.dp,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(4.dp)
                 ) {

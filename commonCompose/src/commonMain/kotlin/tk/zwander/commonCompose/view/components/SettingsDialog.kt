@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.russhwolf.settings.Settings
-import com.soywiz.korio.util.OS
 import tk.zwander.samloaderkotlin.strings
 
 @Composable

@@ -73,12 +73,11 @@ kotlin {
     }
 
     sourceSets {
-        val korlibsVersion = "2.7.0"
-        val ktorVersion = "2.2.3"
-        val jsoupVersion = "1.15.3"
-        val coroutinesVersion = "1.6.4"
+        val korlibsVersion = "3.4.0"
+        val ktorVersion = "2.2.4"
+        val jsoupVersion = "1.15.4"
+        val coroutinesVersion = "1.7.0-Beta"
         val fluidVersion = "0.12.0"
-        val statelyVersion = "1.2.1"
         val settingsVersion = "1.0.0"
 
         val commonMain by getting {
@@ -93,13 +92,11 @@ kotlin {
                 api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                 api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
                 api("com.soywiz.korlibs.klock:klock:$korlibsVersion")
-                api("co.touchlab:stately-common:$statelyVersion")
-                api("co.touchlab:stately-isolate:$statelyVersion")
                 api("io.ktor:ktor-client-core:$ktorVersion")
                 api("io.ktor:ktor-client-auth:$ktorVersion")
                 api("io.fluidsonic.i18n:fluid-i18n:$fluidVersion")
                 api("io.fluidsonic.country:fluid-country:$fluidVersion")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
                 api("com.russhwolf:multiplatform-settings:$settingsVersion")
                 api("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
                 api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")
@@ -117,10 +114,10 @@ kotlin {
             dependencies {
                 api("org.jsoup:jsoup:$jsoupVersion")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
-                api("com.formdev:flatlaf:2.1")
-                api("io.github.vincenzopalazzo:material-ui-swing:1.1.2")
+                api("com.formdev:flatlaf:3.0")
+                api("io.github.vincenzopalazzo:material-ui-swing:1.1.4")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
-                api("com.github.weisj:darklaf-core:2.7.2")
+                api("com.github.weisj:darklaf-core:3.0.2")
                 api("com.bugsnag:bugsnag:3.6.4")
             }
         }
@@ -133,17 +130,17 @@ kotlin {
                 api("org.jsoup:jsoup:$jsoupVersion")
 
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.fragment:fragment-ktx:1.5.5")
-                api("androidx.activity:activity-compose:1.6.1")
+                api("androidx.fragment:fragment-ktx:1.5.6")
+                api("androidx.activity:activity-compose:1.7.0")
                 api("androidx.core:core-ktx:1.9.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
                 // Remove this once JB Compose gets the updated version.
-                api("androidx.compose.foundation:foundation-layout:${rootProject.extra["androidComposeVersion"]}")
+//                api("androidx.compose.foundation:foundation-layout:${rootProject.extra["androidComposeVersion"]}")
                 api("com.caverock:androidsvg-aar:1.4")
-                api("com.bugsnag:bugsnag-android:5.28.4")
+                api("com.bugsnag:bugsnag-android:5.29.0")
             }
         }
 
@@ -196,6 +193,7 @@ kotlin {
 
 android {
     val compileSdk: Int by rootProject.extra
+    val packageName: String by rootProject.extra
     this.compileSdk = compileSdk
 
     defaultConfig {
@@ -205,6 +203,8 @@ android {
         this.minSdk = minSdk
         this.targetSdk = targetSdk
     }
+
+    namespace = packageName
 
     compileOptions {
         val javaVersionEnum: JavaVersion by rootProject.extra

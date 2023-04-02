@@ -1,9 +1,8 @@
 package tk.zwander.common.data
 
-import com.soywiz.korio.file.VfsFile
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
-import kotlinx.coroutines.CoroutineScope
+
 
 /**
  * Platforms should actuate this class to implement

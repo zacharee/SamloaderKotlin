@@ -1,13 +1,12 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.lang.format
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
 import com.soywiz.korio.util.checksum.CRC32
 import com.soywiz.krypto.AES
+import com.soywiz.krypto.CipherPadding
 import com.soywiz.krypto.MD5
-import com.soywiz.krypto.Padding
 import com.soywiz.krypto.encoding.Base64
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
@@ -69,7 +68,7 @@ object CryptUtils {
         val paddedInput = pad(input)
         val iv = key.slice(0 until 16).toByteArray()
 
-        return AES.encryptAesCbc(paddedInput, key, iv, Padding.NoPadding)
+        return AES.encryptAesCbc(paddedInput, key, iv, CipherPadding.NoPadding)
     }
 
     /**
@@ -81,7 +80,7 @@ object CryptUtils {
     fun aesDecrypt(input: ByteArray, key: ByteArray): ByteArray {
         val iv = key.slice(0 until 16).toByteArray()
 
-        return unpad(AES.decryptAesCbc(input, key, iv, Padding.NoPadding))
+        return unpad(AES.decryptAesCbc(input, key, iv, CipherPadding.NoPadding))
     }
 
     /**
@@ -136,7 +135,7 @@ object CryptUtils {
         val request = Request.createBinaryInform(version, model, region, client.getNonce())
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
-        val responseXml = Xml(response)
+        val responseXml = Xml.parse(response)
 
         return try {
             val fwVer = responseXml.child("FUSBody")
@@ -184,7 +183,14 @@ object CryptUtils {
      * @param length the size of the encrypted file.
      * @param progressCallback a callback to keep track of the progress.
      */
-    suspend fun decryptProgress(inf: AsyncInputStream, outf: AsyncOutputStream, key: ByteArray, length: Long, chunkSize: Int = 0x300000, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
+    suspend fun decryptProgress(
+        inf: AsyncInputStream,
+        outf: AsyncOutputStream,
+        key: ByteArray,
+        length: Long,
+        chunkSize: Int = 0x300000,
+        progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit
+    ) {
         withContext(Dispatchers.Default) {
             val buffer = ByteArray(chunkSize)
 
@@ -199,7 +205,7 @@ object CryptUtils {
                     count += len
 
                     if (len > 0) {
-                        val decBlock = AES.decryptAesEcb(buffer.sliceArray(0 until len), key, Padding.NoPadding)
+                        val decBlock = AES.decryptAesEcb(buffer.sliceArray(0 until len), key, CipherPadding.NoPadding)
 
                         outf.write(decBlock, 0, decBlock.size)
                     }
@@ -235,7 +241,12 @@ object CryptUtils {
      * @param progressCallback a callback to keep track of the progress.
      * @return true if the file's CRC32 matches the expected value.
      */
-    suspend fun checkCrc32(enc: AsyncInputStream, encSize: Long, expected: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit): Boolean {
+    suspend fun checkCrc32(
+        enc: AsyncInputStream,
+        encSize: Long,
+        expected: Long,
+        progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit
+    ): Boolean {
         var crcVal = CRC32.initialValue
 
         coroutineScope {
@@ -322,7 +333,8 @@ object CryptUtils {
             while (updateFile.read(buffer, 0, buffer.size).also { read = it } > 0) {
                 md5.update(buffer, 0, read)
             }
-            val output = md5.digest().hex.format("%32s").replace(' ', '0')
+            val hex = md5.digest().hex
+            val output = hex.padStart(32, '0');
             output
         } catch (e: Exception) {
             throw RuntimeException("Unable to process file for MD5", e)

@@ -1,7 +1,8 @@
 package tk.zwander.common.util
 
-import co.touchlab.stately.isolate.IsolateState
 import com.soywiz.klock.DateTime
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1_000_000_000) {
     data class ChunkData(
@@ -10,18 +11,19 @@ class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1
         val currentTimeNano: Long
     )
 
-    private val chunk = IsolateState { ArrayList<ChunkData>(initialCapacity) }
+    private val chunkMutex = Mutex()
+    private val chunk = ArrayList<ChunkData>(initialCapacity)
 
-    fun update(durationNano: Long, read: Long) {
+    suspend fun update(durationNano: Long, read: Long) {
         val currentTimeNano = currentTimeNano()
-        chunk.access { chunk ->
+        chunkMutex.withLock {
             chunk.add(ChunkData(durationNano, read, currentTimeNano))
             chunk.removeAll { currentTimeNano - it.currentTimeNano > thresholdNanos }
         }
     }
 
-    fun sum(): ChunkData {
-        return chunk.access { chunk ->
+    suspend fun sum(): ChunkData {
+        return chunkMutex.withLock {
             ChunkData(
                 chunk.sumOf { it.durationNano },
                 chunk.sumOf { it.read },

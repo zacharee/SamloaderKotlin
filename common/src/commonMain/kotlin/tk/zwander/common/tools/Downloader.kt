@@ -1,12 +1,10 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
 import io.ktor.utils.io.*
 import kotlinx.coroutines.*
 import tk.zwander.common.util.Averager
-import kotlin.coroutines.coroutineContext
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
@@ -54,7 +52,7 @@ object Downloader {
                         averager.update(nano, lenF.toLong())
                         val (totalTime, totalRead, _) = averager.sum()
 
-                        launchImmediately {
+                        launch(start = CoroutineStart.UNDISPATCHED) {
                             progressCallback(
                                 totalLenF + outputSize,
                                 size,

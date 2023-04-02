@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.github.weisj.darklaf.LafManager
-import com.github.weisj.darklaf.theme.info.ColorToneRule
+import com.github.weisj.darklaf.theme.spec.ColorToneRule
 import tk.zwander.commonCompose.monet.ColorScheme
 
 @Composable

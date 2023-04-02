@@ -167,7 +167,7 @@ object Request {
         val request = createBinaryInform(fw, model, region, client.getNonce())
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
-        val responseXml = Xml(response)
+        val responseXml = Xml.parse(response)
 
         try {
             val status = responseXml.child("FUSBody")

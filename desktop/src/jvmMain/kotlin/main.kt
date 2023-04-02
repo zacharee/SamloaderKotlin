@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.bugsnag.Bugsnag
 import com.formdev.flatlaf.FlatDarkLaf
+import korlibs.memory.Platform
 import moe.tlaster.precompose.PreComposeWindow
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
@@ -30,7 +31,7 @@ fun main() {
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
     // Some GPUs don't like Direct3D
-    if (com.soywiz.korio.util.OS.isWindows) {
+    if (Platform.isWindows) {
         System.setProperty("skiko.renderApi", "OPENGL")
     }
 

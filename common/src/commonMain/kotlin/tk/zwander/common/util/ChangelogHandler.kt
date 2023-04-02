@@ -1,6 +1,5 @@
 package tk.zwander.common.util
 
-import com.soywiz.korio.lang.format
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -15,7 +14,6 @@ expect object PlatformChangelogHandler {
 
 object ChangelogHandler {
     private const val DOMAIN_URL = "https://doc.samsungmobile.com:443"
-    private const val BASE_URL = "$DOMAIN_URL/%s/%s/doc.html"
 
     suspend fun getChangelog(device: String, region: String, firmware: String, useProxy: Boolean = tk.zwander.common.util.useProxy): Changelog? {
         return getChangelogs(device, region, useProxy)?.changelogs?.get(firmware)
@@ -59,6 +57,6 @@ object ChangelogHandler {
     }
 
     private fun generateUrlForDeviceAndRegion(device: String, region: String, useProxy: Boolean): String {
-        return generateProperUrl(useProxy, BASE_URL.format(device, region))
+        return generateProperUrl(useProxy, "$DOMAIN_URL/${device}/${region}/doc.html")
     }
 }

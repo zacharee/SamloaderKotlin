@@ -1,6 +1,6 @@
 package tk.zwander.common.util
 
-import com.soywiz.korio.serialization.xml.Xml
+import korlibs.io.serialization.xml.Xml
 import platform.WebKit.*
 import tk.zwander.common.data.changelog.Changelog
 import kotlin.coroutines.resume

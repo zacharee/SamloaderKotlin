@@ -11,8 +11,8 @@ val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
-val skikoVersion by extra("0.7.52")
-val androidComposeVersion by extra("1.4.0-beta02")
+val skikoVersion by extra("0.7.57")
+val androidComposeVersion by extra("1.4.0")
 
 val nodeVersion by extra("16.0.0")
 val webpackVersion by extra("4.10.0")
@@ -20,7 +20,7 @@ val webpackVersion by extra("4.10.0")
 buildscript {
     val kotlinVersion by rootProject.extra("1.8.10")
     val i18n4kVersion by extra("0.5.0")
-    val mokoVersion by extra("0.20.1")
+    val mokoVersion by extra("0.21.1")
 
     repositories {
         google()
@@ -34,10 +34,10 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.3.1")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.4.0-alpha01-dev1004")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.android.tools.build:gradle:7.4.2")
-        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.11.0")
+        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.13.3")
         classpath("dev.icerock.moko:resources-generator:$mokoVersion")
         classpath("de.comahe.i18n4k:i18n4k-gradle-plugin:$i18n4kVersion")
         classpath("com.bugsnag:bugsnag-android-gradle-plugin:7.4.0")
@@ -65,7 +65,7 @@ allprojects {
         maven {
             url = uri("https://plugins.gradle.org/m2/")
         }
-        maven { url = uri("https://zwander.dev/maven") }
+//        maven { url = uri("https://zwander.dev/maven") }
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

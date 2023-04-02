@@ -1,9 +1,9 @@
 package tk.zwander.common.data
 
-import com.soywiz.korio.file.*
-import com.soywiz.korio.jsRuntime
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncOutputStream
+import korlibs.io.file.*
+import korlibs.io.jsRuntime
+import korlibs.io.stream.AsyncInputStream
+import korlibs.io.stream.AsyncOutputStream
 import tk.zwander.common.util.fileHandling.FileSystemFileHandle
 
 actual open class PlatformFile : File {

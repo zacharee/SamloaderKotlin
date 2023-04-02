@@ -1,6 +1,7 @@
 package tk.zwander.common.util
 
-import com.soywiz.korio.util.OS
+import com.soywiz.kmem.Platform
+import com.soywiz.kmem.isJsBrowser
 import io.ktor.client.*
 
 val client: HttpClient
@@ -8,4 +9,4 @@ val client: HttpClient
         this.expectSuccess = false
     }
 
-val useProxy = OS.isJsBrowser
+val useProxy = Platform.isJsBrowser

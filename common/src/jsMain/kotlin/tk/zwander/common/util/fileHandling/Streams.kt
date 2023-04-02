@@ -1,10 +1,10 @@
 package tk.zwander.common.util.fileHandling
 
 import com.soywiz.klock.DateTime
-import com.soywiz.korio.file.*
-import com.soywiz.korio.stream.AsyncOutputStream
-import com.soywiz.korio.stream.AsyncStream
-import com.soywiz.korio.stream.toAsyncStream
+import korlibs.io.file.*
+import korlibs.io.stream.AsyncOutputStream
+import korlibs.io.stream.AsyncStream
+import korlibs.io.stream.toAsyncStream
 import kotlinx.coroutines.await
 
 suspend fun FileSystemFileHandle.toVfsFile(): VfsFile {

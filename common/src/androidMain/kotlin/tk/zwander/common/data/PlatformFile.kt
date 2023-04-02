@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
 import com.soywiz.korio.stream.AsyncInputStream
 import com.soywiz.korio.stream.AsyncOutputStream
-import kotlinx.coroutines.CoroutineScope
 import tk.zwander.common.util.inputAsync
 import tk.zwander.common.util.flushingAsync
 import java.io.FileInputStream

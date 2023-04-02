@@ -29,7 +29,7 @@ object VersionFetch {
                 }
             }
 
-            val responseXml = Xml(response.bodyAsText())
+            val responseXml = Xml.parse(response.bodyAsText())
 
             if (responseXml.name == "Error") {
                 val code = responseXml.child("Code")!!.text
