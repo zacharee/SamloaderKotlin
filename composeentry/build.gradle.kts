@@ -34,7 +34,7 @@ kotlin {
         osx.deploymentTarget = "12.0"
 
         framework {
-            baseName = "common"
+            baseName = "composeentry"
             isStatic = false
         }
 

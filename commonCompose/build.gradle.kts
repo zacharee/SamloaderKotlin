@@ -48,7 +48,6 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 api(compose.material3)
                 api(compose.ui)
-                api("moe.tlaster:precompose:1.3.15")
             }
         }
 

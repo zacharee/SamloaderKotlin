@@ -3,33 +3,29 @@ package tk.zwander.samsungfirmwaredownloader
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
-import android.view.View
-import android.view.WindowManager
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.Modifier
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import kotlinx.coroutines.*
-import moe.tlaster.precompose.lifecycle.PreComposeActivity
-import moe.tlaster.precompose.lifecycle.setContent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import tk.zwander.commonCompose.MainView
-import tk.zwander.common.data.*
 import kotlin.time.ExperimentalTime
 
 /**
  * The Activity to show the downloader UI.
  */
 @ExperimentalTime
-class MainActivity : PreComposeActivity(), CoroutineScope by MainScope() {
+class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
     /**
      * Set whenever the DownloaderService needs to select a file or folder.
      * Called once the user makes a selection.

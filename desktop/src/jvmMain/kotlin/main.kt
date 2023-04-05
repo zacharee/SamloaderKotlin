@@ -10,7 +10,6 @@ import com.bugsnag.Bugsnag
 import com.formdev.flatlaf.FlatDarkLaf
 import com.soywiz.kmem.Platform
 import com.soywiz.kmem.isWindows
-import moe.tlaster.precompose.PreComposeWindow
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
@@ -56,7 +55,7 @@ fun main() {
             }
         }
 
-        PreComposeWindow(
+        Window(
             onCloseRequest = ::exitApplication,
             title = "Bifrost",
             icon = getImage("icon.png").toPainter(),

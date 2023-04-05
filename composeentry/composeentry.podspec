@@ -6,14 +6,14 @@ Pod::Spec.new do |spec|
     spec.authors                  = ''
     spec.license                  = ''
     spec.summary                  = 'IDK'
-    spec.vendored_frameworks      = 'build/cocoapods/framework/common.framework'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/composeentry.framework'
     spec.libraries                = 'c++'
     spec.osx.deployment_target = '12.0'
                 
                 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':composeentry',
-        'PRODUCT_MODULE_NAME' => 'common',
+        'PRODUCT_MODULE_NAME' => 'composeentry',
     }
                 
     spec.script_phases = [

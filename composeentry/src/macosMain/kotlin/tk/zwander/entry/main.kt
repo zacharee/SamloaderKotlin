@@ -1,6 +1,6 @@
 package tk.zwander.entry
 
-import moe.tlaster.precompose.PreComposeWindow
+import androidx.compose.ui.window.Window
 import tk.zwander.common.GradleConfig
 
 fun main() {
@@ -8,7 +8,7 @@ fun main() {
 }
 
 internal fun entry() {
-    PreComposeWindow(GradleConfig.appName) {
+    Window(GradleConfig.appName) {
         View()
     }
 }

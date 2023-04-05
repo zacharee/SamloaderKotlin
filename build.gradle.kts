@@ -11,7 +11,7 @@ val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
-val skikoVersion by extra("0.7.57")
+val skikoVersion by extra("0.7.58")
 val androidComposeVersion by extra("1.4.0")
 
 val nodeVersion by extra("16.0.0")
@@ -34,7 +34,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.4.0-alpha01-dev1004")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.4.0-rc01")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.android.tools.build:gradle:7.4.2")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.13.3")

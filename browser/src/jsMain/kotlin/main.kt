@@ -2,15 +2,14 @@
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.native.ComposeLayer
+import androidx.compose.ui.window.ComposeWindow
 import kotlinx.browser.document
 import kotlinx.browser.window
 import org.jetbrains.skiko.wasm.onWasmReady
 import org.w3c.dom.HTMLCanvasElement
 import tk.zwander.commonCompose.MainView
 import kotlin.time.ExperimentalTime
-import androidx.compose.ui.native.ComposeLayer
-import moe.tlaster.precompose.preComposeWindow
-import tk.zwander.common.GradleConfig
 
 var canvas = document.getElementById("ComposeTarget") as HTMLCanvasElement
 
@@ -47,11 +46,13 @@ fun main() {
 
     onWasmReady {
         canvasResize()
-        preComposeWindow(GradleConfig.appName) {
+        ComposeWindow().apply {
             window.addEventListener("resize", {
                 composableResize(layer = layer)
             })
-            MainView(Modifier.fillMaxSize())
+            setContent {
+                MainView(Modifier.fillMaxSize())
+            }
         }
     }
 }
