@@ -84,7 +84,7 @@ private suspend fun onDownload(
     )
 
     if (error != null && error !is VersionException) {
-        error.printStackTrace()
+        Exception(error).printStackTrace()
         model.endJob("${error.message ?: strings.error()}\n\n${output}")
         PlatformDownloadView.onFinish()
     } else {

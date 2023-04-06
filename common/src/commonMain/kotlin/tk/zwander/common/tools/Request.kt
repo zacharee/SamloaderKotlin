@@ -39,7 +39,8 @@ object Request {
      * @return the needed XML.
      */
     fun createBinaryInform(fw: String, model: String, region: String, nonce: String): String {
-        val (pda, csc, phone, data) = fw.split("/")
+        val split = fw.split("/")
+        val (pda, csc, phone, data) = Array(4) { split.getOrNull(it) }
 
         val xml = buildXml("FUSMsg") {
             node("FUSHdr") {
@@ -86,27 +87,31 @@ object Request {
                     }
                     node("LOGIC_CHECK") {
                         node("Data") {
-                            text(getLogicCheck(fw, nonce))
+                            text(try {
+                                getLogicCheck(fw, nonce)
+                            } catch (e: Throwable) {
+                                ""
+                            })
                         }
                     }
                     node("DEVICE_CONTENTS_DATA_VERSION") {
                         node("Data") {
-                            text(data)
+                            text(data ?: "")
                         }
                     }
                     node("DEVICE_CSC_CODE2_VERSION") {
                         node("Data") {
-                            text(csc)
+                            text(csc ?: "")
                         }
                     }
                     node("DEVICE_PDA_CODE1_VERSION") {
                         node("Data") {
-                            text(pda)
+                            text(pda ?: "")
                         }
                     }
                     node("DEVICE_PHONE_FONT_VERSION") {
                         node("Data") {
-                            text(phone)
+                            text(phone ?: "")
                         }
                     }
                     node("DEVICE_PLATFORM") {
@@ -164,7 +169,13 @@ object Request {
      * @return a BinaryFileInfo instance representing the file.
      */
     suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): FetchResult.GetBinaryFileResult {
-        val request = createBinaryInform(fw, model, region, client.getNonce())
+        val request = try {
+            createBinaryInform(fw, model, region, client.getNonce())
+        } catch (e: Throwable) {
+            return FetchResult.GetBinaryFileResult(
+                error = Exception(strings.badReturnStatus(e.message.toString()), e)
+            )
+        }
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
         val responseXml = Xml.parse(response)
@@ -173,11 +184,18 @@ object Request {
             val status = responseXml.child("FUSBody")
                 ?.child("Results")
                 ?.child("Status")
-                ?.text?.toInt()!!
+                ?.text
 
-            if (status != 200) {
+            if (status == "F01") {
                 return FetchResult.GetBinaryFileResult(
-                    error = Exception(strings.badReturnStatus(status)),
+                    error = Exception(strings.invalidFirmwareError()),
+                    rawOutput = responseXml.toString()
+                )
+            }
+
+            if (status != "200") {
+                return FetchResult.GetBinaryFileResult(
+                    error = Exception(strings.badReturnStatus(status.toString())),
                     rawOutput = responseXml.toString()
                 )
             }
