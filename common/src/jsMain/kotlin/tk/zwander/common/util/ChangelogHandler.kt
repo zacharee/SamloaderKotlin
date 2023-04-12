@@ -1,8 +1,7 @@
 package tk.zwander.common.util
 
-import korlibs.io.toList
+import com.soywiz.korio.toList
 import io.ktor.util.*
-import org.w3c.dom.Element
 import org.w3c.dom.HTMLHRElement
 import org.w3c.dom.get
 import org.w3c.dom.parsing.DOMParser

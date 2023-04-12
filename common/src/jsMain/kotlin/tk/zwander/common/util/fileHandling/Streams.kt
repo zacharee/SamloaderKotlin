@@ -1,10 +1,14 @@
 package tk.zwander.common.util.fileHandling
 
 import com.soywiz.klock.DateTime
-import korlibs.io.file.*
-import korlibs.io.stream.AsyncOutputStream
-import korlibs.io.stream.AsyncStream
-import korlibs.io.stream.toAsyncStream
+import com.soywiz.korio.file.Vfs
+import com.soywiz.korio.file.VfsFile
+import com.soywiz.korio.file.VfsOpenMode
+import com.soywiz.korio.file.VfsStat
+import com.soywiz.korio.file.openAsync
+import com.soywiz.korio.stream.AsyncOutputStream
+import com.soywiz.korio.stream.AsyncStream
+import com.soywiz.korio.stream.toAsyncStream
 import kotlinx.coroutines.await
 
 suspend fun FileSystemFileHandle.toVfsFile(): VfsFile {
@@ -33,7 +37,7 @@ suspend fun FileSystemFileHandle.toVfsFile(): VfsFile {
                 exists = true,
                 isDirectory = false,
                 size = file.size.toLong(),
-                modifiedTime = DateTime.Companion.fromUnix(file.lastModified.toLong()),
+                modifiedTime = DateTime.Companion.fromUnixMillis(file.lastModified.toLong()),
                 kind = FileKind.BINARY
             )
         }

@@ -1,10 +1,13 @@
 package tk.zwander.common.data
 
-import korlibs.io.file.*
-import korlibs.io.jsRuntime
-import korlibs.io.stream.AsyncInputStream
-import korlibs.io.stream.AsyncOutputStream
-import tk.zwander.common.util.fileHandling.FileSystemFileHandle
+import com.soywiz.korio.file.VfsFile
+import com.soywiz.korio.file.VfsOpenMode
+import com.soywiz.korio.file.baseName
+import com.soywiz.korio.file.combine
+import com.soywiz.korio.file.pathInfo
+import com.soywiz.korio.jsRuntime
+import com.soywiz.korio.stream.AsyncInputStream
+import com.soywiz.korio.stream.AsyncOutputStream
 
 actual open class PlatformFile : File {
     private val wrappedFile: VfsFile

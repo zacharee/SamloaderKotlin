@@ -150,6 +150,7 @@ kotlin {
 
                 api("io.ktor:ktor-client-js:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-js:${rootProject.extra["i18n4kVersion"]}")
+                api("org.jetbrains.kotlin:kotlinx-atomicfu-runtime:1.8.20-RC")
 
                 api(npm("bootstrap", "5.1.0"))
                 api(npm("jquery", "3.6.0"))

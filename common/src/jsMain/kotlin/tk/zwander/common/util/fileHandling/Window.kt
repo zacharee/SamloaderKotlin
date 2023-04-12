@@ -1,7 +1,6 @@
 package tk.zwander.common.util.fileHandling
 
-import korlibs.io.jsObject
-import org.w3c.dom.MimeType
+import com.soywiz.korio.jsObject
 import org.w3c.dom.Window
 import kotlin.js.Promise
 
