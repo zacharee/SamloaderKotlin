@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.icerock.moko.resources.compose.painterResource
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
-import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 
@@ -64,7 +64,7 @@ internal fun HistoryItem(
                             .size(32.dp)
                     ) {
                         Icon(
-                            vectorResource(MR.assets.download),
+                            painterResource(MR.images.download),
                             strings.download(),
                             Modifier.size(24.dp)
                         )
@@ -80,7 +80,7 @@ internal fun HistoryItem(
                             .size(32.dp)
                     ) {
                         Icon(
-                            vectorResource(MR.assets.lock_open_outline),
+                            painterResource(MR.images.lock_open_outline),
                             strings.decrypt(),
                             Modifier.size(24.dp)
                         )

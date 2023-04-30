@@ -123,6 +123,8 @@ android {
         this.targetSdk = targetSdk
     }
 
+    namespace = "tk.zwander.commonCompose"
+
     compileOptions {
         val javaVersionEnum: JavaVersion by rootProject.extra
         sourceCompatibility = javaVersionEnum
@@ -130,6 +132,7 @@ android {
     }
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
 }
 
 compose.experimental {

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.soywiz.korio.serialization.xml.Xml
 import com.soywiz.korio.serialization.xml.firstDescendant
+import dev.icerock.moko.resources.compose.painterResource
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
@@ -31,7 +32,6 @@ import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
 import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.model.HistoryModel
-import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
@@ -206,7 +206,7 @@ internal fun HistoryView(
                     enabled = canCheckHistory,
                     text = strings.checkHistory(),
                     description = strings.checkHistory(),
-                    vectorIcon = vectorResource(MR.assets.refresh),
+                    vectorIcon = painterResource(MR.images.refresh),
                     parentSize = constraints.maxWidth
                 )
 
@@ -229,7 +229,7 @@ internal fun HistoryView(
                     enabled = hasRunningJobs,
                     text = strings.cancel(),
                     description = strings.cancel(),
-                    vectorIcon = vectorResource(MR.assets.cancel),
+                    vectorIcon = painterResource(MR.images.cancel),
                     parentSize = constraints.maxWidth
                 )
             }

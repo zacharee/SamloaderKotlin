@@ -101,6 +101,7 @@ kotlin {
                 api("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
                 api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")
                 api("dev.icerock.moko:resources:${rootProject.extra["mokoVersion"]}")
+                api("dev.icerock.moko:resources-compose:${rootProject.extra["mokoVersion"]}")
             }
         }
 
@@ -146,11 +147,11 @@ kotlin {
             dependsOn(commonMain)
 
             dependencies {
-                api(compose.web.core)
+                api(compose.runtime)
 
                 api("io.ktor:ktor-client-js:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-js:${rootProject.extra["i18n4kVersion"]}")
-                api("org.jetbrains.kotlin:kotlinx-atomicfu-runtime:1.8.20-RC")
+                api("org.jetbrains.kotlin:kotlinx-atomicfu-runtime:1.8.20")
 
                 api(npm("bootstrap", "5.1.0"))
                 api(npm("jquery", "3.6.0"))
@@ -192,7 +193,6 @@ kotlin {
 
 android {
     val compileSdk: Int by rootProject.extra
-    val packageName: String by rootProject.extra
     this.compileSdk = compileSdk
 
     defaultConfig {
@@ -203,7 +203,7 @@ android {
         this.targetSdk = targetSdk
     }
 
-    namespace = packageName
+    namespace = "tk.zwander.common"
 
     compileOptions {
         val javaVersionEnum: JavaVersion by rootProject.extra
@@ -212,6 +212,8 @@ android {
     }
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
 }
 
 buildkonfig {

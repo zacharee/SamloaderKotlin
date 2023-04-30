@@ -20,7 +20,7 @@ val webpackVersion by extra("4.10.0")
 buildscript {
     val kotlinVersion by rootProject.extra("1.8.20")
     val i18n4kVersion by extra("0.5.0")
-    val mokoVersion by extra("0.21.1")
+    val mokoVersion by extra("0.22.0")
 
     repositories {
         google()

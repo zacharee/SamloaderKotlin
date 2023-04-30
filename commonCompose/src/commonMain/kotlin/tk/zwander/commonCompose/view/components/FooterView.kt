@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
@@ -26,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import com.soywiz.kmem.Platform
 import com.soywiz.kmem.isAndroid
 import com.soywiz.kmem.isJvm
+import dev.icerock.moko.resources.compose.painterResource
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
-import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 
@@ -96,7 +95,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            vectorResource(MR.assets.heart), strings.supporters(),
+                            painterResource(MR.images.heart), strings.supporters(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -109,7 +108,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            vectorResource(MR.assets.github), strings.github(),
+                            painterResource(MR.images.github), strings.github(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -122,7 +121,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            vectorResource(MR.assets.mastodon), strings.mastodon(),
+                            painterResource(MR.images.mastodon), strings.mastodon(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -135,7 +134,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            vectorResource(MR.assets.twitter), strings.twitter(),
+                            painterResource(MR.images.twitter), strings.twitter(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -148,7 +147,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            vectorResource(MR.assets.patreon), strings.patreon(),
+                            painterResource(MR.images.patreon), strings.patreon(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -162,7 +161,7 @@ fun FooterView(
                             }
                         ) {
                             Icon(
-                                painter = vectorResource(MR.assets.cog),
+                                painter = painterResource(MR.images.cog),
                                 contentDescription = strings.settings(),
                                 modifier = Modifier.padding(8.dp).size(24.dp)
                             )

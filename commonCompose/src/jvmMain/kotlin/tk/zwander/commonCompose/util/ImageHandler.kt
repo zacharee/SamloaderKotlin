@@ -20,8 +20,3 @@ fun loadResource(path: String): ByteArray {
 fun imageResource(path: String): ImageBitmap {
     return Image.makeFromEncoded(loadResource(path)).toComposeImageBitmap()
 }
-
-@Composable
-actual fun vectorResourceImpl(resource: AssetResource, result: (Painter) -> Unit) {
-    result(loadSvgPainter(loadResource(resource.filePath), LocalDensity.current))
-}

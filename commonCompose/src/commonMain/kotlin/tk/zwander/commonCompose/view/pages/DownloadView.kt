@@ -16,6 +16,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.painterResource
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.GradleConfig
@@ -27,7 +28,6 @@ import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.model.DownloadModel
-import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.*
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
@@ -290,7 +290,7 @@ internal fun DownloadView(scrollState: ScrollState) {
                         }
                     },
                     enabled = canDownload,
-                    vectorIcon = vectorResource(MR.assets.download),
+                    vectorIcon = painterResource(MR.images.download),
                     text = strings.download(),
                     description = strings.downloadFirmware(),
                     parentSize = constraints.maxWidth
@@ -306,7 +306,7 @@ internal fun DownloadView(scrollState: ScrollState) {
                     },
                     enabled = canCheckVersion,
                     text = strings.checkForUpdates(),
-                    vectorIcon = vectorResource(MR.assets.refresh),
+                    vectorIcon = painterResource(MR.images.refresh),
                     description = strings.checkForUpdatesDesc(),
                     parentSize = constraints.maxWidth
                 )
@@ -321,7 +321,7 @@ internal fun DownloadView(scrollState: ScrollState) {
                     enabled = hasRunningJobs,
                     text = strings.cancel(),
                     description = strings.cancel(),
-                    vectorIcon = vectorResource(MR.assets.cancel),
+                    vectorIcon = painterResource(MR.images.cancel),
                     parentSize = constraints.maxWidth
                 )
             }

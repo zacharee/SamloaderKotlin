@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -37,8 +36,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.painterResource
 import tk.zwander.common.data.csc.CSCDB
-import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
 
@@ -223,7 +222,7 @@ private fun HeaderItem(
             painter = when (state) {
                 SelectionState.ASCENDING -> rememberVectorPainter(Icons.Default.KeyboardArrowUp)
                 SelectionState.DESCENDING -> rememberVectorPainter(Icons.Default.KeyboardArrowDown)
-                SelectionState.NONE -> vectorResource(MR.assets.unfold_more)
+                SelectionState.NONE -> painterResource(MR.images.unfold_more)
             },
             contentDescription = when (state) {
                 SelectionState.ASCENDING -> strings.ascending()

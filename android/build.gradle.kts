@@ -3,6 +3,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("org.jetbrains.kotlin.android")
+    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -72,4 +73,8 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/versions/9/previous-compilation-data.bin")
     }
+}
+
+multiplatformResources {
+    multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.android" // required
 }

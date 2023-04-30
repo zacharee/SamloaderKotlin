@@ -9,13 +9,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.painterResource
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.model.DecryptModel
-import tk.zwander.commonCompose.util.vectorResource
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
@@ -124,7 +124,7 @@ internal fun DecryptView(scrollState: ScrollState) {
                     enabled = canDecrypt,
                     text = strings.decrypt(),
                     description = strings.decryptFirmware(),
-                    vectorIcon = vectorResource(MR.assets.lock_open_outline),
+                    vectorIcon = painterResource(MR.images.lock_open_outline),
                     parentSize = constraints.maxWidth
                 )
                 Spacer(Modifier.width(8.dp))
@@ -137,7 +137,7 @@ internal fun DecryptView(scrollState: ScrollState) {
                     enabled = canChangeOption,
                     text = strings.openFile(),
                     description = strings.openFileDesc(),
-                    vectorIcon = vectorResource(MR.assets.open_in_new),
+                    vectorIcon = painterResource(MR.images.open_in_new),
                     parentSize = constraints.maxWidth
                 )
                 Spacer(Modifier.weight(1f))
@@ -149,7 +149,7 @@ internal fun DecryptView(scrollState: ScrollState) {
                     enabled = hasRunningJobs,
                     text = strings.cancel(),
                     description = strings.cancel(),
-                    vectorIcon = vectorResource(MR.assets.cancel),
+                    vectorIcon = painterResource(MR.images.cancel),
                     parentSize = constraints.maxWidth
                 )
             }
