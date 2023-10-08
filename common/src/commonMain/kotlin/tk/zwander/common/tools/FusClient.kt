@@ -69,7 +69,7 @@ class FusClient(
     }
 
     fun getDownloadUrl(path: String): String {
-        return generateProperUrl(useProxy, "http://cloud-neofussvr.sslcs.cdngc.net/NF_DownloadBinaryForMass.do?file=${path}")
+        return generateProperUrl(useProxy, "http://cloud-neofussvr.samsungmobile.com/NF_DownloadBinaryForMass.do?file=${path}")
     }
 
     /**
