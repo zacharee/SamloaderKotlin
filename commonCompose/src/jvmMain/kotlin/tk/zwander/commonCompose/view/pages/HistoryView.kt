@@ -26,7 +26,8 @@ actual object PlatformHistoryView {
 
             val formats = arrayOf(
                 "yyyy/M/d",
-                "yyyy-M-d"
+                "yyyy-M-d",
+                "M/d/yyyy"
             )
 
             val parsed = formats.firstNotNullOfOrNull { format ->
