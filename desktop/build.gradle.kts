@@ -3,7 +3,6 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
-    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -39,7 +38,7 @@ compose.desktop {
     val appName: String by rootProject.extra
 
     application {
-        this.dependsOn(project(":common").tasks.named("generateMRjvmMain").get())
+//        this.dependsOn(project(":common").tasks.named("generateMRjvmMain").get())
 
         mainClass = "MainKt"
         nativeDistributions {
@@ -71,23 +70,4 @@ compose.desktop {
             this.packageName = appName
         }
     }
-}
-
-multiplatformResources {
-    multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.desktop"
-}
-
-tasks.findByPath(":common:jvmProcessResources")?.apply {
-    dependsOn(":common:generateMRcommonMain")
-    dependsOn("generateMRjvmMain")
-}
-
-tasks.findByPath(":commonCompose:jvmProcessResources")?.apply {
-    dependsOn(":commonCompose:generateMRcommonMain")
-    dependsOn("generateMRjvmMain")
-}
-
-tasks.findByPath(":desktop:jvmProcessResources")?.apply {
-    dependsOn(":desktop:generateMRcommonMain")
-    dependsOn("generateMRjvmMain")
 }

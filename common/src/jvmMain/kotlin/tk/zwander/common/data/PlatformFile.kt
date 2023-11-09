@@ -34,14 +34,14 @@ actual open class PlatformFile : File {
     }
 
     override fun getName(): String = wrappedFile.name
-    override suspend fun getParent(): String = wrappedFile.parent
-    override suspend fun getParentFile(): File = File(wrappedFile.parentFile.absolutePath)
+    override suspend fun getParent(): String? = wrappedFile.parent
+    override suspend fun getParentFile(): IPlatformFile? = File(wrappedFile.parentFile.absolutePath)
     override fun getPath(): String = wrappedFile.path
     override suspend fun isAbsolute(): Boolean = wrappedFile.isAbsolute
     override fun getAbsolutePath(): String = wrappedFile.absolutePath
-    override fun getAbsoluteFile(): File = File(wrappedFile.absoluteFile.absolutePath)
+    override fun getAbsoluteFile(): IPlatformFile = File(wrappedFile.absoluteFile.absolutePath)
     override suspend fun getCanonicalPath(): String = wrappedFile.canonicalPath
-    override suspend fun getCanonicalFile(): File = File(wrappedFile.canonicalFile.absolutePath)
+    override suspend fun getCanonicalFile(): IPlatformFile = File(wrappedFile.canonicalFile.absolutePath)
     override suspend fun getCanRead(): Boolean = wrappedFile.canRead()
     override suspend fun getCanWrite(): Boolean = wrappedFile.canWrite()
     override suspend fun getExists(): Boolean = wrappedFile.exists()

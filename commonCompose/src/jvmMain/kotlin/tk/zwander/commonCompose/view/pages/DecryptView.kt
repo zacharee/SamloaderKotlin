@@ -18,7 +18,7 @@ actual object PlatformDecryptView {
                 callback(
                     DecryptFileInfo(
                         file,
-                        PlatformFile(file.getParent(), File(file.getAbsolutePath()).nameWithoutExtension)
+                        PlatformFile(file.getParent()!!, File(file.getAbsolutePath()).nameWithoutExtension)
                     )
                 )
             } else {

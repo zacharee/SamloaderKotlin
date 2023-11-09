@@ -74,10 +74,10 @@ kotlin {
 
     sourceSets {
         val korlibsVersion = "3.4.0"
-        val ktorVersion = "2.2.4"
-        val jsoupVersion = "1.15.4"
-        val coroutinesVersion = "1.7.0-Beta"
-        val fluidVersion = "0.12.0"
+        val ktorVersion = "2.3.6"
+        val jsoupVersion = "1.16.2"
+        val coroutinesVersion = "1.7.3"
+        val fluidVersion = "0.13.0"
         val settingsVersion = "1.0.0"
 
         val commonMain by getting {
@@ -86,7 +86,7 @@ kotlin {
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 //                api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
                 api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
@@ -96,7 +96,7 @@ kotlin {
                 api("io.ktor:ktor-client-auth:$ktorVersion")
                 api("io.fluidsonic.i18n:fluid-i18n:$fluidVersion")
                 api("io.fluidsonic.country:fluid-country:$fluidVersion")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
                 api("com.russhwolf:multiplatform-settings:$settingsVersion")
                 api("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
                 api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")
@@ -115,11 +115,11 @@ kotlin {
             dependencies {
                 api("org.jsoup:jsoup:$jsoupVersion")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
-                api("com.formdev:flatlaf:3.0")
+                api("com.formdev:flatlaf:3.2.5")
                 api("io.github.vincenzopalazzo:material-ui-swing:1.1.4")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
                 api("com.github.weisj:darklaf-core:3.0.2")
-                api("com.bugsnag:bugsnag:3.6.4")
+                api("com.bugsnag:bugsnag:3.7.1")
             }
         }
 
@@ -131,15 +131,15 @@ kotlin {
                 api("org.jsoup:jsoup:$jsoupVersion")
 
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.fragment:fragment-ktx:1.5.6")
-                api("androidx.activity:activity-compose:1.7.0")
-                api("androidx.core:core-ktx:1.9.0")
+                api("androidx.fragment:fragment-ktx:1.6.2")
+                api("androidx.activity:activity-compose:1.7.2")
+                api("androidx.core:core-ktx:1.12.0")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
                 api("com.caverock:androidsvg-aar:1.4")
-                api("com.bugsnag:bugsnag-android:5.29.0")
+                api("com.bugsnag:bugsnag-android:5.31.3")
             }
         }
 
@@ -151,7 +151,7 @@ kotlin {
 
                 api("io.ktor:ktor-client-js:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-js:${rootProject.extra["i18n4kVersion"]}")
-                api("org.jetbrains.kotlin:kotlinx-atomicfu-runtime:1.8.20")
+                api("org.jetbrains.kotlin:kotlinx-atomicfu-runtime:${rootProject.extra["kotlinVersion"]}")
 
                 api(npm("bootstrap", "5.1.0"))
                 api(npm("jquery", "3.6.0"))

@@ -20,10 +20,17 @@ import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.LocalComposeScene
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.platform.SkiaBasedOwner
 import androidx.compose.ui.unit.IntOffset
@@ -127,22 +134,35 @@ internal fun AbsolutePopup(
     onKeyEvent: (KeyEvent) -> Boolean = { false },
     content: @Composable () -> Unit
 ) {
-    val scene = LocalComposeScene.current
+    val scene = LocalComposeScene.current!!
     val density = LocalDensity.current
+    val layoutDirection = LocalLayoutDirection.current
+
+    val scope = rememberCoroutineScope()
 
     var popupBounds by remember { mutableStateOf(IntRect.Zero) }
+    val focusRequester = remember {
+        FocusRequester()
+    }
+
+    LaunchedEffect(null) {
+        focusRequester.requestFocus()
+    }
 
     val parentComposition = rememberCompositionContext()
     val (owner, composition) = remember {
         val owner = SkiaBasedOwner(
             platform = scene.platform,
-            pointerPositionUpdater = scene.pointerPositionUpdater,
             bounds = popupBounds,
-            isFocusable = focusable,
-            onDismissRequest = onDismissRequest,
-            onPreviewKeyEvent = onPreviewKeyEvent,
-            onKeyEvent = onKeyEvent,
-            scene = scene
+            focusable = focusable,
+            scene = scene,
+            coroutineContext = scope.coroutineContext,
+            parentFocusManager = scene.platform.focusManager,
+            initDensity = density,
+            modifier = Modifier.onKeyEvent(onKeyEvent)
+                .onPreviewKeyEvent(onPreviewKeyEvent),
+            onOutsidePointerEvent = { onDismissRequest?.invoke() },
+            initLayoutDirection = layoutDirection,
         )
         scene.attach(owner)
 
@@ -172,7 +192,17 @@ internal fun AbsolutePopup(
                             placeable.place(position.x, position.y)
                         }
                     }
-                }
+                },
+                modifier = Modifier
+                    .onPreviewKeyEvent {
+                        if (it.key == Key.Escape) {
+                            onDismissRequest?.invoke()
+                            true
+                        } else {
+                            false
+                        }
+                    }
+                    .focusRequester(focusRequester),
             )
         }
 

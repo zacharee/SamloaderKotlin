@@ -21,7 +21,7 @@ actual object PlatformDownloadView {
             if (file == null) {
                 callback(null)
             } else {
-                val decFile = PlatformFile(file.getParent(), fileName.replace(".enc2", "").replace(".enc4", ""))
+                val decFile = PlatformFile(file.getParent()!!, fileName.replace(".enc2", "").replace(".enc4", ""))
 
                 callback(
                     DownloadFileInfo(
