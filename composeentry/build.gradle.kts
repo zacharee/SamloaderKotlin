@@ -74,3 +74,10 @@ multiplatformResources {
 tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+compose {
+    val kotlinVersion = rootProject.extra["kotlinVersion"].toString()
+
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["composeCompilerVersion"]}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
+}

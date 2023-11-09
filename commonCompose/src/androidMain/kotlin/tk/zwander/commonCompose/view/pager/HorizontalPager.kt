@@ -18,7 +18,9 @@ internal actual fun HorizontalPager(
     onPageChanged: (Int) -> Unit,
     eval: @Composable() (Page) -> Unit,
 ): (@Composable() (List<TabPosition>) -> Unit)? {
-    val pState = androidx.compose.foundation.pager.rememberPagerState()
+    val pState = androidx.compose.foundation.pager.rememberPagerState {
+        count
+    }
 
     LaunchedEffect(key1 = currentPage) {
         pState.animateScrollToPage(currentPage)
@@ -31,11 +33,10 @@ internal actual fun HorizontalPager(
     }
 
     androidx.compose.foundation.pager.HorizontalPager(
-        pageCount = count,
         state = pState,
         pageSpacing = 8.dp,
     ) {
-        eval(Page.values()[it])
+        eval(Page.entries[it])
     }
 
     return { tabPositions ->

@@ -131,6 +131,14 @@ android {
         targetCompatibility = javaVersionEnum
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["composeCompilerVersion"].toString()
+    }
+
+    buildFeatures {
+        aidl = true
+    }
+
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
 }
@@ -147,5 +155,12 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs += listOf("-Xskip-prerelease-check")
     }
+}
+
+compose {
+    val kotlinVersion = rootProject.extra["kotlinVersion"].toString()
+
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["composeCompilerVersion"]}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
 }
 

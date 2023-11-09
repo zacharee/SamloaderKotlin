@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
 import tk.zwander.common.data.DecryptFileInfo
@@ -258,7 +259,7 @@ class DownloaderService : Service() {
     }
 
     override fun onDestroy() {
-        stopForeground(false)
+        ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         application.unregisterActivityLifecycleCallbacks(lifecycleCallbacks)
         super.onDestroy()
     }

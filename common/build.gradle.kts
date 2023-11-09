@@ -211,6 +211,10 @@ android {
         targetCompatibility = javaVersionEnum
     }
 
+    buildFeatures {
+        aidl = true
+    }
+
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
@@ -250,6 +254,13 @@ tasks.withType<Copy> {
 
 compose.experimental {
     web.application {}
+}
+
+compose {
+    val kotlinVersion = rootProject.extra["kotlinVersion"].toString()
+
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["composeCompilerVersion"]}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
 }
 
 //tasks.named<org.jetbrains.kotlin.gradle.tasks.DefFileTask>("generateDefHTMLKit").configure {

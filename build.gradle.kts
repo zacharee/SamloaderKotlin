@@ -18,6 +18,7 @@ val webpackVersion by extra("4.10.0")
 
 buildscript {
     val kotlinVersion by rootProject.extra("1.9.20")
+    val composeCompilerVersion by rootProject.extra("1.5.3")
     val i18n4kVersion by extra("0.6.2")
     val mokoVersion by extra("0.23.0")
 

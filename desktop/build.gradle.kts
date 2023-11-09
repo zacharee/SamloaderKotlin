@@ -71,3 +71,10 @@ compose.desktop {
         }
     }
 }
+
+compose {
+    val kotlinVersion = rootProject.extra["kotlinVersion"].toString()
+
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["composeCompilerVersion"]}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
+}

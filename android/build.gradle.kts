@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     implementation(project(":commonCompose"))
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.10.0")
 }
 
 android {
@@ -43,6 +43,7 @@ android {
 
     buildFeatures {
         compose = true
+        aidl = true
     }
 
     buildTypes {
@@ -73,8 +74,19 @@ android {
     packagingOptions {
         resources.excludes.add("META-INF/versions/9/previous-compilation-data.bin")
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = rootProject.extra["composeCompilerVersion"].toString()
+    }
 }
 
 multiplatformResources {
     multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.android" // required
+}
+
+compose {
+    val kotlinVersion = rootProject.extra["kotlinVersion"].toString()
+
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["composeCompilerVersion"]}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
 }

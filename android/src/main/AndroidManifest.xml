@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
 
     <application
         android:name=".App"
@@ -25,7 +26,9 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".DownloaderService" />
+        <service android:name=".DownloaderService"
+            android:foregroundServiceType="specialUse"
+            />
 
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
