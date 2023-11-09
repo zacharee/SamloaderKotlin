@@ -11,3 +11,9 @@
 /.idea/libraries/
 **/build/
 /.idea/
+/browser/karma.config.d/moko-resources-generated.js
+/browser/webpack.config.d/moko-resources-generated.js
+/common/karma.config.d/moko-resources-generated.js
+/common/webpack.config.d/moko-resources-generated.js
+/commonCompose/karma.config.d/moko-resources-generated.js
+/commonCompose/webpack.config.d/moko-resources-generated.js
