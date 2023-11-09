@@ -1,6 +1,11 @@
-# ???
+# 1.14.2
+- Fix downloads (#109) (thanks @ananjaser1211).
 - Add Bugsnag error reporting.
-- Update Compose to 1.3.1-rc01
+- Update Compose to 1.5.10.
+- Update CSC options.
+- Add Bugsnag.
+- Fix some date formats (#112) (thanks @Tostis).
+- Add native ARM64 macOS build.
 
 # 1.14.1
 - Add some more CSCs.
