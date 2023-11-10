@@ -37,9 +37,21 @@ jobs:
         key: ${{ runner.os }}-gradle-macos-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-macos-
+    - name: Import Certs
+      uses: apple-actions/import-codesign-certs@v2
+      id: importcerts
+      with:
+        p12-file-base64: ${{ secrets.MACOS_CERTIFICATE }}
+        p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+        keychain-name: build
+        keychain-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
     - name: Build with Gradle
       run: |
-        ./gradlew packageDmg
+        ./gradlew packageDmg -Pcompose.desktop.mac.signing.identity=${{ secrets.MACOS_SIGNING_ID }}
+        ./gradlew --stop
+    - name: Notarize with Gradle
+      run: |
+        ./gradlew notarizeDmg -Pcompose.desktop.mac.notarization.appleID=${{ secrets.MACOS_NOTARIZATION_ID }} -Pcompose.desktop.mac.notarization.password=${{ secrets.MACOS_NOTARIZATION_PASSWORD }} -Pcompose.desktop.mac.notarization.teamID=${{ secrets.MACOS_TEAM_ID }}
         ./gradlew --stop
     - name: Upload Logs
       if: ${{ always() }}
@@ -49,28 +61,6 @@ jobs:
         path: ${{ github.workspace }}/desktop/build/compose/logs/
     - name: Check Output Exists
       run: ls -laR ${{ github.workspace }}/desktop/build/compose/binaries/main/dmg/
-    - name: Import Certs
-      uses: figleafteam/import-codesign-certs@v2
-      id: importcerts
-      with:
-        p12-file-base64: ${{ secrets.MACOS_CERTIFICATE }}
-        p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-        keychain-name: build
-        keychain-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-    - name: Sign Executable
-      continue-on-error: true
-      env:
-        MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
-        MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-        WORKSPACE: ${{ github.workspace }}
-      run: >
-        echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12 ;
-        security default-keychain -s build.keychain ;
-        security unlock-keychain -p $MACOS_CERTIFICATE_PWD build.keychain ;
-        security import certificate.p12 -k build.keychain -P $MACOS_CERTIFICATE_PWD -T /usr/bin/codesign ;
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $MACOS_CERTIFICATE_PWD build.keychain ;
-        security find-identity ;
-        /usr/bin/codesign -fs "Bifrost" "$(ls $WORKSPACE//desktop/build/compose/binaries/main/dmg/Bifrost-*.dmg)" -v
     - name: Create Release ZIP
       uses: papeloto/action-zip@v1
       with:

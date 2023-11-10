@@ -59,6 +59,20 @@ compose.desktop {
                 packageVersion = "1." + rootProject.extra["versionCode"]
                 targetFormats(TargetFormat.Dmg)
                 this.packageName = appName
+
+                val providers = project.providers
+
+                signing {
+                    sign.set(true)
+                    identity.set(providers.environmentVariable("MACOS_SIGNING_ID"))
+//                    keychain.set("build.keychain")
+                }
+
+                notarization {
+//                    appleID.set(providers.environmentVariable("MACOS_NOTARIZATION_ID"))
+//                    password.set(providers.environmentVariable("MACOS_NOTARIZATION_PASSWORD"))
+//                    teamID.set(providers.environmentVariable("MACOS_TEAM_ID"))
+                }
             }
 
             linux {
