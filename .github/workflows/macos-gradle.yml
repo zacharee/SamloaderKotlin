@@ -47,11 +47,11 @@ jobs:
         keychain-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
     - name: Build with Gradle
       run: |
-        ./gradlew packageDmg -Pcompose.desktop.mac.signing.identity=${{ secrets.MACOS_SIGNING_ID }}
+        ./gradlew packageDmg -Pcompose.desktop.mac.signing.identity="${{ secrets.MACOS_SIGNING_ID }}"
         ./gradlew --stop
     - name: Notarize with Gradle
       run: |
-        ./gradlew notarizeDmg -Pcompose.desktop.mac.notarization.appleID=${{ secrets.MACOS_NOTARIZATION_ID }} -Pcompose.desktop.mac.notarization.password=${{ secrets.MACOS_NOTARIZATION_PASSWORD }} -Pcompose.desktop.mac.notarization.teamID=${{ secrets.MACOS_TEAM_ID }}
+        ./gradlew notarizeDmg -Pcompose.desktop.mac.notarization.appleID="${{ secrets.MACOS_NOTARIZATION_ID }}" -Pcompose.desktop.mac.notarization.password="${{ secrets.MACOS_NOTARIZATION_PASSWORD }}" -Pcompose.desktop.mac.notarization.teamID="${{ secrets.MACOS_TEAM_ID }}"
         ./gradlew --stop
     - name: Upload Logs
       if: ${{ always() }}
