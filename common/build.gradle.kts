@@ -120,6 +120,7 @@ kotlin {
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
                 api("com.github.weisj:darklaf-core:3.0.2")
                 api("com.bugsnag:bugsnag:3.7.1")
+                api("org.slf4j:slf4j-simple:2.0.9")
             }
         }
 
