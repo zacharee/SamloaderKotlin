@@ -1,3 +1,9 @@
+# 1.14.3
+- Fix a crash on launch on desktop.
+- Migrate to Korlibs 4.
+- Fix harmless SLF4J error.
+- Other crash fixes.
+
 # 1.14.2
 - Fix downloads (#109) (thanks @ananjaser1211).
 - Add Bugsnag error reporting.
