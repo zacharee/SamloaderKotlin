@@ -200,14 +200,10 @@ class DownloaderService : Service() {
             )
         }
         PlatformDecryptView.decryptCallback = input@{ callback ->
-            var inputUri: Uri? = null
-            var outputUri: Uri? = null
-
-            suspendCoroutine<Unit> { cont ->
+            val inputUri = suspendCoroutine { cont ->
                 activityCallback?.openDecryptInput(object : IOpenCallback.Stub() {
                     override fun onOpen(uri: Uri?) {
-                        inputUri = uri
-                        cont.resume(Unit)
+                        cont.resume(uri)
                     }
                 })
             }
@@ -222,21 +218,24 @@ class DownloaderService : Service() {
                     return@input
                 }
 
-            suspendCoroutine<Unit> { cont ->
+            val outputUri = suspendCoroutine { cont ->
                 activityCallback?.openDecryptOutput(
                     inputFile.name!!
                         .replace(".enc2", "")
                         .replace(".enc4", ""),
                     object : IOpenCallback.Stub() {
                         override fun onOpen(uri: Uri?) {
-                            outputUri = uri
-                            cont.resume(Unit)
+                            cont.resume(uri)
                         }
                     })
             }
 
+            if (outputUri == null) {
+                callback(null)
+                return@input
+            }
             val outputFile =
-                DocumentFile.fromSingleUri(this@DownloaderService, outputUri!!) ?: run {
+                DocumentFile.fromSingleUri(this@DownloaderService, outputUri) ?: run {
                     callback(null)
                     return@input
                 }

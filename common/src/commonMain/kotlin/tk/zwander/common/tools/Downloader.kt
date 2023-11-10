@@ -1,6 +1,5 @@
 package tk.zwander.common.tools
 
-import io.ktor.utils.io.*
 import korlibs.io.stream.AsyncInputStream
 import korlibs.io.stream.AsyncOutputStream
 import kotlinx.coroutines.*
