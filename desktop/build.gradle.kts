@@ -43,6 +43,7 @@ compose.desktop {
         mainClass = "MainKt"
         nativeDistributions {
             modules("jdk.crypto.ec")
+            modules("java.management")
 
             windows {
                 menu = true

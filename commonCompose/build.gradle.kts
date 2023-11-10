@@ -21,7 +21,7 @@ kotlin {
         binaries.executable()
     }
 
-    android {
+    androidTarget {
         compilations.forEach {
             it.kotlinOptions {
                 freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"

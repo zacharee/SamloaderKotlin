@@ -39,7 +39,7 @@ kotlin {
     macosX64 {}
     macosArm64 {}
 
-    android {
+    androidTarget {
         compilations.forEach {
             it.kotlinOptions {
                 freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
