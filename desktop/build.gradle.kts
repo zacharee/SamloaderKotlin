@@ -63,8 +63,8 @@ compose.desktop {
                 val providers = project.providers
 
                 signing {
-                    sign.set(true)
-                    identity.set(providers.environmentVariable("MACOS_SIGNING_ID"))
+//                    sign.set(true)
+//                    identity.set(providers.environmentVariable("MACOS_SIGNING_ID"))
 //                    keychain.set("build.keychain")
                 }
 
