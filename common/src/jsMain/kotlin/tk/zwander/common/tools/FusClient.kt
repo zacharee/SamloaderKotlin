@@ -1,11 +1,11 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.jsObject
-import com.soywiz.korio.runtime.node.toByteArray
-import com.soywiz.korio.stream.AsyncInputStream
 import io.ktor.client.fetch.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.internal.*
+import korlibs.io.jsObject
+import korlibs.io.runtime.node.toByteArray
+import korlibs.io.stream.AsyncInputStream
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await

@@ -1,8 +1,7 @@
 package tk.zwander.common.util
 
-import com.soywiz.kmem.Platform
-import com.soywiz.kmem.isJsBrowser
 import io.ktor.client.*
+import korlibs.memory.Platform
 
 val client: HttpClient
     get() = HttpClient {

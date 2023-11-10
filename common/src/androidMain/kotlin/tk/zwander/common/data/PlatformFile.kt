@@ -3,8 +3,8 @@ package tk.zwander.common.data
 import android.content.Context
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncOutputStream
+import korlibs.io.stream.AsyncInputStream
+import korlibs.io.stream.AsyncOutputStream
 import tk.zwander.common.util.inputAsync
 import tk.zwander.common.util.flushingAsync
 import java.io.FileInputStream

@@ -4,7 +4,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.soywiz.krypto.encoding.hex
+import korlibs.crypto.encoding.hex
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 

@@ -1,6 +1,6 @@
 package tk.zwander.common.util
 
-import com.soywiz.klock.DateTime
+import korlibs.time.DateTime
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 

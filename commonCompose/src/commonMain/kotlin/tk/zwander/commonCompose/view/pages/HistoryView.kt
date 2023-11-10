@@ -22,9 +22,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.soywiz.korio.serialization.xml.Xml
-import com.soywiz.korio.serialization.xml.firstDescendant
 import dev.icerock.moko.resources.compose.painterResource
+import korlibs.io.serialization.xml.Xml
+import korlibs.io.serialization.xml.firstDescendant
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler

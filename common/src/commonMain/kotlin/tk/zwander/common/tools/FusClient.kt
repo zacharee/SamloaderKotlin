@@ -1,12 +1,12 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.stream.AsyncInputStream
 import io.ktor.client.request.*
 import io.ktor.client.request.request
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
+import korlibs.io.stream.AsyncInputStream
 import tk.zwander.common.util.client
 import tk.zwander.common.util.generateProperUrl
 import kotlin.time.ExperimentalTime

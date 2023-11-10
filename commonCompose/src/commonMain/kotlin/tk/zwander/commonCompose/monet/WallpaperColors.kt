@@ -2,7 +2,7 @@ package tk.zwander.commonCompose.monet
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.soywiz.krypto.encoding.hex
+import korlibs.crypto.encoding.hex
 import kotlin.math.abs
 import kotlin.math.round
 

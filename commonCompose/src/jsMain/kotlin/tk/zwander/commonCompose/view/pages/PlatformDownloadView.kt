@@ -1,19 +1,14 @@
 package tk.zwander.commonCompose.view.pages
 
-import com.soywiz.klogger.Console.appendReset
-import com.soywiz.klogger.Console.red
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.await
 import kotlinx.coroutines.coroutineScope
-import org.w3c.dom.Window
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformFile
-import tk.zwander.common.util.fileHandling.CreateWritableOptions
 import tk.zwander.common.util.fileHandling.GetHandleOptions
 import tk.zwander.common.util.fileHandling.showDirectoryPicker
 import tk.zwander.common.util.fileHandling.toVfsFile
-import kotlin.js.Promise
 
 /**
  * Delegate retrieving the download location to the platform.

@@ -1,6 +1,6 @@
 package tk.zwander.commonCompose.view.pages
 
-import com.soywiz.klock.DateFormat
+import korlibs.time.DateFormat
 import org.w3c.dom.Element
 import org.w3c.dom.asList
 import org.w3c.dom.get

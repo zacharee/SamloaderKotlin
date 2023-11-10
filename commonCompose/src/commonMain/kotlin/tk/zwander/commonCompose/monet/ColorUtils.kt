@@ -2,7 +2,7 @@ package tk.zwander.commonCompose.monet
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import com.soywiz.kmem.clamp
+import korlibs.memory.clamp
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

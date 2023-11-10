@@ -1,10 +1,10 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.serialization.xml.Xml
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.core.*
+import korlibs.io.serialization.xml.Xml
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.util.client
 import tk.zwander.common.util.generateProperUrl

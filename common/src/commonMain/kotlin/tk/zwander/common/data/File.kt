@@ -1,8 +1,7 @@
 package tk.zwander.common.data
 
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncOutputStream
-
+import korlibs.io.stream.AsyncInputStream
+import korlibs.io.stream.AsyncOutputStream
 
 /**
  * Platforms should actuate this class to implement

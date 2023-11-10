@@ -1,14 +1,14 @@
 package tk.zwander.common.data
 
-import com.soywiz.klock.DateTime
-import com.soywiz.korio.file.VfsFile
-import com.soywiz.korio.file.VfsOpenMode
-import com.soywiz.korio.file.baseName
-import com.soywiz.korio.file.fullName
-import com.soywiz.korio.file.isAbsolute
-import com.soywiz.korio.file.std.rootLocalVfsNative
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncOutputStream
+import korlibs.io.file.VfsFile
+import korlibs.io.file.VfsOpenMode
+import korlibs.io.file.baseName
+import korlibs.io.file.fullName
+import korlibs.io.file.isAbsolute
+import korlibs.io.file.std.rootLocalVfsNative
+import korlibs.io.stream.AsyncInputStream
+import korlibs.io.stream.AsyncOutputStream
+import korlibs.time.DateTime
 
 /**
  * A File implementation that wraps macOS' file API.

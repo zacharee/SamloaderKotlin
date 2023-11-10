@@ -1,10 +1,10 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.serialization.xml.Xml
-import com.soywiz.korio.serialization.xml.buildXml
-import com.soywiz.krypto.MD5
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
+import korlibs.crypto.MD5
+import korlibs.io.serialization.xml.Xml
+import korlibs.io.serialization.xml.buildXml
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.data.exception.VersionCheckException

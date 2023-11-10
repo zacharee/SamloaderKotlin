@@ -1,7 +1,6 @@
 package tk.zwander.commonCompose.view.pages
 
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.DateTime
+import korlibs.time.DateFormat
 import org.jsoup.Jsoup
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.makeFirmwareString
@@ -31,13 +30,13 @@ actual object PlatformHistoryView {
                 "M/d/yyyy"
             )
 
-            val parsed = formats.mapNotNull { format ->
+            val parsed = formats.firstNotNullOfOrNull { format ->
                 try {
                     DateFormat(format).tryParse(date)
                 } catch (e: Exception) {
                     null
                 }
-            }.firstOrNull()
+            }
 
             HistoryInfo(
                 parsed ?: throw IllegalArgumentException("Invalid date format $date"),

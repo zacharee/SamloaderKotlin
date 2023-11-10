@@ -1,15 +1,15 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.serialization.xml.Xml
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncOutputStream
-import com.soywiz.korio.util.checksum.CRC32
-import com.soywiz.krypto.AES
-import com.soywiz.krypto.CipherPadding
-import com.soywiz.krypto.MD5
-import com.soywiz.krypto.encoding.Base64
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
+import korlibs.crypto.AES
+import korlibs.crypto.CipherPadding
+import korlibs.crypto.MD5
+import korlibs.crypto.encoding.Base64
+import korlibs.io.serialization.xml.Xml
+import korlibs.io.stream.AsyncInputStream
+import korlibs.io.stream.AsyncOutputStream
+import korlibs.io.util.checksum.CRC32
 import kotlinx.coroutines.*
 import tk.zwander.common.util.Averager
 import kotlin.time.*

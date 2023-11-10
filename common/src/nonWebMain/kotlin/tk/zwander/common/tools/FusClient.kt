@@ -1,9 +1,9 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.net.http.Http
-import com.soywiz.korio.net.http.HttpClient
-import com.soywiz.korio.stream.AsyncInputStream
 import io.ktor.utils.io.core.internal.*
+import korlibs.io.net.http.Http
+import korlibs.io.net.http.HttpClient
+import korlibs.io.stream.AsyncInputStream
 
 @OptIn(DangerousInternalIoApi::class)
 actual suspend fun doDownloadFile(client: FusClient, fileName: String, start: Long): Pair<AsyncInputStream, String?> {

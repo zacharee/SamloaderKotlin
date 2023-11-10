@@ -22,10 +22,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.soywiz.kmem.Platform
-import com.soywiz.kmem.isAndroid
-import com.soywiz.kmem.isJvm
 import dev.icerock.moko.resources.compose.painterResource
+import korlibs.memory.Platform
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.samloaderkotlin.resources.MR

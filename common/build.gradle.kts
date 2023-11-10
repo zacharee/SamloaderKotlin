@@ -73,7 +73,7 @@ kotlin {
     }
 
     sourceSets {
-        val korlibsVersion = "3.4.0"
+        val korlibsVersion = "4.0.10"
         val ktorVersion = "2.3.6"
         val jsoupVersion = "1.16.2"
         val coroutinesVersion = "1.7.3"

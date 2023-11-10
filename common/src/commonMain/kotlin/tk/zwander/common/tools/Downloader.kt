@@ -1,8 +1,8 @@
 package tk.zwander.common.tools
 
-import com.soywiz.korio.stream.AsyncInputStream
-import com.soywiz.korio.stream.AsyncOutputStream
 import io.ktor.utils.io.*
+import korlibs.io.stream.AsyncInputStream
+import korlibs.io.stream.AsyncOutputStream
 import kotlinx.coroutines.*
 import tk.zwander.common.util.Averager
 import kotlin.time.ExperimentalTime

@@ -1,6 +1,6 @@
 package tk.zwander.common.data
 
-import com.soywiz.klock.DateTimeTz
+import korlibs.time.DateTimeTz
 
 /**
  * Data for a firmware history item.

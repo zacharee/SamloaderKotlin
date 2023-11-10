@@ -1,5 +1,4 @@
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
@@ -8,8 +7,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.bugsnag.Bugsnag
 import com.formdev.flatlaf.FlatDarkLaf
-import com.soywiz.kmem.Platform
-import com.soywiz.kmem.isWindows
+import korlibs.memory.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
@@ -24,7 +22,6 @@ import kotlin.time.ExperimentalTime
 
 
 @ExperimentalTime
-@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
