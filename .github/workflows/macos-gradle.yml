@@ -47,7 +47,9 @@ jobs:
         keychain-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
     - name: Build with Gradle
       run: |
-        ./gradlew packageDmg -Pcompose.desktop.mac.sign=true -Pcompose.desktop.mac.signing.identity="${{ secrets.MACOS_SIGNING_ID }}"
+        ./gradlew packageDmg \
+            -Pcompose.desktop.mac.sign=true \
+            -Pcompose.desktop.mac.signing.identity="${{ secrets.MACOS_SIGNING_ID }}"
         ./gradlew --stop
     - name: Notarize with Gradle
       run: |
