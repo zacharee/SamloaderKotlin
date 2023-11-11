@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -16,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import com.russhwolf.settings.Settings
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.samloaderkotlin.strings
@@ -27,14 +27,15 @@ import tk.zwander.samloaderkotlin.strings
  * @param canChangeFirmware whether the firmware field should be editable.
  * @param showFirmware whether to show the firmware field.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MRFLayout(
     model: BaseModel,
     canChangeOption: Boolean,
     canChangeFirmware: Boolean,
-    showFirmware: Boolean = true
+    showFirmware: Boolean = true,
 ) {
+    val settings = remember { Settings() }
+
     var showingCscChooser by remember {
         mutableStateOf(false)
     }
@@ -46,7 +47,7 @@ internal fun MRFLayout(
             OutlinedTextField(
                 value = model.model.collectAsState().value,
                 onValueChange = {
-                    model.model.value = it.uppercase().trim()
+                    model.model.value = it.transformText(settings)
                     if ((model is DownloadModel && !model.manual.value)) {
                         model.fw.value = ""
                         model.osCode.value = ""
@@ -56,14 +57,14 @@ internal fun MRFLayout(
                 label = { Text(strings.modelHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-                singleLine = true
+                singleLine = true,
             )
         },
         endComponent = {
             OutlinedTextField(
                 value = model.region.collectAsState().value,
                 onValueChange = {
-                    model.region.value = it.uppercase().trim()
+                    model.region.value = it.transformText(settings)
                     if ((model is DownloadModel && !model.manual.value)) {
                         model.fw.value = ""
                         model.osCode.value = ""
@@ -96,7 +97,7 @@ internal fun MRFLayout(
 
         OutlinedTextField(
             value = model.fw.collectAsState().value,
-            onValueChange = { model.fw.value = it.uppercase().trim() },
+            onValueChange = { model.fw.value = it.transformText(settings) },
             label = { Text(strings.firmwareHint()) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmware,
@@ -114,4 +115,10 @@ internal fun MRFLayout(
             }
         }
     )
+}
+
+private fun String.transformText(settings: Settings): String {
+    val trimmed = trim()
+
+    return if (settings.getBoolean("allowLowercaseCharacters", false)) trimmed else trimmed.uppercase()
 }
