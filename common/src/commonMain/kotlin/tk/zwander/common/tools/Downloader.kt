@@ -4,7 +4,6 @@ import korlibs.io.stream.AsyncInputStream
 import korlibs.io.stream.AsyncOutputStream
 import kotlinx.coroutines.*
 import tk.zwander.common.util.Averager
-import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
 /**
@@ -19,7 +18,6 @@ object Downloader {
      * @param outputSize the current size of the output file. Used for resuming downloads.
      * @param progressCallback a callback to keep track of th®e download.
      */
-    @OptIn(ExperimentalTime::class)
     suspend fun download(response: AsyncInputStream, size: Long, output: AsyncOutputStream, outputSize: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
         withContext(Dispatchers.Default) {
             val chunkSize = 0x300000

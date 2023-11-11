@@ -38,7 +38,10 @@ compose.desktop {
     val appName: String by rootProject.extra
 
     application {
-//        this.dependsOn(project(":common").tasks.named("generateMRjvmMain").get())
+        buildTypes.release.proguard {
+            isEnabled.set(false)
+            version.set("7.4.0")
+        }
 
         mainClass = "MainKt"
         nativeDistributions {
@@ -57,7 +60,7 @@ compose.desktop {
                 bundleID = packageName
                 iconFile.set(project.file("src/jvmMain/resources/icon.icns"))
                 packageVersion = "1." + rootProject.extra["versionCode"]
-                targetFormats(TargetFormat.Dmg)
+                targetFormats(TargetFormat.Dmg, TargetFormat.Pkg)
                 this.packageName = appName
             }
 
