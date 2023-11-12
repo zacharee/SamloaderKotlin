@@ -60,13 +60,6 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
             return if (intent == null || resultCode != RESULT_OK) null else intent.data
         }
-
-        override fun getSynchronousResult(
-            context: Context,
-            input: Uri?
-        ): SynchronousResult<Uri?>? {
-            return null
-        }
     }) {
         openCallback?.resume(it)
     }
