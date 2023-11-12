@@ -7,7 +7,7 @@ import tk.zwander.common.data.changelog.Changelogs
 /**
  * The model for the History view.
  */
-class HistoryModel : BaseModel() {
+class HistoryModel : BaseModel("history_model") {
     /**
      * The historical firmware versions available.
      */

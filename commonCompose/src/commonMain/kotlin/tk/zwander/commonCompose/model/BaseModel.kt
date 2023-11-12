@@ -1,12 +1,14 @@
 package tk.zwander.commonCompose.model
 
 import androidx.compose.runtime.*
+import com.russhwolf.settings.Settings
 import io.ktor.client.utils.*
 import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,21 +19,31 @@ import kotlinx.coroutines.launch
 /**
  * A model class to hold information for the various views.
  */
-open class BaseModel {
+abstract class BaseModel(
+    private val modelKey: String,
+) {
+    companion object {
+        private const val MODEL_KEY = "field_model"
+        private const val REGION_KEY = "field_region"
+        private const val FIRMWARE_KEY = "field_firmware"
+    }
+
+    protected val settings = Settings()
+
     /**
      * Device model.
      */
-    val model = MutableStateFlow("")
+    val model = MutableStateFlow(settings.getString(MODEL_KEY.fullKey, ""))
 
     /**
      * Device region.
      */
-    val region = MutableStateFlow("")
+    val region = MutableStateFlow(settings.getString(REGION_KEY.fullKey, ""))
 
     /**
      * Firmware string, if available.
      */
-    val fw = MutableStateFlow("")
+    val fw = MutableStateFlow(settings.getString(FIRMWARE_KEY.fullKey, ""))
 
     /**
      * Current status, if available.
@@ -62,7 +74,10 @@ open class BaseModel {
     @OptIn(InternalAPI::class)
     private val scope = CoroutineScope(Dispatchers.clientDispatcher(5, "Background${this::class.simpleName}"))
 
-    /**
+    protected val String.fullKey: String
+        get() = "${modelKey}_$this"
+
+            /**
      * Called when a Job should be ended.
      * @param text the text to show in the status message.
      */
@@ -81,7 +96,7 @@ open class BaseModel {
     }
 
     fun launchJob(block: suspend CoroutineScope.() -> Unit) {
-        _jobs.value = _jobs.value + scope.launch(block = block)
+        _jobs.value += scope.launch(block = block)
     }
 
     /**
@@ -89,4 +104,28 @@ open class BaseModel {
      * extra operations when a Job ends.
      */
     protected open fun onEnd(text: String) {}
+
+    suspend fun onCreate() = coroutineScope {
+        launch(Dispatchers.Unconfined) {
+            model.collect {
+                settings.putString(MODEL_KEY.fullKey, it)
+            }
+        }
+
+        launch(Dispatchers.Unconfined) {
+            region.collect {
+                settings.putString(REGION_KEY.fullKey, it)
+            }
+        }
+
+        launch(Dispatchers.Unconfined) {
+            fw.collect {
+                settings.putString(FIRMWARE_KEY.fullKey, it)
+            }
+        }
+
+        createExtra()
+    }
+
+    protected open suspend fun createExtra() {}
 }

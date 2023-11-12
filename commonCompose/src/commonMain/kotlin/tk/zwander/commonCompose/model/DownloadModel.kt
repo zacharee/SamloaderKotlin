@@ -1,16 +1,22 @@
 package tk.zwander.commonCompose.model
 
+import korlibs.io.async.launch
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import tk.zwander.common.data.changelog.Changelog
 
 /**
  * The model for the Downloader view.
  */
-class DownloadModel : BaseModel() {
+class DownloadModel : BaseModel("download_model") {
+    companion object {
+        private const val MANUAL_KEY = "field_manual"
+    }
+
     /**
      * Whether the user is manually inputting firmware.
      */
-    val manual = MutableStateFlow(false)
+    val manual = MutableStateFlow(settings.getBoolean(MANUAL_KEY.fullKey, false))
 
     /**
      * The Android version of automatically-retrieved
@@ -27,4 +33,12 @@ class DownloadModel : BaseModel() {
      * Whether the changelog is expanded.
      */
     val changelogExpanded = MutableStateFlow(false)
+
+    override suspend fun createExtra() {
+        launch(Dispatchers.Unconfined) {
+            manual.collect {
+                settings.putBoolean(MANUAL_KEY.fullKey, it)
+            }
+        }
+    }
 }

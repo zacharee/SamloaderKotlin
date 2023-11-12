@@ -9,8 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.ktor.utils.io.core.internal.*
+import korlibs.io.async.launch
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
+import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.locals.ProvideModels
 import tk.zwander.commonCompose.view.pager.HorizontalPager
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
@@ -29,13 +31,22 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 @Composable
 fun MainView(modifier: Modifier = Modifier) {
+    val scope = rememberCoroutineScope()
+
     val scrollState = rememberScrollState(0)
     var currentPage by remember { mutableStateOf(Page.DOWNLOADER) }
-    var indicator by remember { mutableStateOf<(@Composable() (List<TabPosition>) -> Unit)?>(null) }
+    var indicator by remember { mutableStateOf<(@Composable (List<TabPosition>) -> Unit)?>(null) }
 
     ProvideModels {
         val downloadModel = LocalDownloadModel.current
         val decryptModel = LocalDecryptModel.current
+        val historyModel = LocalHistoryModel.current
+
+        scope.launch {
+            downloadModel.onCreate()
+            decryptModel.onCreate()
+            historyModel.onCreate()
+        }
 
         CustomMaterialTheme {
             Surface {

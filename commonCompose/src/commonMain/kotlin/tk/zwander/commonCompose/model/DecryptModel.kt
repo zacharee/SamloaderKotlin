@@ -6,7 +6,7 @@ import tk.zwander.common.data.DecryptFileInfo
 /**
  * The model for the Decrypter view.
  */
-class DecryptModel : BaseModel() {
+class DecryptModel : BaseModel("decrypt_model") {
     /**
      * Contains the encrypted file and decrypted target.
      */
