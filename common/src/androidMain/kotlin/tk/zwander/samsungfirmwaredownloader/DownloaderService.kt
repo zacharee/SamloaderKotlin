@@ -10,7 +10,6 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
-import kotlinx.coroutines.CoroutineScope
 import tk.zwander.common.R
 import tk.zwander.common.util.*
 import kotlin.math.max

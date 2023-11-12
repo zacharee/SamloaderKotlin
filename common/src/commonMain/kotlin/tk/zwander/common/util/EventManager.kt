@@ -1,7 +1,6 @@
 package tk.zwander.common.util
 
 import io.ktor.util.collections.ConcurrentSet
-import korlibs.io.async.async
 import korlibs.io.async.launch
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope

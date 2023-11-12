@@ -21,7 +21,6 @@ import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.data.BinaryFileInfo
-import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.exception.VersionException
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
