@@ -27,24 +27,7 @@ object Request {
             return ""
         }
 
-        val stringBuilder = StringBuilder()
-        var num1 = 0
-
-        if (input.endsWith(".zip.enc2") || input.endsWith(".zip.enc4")) {
-            num1 = input.length - 25
-        }
-
-        nonce.forEach { num2 ->
-            val num3 = num2.code and 15
-
-            if (input.length <= num3 + num1) {
-                return ""
-            }
-
-            stringBuilder.append(input[num3 + num1])
-        }
-
-        return stringBuilder.toString()
+        return nonce.toCharArray().joinToString("") { "${input[it.code and 0xf]}" }
     }
 
     /**
