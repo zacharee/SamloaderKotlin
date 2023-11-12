@@ -43,7 +43,13 @@ fun MainView(modifier: Modifier = Modifier) {
 
         scope.launch {
             downloadModel.onCreate()
+        }
+
+        scope.launch {
             decryptModel.onCreate()
+        }
+
+        scope.launch {
             historyModel.onCreate()
         }
 
