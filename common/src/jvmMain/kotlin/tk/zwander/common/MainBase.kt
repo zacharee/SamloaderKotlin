@@ -1,6 +1,6 @@
 package tk.zwander.common
 
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformFile
@@ -16,9 +16,9 @@ class MainBase : EventManager.EventListener {
     }
 
     override suspend fun onEvent(event: Event) {
-        when (event) {
-            is Event.Decrypt.GetInput -> {
-                event.callbackScope.launch {
+        coroutineScope {
+            when (event) {
+                is Event.Decrypt.GetInput -> {
                     val file = FilePicker.pickFile()
 
                     if (file != null) {
@@ -33,9 +33,7 @@ class MainBase : EventManager.EventListener {
                         event.callback(this, null)
                     }
                 }
-            }
-            is Event.Download.GetInput -> {
-                event.callbackScope.launch {
+                is Event.Download.GetInput -> {
                     val file = FilePicker.createFile(name = event.fileName)
 
                     if (file == null) {
@@ -56,8 +54,8 @@ class MainBase : EventManager.EventListener {
                         )
                     }
                 }
+                else -> {}
             }
-            else -> {}
         }
     }
 }

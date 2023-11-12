@@ -19,7 +19,6 @@ import androidx.core.view.WindowCompat
 import androidx.documentfile.provider.DocumentFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformUriFile
@@ -117,91 +116,87 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
     override suspend fun onEvent(event: Event) {
         when (event) {
             is Event.Download.GetInput -> {
-                event.callbackScope.launch {
-                    val inputUri: Uri? = suspendCoroutine { cont ->
-                        openCallback = cont
+                val inputUri: Uri? = suspendCoroutine { cont ->
+                    openCallback = cont
 
-                        openDownloadTree.launch(null)
-                    }
-
-                    if (inputUri == null) {
-                        event.callback(this, null)
-                        return@launch
-                    }
-
-                    contentResolver.takePersistableUriPermission(
-                        inputUri,
-                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                    )
-
-                    val dir = DocumentFile.fromTreeUri(this@MainActivity, inputUri) ?: return@launch
-                    val decName = event.fileName.replace(".enc2", "")
-                        .replace(".enc4", "")
-
-                    val enc = dir.findFile(event.fileName)
-                        ?: dir.createFile("application/octet-stream", event.fileName)
-                        ?: run {
-                            event.callback(this, null)
-                            return@launch
-                        }
-                    val dec =
-                        dir.findFile(decName) ?: dir.createFile("application/zip", decName) ?: return@launch
-
-                    event.callback(
-                        this,
-                        DownloadFileInfo(
-                            PlatformUriFile(this@MainActivity, enc),
-                            PlatformUriFile(this@MainActivity, dec)
-                        )
-                    )
+                    openDownloadTree.launch(null)
                 }
+
+                if (inputUri == null) {
+                    event.callback(this, null)
+                    return
+                }
+
+                contentResolver.takePersistableUriPermission(
+                    inputUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+
+                val dir = DocumentFile.fromTreeUri(this@MainActivity, inputUri) ?: return
+                val decName = event.fileName.replace(".enc2", "")
+                    .replace(".enc4", "")
+
+                val enc = dir.findFile(event.fileName)
+                    ?: dir.createFile("application/octet-stream", event.fileName)
+                    ?: run {
+                        event.callback(this, null)
+                        return
+                    }
+                val dec =
+                    dir.findFile(decName) ?: dir.createFile("application/zip", decName) ?: return
+
+                event.callback(
+                    this,
+                    DownloadFileInfo(
+                        PlatformUriFile(this@MainActivity, enc),
+                        PlatformUriFile(this@MainActivity, dec)
+                    )
+                )
             }
             is Event.Decrypt.GetInput -> {
-                event.callbackScope.launch {
-                    val inputUri: Uri? = suspendCoroutine { cont ->
-                        openCallback = cont
-                        openDecryptInput.launch(arrayOf("application/octet-stream"))
-                    }
+                val inputUri: Uri? = suspendCoroutine { cont ->
+                    openCallback = cont
+                    openDecryptInput.launch(arrayOf("application/octet-stream"))
+                }
 
-                    if (inputUri == null) {
+                if (inputUri == null) {
+                    event.callback(this, null)
+                    return
+                }
+
+                val inputFile =
+                    DocumentFile.fromSingleUri(this@MainActivity, inputUri) ?: run {
                         event.callback(this, null)
-                        return@launch
+                        return
                     }
 
-                    val inputFile =
-                        DocumentFile.fromSingleUri(this@MainActivity, inputUri) ?: run {
-                            event.callback(this, null)
-                            return@launch
-                        }
-
-                    val outputUri: Uri? = suspendCoroutine { cont ->
-                        openCallback = cont
-                        openDecryptOutput.launch(
-                            inputFile.name!!
-                                .replace(".enc2", "")
-                                .replace(".enc4", ""),
-                        )
-                    }
-
-                    if (outputUri == null) {
-                        event.callback(this, null)
-                        return@launch
-                    }
-
-                    val outputFile =
-                        DocumentFile.fromSingleUri(this@MainActivity, outputUri) ?: run {
-                            event.callback(this, null)
-                            return@launch
-                        }
-
-                    event.callback(
-                        this,
-                        DecryptFileInfo(
-                            PlatformUriFile(this@MainActivity, inputFile),
-                            PlatformUriFile(this@MainActivity, outputFile)
-                        ),
+                val outputUri: Uri? = suspendCoroutine { cont ->
+                    openCallback = cont
+                    openDecryptOutput.launch(
+                        inputFile.name!!
+                            .replace(".enc2", "")
+                            .replace(".enc4", ""),
                     )
                 }
+
+                if (outputUri == null) {
+                    event.callback(this, null)
+                    return
+                }
+
+                val outputFile =
+                    DocumentFile.fromSingleUri(this@MainActivity, outputUri) ?: run {
+                        event.callback(this, null)
+                        return
+                    }
+
+                event.callback(
+                    this,
+                    DecryptFileInfo(
+                        PlatformUriFile(this@MainActivity, inputFile),
+                        PlatformUriFile(this@MainActivity, outputFile)
+                    ),
+                )
             }
             else -> {}
         }

@@ -111,7 +111,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
         )
 
         eventManager.sendEvent(
-            Event.Download.GetInput(this, fullFileName) { inputInfo ->
+            Event.Download.GetInput(fullFileName) { inputInfo ->
                 try {
                     if (inputInfo != null) {
                         val (response, md5) = client.downloadFile(
@@ -199,6 +199,10 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                         model.endJob("")
                     }
                 } catch (e: Throwable) {
+                    if (e is CancellationException) {
+                        return@GetInput
+                    }
+
                     model.endJob("${e.message}")
                 }
             }

@@ -1,9 +1,10 @@
 package tk.zwander.common.util
 
 import io.ktor.util.collections.ConcurrentSet
+import korlibs.io.async.async
 import korlibs.io.async.launch
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
 
@@ -36,9 +37,13 @@ class EventManager private constructor() {
     }
 
     suspend fun sendEvent(event: Event) {
-        listeners.forEach { listener ->
-            launch(Dispatchers.Unconfined) {
-                listener.onEvent(event)
+        coroutineScope {
+            listeners.forEach { listener ->
+                launch {
+                    with(listener) {
+                        onEvent(event)
+                    }
+                }
             }
         }
     }
@@ -47,7 +52,6 @@ class EventManager private constructor() {
 sealed class Event {
     sealed class Download : Event() {
         data class GetInput(
-            val callbackScope: CoroutineScope,
             val fileName: String,
             val callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit,
         ) : Download()
@@ -61,7 +65,6 @@ sealed class Event {
     }
     sealed class Decrypt : Event() {
         data class GetInput(
-            val callbackScope: CoroutineScope,
             val callback: suspend CoroutineScope.(DecryptFileInfo?) -> Unit,
         ) : Decrypt()
         data class Progress(

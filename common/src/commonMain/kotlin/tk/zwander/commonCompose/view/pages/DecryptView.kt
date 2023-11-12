@@ -61,7 +61,7 @@ private suspend fun onDecrypt(model: DecryptModel) {
 
 private suspend fun onOpenFile(model: DecryptModel) {
     coroutineScope {
-        eventManager.sendEvent(Event.Decrypt.GetInput(this) { info ->
+        eventManager.sendEvent(Event.Decrypt.GetInput { info ->
             if (info != null) {
                 if (!info.encFile.getName().endsWith(".enc2") &&
                     !info.encFile.getName().endsWith(".enc4")) {
