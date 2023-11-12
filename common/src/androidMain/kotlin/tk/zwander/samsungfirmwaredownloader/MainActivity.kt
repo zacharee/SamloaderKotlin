@@ -16,21 +16,32 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import androidx.documentfile.provider.DocumentFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import tk.zwander.common.data.DecryptFileInfo
+import tk.zwander.common.data.DownloadFileInfo
+import tk.zwander.common.data.PlatformUriFile
+import tk.zwander.common.util.Event
+import tk.zwander.common.util.EventManager
+import tk.zwander.common.util.eventManager
 import tk.zwander.commonCompose.MainView
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.time.ExperimentalTime
 
 /**
  * The Activity to show the downloader UI.
  */
 @ExperimentalTime
-class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
+class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventManager.EventListener {
     /**
      * Set whenever the DownloaderService needs to select a file or folder.
      * Called once the user makes a selection.
      */
-    private var openCallback: IOpenCallback? = null
+    private var openCallback: Continuation<Uri?>? = null
 
     private val openDownloadTree = registerForActivityResult(object : ActivityResultContract<Uri?, Uri?>() {
         override fun createIntent(context: Context, input: Uri?): Intent {
@@ -57,15 +68,15 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             return null
         }
     }) {
-        openCallback?.onOpen(it)
+        openCallback?.resume(it)
     }
 
     private val openDecryptInput = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-        openCallback?.onOpen(it)
+        openCallback?.resume(it)
     }
 
     private val openDecryptOutput = registerForActivityResult(ActivityResultContracts.CreateDocument("*/*")) {
-        openCallback?.onOpen(it)
+        openCallback?.resume(it)
     }
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
@@ -80,23 +91,10 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
             }
         }
 
+        eventManager.addListener(this)
+
         //Start the DownloaderService.
-        DownloaderService.start(this, object : IMainActivity.Stub() {
-            override fun openDecryptInput(callback: IOpenCallback) {
-                openCallback = callback
-                openDecryptInput.launch(arrayOf("application/octet-stream"))
-            }
-
-            override fun openDecryptOutput(fileName: String, callback: IOpenCallback) {
-                openCallback = callback
-                openDecryptOutput.launch(fileName)
-            }
-
-            override fun openDownloadTree(callback: IOpenCallback) {
-                openCallback = callback
-                openDownloadTree.launch(null)
-            }
-        })
+        DownloaderService.start(this)
 
         //Set up windowing stuff.
         actionBar?.hide()
@@ -115,6 +113,104 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope() {
                     .imePadding()
                     .systemBarsPadding()
             )
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        eventManager.removeListener(this)
+    }
+
+    override suspend fun onEvent(event: Event) {
+        when (event) {
+            is Event.Download.GetInput -> {
+                event.callbackScope.launch {
+                    val inputUri: Uri? = suspendCoroutine { cont ->
+                        openCallback = cont
+
+                        openDownloadTree.launch(null)
+                    }
+
+                    if (inputUri == null) {
+                        event.callback(this, null)
+                        return@launch
+                    }
+
+                    contentResolver.takePersistableUriPermission(
+                        inputUri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    )
+
+                    val dir = DocumentFile.fromTreeUri(this@MainActivity, inputUri) ?: return@launch
+                    val decName = event.fileName.replace(".enc2", "")
+                        .replace(".enc4", "")
+
+                    val enc = dir.findFile(event.fileName)
+                        ?: dir.createFile("application/octet-stream", event.fileName)
+                        ?: run {
+                            event.callback(this, null)
+                            return@launch
+                        }
+                    val dec =
+                        dir.findFile(decName) ?: dir.createFile("application/zip", decName) ?: return@launch
+
+                    event.callback(
+                        this,
+                        DownloadFileInfo(
+                            PlatformUriFile(this@MainActivity, enc),
+                            PlatformUriFile(this@MainActivity, dec)
+                        )
+                    )
+                }
+            }
+            is Event.Decrypt.GetInput -> {
+                event.callbackScope.launch {
+                    val inputUri: Uri? = suspendCoroutine { cont ->
+                        openCallback = cont
+                        openDecryptInput.launch(arrayOf("application/octet-stream"))
+                    }
+
+                    if (inputUri == null) {
+                        event.callback(this, null)
+                        return@launch
+                    }
+
+                    val inputFile =
+                        DocumentFile.fromSingleUri(this@MainActivity, inputUri) ?: run {
+                            event.callback(this, null)
+                            return@launch
+                        }
+
+                    val outputUri: Uri? = suspendCoroutine { cont ->
+                        openCallback = cont
+                        openDecryptOutput.launch(
+                            inputFile.name!!
+                                .replace(".enc2", "")
+                                .replace(".enc4", ""),
+                        )
+                    }
+
+                    if (outputUri == null) {
+                        event.callback(this, null)
+                        return@launch
+                    }
+
+                    val outputFile =
+                        DocumentFile.fromSingleUri(this@MainActivity, outputUri) ?: run {
+                            event.callback(this, null)
+                            return@launch
+                        }
+
+                    event.callback(
+                        this,
+                        DecryptFileInfo(
+                            PlatformUriFile(this@MainActivity, inputFile),
+                            PlatformUriFile(this@MainActivity, outputFile)
+                        ),
+                    )
+                }
+            }
+            else -> {}
         }
     }
 }

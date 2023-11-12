@@ -7,13 +7,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.tools.CryptUtils
+import tk.zwander.common.util.Event
+import tk.zwander.common.util.eventManager
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.commonCompose.view.components.HybridButton
@@ -21,21 +26,12 @@ import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.samloaderkotlin.strings
+import kotlin.coroutines.coroutineContext
 import kotlin.time.ExperimentalTime
-
-/**
- * Delegate getting the decryption input and output to the platform.
- */
-expect object PlatformDecryptView {
-    suspend fun getInput(callback: suspend CoroutineScope.(DecryptFileInfo?) -> Unit)
-    fun onStart()
-    fun onFinish()
-    fun onProgress(status: String, current: Long, max: Long)
-}
 
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
 private suspend fun onDecrypt(model: DecryptModel) {
-    PlatformDecryptView.onStart()
+    eventManager.sendEvent(Event.Decrypt.Start)
     val info = model.fileToDecrypt.value!!
     val inputFile = info.encFile
     val outputFile = info.decFile
@@ -56,28 +52,28 @@ private suspend fun onDecrypt(model: DecryptModel) {
     CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
         model.progress.value = current to max
         model.speed.value = bps
-        PlatformDecryptView.onProgress(strings.decrypting(), current, max)
+        eventManager.sendEvent(Event.Decrypt.Progress(strings.decrypting(), current, max))
     }
 
-    PlatformDecryptView.onFinish()
+    eventManager.sendEvent(Event.Decrypt.Finish)
     model.endJob(strings.done())
 }
 
 private suspend fun onOpenFile(model: DecryptModel) {
-    PlatformDecryptView.getInput { info ->
-        if (info != null) {
-            if (!info.encFile.getName().endsWith(".enc2") && !info.encFile.getName().endsWith(
-                    ".enc4"
-                )
-            ) {
-                model.endJob(strings.selectEncrypted())
+    coroutineScope {
+        eventManager.sendEvent(Event.Decrypt.GetInput(this) { info ->
+            if (info != null) {
+                if (!info.encFile.getName().endsWith(".enc2") &&
+                    !info.encFile.getName().endsWith(".enc4")) {
+                    model.endJob(strings.selectEncrypted())
+                } else {
+                    model.endJob("")
+                    model.fileToDecrypt.value = info
+                }
             } else {
                 model.endJob("")
-                model.fileToDecrypt.value = info
             }
-        } else {
-            model.endJob("")
-        }
+        })
     }
 }
 
@@ -88,7 +84,6 @@ private suspend fun onOpenFile(model: DecryptModel) {
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 internal fun DecryptView(scrollState: ScrollState) {
     val model = LocalDecryptModel.current
 
@@ -102,6 +97,8 @@ internal fun DecryptView(scrollState: ScrollState) {
             && fw.isNotBlank() && modelModel.isNotBlank() && region.isNotBlank()
 
     val canChangeOption = !hasRunningJobs
+
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -143,7 +140,9 @@ internal fun DecryptView(scrollState: ScrollState) {
                 Spacer(Modifier.weight(1f))
                 HybridButton(
                     onClick = {
-                        PlatformDecryptView.onFinish()
+                        scope.launch {
+                            eventManager.sendEvent(Event.Decrypt.Finish)
+                        }
                         model.endJob("")
                     },
                     enabled = hasRunningJobs,

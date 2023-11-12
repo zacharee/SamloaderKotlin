@@ -3,7 +3,6 @@ package tk.zwander.samsungfirmwaredownloader
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -11,16 +10,8 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
-import androidx.documentfile.provider.DocumentFile
 import tk.zwander.common.R
-import tk.zwander.common.data.DecryptFileInfo
-import tk.zwander.common.data.DownloadFileInfo
-import tk.zwander.common.data.PlatformUriFile
 import tk.zwander.common.util.*
-import tk.zwander.commonCompose.view.pages.PlatformDecryptView
-import tk.zwander.commonCompose.view.pages.PlatformDownloadView
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.time.ExperimentalTime
@@ -33,18 +24,15 @@ import kotlin.time.ExperimentalTime
  * TODO: from Recents and still function?
  */
 @OptIn(ExperimentalTime::class)
-class DownloaderService : Service() {
+class DownloaderService : Service(), EventManager.EventListener {
     companion object {
-        const val EXTRA_ACTIVITY_CALLBACK = "activity_callback"
-
         /**
          * Start the Service.
          * @param context a Context object.
          * @param callback the MainActivity callback.
          */
-        fun start(context: Context, callback: IMainActivity) {
+        fun start(context: Context) {
             val startIntent = Intent(context, DownloaderService::class.java)
-            startIntent.putBinder(EXTRA_ACTIVITY_CALLBACK, callback.asBinder())
 
             ContextCompat.startForegroundService(context, startIntent)
         }
@@ -63,7 +51,6 @@ class DownloaderService : Service() {
     /**
      * Used to communicate with MainActivity.
      */
-    private var activityCallback: IMainActivity? = null
     private var runningJobs = 0
         set(value) {
             field = value
@@ -119,18 +106,10 @@ class DownloaderService : Service() {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        //Retrieve the callback.
-        activityCallback = IMainActivity.Stub.asInterface(
-            intent?.getBinder(EXTRA_ACTIVITY_CALLBACK)
-        )
-
-        return super.onStartCommand(intent, flags, startId)
-    }
-
     override fun onCreate() {
         super.onCreate()
 
+        eventManager.addListener(this)
         application.registerActivityLifecycleCallbacks(lifecycleCallbacks)
 
         //Create the notification channel if applicable.
@@ -155,118 +134,30 @@ class DownloaderService : Service() {
 
         //Start in the foreground.
         startForeground(100, foregroundNotification)
-
-        //TODO: This is an absolute mess and hopefully there will be a way to
-        //TODO: fix it in the future.
-        PlatformDownloadView.getInputCallback = input@{ fileName, callback ->
-            var inputUri: Uri? = null
-
-            suspendCoroutine { cont ->
-                activityCallback?.openDownloadTree(object : IOpenCallback.Stub() {
-                    override fun onOpen(uri: Uri?) {
-                        inputUri = uri
-                        cont.resume(Unit)
-                    }
-                })
-            }
-
-            if (inputUri == null) {
-                callback(null)
-                return@input
-            }
-
-            contentResolver.takePersistableUriPermission(
-                inputUri!!,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-
-            val dir = DocumentFile.fromTreeUri(this@DownloaderService, inputUri!!) ?: return@input
-            val decName = fileName.replace(".enc2", "")
-                .replace(".enc4", "")
-
-            val enc = dir.findFile(fileName)
-                ?: dir.createFile("application/octet-stream", fileName)
-                ?: run {
-                    callback(null)
-                    return@input
-                }
-            val dec =
-                dir.findFile(decName) ?: dir.createFile("application/zip", decName) ?: return@input
-
-            callback(
-                DownloadFileInfo(
-                    PlatformUriFile(this@DownloaderService, enc),
-                    PlatformUriFile(this@DownloaderService, dec)
-                )
-            )
-        }
-        PlatformDecryptView.decryptCallback = input@{ callback ->
-            val inputUri = suspendCoroutine { cont ->
-                activityCallback?.openDecryptInput(object : IOpenCallback.Stub() {
-                    override fun onOpen(uri: Uri?) {
-                        cont.resume(uri)
-                    }
-                })
-            }
-
-            if (inputUri == null) {
-                callback(null)
-                return@input
-            }
-            val inputFile =
-                DocumentFile.fromSingleUri(this@DownloaderService, inputUri) ?: run {
-                    callback(null)
-                    return@input
-                }
-
-            val outputUri = suspendCoroutine { cont ->
-                activityCallback?.openDecryptOutput(
-                    inputFile.name!!
-                        .replace(".enc2", "")
-                        .replace(".enc4", ""),
-                    object : IOpenCallback.Stub() {
-                        override fun onOpen(uri: Uri?) {
-                            cont.resume(uri)
-                        }
-                    })
-            }
-
-            if (outputUri == null) {
-                callback(null)
-                return@input
-            }
-            val outputFile =
-                DocumentFile.fromSingleUri(this@DownloaderService, outputUri) ?: run {
-                    callback(null)
-                    return@input
-                }
-
-            callback(
-                DecryptFileInfo(
-                    PlatformUriFile(this@DownloaderService, inputFile),
-                    PlatformUriFile(this@DownloaderService, outputFile)
-                )
-            )
-        }
-
-        PlatformDownloadView.downloadStartCallback = ::onJobStarted
-        PlatformDownloadView.downloadStopCallback = ::onJobFinished
-        PlatformDecryptView.decryptStartCallback = ::onJobStarted
-        PlatformDecryptView.decryptStopCallback = ::onJobFinished
-
-        PlatformDownloadView.downloadProgressCallback = ::onProgress
-        PlatformDecryptView.decryptProgressCallback = ::onProgress
     }
 
     override fun onDestroy() {
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         application.unregisterActivityLifecycleCallbacks(lifecycleCallbacks)
+        eventManager.removeListener(this)
         super.onDestroy()
     }
 
-    override fun onBind(intent: Intent?): IBinder {
-        return object : IDownloaderService.Stub() {
-            override fun nuffin() {}
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
+    }
+
+    override suspend fun onEvent(event: Event) {
+        when (event) {
+            Event.Download.Start, Event.Decrypt.Start -> onJobStarted()
+            Event.Download.Finish, Event.Decrypt.Finish -> onJobFinished()
+            is Event.Download.Progress -> {
+                onProgress(event.status, event.current, event.max)
+            }
+            is Event.Decrypt.Progress -> {
+                onProgress(event.status, event.current, event.max)
+            }
+            else -> {}
         }
     }
 

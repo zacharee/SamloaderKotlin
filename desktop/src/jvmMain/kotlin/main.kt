@@ -11,6 +11,7 @@ import korlibs.memory.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
+import tk.zwander.common.MainBase
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
@@ -38,6 +39,8 @@ fun main() {
         it.addToTab("app", "version_code", GradleConfig.versionCode)
         it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
     }
+
+    MainBase()
 
     application {
         var aboutState by remember { mutableStateOf(false) }
