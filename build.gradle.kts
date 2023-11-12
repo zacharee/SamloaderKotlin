@@ -34,7 +34,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.5.10")
+        classpath("org.jetbrains.compose:compose-gradle-plugin:1.6.0-dev1265")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
         classpath("com.android.tools.build:gradle:8.1.3")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.15.0")
@@ -65,7 +65,6 @@ allprojects {
         maven {
             url = uri("https://plugins.gradle.org/m2/")
         }
-//        maven { url = uri("https://zwander.dev/maven") }
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
