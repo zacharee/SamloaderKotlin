@@ -56,6 +56,10 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
+                api(compose.foundation)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                api(compose.material3)
+                api(compose.ui)
 
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
@@ -77,12 +81,12 @@ kotlin {
             }
         }
 
-        val nonWebMain by creating {
+        val skiaMain by creating {
             dependsOn(commonMain)
         }
 
         val jvmMain by getting {
-            dependsOn(nonWebMain)
+            dependsOn(skiaMain)
 
             dependencies {
                 api("org.jsoup:jsoup:$jsoupVersion")
@@ -97,7 +101,7 @@ kotlin {
         }
 
         val androidMain by getting {
-            dependsOn(nonWebMain)
+            dependsOn(commonMain)
 
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")

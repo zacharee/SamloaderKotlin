@@ -12,4 +12,3 @@ rootProject.name = "SamloaderKotlin"
 include(":android")
 include(":desktop")
 include(":common")
-include(":commonCompose")
