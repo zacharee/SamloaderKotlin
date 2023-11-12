@@ -213,7 +213,7 @@ class DownloaderService : Service() {
                 return@input
             }
             val inputFile =
-                DocumentFile.fromSingleUri(this@DownloaderService, inputUri!!) ?: run {
+                DocumentFile.fromSingleUri(this@DownloaderService, inputUri) ?: run {
                     callback(null)
                     return@input
                 }

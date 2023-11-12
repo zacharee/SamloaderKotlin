@@ -16,7 +16,6 @@ plugins {
     id("org.jetbrains.compose")
     id("de.comahe.i18n4k")
     id("dev.icerock.mobile.multiplatform-resources")
-    kotlin("native.cocoapods")
     id("org.jetbrains.kotlin.plugin.atomicfu")
     kotlin("plugin.serialization")
     id("com.bugsnag.android.gradle")
@@ -31,14 +30,6 @@ kotlin.sourceSets.all {
 }
 
 kotlin {
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
-
-    macosX64 {}
-    macosArm64 {}
-
     androidTarget {
         compilations.forEach {
             it.kotlinOptions {
@@ -52,24 +43,6 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
         }
-    }
-
-    cocoapods {
-        summary = "IDK"
-        homepage = "https://zwander.dev"
-        osx.deploymentTarget = "12.0"
-
-        framework {
-            baseName = "common"
-            isStatic = false
-        }
-
-//        pod("HTMLReader")
-
-//        pod("HTMLKit") {
-//            version = "~> 4.2"
-//        }
-//        useLibraries()
     }
 
     sourceSets {
@@ -87,7 +60,6 @@ kotlin {
                 api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
-//                api("com.squareup.okio:okio-multiplatform:3.0.0-alpha.9")
 
                 api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
                 api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
@@ -142,52 +114,6 @@ kotlin {
 
                 api("com.caverock:androidsvg-aar:1.4")
                 api("com.bugsnag:bugsnag-android:5.31.3")
-            }
-        }
-
-        val jsMain by getting {
-            dependsOn(commonMain)
-
-            dependencies {
-                api(compose.runtime)
-
-                api("io.ktor:ktor-client-js:$ktorVersion")
-                api("de.comahe.i18n4k:i18n4k-core-js:${rootProject.extra["i18n4kVersion"]}")
-                api("org.jetbrains.kotlin:kotlinx-atomicfu-runtime:${rootProject.extra["kotlinVersion"]}")
-
-                api(npm("bootstrap", "5.1.0"))
-                api(npm("jquery", "3.6.0"))
-                api(npm("streamsaver", "2.0.5"))
-
-//                implementation(npm("react", "18.1.0"))
-//                implementation(npm("react-dom", "18.1.0"))
-
-//                api("org.jetbrains.kotlin-wrappers:kotlin-react:18.1.0-pre.336")
-//                api("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.1.0-pre.336")
-//                api("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.5-pre.336")
-            }
-        }
-
-        val macosMain by creating {
-            dependsOn(nonWebMain)
-
-            dependencies {
-                api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
-                api("io.ktor:ktor-client-darwin:$ktorVersion")
-            }
-        }
-
-        val macosArm64Main by getting {
-            dependsOn(macosMain)
-            dependencies {
-                api("org.jetbrains.skiko:skiko-macosarm64:${rootProject.extra["skikoVersion"]}")
-            }
-        }
-
-        val macosX64Main by getting {
-            dependsOn(macosMain)
-            dependencies {
-                api("org.jetbrains.skiko:skiko-macosx64:${rootProject.extra["skikoVersion"]}")
             }
         }
     }
@@ -246,16 +172,8 @@ tasks.named("jvmProcessResources") {
     dependsOn(tasks.named("generateI18n4kFiles"))
 }
 
-tasks.named("jsProcessResources") {
-    dependsOn(tasks.named("generateI18n4kFiles"))
-}
-
 tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-compose.experimental {
-    web.application {}
 }
 
 compose {
@@ -264,25 +182,3 @@ compose {
     kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["composeCompilerVersion"]}")
     kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
 }
-
-//tasks.named<org.jetbrains.kotlin.gradle.tasks.DefFileTask>("generateDefHTMLKit").configure {
-//    doLast {
-//        outputFile.writeText("""
-//            language = Objective-C
-//            headers = HTMLKit.h
-//        """.trimIndent())
-//    }
-//}
-//
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.CInteropProcess>()
-//    .matching { it.name.contains("cinteropHTMLKit") }
-//    .configureEach {
-//        val dir = project.buildDir.resolve("cocoapods/synthetic/OSX/Pods/HTMLKit/Sources/include").absolutePath
-//        settings.compilerOpts.add("-I$dir")
-//    }
-//
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.CInteropProcess> {
-//    settings.compilerOpts("-DNS_FORMAT_ARGUMENT(A)=")
-//}
-
-//apply(plugin = "kotlinx-atomicfu")

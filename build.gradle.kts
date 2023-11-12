@@ -5,7 +5,7 @@ val compileSdk by extra(34)
 val targetSdk by extra(34)
 val minSdk by extra(24)
 
-val javaVersionEnum by extra(JavaVersion.VERSION_17)
+val javaVersionEnum by extra(JavaVersion.VERSION_18)
 
 val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")

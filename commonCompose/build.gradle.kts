@@ -16,11 +16,6 @@ repositories {
 }
 
 kotlin {
-    js(IR) {
-        browser()
-        binaries.executable()
-    }
-
     androidTarget {
         compilations.forEach {
             it.kotlinOptions {
@@ -34,10 +29,6 @@ kotlin {
             kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
         }
     }
-
-    macosX64 {}
-
-    macosArm64 {}
 
     sourceSets {
         val commonMain by getting {
@@ -70,46 +61,8 @@ kotlin {
                 api(project(":common"))
             }
         }
-
-        val macosMain by creating {
-            dependsOn(skiaMain)
-        }
-
-        val macosArm64Main by getting {
-            dependsOn(macosMain)
-        }
-
-        val macosX64Main by getting {
-            dependsOn(macosMain)
-        }
-
-        val jsMain by getting {
-            dependsOn(skiaMain)
-        }
     }
 }
-
-//compose.experimental {
-//    uikit.application {
-//        bundleIdPrefix = "dev.zwander"
-//        projectName = "Bifrost"
-//        deployConfigurations {
-//            simulator("IPhone8") {
-//                //Usage: ./gradlew iosDeployIPhone8Debug
-//                device = org.jetbrains.compose.experimental.dsl.IOSDevices.IPHONE_8
-//            }
-//            simulator("IPad") {
-//                //Usage: ./gradlew iosDeployIPadDebug
-//                device = org.jetbrains.compose.experimental.dsl.IOSDevices.IPAD_MINI_6th_Gen
-//            }
-//            connectedDevice("Device") {
-//                //First need specify your teamId here, or in local.properties (compose.ios.teamId=***)
-//                //teamId="***"
-//                //Usage: ./gradlew iosDeployDeviceRelease
-//            }
-//        }
-//    }
-//}
 
 android {
     val compileSdk: Int by rootProject.extra
@@ -141,10 +94,6 @@ android {
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
-}
-
-compose.experimental {
-    web.application {}
 }
 
 multiplatformResources {
