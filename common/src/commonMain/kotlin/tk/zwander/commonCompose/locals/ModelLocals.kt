@@ -18,7 +18,7 @@ internal fun ProvideModels(content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalDownloadModel provides DownloadModel(),
         LocalDecryptModel provides DecryptModel(),
-        LocalHistoryModel provides HistoryModel()
+        LocalHistoryModel provides HistoryModel(),
     ) {
         content()
     }

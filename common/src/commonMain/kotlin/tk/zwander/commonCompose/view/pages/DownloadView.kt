@@ -1,10 +1,10 @@
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.*
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
@@ -229,12 +229,11 @@ private suspend fun onFetch(model: DownloadModel) {
 
 /**
  * The Downloader View.
- * @param scrollState a shared scroll state.
  */
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-internal fun DownloadView(scrollState: ScrollState) {
+internal fun DownloadView() {
     val model = LocalDownloadModel.current
 
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
@@ -262,296 +261,309 @@ internal fun DownloadView(scrollState: ScrollState) {
         mutableStateOf<DownloadErrorInfo?>(null)
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-            .verticalScroll(scrollState),
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        BoxWithConstraints(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            val constraints = constraints
-            Row(
-                modifier = Modifier.fillMaxWidth()
+        item {
+            BoxWithConstraints(
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                HybridButton(
-                    onClick = {
-                        model.launchJob {
-                            onDownload(
-                                model, client,
-                                confirmCallback = object : DownloadErrorCallback {
-                                    override fun onError(info: DownloadErrorInfo) {
-                                        downloadErrorInfo = info
+                val constraints = constraints
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    HybridButton(
+                        onClick = {
+                            model.launchJob {
+                                onDownload(
+                                    model, client,
+                                    confirmCallback = object : DownloadErrorCallback {
+                                        override fun onError(info: DownloadErrorInfo) {
+                                            downloadErrorInfo = info
+                                        }
                                     }
-                                }
-                            )
-                        }
-                    },
-                    enabled = canDownload,
-                    vectorIcon = painterResource(MR.images.download),
-                    text = strings.download(),
-                    description = strings.downloadFirmware(),
-                    parentSize = constraints.maxWidth
-                )
+                                )
+                            }
+                        },
+                        enabled = canDownload,
+                        vectorIcon = painterResource(MR.images.download),
+                        text = strings.download(),
+                        description = strings.downloadFirmware(),
+                        parentSize = constraints.maxWidth
+                    )
 
-                Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(8.dp))
 
-                HybridButton(
-                    onClick = {
-                        model.launchJob {
-                            onFetch(model)
-                        }
-                    },
-                    enabled = canCheckVersion,
-                    text = strings.checkForUpdates(),
-                    vectorIcon = painterResource(MR.images.refresh),
-                    description = strings.checkForUpdatesDesc(),
-                    parentSize = constraints.maxWidth
-                )
+                    HybridButton(
+                        onClick = {
+                            model.launchJob {
+                                onFetch(model)
+                            }
+                        },
+                        enabled = canCheckVersion,
+                        text = strings.checkForUpdates(),
+                        vectorIcon = painterResource(MR.images.refresh),
+                        description = strings.checkForUpdatesDesc(),
+                        parentSize = constraints.maxWidth
+                    )
 
-                Spacer(Modifier.weight(1f))
+                    Spacer(Modifier.weight(1f))
 
-                HybridButton(
-                    onClick = {
-                        scope.launch {
-                            eventManager.sendEvent(Event.Download.Finish)
-                        }
-                        model.endJob("")
-                    },
-                    enabled = hasRunningJobs,
-                    text = strings.cancel(),
-                    description = strings.cancel(),
-                    vectorIcon = painterResource(MR.images.cancel),
-                    parentSize = constraints.maxWidth
-                )
+                    HybridButton(
+                        onClick = {
+                            scope.launch {
+                                eventManager.sendEvent(Event.Download.Finish)
+                            }
+                            model.endJob("")
+                        },
+                        enabled = hasRunningJobs,
+                        text = strings.cancel(),
+                        description = strings.cancel(),
+                        vectorIcon = painterResource(MR.images.cancel),
+                        parentSize = constraints.maxWidth
+                    )
+                }
             }
         }
 
-        Spacer(Modifier.height(8.dp))
+        item {
+            val boxSource = remember { MutableInteractionSource() }
 
-        val boxSource = remember { MutableInteractionSource() }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.animateContentSize()
-        ) {
             Row(
-                modifier = Modifier.clickable(
-                    interactionSource = boxSource,
-                    indication = null
-                ) {
-                    model.manual.value = !model.manual.value
-                }
-                    .padding(4.dp)
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.animateContentSize()
             ) {
-                Checkbox(
-                    checked = manual,
-                    onCheckedChange = {
-                        model.manual.value = it
-                    },
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    enabled = canChangeOption,
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = MaterialTheme.colorScheme.primary,
-                    ),
-                    interactionSource = boxSource
-                )
-
-                Spacer(Modifier.width(8.dp))
-
-
-                Text(
-                    text = strings.manual(),
-                    modifier = Modifier.align(Alignment.CenterVertically)
-                )
-            }
-
-            AnimatedVisibility(
-                visible = manual,
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                var showingRequestWarningDialog by remember { mutableStateOf(false) }
-
-                val textStyle =
-                    LocalTextStyle.current.copy(LocalContentColor.current)
-
-                Row {
-                    Spacer(Modifier.width(32.dp))
-
-                    val info = buildAnnotatedString {
-                        pushStyle(SpanStyle(color = MaterialTheme.colorScheme.error))
-                        append("${strings.manualWarning()} ")
-                        pushStringAnnotation(
-                            "MoreInfo",
-                            "MoreInfo"
-                        )
-                        pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                        append(strings.moreInfo())
-                        pop()
-                        pop()
+                Row(
+                    modifier = Modifier.clickable(
+                        interactionSource = boxSource,
+                        indication = null
+                    ) {
+                        model.manual.value = !model.manual.value
                     }
-
-                    ClickableText(
-                        text = info,
-                        onClick = {
-                            info.getStringAnnotations("MoreInfo", it, it)
-                                .firstOrNull()?.let {
-                                    showingRequestWarningDialog = true
-                                }
+                        .padding(4.dp)
+                ) {
+                    Checkbox(
+                        checked = manual,
+                        onCheckedChange = {
+                            model.manual.value = it
                         },
-                        style = textStyle,
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        enabled = canChangeOption,
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = MaterialTheme.colorScheme.primary,
+                        ),
+                        interactionSource = boxSource
+                    )
+
+                    Spacer(Modifier.width(8.dp))
+
+
+                    Text(
+                        text = strings.manual(),
+                        modifier = Modifier.align(Alignment.CenterVertically)
                     )
                 }
 
-                AlertDialogDef(
-                    showing = showingRequestWarningDialog,
-                    title = {
-                        Text(text = strings.moreInfo())
-                    },
-                    text = {
+                AnimatedVisibility(
+                    visible = manual,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    var showingRequestWarningDialog by remember { mutableStateOf(false) }
+
+                    val textStyle =
+                        LocalTextStyle.current.copy(LocalContentColor.current)
+
+                    Row {
+                        Spacer(Modifier.width(32.dp))
+
                         val info = buildAnnotatedString {
-                            append(strings.manualWarningDetails(GradleConfig.appName, GradleConfig.appName))
-                            append(" ")
+                            pushStyle(SpanStyle(color = MaterialTheme.colorScheme.error))
+                            append("${strings.manualWarning()} ")
                             pushStringAnnotation(
-                                "IssueLink",
-                                "https://github.com/zacharee/SamloaderKotlin/issues/10"
+                                "MoreInfo",
+                                "MoreInfo",
                             )
                             pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                            append(strings.manualWarningDetails2())
+                            append(strings.moreInfo())
                             pop()
                             pop()
-                            append(" ")
-                            append(strings.manualWarningDetails3())
                         }
-
-                        val scroll = rememberScrollState()
 
                         ClickableText(
                             text = info,
                             onClick = {
-                                info.getStringAnnotations("IssueLink", it, it)
-                                    .firstOrNull()?.let { item ->
-                                        UrlHandler.launchUrl(item.item)
+                                info.getStringAnnotations("MoreInfo", it, it)
+                                    .firstOrNull()?.let {
+                                        showingRequestWarningDialog = true
                                     }
                             },
                             style = textStyle,
-                            modifier = Modifier.verticalScroll(scroll)
                         )
-                    },
-                    buttons = {
-                        TextButton(
-                            onClick = {
-                                showingRequestWarningDialog = false
+                    }
+
+                    AlertDialogDef(
+                        showing = showingRequestWarningDialog,
+                        title = {
+                            Text(text = strings.moreInfo())
+                        },
+                        text = {
+                            val info = buildAnnotatedString {
+                                append(strings.manualWarningDetails(GradleConfig.appName, GradleConfig.appName))
+                                append(" ")
+                                pushStringAnnotation(
+                                    "IssueLink",
+                                    "https://github.com/zacharee/SamloaderKotlin/issues/10"
+                                )
+                                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
+                                append(strings.manualWarningDetails2())
+                                pop()
+                                pop()
+                                append(" ")
+                                append(strings.manualWarningDetails3())
                             }
-                        ) {
-                            Text(strings.ok())
+
+                            val scroll = rememberScrollState()
+
+                            ClickableText(
+                                text = info,
+                                onClick = {
+                                    info.getStringAnnotations("IssueLink", it, it)
+                                        .firstOrNull()?.let { item ->
+                                            UrlHandler.launchUrl(item.item)
+                                        }
+                                },
+                                style = textStyle,
+                                modifier = Modifier.verticalScroll(scroll)
+                            )
+                        },
+                        buttons = {
+                            TextButton(
+                                onClick = {
+                                    showingRequestWarningDialog = false
+                                }
+                            ) {
+                                Text(strings.ok())
+                            }
+                        },
+                        onDismissRequest = {
+                            showingRequestWarningDialog = false
                         }
-                    },
-                    onDismissRequest = {
-                        showingRequestWarningDialog = false
-                    }
-                )
-            }
-        }
-
-        Spacer(Modifier.height(8.dp))
-
-        MRFLayout(model, canChangeOption, manual && canChangeOption)
-
-        AnimatedVisibility(
-            visible = !manual && osCode.isNotEmpty(),
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Column {
-                Spacer(Modifier.height(4.dp))
-
-                Text(
-                    text = strings.osVersion(osCode)
-                )
-            }
-        }
-
-        AnimatedVisibility(
-            visible = hasRunningJobs || progress.first > 0 || progress.second > 0 || statusText.isNotBlank(),
-        ) {
-            Column {
-                Spacer(Modifier.height(16.dp))
-
-                ProgressInfo(model)
-            }
-        }
-
-        val changelogCondition =
-            changelog != null && !manual && !hasRunningJobs && fw.isNotBlank()
-
-        AnimatedVisibility(
-            visible = changelogCondition,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Column {
-                Spacer(Modifier.height(8.dp))
-
-                ExpandButton(
-                    changelogExpanded,
-                    strings.changelog()
-                ) { model.changelogExpanded.value = it }
-
-                Spacer(Modifier.height(8.dp))
-            }
-        }
-
-        AnimatedVisibility(
-            visible = changelogExpanded && changelogCondition,
-        ) {
-            ChangelogDisplay(changelog!!)
-        }
-
-        AlertDialogDef(
-            showing = downloadErrorInfo != null,
-            onDismissRequest = {
-                model.launchJob {
-                    downloadErrorInfo?.callback?.onCancel?.invoke()
-                    downloadErrorInfo = null
-                }
-            },
-            title = {
-                Text(text = strings.warning())
-            },
-            text = {
-                Text(text = downloadErrorInfo?.message ?: "")
-            },
-            buttons = {
-                Spacer(Modifier.weight(1f))
-
-                TextButton(
-                    onClick = {
-                        model.launchJob {
-                            val info = downloadErrorInfo
-                            downloadErrorInfo = null
-                            info?.callback?.onCancel?.invoke()
-                        }
-                    }
-                ) {
-                    Text(text = strings.no())
-                }
-
-                TextButton(
-                    onClick = {
-                        model.launchJob {
-                            val info = downloadErrorInfo
-                            downloadErrorInfo = null
-                            info?.callback?.onAccept?.invoke()
-                        }
-                    }
-                ) {
-                    Text(
-                        text = strings.yes(),
-                        color = MaterialTheme.colorScheme.error
                     )
                 }
             }
-        )
+        }
+
+        item {
+            MRFLayout(model, canChangeOption, manual && canChangeOption)
+        }
+
+        item {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                AnimatedVisibility(
+                    visible = !manual && osCode.isNotEmpty(),
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Column {
+                        Spacer(Modifier.height(4.dp))
+
+                        Text(
+                            text = strings.osVersion(osCode)
+                        )
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = hasRunningJobs || progress.first > 0 || progress.second > 0 || statusText.isNotBlank(),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Column {
+                        Spacer(Modifier.height(16.dp))
+
+                        ProgressInfo(model)
+                    }
+                }
+
+                val changelogCondition =
+                    changelog != null && !manual && !hasRunningJobs && fw.isNotBlank()
+
+                AnimatedVisibility(
+                    visible = changelogCondition,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Column {
+                        Spacer(Modifier.height(8.dp))
+
+                        ExpandButton(
+                            changelogExpanded,
+                            strings.changelog()
+                        ) { model.changelogExpanded.value = it }
+
+                        Spacer(Modifier.height(8.dp))
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = changelogExpanded && changelogCondition,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    ChangelogDisplay(changelog!!)
+                }
+            }
+        }
     }
+
+    AlertDialogDef(
+        showing = downloadErrorInfo != null,
+        onDismissRequest = {
+            model.launchJob {
+                downloadErrorInfo?.callback?.onCancel?.invoke()
+                downloadErrorInfo = null
+            }
+        },
+        title = {
+            Text(text = strings.warning())
+        },
+        text = {
+            Text(text = downloadErrorInfo?.message ?: "")
+        },
+        buttons = {
+            Spacer(Modifier.weight(1f))
+
+            TextButton(
+                onClick = {
+                    model.launchJob {
+                        val info = downloadErrorInfo
+                        downloadErrorInfo = null
+                        info?.callback?.onCancel?.invoke()
+                    }
+                }
+            ) {
+                Text(text = strings.no())
+            }
+
+            TextButton(
+                onClick = {
+                    model.launchJob {
+                        val info = downloadErrorInfo
+                        downloadErrorInfo = null
+                        info?.callback?.onAccept?.invoke()
+                    }
+                }
+            ) {
+                Text(
+                    text = strings.yes(),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        }
+    )
 }

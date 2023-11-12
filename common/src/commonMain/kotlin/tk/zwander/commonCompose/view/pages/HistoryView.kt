@@ -1,15 +1,26 @@
 package tk.zwander.commonCompose.view.pages
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -150,11 +161,10 @@ private suspend fun onFetch(model: HistoryModel) {
  * @param onDownload a callback for when the user hits the "Download" button on an item.
  * @param onDecrypt a callback for when the user hits the "Decrypt" button on an item.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HistoryView(
     onDownload: (model: String, region: String, fw: String) -> Unit,
-    onDecrypt: (model: String, region: String, fw: String) -> Unit
+    onDecrypt: (model: String, region: String, fw: String) -> Unit,
 ) {
     val model = LocalHistoryModel.current
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
@@ -184,117 +194,108 @@ internal fun HistoryView(
         pop()
     }
 
-    Column(
-        Modifier.fillMaxWidth()
+    val historyItems by model.historyItems.collectAsState()
+    val changelogs by model.changelogs.collectAsState()
+
+    val expanded = remember {
+        mutableStateMapOf<String, Boolean>()
+    }
+
+    LazyVerticalStaggeredGrid(
+        modifier = Modifier.fillMaxWidth(),
+        columns = StaggeredGridCells.Adaptive(minSize = 350.dp),
+        verticalItemSpacing = 8.dp,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(8.dp),
     ) {
-        BoxWithConstraints(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            val constraints = constraints
-
-            Row(
-                modifier = Modifier.fillMaxWidth()
+        item(span = StaggeredGridItemSpan.FullLine) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
             ) {
-                HybridButton(
-                    onClick = {
-                        model.historyItems.value = listOf()
-
-                        model.launchJob {
-                            onFetch(model)
-                        }
-                    },
-                    enabled = canCheckHistory,
-                    text = strings.checkHistory(),
-                    description = strings.checkHistory(),
-                    vectorIcon = painterResource(MR.images.refresh),
-                    parentSize = constraints.maxWidth
-                )
-
-                if (hasRunningJobs) {
-                    Spacer(Modifier.width(8.dp))
-
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp)
-                            .align(Alignment.CenterVertically),
-                        strokeWidth = 2.dp
-                    )
-                }
-
-                Spacer(Modifier.weight(1f))
-
-                HybridButton(
-                    onClick = {
-                        model.endJob("")
-                    },
-                    enabled = hasRunningJobs,
-                    text = strings.cancel(),
-                    description = strings.cancel(),
-                    vectorIcon = painterResource(MR.images.cancel),
-                    parentSize = constraints.maxWidth
-                )
-            }
-        }
-
-        Spacer(Modifier.height(8.dp))
-
-        MRFLayout(model, !hasRunningJobs, !hasRunningJobs, false)
-
-        ClickableText(
-            text = odinRomSource,
-            modifier = Modifier.padding(start = 4.dp),
-            onClick = {
-                odinRomSource.getStringAnnotations("OdinRomLink", it, it)
-                    .firstOrNull()?.let { item ->
-                        UrlHandler.launchUrl(item.item)
-                    }
-            },
-            style = LocalTextStyle.current.copy(LocalContentColor.current),
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        val expanded = remember {
-            mutableStateMapOf<String, Boolean>()
-        }
-
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            if (statusText.isNotBlank()) {
-                Text(
-                    text = statusText,
-                )
-            }
-
-            val historyItems by model.historyItems.collectAsState()
-            val changelogs by model.changelogs.collectAsState()
-
-            AnimatedVisibility(
-                visible = historyItems.isNotEmpty(),
-                enter = fadeIn(),
-                exit = fadeOut(),
-                modifier = Modifier.weight(1f)
-            ) {
-                LazyVerticalStaggeredGrid(
+                BoxWithConstraints(
                     modifier = Modifier.fillMaxWidth(),
-                    columns = StaggeredGridCells.Adaptive(minSize = 350.dp),
-                    verticalItemSpacing = 8.dp,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(4.dp)
                 ) {
-                    itemsIndexed(historyItems, { _, item -> item.toString() }) { index, historyInfo ->
-                        HistoryItem(
-                            index = index,
-                            info = historyInfo,
-                            changelog = changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
-                            changelogExpanded = expanded[historyInfo.toString()] ?: false,
-                            onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
-                            onDownload = { onDownload(model.model.value, model.region.value, it) },
-                            onDecrypt = { onDecrypt(model.model.value, model.region.value, it) }
+                    val constraints = constraints
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        HybridButton(
+                            onClick = {
+                                model.historyItems.value = listOf()
+
+                                model.launchJob {
+                                    onFetch(model)
+                                }
+                            },
+                            enabled = canCheckHistory,
+                            text = strings.checkHistory(),
+                            description = strings.checkHistory(),
+                            vectorIcon = painterResource(MR.images.refresh),
+                            parentSize = constraints.maxWidth
+                        )
+
+                        if (hasRunningJobs) {
+                            Spacer(Modifier.width(8.dp))
+
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(24.dp)
+                                    .align(Alignment.CenterVertically),
+                                strokeWidth = 2.dp
+                            )
+                        }
+
+                        Spacer(Modifier.weight(1f))
+
+                        HybridButton(
+                            onClick = {
+                                model.endJob("")
+                            },
+                            enabled = hasRunningJobs,
+                            text = strings.cancel(),
+                            description = strings.cancel(),
+                            vectorIcon = painterResource(MR.images.cancel),
+                            parentSize = constraints.maxWidth
                         )
                     }
                 }
+
+                Spacer(Modifier.height(8.dp))
+
+                MRFLayout(model, !hasRunningJobs, !hasRunningJobs, false)
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    ClickableText(
+                        text = odinRomSource,
+                        modifier = Modifier.padding(start = 4.dp),
+                        onClick = {
+                            odinRomSource.getStringAnnotations("OdinRomLink", it, it)
+                                .firstOrNull()?.let { item ->
+                                    UrlHandler.launchUrl(item.item)
+                                }
+                        },
+                        style = LocalTextStyle.current.copy(LocalContentColor.current),
+                    )
+
+                    Spacer(Modifier.weight(1f))
+
+                    Text(text = statusText)
+                }
             }
+        }
+
+        itemsIndexed(historyItems, { _, item -> item.toString() }) { index, historyInfo ->
+            HistoryItem(
+                index = index,
+                info = historyInfo,
+                changelog = changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
+                changelogExpanded = expanded[historyInfo.toString()] ?: false,
+                onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
+                onDownload = { onDownload(model.model.value, model.region.value, it) },
+                onDecrypt = { onDecrypt(model.model.value, model.region.value, it) }
+            )
         }
     }
 }

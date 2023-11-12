@@ -2,6 +2,7 @@ package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -79,12 +80,11 @@ private suspend fun onOpenFile(model: DecryptModel) {
 
 /**
  * The Decrypter View.
- * @param scrollState a shared scroll state among all pages.
  */
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
-internal fun DecryptView(scrollState: ScrollState) {
+internal fun DecryptView() {
     val model = LocalDecryptModel.current
 
     val fw by model.fw.collectAsState()
@@ -100,81 +100,90 @@ internal fun DecryptView(scrollState: ScrollState) {
 
     val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-            .verticalScroll(scrollState)
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        BoxWithConstraints(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            val constraints = constraints
+        item {
+            BoxWithConstraints(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                val constraints = constraints
 
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    HybridButton(
+                        onClick = {
+                            model.launchJob {
+                                onDecrypt(model)
+                            }
+                        },
+                        enabled = canDecrypt,
+                        text = strings.decrypt(),
+                        description = strings.decryptFirmware(),
+                        vectorIcon = painterResource(MR.images.lock_open_outline),
+                        parentSize = constraints.maxWidth
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    HybridButton(
+                        onClick = {
+                            model.launchJob {
+                                onOpenFile(model)
+                            }
+                        },
+                        enabled = canChangeOption,
+                        text = strings.openFile(),
+                        description = strings.openFileDesc(),
+                        vectorIcon = painterResource(MR.images.open_in_new),
+                        parentSize = constraints.maxWidth
+                    )
+                    Spacer(Modifier.weight(1f))
+                    HybridButton(
+                        onClick = {
+                            scope.launch {
+                                eventManager.sendEvent(Event.Decrypt.Finish)
+                            }
+                            model.endJob("")
+                        },
+                        enabled = hasRunningJobs,
+                        text = strings.cancel(),
+                        description = strings.cancel(),
+                        vectorIcon = painterResource(MR.images.cancel),
+                        parentSize = constraints.maxWidth
+                    )
+                }
+            }
+        }
+
+        item {
+            MRFLayout(model, canChangeOption, canChangeOption)
+        }
+
+        item {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                HybridButton(
-                    onClick = {
-                        model.launchJob {
-                            onDecrypt(model)
-                        }
-                    },
-                    enabled = canDecrypt,
-                    text = strings.decrypt(),
-                    description = strings.decryptFirmware(),
-                    vectorIcon = painterResource(MR.images.lock_open_outline),
-                    parentSize = constraints.maxWidth
-                )
-                Spacer(Modifier.width(8.dp))
-                HybridButton(
-                    onClick = {
-                        model.launchJob {
-                            onOpenFile(model)
-                        }
-                    },
-                    enabled = canChangeOption,
-                    text = strings.openFile(),
-                    description = strings.openFileDesc(),
-                    vectorIcon = painterResource(MR.images.open_in_new),
-                    parentSize = constraints.maxWidth
-                )
-                Spacer(Modifier.weight(1f))
-                HybridButton(
-                    onClick = {
-                        scope.launch {
-                            eventManager.sendEvent(Event.Decrypt.Finish)
-                        }
-                        model.endJob("")
-                    },
-                    enabled = hasRunningJobs,
-                    text = strings.cancel(),
-                    description = strings.cancel(),
-                    vectorIcon = painterResource(MR.images.cancel),
-                    parentSize = constraints.maxWidth
+                OutlinedTextField(
+                    value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
+                    onValueChange = {},
+                    label = { Text(strings.file()) },
+                    modifier = Modifier.weight(1f),
+                    readOnly = true,
+                    singleLine = true,
                 )
             }
         }
 
-        Spacer(Modifier.height(8.dp))
+        item {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Spacer(Modifier.size(8.dp))
 
-        MRFLayout(model, canChangeOption, canChangeOption)
-
-        Spacer(Modifier.height(8.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            OutlinedTextField(
-                value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
-                onValueChange = {},
-                label = { Text(strings.file()) },
-                modifier = Modifier.weight(1f),
-                readOnly = true,
-                singleLine = true,
-            )
+                ProgressInfo(model)
+            }
         }
-
-        Spacer(Modifier.height(16.dp))
-
-        ProgressInfo(model)
     }
 }

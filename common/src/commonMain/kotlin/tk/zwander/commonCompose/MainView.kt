@@ -33,7 +33,6 @@ import kotlin.time.ExperimentalTime
 fun MainView(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
 
-    val scrollState = rememberScrollState(0)
     var currentPage by remember { mutableStateOf(Page.DOWNLOADER) }
     var indicator by remember { mutableStateOf<(@Composable (List<TabPosition>) -> Unit)?>(null) }
 
@@ -64,7 +63,6 @@ fun MainView(modifier: Modifier = Modifier) {
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(8.dp)
                             .widthIn(max = 1200.dp)
                             .align(Alignment.CenterHorizontally)
                     ) {
@@ -90,17 +88,17 @@ fun MainView(modifier: Modifier = Modifier) {
                         indicator = HorizontalPager(
                             count = 3,
                             currentPage = currentPage.index,
-                            onPageChanged = { currentPage = Page.values()[it] },
+                            onPageChanged = { currentPage = Page.entries[it] },
                             eval = {
                                 when (it) {
-                                    Page.DOWNLOADER -> DownloadView(scrollState)
-                                    Page.DECRYPTER -> DecryptView(scrollState)
+                                    Page.DOWNLOADER -> DownloadView()
+                                    Page.DECRYPTER -> DecryptView()
                                     Page.HISTORY -> HistoryView(
                                         historyDownloadCallback,
-                                        historyDecryptCallback
+                                        historyDecryptCallback,
                                     )
                                 }
-                            }
+                            },
                         )
                     }
 
