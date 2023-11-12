@@ -1,3 +1,6 @@
+# 1.15.1
+- Fix downloads for models without hyphens or with lowercase characters.
+
 # 1.15.0
 - macOS builds should now be fully signed and notarized!
 - Add option to allow lowercase characters in text fields.
