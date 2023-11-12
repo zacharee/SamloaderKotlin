@@ -45,15 +45,15 @@ jobs:
         p12-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
         keychain-name: build
         keychain-password: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-    - name: Build with Gradle
+#    - name: Build with Gradle
+#      run: |
+#        ./gradlew packageDmg \
+#            -Pcompose.desktop.mac.sign=true \
+#            -Pcompose.desktop.mac.signing.identity="${{ secrets.MACOS_SIGNING_ID }}"
+#        ./gradlew --stop
+    - name: Build, Sign, and Notarize with Gradle
       run: |
-        ./gradlew packageDmg \
-            -Pcompose.desktop.mac.sign=true \
-            -Pcompose.desktop.mac.signing.identity="${{ secrets.MACOS_SIGNING_ID }}"
-        ./gradlew --stop
-    - name: Notarize with Gradle
-      run: |
-        ./gradlew notarizeDmg \
+        ./gradlew notarizeReleaseDmg \
             -Pcompose.desktop.mac.notarization.appleID="${{ secrets.MACOS_NOTARIZATION_ID }}" \
             -Pcompose.desktop.mac.notarization.password="${{ secrets.MACOS_NOTARIZATION_PASSWORD }}" \
             -Pcompose.desktop.mac.notarization.teamID="${{ secrets.MACOS_TEAM_ID }}" \
