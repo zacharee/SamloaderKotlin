@@ -160,7 +160,7 @@ class DownloaderService : Service() {
         PlatformDownloadView.getInputCallback = input@{ fileName, callback ->
             var inputUri: Uri? = null
 
-            suspendCoroutine<Unit> { cont ->
+            suspendCoroutine { cont ->
                 activityCallback?.openDownloadTree(object : IOpenCallback.Stub() {
                     override fun onOpen(uri: Uri?) {
                         inputUri = uri
