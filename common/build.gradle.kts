@@ -133,8 +133,9 @@ kotlin {
 
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.fragment:fragment-ktx:1.6.2")
-                api("androidx.activity:activity-compose:1.7.2")
+                api("androidx.activity:activity-compose:1.8.0")
                 api("androidx.core:core-ktx:1.12.0")
+                api("androidx.preference:preference-ktx:1.2.1")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
