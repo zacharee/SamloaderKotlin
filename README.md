@@ -118,18 +118,6 @@ Run the `package` Gradle task.
 2. Move "Bifrost.app" to the Applications folder.
 3. Launch the app.
 
-There may be a security error when launching the app. If there is, follow the steps outlined [here](https://github.com/hashicorp/terraform/issues/23033#issuecomment-542302933).
-
-Alternatively, if the above doesn't work, you can try running the following in a Terminal (requires root permissions):
-
-`sudo xattr -cr /Applications/Bifrost.app`.
-
-Once that command is executed, the app should run.
-
-It's also possible that the DMG itself will refuse to open. If that happens, the same `xattr` command, but run on the DMG, should work:
-
-`sudo xattr -cr ~/Downloads/Bifrost-<VERSION>.dmg`.
-
 ## Android
 
 1. Download the release APK to your phone.

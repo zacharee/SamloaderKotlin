@@ -1,3 +1,10 @@
+# 1.15.0
+- macOS builds should now be fully signed and notarized!
+- Add option to allow lowercase characters in text fields.
+- Persist model/region/firmware/manual values across app restarts.
+- Work on text field input performance.
+- Update dependencies.
+
 # 1.14.3
 - Fix a crash on launch on desktop.
 - Migrate to Korlibs 4.
