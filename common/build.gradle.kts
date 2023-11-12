@@ -78,7 +78,7 @@ kotlin {
         val jsoupVersion = "1.16.2"
         val coroutinesVersion = "1.7.3"
         val fluidVersion = "0.13.0"
-        val settingsVersion = "1.0.0"
+        val settingsVersion = "1.1.0"
 
         val commonMain by getting {
             dependencies {
