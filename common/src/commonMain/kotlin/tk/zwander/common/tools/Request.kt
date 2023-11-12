@@ -27,7 +27,11 @@ object Request {
             return ""
         }
 
-        return nonce.toCharArray().joinToString("") { "${input[it.code and 0xf]}" }
+        return buildString {
+            nonce.forEach {char ->
+                append(input[char.code and 0xf])
+            }
+        }
     }
 
     /**
