@@ -64,8 +64,8 @@ class FusClient(
         println("Auth: $auth")
     }
 
-    fun getAuthV(): String {
-        return "FUS nonce=\"$encNonce\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
+    fun getAuthV(includeNonce: Boolean = true): String {
+        return "FUS nonce=\"${if (includeNonce) encNonce else ""}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
     }
 
     fun getDownloadUrl(path: String): String {
@@ -78,21 +78,22 @@ class FusClient(
      * @param data any body data that needs to go into the request.
      * @return the response body data, as text. Usually XML.
      */
-    suspend fun makeReq(request: Request, data: String = ""): String {
+    suspend fun makeReq(request: Request, data: String = "", includeNonce: Boolean = true): String {
         if (nonce.isBlank() && request != Request.GENERATE_NONCE) {
             generateNonce()
         }
 
-        val authV = getAuthV()
+        val authV = getAuthV(includeNonce)
 
         val response = client.use {
-            it.request(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net:443/${request.value}")) {
+            it.request(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net/${request.value}")) {
                 method = HttpMethod.Post
                 headers {
                     append("Authorization", authV)
                     append("User-Agent", "Kies2.0_FUS")
                     append("Cookie", "JSESSIONID=${sessId}")
                     append("Set-Cookie", "JSESSIONID=${sessId}")
+                    append(HttpHeaders.ContentLength, "${data.toByteArray().size}")
                 }
                 setBody(data)
             }

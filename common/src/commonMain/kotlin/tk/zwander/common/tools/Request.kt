@@ -24,10 +24,27 @@ object Request {
      */
     fun getLogicCheck(input: String, nonce: String): String {
         if (input.length < 16) {
-            throw IllegalArgumentException("Input is too short")
+            return ""
         }
 
-        return nonce.map { input[it.code and 0xf] }.joinToString("")
+        val stringBuilder = StringBuilder()
+        var num1 = 0
+
+        if (input.endsWith(".zip.enc2") || input.endsWith(".zip.enc4")) {
+            num1 = input.length - 25
+        }
+
+        nonce.forEach { num2 ->
+            val num3 = num2.code and 15
+
+            if (input.length <= num3 + num1) {
+                return ""
+            }
+
+            stringBuilder.append(input[num3 + num1])
+        }
+
+        return stringBuilder.toString()
     }
 
     /**
@@ -46,6 +63,12 @@ object Request {
             node("FUSHdr") {
                 node("ProtoVer") {
                     text("1.0")
+                }
+                node("SessionID") {
+                    text("0")
+                }
+                node("MsgID") {
+                    text("1")
                 }
             }
             node("FUSBody") {
@@ -70,6 +93,17 @@ object Request {
                             text("4.1.16014_12")
                         }
                     }
+                    node("CLIENT_LANGUAGE") {
+                        node("Type") {
+                            text("String")
+                        }
+                        node("Type") {
+                            text("ISO 3166-1-alpha-3")
+                        }
+                        node("Data") {
+                            text("1033")
+                        }
+                    }
                     node("DEVICE_FW_VERSION") {
                         node("Data") {
                             text(fw)
@@ -90,6 +124,7 @@ object Request {
                             text(try {
                                 getLogicCheck(fw, nonce)
                             } catch (e: Throwable) {
+                                e.printStackTrace()
                                 ""
                             })
                         }
@@ -119,6 +154,12 @@ object Request {
                             text("Android")
                         }
                     }
+                }
+                node("Get") {
+                    node("CmdID") {
+                        text("2")
+                    }
+                    node("LATEST_FW_VERSION")
                 }
             }
         }
@@ -170,13 +211,13 @@ object Request {
      */
     suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): FetchResult.GetBinaryFileResult {
         val request = try {
-            createBinaryInform(fw, model, region, client.getNonce())
+            createBinaryInform(fw.uppercase(), model, region, client.getNonce())
         } catch (e: Throwable) {
             return FetchResult.GetBinaryFileResult(
                 error = Exception(strings.badReturnStatus(e.message.toString()), e)
             )
         }
-        val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
+        val response = client.makeReq(FusClient.Request.BINARY_INFORM, request, false)
 
         val responseXml = Xml.parse(response)
 
@@ -229,7 +270,7 @@ object Request {
                 if (file.isNullOrBlank()) return null
 
                 val fileSplit = file.split("_")
-                val modelSuffix = model.split("-")[1]
+                val modelSuffix = model.split("-").getOrElse(1) { model }
 
                 return fileSplit.indexOfFirst {
                     it.startsWith(modelSuffix) ||
@@ -259,9 +300,14 @@ object Request {
 
                     val logicVal = responseXml.child("FUSBody")
                         ?.child("Put")
-                        ?.child("LOGIC_VALUE_FACTORY")
-                        ?.child("Data")
-                        ?.text!!
+                        .run {
+                            this?.child("LOGIC_VALUE_FACTORY")
+                                ?.child("Data")
+                                ?.text ?:
+                            this?.child("LOGIC_VALUE_HOME")
+                                ?.child("Data")
+                                ?.text!!
+                        }
 
                     val decKey = getLogicCheck(fwVer, logicVal)
 

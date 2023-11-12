@@ -132,7 +132,7 @@ object CryptUtils {
      * @return the decryption key for this firmware.
      */
     suspend fun getV4Key(client: FusClient, version: String, model: String, region: String, tries: Int = 0): ByteArray {
-        val request = Request.createBinaryInform(version, model, region, client.getNonce())
+        val request = Request.createBinaryInform(version.uppercase(), model, region, client.getNonce())
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
         val responseXml = Xml.parse(response)
@@ -146,9 +146,14 @@ object CryptUtils {
 
             val logicVal = responseXml.child("FUSBody")
                 ?.child("Put")
-                ?.child("LOGIC_VALUE_FACTORY")
-                ?.child("Data")
-                ?.text!!
+                .run {
+                    this?.child("LOGIC_VALUE_FACTORY")
+                        ?.child("Data")
+                        ?.text ?: 
+                    this?.child("LOGIC_VALUE_HOME")
+                        ?.child("Data")
+                        ?.text!!
+                }
 
             val decKey = Request.getLogicCheck(fwVer, logicVal)
 
