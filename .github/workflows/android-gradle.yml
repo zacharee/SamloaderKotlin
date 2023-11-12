@@ -22,7 +22,7 @@ jobs:
         java-version: '17'
     - name: Get Latest Release
       id: release
-      uses: InsonusK/get-latest-release@v1.0.1
+      uses: InsonusK/get-latest-release@v1.1.0
       with:
         myToken: ${{ secrets.GITHUB_TOKEN }}
         view_top: 1
