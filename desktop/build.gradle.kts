@@ -1,4 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.util.Properties
 
 plugins {
     kotlin("multiplatform")
@@ -37,6 +38,9 @@ compose.desktop {
     val packageName: String by rootProject.extra
     val appName: String by rootProject.extra
 
+    val localProperties = Properties()
+    localProperties.load(rootProject.file("local.properties").reader())
+
     application {
         buildTypes.release.proguard {
             isEnabled.set(false)
@@ -62,6 +66,31 @@ compose.desktop {
                 packageVersion = "1." + rootProject.extra["versionCode"]
                 targetFormats(TargetFormat.Dmg, TargetFormat.Pkg)
                 this.packageName = appName
+
+                signing {
+                    val macosSigningId: String? by localProperties
+
+                    if (macosSigningId != null) {
+                        sign.set(macosSigningId != null)
+                        identity.set(macosSigningId)
+                    }
+                }
+
+                notarization {
+                    val macosNotarizationEmail: String? by localProperties
+                    val macosNotarizationPassword: String? by localProperties
+                    val macosNotarizationTeamId: String? by localProperties
+
+                    if (macosNotarizationEmail != null) {
+                        appleID.set(macosNotarizationEmail)
+                    }
+                    if (macosNotarizationPassword != null) {
+                        password.set(macosNotarizationPassword)
+                    }
+                    if (macosNotarizationTeamId != null) {
+                        teamID.set(macosNotarizationTeamId)
+                    }
+                }
             }
 
             linux {
