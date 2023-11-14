@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +16,7 @@ import tk.zwander.samloaderkotlin.strings
 
 @Composable
 internal fun ChangelogDisplay(
-    changelog: Changelog
+    changelog: Changelog?,
 ) {
     Card(
         elevation = CardDefaults.cardElevation(),
@@ -29,7 +28,7 @@ internal fun ChangelogDisplay(
             modifier = Modifier.fillMaxWidth()
                 .padding(8.dp)
         ) {
-            if (changelog.secPatch != null) {
+            if (changelog?.secPatch != null) {
                 Text(
                     fontWeight = FontWeight.Bold,
                     text = strings.security(changelog.secPatch.toString()),
@@ -39,7 +38,7 @@ internal fun ChangelogDisplay(
                 Spacer(Modifier.height(8.dp))
             }
 
-            if (changelog.relDate != null) {
+            if (changelog?.relDate != null) {
                 Text(
                     fontWeight = FontWeight.Bold,
                     text = strings.release(changelog.relDate.toString()),
@@ -49,8 +48,8 @@ internal fun ChangelogDisplay(
                 Spacer(Modifier.height(8.dp))
             }
 
-            if (changelog.notes != null) {
-                Text(changelog.notes!!.parseHtml())
+            if (changelog?.notes != null) {
+                Text(changelog.notes.parseHtml())
             }
         }
     }

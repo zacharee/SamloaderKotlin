@@ -1,6 +1,7 @@
 package tk.zwander.common.util
 
 import java.awt.Desktop
+import java.io.IOException
 import java.lang.StringBuilder
 import java.net.URI
 import java.net.URLEncoder
@@ -10,7 +11,14 @@ actual object UrlHandler {
 
     actual fun launchUrl(url: String) {
         val uri = URI(url)
-        desktop.browse(uri)
+
+        try {
+            desktop.browse(uri)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: UnsupportedOperationException) {
+            e.printStackTrace()
+        }
     }
     actual fun sendEmail(address: String, subject: String?, content: String?) {
         val string = StringBuilder()
@@ -21,6 +29,13 @@ actual object UrlHandler {
         string.append("&body=${URLEncoder.encode(content ?: "", Charsets.UTF_8)}")
 
         val uri = URI(string.toString())
-        desktop.mail(uri)
+
+        try {
+            desktop.mail(uri)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: UnsupportedOperationException) {
+            e.printStackTrace()
+        }
     }
 }

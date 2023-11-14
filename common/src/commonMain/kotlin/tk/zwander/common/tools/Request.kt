@@ -201,12 +201,18 @@ object Request {
             createBinaryInform(fw.uppercase(), model, region, client.getNonce())
         } catch (e: Throwable) {
             return FetchResult.GetBinaryFileResult(
-                error = Exception(strings.badReturnStatus(e.message.toString()), e)
+                error = Exception(strings.badReturnStatus(e.message.toString()), e),
             )
         }
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request, false)
 
-        val responseXml = Xml.parse(response)
+        val responseXml = try {
+            Xml.parse(response)
+        } catch (e: Exception) {
+            return FetchResult.GetBinaryFileResult(
+                error = e,
+            )
+        }
 
         try {
             val status = responseXml.child("FUSBody")

@@ -515,7 +515,7 @@ internal fun DownloadView() {
                     visible = changelogExpanded && changelogCondition,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    ChangelogDisplay(changelog!!)
+                    ChangelogDisplay(changelog)
                 }
             }
         }
