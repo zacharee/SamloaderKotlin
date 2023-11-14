@@ -9,7 +9,8 @@ import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.data.exception.VersionCheckException
 import tk.zwander.common.data.exception.VersionMismatchException
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.common.util.invoke
+import tk.zwander.samloaderkotlin.resources.MR
 
 /**
  * Handle some requests to Samsung's servers.
@@ -201,7 +202,7 @@ object Request {
             createBinaryInform(fw.uppercase(), model, region, client.getNonce())
         } catch (e: Throwable) {
             return FetchResult.GetBinaryFileResult(
-                error = Exception(strings.badReturnStatus(e.message.toString()), e),
+                error = Exception(MR.strings.badReturnStatus(e.message.toString()), e),
             )
         }
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request, false)
@@ -222,21 +223,21 @@ object Request {
 
             if (status == "F01") {
                 return FetchResult.GetBinaryFileResult(
-                    error = Exception(strings.invalidFirmwareError()),
+                    error = Exception(MR.strings.invalidFirmwareError()),
                     rawOutput = responseXml.toString()
                 )
             }
 
             if (status != "200") {
                 return FetchResult.GetBinaryFileResult(
-                    error = Exception(strings.badReturnStatus(status.toString())),
+                    error = Exception(MR.strings.badReturnStatus(status.toString())),
                     rawOutput = responseXml.toString()
                 )
             }
 
             val noBinaryError = {
                 FetchResult.GetBinaryFileResult(
-                    error = Exception(strings.noBinaryFile(model, region)),
+                    error = Exception(MR.strings.noBinaryFile(model, region)),
                     rawOutput = responseXml.toString()
                 )
             }
@@ -333,7 +334,7 @@ object Request {
             if (dataFile.isNullOrBlank()) {
                 return FetchResult.GetBinaryFileResult(
                     info = generateInfo(),
-                    error = VersionCheckException(strings.versionCheckError())
+                    error = VersionCheckException(MR.strings.versionCheckError())
                 )
             }
 
@@ -394,7 +395,7 @@ object Request {
                 if (served != fw && !versionSuffixMatch && !cscSuffixMatch && !cpSuffixMatch && !pdaSuffixMatch) {
                     return FetchResult.GetBinaryFileResult(
                         info = generateInfo(),
-                        error = VersionMismatchException(strings.versionMismatch(fw, served))
+                        error = VersionMismatchException(MR.strings.versionMismatch(fw, served))
                     )
                 }
             }

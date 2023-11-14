@@ -14,7 +14,6 @@ val appName by extra("Bifrost")
 buildscript {
     val kotlinVersion by rootProject.extra("1.9.20")
     val composeCompilerVersion by rootProject.extra("1.5.3")
-    val i18n4kVersion by extra("0.6.2")
     val mokoVersion by extra("0.23.0")
 
     repositories {
@@ -34,7 +33,6 @@ buildscript {
         classpath("com.android.tools.build:gradle:8.1.3")
         classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.15.0")
         classpath("dev.icerock.moko:resources-generator:$mokoVersion")
-        classpath("de.comahe.i18n4k:i18n4k-gradle-plugin:$i18n4kVersion")
         classpath("com.bugsnag:bugsnag-android-gradle-plugin:8.1.0")
         classpath("org.jetbrains.kotlin:atomicfu:$kotlinVersion")
         classpath(kotlin("serialization", version = kotlinVersion))

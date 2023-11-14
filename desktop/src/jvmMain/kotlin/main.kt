@@ -13,9 +13,10 @@ import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.MainBase
 import tk.zwander.common.util.UrlHandler
+import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Desktop
 import java.awt.Dimension
 import javax.swing.*
@@ -73,10 +74,10 @@ fun main() {
             if (hostOs == OS.MacOS) {
                 MenuBar {
                     Menu(
-                        text = strings.window()
+                        text = MR.strings.window()
                     ) {
                         Item(
-                            text = strings.minimize(),
+                            text = MR.strings.minimize(),
                             onClick = {
                                 mainWindowState.isMinimized = true
                             },
@@ -84,14 +85,14 @@ fun main() {
                         )
 
                         Item(
-                            text = strings.zoom(),
+                            text = MR.strings.zoom(),
                             onClick = {
                                 mainWindowState.placement = WindowPlacement.Maximized
                             }
                         )
 
                         Item(
-                            text = strings.close(),
+                            text = MR.strings.close(),
                             onClick = {
                                 exitApplication()
                             },
@@ -100,38 +101,38 @@ fun main() {
                     }
 
                     Menu(
-                        text = strings.help()
+                        text = MR.strings.help()
                     ) {
                         Item(
-                            text = strings.github(),
+                            text = MR.strings.github(),
                             onClick = {
                                 UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
                             }
                         )
 
                         Item(
-                            text = strings.mastodon(),
+                            text = MR.strings.mastodon(),
                             onClick = {
                                 UrlHandler.launchUrl("https://androiddev.social/@wander1236")
                             }
                         )
 
                         Item(
-                            text = strings.twitter(),
+                            text = MR.strings.twitter(),
                             onClick = {
                                 UrlHandler.launchUrl("https://twitter.com/wander1236")
                             }
                         )
 
                         Item(
-                            text = strings.patreon(),
+                            text = MR.strings.patreon(),
                             onClick = {
                                 UrlHandler.launchUrl("https://patreon.com/zacharywander")
                             }
                         )
 
                         Item(
-                            text = strings.supporters(),
+                            text = MR.strings.supporters(),
                             onClick = {
                                 showingSupportersWindow = true
                             }

@@ -16,9 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.util.ObservableSettings
+import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.samloaderkotlin.resources.MR
 
 /**
  * A common container for the model, region, and firmware text inputs used in [DownloadView] and [DecryptView]
@@ -68,7 +69,7 @@ internal fun MRFLayout(
                     }
                 },
                 modifier = Modifier,
-                label = { Text(strings.modelHint()) },
+                label = { Text(MR.strings.modelHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true,
@@ -85,7 +86,7 @@ internal fun MRFLayout(
                     }
                 },
                 modifier = Modifier,
-                label = { Text(strings.regionHint()) },
+                label = { Text(MR.strings.regionHint()) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true,
@@ -95,7 +96,7 @@ internal fun MRFLayout(
                     ) {
                         Icon(
                             imageVector = Icons.Default.List,
-                            contentDescription = strings.chooseCsc()
+                            contentDescription = MR.strings.chooseCsc()
                         )
                     }
                 }
@@ -112,7 +113,7 @@ internal fun MRFLayout(
         OutlinedTextField(
             value = model.fw.collectAsState().value,
             onValueChange = { model.fw.value = it.transformText(allowLowercase) },
-            label = { Text(strings.firmwareHint()) },
+            label = { Text(MR.strings.firmwareHint()) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmware,
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),

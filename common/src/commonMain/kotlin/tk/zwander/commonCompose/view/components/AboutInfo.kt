@@ -9,17 +9,15 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.PlatformParagraphStyle
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.UrlHandler
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.common.util.invoke
+import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
 fun AboutInfo(
@@ -33,7 +31,7 @@ fun AboutInfo(
                     fontSize = 16.sp
                 )
             )
-            append(strings.version("${GradleConfig.versionName} © "))
+            append(MR.strings.version("${GradleConfig.versionName} © "))
             pushStyle(
                 SpanStyle(
                     color = MaterialTheme.colorScheme.primary,
@@ -41,7 +39,7 @@ fun AboutInfo(
                 )
             )
             pushStringAnnotation("WebsiteLink", "https://zwander.dev")
-            append(strings.zacharyWander())
+            append(MR.strings.zacharyWander())
             pop()
         }
 
@@ -52,7 +50,7 @@ fun AboutInfo(
                     fontSize = 16.sp
                 )
             )
-            append(strings.basedOn())
+            append(MR.strings.basedOn())
             append(" ")
             pushStyle(
                 SpanStyle(
@@ -61,7 +59,7 @@ fun AboutInfo(
                 )
             )
             pushStringAnnotation("SamloaderLink", "https://github.com/nlscc/samloader")
-            append(strings.samloader())
+            append(MR.strings.samloader())
             pop()
         }
 

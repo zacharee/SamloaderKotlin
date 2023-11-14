@@ -25,14 +25,14 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import korlibs.memory.Platform
 import tk.zwander.common.util.UrlHandler
+import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.samloaderkotlin.resources.MR
-import tk.zwander.samloaderkotlin.strings
 
 val options = arrayListOf<Pair<String, String>>().apply {
     if (Platform.isJvm && !Platform.isAndroid) {
-        add(strings.useNativeFilePicker() to "useNativeFileDialog")
-        add(strings.allowLowercaseCharacters() to "allowLowercaseCharacters")
+        add(MR.strings.useNativeFilePicker() to "useNativeFileDialog")
+        add(MR.strings.allowLowercaseCharacters() to "allowLowercaseCharacters")
     }
 }
 
@@ -81,7 +81,7 @@ fun FooterView(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Info,
-                                contentDescription = strings.about()
+                                contentDescription = MR.strings.about()
                             )
                         }
                     }
@@ -94,7 +94,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            painterResource(MR.images.heart), strings.supporters(),
+                            painterResource(MR.images.heart), MR.strings.supporters(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -107,7 +107,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            painterResource(MR.images.github), strings.github(),
+                            painterResource(MR.images.github), MR.strings.github(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -120,7 +120,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            painterResource(MR.images.mastodon), strings.mastodon(),
+                            painterResource(MR.images.mastodon), MR.strings.mastodon(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -133,7 +133,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            painterResource(MR.images.twitter), strings.twitter(),
+                            painterResource(MR.images.twitter), MR.strings.twitter(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -146,7 +146,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            painterResource(MR.images.patreon), strings.patreon(),
+                            painterResource(MR.images.patreon), MR.strings.patreon(),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -161,7 +161,7 @@ fun FooterView(
                         ) {
                             Icon(
                                 painter = painterResource(MR.images.cog),
-                                contentDescription = strings.settings(),
+                                contentDescription = MR.strings.settings(),
                                 modifier = Modifier.padding(8.dp).size(24.dp)
                             )
                         }
@@ -183,14 +183,14 @@ fun FooterView(
         showing = showingAboutDialog,
         onDismissRequest = { showingAboutDialog = false },
         title = {
-            Text(text = strings.about())
+            Text(text = MR.strings.about())
         },
         text = {
             AboutInfo()
         },
         buttons = {
             TextButton(onClick = { showingAboutDialog = false }) {
-                Text(text = strings.ok())
+                Text(text = MR.strings.ok())
             }
         }
     )

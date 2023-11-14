@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
+import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
-import tk.zwander.samloaderkotlin.strings
 
 /**
  * An item in the firmware history list.
@@ -21,7 +21,6 @@ import tk.zwander.samloaderkotlin.strings
  * @param onDownload called when the user hits the "Download" button.
  * @param onDecrypt called when the user hits the "Decrypt" button.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HistoryItem(
     index: Int,
@@ -45,9 +44,9 @@ internal fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${index + 1}. ${strings.android(info.androidVersion 
+                        text = "${index + 1}. ${MR.strings.android(info.androidVersion 
                             ?: changelog?.androidVer?.let { Regex("[0-9]+").find(it)?.value } 
-                            ?: strings.unknown())}",
+                            ?: MR.strings.unknown())}",
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.CenterVertically),
                         fontSize = 20.sp,
@@ -65,7 +64,7 @@ internal fun HistoryItem(
                     ) {
                         Icon(
                             painterResource(MR.images.download),
-                            strings.download(),
+                            MR.strings.download(),
                             Modifier.size(24.dp)
                         )
                     }
@@ -81,7 +80,7 @@ internal fun HistoryItem(
                     ) {
                         Icon(
                             painterResource(MR.images.lock_open_outline),
-                            strings.decrypt(),
+                            MR.strings.decrypt(),
                             Modifier.size(24.dp)
                         )
                     }
@@ -93,7 +92,7 @@ internal fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = strings.buildDate(info.date?.format("MMM dd, yyyy") ?: strings.unknown()),
+                        text = MR.strings.buildDate(info.date?.format("MMM dd, yyyy") ?: MR.strings.unknown()),
                         modifier = Modifier.align(Alignment.Bottom),
                         fontSize = 16.sp,
                         lineHeight = 16.sp
@@ -111,7 +110,7 @@ internal fun HistoryItem(
                         readOnly = true,
                         modifier = Modifier.weight(1f)
                             .align(Alignment.CenterVertically),
-                        label = { Text(strings.firmware()) },
+                        label = { Text(MR.strings.firmware()) },
                         singleLine = true
                     )
                 }
@@ -127,7 +126,7 @@ internal fun HistoryItem(
                         Column {
                             ExpandButton(
                                 changelogExpanded,
-                                strings.changelog()
+                                MR.strings.changelog()
                             ) { onChangelogExpanded(it) }
 
                             AnimatedVisibility(

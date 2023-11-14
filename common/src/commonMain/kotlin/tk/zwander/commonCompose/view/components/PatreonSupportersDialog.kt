@@ -8,7 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.util.PatreonSupportersParser
 import tk.zwander.common.util.SupporterInfo
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.common.util.invoke
+import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
 internal fun PatreonSupportersDialog(
@@ -34,11 +35,11 @@ internal fun PatreonSupportersDialog(
             TextButton(
                 onClick = onDismissRequest
             ) {
-                Text(text = strings.ok())
+                Text(text = MR.strings.ok())
             }
         },
         title = {
-            Text(text = strings.patreonSupporters())
+            Text(text = MR.strings.patreonSupporters())
         },
         text = {
             PatreonSupportersList(

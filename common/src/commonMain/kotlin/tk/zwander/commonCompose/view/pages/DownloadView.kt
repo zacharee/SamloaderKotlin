@@ -27,11 +27,11 @@ import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.eventManager
+import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.commonCompose.view.components.*
 import tk.zwander.samloaderkotlin.resources.MR
-import tk.zwander.samloaderkotlin.strings
 import kotlin.time.ExperimentalTime
 
 /**
@@ -61,7 +61,7 @@ private suspend fun onDownload(
     confirmCallback: DownloadErrorCallback
 ) {
     eventManager.sendEvent(Event.Download.Start)
-    model.statusText.value = strings.downloading()
+    model.statusText.value = MR.strings.downloading()
 
     val (info, error, output) = Request.getBinaryFile(
         client,
@@ -72,7 +72,7 @@ private suspend fun onDownload(
 
     if (error != null && error !is VersionException) {
         Exception(error).printStackTrace()
-        model.endJob("${error.message ?: strings.error()}\n\n${output}")
+        model.endJob("${error.message ?: MR.strings.error()}\n\n${output}")
         eventManager.sendEvent(Event.Download.Finish)
     } else {
         if (error is VersionException) {
@@ -127,12 +127,12 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             model.progress.value = current to max
                             model.speed.value = bps
 
-                            eventManager.sendEvent(Event.Download.Progress(strings.downloading(), current, max))
+                            eventManager.sendEvent(Event.Download.Progress(MR.strings.downloading(), current, max))
                         }
 
                         if (crc32 != null) {
                             model.speed.value = 0L
-                            model.statusText.value = strings.checkingCRC()
+                            model.statusText.value = MR.strings.checkingCRC()
                             val result = CryptUtils.checkCrc32(
                                 inputInfo.downloadFile.openInputStream(),
                                 size,
@@ -141,20 +141,20 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                                 model.progress.value = current to max
                                 model.speed.value = bps
 
-                                eventManager.sendEvent(Event.Download.Progress(strings.checkingCRC(), current, max))
+                                eventManager.sendEvent(Event.Download.Progress(MR.strings.checkingCRC(), current, max))
                             }
 
                             if (!result) {
-                                model.endJob(strings.crcCheckFailed())
+                                model.endJob(MR.strings.crcCheckFailed())
                                 return@GetInput
                             }
                         }
 
                         if (md5 != null) {
                             model.speed.value = 0L
-                            model.statusText.value = strings.checkingMD5()
+                            model.statusText.value = MR.strings.checkingMD5()
 
-                            eventManager.sendEvent(Event.Download.Progress(strings.checkingMD5(), 0, 1))
+                            eventManager.sendEvent(Event.Download.Progress(MR.strings.checkingMD5(), 0, 1))
 
                             val result = withContext(Dispatchers.Default) {
                                 CryptUtils.checkMD5(
@@ -164,13 +164,13 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             }
 
                             if (!result) {
-                                model.endJob(strings.md5CheckFailed())
+                                model.endJob(MR.strings.md5CheckFailed())
                                 return@GetInput
                             }
                         }
 
                         model.speed.value = 0L
-                        model.statusText.value = strings.decrypting()
+                        model.statusText.value = MR.strings.decrypting()
 
                         val key =
                             if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
@@ -190,10 +190,10 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             model.progress.value = current to max
                             model.speed.value = bps
 
-                            eventManager.sendEvent(Event.Download.Progress(strings.decrypting(), current, max))
+                            eventManager.sendEvent(Event.Download.Progress(MR.strings.decrypting(), current, max))
                         }
 
-                        model.endJob(strings.done())
+                        model.endJob(MR.strings.done())
                     } else {
                         model.endJob("")
                     }
@@ -215,7 +215,7 @@ private suspend fun onFetch(model: DownloadModel) {
     val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model.value, model.region.value)
 
     if (error != null) {
-        model.endJob(strings.firmwareCheckError(error.message.toString(), output))
+        model.endJob(MR.strings.firmwareCheckError(error.message.toString(), output))
         return
     }
 
@@ -289,8 +289,8 @@ internal fun DownloadView() {
                         },
                         enabled = canDownload,
                         vectorIcon = painterResource(MR.images.download),
-                        text = strings.download(),
-                        description = strings.downloadFirmware(),
+                        text = MR.strings.download(),
+                        description = MR.strings.downloadFirmware(),
                         parentSize = constraints.maxWidth
                     )
 
@@ -303,9 +303,9 @@ internal fun DownloadView() {
                             }
                         },
                         enabled = canCheckVersion,
-                        text = strings.checkForUpdates(),
+                        text = MR.strings.checkForUpdates(),
                         vectorIcon = painterResource(MR.images.refresh),
-                        description = strings.checkForUpdatesDesc(),
+                        description = MR.strings.checkForUpdatesDesc(),
                         parentSize = constraints.maxWidth
                     )
 
@@ -319,8 +319,8 @@ internal fun DownloadView() {
                             model.endJob("")
                         },
                         enabled = hasRunningJobs,
-                        text = strings.cancel(),
-                        description = strings.cancel(),
+                        text = MR.strings.cancel(),
+                        description = MR.strings.cancel(),
                         vectorIcon = painterResource(MR.images.cancel),
                         parentSize = constraints.maxWidth
                     )
@@ -361,7 +361,7 @@ internal fun DownloadView() {
 
 
                     Text(
-                        text = strings.manual(),
+                        text = MR.strings.manual(),
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                 }
@@ -381,13 +381,13 @@ internal fun DownloadView() {
 
                         val info = buildAnnotatedString {
                             pushStyle(SpanStyle(color = MaterialTheme.colorScheme.error))
-                            append("${strings.manualWarning()} ")
+                            append("${MR.strings.manualWarning()} ")
                             pushStringAnnotation(
                                 "MoreInfo",
                                 "MoreInfo",
                             )
                             pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                            append(strings.moreInfo())
+                            append(MR.strings.moreInfo())
                             pop()
                             pop()
                         }
@@ -407,22 +407,22 @@ internal fun DownloadView() {
                     AlertDialogDef(
                         showing = showingRequestWarningDialog,
                         title = {
-                            Text(text = strings.moreInfo())
+                            Text(text = MR.strings.moreInfo())
                         },
                         text = {
                             val info = buildAnnotatedString {
-                                append(strings.manualWarningDetails(GradleConfig.appName, GradleConfig.appName))
+                                append(MR.strings.manualWarningDetails(GradleConfig.appName, GradleConfig.appName))
                                 append(" ")
                                 pushStringAnnotation(
                                     "IssueLink",
                                     "https://github.com/zacharee/SamloaderKotlin/issues/10"
                                 )
                                 pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                                append(strings.manualWarningDetails2())
+                                append(MR.strings.manualWarningDetails2())
                                 pop()
                                 pop()
                                 append(" ")
-                                append(strings.manualWarningDetails3())
+                                append(MR.strings.manualWarningDetails3())
                             }
 
                             val scroll = rememberScrollState()
@@ -445,7 +445,7 @@ internal fun DownloadView() {
                                     showingRequestWarningDialog = false
                                 }
                             ) {
-                                Text(strings.ok())
+                                Text(MR.strings.ok())
                             }
                         },
                         onDismissRequest = {
@@ -474,7 +474,7 @@ internal fun DownloadView() {
                         Spacer(Modifier.height(4.dp))
 
                         Text(
-                            text = strings.osVersion(osCode)
+                            text = MR.strings.osVersion(osCode)
                         )
                     }
                 }
@@ -504,7 +504,7 @@ internal fun DownloadView() {
 
                         ExpandButton(
                             changelogExpanded,
-                            strings.changelog()
+                            MR.strings.changelog()
                         ) { model.changelogExpanded.value = it }
 
                         Spacer(Modifier.height(8.dp))
@@ -530,7 +530,7 @@ internal fun DownloadView() {
             }
         },
         title = {
-            Text(text = strings.warning())
+            Text(text = MR.strings.warning())
         },
         text = {
             Text(text = downloadErrorInfo?.message ?: "")
@@ -547,7 +547,7 @@ internal fun DownloadView() {
                     }
                 }
             ) {
-                Text(text = strings.no())
+                Text(text = MR.strings.no())
             }
 
             TextButton(
@@ -560,7 +560,7 @@ internal fun DownloadView() {
                 }
             ) {
                 Text(
-                    text = strings.yes(),
+                    text = MR.strings.yes(),
                     color = MaterialTheme.colorScheme.error
                 )
             }

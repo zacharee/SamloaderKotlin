@@ -14,7 +14,6 @@ plugins {
     kotlin("multiplatform")
     id("com.codingfeline.buildkonfig")
     id("org.jetbrains.compose")
-    id("de.comahe.i18n4k")
     id("dev.icerock.mobile.multiplatform-resources")
     id("org.jetbrains.kotlin.plugin.atomicfu")
     kotlin("plugin.serialization")
@@ -75,7 +74,6 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
                 api("com.russhwolf:multiplatform-settings:$settingsVersion")
                 api("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
-                api("de.comahe.i18n4k:i18n4k-core:${rootProject.extra["i18n4kVersion"]}")
                 api("dev.icerock.moko:resources:${rootProject.extra["mokoVersion"]}")
                 api("dev.icerock.moko:resources-compose:${rootProject.extra["mokoVersion"]}")
             }
@@ -93,7 +91,6 @@ kotlin {
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("com.formdev:flatlaf:3.2.5")
                 api("io.github.vincenzopalazzo:material-ui-swing:1.1.4")
-                api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
                 api("com.github.weisj:darklaf-core:3.0.2")
                 api("com.bugsnag:bugsnag:3.7.1")
                 api("org.slf4j:slf4j-simple:2.0.9")
@@ -106,6 +103,7 @@ kotlin {
             dependencies {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
                 api("org.jsoup:jsoup:$jsoupVersion")
+                api("io.ktor:ktor-client-cio:$ktorVersion")
 
                 api("androidx.appcompat:appcompat:1.7.0-alpha03")
                 api("androidx.fragment:fragment-ktx:1.7.0-alpha06")
@@ -114,9 +112,6 @@ kotlin {
                 api("androidx.preference:preference-ktx:1.2.1")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
                 api("com.google.android.material:material:1.12.0-alpha01")
-
-                api("io.ktor:ktor-client-cio:$ktorVersion")
-                api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 
                 api("com.caverock:androidsvg-aar:1.4")
                 api("com.bugsnag:bugsnag-android:5.31.3")
@@ -166,14 +161,6 @@ buildkonfig {
 
 multiplatformResources {
     multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.resources" // required
-}
-
-i18n4k {
-    sourceCodeLocales = listOf("en", "ru_RU", "th_TH")
-}
-
-tasks.named("jvmProcessResources") {
-    dependsOn(tasks.named("generateI18n4kFiles"))
 }
 
 tasks.withType<Copy> {

@@ -12,7 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.russhwolf.settings.Settings
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.common.util.invoke
+import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
 internal fun SettingsDialog(
@@ -31,11 +32,11 @@ internal fun SettingsDialog(
             TextButton(
                 onClick = onDismissRequest
             ) {
-                Text(text = strings.ok())
+                Text(text = MR.strings.ok())
             }
         },
         title = {
-            Text(strings.settings())
+            Text(MR.strings.settings())
         },
         text = {
             Column(

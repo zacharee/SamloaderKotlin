@@ -14,9 +14,10 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
 import tk.zwander.common.util.PatreonSupportersParser
 import tk.zwander.common.util.SupporterInfo
+import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.PatreonSupportersList
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
 internal fun PatreonSupportersWindow(
@@ -36,7 +37,7 @@ internal fun PatreonSupportersWindow(
 
         Window(
             onCloseRequest = onDismiss,
-            title = strings.patreonSupporters(),
+            title = MR.strings.patreonSupporters(),
             icon = getImage("icon.png").toPainter(),
             state = WindowState(
                 placement = WindowPlacement.Floating,

@@ -1,9 +1,7 @@
 package tk.zwander.commonCompose.view.pages
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,21 +11,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import io.ktor.utils.io.core.internal.*
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.eventManager
+import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
 import tk.zwander.samloaderkotlin.resources.MR
-import tk.zwander.samloaderkotlin.strings
-import kotlin.coroutines.coroutineContext
 import kotlin.time.ExperimentalTime
 
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
@@ -45,7 +40,7 @@ private suspend fun onDecrypt(model: DecryptModel) {
         try {
             CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value)
         } catch (e: Throwable) {
-            model.endJob(strings.decryptError(e.message.toString()))
+            model.endJob(MR.strings.decryptError(e.message.toString()))
             return
         }
     }
@@ -53,11 +48,11 @@ private suspend fun onDecrypt(model: DecryptModel) {
     CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
         model.progress.value = current to max
         model.speed.value = bps
-        eventManager.sendEvent(Event.Decrypt.Progress(strings.decrypting(), current, max))
+        eventManager.sendEvent(Event.Decrypt.Progress(MR.strings.decrypting(), current, max))
     }
 
     eventManager.sendEvent(Event.Decrypt.Finish)
-    model.endJob(strings.done())
+    model.endJob(MR.strings.done())
 }
 
 private suspend fun onOpenFile(model: DecryptModel) {
@@ -66,7 +61,7 @@ private suspend fun onOpenFile(model: DecryptModel) {
             if (info != null) {
                 if (!info.encFile.getName().endsWith(".enc2") &&
                     !info.encFile.getName().endsWith(".enc4")) {
-                    model.endJob(strings.selectEncrypted())
+                    model.endJob(MR.strings.selectEncrypted())
                 } else {
                     model.endJob("")
                     model.fileToDecrypt.value = info
@@ -121,8 +116,8 @@ internal fun DecryptView() {
                             }
                         },
                         enabled = canDecrypt,
-                        text = strings.decrypt(),
-                        description = strings.decryptFirmware(),
+                        text = MR.strings.decrypt(),
+                        description = MR.strings.decryptFirmware(),
                         vectorIcon = painterResource(MR.images.lock_open_outline),
                         parentSize = constraints.maxWidth
                     )
@@ -134,8 +129,8 @@ internal fun DecryptView() {
                             }
                         },
                         enabled = canChangeOption,
-                        text = strings.openFile(),
-                        description = strings.openFileDesc(),
+                        text = MR.strings.openFile(),
+                        description = MR.strings.openFileDesc(),
                         vectorIcon = painterResource(MR.images.open_in_new),
                         parentSize = constraints.maxWidth
                     )
@@ -148,8 +143,8 @@ internal fun DecryptView() {
                             model.endJob("")
                         },
                         enabled = hasRunningJobs,
-                        text = strings.cancel(),
-                        description = strings.cancel(),
+                        text = MR.strings.cancel(),
+                        description = MR.strings.cancel(),
                         vectorIcon = painterResource(MR.images.cancel),
                         parentSize = constraints.maxWidth
                     )
@@ -168,7 +163,7 @@ internal fun DecryptView() {
                 OutlinedTextField(
                     value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
                     onValueChange = {},
-                    label = { Text(strings.file()) },
+                    label = { Text(MR.strings.file()) },
                     modifier = Modifier.weight(1f),
                     readOnly = true,
                     singleLine = true,

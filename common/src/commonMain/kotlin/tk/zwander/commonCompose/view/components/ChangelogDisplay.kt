@@ -11,8 +11,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.data.changelog.Changelog
+import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.util.parseHtml
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
 internal fun ChangelogDisplay(
@@ -31,7 +32,7 @@ internal fun ChangelogDisplay(
             if (changelog?.secPatch != null) {
                 Text(
                     fontWeight = FontWeight.Bold,
-                    text = strings.security(changelog.secPatch.toString()),
+                    text = MR.strings.security(changelog.secPatch.toString()),
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -41,7 +42,7 @@ internal fun ChangelogDisplay(
             if (changelog?.relDate != null) {
                 Text(
                     fontWeight = FontWeight.Bold,
-                    text = strings.release(changelog.relDate.toString()),
+                    text = MR.strings.release(changelog.relDate.toString()),
                     modifier = Modifier.fillMaxWidth()
                 )
 

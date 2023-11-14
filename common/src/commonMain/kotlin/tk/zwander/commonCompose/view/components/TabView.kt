@@ -7,7 +7,8 @@ import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import tk.zwander.samloaderkotlin.strings
+import tk.zwander.common.util.invoke
+import tk.zwander.samloaderkotlin.resources.MR
 
 /**
  * Represents the available pages.
@@ -39,21 +40,21 @@ internal fun TabView(
     ) {
         Tab(
             selected = selectedPage == Page.DOWNLOADER,
-            text = { Text(strings.downloader()) },
+            text = { Text(MR.strings.downloader()) },
             onClick = {
                 onPageSelected(Page.DOWNLOADER)
             }
         )
         Tab(
             selected = selectedPage == Page.DECRYPTER,
-            text = { Text(strings.decrypter()) },
+            text = { Text(MR.strings.decrypter()) },
             onClick = {
                 onPageSelected(Page.DECRYPTER)
             }
         )
         Tab(
             selected = selectedPage == Page.HISTORY,
-            text = { Text(strings.history()) },
+            text = { Text(MR.strings.history()) },
             onClick = {
                 onPageSelected(Page.HISTORY)
             }

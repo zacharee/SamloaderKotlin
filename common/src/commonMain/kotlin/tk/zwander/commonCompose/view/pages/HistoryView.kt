@@ -41,13 +41,13 @@ import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
+import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.model.HistoryModel
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.samloaderkotlin.resources.MR
-import tk.zwander.samloaderkotlin.strings
 
 /**
  * Delegate HTML parsing to the platform until there's an MPP library.
@@ -122,7 +122,7 @@ private suspend fun onFetch(model: HistoryModel) {
     val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value, model.region.value)
 
     if (historyString == null && historyStringXml == null) {
-        model.endJob(strings.historyError())
+        model.endJob(MR.strings.historyError())
     } else {
         try {
             val parsed = when {
@@ -135,7 +135,7 @@ private suspend fun onFetch(model: HistoryModel) {
                 }
 
                 else -> {
-                    model.endJob(strings.historyError())
+                    model.endJob(MR.strings.historyError())
                     return
                 }
             }
@@ -151,7 +151,7 @@ private suspend fun onFetch(model: HistoryModel) {
             model.endJob("")
         } catch (e: Exception) {
             e.printStackTrace()
-            model.endJob(strings.historyErrorFormat(e.message.toString()))
+            model.endJob(MR.strings.historyErrorFormat(e.message.toString()))
         }
     }
 }
@@ -181,7 +181,7 @@ internal fun HistoryView(
                 fontSize = 16.sp
             )
         )
-        append(strings.source())
+        append(MR.strings.source())
         append(" ")
         pushStyle(
             SpanStyle(
@@ -190,7 +190,7 @@ internal fun HistoryView(
             )
         )
         pushStringAnnotation("OdinRomLink", "https://odinrom.com")
-        append(strings.odinRom())
+        append(MR.strings.odinRom())
         pop()
     }
 
@@ -229,8 +229,8 @@ internal fun HistoryView(
                                 }
                             },
                             enabled = canCheckHistory,
-                            text = strings.checkHistory(),
-                            description = strings.checkHistory(),
+                            text = MR.strings.checkHistory(),
+                            description = MR.strings.checkHistory(),
                             vectorIcon = painterResource(MR.images.refresh),
                             parentSize = constraints.maxWidth
                         )
@@ -252,8 +252,8 @@ internal fun HistoryView(
                                 model.endJob("")
                             },
                             enabled = hasRunningJobs,
-                            text = strings.cancel(),
-                            description = strings.cancel(),
+                            text = MR.strings.cancel(),
+                            description = MR.strings.cancel(),
                             vectorIcon = painterResource(MR.images.cancel),
                             parentSize = constraints.maxWidth
                         )
