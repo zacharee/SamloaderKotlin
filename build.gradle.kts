@@ -11,11 +11,6 @@ val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
-val skikoVersion by extra("0.7.87")
-
-val nodeVersion by extra("16.0.0")
-val webpackVersion by extra("4.10.0")
-
 buildscript {
     val kotlinVersion by rootProject.extra("1.9.20")
     val composeCompilerVersion by rootProject.extra("1.5.3")
@@ -44,10 +39,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:atomicfu:$kotlinVersion")
         classpath(kotlin("serialization", version = kotlinVersion))
     }
-}
-
-rootProject.plugins.withType<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin> {
-    rootProject.the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().nodeVersion = nodeVersion
 }
 
 group = groupName

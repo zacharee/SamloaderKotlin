@@ -113,6 +113,8 @@ kotlin {
                 api("androidx.core:core-ktx:1.12.0")
                 api("androidx.preference:preference-ktx:1.2.1")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
+                api("com.google.android.material:material:1.10.0")
+
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
 

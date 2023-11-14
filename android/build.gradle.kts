@@ -15,7 +15,6 @@ repositories {
 
 dependencies {
     implementation(project(":common"))
-    implementation("com.google.android.material:material:1.10.0")
 }
 
 android {
