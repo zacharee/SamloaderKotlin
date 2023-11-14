@@ -107,13 +107,13 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
                 api("org.jsoup:jsoup:$jsoupVersion")
 
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.fragment:fragment-ktx:1.6.2")
+                api("androidx.appcompat:appcompat:1.7.0-alpha03")
+                api("androidx.fragment:fragment-ktx:1.7.0-alpha06")
                 api("androidx.activity:activity-compose:1.8.0")
-                api("androidx.core:core-ktx:1.12.0")
+                api("androidx.core:core-ktx:1.13.0-alpha01")
                 api("androidx.preference:preference-ktx:1.2.1")
                 api("androidx.documentfile:documentfile:1.1.0-alpha01")
-                api("com.google.android.material:material:1.10.0")
+                api("com.google.android.material:material:1.12.0-alpha01")
 
                 api("io.ktor:ktor-client-cio:$ktorVersion")
                 api("de.comahe.i18n4k:i18n4k-core-jvm:${rootProject.extra["i18n4kVersion"]}")
@@ -131,10 +131,8 @@ android {
 
     defaultConfig {
         val minSdk: Int by rootProject.extra
-        val targetSdk: Int by rootProject.extra
 
         this.minSdk = minSdk
-        this.targetSdk = targetSdk
     }
 
     namespace = "tk.zwander.common"
