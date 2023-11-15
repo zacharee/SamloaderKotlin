@@ -1,9 +1,8 @@
 plugins {
-    id("org.jetbrains.compose")
-    id("com.android.application")
-    id("kotlin-android")
-    id("org.jetbrains.kotlin.android")
-    id("dev.icerock.mobile.multiplatform-resources")
+    alias(libs.plugins.compose)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.moko.resources)
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -75,7 +74,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["composeCompilerVersion"].toString()
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 }
 
@@ -84,8 +83,6 @@ multiplatformResources {
 }
 
 compose {
-    val kotlinVersion = rootProject.extra["kotlinVersion"].toString()
-
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["composeCompilerVersion"]}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
 }

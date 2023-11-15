@@ -10,14 +10,14 @@ repositories {
 }
 
 plugins {
-    id("com.android.library")
-    kotlin("multiplatform")
-    id("com.codingfeline.buildkonfig")
-    id("org.jetbrains.compose")
-    id("dev.icerock.mobile.multiplatform-resources")
-    id("org.jetbrains.kotlin.plugin.atomicfu")
-    kotlin("plugin.serialization")
-    id("com.bugsnag.android.gradle")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.moko.resources)
+    alias(libs.plugins.kotlin.atomicfu)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.bugsnag.android)
 }
 
 
@@ -45,13 +45,6 @@ kotlin {
     }
 
     sourceSets {
-        val korlibsVersion = "4.0.10"
-        val ktorVersion = "2.3.6"
-        val jsoupVersion = "1.16.2"
-        val coroutinesVersion = "1.7.3"
-        val fluidVersion = "0.13.0"
-        val settingsVersion = "1.1.0"
-
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
@@ -59,23 +52,28 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 api(compose.material3)
                 api(compose.ui)
+                api(libs.compose.compiler)
 
-                api("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${rootProject.extra["kotlinVersion"]}")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+                api(libs.kotlin)
+                api(libs.kotlinx.coroutines)
+                api(libs.kotlinx.datetime)
+                api(libs.kotlinx.serialization.json)
 
-                api("com.soywiz.korlibs.krypto:krypto:$korlibsVersion")
-                api("com.soywiz.korlibs.korio:korio:$korlibsVersion")
-                api("com.soywiz.korlibs.klock:klock:$korlibsVersion")
-                api("io.ktor:ktor-client-core:$ktorVersion")
-                api("io.ktor:ktor-client-auth:$ktorVersion")
-                api("io.fluidsonic.i18n:fluid-i18n:$fluidVersion")
-                api("io.fluidsonic.country:fluid-country:$fluidVersion")
-                api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-                api("com.russhwolf:multiplatform-settings:$settingsVersion")
-                api("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
-                api("dev.icerock.moko:resources:${rootProject.extra["mokoVersion"]}")
-                api("dev.icerock.moko:resources-compose:${rootProject.extra["mokoVersion"]}")
+                api(libs.korlibs.klock)
+                api(libs.korlibs.korio)
+                api(libs.korlibs.krypto)
+
+                api(libs.ktor.client.auth)
+                api(libs.ktor.client.core)
+
+                api(libs.fluid.country)
+                api(libs.fluid.i18n)
+
+                api(libs.multiplatformSettings)
+                api(libs.multiplatformSettings.noArg)
+
+                api(libs.moko.resources)
+                api(libs.moko.resources.compose)
             }
         }
 
@@ -87,13 +85,13 @@ kotlin {
             dependsOn(skiaMain)
 
             dependencies {
-                api("org.jsoup:jsoup:$jsoupVersion")
-                api("io.ktor:ktor-client-cio:$ktorVersion")
-                api("com.formdev:flatlaf:3.2.5")
-                api("io.github.vincenzopalazzo:material-ui-swing:1.1.4")
-                api("com.github.weisj:darklaf-core:3.0.2")
-                api("com.bugsnag:bugsnag:3.7.1")
-                api("org.slf4j:slf4j-simple:2.0.9")
+                api(libs.jsoup)
+                api(libs.ktor.client.cio)
+                api(libs.flatlaf)
+                api(libs.materialUiSwing)
+                api(libs.darklaf.core)
+                api(libs.bugsnag.jvm)
+                api(libs.slf4j)
             }
         }
 
@@ -101,20 +99,23 @@ kotlin {
             dependsOn(commonMain)
 
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
-                api("org.jsoup:jsoup:$jsoupVersion")
-                api("io.ktor:ktor-client-cio:$ktorVersion")
+                api(libs.kotlinx.coroutines.android)
+                api(libs.jsoup)
 
-                api("androidx.appcompat:appcompat:1.7.0-alpha03")
-                api("androidx.fragment:fragment-ktx:1.7.0-alpha06")
-                api("androidx.activity:activity-compose:1.8.0")
-                api("androidx.core:core-ktx:1.13.0-alpha01")
-                api("androidx.preference:preference-ktx:1.2.1")
-                api("androidx.documentfile:documentfile:1.1.0-alpha01")
-                api("com.google.android.material:material:1.12.0-alpha01")
+                api(libs.ktor.client.cio)
 
-                api("com.caverock:androidsvg-aar:1.4")
-                api("com.bugsnag:bugsnag-android:5.31.3")
+                api(libs.androidx.activity.compose)
+                api(libs.androidx.appcompat)
+                api(libs.androidx.core.ktx)
+                api(libs.androidx.documentfile)
+                api(libs.androidx.fragment.ktx)
+                api(libs.androidx.preference.ktx)
+
+                api(libs.google.material)
+
+                api(libs.androidSvg)
+
+                api(libs.bugsnag.android)
             }
         }
     }
@@ -168,8 +169,6 @@ tasks.withType<Copy> {
 }
 
 compose {
-    val kotlinVersion = rootProject.extra["kotlinVersion"].toString()
-
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${rootProject.extra["composeCompilerVersion"]}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${kotlinVersion}")
+    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
+    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
 }

@@ -11,11 +11,20 @@ val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
-buildscript {
-    val kotlinVersion by rootProject.extra("1.9.20")
-    val composeCompilerVersion by rootProject.extra("1.5.3")
-    val mokoVersion by extra("0.23.0")
+plugins {
+    alias(libs.plugins.compose) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.buildkonfig) apply false
+    alias(libs.plugins.moko.resources) apply false
+    alias(libs.plugins.kotlin.atomicfu) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.bugsnag.android) apply false
+}
 
+buildscript {
     repositories {
         google()
         mavenCentral()
@@ -28,14 +37,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.jetbrains.compose:compose-gradle-plugin:1.6.0-dev1265")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-        classpath("com.android.tools.build:gradle:8.1.3")
-        classpath("com.codingfeline.buildkonfig:buildkonfig-gradle-plugin:0.15.0")
-        classpath("dev.icerock.moko:resources-generator:$mokoVersion")
-        classpath("com.bugsnag:bugsnag-android-gradle-plugin:8.1.0")
-        classpath("org.jetbrains.kotlin:atomicfu:$kotlinVersion")
-        classpath(kotlin("serialization", version = kotlinVersion))
+        classpath(libs.bugsnag.android.gradle.plugin)
     }
 }
 
