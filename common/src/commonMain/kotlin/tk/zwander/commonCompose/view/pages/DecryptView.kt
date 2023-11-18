@@ -45,7 +45,21 @@ private suspend fun onDecrypt(model: DecryptModel) {
         }
     }
 
-    CryptUtils.decryptProgress(inputFile.openInputStream(), outputFile.openOutputStream(), key, inputFile.getLength()) { current, max, bps ->
+    val inputStream = try {
+        inputFile.openInputStream()
+    } catch (e: Throwable) {
+        model.endJob(MR.strings.decryptError(e.message.toString()))
+        return
+    }
+
+    val outputStream = try {
+        outputFile.openOutputStream()
+    } catch (e: Throwable) {
+        model.endJob(MR.strings.decryptError(e.message.toString()))
+        return
+    }
+
+    CryptUtils.decryptProgress(inputStream, outputStream, key, inputFile.getLength()) { current, max, bps ->
         model.progress.value = current to max
         model.speed.value = bps
         eventManager.sendEvent(Event.Decrypt.Progress(MR.strings.decrypting(), current, max))
