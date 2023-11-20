@@ -22,7 +22,7 @@ actual object BugsnagUtils {
                     "Type: ${data.type}\n\n" +
                     data.data.entries.joinToString("\n") { "${it.key}==${it.value}" })
         }
-        breadcrumbs.clear()
+        addBreadcrumb(e.message.toString(), mapOf(), BreadcrumbType.ERROR)
 
         bugsnag.notify(report)
     }
