@@ -12,6 +12,7 @@ import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.MainBase
+import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.MainView
@@ -34,7 +35,7 @@ fun main() {
         System.setProperty("skiko.renderApi", "OPENGL")
     }
 
-    val bugsnag = Bugsnag("a5b9774e86bc615c2e49a572b8313489")
+    val bugsnag = BugsnagUtils.bugsnag
     bugsnag.setAppVersion(GradleConfig.versionName)
     bugsnag.addCallback {
         it.addToTab("app", "version_code", GradleConfig.versionCode)

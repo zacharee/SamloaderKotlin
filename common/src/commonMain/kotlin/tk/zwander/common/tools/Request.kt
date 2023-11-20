@@ -9,6 +9,7 @@ import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.data.exception.VersionCheckException
 import tk.zwander.common.data.exception.VersionMismatchException
+import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
 
@@ -210,6 +211,8 @@ object Request {
         val responseXml = try {
             Xml.parse(response)
         } catch (e: Exception) {
+            CrossPlatformBugsnag.notify(e)
+
             return FetchResult.GetBinaryFileResult(
                 error = e,
             )
