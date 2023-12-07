@@ -10,7 +10,6 @@
 /.idea/artifacts/
 /.idea/libraries/
 **/build/
-/.idea/
 /browser/karma.config.d/moko-resources-generated.js
 /browser/webpack.config.d/moko-resources-generated.js
 /common/karma.config.d/moko-resources-generated.js
