@@ -61,7 +61,7 @@ jobs:
       env:
         BUILD_TOOLS_VERSION: "30.0.3"
     - name: Rename APK
-      run: mv ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{ github.workspace }}/android/build/outputs/apk/release/Bifrost_Android.apk
+      run: mv ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{ github.workspace }}/android/build/outputs/apk/release/Bifrost_Android_${{ steps.release.outputs.tag_name }}.apk
     - name: Upload APK
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
