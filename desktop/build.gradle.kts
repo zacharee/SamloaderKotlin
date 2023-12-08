@@ -4,6 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.multiplatform)
+    id("dev.hydraulic.conveyor")
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -108,4 +109,13 @@ compose.desktop {
 compose {
     kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
     kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
+}
+
+dependencies {
+    // Use the configurations created by the Conveyor plugin to tell Gradle/Conveyor where to find the artifacts for each platform.
+    linuxAmd64(compose.desktop.linux_x64)
+    linuxAarch64(compose.desktop.linux_arm64)
+    macAmd64(compose.desktop.macos_x64)
+    macAarch64(compose.desktop.macos_arm64)
+    windowsAmd64(compose.desktop.windows_x64)
 }

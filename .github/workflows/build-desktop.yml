@@ -1,0 +1,86 @@
+name: Desktop Build
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Get Latest Release
+        id: release
+        uses: InsonusK/get-latest-release@v1.0.1
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+          view_top: 1
+
+      - name: Retrieve macOS Certificate
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.MACOS_CERTIFICATE_CONVEYOR }}
+        run: |
+          echo $CERTIFICATE_BASE64 | base64 --decode > macos.cer
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-desktop-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-desktop-
+
+      - name: Build with Gradle
+        id: gradle-build
+        run: |
+          ./gradlew :desktop:build
+          ./gradlew --stop
+
+      - name: Download Conveyor
+        shell: bash
+        run: |
+          wget https://downloads.hydraulic.dev/conveyor/conveyor-12.1-mac-amd64.zip
+          unzip conveyor-12.1-mac-amd64.zip
+
+      - name: Run Conveyor
+        shell: bash
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          CONVEYOR_AGREE_TO_LICENSE: 1
+        run: |
+          PATH="$PATH:./Conveyor.app/Contents/MacOS"
+          conveyor \
+            "-Kapp.signing-key=${{ secrets.SIGNING_KEY }}" \
+            "-Kapp.mac.certificate=macos.cer" \
+            "-Kapp.mac.notarization.team-id=${{ secrets.MACOS_TEAM_ID }}" \
+            "-Kapp.mac.notarization.app-specific-password=${{ secrets.MACOS_NOTARIZATION_PASSWORD }}" \
+            "-Kapp.mac.notarization.apple-id=${{ secrets.MACOS_NOTARIZATION_ID }}" \
+            make site
+
+      - name: Upload Release Files
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'output/*'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          allowUpdates: true
+          replacesArtifacts: false
+          omitBodyDuringUpdate: true
+          tag: ${{ steps.release.outputs.tag_name }}

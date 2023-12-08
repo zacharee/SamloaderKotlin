@@ -4,9 +4,9 @@
 name: Build for Windows
 
 on:
-  release:
-    types:
-      - published
+#  release:
+#    types:
+#      - published
   workflow_dispatch:
 
 jobs:

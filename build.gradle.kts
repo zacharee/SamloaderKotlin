@@ -22,6 +22,7 @@ plugins {
     alias(libs.plugins.kotlin.atomicfu) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.bugsnag.android) apply false
+    alias(libs.plugins.conveyor) apply false
 }
 
 buildscript {

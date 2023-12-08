@@ -12,6 +12,7 @@ bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.0"
 compose = "1.6.0-dev1276"
 compose-compiler = "1.5.3"
+conveyor = "1.6"
 darklaf = "3.0.2"
 flatlaf = "3.2.5"
 fluid = "0.13.0"
@@ -76,3 +77,4 @@ kotlin-atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
+conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
