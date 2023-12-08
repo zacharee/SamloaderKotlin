@@ -69,21 +69,22 @@ Building this project should be fairly easy.
 ## Prep:
 1. Make sure you have the latest [Android Studio Canary](https://developer.android.com/studio/preview) installed.
 2. Clone this project into Android Studio and let it import.
-   
-## Desktop:
-Run the `package` Gradle task.
 
-### Command Line:
-1. Open the Terminal view in Android Studio (bottom-left).
-2. Enter `gradlew createDistributable` on Windows, `./gradlew createDistributable` on Linux, or `./gradlew packageDmg` on macOS.
-3. Once it finishes building, check the output log to see where the executable was saved.
+## Desktop
+Bifrost makes use of [Conveyor](https://www.hydraulic.dev/) to create binaries for different desktop platforms.
 
-### GUI:
-1. Go to Android Studio's settings (Ctrl+Alt+S on Windows and Linux, CMD+, on macOS), go to "Experimental", and uncheck "Only include test tasks in the Gradle task list generated during Gradle Sync".
-2. Open the Gradle view in Android Studio (top-right).
-3. Expand the project, then expand "desktop".
-4. Expand "Tasks", then "compose desktop" and double-click "createDistributable" on Windows and Linux, or "packageDmg" on macOS.
-5. Once it finishes building, check the output log to see where the executable was saved.
+Conveyor can build for Windows and Linux from any host OS, but macOS is required to build for macOS.
+
+1. To build, first download and install Conveyor from the link above.
+2. Next, open a terminal to the project's root directory.
+3. Run `./gradlew :desktop:build` (`.\gradlew.bat :desktop:build` on Windows).
+4. Run the following command based on your target system.  
+   4.1. Windows: `conveyor make windows-zip`.  
+   4.2. Debian: `conveyor make debian-package`.  
+   4.3. Linux: `conveyor make linux-tarball`.  
+   4.4. Intel Macs: `conveyor -Kapp.machines=mac.amd64 make unnotarized-mac-zip`.  
+   4.5. Apple Silicon Macs: `conveyor -Kapp.machines=mac.arm64 make unnotarized-mac-zip`.
+5. Check the `output` folder in the root of the project for the binary.
 
 ## Android:
 
@@ -100,28 +101,23 @@ Run the `package` Gradle task.
 
 # Running
 
+## Android
+Download `Bifrost_Android_<VERSION>.apk` and install it.
+
 ## Windows
+Download the .zip ending in `windows-amd64`.
 
-1. Extract the release ZIP for Windows and go through the folders until you find "Bifrost.exe".
-2. Launch the EXE. If it fails, launch as Administrator.
-
-## Linux
-
-1. Extract the release ZIP for Linux and go through the folders until you find "Bifrost".
-2. Open a terminal in this location.
-3. Enter `chmod +x Bifrost`.
-4. Enter `./Bifrost`.
+Native ARM64 Windows builds aren't currently available.
 
 ## macOS
+- On Intel Macs, download the .zip ending in `mac-amd64`.
+- On Apple Silicon Macs, download the .zip ending in `mac-aarch64`.
 
-1. Extract the release ZIP and open the DMG.
-2. Move "Bifrost.app" to the Applications folder.
-3. Launch the app.
+## Linux
+- On Debian-based systems, download the `.deb` file.
+- On other Linux distros, download the `.tar.gz` file.
 
-## Android
-
-1. Download the release APK to your phone.
-2. Install and run it.
+On x64 Linux, download the `amd64` variant. On ARM64 Linux, choose `aarch64`.
 
 # Translating
 
