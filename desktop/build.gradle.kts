@@ -40,7 +40,11 @@ compose.desktop {
     val appName: String by rootProject.extra
 
     val localProperties = Properties()
-    localProperties.load(rootProject.file("local.properties").reader())
+    val localPropertiesFile = rootProject.file("local.properties")
+
+    if (localPropertiesFile.exists()) {
+        localProperties.load(localPropertiesFile.reader())
+    }
 
     application {
         buildTypes.release.proguard {
