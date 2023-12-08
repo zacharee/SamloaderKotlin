@@ -121,15 +121,9 @@ On x64 Linux, download the `amd64` variant. On ARM64 Linux, choose `aarch64`.
 
 # Translating
 
-Bifrost supports basic text localization. You can help translate here: https://crowdin.com/project/bifrost-kotlin.
+Translations aren't currently supported. Multiplatform resources make this tricky.
 
-Note: Pay special attention to formatting arguments. Numbers inside curly brackets (e.g., `{0}`, `{1}`) should be kept as-is as they will be replaced with text during the application's runtime.
-
-Note: Make sure to keep any other formatting characters as-is (e.g., `\n` should stay as `\n` and `%%` should stay as `%%`).
-
-## Translators:
-
-- Russian: [Leo17032009](https://github.com/Leo17032009)
+I'm hoping to have a translation platform ready soon.
 
 # Screenshots
 
