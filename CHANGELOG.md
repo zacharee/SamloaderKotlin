@@ -1,3 +1,15 @@
+# 1.15.2
+- Move to using Conveyor for desktop builds.
+  - ARM64 macOS builds are automatically generated.
+  - ARM64 Linux is now supported.
+- Update Android release file name to include version.
+- Use moko-resources for translations (preparation for later).
+- Update error reporting behavior.
+- Update Compose.
+- Performance fixes.
+- UI tweaks.
+- Remove native macOS and JS targets (never released).
+
 # 1.15.1
 - Fix downloads for models without hyphens or with lowercase characters.
 
