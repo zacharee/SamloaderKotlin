@@ -33,7 +33,7 @@ kotlin {
         compilations.forEach {
             it.kotlinOptions {
                 freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
-                jvmTarget = rootProject.extra["javaVerionEnum"].toString()
+                jvmTarget = rootProject.extra["javaVersionEnum"].toString()
             }
         }
     }
@@ -42,6 +42,7 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
         }
+        jvmToolchain(rootProject.extra["javaVersionEnum"].toString().toInt())
     }
 
     targets.all {

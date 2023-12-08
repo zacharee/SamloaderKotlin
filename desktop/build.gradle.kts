@@ -15,6 +15,8 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
         }
+        jvmToolchain(rootProject.extra["javaVersionEnum"].toString().toInt())
+        withJava()
     }
     sourceSets {
         val jvmMain by getting {
