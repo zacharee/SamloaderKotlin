@@ -67,11 +67,11 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: Bifrost
-        path: ${{ github.workspace }}/android/build/outputs/apk/release/Bifrost_Android.apk
+        path: ${{ github.workspace }}/android/build/outputs/apk/release/Bifrost_Android*.apk
     - name: Upload Release APK
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ github.workspace }}/android/build/outputs/apk/release/Bifrost_Android.apk
+        artifacts: ${{ github.workspace }}/android/build/outputs/apk/release/Bifrost_Android*.apk
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
         replacesArtifacts: false
