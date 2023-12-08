@@ -11,6 +11,46 @@ val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
+allprojects {
+    repositories {
+        mavenCentral()
+        google()
+        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap/") }
+        maven {
+            url = uri("https://jitpack.io")
+        }
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+    }
+
+    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + listOf("-Xskip-prerelease-check")
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+        maven {
+            url = uri("https://jitpack.io")
+        }
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+    }
+    dependencies {
+        classpath(libs.bugsnag.android.gradle.plugin)
+    }
+}
+
 plugins {
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.kotlin.android) apply false
@@ -25,43 +65,5 @@ plugins {
     alias(libs.plugins.conveyor) apply false
 }
 
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-        maven {
-            url = uri("https://jitpack.io")
-        }
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-    }
-    dependencies {
-        classpath(libs.bugsnag.android.gradle.plugin)
-    }
-}
-
 group = groupName
 version = versionName
-
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap/") }
-        maven {
-            url = uri("https://jitpack.io")
-        }
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + listOf("-Xskip-prerelease-check")
-        }
-    }
-}

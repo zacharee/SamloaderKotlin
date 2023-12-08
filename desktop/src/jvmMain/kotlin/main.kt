@@ -5,7 +5,6 @@ import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.bugsnag.Bugsnag
 import com.formdev.flatlaf.FlatDarkLaf
 import korlibs.memory.Platform
 import org.jetbrains.skiko.OS

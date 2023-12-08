@@ -5,6 +5,7 @@ pluginManagement {
         google()
 
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+        maven("https://maven.hq.hydraulic.software")
     }
 }
 
