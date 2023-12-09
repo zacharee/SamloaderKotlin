@@ -10,6 +10,8 @@ data class Breadcrumb(
 )
 
 actual object BugsnagUtils {
+    const val UUID_KEY = "bugsnag_user_id"
+
     val bugsnag by lazy { Bugsnag("a5b9774e86bc615c2e49a572b8313489") }
 
     private val breadcrumbs = LinkedHashMap<Long, Breadcrumb>()

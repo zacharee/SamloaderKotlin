@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.formdev.flatlaf.FlatDarkLaf
+import com.russhwolf.settings.Settings
 import korlibs.memory.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
@@ -19,9 +20,11 @@ import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Desktop
 import java.awt.Dimension
+import java.util.UUID
 import javax.swing.*
 import kotlin.time.ExperimentalTime
 
+val settings by lazy { Settings() }
 
 @ExperimentalTime
 fun main() {
@@ -34,9 +37,14 @@ fun main() {
         System.setProperty("skiko.renderApi", "OPENGL")
     }
 
+    val uuid = settings.getStringOrNull(BugsnagUtils.UUID_KEY) ?: UUID.randomUUID().toString().also {
+        settings.putString(BugsnagUtils.UUID_KEY, it)
+    }
+
     val bugsnag = BugsnagUtils.bugsnag
     bugsnag.setAppVersion(GradleConfig.versionName)
     bugsnag.addCallback {
+        it.setUserId(uuid)
         it.addToTab("app", "version_code", GradleConfig.versionCode)
         it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
     }
