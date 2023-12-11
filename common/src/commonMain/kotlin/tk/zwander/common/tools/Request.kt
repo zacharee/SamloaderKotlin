@@ -143,13 +143,60 @@ object Request {
                             text("Android")
                         }
                     }
-                }
-                node("Get") {
-                    node("CmdID") {
-                        text("2")
+                // Add additional fields for EUX
+                if (region == "EUX") {
+                    node("DEVICE_AID_CODE") {
+                        node("Data") {
+                            text(region)
+                        }
                     }
-                    node("LATEST_FW_VERSION")
+                    node("DEVICE_CC_CODE") {
+                        node("Data") {
+                            text("DE")
+                        }
+                    }
+                    node("MCC_NUM") {
+                        node("Data") {
+                            text("262")
+                        }
+                    }
+                    node("MNC_NUM") {
+                        node("Data") {
+                            text("01")
+                        }
+                    }
                 }
+
+                // Add additional fields for EUY
+                else if (region == "EUY") {
+                    node("DEVICE_AID_CODE") {
+                        node("Data") {
+                            text(region)
+                        }
+                    }
+                    node("DEVICE_CC_CODE") {
+                        node("Data") {
+                            text("RS")
+                        }
+                    }
+                    node("MCC_NUM") {
+                        node("Data") {
+                            text("220")
+                        }
+                    }
+                    node("MNC_NUM") {
+                        node("Data") {
+                            text("01")
+                        }
+                    }
+                }
+            }
+            node("Get") {
+                node("CmdID") {
+                    text("2")
+                }
+                node("LATEST_FW_VERSION")
+            }
             }
         }
 
