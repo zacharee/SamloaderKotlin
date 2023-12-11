@@ -22,8 +22,10 @@ import kotlinx.coroutines.*
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.exception.VersionException
+import tk.zwander.common.exceptions.DownloadError
 import tk.zwander.common.tools.*
 import tk.zwander.common.util.ChangelogHandler
+import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.eventManager
@@ -73,6 +75,7 @@ private suspend fun onDownload(
     if (error != null && error !is VersionException) {
         Exception(error).printStackTrace()
         model.endJob("${error.message ?: MR.strings.error()}\n\n${output}")
+        CrossPlatformBugsnag.notify(DownloadError(output, error))
         eventManager.sendEvent(Event.Download.Finish)
     } else {
         if (error is VersionException) {
@@ -283,7 +286,7 @@ internal fun DownloadView() {
                                         override fun onError(info: DownloadErrorInfo) {
                                             downloadErrorInfo = info
                                         }
-                                    }
+                                    },
                                 )
                             }
                         },

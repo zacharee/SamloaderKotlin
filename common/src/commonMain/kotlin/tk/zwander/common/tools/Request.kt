@@ -215,6 +215,12 @@ object Request {
 
             return FetchResult.GetBinaryFileResult(
                 error = e,
+                rawOutput = mapOf(
+                    "firmware" to fw,
+                    "model" to model,
+                    "region" to region,
+                    "response" to response,
+                ).toString(),
             )
         }
 
