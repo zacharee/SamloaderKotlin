@@ -32,7 +32,7 @@ object FilePicker {
                 selectedFile = File(name)
             }
             return if (chooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
-                PlatformFile(chooser.selectedFile)
+                chooser.selectedFile?.let { PlatformFile(it) }
             } else {
                 null
             }

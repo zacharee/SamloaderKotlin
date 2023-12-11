@@ -29,7 +29,7 @@ internal fun AboutDialog(
         Window(
             onCloseRequest = onDismiss,
             title = GradleConfig.appName,
-            icon = getImage("icon.png").toPainter(),
+            icon = getImage("icon.png")?.toPainter(),
             state = WindowState(
                 placement = WindowPlacement.Floating,
                 position = WindowPosition(Alignment.Center),

@@ -67,7 +67,7 @@ fun main() {
         Window(
             onCloseRequest = ::exitApplication,
             title = "Bifrost",
-            icon = getImage("icon.png").toPainter(),
+            icon = getImage("icon.png")?.toPainter(),
             state = mainWindowState
         ) {
             with (LocalDensity.current) {

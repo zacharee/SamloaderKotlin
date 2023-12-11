@@ -38,7 +38,7 @@ internal fun PatreonSupportersWindow(
         Window(
             onCloseRequest = onDismiss,
             title = MR.strings.patreonSupporters(),
-            icon = getImage("icon.png").toPainter(),
+            icon = getImage("icon.png")?.toPainter(),
             state = WindowState(
                 placement = WindowPlacement.Floating,
                 position = WindowPosition(Alignment.Center),
