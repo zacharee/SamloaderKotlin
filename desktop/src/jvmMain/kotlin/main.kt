@@ -66,7 +66,7 @@ fun main() {
 
         Window(
             onCloseRequest = ::exitApplication,
-            title = "Bifrost",
+            title = GradleConfig.appName,
             icon = getImage("icon.png")?.toPainter(),
             state = mainWindowState
         ) {
