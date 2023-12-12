@@ -59,6 +59,8 @@ compose.desktop {
             modules("jdk.crypto.ec")
             modules("java.management")
 
+            this.packageName = packageName
+
             windows {
                 menu = true
                 this.console = true
@@ -131,5 +133,15 @@ configurations.all {
     attributes {
         // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
         attribute(Attribute.of("ui", String::class.java), "awt")
+    }
+}
+
+tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorConfig") {
+    doLast {
+        val config = StringBuilder()
+        config.appendLine("app.fsname = bifrost")
+        config.appendLine("app.display-name = ${project.rootProject.extra["appName"]}")
+        config.appendLine("app.rdns-name = ${project.rootProject.extra["packageName"]}")
+        destination.get().asFile.appendText(config.toString())
     }
 }

@@ -17,3 +17,4 @@
 /commonCompose/karma.config.d/moko-resources-generated.js
 /commonCompose/webpack.config.d/moko-resources-generated.js
 /output/
+/desktop/generated.conveyor.conf
