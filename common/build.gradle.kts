@@ -65,12 +65,9 @@ kotlin {
 
                 api(libs.kotlin)
                 api(libs.kotlinx.coroutines)
-                api(libs.kotlinx.datetime)
                 api(libs.kotlinx.serialization.json)
 
-                api(libs.korlibs.klock)
                 api(libs.korlibs.korio)
-                api(libs.korlibs.krypto)
 
                 api(libs.ktor.client.auth)
                 api(libs.ktor.client.core)
@@ -113,10 +110,8 @@ kotlin {
                 api(libs.ktor.client.cio)
 
                 api(libs.androidx.activity.compose)
-                api(libs.androidx.appcompat)
                 api(libs.androidx.core.ktx)
                 api(libs.androidx.documentfile)
-                api(libs.androidx.fragment.ktx)
                 api(libs.androidx.preference.ktx)
 
                 api(libs.google.material)

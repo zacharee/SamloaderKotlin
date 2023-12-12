@@ -1,10 +1,8 @@
 [versions]
 androidSvg = "1.4"
 androidx-activity-compose = "1.8.1"
-androidx-appcompat = "1.7.0-alpha03"
 androidx-core = "1.13.0-alpha02"
 androidx-documentfile = "1.1.0-alpha01"
-androidx-fragment = "1.7.0-alpha07"
 androidx-preference = "1.2.1"
 bugsnag-android = "6.1.0"
 bugsnag-android-gradle = "8.1.0"
@@ -22,7 +20,6 @@ jsoup = "1.16.2"
 korlibs = "4.0.10"
 kotlin = "1.9.21"
 kotlinx-coroutines = "1.7.3"
-kotlinx-datetime = "0.5.0"
 kotlinx-serialization = "1.6.2"
 ktor = "2.3.7"
 moko-resources = "0.23.0"
@@ -32,10 +29,8 @@ slf4j = "2.0.9"
 [libraries]
 androidSvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidSvg" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "androidx-documentfile" }
-androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidx-fragment" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx-preference" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-android-gradle-plugin = { module = "com.bugsnag:bugsnag-android-gradle-plugin", version.ref = "bugsnag-android-gradle" }
@@ -47,13 +42,10 @@ fluid-country = { module = "io.fluidsonic.country:fluid-country", version.ref = 
 fluid-i18n = { module = "io.fluidsonic.i18n:fluid-i18n", version.ref = "fluid" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
-korlibs-klock = { module = "com.soywiz.korlibs.klock:klock", version.ref = "korlibs" }
 korlibs-korio = { module = "com.soywiz.korlibs.korio:korio", version.ref = "korlibs" }
-korlibs-krypto = { module = "com.soywiz.korlibs.krypto:krypto", version.ref = "korlibs" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
