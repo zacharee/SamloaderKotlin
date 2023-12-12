@@ -16,7 +16,7 @@ conveyor = "1.6"
 darklaf = "3.0.2"
 flatlaf = "3.2.5"
 fluid = "0.13.0"
-google-material = "1.12.0-alpha01"
+google-material = "1.12.0-alpha02"
 android-gradle = "8.1.4"
 jsoup = "1.16.2"
 korlibs = "4.0.10"
@@ -25,7 +25,6 @@ kotlinx-coroutines = "1.7.3"
 kotlinx-datetime = "0.5.0"
 kotlinx-serialization = "1.6.2"
 ktor = "2.3.7"
-material-ui-swing = "1.1.4"
 moko-resources = "0.23.0"
 multiplatform-settings = "1.1.0"
 slf4j = "2.0.9"
@@ -59,7 +58,6 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-materialUiSwing = { module = "io.github.vincenzopalazzo:material-ui-swing", version.ref = "material-ui-swing" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
 moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
