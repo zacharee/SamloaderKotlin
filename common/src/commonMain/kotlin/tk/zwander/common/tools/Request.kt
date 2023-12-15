@@ -30,7 +30,7 @@ object Request {
         }
 
         return buildString {
-            nonce.forEach {char ->
+            nonce.forEach { char ->
                 append(input[char.code and 0xf])
             }
         }
@@ -110,12 +110,14 @@ object Request {
                     }
                     node("LOGIC_CHECK") {
                         node("Data") {
-                            text(try {
-                                getLogicCheck(fw, nonce)
-                            } catch (e: Throwable) {
-                                e.printStackTrace()
-                                ""
-                            })
+                            text(
+                                try {
+                                    getLogicCheck(fw, nonce)
+                                } catch (e: Throwable) {
+                                    e.printStackTrace()
+                                    ""
+                                }
+                            )
                         }
                     }
                     node("DEVICE_CONTENTS_DATA_VERSION") {
@@ -143,60 +145,60 @@ object Request {
                             text("Android")
                         }
                     }
-                // Add additional fields for EUX
-                if (region == "EUX") {
-                    node("DEVICE_AID_CODE") {
-                        node("Data") {
-                            text(region)
+                    // Add additional fields for EUX
+                    if (region == "EUX") {
+                        node("DEVICE_AID_CODE") {
+                            node("Data") {
+                                text(region)
+                            }
+                        }
+                        node("DEVICE_CC_CODE") {
+                            node("Data") {
+                                text("DE")
+                            }
+                        }
+                        node("MCC_NUM") {
+                            node("Data") {
+                                text("262")
+                            }
+                        }
+                        node("MNC_NUM") {
+                            node("Data") {
+                                text("01")
+                            }
                         }
                     }
-                    node("DEVICE_CC_CODE") {
-                        node("Data") {
-                            text("DE")
-                        }
-                    }
-                    node("MCC_NUM") {
-                        node("Data") {
-                            text("262")
-                        }
-                    }
-                    node("MNC_NUM") {
-                        node("Data") {
-                            text("01")
-                        }
-                    }
-                }
 
-                // Add additional fields for EUY
-                else if (region == "EUY") {
-                    node("DEVICE_AID_CODE") {
-                        node("Data") {
-                            text(region)
+                    // Add additional fields for EUY
+                    else if (region == "EUY") {
+                        node("DEVICE_AID_CODE") {
+                            node("Data") {
+                                text(region)
+                            }
                         }
-                    }
-                    node("DEVICE_CC_CODE") {
-                        node("Data") {
-                            text("RS")
+                        node("DEVICE_CC_CODE") {
+                            node("Data") {
+                                text("RS")
+                            }
                         }
-                    }
-                    node("MCC_NUM") {
-                        node("Data") {
-                            text("220")
+                        node("MCC_NUM") {
+                            node("Data") {
+                                text("220")
+                            }
                         }
-                    }
-                    node("MNC_NUM") {
-                        node("Data") {
-                            text("01")
+                        node("MNC_NUM") {
+                            node("Data") {
+                                text("01")
+                            }
                         }
                     }
                 }
-            }
-            node("Get") {
-                node("CmdID") {
-                    text("2")
+                node("Get") {
+                    node("CmdID") {
+                        text("2")
+                    }
+                    node("LATEST_FW_VERSION")
                 }
-                node("LATEST_FW_VERSION")
-            }
             }
         }
 
@@ -245,7 +247,12 @@ object Request {
      * @param region the device region.
      * @return a BinaryFileInfo instance representing the file.
      */
-    suspend fun getBinaryFile(client: FusClient, fw: String, model: String, region: String): FetchResult.GetBinaryFileResult {
+    suspend fun getBinaryFile(
+        client: FusClient,
+        fw: String,
+        model: String,
+        region: String
+    ): FetchResult.GetBinaryFileResult {
         val request = try {
             createBinaryInform(fw.uppercase(), model, region, client.getNonce())
         } catch (e: Throwable) {
@@ -353,8 +360,7 @@ object Request {
                         .run {
                             this?.child("LOGIC_VALUE_FACTORY")
                                 ?.child("Data")
-                                ?.text ?:
-                            this?.child("LOGIC_VALUE_HOME")
+                                ?.text ?: this?.child("LOGIC_VALUE_HOME")
                                 ?.child("Data")
                                 ?.text!!
                         }
@@ -437,9 +443,18 @@ object Request {
                 val split = f.split("_")
                 val (version, versionSuffix) = split[dataIndex!!] to split.getOrNull(dataIndex + 1)
 
-                val (servedCsc, cscSuffix) = cscFile!!.split("_").run { get(cscIndex!!) to getOrNull(cscIndex + 1) }
-                val (servedCp, cpSuffix) = cpFile?.split("_").run { this?.getOrNull(cpIndex ?: -1) to this?.getOrNull(cpIndex?.plus(1) ?: - 1) }
-                val (servedPda, pdaSuffix) = pdaFile?.split("_").run { this?.getOrNull(pdaIndex ?: -1) to this?.getOrNull(pdaIndex?.plus(1) ?: -1) }
+                val (servedCsc, cscSuffix) = cscFile!!.split("_")
+                    .run { get(cscIndex!!) to getOrNull(cscIndex + 1) }
+                val (servedCp, cpSuffix) = cpFile?.split("_").run {
+                    this?.getOrNull(cpIndex ?: -1) to this?.getOrNull(
+                        cpIndex?.plus(1) ?: -1
+                    )
+                }
+                val (servedPda, pdaSuffix) = pdaFile?.split("_").run {
+                    this?.getOrNull(pdaIndex ?: -1) to this?.getOrNull(
+                        pdaIndex?.plus(1) ?: -1
+                    )
+                }
 
                 val served = "$version/$servedCsc/${servedCp ?: version}/${servedPda ?: version}"
 
