@@ -1,3 +1,10 @@
+# 1.16.0
+- Add option to automatically delete encrypted download file.
+- Fix EUX and EUY region downloads (thanks [@ananjaser1211](https://github.com/ananjaser1211)).
+- Fix some crashes on desktop.
+- Update Bugsnag error reporting to show some more info.
+- Hopefully reduce download size slightly by removing unused libraries.
+
 # 1.15.2
 - Move to using Conveyor for desktop builds.
   - ARM64 macOS builds are automatically generated.
