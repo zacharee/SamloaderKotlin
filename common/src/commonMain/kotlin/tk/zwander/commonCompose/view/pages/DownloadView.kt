@@ -24,6 +24,7 @@ import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.exception.VersionException
 import tk.zwander.common.exceptions.DownloadError
 import tk.zwander.common.tools.*
+import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.Event
@@ -194,6 +195,10 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             model.speed.value = bps
 
                             eventManager.sendEvent(Event.Download.Progress(MR.strings.decrypting(), current, max))
+                        }
+
+                        if (BifrostSettings.Keys.autoDeleteEncryptedFirmware() == true) {
+                            inputInfo.downloadFile.delete()
                         }
 
                         model.endJob(MR.strings.done())

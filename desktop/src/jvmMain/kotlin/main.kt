@@ -12,6 +12,7 @@ import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.MainBase
+import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.invoke
@@ -24,8 +25,6 @@ import java.util.UUID
 import javax.swing.*
 import kotlin.time.ExperimentalTime
 
-val settings by lazy { Settings() }
-
 @ExperimentalTime
 fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
@@ -37,8 +36,8 @@ fun main() {
         System.setProperty("skiko.renderApi", "OPENGL")
     }
 
-    val uuid = settings.getStringOrNull(BugsnagUtils.UUID_KEY) ?: UUID.randomUUID().toString().also {
-        settings.putString(BugsnagUtils.UUID_KEY, it)
+    val uuid = BifrostSettings.settings.getStringOrNull(BugsnagUtils.UUID_KEY) ?: UUID.randomUUID().toString().also {
+        BifrostSettings.settings.putString(BugsnagUtils.UUID_KEY, it)
     }
 
     val bugsnag = BugsnagUtils.bugsnag

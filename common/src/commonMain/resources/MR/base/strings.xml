@@ -90,4 +90,5 @@
     <string name="sort">Sort</string>
     <string name="about">About</string>
     <string name="allowLowercaseCharacters">Allow Lowercase Characters</string>
+    <string name="autoDeleteEncryptedFirmware">Auto-Delete Encrypted Firmware</string>
 </resources>

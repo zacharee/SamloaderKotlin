@@ -1,7 +1,6 @@
 package tk.zwander.commonCompose.model
 
 import androidx.compose.runtime.*
-import com.russhwolf.settings.Settings
 import io.ktor.client.utils.*
 import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import tk.zwander.common.util.BifrostSettings
 
 /**
  * A model class to hold information for the various views.
@@ -28,22 +28,20 @@ abstract class BaseModel(
         private const val FIRMWARE_KEY = "field_firmware"
     }
 
-    protected val settings = Settings()
-
     /**
      * Device model.
      */
-    val model = MutableStateFlow(settings.getString(MODEL_KEY.fullKey, ""))
+    val model = MutableStateFlow(BifrostSettings.settings.getString(MODEL_KEY.fullKey, ""))
 
     /**
      * Device region.
      */
-    val region = MutableStateFlow(settings.getString(REGION_KEY.fullKey, ""))
+    val region = MutableStateFlow(BifrostSettings.settings.getString(REGION_KEY.fullKey, ""))
 
     /**
      * Firmware string, if available.
      */
-    val fw = MutableStateFlow(settings.getString(FIRMWARE_KEY.fullKey, ""))
+    val fw = MutableStateFlow(BifrostSettings.settings.getString(FIRMWARE_KEY.fullKey, ""))
 
     /**
      * Current status, if available.
@@ -108,19 +106,19 @@ abstract class BaseModel(
     suspend fun onCreate() = coroutineScope {
         launch(Dispatchers.Unconfined) {
             model.collect {
-                settings.putString(MODEL_KEY.fullKey, it)
+                BifrostSettings.settings.putString(MODEL_KEY.fullKey, it)
             }
         }
 
         launch(Dispatchers.Unconfined) {
             region.collect {
-                settings.putString(REGION_KEY.fullKey, it)
+                BifrostSettings.settings.putString(REGION_KEY.fullKey, it)
             }
         }
 
         launch(Dispatchers.Unconfined) {
             fw.collect {
-                settings.putString(FIRMWARE_KEY.fullKey, it)
+                BifrostSettings.settings.putString(FIRMWARE_KEY.fullKey, it)
             }
         }
 

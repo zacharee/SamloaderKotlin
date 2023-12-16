@@ -24,17 +24,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import korlibs.memory.Platform
+import tk.zwander.common.util.BifrostSettings
+import tk.zwander.common.util.SettingsKey
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.samloaderkotlin.resources.MR
 
-val options = arrayListOf<Pair<String, String>>().apply {
+val options = arrayListOf<Pair<String, SettingsKey<*>>>().apply {
     if (Platform.isJvm && !Platform.isAndroid) {
-        add(MR.strings.useNativeFilePicker() to "useNativeFileDialog")
+        add(MR.strings.useNativeFilePicker() to BifrostSettings.Keys.useNativeFileDialog)
     }
 
-    add(MR.strings.allowLowercaseCharacters() to "allowLowercaseCharacters")
+    add(MR.strings.allowLowercaseCharacters() to BifrostSettings.Keys.allowLowercaseCharacters)
+    add(MR.strings.autoDeleteEncryptedFirmware() to BifrostSettings.Keys.autoDeleteEncryptedFirmware)
 }
 
 /**
@@ -42,7 +45,7 @@ val options = arrayListOf<Pair<String, String>>().apply {
  */
 @Composable
 fun FooterView(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showingSupportersDialog by remember { mutableStateOf(false) }
     var showingSettings by remember { mutableStateOf(false) }

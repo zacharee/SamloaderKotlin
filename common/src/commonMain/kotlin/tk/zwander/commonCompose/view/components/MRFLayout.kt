@@ -15,7 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import tk.zwander.common.util.ObservableSettings
+import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
@@ -35,34 +35,19 @@ internal fun MRFLayout(
     canChangeFirmware: Boolean,
     showFirmware: Boolean = true,
 ) {
-    val settings = remember { ObservableSettings() }
-
     var showingCscChooser by remember {
         mutableStateOf(false)
     }
 
-    var allowLowercase by remember {
-        mutableStateOf(settings.getBoolean("allowLowercaseCharacters", false))
-    }
-
+    val allowLowercase by BifrostSettings.Keys.allowLowercaseCharacters.collectAsMutableState()
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
-
-    DisposableEffect(null) {
-        val listener = settings.addBooleanListener("allowLowercaseCharacters", false) {
-            allowLowercase = it
-        }
-
-        onDispose {
-            listener.deactivate()
-        }
-    }
 
     SplitComponent(
         startComponent = {
             OutlinedTextField(
                 value = model.model.collectAsState().value,
                 onValueChange = {
-                    model.model.value = it.transformText(allowLowercase)
+                    model.model.value = it.transformText(allowLowercase ?: false)
                     if ((model is DownloadModel && !model.manual.value)) {
                         model.fw.value = ""
                         model.osCode.value = ""
@@ -79,7 +64,7 @@ internal fun MRFLayout(
             OutlinedTextField(
                 value = model.region.collectAsState().value,
                 onValueChange = {
-                    model.region.value = it.transformText(allowLowercase)
+                    model.region.value = it.transformText(allowLowercase ?: false)
                     if ((model is DownloadModel && !model.manual.value)) {
                         model.fw.value = ""
                         model.osCode.value = ""
@@ -112,7 +97,7 @@ internal fun MRFLayout(
 
         OutlinedTextField(
             value = model.fw.collectAsState().value,
-            onValueChange = { model.fw.value = it.transformText(allowLowercase) },
+            onValueChange = { model.fw.value = it.transformText(allowLowercase ?: false) },
             label = { Text(MR.strings.firmwareHint()) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = !canChangeFirmware,

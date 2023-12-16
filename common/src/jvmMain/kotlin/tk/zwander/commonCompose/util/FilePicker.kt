@@ -1,16 +1,13 @@
 package tk.zwander.commonCompose.util
 
-import com.russhwolf.settings.Settings
 import tk.zwander.common.data.PlatformFile
+import tk.zwander.common.util.BifrostSettings
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
 import javax.swing.JFileChooser
 
 object FilePicker {
-    private val settings by lazy { Settings() }
-    private val useNativeDialog: Boolean
-        get() = settings.getBoolean("useNativeFileDialog", false)
     private var frame: Frame? = null
 
     fun init(frame: Frame) {
@@ -18,7 +15,7 @@ object FilePicker {
     }
 
     fun createFile(name: String): PlatformFile? {
-        if (useNativeDialog) {
+        if (BifrostSettings.Keys.useNativeFileDialog() == true) {
             val dialog = FileDialog(frame).apply {
                 mode = FileDialog.SAVE
                 file = name
@@ -40,7 +37,7 @@ object FilePicker {
     }
 
     fun pickFile(): PlatformFile? {
-        if (useNativeDialog) {
+        if (BifrostSettings.Keys.useNativeFileDialog() == true) {
             val dialog = FileDialog(frame).apply {
                 mode = FileDialog.LOAD
                 isVisible = true
