@@ -32,8 +32,9 @@ import tk.zwander.samloaderkotlin.resources.MR
 val options = arrayListOf<Pair<String, String>>().apply {
     if (Platform.isJvm && !Platform.isAndroid) {
         add(MR.strings.useNativeFilePicker() to "useNativeFileDialog")
-        add(MR.strings.allowLowercaseCharacters() to "allowLowercaseCharacters")
     }
+
+    add(MR.strings.allowLowercaseCharacters() to "allowLowercaseCharacters")
 }
 
 /**
