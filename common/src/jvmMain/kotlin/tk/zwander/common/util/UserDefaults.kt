@@ -11,7 +11,7 @@ class UserDefaults(id: Long) : NSObject(id) {
     fun objectForKey(key: String): Any = id.msgSendInt("integerForKey:", NSString(key))
 
     fun getAccentColor(): Color {
-        return when (objectForKey("AppleAccentColor").also { println(it) }.toString().toIntOrNull()) {
+        return when (objectForKey("AppleAccentColor").toString().toIntOrNull()) {
             -2 -> MacOSColors.ACCENT_BLUE
             -1 -> MacOSColors.ACCENT_GRAPHITE
             0 -> MacOSColors.ACCENT_RED
