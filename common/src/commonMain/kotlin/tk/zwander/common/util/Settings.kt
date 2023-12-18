@@ -17,8 +17,13 @@ object BifrostSettings {
         val allowLowercaseCharacters = SettingsKey.Boolean("allowLowercaseCharacters", false, settings)
         val autoDeleteEncryptedFirmware = SettingsKey.Boolean("autoDeleteEncryptedFirmware", false, settings)
     }
-    
-    val settings = ObservableSettings()
+
+    private val wrappedSettings = ObservableSettings()
+    val settings = object : ObservableSettings by wrappedSettings {
+        override fun putString(key: String, value: String) {
+            wrappedSettings.putString(key, value.replace("\u0000", ""))
+        }
+    }
 }
 
 sealed class SettingsKey<Type> {
