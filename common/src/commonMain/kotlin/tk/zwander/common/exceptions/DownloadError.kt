@@ -1,6 +1,13 @@
 package tk.zwander.common.exceptions
 
 class DownloadError(
-    message: String,
+    request: String,
+    response: String,
     cause: Throwable? = null,
-) : Exception(message, cause)
+) : Exception(
+    mapOf(
+        "request" to request,
+        "response" to response,
+    ).toString(),
+    cause,
+)

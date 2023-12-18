@@ -258,6 +258,7 @@ object Request {
         } catch (e: Throwable) {
             return FetchResult.GetBinaryFileResult(
                 error = Exception(MR.strings.badReturnStatus(e.message.toString()), e),
+                requestBody = "",
             )
         }
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request, false)
@@ -275,6 +276,7 @@ object Request {
                     "region" to region,
                     "response" to response,
                 ).toString(),
+                requestBody = request,
             )
         }
 
@@ -287,21 +289,24 @@ object Request {
             if (status == "F01") {
                 return FetchResult.GetBinaryFileResult(
                     error = Exception(MR.strings.invalidFirmwareError()),
-                    rawOutput = responseXml.toString()
+                    rawOutput = responseXml.toString(),
+                    requestBody = request,
                 )
             }
 
             if (status != "200") {
                 return FetchResult.GetBinaryFileResult(
                     error = Exception(MR.strings.badReturnStatus(status.toString())),
-                    rawOutput = responseXml.toString()
+                    rawOutput = responseXml.toString(),
+                    requestBody = request,
                 )
             }
 
             val noBinaryError = {
                 FetchResult.GetBinaryFileResult(
                     error = Exception(MR.strings.noBinaryFile(model, region)),
-                    rawOutput = responseXml.toString()
+                    rawOutput = responseXml.toString(),
+                    requestBody = request,
                 )
             }
 
@@ -396,7 +401,8 @@ object Request {
             if (dataFile.isNullOrBlank()) {
                 return FetchResult.GetBinaryFileResult(
                     info = generateInfo(),
-                    error = VersionCheckException(MR.strings.versionCheckError())
+                    error = VersionCheckException(MR.strings.versionCheckError()),
+                    requestBody = request,
                 )
             }
 
@@ -466,18 +472,21 @@ object Request {
                 if (served != fw && !versionSuffixMatch && !cscSuffixMatch && !cpSuffixMatch && !pdaSuffixMatch) {
                     return FetchResult.GetBinaryFileResult(
                         info = generateInfo(),
-                        error = VersionMismatchException(MR.strings.versionMismatch(fw, served))
+                        error = VersionMismatchException(MR.strings.versionMismatch(fw, served)),
+                        requestBody = request,
                     )
                 }
             }
 
             return FetchResult.GetBinaryFileResult(
-                info = generateInfo()
+                info = generateInfo(),
+                requestBody = request,
             )
         } catch (e: Exception) {
             return FetchResult.GetBinaryFileResult(
                 error = e,
-                rawOutput = responseXml.toString()
+                rawOutput = responseXml.toString(),
+                requestBody = request,
             )
         }
     }

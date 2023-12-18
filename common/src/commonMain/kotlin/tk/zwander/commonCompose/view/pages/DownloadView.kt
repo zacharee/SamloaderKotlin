@@ -66,7 +66,7 @@ private suspend fun onDownload(
     eventManager.sendEvent(Event.Download.Start)
     model.statusText.value = MR.strings.downloading()
 
-    val (info, error, output) = Request.getBinaryFile(
+    val (info, error, output, requestBody) = Request.getBinaryFile(
         client,
         model.fw.value,
         model.model.value,
@@ -76,7 +76,7 @@ private suspend fun onDownload(
     if (error != null && error !is VersionException) {
         Exception(error).printStackTrace()
         model.endJob("${error.message ?: MR.strings.error()}\n\n${output}")
-        CrossPlatformBugsnag.notify(DownloadError(output, error))
+        CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
         eventManager.sendEvent(Event.Download.Finish)
     } else {
         if (error is VersionException) {
