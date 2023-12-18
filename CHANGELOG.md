@@ -1,3 +1,6 @@
+# 1.16.2
+- Hopefully fix theme weirdness on Windows.
+
 # 1.16.1
 - Update styling on macOS and Windows to include the title bar.
 - Implement better dark mode detection for Linux.
