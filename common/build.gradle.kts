@@ -97,7 +97,6 @@ kotlin {
                 api(libs.bugsnag.jvm)
                 api(libs.slf4j)
                 api(libs.jSystemThemeDetector)
-                api(libs.java.objc.bridge)
             }
         }
 

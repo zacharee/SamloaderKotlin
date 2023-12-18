@@ -6,8 +6,7 @@ import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.formdev.flatlaf.FlatDarkLaf
-import com.formdev.flatlaf.FlatLaf
+import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle
 import korlibs.memory.Platform
 import org.jetbrains.skiko.OS
@@ -89,7 +88,6 @@ fun main() {
                 window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
             }
 
-//            UIManager.setLookAndFeel(FlatDarkLaf())
             FilePicker.init(window)
 
             when (hostOs) {
@@ -169,7 +167,7 @@ fun main() {
                         try {
                             val handle = WindowHandle.tryFind(window)
 
-                            handle.dwmSetBooleanValue(io.github.mimoguz.customwindow.DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, true)
+                            handle.dwmSetBooleanValue(DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, true)
 
                             themeInfo.colors?.background?.let {
                                 handle.setCaptionColor(it)
