@@ -7,7 +7,6 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import tk.zwander.common.data.*
 import tk.zwander.commonCompose.util.ThemeInfo
 import tk.zwander.commonCompose.util.getThemeInfo
 

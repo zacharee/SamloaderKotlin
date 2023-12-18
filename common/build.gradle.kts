@@ -97,6 +97,7 @@ kotlin {
                 api(libs.darklaf.core)
                 api(libs.bugsnag.jvm)
                 api(libs.slf4j)
+                api(libs.jSystemThemeDetector)
             }
         }
 

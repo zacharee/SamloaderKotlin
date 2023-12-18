@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 @Composable
-internal actual fun getThemeInfo(): ThemeInfo {
+actual fun getThemeInfo(): ThemeInfo {
     val context = LocalContext.current
 
     val isAndroid12 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S

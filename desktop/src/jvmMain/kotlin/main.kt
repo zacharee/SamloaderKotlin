@@ -1,3 +1,4 @@
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
@@ -6,7 +7,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.formdev.flatlaf.FlatDarkLaf
-import com.russhwolf.settings.Settings
+import com.github.weisj.darklaf.LafManager
+import io.github.mimoguz.custom_window.DwmAttribute
+import io.github.mimoguz.custom_window.StageOps
 import korlibs.memory.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
@@ -18,6 +21,7 @@ import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
+import tk.zwander.commonCompose.util.getThemeInfo
 import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Desktop
 import java.awt.Dimension
@@ -47,8 +51,24 @@ fun main() {
         it.addToTab("app", "version_code", GradleConfig.versionCode)
         it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
     }
+    bugsnag.setAutoCaptureSessions(true)
+
+    when (hostOs) {
+        OS.Windows -> {
+            System.setProperty("skiko.renderApi", "OPENGL")
+        }
+        else -> {
+            /* no-op */
+        }
+    }
 
     MainBase()
+
+    LafManager.install(
+        LafManager.themeForPreferredStyle(
+            LafManager.getPreferredThemeStyle()
+        )
+    )
 
     application {
         var aboutState by remember { mutableStateOf(false) }
@@ -69,86 +89,126 @@ fun main() {
             icon = getImage("icon.png")?.toPainter(),
             state = mainWindowState
         ) {
-            with (LocalDensity.current) {
-                val minWidth = 200.dp
-                val minHeight = 250.dp
-                window.minimumSize = Dimension(minWidth.roundToPx(), minHeight.roundToPx())
+            // For some reason this returns the title bar height on macOS.
+            val menuBarHeight = remember {
+                if (hostOs == OS.MacOS) window.height.dp else 0.dp
+            }
+
+            val density = LocalDensity.current
+
+            LaunchedEffect(null) {
+                // Set this after getting the original height.
+                window.minimumSize = with(density) {
+                    Dimension(200.dp.roundToPx(), 200.dp.roundToPx())
+                }
+
+                window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
+                window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
             }
 
             UIManager.setLookAndFeel(FlatDarkLaf())
             FilePicker.init(window)
 
-            if (hostOs == OS.MacOS) {
-                MenuBar {
-                    Menu(
-                        text = MR.strings.window()
-                    ) {
-                        Item(
-                            text = MR.strings.minimize(),
-                            onClick = {
-                                mainWindowState.isMinimized = true
-                            },
-                            shortcut = KeyShortcut(Key.M, meta = true)
-                        )
+            when (hostOs) {
+                OS.MacOS -> {
+                    MenuBar {
+                        Menu(
+                            text = MR.strings.window()
+                        ) {
+                            Item(
+                                text = MR.strings.minimize(),
+                                onClick = {
+                                    mainWindowState.isMinimized = true
+                                },
+                                shortcut = KeyShortcut(Key.M, meta = true)
+                            )
 
-                        Item(
-                            text = MR.strings.zoom(),
-                            onClick = {
-                                mainWindowState.placement = WindowPlacement.Maximized
-                            }
-                        )
+                            Item(
+                                text = MR.strings.zoom(),
+                                onClick = {
+                                    mainWindowState.placement = WindowPlacement.Maximized
+                                }
+                            )
 
-                        Item(
-                            text = MR.strings.close(),
-                            onClick = {
-                                exitApplication()
-                            },
-                            shortcut = KeyShortcut(Key.W, meta = true)
-                        )
-                    }
+                            Item(
+                                text = MR.strings.close(),
+                                onClick = {
+                                    exitApplication()
+                                },
+                                shortcut = KeyShortcut(Key.W, meta = true)
+                            )
+                        }
 
-                    Menu(
-                        text = MR.strings.help()
-                    ) {
-                        Item(
-                            text = MR.strings.github(),
-                            onClick = {
-                                UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
-                            }
-                        )
+                        Menu(
+                            text = MR.strings.help()
+                        ) {
+                            Item(
+                                text = MR.strings.github(),
+                                onClick = {
+                                    UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
+                                }
+                            )
 
-                        Item(
-                            text = MR.strings.mastodon(),
-                            onClick = {
-                                UrlHandler.launchUrl("https://androiddev.social/@wander1236")
-                            }
-                        )
+                            Item(
+                                text = MR.strings.mastodon(),
+                                onClick = {
+                                    UrlHandler.launchUrl("https://androiddev.social/@wander1236")
+                                }
+                            )
 
-                        Item(
-                            text = MR.strings.twitter(),
-                            onClick = {
-                                UrlHandler.launchUrl("https://twitter.com/wander1236")
-                            }
-                        )
+                            Item(
+                                text = MR.strings.twitter(),
+                                onClick = {
+                                    UrlHandler.launchUrl("https://twitter.com/wander1236")
+                                }
+                            )
 
-                        Item(
-                            text = MR.strings.patreon(),
-                            onClick = {
-                                UrlHandler.launchUrl("https://patreon.com/zacharywander")
-                            }
-                        )
+                            Item(
+                                text = MR.strings.patreon(),
+                                onClick = {
+                                    UrlHandler.launchUrl("https://patreon.com/zacharywander")
+                                }
+                            )
 
-                        Item(
-                            text = MR.strings.supporters(),
-                            onClick = {
-                                showingSupportersWindow = true
-                            }
-                        )
+                            Item(
+                                text = MR.strings.supporters(),
+                                onClick = {
+                                    showingSupportersWindow = true
+                                }
+                            )
+                        }
                     }
                 }
+                OS.Windows -> {
+                    val themeInfo = getThemeInfo()
+
+                    LaunchedEffect(themeInfo) {
+                        val handle = StageOps.findWindowHandle(window)
+                        StageOps.dwmSetBooleanValue(
+                            handle,
+                            DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
+                            false,
+                        )
+                        themeInfo.colors?.background?.let {
+                            StageOps.setCaptionColor(
+                                handle,
+                                it
+                            )
+                        }
+                        themeInfo.colors?.onBackground?.let {
+                            StageOps.setTextColor(
+                                handle,
+                                it
+                            )
+                        }
+                    }
+                }
+                else -> {}
             }
 
-            MainView()
+            MainView(
+                fullPadding = PaddingValues(top = menuBarHeight),
+            )
         }
 
         AboutDialog(

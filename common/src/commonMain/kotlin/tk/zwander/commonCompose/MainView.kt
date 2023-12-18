@@ -30,7 +30,10 @@ import kotlin.time.ExperimentalTime
 @OptIn(DangerousInternalIoApi::class)
 @ExperimentalTime
 @Composable
-fun MainView(modifier: Modifier = Modifier) {
+fun MainView(
+    modifier: Modifier = Modifier,
+    fullPadding: PaddingValues = PaddingValues(),
+) {
     val scope = rememberCoroutineScope()
 
     var currentPage by remember { mutableStateOf(Page.DOWNLOADER) }
@@ -57,6 +60,7 @@ fun MainView(modifier: Modifier = Modifier) {
             Surface {
                 Column(
                     modifier = modifier.fillMaxSize()
+                        .padding(fullPadding),
                 ) {
                     TabView(
                         selectedPage = currentPage,
