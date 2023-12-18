@@ -73,7 +73,7 @@ android {
         abortOnError = false
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes.add("META-INF/versions/9/previous-compilation-data.bin")
     }
 
