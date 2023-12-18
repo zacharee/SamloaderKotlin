@@ -94,10 +94,10 @@ kotlin {
                 api(libs.jsoup)
                 api(libs.ktor.client.cio)
                 api(libs.flatlaf)
-                api(libs.darklaf.core)
                 api(libs.bugsnag.jvm)
                 api(libs.slf4j)
                 api(libs.jSystemThemeDetector)
+                api(libs.java.objc.bridge)
             }
         }
 

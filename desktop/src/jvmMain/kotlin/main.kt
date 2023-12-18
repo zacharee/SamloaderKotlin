@@ -7,9 +7,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import com.formdev.flatlaf.FlatDarkLaf
-import com.github.weisj.darklaf.LafManager
-import io.github.mimoguz.custom_window.DwmAttribute
-import io.github.mimoguz.custom_window.StageOps
+import com.formdev.flatlaf.FlatLaf
+import io.github.mimoguz.customwindow.WindowHandle
 import korlibs.memory.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
@@ -26,7 +25,6 @@ import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Desktop
 import java.awt.Dimension
 import java.util.UUID
-import javax.swing.*
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -53,22 +51,7 @@ fun main() {
     }
     bugsnag.setAutoCaptureSessions(true)
 
-    when (hostOs) {
-        OS.Windows -> {
-            System.setProperty("skiko.renderApi", "OPENGL")
-        }
-        else -> {
-            /* no-op */
-        }
-    }
-
     MainBase()
-
-    LafManager.install(
-        LafManager.themeForPreferredStyle(
-            LafManager.getPreferredThemeStyle()
-        )
-    )
 
     application {
         var aboutState by remember { mutableStateOf(false) }
@@ -106,7 +89,7 @@ fun main() {
                 window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
             }
 
-            UIManager.setLookAndFeel(FlatDarkLaf())
+//            UIManager.setLookAndFeel(FlatDarkLaf())
             FilePicker.init(window)
 
             when (hostOs) {
@@ -183,23 +166,24 @@ fun main() {
                     val themeInfo = getThemeInfo()
 
                     LaunchedEffect(themeInfo) {
-                        val handle = StageOps.findWindowHandle(window)
-                        StageOps.dwmSetBooleanValue(
-                            handle,
-                            DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE,
-                            false,
-                        )
-                        themeInfo.colors?.background?.let {
-                            StageOps.setCaptionColor(
-                                handle,
-                                it
-                            )
-                        }
-                        themeInfo.colors?.onBackground?.let {
-                            StageOps.setTextColor(
-                                handle,
-                                it
-                            )
+                        try {
+                            val handle = WindowHandle.tryFind(window)
+
+                            handle.dwmSetBooleanValue(io.github.mimoguz.customwindow.DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, true)
+
+                            themeInfo.colors?.background?.let {
+                                handle.setCaptionColor(it)
+                            }
+
+                            themeInfo.colors?.primary?.let {
+                                handle.setBorderColor(it)
+                            }
+
+                            themeInfo.colors?.onBackground?.let {
+                                handle.setTextColor(it)
+                            }
+                        } catch (e: Throwable) {
+                            e.printStackTrace()
                         }
                     }
                 }

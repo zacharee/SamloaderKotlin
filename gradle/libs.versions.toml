@@ -16,6 +16,7 @@ flatlaf = "3.2.5"
 fluid = "0.13.0"
 google-material = "1.12.0-alpha02"
 android-gradle = "8.2.0"
+javaObjcBridge = "1.2"
 jsoup = "1.16.2"
 jsystemthemedetector = "3.8"
 korlibs = "4.0.10"
@@ -42,6 +43,7 @@ flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 fluid-country = { module = "io.fluidsonic.country:fluid-country", version.ref = "fluid" }
 fluid-i18n = { module = "io.fluidsonic.i18n:fluid-i18n", version.ref = "fluid" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
+java-objc-bridge = { module = "ca.weblite:java-objc-bridge", version.ref = "javaObjcBridge" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 jSystemThemeDetector = { module = "com.github.Dansoftowner:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 korlibs-korio = { module = "com.soywiz.korlibs.korio:korio", version.ref = "korlibs" }
