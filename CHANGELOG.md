@@ -1,3 +1,9 @@
+# 1.16.1
+- Update styling on macOS and Windows to include the title bar.
+- Implement better dark mode detection for Linux.
+- Add automatic dark/light mode changes for desktop.
+- Update Gradle.
+
 # 1.16.0
 - Add option to automatically delete encrypted download file.
 - Fix EUX and EUY region downloads (thanks [@ananjaser1211](https://github.com/ananjaser1211)).
