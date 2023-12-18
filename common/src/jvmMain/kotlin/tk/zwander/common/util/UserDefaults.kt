@@ -5,13 +5,16 @@ import korlibs.memory.dyn.osx.NSClass
 import korlibs.memory.dyn.osx.NSObject
 import korlibs.memory.dyn.osx.NSString
 import korlibs.memory.dyn.osx.msgSend
-import korlibs.memory.dyn.osx.msgSendInt
 
 class UserDefaults(id: Long) : NSObject(id) {
-    fun objectForKey(key: String): Any = id.msgSendInt("integerForKey:", NSString(key))
+    fun objectForKey(key: String): String? =
+        id.msgSend("objectForKey:", NSString(key))
+            .msgSend("description")
+            .takeIf { it != 0L }
+            ?.let { NSString(it).cString }
 
     fun getAccentColor(): Color {
-        return when (objectForKey("AppleAccentColor").toString().toIntOrNull()) {
+        return when (objectForKey("AppleAccentColor")?.toIntOrNull()) {
             -2 -> MacOSColors.ACCENT_BLUE
             -1 -> MacOSColors.ACCENT_GRAPHITE
             0 -> MacOSColors.ACCENT_RED
@@ -25,7 +28,8 @@ class UserDefaults(id: Long) : NSObject(id) {
     }
 
     companion object : NSClass("NSUserDefaults") {
-        fun standardUserDefaults(): UserDefaults = UserDefaults(OBJ_CLASS.msgSend("standardUserDefaults"))
+        fun standardUserDefaults(): UserDefaults =
+            UserDefaults(OBJ_CLASS.msgSend("standardUserDefaults"))
     }
 }
 
@@ -62,6 +66,11 @@ object MacOSColors {
          * For consistency with the native code we mirror the implementation of the float to int conversion
          * of the Color class.
          */
-        return Color(red = (r * 255 + 0.5).toInt(), green = (g * 255 + 0.5).toInt(), blue = (b * 255 + 0.5).toInt(), alpha = 255)
+        return Color(
+            red = (r * 255 + 0.5).toInt(),
+            green = (g * 255 + 0.5).toInt(),
+            blue = (b * 255 + 0.5).toInt(),
+            alpha = 255
+        )
     }
 }
