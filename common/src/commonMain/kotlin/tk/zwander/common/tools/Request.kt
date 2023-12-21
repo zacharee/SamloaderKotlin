@@ -10,7 +10,9 @@ import tk.zwander.common.data.FetchResult
 import tk.zwander.common.data.exception.VersionCheckException
 import tk.zwander.common.data.exception.VersionMismatchException
 import tk.zwander.common.util.CrossPlatformBugsnag
+import tk.zwander.common.util.dataNode
 import tk.zwander.common.util.invoke
+import tk.zwander.common.util.textNode
 import tk.zwander.samloaderkotlin.resources.MR
 
 /**
@@ -47,161 +49,59 @@ object Request {
     fun createBinaryInform(fw: String, model: String, region: String, nonce: String): String {
         val split = fw.split("/")
         val (pda, csc, phone, data) = Array(4) { split.getOrNull(it) }
+        val logicCheck = try {
+            getLogicCheck(fw, nonce)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+            ""
+        }
 
         val xml = buildXml("FUSMsg") {
             node("FUSHdr") {
-                node("ProtoVer") {
-                    text("1.0")
-                }
-                node("SessionID") {
-                    text("0")
-                }
-                node("MsgID") {
-                    text("1")
-                }
+                textNode("ProtoVer", "1.0")
+                textNode("SessionID", "0")
+                textNode("MsgID", "1")
             }
             node("FUSBody") {
                 node("Put") {
-                    node("ACCESS_MODE") {
-                        node("Data") {
-                            text("2")
-                        }
-                    }
-                    node("BINARY_NATURE") {
-                        node("Data") {
-                            text("1")
-                        }
-                    }
-                    node("CLIENT_PRODUCT") {
-                        node("Data") {
-                            text("Smart Switch")
-                        }
-                    }
-                    node("CLIENT_VERSION") {
-                        node("Data") {
-                            text("4.3.23123_1")
-                        }
-                    }
-                    node("DEVICE_IMEI_PUSH") {
-                        node("Data") {
-                            text("12345678901234")
-                        }
-                    }
+                    dataNode("ACCESS_MODE", "2")
+                    dataNode("BINARY_NATURE", "1")
+                    dataNode("CLIENT_PRODUCT", "Smart Switch")
+                    dataNode("CLIENT_VERSION", "4.3.23123_1")
+                    dataNode("DEVICE_IMEI_PUSH", "12345678901234")
+                    dataNode("DEVICE_PLATFORM", "Android")
+
+                    dataNode("DEVICE_FW_VERSION", fw)
+                    dataNode("DEVICE_LOCAL_CODE", region)
+                    dataNode("DEVICE_AID_CODE", region)
+                    dataNode("DEVICE_MODEL_NAME", model)
+                    dataNode("LOGIC_CHECK", logicCheck)
+                    dataNode("DEVICE_CONTENTS_DATA_VERSION", data ?: "")
+                    dataNode("DEVICE_CSC_CODE2_VERSION", csc ?: "")
+                    dataNode("DEVICE_PDA_CODE1_VERSION", pda ?: "")
+                    dataNode("DEVICE_PHONE_FONT_VERSION", phone ?: "")
+
                     node("CLIENT_LANGUAGE") {
-                        node("Type") {
-                            text("String")
-                        }
-                        node("Type") {
-                            text("ISO 3166-1-alpha-3")
-                        }
-                        node("Data") {
-                            text("1033")
-                        }
-                    }
-                    node("DEVICE_FW_VERSION") {
-                        node("Data") {
-                            text(fw)
-                        }
-                    }
-                    node("DEVICE_LOCAL_CODE") {
-                        node("Data") {
-                            text(region)
-                        }
-                    }
-                    node("DEVICE_MODEL_NAME") {
-                        node("Data") {
-                            text(model)
-                        }
-                    }
-                    node("LOGIC_CHECK") {
-                        node("Data") {
-                            text(
-                                try {
-                                    getLogicCheck(fw, nonce)
-                                } catch (e: Throwable) {
-                                    e.printStackTrace()
-                                    ""
-                                }
-                            )
-                        }
-                    }
-                    node("DEVICE_CONTENTS_DATA_VERSION") {
-                        node("Data") {
-                            text(data ?: "")
-                        }
-                    }
-                    node("DEVICE_CSC_CODE2_VERSION") {
-                        node("Data") {
-                            text(csc ?: "")
-                        }
-                    }
-                    node("DEVICE_PDA_CODE1_VERSION") {
-                        node("Data") {
-                            text(pda ?: "")
-                        }
-                    }
-                    node("DEVICE_PHONE_FONT_VERSION") {
-                        node("Data") {
-                            text(phone ?: "")
-                        }
-                    }
-                    node("DEVICE_PLATFORM") {
-                        node("Data") {
-                            text("Android")
-                        }
-                    }
-                    // Add additional fields for EUX
-                    if (region == "EUX") {
-                        node("DEVICE_AID_CODE") {
-                            node("Data") {
-                                text(region)
-                            }
-                        }
-                        node("DEVICE_CC_CODE") {
-                            node("Data") {
-                                text("DE")
-                            }
-                        }
-                        node("MCC_NUM") {
-                            node("Data") {
-                                text("262")
-                            }
-                        }
-                        node("MNC_NUM") {
-                            node("Data") {
-                                text("01")
-                            }
-                        }
+                        textNode("Type", "String")
+                        textNode("Type", "ISO 3166-1-alpha-3")
+                        textNode("Data", "1033")
                     }
 
-                    // Add additional fields for EUY
-                    else if (region == "EUY") {
-                        node("DEVICE_AID_CODE") {
-                            node("Data") {
-                                text(region)
-                            }
-                        }
-                        node("DEVICE_CC_CODE") {
-                            node("Data") {
-                                text("RS")
-                            }
-                        }
-                        node("MCC_NUM") {
-                            node("Data") {
-                                text("220")
-                            }
-                        }
-                        node("MNC_NUM") {
-                            node("Data") {
-                                text("01")
-                            }
-                        }
+                    // Some regions need extra properties specified.
+                    // TODO: Make these settable in the UI?
+                    val (cc, mcc, mnc) = when (region) {
+                        "EUX" -> Triple("DE", "262", "01")
+                        "EUY" -> Triple("RS", "220", "01")
+                        else -> Triple(null, null, null)
                     }
+
+                    cc?.let { dataNode("DEVICE_CC_CODE", it) }
+                    mcc?.let { dataNode("MCC_NUM", it) }
+                    mnc?.let { dataNode("MNC_NUM", it) }
                 }
+
                 node("Get") {
-                    node("CmdID") {
-                        text("2")
-                    }
+                    textNode("CmdID", "2")
                     node("LATEST_FW_VERSION")
                 }
             }
@@ -217,26 +117,20 @@ object Request {
      * @return the needed XML.
      */
     fun createBinaryInit(fileName: String, nonce: String): String {
+        val logicCheck = run {
+            val special = fileName.split(".").first()
+                .run { slice(this.length - (16 % this.length)..this.lastIndex) }
+            getLogicCheck(special, nonce)
+        }
+
         val xml = buildXml("FUSMsg") {
             node("FUSHdr") {
-                node("ProtoVer") {
-                    text("1.0")
-                }
+                textNode("ProtoVer", "1.0")
             }
             node("FUSBody") {
                 node("Put") {
-                    node("BINARY_FILE_NAME") {
-                        node("Data") {
-                            text(fileName)
-                        }
-                    }
-                    node("LOGIC_CHECK") {
-                        node("Data") {
-                            val special = fileName.split(".").first()
-                                .run { slice(this.length - (16 % this.length)..this.lastIndex) }
-                            text(getLogicCheck(special, nonce))
-                        }
-                    }
+                    dataNode("BINARY_FILE_NAME", fileName)
+                    dataNode("LOGIC_CHECK", logicCheck)
                 }
             }
         }
