@@ -1,3 +1,8 @@
+# 1.16.3
+- Add a likely-temporary workaround to download firmware.
+- Improve error reporting again.
+- Crash fixes.
+
 # 1.16.2
 - Hopefully fix theme weirdness on Windows.
 
