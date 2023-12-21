@@ -79,7 +79,12 @@ object Request {
                     }
                     node("CLIENT_VERSION") {
                         node("Data") {
-                            text("4.1.16014_12")
+                            text("4.3.23123_1")
+                        }
+                    }
+                    node("DEVICE_IMEI_PUSH") {
+                        node("Data") {
+                            text("12345678901234")
                         }
                     }
                     node("CLIENT_LANGUAGE") {

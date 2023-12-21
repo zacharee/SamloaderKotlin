@@ -23,8 +23,8 @@ object CryptUtils {
     /**
      * Decryption keys for the firmware and other data.
      */
-    const val KEY_1 = "hqzdurufm2c8mf6bsjezu1qgveouv7c7"
-    const val KEY_2 = "w13r4cvf4hctaujv"
+    const val KEY_1 = "vicopx7dqu06emacgpnpy8j8zwhduwlh"
+    const val KEY_2 = "9u7qab84rpc16gvk"
 
     /**
      * Samsung uses its own padding for its AES
