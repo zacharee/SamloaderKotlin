@@ -40,6 +40,7 @@ actual object PlatformChangelogHandler {
                         null
                     )
                 }
+
                 row.count() == 3 -> {
                     Changelog(
                         row[0].text().split(":")[1].trim(),
@@ -48,12 +49,24 @@ actual object PlatformChangelogHandler {
                         null, null
                     )
                 }
+
                 else -> {
                     Changelog(null, null, null, null, null)
                 }
             }
 
-            val logText = log.children()[0].childNodes().joinToString(separator = "", transform = { it.outerHtml() })
+            val logText = log.children()[0].childNodes().joinToString(
+                separator = "",
+                transform = {
+                    it.outerHtml().lines().joinToString("\n") { line ->
+                        if (line.startsWith(" ")) {
+                            line.replaceFirst(" ", "")
+                        } else {
+                            line
+                        }
+                    }
+                },
+            )
 
             if (build != null) {
                 changelogs[build] = Changelog(

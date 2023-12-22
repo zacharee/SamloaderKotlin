@@ -1,6 +1,5 @@
 package tk.zwander.common.util
 
-import io.ktor.util.*
 import org.jsoup.Jsoup
 import tk.zwander.common.data.changelog.Changelog
 
@@ -13,7 +12,6 @@ actual object PlatformChangelogHandler {
         return engOption?.text()
     }
 
-    @OptIn(InternalAPI::class)
     actual suspend fun parseChangelogs(body: String): Map<String, Changelog> {
         val doc = Jsoup.parse(body)
         val container = doc.selectFirst(".container")
@@ -55,7 +53,18 @@ actual object PlatformChangelogHandler {
                 }
             }
 
-            val logText = log.children()[0].childNodes().joinToString(separator = "", transform = { it.outerHtml() })
+            val logText = log.children()[0].childNodes().joinToString(
+                separator = "",
+                transform = {
+                    it.outerHtml().lines().joinToString("\n") { line ->
+                        if (line.startsWith(" ")) {
+                            line.replaceFirst(" ", "")
+                        } else {
+                            line
+                        }
+                    }
+                },
+            )
 
             if (build != null) {
                 changelogs[build] = Changelog(
