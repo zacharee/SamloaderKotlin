@@ -124,7 +124,7 @@ internal class GenericLinuxThemeDetector {
     }
 
     companion object {
-        private const val MONITORING_CMD = "gsettings monitor org.gnome.desktop.interface icon-theme"
-        private const val GET_CMD = "gsettings get org.gnome.desktop.interface icon-theme"
+        private val MONITORING_CMD = arrayOf("gsettings", "monitor", "org.gnome.desktop.interface", "icon-theme")
+        private val GET_CMD = arrayOf("gsettings", "get", "org.gnome.desktop.interface", "icon-theme")
     }
 }
