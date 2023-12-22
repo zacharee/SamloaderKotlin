@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
@@ -19,7 +20,8 @@ import androidx.compose.ui.unit.sp
 internal fun ExpandButton(
     expanded: Boolean,
     text: String,
-    onExpandChange: (Boolean) -> Unit
+    modifier: Modifier = Modifier,
+    onExpandChange: (Boolean) -> Unit,
 ) {
     val expandText = buildAnnotatedString {
         append(text)
@@ -47,7 +49,8 @@ internal fun ExpandButton(
     TextButton(
         onClick = {
             onExpandChange(!expanded)
-        }
+        },
+        modifier = modifier,
     ) {
         Text(
             text = expandText,

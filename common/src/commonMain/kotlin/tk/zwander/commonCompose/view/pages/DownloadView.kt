@@ -513,7 +513,8 @@ internal fun DownloadView() {
 
                         ExpandButton(
                             changelogExpanded,
-                            MR.strings.changelog()
+                            MR.strings.changelog(),
+                            modifier = Modifier.fillMaxWidth(),
                         ) { model.changelogExpanded.value = it }
 
                         Spacer(Modifier.height(8.dp))

@@ -126,15 +126,18 @@ internal fun HistoryItem(
                         Column {
                             ExpandButton(
                                 changelogExpanded,
-                                MR.strings.changelog()
+                                MR.strings.changelog(),
+                                modifier = Modifier.fillMaxWidth(),
                             ) { onChangelogExpanded(it) }
 
                             AnimatedVisibility(
                                 visible = changelogExpanded
                             ) {
-                                Spacer(Modifier.height(8.dp))
+                                Column {
+                                    Spacer(Modifier.height(8.dp))
 
-                                ChangelogDisplay(changelog)
+                                    ChangelogDisplay(changelog)
+                                }
                             }
                         }
                     }
