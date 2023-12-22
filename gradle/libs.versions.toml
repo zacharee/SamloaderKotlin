@@ -1,6 +1,6 @@
 [versions]
 androidSvg = "1.4"
-androidx-activity-compose = "1.8.1"
+androidx-activity-compose = "1.8.2"
 androidx-core = "1.13.0-alpha02"
 androidx-documentfile = "1.1.0-alpha01"
 androidx-preference = "1.2.1"
@@ -35,7 +35,7 @@ androidx-preference-ktx = { module = "androidx.preference:preference-ktx", versi
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-android-gradle-plugin = { module = "com.bugsnag:bugsnag-android-gradle-plugin", version.ref = "bugsnag-android-gradle" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
-compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
+compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 fluid-country = { module = "io.fluidsonic.country:fluid-country", version.ref = "fluid" }
 fluid-i18n = { module = "io.fluidsonic.i18n:fluid-i18n", version.ref = "fluid" }
