@@ -58,8 +58,14 @@ internal fun ChangelogDisplay(
 
             if (changelog?.notes != null) {
                 SelectionContainer {
-                    println(changelog.notes)
-                    Text(changelog.notes.parseHtml())
+                    val formatted = changelog.notes.replace("<br><br><br><br>", "<QUAD_BR>")
+                        .replace("<br><br>", "<DOUBLE_BR>")
+                        .replace("<br>\n", "\n")
+                        .replace("<br>", "")
+                        .replace("<QUAD_BR>", "\n\n")
+                        .replace("<DOUBLE_BR>", "\n\n")
+
+                    Text(formatted.parseHtml())
                 }
             }
         }
