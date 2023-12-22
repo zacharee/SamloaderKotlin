@@ -346,7 +346,8 @@ internal fun DownloadView() {
                 Row(
                     modifier = Modifier.clickable(
                         interactionSource = boxSource,
-                        indication = null
+                        indication = null,
+                        enabled = canChangeOption,
                     ) {
                         model.manual.value = !model.manual.value
                     }
