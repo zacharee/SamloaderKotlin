@@ -58,6 +58,7 @@ internal fun ChangelogDisplay(
 
             if (changelog?.notes != null) {
                 SelectionContainer {
+                    println(changelog.notes)
                     Text(changelog.notes.parseHtml())
                 }
             }

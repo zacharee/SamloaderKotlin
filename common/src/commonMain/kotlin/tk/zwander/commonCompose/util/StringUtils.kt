@@ -21,7 +21,13 @@ private val tags = linkedMapOf(
  * The main entry point. Call this on a String and use the result in a Text.
  */
 fun String.parseHtml(): AnnotatedString {
-    val newlineReplace = this.replace("<br>", "")
+    val newlineReplace = this
+        .replace("<br><br><br><br>", "<QUAD_BR>")
+        .replace("<br><br>", "<DOUBLE_BR>")
+        .replace("<br>\n", "\n")
+        .replace("<br>", "")
+        .replace("<QUAD_BR>", "\n\n")
+        .replace("<DOUBLE_BR>", "\n\n")
 
     return buildAnnotatedString {
         recurse(newlineReplace, this)
