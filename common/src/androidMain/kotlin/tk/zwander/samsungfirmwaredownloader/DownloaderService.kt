@@ -19,9 +19,6 @@ import kotlin.time.ExperimentalTime
 /**
  * A Service to manage downloading and decrypting on Android. This is used mostly to just keep the
  * app running when it's in the background. It will run as long as the app is running.
- *
- * TODO: Maybe this should be completely separate from the Activity, so the app can be cleared
- * TODO: from Recents and still function?
  */
 @OptIn(ExperimentalTime::class)
 class DownloaderService : Service(), EventManager.EventListener {
@@ -29,7 +26,6 @@ class DownloaderService : Service(), EventManager.EventListener {
         /**
          * Start the Service.
          * @param context a Context object.
-         * @param callback the MainActivity callback.
          */
         fun start(context: Context) {
             val startIntent = Intent(context, DownloaderService::class.java)
@@ -56,6 +52,7 @@ class DownloaderService : Service(), EventManager.EventListener {
             field = value
 
             if (value == 0) {
+                nm.cancel(100)
                 nm.notify(100, makeForegroundNotification(null))
             }
 
