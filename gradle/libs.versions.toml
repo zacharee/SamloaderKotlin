@@ -24,6 +24,7 @@ kotlinx-serialization = "1.6.2"
 ktor = "2.3.7"
 moko-resources = "0.23.0"
 multiplatform-settings = "1.1.0"
+oshi = "6.4.9"
 slf4j = "2.0.9"
 
 [libraries]
@@ -54,6 +55,7 @@ moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-re
 moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
 multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
+oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 
 [plugins]
