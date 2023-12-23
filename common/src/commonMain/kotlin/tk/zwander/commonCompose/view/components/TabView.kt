@@ -16,7 +16,8 @@ import tk.zwander.samloaderkotlin.resources.MR
 enum class Page(val index: Int) {
     DOWNLOADER(0),
     DECRYPTER(1),
-    HISTORY(2)
+    HISTORY(2),
+    SETTINGS_ABOUT(3),
 }
 
 /**
@@ -26,7 +27,7 @@ enum class Page(val index: Int) {
 internal fun TabView(
     selectedPage: Page,
     onPageSelected: (Page) -> Unit,
-    indicator: @Composable() ((List<TabPosition>) -> Unit)?
+    indicator: @Composable ((List<TabPosition>) -> Unit)?
 ) {
     TabRow(
         modifier = Modifier.fillMaxWidth()
@@ -58,6 +59,13 @@ internal fun TabView(
             onClick = {
                 onPageSelected(Page.HISTORY)
             }
+        )
+        Tab(
+            selected = selectedPage == Page.SETTINGS_ABOUT,
+            text = { Text(MR.strings.more()) },
+            onClick = {
+                onPageSelected(Page.SETTINGS_ABOUT)
+            },
         )
     }
 }

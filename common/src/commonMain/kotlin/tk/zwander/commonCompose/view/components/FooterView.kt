@@ -23,22 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
-import korlibs.memory.Platform
-import tk.zwander.common.util.BifrostSettings
-import tk.zwander.common.util.SettingsKey
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.samloaderkotlin.resources.MR
-
-val options = arrayListOf<Pair<String, SettingsKey<*>>>().apply {
-    if (Platform.isJvm && !Platform.isAndroid) {
-        add(MR.strings.useNativeFilePicker() to BifrostSettings.Keys.useNativeFileDialog)
-    }
-
-    add(MR.strings.allowLowercaseCharacters() to BifrostSettings.Keys.allowLowercaseCharacters)
-    add(MR.strings.autoDeleteEncryptedFirmware() to BifrostSettings.Keys.autoDeleteEncryptedFirmware)
-}
 
 /**
  * The footer shown on all pages.
@@ -48,16 +36,15 @@ fun FooterView(
     modifier: Modifier = Modifier,
 ) {
     var showingSupportersDialog by remember { mutableStateOf(false) }
-    var showingSettings by remember { mutableStateOf(false) }
     var showingAboutDialog by remember { mutableStateOf(false) }
 
     BoxWithConstraints(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier,
     ) {
         val overThreshold = rememberIsOverScaledThreshold(constraints.maxWidth, 600)
 
         Row(
-            modifier = modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
                 .padding(8.dp)
         ) {
             if (overThreshold) {
@@ -81,7 +68,7 @@ fun FooterView(
                         IconButton(
                             onClick = {
                                 showingAboutDialog = true
-                            }
+                            },
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Info,
@@ -155,32 +142,12 @@ fun FooterView(
                         )
                     }
                 }
-
-                if (options.isNotEmpty()) {
-                    item {
-                        IconButton(
-                            onClick = {
-                                showingSettings = true
-                            }
-                        ) {
-                            Icon(
-                                painter = painterResource(MR.images.cog),
-                                contentDescription = MR.strings.settings(),
-                                modifier = Modifier.padding(8.dp).size(24.dp)
-                            )
-                        }
-                    }
-                }
             }
         }
     }
 
     PatreonSupportersDialog(showingSupportersDialog) {
         showingSupportersDialog = false
-    }
-
-    SettingsDialog(showingSettings, options) {
-        showingSettings = false
     }
 
     AlertDialogDef(

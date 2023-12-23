@@ -41,43 +41,11 @@ internal fun SettingsDialog(
                 modifier = Modifier.padding(8.dp)
             ) {
                 options.forEach { (label, key) ->
-                    when (key) {
-                        is SettingsKey.Boolean -> {
-                            BooleanPreference(
-                                label = label,
-                                key = key,
-                            )
-                        }
-                        // TODO: Layouts for other settings types.
-                        else -> {}
-                    }
+
                 }
             }
         },
     )
 }
 
-@Composable
-private fun BooleanPreference(
-    label: String,
-    key: SettingsKey.Boolean,
-    modifier: Modifier = Modifier,
-) {
-    var state by key.collectAsMutableState()
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
-    ) {
-        Text(text = label)
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Switch(
-            checked = state ?: false,
-            onCheckedChange = {
-                state = it
-            },
-        )
-    }
-}

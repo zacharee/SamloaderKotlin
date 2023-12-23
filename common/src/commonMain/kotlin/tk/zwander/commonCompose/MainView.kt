@@ -15,12 +15,12 @@ import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.locals.ProvideModels
 import tk.zwander.commonCompose.view.pager.HorizontalPager
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
-import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.commonCompose.view.components.TabView
 import tk.zwander.commonCompose.view.pages.DecryptView
 import tk.zwander.commonCompose.view.pages.DownloadView
 import tk.zwander.commonCompose.view.pages.HistoryView
+import tk.zwander.commonCompose.view.pages.SettingsAboutView
 import kotlin.time.ExperimentalTime
 
 /**
@@ -98,12 +98,11 @@ fun MainView(
                                         historyDownloadCallback,
                                         historyDecryptCallback,
                                     )
+                                    Page.SETTINGS_ABOUT -> SettingsAboutView()
                                 }
                             },
                         )
                     }
-
-                    FooterView()
 
                     TabView(
                         selectedPage = currentPage,

@@ -1,11 +1,16 @@
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
+import com.formdev.flatlaf.FlatDarculaLaf
+import com.formdev.flatlaf.FlatDarkLaf
+import com.formdev.flatlaf.FlatIntelliJLaf
+import com.formdev.flatlaf.FlatLaf
 import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle
 import korlibs.memory.Platform
@@ -21,9 +26,9 @@ import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.getThemeInfo
 import tk.zwander.samloaderkotlin.resources.MR
-import java.awt.Desktop
 import java.awt.Dimension
 import java.util.UUID
+import javax.swing.UIDefaults
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -55,6 +60,7 @@ fun main() {
     application {
         var showingSupportersWindow by remember { mutableStateOf(false) }
         val mainWindowState = rememberWindowState()
+        val themeInfo = getThemeInfo()
 
         Window(
             onCloseRequest = ::exitApplication,
@@ -62,6 +68,21 @@ fun main() {
             icon = getImage("icon.png")?.toPainter(),
             state = mainWindowState
         ) {
+            LaunchedEffect(null) {
+                val map = mutableMapOf<String, String>()
+
+                themeInfo.colors?.primary?.toArgb()?.let {
+                    map.put("@accentColor", String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)))
+                }
+                themeInfo.colors?.background?.toArgb()?.let {
+                    map.put("@background", String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)))
+                }
+
+                FlatLaf.setGlobalExtraDefaults(map)
+
+                FlatDarkLaf.setup()
+            }
+
             // For some reason this returns the title bar height on macOS.
             val menuBarHeight = remember {
                 if (hostOs == OS.MacOS) window.height.dp else 0.dp
@@ -152,8 +173,6 @@ fun main() {
                     }
                 }
                 OS.Windows -> {
-                    val themeInfo = getThemeInfo()
-
                     LaunchedEffect(themeInfo) {
                         try {
                             val handle = WindowHandle.tryFind(window)

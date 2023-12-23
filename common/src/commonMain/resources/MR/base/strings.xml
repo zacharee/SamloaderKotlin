@@ -63,10 +63,10 @@
     <string name="mib">MiB</string>
     <string name="mibs">MiB/s</string>
     <string name="kibs">KiB/s</string>
-    <string name="useNativeFilePicker">Use native file picker</string>
     <string name="downloader">Downloader</string>
     <string name="decrypter">Decrypter</string>
     <string name="history">History</string>
+    <string name="more">More</string>
     <string name="retrieve">Retrieve</string>
     <string name="canceled">Canceled</string>
     <string name="statusFormat">Status: %1$s</string>
@@ -89,6 +89,13 @@
     <string name="descending">Descending</string>
     <string name="sort">Sort</string>
     <string name="about">About</string>
+
+    <string name="useNativeFilePicker">Use native file picker</string>
+    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
+
     <string name="allowLowercaseCharacters">Allow Lowercase Characters</string>
+    <string name="allowLowercaseCharactersDesc">For convenience, Bifrost automatically capitalizes all characters in the model, region, and firmware fields. However, a few device models contain lowercase characters. Enable this option to download firmware for those models.</string>
+
     <string name="autoDeleteEncryptedFirmware">Auto-Delete Encrypted Firmware</string>
+    <string name="autoDeleteEncryptedFirmwareDesc">When downloading firmware from Samsung, Bifrost creates two files: the encrypted firmware from Samsung, and a ZIP containing the decrypted firmware files. Enable this option to automatically delete the encrypted file once it\'s been decrypted.</string>
 </resources>
