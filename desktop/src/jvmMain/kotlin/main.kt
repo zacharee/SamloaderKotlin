@@ -7,9 +7,7 @@ import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
-import com.formdev.flatlaf.FlatDarculaLaf
 import com.formdev.flatlaf.FlatDarkLaf
-import com.formdev.flatlaf.FlatIntelliJLaf
 import com.formdev.flatlaf.FlatLaf
 import io.github.mimoguz.customwindow.DwmAttribute
 import io.github.mimoguz.customwindow.WindowHandle
@@ -28,7 +26,6 @@ import tk.zwander.commonCompose.util.getThemeInfo
 import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Dimension
 import java.util.UUID
-import javax.swing.UIDefaults
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
