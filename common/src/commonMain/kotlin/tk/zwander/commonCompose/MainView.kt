@@ -1,7 +1,6 @@
 package tk.zwander.commonCompose
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TabPosition
 import androidx.compose.runtime.*
@@ -62,14 +61,6 @@ fun MainView(
                     modifier = modifier.fillMaxSize()
                         .padding(fullPadding),
                 ) {
-                    TabView(
-                        selectedPage = currentPage,
-                        onPageSelected = {
-                            currentPage = it
-                        },
-                        indicator = indicator
-                    )
-
                     Column(
                         modifier = Modifier
                             .weight(1f)
@@ -113,6 +104,14 @@ fun MainView(
                     }
 
                     FooterView()
+
+                    TabView(
+                        selectedPage = currentPage,
+                        onPageSelected = {
+                            currentPage = it
+                        },
+                        indicator = indicator
+                    )
                 }
             }
         }

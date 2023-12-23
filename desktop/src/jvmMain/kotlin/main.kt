@@ -53,17 +53,8 @@ fun main() {
     MainBase()
 
     application {
-        var aboutState by remember { mutableStateOf(false) }
         var showingSupportersWindow by remember { mutableStateOf(false) }
         val mainWindowState = rememberWindowState()
-
-        Desktop.getDesktop().apply {
-            if (isSupported(Desktop.Action.APP_ABOUT)) {
-                setAboutHandler {
-                    aboutState = true
-                }
-            }
-        }
 
         Window(
             onCloseRequest = ::exitApplication,
@@ -191,16 +182,6 @@ fun main() {
             MainView(
                 fullPadding = PaddingValues(top = menuBarHeight),
             )
-        }
-
-        AboutDialog(
-            aboutState
-        ) { aboutState = false }
-
-        PatreonSupportersWindow(
-            showingSupportersWindow
-        ) {
-            showingSupportersWindow = false
         }
     }
 }
