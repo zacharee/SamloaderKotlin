@@ -6,6 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
@@ -37,32 +38,57 @@ internal fun TabView(
             TabRowDefaults.Indicator(
                 Modifier.tabIndicatorOffset(tabPositions[selectedPage.index])
             )
-        }
+        },
+        divider = {},
     ) {
         Tab(
             selected = selectedPage == Page.DOWNLOADER,
-            text = { Text(MR.strings.downloader()) },
+            text = {
+                Text(
+                    text = MR.strings.downloader(),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            },
             onClick = {
                 onPageSelected(Page.DOWNLOADER)
-            }
+            },
         )
         Tab(
             selected = selectedPage == Page.DECRYPTER,
-            text = { Text(MR.strings.decrypter()) },
+            text = {
+                Text(
+                    text = MR.strings.decrypter(),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            },
             onClick = {
                 onPageSelected(Page.DECRYPTER)
-            }
+            },
         )
         Tab(
             selected = selectedPage == Page.HISTORY,
-            text = { Text(MR.strings.history()) },
+            text = {
+                Text(
+                    text = MR.strings.history(),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            },
             onClick = {
                 onPageSelected(Page.HISTORY)
-            }
+            },
         )
         Tab(
             selected = selectedPage == Page.SETTINGS_ABOUT,
-            text = { Text(MR.strings.more()) },
+            text = {
+                Text(
+                    text = MR.strings.more(),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
+            },
             onClick = {
                 onPageSelected(Page.SETTINGS_ABOUT)
             },

@@ -87,7 +87,7 @@ fun MainView(
                         }
 
                         indicator = HorizontalPager(
-                            count = 3,
+                            count = Page.entries.size,
                             currentPage = currentPage.index,
                             onPageChanged = { currentPage = Page.entries[it] },
                             eval = {

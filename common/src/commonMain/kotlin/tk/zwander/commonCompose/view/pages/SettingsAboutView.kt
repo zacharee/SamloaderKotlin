@@ -72,7 +72,7 @@ fun SettingsAboutView() {
             verticalItemSpacing = 8.dp,
             modifier = Modifier.weight(1f),
         ) {
-            items(items = options, key = { it.key }) { item ->
+            items(items = options, key = { it.key.key }) { item ->
                 Box(
                     modifier = Modifier.widthIn(max = 400.dp),
                 ) {
