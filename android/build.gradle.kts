@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
-
 plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
@@ -38,7 +36,7 @@ android {
         this.versionCode = versionCode
         this.versionName = versionName
 
-        archivesName.set("Bifrost_$versionName")
+        setProperty("archivesBaseName", "bifrost_$versionName")
     }
 
     namespace = packageName
