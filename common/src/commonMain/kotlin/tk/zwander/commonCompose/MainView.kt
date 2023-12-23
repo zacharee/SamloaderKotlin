@@ -1,32 +1,34 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package tk.zwander.commonCompose
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TabPosition
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ktor.utils.io.core.internal.*
+import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import korlibs.io.async.launch
+import korlibs.memory.Platform
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
+import tk.zwander.commonCompose.locals.LocalMainModel
 import tk.zwander.commonCompose.locals.ProvideModels
-import tk.zwander.commonCompose.view.pager.HorizontalPager
+import tk.zwander.commonCompose.util.pager.pagerTabIndicatorOffset
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
-import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.commonCompose.view.components.TabView
-import tk.zwander.commonCompose.view.pages.DecryptView
-import tk.zwander.commonCompose.view.pages.DownloadView
-import tk.zwander.commonCompose.view.pages.HistoryView
-import tk.zwander.commonCompose.view.pages.SettingsAboutView
+import tk.zwander.commonCompose.view.components.pages
 import kotlin.time.ExperimentalTime
 
 /**
  * The main UI view.
  */
-@OptIn(DangerousInternalIoApi::class)
 @ExperimentalTime
 @Composable
 fun MainView(
@@ -35,10 +37,19 @@ fun MainView(
 ) {
     val scope = rememberCoroutineScope()
 
-    var currentPage by remember { mutableStateOf(Page.DOWNLOADER) }
-    var indicator by remember { mutableStateOf<(@Composable (List<TabPosition>) -> Unit)?>(null) }
-
     ProvideModels {
+        var currentPage by LocalMainModel.current.currentPage.collectAsMutableState()
+        val pagerState = rememberPagerState { pages.size }
+
+        LaunchedEffect(key1 = currentPage.index) {
+            pagerState.animateScrollToPage(currentPage.index)
+        }
+        LaunchedEffect(key1 = pagerState.currentPage, key2 = pagerState.currentPageOffsetFraction) {
+            if (pagerState.currentPage == pagerState.targetPage && pagerState.currentPageOffsetFraction == 0f) {
+                currentPage = pages[pagerState.currentPage]
+            }
+        }
+
         val downloadModel = LocalDownloadModel.current
         val decryptModel = LocalDecryptModel.current
         val historyModel = LocalHistoryModel.current
@@ -67,41 +78,13 @@ fun MainView(
                             .widthIn(max = 1200.dp)
                             .align(Alignment.CenterHorizontally)
                     ) {
-                        val historyDownloadCallback = { model: String, region: String, fw: String ->
-                            downloadModel.manual.value = true
-                            downloadModel.osCode.value = ""
-                            downloadModel.model.value = model
-                            downloadModel.region.value = region
-                            downloadModel.fw.value = fw
-
-                            currentPage = Page.DOWNLOADER
+                        HorizontalPager(
+                            state = pagerState,
+                            pageSpacing = 8.dp,
+                            userScrollEnabled = Platform.isAndroid,
+                        ) {
+                            pages[it].render()
                         }
-
-                        val historyDecryptCallback = { model: String, region: String, fw: String ->
-                            decryptModel.fileToDecrypt.value = null
-                            decryptModel.model.value = model
-                            decryptModel.region.value = region
-                            decryptModel.fw.value = fw
-
-                            currentPage = Page.DECRYPTER
-                        }
-
-                        indicator = HorizontalPager(
-                            count = Page.entries.size,
-                            currentPage = currentPage.index,
-                            onPageChanged = { currentPage = Page.entries[it] },
-                            eval = {
-                                when (it) {
-                                    Page.DOWNLOADER -> DownloadView()
-                                    Page.DECRYPTER -> DecryptView()
-                                    Page.HISTORY -> HistoryView(
-                                        historyDownloadCallback,
-                                        historyDecryptCallback,
-                                    )
-                                    Page.SETTINGS_ABOUT -> SettingsAboutView()
-                                }
-                            },
-                        )
                     }
 
                     TabView(
@@ -109,7 +92,11 @@ fun MainView(
                         onPageSelected = {
                             currentPage = it
                         },
-                        indicator = indicator
+                        indicator = { tabPositions ->
+                            TabRowDefaults.Indicator(
+                                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                            )
+                        },
                     )
                 }
             }

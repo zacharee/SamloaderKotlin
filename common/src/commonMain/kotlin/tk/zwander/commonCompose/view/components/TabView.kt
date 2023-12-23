@@ -1,24 +1,45 @@
+@file:OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
+
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.StringResource
+import io.ktor.utils.io.core.internal.DangerousInternalIoApi
+import korlibs.io.annotations.Keep
 import tk.zwander.common.util.invoke
+import tk.zwander.commonCompose.view.pages.DecryptView
+import tk.zwander.commonCompose.view.pages.DownloadView
+import tk.zwander.commonCompose.view.pages.HistoryView
+import tk.zwander.commonCompose.view.pages.SettingsAboutView
 import tk.zwander.samloaderkotlin.resources.MR
+import kotlin.time.ExperimentalTime
+
+val pages = Page::class.sealedSubclasses
+    .mapNotNull { it.objectInstance }
+    .sortedBy { it.index }
 
 /**
  * Represents the available pages.
  */
-enum class Page(val index: Int) {
-    DOWNLOADER(0),
-    DECRYPTER(1),
-    HISTORY(2),
-    SETTINGS_ABOUT(3),
+sealed class Page(
+    val render: @Composable () -> Unit,
+    val labelRes: StringResource,
+    val index: Int,
+) {
+    @Keep
+    data object Downloader : Page({ DownloadView() }, MR.strings.downloader, 0)
+    @Keep
+    data object Decrypter : Page({ DecryptView() }, MR.strings.decrypter, 1)
+    @Keep
+    data object History : Page({ HistoryView() }, MR.strings.history, 2)
+    @Keep
+    data object SettingsAbout : Page({ SettingsAboutView() }, MR.strings.more, 3)
 }
 
 /**
@@ -28,70 +49,29 @@ enum class Page(val index: Int) {
 internal fun TabView(
     selectedPage: Page,
     onPageSelected: (Page) -> Unit,
-    indicator: @Composable ((List<TabPosition>) -> Unit)?
+    indicator: @Composable ((List<TabPosition>) -> Unit),
 ) {
     TabRow(
         modifier = Modifier.fillMaxWidth()
             .height(48.dp),
         selectedTabIndex = selectedPage.index,
-        indicator = indicator ?: { tabPositions ->
-            TabRowDefaults.Indicator(
-                Modifier.tabIndicatorOffset(tabPositions[selectedPage.index])
-            )
-        },
+        indicator = indicator,
         divider = {},
     ) {
-        Tab(
-            selected = selectedPage == Page.DOWNLOADER,
-            text = {
-                Text(
-                    text = MR.strings.downloader(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
-            },
-            onClick = {
-                onPageSelected(Page.DOWNLOADER)
-            },
-        )
-        Tab(
-            selected = selectedPage == Page.DECRYPTER,
-            text = {
-                Text(
-                    text = MR.strings.decrypter(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
-            },
-            onClick = {
-                onPageSelected(Page.DECRYPTER)
-            },
-        )
-        Tab(
-            selected = selectedPage == Page.HISTORY,
-            text = {
-                Text(
-                    text = MR.strings.history(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
-            },
-            onClick = {
-                onPageSelected(Page.HISTORY)
-            },
-        )
-        Tab(
-            selected = selectedPage == Page.SETTINGS_ABOUT,
-            text = {
-                Text(
-                    text = MR.strings.more(),
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                )
-            },
-            onClick = {
-                onPageSelected(Page.SETTINGS_ABOUT)
-            },
-        )
+        pages.forEach { page ->
+            Tab(
+                selected = selectedPage == page,
+                text = {
+                    Text(
+                        text = page.labelRes(),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                    )
+                },
+                onClick = {
+                    onPageSelected(page)
+                },
+            )
+        }
     }
 }

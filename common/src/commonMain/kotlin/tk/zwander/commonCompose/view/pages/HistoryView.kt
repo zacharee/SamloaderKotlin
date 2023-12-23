@@ -43,11 +43,15 @@ import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
 import tk.zwander.common.util.invoke
+import tk.zwander.commonCompose.locals.LocalDecryptModel
+import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
+import tk.zwander.commonCompose.locals.LocalMainModel
 import tk.zwander.commonCompose.model.HistoryModel
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
+import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.samloaderkotlin.resources.MR
 
 /**
@@ -159,15 +163,14 @@ private suspend fun onFetch(model: HistoryModel) {
 
 /**
  * The History View.
- * @param onDownload a callback for when the user hits the "Download" button on an item.
- * @param onDecrypt a callback for when the user hits the "Decrypt" button on an item.
  */
 @Composable
-internal fun HistoryView(
-    onDownload: (model: String, region: String, fw: String) -> Unit,
-    onDecrypt: (model: String, region: String, fw: String) -> Unit,
-) {
+internal fun HistoryView() {
     val model = LocalHistoryModel.current
+    val downloadModel = LocalDownloadModel.current
+    val decryptModel = LocalDecryptModel.current
+    val mainModel = LocalMainModel.current
+
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
     val modelModel by model.model.collectAsState()
     val region by model.region.collectAsState()
@@ -294,8 +297,23 @@ internal fun HistoryView(
                 changelog = changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
                 changelogExpanded = expanded[historyInfo.toString()] ?: false,
                 onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
-                onDownload = { onDownload(model.model.value, model.region.value, it) },
-                onDecrypt = { onDecrypt(model.model.value, model.region.value, it) }
+                onDownload = {
+                    downloadModel.manual.value = true
+                    downloadModel.osCode.value = ""
+                    downloadModel.model.value = model.model.value
+                    downloadModel.region.value = model.region.value
+                    downloadModel.fw.value = it
+
+                    mainModel.currentPage.value = Page.Downloader
+                },
+                onDecrypt = {
+                    decryptModel.fileToDecrypt.value = null
+                    decryptModel.model.value = model.model.value
+                    decryptModel.region.value = model.region.value
+                    decryptModel.fw.value = it
+
+                    mainModel.currentPage.value = Page.Decrypter
+                },
             )
         }
     }

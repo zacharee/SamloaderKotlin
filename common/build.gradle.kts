@@ -64,6 +64,7 @@ kotlin {
                 api(libs.compose.compiler)
 
                 api(libs.kotlin)
+                api(libs.kotlin.reflect)
                 api(libs.kotlinx.coroutines)
                 api(libs.kotlinx.serialization.json)
 
@@ -78,6 +79,7 @@ kotlin {
                 api(libs.multiplatformSettings)
                 api(libs.multiplatformSettings.noArg)
 
+                api(libs.moko.mvvm.flow.compose)
                 api(libs.moko.resources)
                 api(libs.moko.resources.compose)
             }

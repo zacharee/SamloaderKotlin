@@ -8,10 +8,12 @@ import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.commonCompose.model.HistoryModel
+import tk.zwander.commonCompose.model.MainModel
 
 val LocalDownloadModel = compositionLocalOfModel<DownloadModel>()
 val LocalDecryptModel = compositionLocalOfModel<DecryptModel>()
 val LocalHistoryModel = compositionLocalOfModel<HistoryModel>()
+val LocalMainModel = compositionLocalOf<MainModel> { error("No MainModel provided") }
 
 @Composable
 internal fun ProvideModels(content: @Composable () -> Unit) {
@@ -19,6 +21,7 @@ internal fun ProvideModels(content: @Composable () -> Unit) {
         LocalDownloadModel provides DownloadModel(),
         LocalDecryptModel provides DecryptModel(),
         LocalHistoryModel provides HistoryModel(),
+        LocalMainModel provides MainModel(),
     ) {
         content()
     }

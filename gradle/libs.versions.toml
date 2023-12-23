@@ -22,6 +22,7 @@ kotlin = "1.9.21"
 kotlinx-coroutines = "1.7.3"
 kotlinx-serialization = "1.6.2"
 ktor = "2.3.7"
+moko-mvvm = "0.16.1"
 moko-resources = "0.23.0"
 multiplatform-settings = "1.1.0"
 oshi = "6.4.9"
@@ -45,12 +46,14 @@ jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 jSystemThemeDetector = { module = "com.github.Dansoftowner:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 korlibs-korio = { module = "com.soywiz.korlibs.korio:korio", version.ref = "korlibs" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+moko-mvvm-flow-compose = { module = "dev.icerock.moko:mvvm-flow-compose", version.ref = "moko-mvvm" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
 moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
