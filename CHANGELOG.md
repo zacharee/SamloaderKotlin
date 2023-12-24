@@ -1,3 +1,22 @@
+# 1.16.4
+- Implement a way to use the modern native Windows file picker.
+- Move footer and settings to a dedicated page.
+- Add descriptions for settings.
+- Move page tabs to the bottom.
+- Desktop now scrolls pages like on Android.
+- Update style of firmware changelogs.
+- Rework HTML parsing for changelogs.
+- Fix an issue where the history page wasn't displaying properly on Android.
+- Fix an issue where Manual mode could be toggled while a download was in progress.
+- Fix styling for the non-native file picker.
+- Remove About and Supporters windows on desktop.
+- Make progress bar animations smoother.
+- Enable the native file picker by default.
+- Fix rounded app icon.
+- Add proper macOS app icon.
+- Android APK name is now lowercase.
+- Code cleanup.
+
 # 1.16.3
 - Add a likely-temporary workaround to download firmware.
 - Improve error reporting again.
