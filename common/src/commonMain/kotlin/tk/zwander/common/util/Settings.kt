@@ -13,7 +13,7 @@ expect fun ObservableSettings(): ObservableSettings
 
 object BifrostSettings {
     object Keys {
-        val useNativeFileDialog = SettingsKey.Boolean("useNativeFileDialog", false, settings)
+        val useNativeFileDialog = SettingsKey.Boolean("useNativeFileDialog", true, settings)
         val allowLowercaseCharacters = SettingsKey.Boolean("allowLowercaseCharacters", false, settings)
         val autoDeleteEncryptedFirmware = SettingsKey.Boolean("autoDeleteEncryptedFirmware", false, settings)
     }
