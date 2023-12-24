@@ -12,6 +12,7 @@ import korlibs.io.stream.AsyncOutputStream
 import korlibs.io.util.checksum.CRC32
 import kotlinx.coroutines.*
 import tk.zwander.common.util.Averager
+import tk.zwander.common.util.streamOperationWithProgress
 import kotlin.time.*
 
 /**
@@ -196,46 +197,16 @@ object CryptUtils {
         chunkSize: Int = 0x300000,
         progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit
     ) {
-        withContext(Dispatchers.IO) {
-            val buffer = ByteArray(chunkSize)
-
-            var len: Int
-            var count = 0L
-
-            val averager = Averager()
-
-            while (this.isActive) {
-                val nano = measureTime {
-                    len = inf.read(buffer, 0, buffer.size)
-                    count += len
-
-                    if (len > 0) {
-                        val decBlock = AES.decryptAesEcb(buffer.sliceArray(0 until len), key, CipherPadding.NoPadding)
-
-                        outf.write(decBlock, 0, decBlock.size)
-                    }
-                }.inWholeNanoseconds
-
-                if (len <= 0) break
-
-                val lenF = len
-                val totalLenF = count
-
-                async {
-                    averager.update(nano, lenF.toLong())
-                    val (totalTime, totalRead, _) = averager.sum()
-
-                    progressCallback(
-                        totalLenF,
-                        length,
-                        (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
-                    )
-                }
-            }
-
-            inf.close()
-            outf.close()
-        }
+        streamOperationWithProgress(
+            input = inf,
+            output = outf,
+            size = length,
+            chunkSize = chunkSize,
+            progressCallback = progressCallback,
+            operation = {
+                AES.decryptAesEcb(it, key, CipherPadding.NoPadding)
+            },
+        )
     }
 
     /**

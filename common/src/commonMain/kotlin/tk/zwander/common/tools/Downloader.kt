@@ -3,8 +3,7 @@ package tk.zwander.common.tools
 import korlibs.io.stream.AsyncInputStream
 import korlibs.io.stream.AsyncOutputStream
 import kotlinx.coroutines.*
-import tk.zwander.common.util.Averager
-import kotlin.time.measureTime
+import tk.zwander.common.util.streamOperationWithProgress
 
 /**
  * Manage downloading firmware.
@@ -25,47 +24,17 @@ object Downloader {
         outputSize: Long,
         progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit,
     ) {
-        withContext(Dispatchers.IO) {
-            val chunkSize = 0x300000
-
-            val read = ByteArray(chunkSize)
-
-            if (outputSize < size) {
-                var len: Int
-                var totalLen = 0L
-
-                val averager = Averager()
-
-                while (isActive) {
-                    val nano = measureTime {
-                        len = response.read(read, 0, chunkSize)
-                        totalLen += len
-
-                        if (len > 0) {
-                            output.write(read, 0, len)
-                        }
-                    }.inWholeNanoseconds
-
-                    if (len <= 0) break
-
-                    val lenF = len
-                    val totalLenF = totalLen
-
-                    async {
-                        averager.update(nano, lenF.toLong())
-                        val (totalTime, totalRead, _) = averager.sum()
-
-                        progressCallback(
-                            totalLenF + outputSize,
-                            size,
-                            (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
-                        )
-                    }
-                }
-            }
-
-            response.close()
-            output.close()
+        try {
+            streamOperationWithProgress(
+                input = response,
+                output = output,
+                size = size,
+                progressOffset = outputSize,
+                progressCallback = progressCallback,
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw e
         }
     }
 }
