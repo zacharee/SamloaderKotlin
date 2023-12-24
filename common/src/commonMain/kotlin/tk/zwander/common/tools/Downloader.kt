@@ -18,8 +18,14 @@ object Downloader {
      * @param outputSize the current size of the output file. Used for resuming downloads.
      * @param progressCallback a callback to keep track of th®e download.
      */
-    suspend fun download(response: AsyncInputStream, size: Long, output: AsyncOutputStream, outputSize: Long, progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit) {
-        withContext(Dispatchers.Default) {
+    suspend fun download(
+        response: AsyncInputStream,
+        size: Long,
+        output: AsyncOutputStream,
+        outputSize: Long,
+        progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit,
+    ) {
+        withContext(Dispatchers.IO) {
             val chunkSize = 0x300000
 
             val read = ByteArray(chunkSize)
@@ -49,13 +55,11 @@ object Downloader {
                         averager.update(nano, lenF.toLong())
                         val (totalTime, totalRead, _) = averager.sum()
 
-                        launch(start = CoroutineStart.UNDISPATCHED) {
-                            progressCallback(
-                                totalLenF + outputSize,
-                                size,
-                                (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
-                            )
-                        }
+                        progressCallback(
+                            totalLenF + outputSize,
+                            size,
+                            (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
+                        )
                     }
                 }
             }

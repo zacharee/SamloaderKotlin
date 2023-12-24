@@ -110,7 +110,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
 
         val fullFileName = fileName.replace(
             ".zip",
-            "_${model.fw.value.replace("/", "_")}_${model.region.value}.zip"
+            "_${model.fw.value.replace("/", "_")}_${model.region.value}.zip",
         )
 
         eventManager.sendEvent(
@@ -119,14 +119,14 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                     if (inputInfo != null) {
                         val (response, md5) = client.downloadFile(
                             path + fileName,
-                            inputInfo.downloadFile.getLength()
+                            inputInfo.downloadFile.getLength(),
                         )
 
                         Downloader.download(
                             response,
                             size,
                             inputInfo.downloadFile.openOutputStream(true),
-                            inputInfo.downloadFile.getLength()
+                            inputInfo.downloadFile.getLength(),
                         ) { current, max, bps ->
                             model.progress.value = current to max
                             model.speed.value = bps
@@ -140,7 +140,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             val result = CryptUtils.checkCrc32(
                                 inputInfo.downloadFile.openInputStream(),
                                 size,
-                                crc32
+                                crc32,
                             ) { current, max, bps ->
                                 model.progress.value = current to max
                                 model.speed.value = bps
@@ -163,7 +163,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             val result = withContext(Dispatchers.Default) {
                                 CryptUtils.checkMD5(
                                     md5,
-                                    inputInfo.downloadFile.openInputStream()
+                                    inputInfo.downloadFile.openInputStream(),
                                 )
                             }
 
@@ -180,7 +180,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
                                 model.fw.value,
                                 model.model.value,
-                                model.region.value
+                                model.region.value,
                             ) else {
                                 v4Key ?: CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value)
                             }
@@ -189,7 +189,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             inputInfo.downloadFile.openInputStream(),
                             inputInfo.decryptFile.openOutputStream(),
                             key,
-                            size
+                            size,
                         ) { current, max, bps ->
                             model.progress.value = current to max
                             model.speed.value = bps

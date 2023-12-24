@@ -196,7 +196,7 @@ object CryptUtils {
         chunkSize: Int = 0x300000,
         progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit
     ) {
-        withContext(Dispatchers.Default) {
+        withContext(Dispatchers.IO) {
             val buffer = ByteArray(chunkSize)
 
             var len: Int
