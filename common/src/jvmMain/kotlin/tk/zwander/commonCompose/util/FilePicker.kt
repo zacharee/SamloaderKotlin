@@ -1,5 +1,7 @@
 package tk.zwander.commonCompose.util
 
+import jnafilechooser.api.WindowsFileChooser
+import korlibs.memory.Platform
 import tk.zwander.common.data.PlatformFile
 import tk.zwander.common.util.BifrostSettings
 import java.awt.FileDialog
@@ -16,13 +18,21 @@ object FilePicker {
 
     fun createFile(name: String): PlatformFile? {
         if (BifrostSettings.Keys.useNativeFileDialog() == true) {
-            val dialog = FileDialog(frame).apply {
-                mode = FileDialog.SAVE
-                file = name
-                isVisible = true
-            }
+            return if (Platform.isWindows) {
+                val dialog = WindowsFileChooser()
+                dialog.defaultFilename = name
+                dialog.showSaveDialog(frame!!)
 
-            return dialog.files.firstOrNull()?.let { PlatformFile(it) }
+                dialog.selectedFile?.let { PlatformFile(it) }
+            } else {
+                val dialog = FileDialog(frame).apply {
+                    mode = FileDialog.SAVE
+                    file = name
+                    isVisible = true
+                }
+
+                dialog.files.firstOrNull()?.let { PlatformFile(it) }
+            }
         } else {
             val chooser = JFileChooser().apply {
                 dialogType = JFileChooser.SAVE_DIALOG
@@ -38,12 +48,19 @@ object FilePicker {
 
     fun pickFile(): PlatformFile? {
         if (BifrostSettings.Keys.useNativeFileDialog() == true) {
-            val dialog = FileDialog(frame).apply {
-                mode = FileDialog.LOAD
-                isVisible = true
-            }
+            return if (Platform.isWindows) {
+                val dialog = WindowsFileChooser()
+                dialog.showOpenDialog(frame!!)
 
-            return dialog.files.firstOrNull()?.let { PlatformFile(it) }
+                dialog.selectedFile?.let { PlatformFile(it) }
+            } else {
+                val dialog = FileDialog(frame).apply {
+                    mode = FileDialog.LOAD
+                    isVisible = true
+                }
+
+                dialog.files.firstOrNull()?.let { PlatformFile(it) }
+            }
         } else {
             val chooser = JFileChooser().apply {
                 dialogType = JFileChooser.OPEN_DIALOG
