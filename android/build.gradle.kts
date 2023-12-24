@@ -36,7 +36,7 @@ android {
         this.versionCode = versionCode
         this.versionName = versionName
 
-        setProperty("archivesBaseName", "bifrost_$versionName")
+        setProperty("archivesBaseName", "bifrost_android_$versionName")
     }
 
     namespace = packageName

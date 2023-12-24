@@ -102,7 +102,7 @@ Conveyor can build for Windows and Linux from any host OS, but macOS is required
 # Running
 
 ## Android
-Download `Bifrost_Android_<VERSION>.apk` and install it.
+Download `bifrost_android_<VERSION>.apk` and install it.
 
 ## Windows
 Download the .zip ending in `windows-amd64`.
