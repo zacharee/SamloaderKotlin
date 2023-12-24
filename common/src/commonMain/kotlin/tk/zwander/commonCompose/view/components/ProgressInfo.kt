@@ -68,7 +68,7 @@ internal fun ProgressInfo(model: BaseModel) {
                     val animatedProgress by animateFloatAsState(
                         targetValue = minOf(1f, round(newProgress * 1000f) / 1000f), // Get rid of some precision to reduce lag.
                         animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec,
-                        visibilityThreshold = 1 / 1000f,
+                        visibilityThreshold = 1 / 10000f,
                     )
 
                     LinearProgressIndicator(
