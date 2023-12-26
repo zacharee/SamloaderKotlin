@@ -1,3 +1,6 @@
+# 1.16.5
+- Add an IMEI/Serial field that needs to be filled with a value that matches the requested firmware.
+
 # 1.16.4
 - Implement a way to use the modern native Windows file picker.
 - Move footer and settings to a dedicated page.
