@@ -89,6 +89,9 @@
     <string name="descending">Descending</string>
     <string name="sort">Sort</string>
     <string name="about">About</string>
+    <string name="imei_serial">IMEI/Serial</string>
+
+    <string name="imei_serial_help">Samsung has started requiring the use of an IMEI or serial number that matches the firmware being downloaded. In many cases, if you use your device\'s serial number, you\'ll be able to download firmware for any CSC for your model. Without the correct IMEI or serial, you\'ll receive error 408 when attempting to download.</string>
 
     <string name="useNativeFilePicker">Use native file picker</string>
     <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>

@@ -38,7 +38,7 @@ private suspend fun onDecrypt(model: DecryptModel) {
         model.region.value
     ) else {
         try {
-            CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value)
+            CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value, model.imeiSerial.value)
         } catch (e: Throwable) {
             model.endJob(MR.strings.decryptError(e.message.toString()))
             return
@@ -167,7 +167,7 @@ internal fun DecryptView() {
         }
 
         item {
-            MRFLayout(model, canChangeOption, canChangeOption)
+            MRFLayout(model, canChangeOption, canChangeOption, showImeiSerial = true)
         }
 
         item {

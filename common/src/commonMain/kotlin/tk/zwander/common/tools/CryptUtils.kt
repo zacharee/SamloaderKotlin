@@ -132,8 +132,8 @@ object CryptUtils {
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV4Key(client: FusClient, version: String, model: String, region: String, tries: Int = 0): ByteArray {
-        val request = Request.createBinaryInform(version.uppercase(), model, region, client.getNonce())
+    suspend fun getV4Key(client: FusClient, version: String, model: String, region: String, imeiSerial: String, tries: Int = 0): ByteArray {
+        val request = Request.createBinaryInform(version.uppercase(), model, region, client.getNonce(), imeiSerial)
         val response = client.makeReq(FusClient.Request.BINARY_INFORM, request)
 
         val responseXml = Xml.parse(response)
@@ -164,7 +164,7 @@ object CryptUtils {
                 throw e
             } else {
                 client.makeReq(FusClient.Request.GENERATE_NONCE)
-                getV4Key(client, version, model, region, tries + 1)
+                getV4Key(client, version, model, region, imeiSerial, tries + 1)
             }
         }
     }

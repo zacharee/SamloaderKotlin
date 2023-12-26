@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import tk.zwander.common.util.BifrostSettings
@@ -26,6 +27,7 @@ abstract class BaseModel(
         private const val MODEL_KEY = "field_model"
         private const val REGION_KEY = "field_region"
         private const val FIRMWARE_KEY = "field_firmware"
+        private const val IMEI_SERIAL_KEY = "field_imei_serial"
     }
 
     /**
@@ -42,6 +44,8 @@ abstract class BaseModel(
      * Firmware string, if available.
      */
     val fw = MutableStateFlow(BifrostSettings.settings.getString(FIRMWARE_KEY.fullKey, ""))
+
+    val imeiSerial = MutableStateFlow(BifrostSettings.settings.getString(IMEI_SERIAL_KEY.fullKey, ""))
 
     /**
      * Current status, if available.
@@ -119,6 +123,12 @@ abstract class BaseModel(
         launch(Dispatchers.Unconfined) {
             fw.collect {
                 BifrostSettings.settings.putString(FIRMWARE_KEY.fullKey, it)
+            }
+        }
+
+        launch(Dispatchers.Unconfined) {
+            imeiSerial.collect {
+                BifrostSettings.settings.putString(IMEI_SERIAL_KEY.fullKey, it)
             }
         }
 

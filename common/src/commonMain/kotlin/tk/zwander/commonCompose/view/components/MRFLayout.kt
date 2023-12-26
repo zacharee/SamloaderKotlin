@@ -6,15 +6,19 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.StringResource
+import kotlinx.coroutines.flow.StateFlow
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.BaseModel
@@ -34,8 +38,12 @@ internal fun MRFLayout(
     canChangeOption: Boolean,
     canChangeFirmware: Boolean,
     showFirmware: Boolean = true,
+    showImeiSerial: Boolean = false,
 ) {
     var showingCscChooser by remember {
+        mutableStateOf(false)
+    }
+    var showingImeiHelp by remember {
         mutableStateOf(false)
     }
 
@@ -84,7 +92,7 @@ internal fun MRFLayout(
                             contentDescription = MR.strings.chooseCsc()
                         )
                     }
-                }
+                },
             )
         },
         startRatio = 0.6,
@@ -92,18 +100,108 @@ internal fun MRFLayout(
         modifier = Modifier.fillMaxWidth()
     )
 
-    if (showFirmware) {
+    val firmwareImeiSerial by remember {
+        derivedStateOf {
+            val items = mutableListOf<DynamicField>()
+
+            if (showFirmware) {
+                items.add(
+                    DynamicField(
+                        value = model.fw,
+                        onValueChange = { model.fw.value = it },
+                        labelRes = MR.strings.firmware,
+                        readOnly = !canChangeFirmware,
+                    )
+                )
+            }
+
+            if (showImeiSerial) {
+                items.add(
+                    DynamicField(
+                        value = model.imeiSerial,
+                        onValueChange = { model.imeiSerial.value = it },
+                        labelRes = MR.strings.imei_serial,
+                        readOnly = !canChangeOption,
+                        trailingIcon = {
+                            IconButton(
+                                onClick = { showingImeiHelp = true }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Info,
+                                    contentDescription = MR.strings.chooseCsc()
+                                )
+                            }
+                        },
+                    )
+                )
+            }
+
+            items
+        }
+    }
+
+    if (firmwareImeiSerial.isNotEmpty()) {
         Spacer(Modifier.size(8.dp))
 
-        OutlinedTextField(
-            value = model.fw.collectAsState().value,
-            onValueChange = { model.fw.value = it.transformText(allowLowercase ?: false) },
-            label = { Text(MR.strings.firmwareHint()) },
-            modifier = Modifier.fillMaxWidth(),
-            readOnly = !canChangeFirmware,
-            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-            singleLine = true
-        )
+        if (firmwareImeiSerial.size == 1) {
+            val first = firmwareImeiSerial.first()
+
+            OutlinedTextField(
+                value = first.value.collectAsState().value,
+                onValueChange = { first.onValueChange(it.transformText(allowLowercase ?: false)) },
+                label = { Text(text = first.labelRes()) },
+                modifier = Modifier.fillMaxWidth(),
+                readOnly = first.readOnly,
+                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+                singleLine = true,
+                trailingIcon = first.trailingIcon,
+            )
+        } else {
+            val first = firmwareImeiSerial.first()
+            val second = firmwareImeiSerial[1]
+
+            SplitComponent(
+                startComponent = {
+                    OutlinedTextField(
+                        value = first.value.collectAsState().value,
+                        onValueChange = {
+                            first.onValueChange(
+                                it.transformText(
+                                    allowLowercase ?: false
+                                )
+                            )
+                        },
+                        modifier = Modifier,
+                        label = { Text(text = first.labelRes()) },
+                        readOnly = first.readOnly,
+                        keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+                        singleLine = true,
+                        trailingIcon = first.trailingIcon,
+                    )
+                },
+                endComponent = {
+                    OutlinedTextField(
+                        value = second.value.collectAsState().value,
+                        onValueChange = {
+                            second.onValueChange(
+                                it.transformText(
+                                    allowLowercase ?: false
+                                )
+                            )
+                        },
+                        modifier = Modifier,
+                        label = { Text(text = second.labelRes()) },
+                        readOnly = second.readOnly,
+                        keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+                        singleLine = true,
+                        trailingIcon = second.trailingIcon,
+                    )
+                },
+                startRatio = 0.6,
+                endRatio = 0.4,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 
     CSCChooserDialog(
@@ -115,6 +213,18 @@ internal fun MRFLayout(
             }
         }
     )
+
+    AlertDialogDef(
+        showing = showingImeiHelp,
+        onDismissRequest = { showingImeiHelp = false },
+        title = { Text(text = MR.strings.imei_serial()) },
+        text = { Text(text = MR.strings.imei_serial_help()) },
+        buttons = {
+            TextButton(onClick = { showingImeiHelp = false }) {
+                Text(text = MR.strings.ok())
+            }
+        },
+    )
 }
 
 private fun String.transformText(allowLowercase: Boolean): String {
@@ -122,3 +232,11 @@ private fun String.transformText(allowLowercase: Boolean): String {
 
     return if (allowLowercase) trimmed else trimmed.uppercase()
 }
+
+private data class DynamicField(
+    val value: StateFlow<String>,
+    val onValueChange: (String) -> Unit,
+    val labelRes: StringResource,
+    val readOnly: Boolean,
+    val trailingIcon: (@Composable () -> Unit)? = null,
+)

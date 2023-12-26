@@ -70,7 +70,8 @@ private suspend fun onDownload(
         client,
         model.fw.value,
         model.model.value,
-        model.region.value
+        model.region.value,
+        model.imeiSerial.value,
     )
 
     if (error != null && error !is VersionException) {
@@ -182,7 +183,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                                 model.model.value,
                                 model.region.value,
                             ) else {
-                                v4Key ?: CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value)
+                                v4Key ?: CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value, model.imeiSerial.value)
                             }
 
                         CryptUtils.decryptProgress(
@@ -466,7 +467,7 @@ internal fun DownloadView() {
         }
 
         item {
-            MRFLayout(model, canChangeOption, manual && canChangeOption)
+            MRFLayout(model, canChangeOption, manual && canChangeOption, showImeiSerial = true)
         }
 
         item {

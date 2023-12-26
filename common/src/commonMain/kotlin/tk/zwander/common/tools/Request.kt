@@ -46,7 +46,7 @@ object Request {
      * @param nonce the session nonce.
      * @return the needed XML.
      */
-    fun createBinaryInform(fw: String, model: String, region: String, nonce: String): String {
+    fun createBinaryInform(fw: String, model: String, region: String, nonce: String, imeiSerial: String): String {
         val split = fw.split("/")
         val (pda, csc, phone, data) = Array(4) { split.getOrNull(it) }
         val logicCheck = try {
@@ -68,8 +68,7 @@ object Request {
                     dataNode("BINARY_NATURE", "1")
                     dataNode("CLIENT_PRODUCT", "Smart Switch")
                     dataNode("CLIENT_VERSION", "4.3.23123_1")
-                    dataNode("DEVICE_IMEI_PUSH", "12345678901234")
-                    dataNode("DEVICE_PLATFORM", "Android")
+                    dataNode("DEVICE_IMEI_PUSH", imeiSerial)
 
                     dataNode("DEVICE_FW_VERSION", fw)
                     dataNode("DEVICE_LOCAL_CODE", region)
@@ -150,10 +149,11 @@ object Request {
         client: FusClient,
         fw: String,
         model: String,
-        region: String
+        region: String,
+        imeiSerial: String,
     ): FetchResult.GetBinaryFileResult {
         val request = try {
-            createBinaryInform(fw.uppercase(), model, region, client.getNonce())
+            createBinaryInform(fw.uppercase(), model, region, client.getNonce(), imeiSerial)
         } catch (e: Throwable) {
             return FetchResult.GetBinaryFileResult(
                 error = Exception(MR.strings.badReturnStatus(e.message.toString()), e),
