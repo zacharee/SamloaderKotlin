@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.SystemProperties
 import android.telephony.TelephonyManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -63,7 +62,8 @@ actual fun rememberPhoneInfo(): PhoneInfo? {
         derivedStateOf {
             PhoneInfo(
                 tac = tac,
-                model = SystemProperties.get("ro.product.model"),
+                model = Class.forName("android.os.SystemProperties")
+                    .getMethod("get", String::class.java).invoke(null, "ro.product.model") as String,
             )
         }
     }.value
