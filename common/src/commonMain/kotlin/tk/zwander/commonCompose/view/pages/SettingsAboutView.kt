@@ -1,5 +1,6 @@
 package tk.zwander.commonCompose.view.pages
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -21,17 +24,24 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import korlibs.memory.Platform
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.SettingsKey
 import tk.zwander.common.util.invoke
+import tk.zwander.common.util.rememberPhoneInfo
+import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.samloaderkotlin.resources.MR
+import kotlin.math.exp
 
 data class OptionItem<T>(
     val label: String,
@@ -87,9 +97,67 @@ fun SettingsAboutView() {
             }
         }
 
+        if (Platform.isAndroid) {
+            PhoneInfoView(modifier = Modifier.fillMaxWidth())
+        }
+
         FooterView(
             modifier = Modifier.fillMaxWidth(),
         )
+    }
+}
+
+@Composable
+private fun PhoneInfoView(
+    modifier: Modifier = Modifier,
+) {
+    val phoneInfo = rememberPhoneInfo()
+    val clipboard = LocalClipboardManager.current
+    var expanded by remember {
+        mutableStateOf(true)
+    }
+
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        ExpandButton(
+            expanded = expanded,
+            text = MR.strings.phoneInfo(),
+            onExpandChange = { expanded = it },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        AnimatedVisibility(
+            visible = !expanded,
+        ) {
+            SelectionContainer {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = MR.strings.tacFormat(phoneInfo?.tac ?: ""),
+                    )
+
+                    Text(
+                        text = MR.strings.modelFormat(phoneInfo?.model ?: ""),
+                    )
+
+                    Button(
+                        onClick = {
+                            clipboard.setText(buildAnnotatedString {
+                                append("${phoneInfo?.tac},${phoneInfo?.model}")
+                            })
+                        },
+                    ) {
+                        Text(text = MR.strings.copy())
+                    }
+                }
+            }
+        }
     }
 }
 

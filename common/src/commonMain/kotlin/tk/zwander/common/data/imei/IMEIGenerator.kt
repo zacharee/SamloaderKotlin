@@ -1,6 +1,7 @@
 package tk.zwander.common.data.imei
 
 import korlibs.io.serialization.csv.CSV
+import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
 
 data object IMEIGenerator {
@@ -55,7 +56,7 @@ data object IMEIDatabase {
     val imeis = mutableMapOf<String, String>()
 
     init {
-        val csv = CSV.parse(MR.files.tacs.readText())
+        val csv = CSV.parse(MR.files.tacs()!!.decodeToString())
         csv.lines.forEach { line ->
             if (line.size >= 2) {
                 val tac = line[0]
