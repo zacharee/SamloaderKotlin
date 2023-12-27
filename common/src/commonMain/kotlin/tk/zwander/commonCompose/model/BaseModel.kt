@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import tk.zwander.common.data.imei.IMEIGenerator
 import tk.zwander.common.util.BifrostSettings
 
 /**
@@ -111,6 +112,8 @@ abstract class BaseModel(
         launch(Dispatchers.Unconfined) {
             model.collect {
                 BifrostSettings.settings.putString(MODEL_KEY.fullKey, it)
+
+                imeiSerial.value = IMEIGenerator.makeImeiForModel(it) ?: ""
             }
         }
 
