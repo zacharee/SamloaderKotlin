@@ -149,7 +149,8 @@ private fun PhoneInfoView(
                     Button(
                         onClick = {
                             clipboard.setText(buildAnnotatedString {
-                                append("${phoneInfo?.tac},${phoneInfo?.model}")
+                                appendLine("TAC,Model")
+                                appendLine("${phoneInfo?.tac},${phoneInfo?.model}")
                             })
                         },
                     ) {
