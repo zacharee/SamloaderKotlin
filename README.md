@@ -1,7 +1,15 @@
-# Notice
-Manual firmware downloads and downloading from the firmware history feature have been disabled for now. Samsung changed something on the backend and always serves the latest available firmware, no matter which is requested.
+# Notices
+## Old Firmware
+Samsung may not serve the firmware you request. Early in 2023, Samsung made it so it's only possible to download the latest firmware in most cases, no matter which you request.
 
 If you know a workaround, please follow up on [this issue](https://github.com/zacharee/SamloaderKotlin/issues/10).
+
+## IMEI/Serial Number Requirement
+Samsung now requires a matching IMEI or serial number be sent with firmware requests. If you're downloading firmware for a device on-hand, enter the IMEI or serial from that device.
+
+Otherwise, you can likely find an IMEI by searching "[MODEL] IMEI" in Google. The CSC doesn't seem to matter, only the model and variant.
+
+The U/U1 variants (US/US Unlocked) are interchangeable. An IMEI for the SM-S918U will work to download firmware for the SM-S918U1, for example.
 
 # Bifrost - Samsung Firmware Downloader
 This is yet another firmware downloader for Samsung devices, but it has some special features.
