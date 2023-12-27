@@ -11,6 +11,8 @@ Otherwise, you can likely find an IMEI by searching "[MODEL] IMEI" in Google. Th
 
 The U/U1 variants (US/US Unlocked) are interchangeable. An IMEI for the SM-S918U will work to download firmware for the SM-S918U1, for example.
 
+If you know a model and TAC you want added to the database, please [open an issue](https://github.com/zacharee/SamloaderKotlin/issues/new?assignees=&labels=&projects=&template=imei-database-request.md&title=).
+
 # Bifrost - Samsung Firmware Downloader
 This is yet another firmware downloader for Samsung devices, but it has some special features.
 

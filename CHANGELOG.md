@@ -2,7 +2,7 @@
 - Add database of IMEI TACs for generating IMEIs based on entered model.
   - If the entered model is in the database, an IMEI should be automatically filled.
 - Add section to "More" page on Android to show TAC and model and allow copying.
-  - Please open an issue if your IMEI is not being automatically filled with your TAC and model.
+  - Please [open an issue](https://github.com/zacharee/SamloaderKotlin/issues/new?assignees=&labels=&projects=&template=imei-database-request.md&title=) if your IMEI is not being automatically filled with your TAC and model.
 
 # 1.16.5
 - Add an IMEI/Serial field that needs to be filled with a value that matches the requested firmware.
