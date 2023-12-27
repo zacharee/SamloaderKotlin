@@ -4,14 +4,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -33,6 +32,7 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import io.ktor.http.URLBuilder
 import korlibs.memory.Platform
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.SettingsKey
@@ -41,7 +41,7 @@ import tk.zwander.common.util.rememberPhoneInfo
 import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.samloaderkotlin.resources.MR
-import kotlin.math.exp
+import tk.zwander.common.util.UrlHandler
 
 data class OptionItem<T>(
     val label: String,
@@ -107,6 +107,7 @@ fun SettingsAboutView() {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun PhoneInfoView(
     modifier: Modifier = Modifier,
@@ -146,15 +147,37 @@ private fun PhoneInfoView(
                         text = MR.strings.modelFormat(phoneInfo?.model ?: ""),
                     )
 
-                    Button(
-                        onClick = {
-                            clipboard.setText(buildAnnotatedString {
-                                appendLine("TAC,Model")
-                                appendLine("${phoneInfo?.tac},${phoneInfo?.model}")
-                            })
-                        },
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
-                        Text(text = MR.strings.copy())
+                        Button(
+                            onClick = {
+                                clipboard.setText(buildAnnotatedString {
+                                    appendLine("TAC,Model")
+                                    appendLine("${phoneInfo?.tac},${phoneInfo?.model}")
+                                })
+                            },
+                        ) {
+                            Text(text = MR.strings.copy())
+                        }
+
+                        Button(
+                            onClick = {
+                                val urlBuilder = URLBuilder("https://github.com/zacharee/SamloaderKotlin/issues/new")
+                                urlBuilder.parameters["template"] = "imei-database-request.md"
+                                urlBuilder.parameters["title"] = "[Device IMEI Request] ${phoneInfo?.model}"
+                                urlBuilder.parameters["body"] = buildString {
+                                    appendLine("TAC,Model")
+                                    appendLine("${phoneInfo?.tac},${phoneInfo?.model}")
+                                }
+
+                                UrlHandler.launchUrl(urlBuilder.buildString(), true)
+                            },
+                        ) {
+                            Text(text = MR.strings.fileIssue())
+                        }
                     }
                 }
             }

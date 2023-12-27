@@ -8,7 +8,7 @@ expect object UrlHandler {
      * Launch a given URL.
      * @param url the URL to open.
      */
-    fun launchUrl(url: String)
+    fun launchUrl(url: String, forceBrowser: Boolean = false)
 
     /**
      * Send an email.

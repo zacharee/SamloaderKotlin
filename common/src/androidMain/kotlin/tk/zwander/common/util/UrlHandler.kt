@@ -5,9 +5,9 @@ import tk.zwander.samsungfirmwaredownloader.util.launchEmail
 import tk.zwander.samsungfirmwaredownloader.util.launchUrl
 
 actual object UrlHandler {
-    actual fun launchUrl(url: String) {
+    actual fun launchUrl(url: String, forceBrowser: Boolean) {
         val context = App.instance
-        context?.launchUrl(url)
+        context?.launchUrl(url, forceBrowser)
     }
     actual fun sendEmail(address: String, subject: String?, content: String?) {
         val context = App.instance

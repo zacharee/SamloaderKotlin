@@ -9,7 +9,7 @@ import java.net.URLEncoder
 actual object UrlHandler {
     private val desktop = Desktop.getDesktop()
 
-    actual fun launchUrl(url: String) {
+    actual fun launchUrl(url: String, forceBrowser: Boolean) {
         val uri = URI(url)
 
         try {
