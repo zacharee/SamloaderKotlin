@@ -1,3 +1,7 @@
+# 1.16.7
+- Add some more TACs.
+- Fetch the latest TACs database from GitHub if possible to avoid having to update Bifrost when new TACs are added.
+
 # 1.16.6
 - Add database of IMEI TACs for generating IMEIs based on entered model.
   - If the entered model is in the database, an IMEI should be automatically filled.
