@@ -11,6 +11,20 @@ val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
+plugins {
+    alias(libs.plugins.compose) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.buildkonfig) apply false
+    alias(libs.plugins.moko.resources) apply false
+    alias(libs.plugins.kotlin.atomicfu) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.bugsnag.android) apply false
+    alias(libs.plugins.conveyor) apply false
+}
+
 allprojects {
     repositories {
         mavenCentral()
@@ -49,20 +63,6 @@ buildscript {
     dependencies {
         classpath(libs.bugsnag.android.gradle.plugin)
     }
-}
-
-plugins {
-    alias(libs.plugins.compose) apply false
-    alias(libs.plugins.kotlin.android) apply false
-    alias(libs.plugins.kotlin.multiplatform) apply false
-    alias(libs.plugins.android.application) apply false
-    alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.buildkonfig) apply false
-    alias(libs.plugins.moko.resources) apply false
-    alias(libs.plugins.kotlin.atomicfu) apply false
-    alias(libs.plugins.kotlin.serialization) apply false
-    alias(libs.plugins.bugsnag.android) apply false
-    alias(libs.plugins.conveyor) apply false
 }
 
 group = groupName
