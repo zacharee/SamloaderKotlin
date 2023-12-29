@@ -92,18 +92,16 @@ data object IMEIDatabase {
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
+            loadLocalCsv()
             try {
                 val response = client.get(LIVE_ENDPOINT)
                 val liveData = response.bodyAsText()
 
-                if (liveData.isBlank()) {
-                    loadLocalCsv()
-                } else {
+                if (liveData.isNotBlank()) {
                     loadCsv(liveData)
                 }
             } catch (e: Throwable) {
                 println("Failed to fetch remote TAC list, using local resource instead. ${e.message}")
-                loadLocalCsv()
             }
         }
     }
