@@ -62,7 +62,7 @@ object Request {
                     ?.child("Status")
                     ?.text
 
-                println("Status $status")
+                println("Status for IMEI $imei: $status")
 
                 if (status == "200") {
                     return (latestRequest to result)
