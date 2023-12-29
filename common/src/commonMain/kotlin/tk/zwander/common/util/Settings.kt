@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.SettingsListener
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,6 +48,7 @@ sealed class SettingsKey<Type> {
 
     protected abstract fun registerListener(callback: (Type?) -> Unit): SettingsListener
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun asMutableStateFlow(): MutableStateFlow<Type?> {
         val wrappedFlow = MutableStateFlow(getValue())
         val flow = object : MutableStateFlow<Type?> by wrappedFlow {
