@@ -18,7 +18,13 @@ expect fun ObservableSettings(): ObservableSettings
 class ObservableBifrostSettings(private val wrapped: ObservableSettings) :
     ObservableSettings by wrapped {
     override fun putString(key: String, value: String) {
-        wrapped.putString(key, value.replace("\u0000", ""))
+        wrapped.putString(
+            key,
+            value.replace("\u0000", "")
+                .split("\n")
+                .take(10)
+                .joinToString("\n"),
+        )
     }
 }
 
