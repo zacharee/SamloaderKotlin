@@ -111,7 +111,12 @@ internal fun MRFLayout(
                         onValueChange = { model.fw.value = it },
                         labelRes = MR.strings.firmware,
                         readOnly = !canChangeFirmware,
-                    )
+                        transform = {
+                            it.transformText(
+                                allowLowercase ?: false
+                            )
+                        },
+                    ),
                 )
             }
 
@@ -133,7 +138,8 @@ internal fun MRFLayout(
                             }
                         },
                         singleLine = false,
-                    )
+                        maxLines = 2,
+                    ),
                 )
             }
 
@@ -147,60 +153,21 @@ internal fun MRFLayout(
         if (firmwareImeiSerial.size == 1) {
             val first = firmwareImeiSerial.first()
 
-            OutlinedTextField(
-                value = first.value.collectAsState().value,
-                onValueChange = { first.onValueChange(it.transformText(allowLowercase ?: false)) },
-                label = { Text(text = first.labelRes()) },
-                modifier = Modifier.fillMaxWidth(),
-                readOnly = first.readOnly,
-                keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-                singleLine = true,
-                trailingIcon = first.trailingIcon,
-            )
+            first.render()
         } else {
             val first = firmwareImeiSerial.first()
             val second = firmwareImeiSerial[1]
 
             SplitComponent(
                 startComponent = {
-                    OutlinedTextField(
-                        value = first.value.collectAsState().value,
-                        onValueChange = {
-                            first.onValueChange(
-                                it.transformText(
-                                    allowLowercase ?: false
-                                )
-                            )
-                        },
-                        modifier = Modifier,
-                        label = { Text(text = first.labelRes()) },
-                        readOnly = first.readOnly,
-                        keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-                        singleLine = first.singleLine,
-                        trailingIcon = first.trailingIcon,
-                    )
+                    first.render()
                 },
                 endComponent = {
-                    OutlinedTextField(
-                        value = second.value.collectAsState().value,
-                        onValueChange = {
-                            second.onValueChange(
-                                it.transformText(
-                                    allowLowercase ?: false
-                                )
-                            )
-                        },
-                        modifier = Modifier,
-                        label = { Text(text = second.labelRes()) },
-                        readOnly = second.readOnly,
-                        keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-                        singleLine = second.singleLine,
-                        trailingIcon = second.trailingIcon,
-                    )
+                    second.render()
                 },
                 startRatio = 0.6,
                 endRatio = 0.4,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -239,6 +206,25 @@ private data class DynamicField(
     val onValueChange: (String) -> Unit,
     val labelRes: StringResource,
     val readOnly: Boolean,
+    val transform: (String) -> String = { it },
     val singleLine: Boolean = true,
+    val maxLines: Int = Int.MAX_VALUE,
     val trailingIcon: (@Composable () -> Unit)? = null,
-)
+) {
+    @Composable
+    fun render(modifier: Modifier = Modifier) {
+        OutlinedTextField(
+            value = value.collectAsState().value,
+            onValueChange = {
+                onValueChange(transform(it))
+            },
+            modifier = modifier,
+            label = { Text(text = labelRes()) },
+            readOnly = readOnly,
+            keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
+            singleLine = singleLine,
+            trailingIcon = trailingIcon,
+            maxLines = maxLines,
+        )
+    }
+}
