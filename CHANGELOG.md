@@ -1,3 +1,7 @@
+# 1.16.9
+- Rework settings model to hopefully reduce text scrambling.
+- Add an option under "More" to delete settings data.
+
 # 1.16.8
 - Add more TACs.
 - Rely on local TAC DB while remote is being fetched.
