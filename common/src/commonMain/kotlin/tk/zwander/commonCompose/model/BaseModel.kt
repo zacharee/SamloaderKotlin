@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -118,7 +117,7 @@ abstract class BaseModel(
         }
 
         launch(Dispatchers.Unconfined) {
-            model.combine(IMEIDatabase.imeis) { model, imeis ->
+            model.combine(IMEIDatabase.tacs) { model, imeis ->
                 model to imeis
             }.collect { (model, imeis) ->
                 imeiSerial.value = IMEIGenerator.makeImeisForModel(model, imeis).joinToString("\n")

@@ -17,7 +17,7 @@ import tk.zwander.samloaderkotlin.resources.MR
 data object IMEIGenerator {
     fun makeImeisForModel(
         model: String,
-        imeis: Map<String, String> = IMEIDatabase.imeis.value
+        imeis: Map<String, Set<String>> = IMEIDatabase.tacs.value,
     ): List<String> {
         val adjustedModel = if (model.endsWith("U1")) {
             model.replace("U1", "U")
@@ -25,11 +25,13 @@ data object IMEIGenerator {
             model
         }
 
-        val tac = imeis[adjustedModel] ?: return emptyList()
+        val tacs = imeis[adjustedModel] ?: return emptyList()
 
-        return IMEIDatabase.DUMMY_SERIALS.map { serial ->
-            val baseImei = "${tac}${serial}"
-            calculateCheckDigitForPartialImei(baseImei)
+        return IMEIDatabase.DUMMY_SERIALS.flatMap { serial ->
+            tacs.map { tac ->
+                val baseImei = "${tac}${serial}"
+                calculateCheckDigitForPartialImei(baseImei)
+            }
         }
     }
 
@@ -86,7 +88,7 @@ data object IMEIDatabase {
     const val LIVE_ENDPOINT =
         "https://raw.githubusercontent.com/zacharee/SamloaderKotlin/master/common/src/commonMain/resources/MR/files/tacs.csv"
 
-    val imeis = MutableStateFlow<Map<String, String>>(mapOf())
+    val tacs = MutableStateFlow<Map<String, Set<String>>>(mapOf())
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
@@ -132,13 +134,23 @@ data object IMEIDatabase {
             if (line.size >= 2) {
                 val tac = line[0]
                 val model = line[1].cleanUpModel()
-                val model2 = line.getOrNull(2)?.cleanUpModel()
 
-                val newValue = imeis.value.toMutableMap()
-                newValue[model] = tac
-                model2?.let { newValue[it] = tac }
+                val newMap = tacs.value.toMutableMap()
 
-                imeis.value = newValue
+                val model1Set = (newMap[model] ?: setOf()).toMutableSet()
+                model1Set.add(tac)
+                newMap[model] = model1Set
+
+                if (line.size > 2) {
+                    line.slice(2..line.lastIndex).forEach { secondaryModel ->
+                        val cleaned = secondaryModel.cleanUpModel()
+                        val secondarySet = (newMap[cleaned] ?: setOf()).toMutableSet()
+                        secondarySet.add(tac)
+                        newMap[cleaned] = secondarySet
+                    }
+                }
+
+                tacs.value = newMap
             }
         }
     }
