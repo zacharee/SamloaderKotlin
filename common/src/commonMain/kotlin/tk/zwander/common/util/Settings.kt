@@ -8,8 +8,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.SettingsListener
+import korlibs.io.async.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 
 expect fun ObservableSettings(): ObservableSettings
+
+class ObservableBifrostSettings(private val wrapped: ObservableSettings) : ObservableSettings by wrapped {
+    suspend fun putStringAsync(key: String, value: String) = coroutineScope {
+        async(Dispatchers.IO) {
+            putString(key, value)
+        }
+    }
+
+    override fun putString(key: String, value: String) {
+        wrapped.putString(key, value.replace("\u0000", ""))
+    }
+}
 
 object BifrostSettings {
     object Keys {
@@ -18,12 +33,7 @@ object BifrostSettings {
         val autoDeleteEncryptedFirmware = SettingsKey.Boolean("autoDeleteEncryptedFirmware", false, settings)
     }
 
-    private val wrappedSettings = ObservableSettings()
-    val settings = object : ObservableSettings by wrappedSettings {
-        override fun putString(key: String, value: String) {
-            wrappedSettings.putString(key, value.replace("\u0000", ""))
-        }
-    }
+    val settings = ObservableBifrostSettings(ObservableSettings())
 }
 
 sealed class SettingsKey<Type> {

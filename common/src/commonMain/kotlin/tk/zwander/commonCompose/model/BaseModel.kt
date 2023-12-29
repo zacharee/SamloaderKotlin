@@ -3,6 +3,7 @@ package tk.zwander.commonCompose.model
 import androidx.compose.runtime.*
 import io.ktor.client.utils.*
 import io.ktor.util.*
+import korlibs.io.async.async
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -112,7 +113,7 @@ abstract class BaseModel(
     suspend fun onCreate() = coroutineScope {
         launch(Dispatchers.Unconfined) {
             model.collect {
-                BifrostSettings.settings.putString(MODEL_KEY.fullKey, it)
+                BifrostSettings.settings.putStringAsync(MODEL_KEY.fullKey, it)
             }
         }
 
@@ -120,25 +121,27 @@ abstract class BaseModel(
             model.combine(IMEIDatabase.tacs) { model, imeis ->
                 model to imeis
             }.collect { (model, imeis) ->
-                imeiSerial.value = IMEIGenerator.makeImeisForModel(model, imeis).joinToString("\n")
+                async {
+                    imeiSerial.value = IMEIGenerator.makeImeisForModel(model, imeis).joinToString("\n")
+                }
             }
         }
 
         launch(Dispatchers.Unconfined) {
             region.collect {
-                BifrostSettings.settings.putString(REGION_KEY.fullKey, it)
+                BifrostSettings.settings.putStringAsync(REGION_KEY.fullKey, it)
             }
         }
 
         launch(Dispatchers.Unconfined) {
             fw.collect {
-                BifrostSettings.settings.putString(FIRMWARE_KEY.fullKey, it)
+                BifrostSettings.settings.putStringAsync(FIRMWARE_KEY.fullKey, it)
             }
         }
 
         launch(Dispatchers.Unconfined) {
             imeiSerial.collect {
-                BifrostSettings.settings.putString(IMEI_SERIAL_KEY.fullKey, it)
+                BifrostSettings.settings.putStringAsync(IMEI_SERIAL_KEY.fullKey, it)
             }
         }
 
