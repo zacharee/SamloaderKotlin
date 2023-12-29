@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import tk.zwander.common.data.imei.IMEIDatabase
 import tk.zwander.common.data.imei.IMEIGenerator
 import tk.zwander.common.util.BifrostSettings
+import tk.zwander.common.util.SettingsKey
 
 /**
  * A model class to hold information for the various views.
@@ -36,19 +37,22 @@ abstract class BaseModel(
     /**
      * Device model.
      */
-    val model = MutableStateFlow(BifrostSettings.settings.getString(MODEL_KEY.fullKey, ""))
+    val model = SettingsKey.String(MODEL_KEY.fullKey, "", BifrostSettings.settings).asMutableStateFlow()
 
     /**
      * Device region.
      */
-    val region = MutableStateFlow(BifrostSettings.settings.getString(REGION_KEY.fullKey, ""))
+    val region = SettingsKey.String(REGION_KEY.fullKey, "", BifrostSettings.settings).asMutableStateFlow()
 
     /**
      * Firmware string, if available.
      */
-    val fw = MutableStateFlow(BifrostSettings.settings.getString(FIRMWARE_KEY.fullKey, ""))
+    val fw = SettingsKey.String(FIRMWARE_KEY.fullKey, "", BifrostSettings.settings).asMutableStateFlow()
 
-    val imeiSerial = MutableStateFlow(BifrostSettings.settings.getString(IMEI_SERIAL_KEY.fullKey, ""))
+    /**
+     * Newline-separated list of IMEIs/serial numbers.
+     */
+    val imeiSerial = SettingsKey.String(IMEI_SERIAL_KEY.fullKey, "", BifrostSettings.settings).asMutableStateFlow()
 
     /**
      * Current status, if available.
@@ -111,37 +115,13 @@ abstract class BaseModel(
     protected open fun onEnd(text: String) {}
 
     suspend fun onCreate() = coroutineScope {
-        launch(Dispatchers.Unconfined) {
-            model.collect {
-                BifrostSettings.settings.putStringAsync(MODEL_KEY.fullKey, it)
-            }
-        }
-
-        launch(Dispatchers.Unconfined) {
+        launch(Dispatchers.IO) {
             model.combine(IMEIDatabase.tacs) { model, imeis ->
                 model to imeis
             }.collect { (model, imeis) ->
-                async {
+                launch(Dispatchers.IO) {
                     imeiSerial.value = IMEIGenerator.makeImeisForModel(model, imeis).joinToString("\n")
                 }
-            }
-        }
-
-        launch(Dispatchers.Unconfined) {
-            region.collect {
-                BifrostSettings.settings.putStringAsync(REGION_KEY.fullKey, it)
-            }
-        }
-
-        launch(Dispatchers.Unconfined) {
-            fw.collect {
-                BifrostSettings.settings.putStringAsync(FIRMWARE_KEY.fullKey, it)
-            }
-        }
-
-        launch(Dispatchers.Unconfined) {
-            imeiSerial.collect {
-                BifrostSettings.settings.putStringAsync(IMEI_SERIAL_KEY.fullKey, it)
             }
         }
 

@@ -33,12 +33,18 @@ private suspend fun onDecrypt(model: DecryptModel) {
     val outputFile = info.decFile
 
     val key = if (inputFile.getName().endsWith(".enc2")) CryptUtils.getV2Key(
-        model.fw.value,
-        model.model.value,
-        model.region.value
+        model.fw.value ?: "",
+        model.model.value ?: "",
+        model.region.value ?: ""
     ) else {
         try {
-            CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value, model.imeiSerial.value)
+            CryptUtils.getV4Key(
+                client,
+                model.fw.value ?: "",
+                model.model.value ?: "",
+                model.region.value ?: "",
+                model.imeiSerial.value ?: "",
+            )
         } catch (e: Throwable) {
             model.endJob(MR.strings.decryptError(e.message.toString()))
             return
@@ -103,7 +109,7 @@ internal fun DecryptView() {
 
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
     val canDecrypt = fileToDecrypt != null && !hasRunningJobs
-            && fw.isNotBlank() && modelModel.isNotBlank() && region.isNotBlank()
+            && !fw.isNullOrBlank() && !modelModel.isNullOrBlank() && !region.isNullOrBlank()
 
     val canChangeOption = !hasRunningJobs
 

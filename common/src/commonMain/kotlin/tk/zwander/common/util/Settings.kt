@@ -8,19 +8,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.SettingsListener
-import korlibs.io.async.async
+import korlibs.io.async.launch
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 expect fun ObservableSettings(): ObservableSettings
 
-class ObservableBifrostSettings(private val wrapped: ObservableSettings) : ObservableSettings by wrapped {
-    suspend fun putStringAsync(key: String, value: String) = coroutineScope {
-        async(Dispatchers.IO) {
-            putString(key, value)
-        }
-    }
-
+class ObservableBifrostSettings(private val wrapped: ObservableSettings) :
+    ObservableSettings by wrapped {
     override fun putString(key: String, value: String) {
         wrapped.putString(key, value.replace("\u0000", ""))
     }
@@ -29,8 +26,10 @@ class ObservableBifrostSettings(private val wrapped: ObservableSettings) : Obser
 object BifrostSettings {
     object Keys {
         val useNativeFileDialog = SettingsKey.Boolean("useNativeFileDialog", true, settings)
-        val allowLowercaseCharacters = SettingsKey.Boolean("allowLowercaseCharacters", false, settings)
-        val autoDeleteEncryptedFirmware = SettingsKey.Boolean("autoDeleteEncryptedFirmware", false, settings)
+        val allowLowercaseCharacters =
+            SettingsKey.Boolean("allowLowercaseCharacters", false, settings)
+        val autoDeleteEncryptedFirmware =
+            SettingsKey.Boolean("autoDeleteEncryptedFirmware", false, settings)
     }
 
     val settings = ObservableBifrostSettings(ObservableSettings())
@@ -40,11 +39,48 @@ sealed class SettingsKey<Type> {
     abstract val key: kotlin.String
     abstract val default: Type?
     abstract val settings: ObservableSettings
-    
+
     abstract fun getValue(): Type?
     abstract fun setValue(value: Type?)
 
     protected abstract fun registerListener(callback: (Type?) -> Unit): SettingsListener
+
+    fun asMutableStateFlow(): MutableStateFlow<Type?> {
+        val wrappedFlow = MutableStateFlow(getValue())
+        val flow = object : MutableStateFlow<Type?> by wrappedFlow {
+            override var value: Type?
+                get() = wrappedFlow.value
+                set(value) {
+                    wrappedFlow.value = value
+                    GlobalScope.launch(Dispatchers.IO) {
+                        setValue(value)
+                    }
+                }
+
+            override suspend fun emit(value: Type?) {
+                wrappedFlow.emit(value)
+                GlobalScope.launch(Dispatchers.IO) {
+                    setValue(value)
+                }
+            }
+
+            override fun tryEmit(value: Type?): kotlin.Boolean {
+                return wrappedFlow.tryEmit(value).also {
+                    if (it) {
+                        GlobalScope.launch(Dispatchers.IO) {
+                            setValue(value)
+                        }
+                    }
+                }
+            }
+        }
+
+        registerListener {
+            flow.value = it
+        }
+
+        return flow
+    }
 
     @Composable
     fun collectAsMutableState(): MutableState<Type?> {
@@ -58,7 +94,7 @@ sealed class SettingsKey<Type> {
 
         DisposableEffect(this) {
             val listener = registerListener {
-                state.value = it
+                state.value = getValue()
             }
 
             onDispose {
@@ -70,7 +106,7 @@ sealed class SettingsKey<Type> {
     }
 
     operator fun invoke(): Type? = getValue()
-    
+
     data class Boolean(
         override val key: kotlin.String,
         override val default: kotlin.Boolean?,

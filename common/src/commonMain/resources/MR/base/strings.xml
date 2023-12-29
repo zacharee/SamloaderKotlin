@@ -106,4 +106,7 @@
 
     <string name="autoDeleteEncryptedFirmware">Auto-Delete Encrypted Firmware</string>
     <string name="autoDeleteEncryptedFirmwareDesc">When downloading firmware from Samsung, Bifrost creates two files: the encrypted firmware from Samsung, and a ZIP containing the decrypted firmware files. Enable this option to automatically delete the encrypted file once it\'s been decrypted.</string>
+
+    <string name="removeSavedData">Remove Saved Data</string>
+    <string name="removeSavedDataDesc">Bifrost stores some data such as the last-entered device information and current settings states. Click here to remove that data.</string>
 </resources>

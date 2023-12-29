@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import kotlinx.coroutines.flow.StateFlow
 import tk.zwander.common.util.BifrostSettings
@@ -40,6 +41,11 @@ internal fun MRFLayout(
     showFirmware: Boolean = true,
     showImeiSerial: Boolean = false,
 ) {
+    var modelState by model.model.collectAsMutableState()
+    var regionState by model.region.collectAsMutableState()
+    var firmwareState by model.fw.collectAsMutableState()
+    var imeiState by model.imeiSerial.collectAsMutableState()
+
     var showingCscChooser by remember {
         mutableStateOf(false)
     }
@@ -53,10 +59,10 @@ internal fun MRFLayout(
     SplitComponent(
         startComponent = {
             OutlinedTextField(
-                value = model.model.collectAsState().value,
+                value = modelState ?: "",
                 onValueChange = {
-                    model.model.value = it.transformText(allowLowercase ?: false)
-                    if ((model is DownloadModel && !model.manual.value)) {
+                    modelState = it.transformText(allowLowercase ?: false)
+                    if ((model is DownloadModel && model.manual.value == false)) {
                         model.fw.value = ""
                         model.osCode.value = ""
                     }
@@ -70,10 +76,10 @@ internal fun MRFLayout(
         },
         endComponent = {
             OutlinedTextField(
-                value = model.region.collectAsState().value,
+                value = regionState ?: "",
                 onValueChange = {
-                    model.region.value = it.transformText(allowLowercase ?: false)
-                    if ((model is DownloadModel && !model.manual.value)) {
+                    regionState = it.transformText(allowLowercase ?: false)
+                    if ((model is DownloadModel && model.manual.value == false)) {
                         model.fw.value = ""
                         model.osCode.value = ""
                     }
@@ -107,8 +113,8 @@ internal fun MRFLayout(
             if (showFirmware) {
                 items.add(
                     DynamicField(
-                        value = model.fw,
-                        onValueChange = { model.fw.value = it },
+                        value = firmwareState ?: "",
+                        onValueChange = { firmwareState = it },
                         labelRes = MR.strings.firmware,
                         readOnly = !canChangeFirmware,
                         transform = {
@@ -123,8 +129,8 @@ internal fun MRFLayout(
             if (showImeiSerial) {
                 items.add(
                     DynamicField(
-                        value = model.imeiSerial,
-                        onValueChange = { model.imeiSerial.value = it },
+                        value = imeiState ?: "",
+                        onValueChange = { imeiState = it },
                         labelRes = MR.strings.imei_serial,
                         readOnly = !canChangeOption,
                         trailingIcon = {
@@ -202,7 +208,7 @@ private fun String.transformText(allowLowercase: Boolean): String {
 }
 
 private data class DynamicField(
-    val value: StateFlow<String>,
+    val value: String,
     val onValueChange: (String) -> Unit,
     val labelRes: StringResource,
     val readOnly: Boolean,
@@ -214,7 +220,7 @@ private data class DynamicField(
     @Composable
     fun render(modifier: Modifier = Modifier) {
         OutlinedTextField(
-            value = value.collectAsState().value,
+            value = value,
             onValueChange = {
                 onValueChange(transform(it))
             },

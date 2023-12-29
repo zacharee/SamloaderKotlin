@@ -16,10 +16,10 @@ import tk.zwander.samloaderkotlin.resources.MR
 
 data object IMEIGenerator {
     fun makeImeisForModel(
-        model: String,
+        model: String?,
         imeis: Map<String, Set<String>> = IMEIDatabase.tacs.value,
     ): List<String> {
-        val adjustedModel = if (model.endsWith("U1")) {
+        val adjustedModel = if (model?.endsWith("U1") == true) {
             model.replace("U1", "U")
         } else {
             model

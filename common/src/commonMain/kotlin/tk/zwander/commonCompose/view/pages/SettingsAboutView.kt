@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.ktor.http.URLBuilder
+import korlibs.io.async.launch
 import korlibs.memory.Platform
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.SettingsKey
@@ -43,30 +45,57 @@ import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.common.util.UrlHandler
 
-data class OptionItem<T>(
-    val label: String,
-    val desc: String?,
-    val key: SettingsKey<T>,
-)
+sealed interface IOptionItem {
+    val label: String
+    val desc: String?
+    val listKey: String
 
-val options = arrayListOf<OptionItem<*>>().apply {
+    data class ActionOptionItem(
+        override val label: String,
+        override val desc: String?,
+        override val listKey: String,
+        val action: suspend () -> Unit,
+    ) : IOptionItem
+
+    sealed interface BasicOptionItem<T> : IOptionItem {
+        val key: SettingsKey<T>
+        override val listKey: String
+            get() = key.key
+
+        data class BooleanItem(
+            override val label: String,
+            override val desc: String?,
+            override val key: SettingsKey<Boolean>,
+        ) : BasicOptionItem<Boolean>
+    }
+}
+
+val options = arrayListOf<IOptionItem>().apply {
     if (Platform.isJvm && !Platform.isAndroid) {
-        add(OptionItem(
+        add(IOptionItem.BasicOptionItem.BooleanItem(
             label = MR.strings.useNativeFilePicker(),
             desc = MR.strings.useNativeFilePickerDesc(),
             key = BifrostSettings.Keys.useNativeFileDialog,
         ))
     }
 
-    add(OptionItem(
+    add(IOptionItem.BasicOptionItem.BooleanItem(
         label = MR.strings.allowLowercaseCharacters(),
         desc = MR.strings.allowLowercaseCharactersDesc(),
         key = BifrostSettings.Keys.allowLowercaseCharacters,
     ))
-    add(OptionItem(
+    add(IOptionItem.BasicOptionItem.BooleanItem(
         label = MR.strings.autoDeleteEncryptedFirmware(),
         desc = MR.strings.autoDeleteEncryptedFirmwareDesc(),
         key = BifrostSettings.Keys.autoDeleteEncryptedFirmware,
+    ))
+    add(IOptionItem.ActionOptionItem(
+        label = MR.strings.removeSavedData(),
+        desc = MR.strings.removeSavedDataDesc(),
+        listKey = "remove_saved_data",
+        action = {
+            BifrostSettings.settings.clear()
+        },
     ))
 }
 
@@ -82,16 +111,20 @@ fun SettingsAboutView() {
             verticalItemSpacing = 8.dp,
             modifier = Modifier.weight(1f),
         ) {
-            items(items = options, key = { it.key.key }) { item ->
+            items(items = options, key = { it.listKey }) { item ->
                 Box(
                     modifier = Modifier.widthIn(max = 400.dp),
                 ) {
-                    when (item.key) {
-                        is SettingsKey.Boolean -> {
-                            BooleanPreference(item = item as OptionItem<Boolean>)
+                    when (item) {
+                        is IOptionItem.ActionOptionItem -> {
+                            ActionPreference(item = item)
                         }
+
+                        is IOptionItem.BasicOptionItem.BooleanItem -> {
+                            BooleanPreference(item = item)
+                        }
+
                         // TODO: Layouts for other settings types.
-                        else -> {}
                     }
                 }
             }
@@ -188,7 +221,7 @@ private fun PhoneInfoView(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BooleanPreference(
-    item: OptionItem<Boolean>,
+    item: IOptionItem.BasicOptionItem.BooleanItem,
     modifier: Modifier = Modifier,
 ) {
     var state by item.key.collectAsMutableState()
@@ -203,29 +236,58 @@ private fun BooleanPreference(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column(
-                modifier = Modifier.weight(1f)
-                    .padding(end = 8.dp),
-            ) {
-                Text(
-                    text = item.label,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
-                )
-
-                item.desc?.let {
-                    Text(
-                        text = it,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
-            }
+            LabelDesc(
+                item = item,
+                modifier = Modifier.weight(1f).padding(end = 8.dp),
+            )
 
             Switch(
                 checked = state ?: false,
                 onCheckedChange = {
                     state = it
                 },
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ActionPreference(
+    item: IOptionItem.ActionOptionItem,
+    modifier: Modifier = Modifier,
+) {
+    val scope = rememberCoroutineScope()
+
+    Card(
+        modifier = modifier,
+        onClick = { scope.launch { item.action() } },
+    ) {
+        LabelDesc(
+            item = item,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        )
+    }
+}
+
+@Composable
+private fun LabelDesc(
+    item: IOptionItem,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Text(
+            text = item.label,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Bold,
+        )
+
+        item.desc?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }

@@ -3,8 +3,10 @@ package tk.zwander.commonCompose.model
 import korlibs.io.async.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.util.BifrostSettings
+import tk.zwander.common.util.SettingsKey
 
 /**
  * The model for the Downloader view.
@@ -17,7 +19,7 @@ class DownloadModel : BaseModel("download_model") {
     /**
      * Whether the user is manually inputting firmware.
      */
-    val manual = MutableStateFlow(BifrostSettings.settings.getBoolean(MANUAL_KEY.fullKey, false))
+    val manual = SettingsKey.Boolean(MANUAL_KEY.fullKey, false, BifrostSettings.settings).asMutableStateFlow()
 
     /**
      * The Android version of automatically-retrieved
@@ -34,12 +36,4 @@ class DownloadModel : BaseModel("download_model") {
      * Whether the changelog is expanded.
      */
     val changelogExpanded = MutableStateFlow(false)
-
-    override suspend fun createExtra() {
-        launch(Dispatchers.Unconfined) {
-            manual.collect {
-                BifrostSettings.settings.putBoolean(MANUAL_KEY.fullKey, it)
-            }
-        }
-    }
 }

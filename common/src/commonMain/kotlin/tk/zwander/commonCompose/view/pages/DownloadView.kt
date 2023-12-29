@@ -68,10 +68,10 @@ private suspend fun onDownload(
 
     val (info, error, output, requestBody) = Request.getBinaryFile(
         client,
-        model.fw.value,
-        model.model.value,
-        model.region.value,
-        model.imeiSerial.value,
+        model.fw.value ?: "",
+        model.model.value ?: "",
+        model.region.value ?: "",
+        model.imeiSerial.value ?: "",
     )
 
     if (error != null && error !is VersionException) {
@@ -111,7 +111,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
 
         val fullFileName = fileName.replace(
             ".zip",
-            "_${model.fw.value.replace("/", "_")}_${model.region.value}.zip",
+            "_${model.fw.value?.replace("/", "_")}_${model.region.value}.zip",
         )
 
         eventManager.sendEvent(
@@ -179,11 +179,17 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
 
                         val key =
                             if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
-                                model.fw.value,
-                                model.model.value,
-                                model.region.value,
+                                model.fw.value ?: "",
+                                model.model.value ?: "",
+                                model.region.value ?: "",
                             ) else {
-                                v4Key ?: CryptUtils.getV4Key(client, model.fw.value, model.model.value, model.region.value, model.imeiSerial.value)
+                                v4Key ?: CryptUtils.getV4Key(
+                                    client,
+                                    model.fw.value ?: "",
+                                    model.model.value ?: "",
+                                    model.region.value ?: "",
+                                    model.imeiSerial.value ?: "",
+                                )
                             }
 
                         CryptUtils.decryptProgress(
@@ -221,14 +227,14 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
 }
 
 private suspend fun onFetch(model: DownloadModel) {
-    val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model.value, model.region.value)
+    val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model.value ?: "", model.region.value ?: "")
 
     if (error != null) {
         model.endJob(MR.strings.firmwareCheckError(error.message.toString(), output))
         return
     }
 
-    model.changelog.value = ChangelogHandler.getChangelog(model.model.value, model.region.value, fw.split("/")[0])
+    model.changelog.value = ChangelogHandler.getChangelog(model.model.value ?: "", model.region.value ?: "", fw.split("/")[0])
 
     model.fw.value = fw
     model.osCode.value = os
@@ -256,10 +262,10 @@ internal fun DownloadView() {
     val changelog by model.changelog.collectAsState()
     val changelogExpanded by model.changelogExpanded.collectAsState()
 
-    val canCheckVersion = !manual && modelModel.isNotBlank()
-            && region.isNotBlank() && !hasRunningJobs
+    val canCheckVersion = manual == false && !modelModel.isNullOrBlank()
+            && !region.isNullOrBlank() && !hasRunningJobs
 
-    val canDownload = modelModel.isNotBlank() && region.isNotBlank() && fw.isNotBlank()
+    val canDownload = !modelModel.isNullOrBlank() && !region.isNullOrBlank() && !fw.isNullOrBlank()
             && !hasRunningJobs
 
     val canChangeOption = !hasRunningJobs
@@ -350,12 +356,12 @@ internal fun DownloadView() {
                         indication = null,
                         enabled = canChangeOption,
                     ) {
-                        model.manual.value = !model.manual.value
+                        model.manual.value = model.manual.value?.let { !it }
                     }
                         .padding(4.dp)
                 ) {
                     Checkbox(
-                        checked = manual,
+                        checked = manual == true,
                         onCheckedChange = {
                             model.manual.value = it
                         },
@@ -377,7 +383,7 @@ internal fun DownloadView() {
                 }
 
                 AnimatedVisibility(
-                    visible = manual,
+                    visible = manual == true,
                     enter = fadeIn(),
                     exit = fadeOut()
                 ) {
@@ -467,7 +473,7 @@ internal fun DownloadView() {
         }
 
         item {
-            MRFLayout(model, canChangeOption, manual && canChangeOption, showImeiSerial = true)
+            MRFLayout(model, canChangeOption, manual == true && canChangeOption, showImeiSerial = true)
         }
 
         item {
@@ -475,7 +481,7 @@ internal fun DownloadView() {
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 AnimatedVisibility(
-                    visible = !manual && osCode.isNotEmpty(),
+                    visible = manual == false && osCode.isNotEmpty(),
                     enter = fadeIn(),
                     exit = fadeOut(),
                     modifier = Modifier.fillMaxWidth(),
@@ -501,7 +507,7 @@ internal fun DownloadView() {
                 }
 
                 val changelogCondition =
-                    changelog != null && !manual && !hasRunningJobs && fw.isNotBlank()
+                    changelog != null && manual == false && !hasRunningJobs && !fw.isNullOrBlank()
 
                 AnimatedVisibility(
                     visible = changelogCondition,

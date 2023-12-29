@@ -123,8 +123,8 @@ private fun parseHistoryXml(xml: String): List<HistoryInfo> {
 }
 
 private suspend fun onFetch(model: HistoryModel) {
-    val historyString = getFirmwareHistoryString(model.model.value, model.region.value)
-    val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value, model.region.value)
+    val historyString = getFirmwareHistoryString(model.model.value ?: "", model.region.value ?: "")
+    val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value ?: "", model.region.value ?: "")
 
     if (historyString == null && historyStringXml == null) {
         model.endJob(MR.strings.historyError())
@@ -146,7 +146,7 @@ private suspend fun onFetch(model: HistoryModel) {
             }
 
             model.changelogs.value = try {
-                ChangelogHandler.getChangelogs(model.model.value, model.region.value)
+                ChangelogHandler.getChangelogs(model.model.value ?: "", model.region.value ?: "")
             } catch (e: Exception) {
                 println("Error retrieving changelogs")
                 e.printStackTrace()
@@ -175,8 +175,8 @@ internal fun HistoryView() {
     val modelModel by model.model.collectAsState()
     val region by model.region.collectAsState()
     val statusText by model.statusText.collectAsState()
-    val canCheckHistory = modelModel.isNotBlank()
-            && region.isNotBlank() && !hasRunningJobs
+    val canCheckHistory = !modelModel.isNullOrBlank()
+            && !region.isNullOrBlank() && !hasRunningJobs
 
     val odinRomSource = buildAnnotatedString {
         pushStyle(
