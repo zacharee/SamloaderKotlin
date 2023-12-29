@@ -20,10 +20,7 @@ class ObservableBifrostSettings(private val wrapped: ObservableSettings) :
     override fun putString(key: String, value: String) {
         wrapped.putString(
             key,
-            value.replace("\u0000", "")
-                .split("\n")
-                .take(10)
-                .joinToString("\n"),
+            value.replace("\u0000", ""),
         )
     }
 }

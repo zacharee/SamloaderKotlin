@@ -120,7 +120,8 @@ abstract class BaseModel(
                 model to imeis
             }.collect { (model, imeis) ->
                 launch(Dispatchers.IO) {
-                    imeiSerial.value = IMEIGenerator.makeImeisForModel(model, imeis).joinToString("\n")
+                    imeiSerial.value = IMEIGenerator.makeImeisForModel(model, imeis)
+                        .take(10).joinToString("\n")
                 }
             }
         }
