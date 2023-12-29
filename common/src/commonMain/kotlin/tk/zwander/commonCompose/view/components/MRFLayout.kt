@@ -132,6 +132,7 @@ internal fun MRFLayout(
                                 )
                             }
                         },
+                        singleLine = false,
                     )
                 )
             }
@@ -175,7 +176,7 @@ internal fun MRFLayout(
                         label = { Text(text = first.labelRes()) },
                         readOnly = first.readOnly,
                         keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-                        singleLine = true,
+                        singleLine = first.singleLine,
                         trailingIcon = first.trailingIcon,
                     )
                 },
@@ -193,7 +194,7 @@ internal fun MRFLayout(
                         label = { Text(text = second.labelRes()) },
                         readOnly = second.readOnly,
                         keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
-                        singleLine = true,
+                        singleLine = second.singleLine,
                         trailingIcon = second.trailingIcon,
                     )
                 },
@@ -238,5 +239,6 @@ private data class DynamicField(
     val onValueChange: (String) -> Unit,
     val labelRes: StringResource,
     val readOnly: Boolean,
+    val singleLine: Boolean = true,
     val trailingIcon: (@Composable () -> Unit)? = null,
 )

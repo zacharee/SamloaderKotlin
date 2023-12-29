@@ -38,6 +38,43 @@ object Request {
         }
     }
 
+    suspend fun performBinaryInformRetry(client: FusClient, fw: String, model: String, region: String, imeiSerial: String, includeNonce: Boolean): Pair<String, Xml> {
+        val splitImeiSerial = imeiSerial.split("\n")
+
+        var latestRequest = ""
+        var latestResult: Xml = Xml.Text("")
+        var latestError: Throwable? = null
+
+        splitImeiSerial.forEach { imei ->
+            latestRequest = createBinaryInform(fw, model, region, client.getNonce(), imei)
+
+            latestResult = try {
+                Xml.parse(client.makeReq(FusClient.Request.BINARY_INFORM, latestRequest, includeNonce))
+            } catch (e: Throwable) {
+                latestError = e
+                Xml.Text("")
+                return@forEach
+            }
+
+            latestResult.let { result ->
+                val status = result.child("FUSBody")
+                    ?.child("Results")
+                    ?.child("Status")
+                    ?.text
+
+                println("Status $status")
+
+                if (status == "200") {
+                    return (latestRequest to result)
+                }
+            }
+        }
+
+        latestError?.let { throw it }
+
+        return (latestRequest to latestResult)
+    }
+
     /**
      * Generate the XML needed to perform a binary inform.
      * @param fw the firmware string.
@@ -152,18 +189,8 @@ object Request {
         region: String,
         imeiSerial: String,
     ): FetchResult.GetBinaryFileResult {
-        val request = try {
-            createBinaryInform(fw.uppercase(), model, region, client.getNonce(), imeiSerial)
-        } catch (e: Throwable) {
-            return FetchResult.GetBinaryFileResult(
-                error = Exception(MR.strings.badReturnStatus(e.message.toString()), e),
-                requestBody = "",
-            )
-        }
-        val response = client.makeReq(FusClient.Request.BINARY_INFORM, request, false)
-
-        val responseXml = try {
-            Xml.parse(response)
+        val (request, responseXml) = try {
+            performBinaryInformRetry(client, fw.uppercase(), model, region, imeiSerial, false)
         } catch (e: Exception) {
             CrossPlatformBugsnag.notify(e)
 
@@ -173,9 +200,8 @@ object Request {
                     "firmware" to fw,
                     "model" to model,
                     "region" to region,
-                    "response" to response,
                 ).toString(),
-                requestBody = request,
+                requestBody = "",
             )
         }
 

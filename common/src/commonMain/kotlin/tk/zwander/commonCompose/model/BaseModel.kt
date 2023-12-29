@@ -121,7 +121,7 @@ abstract class BaseModel(
             model.combine(IMEIDatabase.imeis) { model, imeis ->
                 model to imeis
             }.collect { (model, imeis) ->
-                imeiSerial.value = IMEIGenerator.makeImeiForModel(model, imeis) ?: ""
+                imeiSerial.value = IMEIGenerator.makeImeisForModel(model, imeis).joinToString("\n")
             }
         }
 

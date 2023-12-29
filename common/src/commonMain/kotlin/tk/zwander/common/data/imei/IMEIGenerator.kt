@@ -15,17 +15,22 @@ import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
 
 data object IMEIGenerator {
-    fun makeImeiForModel(model: String, imeis: Map<String, String> = IMEIDatabase.imeis.value): String? {
+    fun makeImeisForModel(
+        model: String,
+        imeis: Map<String, String> = IMEIDatabase.imeis.value
+    ): List<String> {
         val adjustedModel = if (model.endsWith("U1")) {
             model.replace("U1", "U")
         } else {
             model
         }
 
-        val tac = imeis[adjustedModel] ?: return null
-        val baseImei = "${tac}${IMEIDatabase.DUMMY_SERIAL}"
+        val tac = imeis[adjustedModel] ?: return emptyList()
 
-        return calculateCheckDigitForPartialImei(baseImei)
+        return IMEIDatabase.DUMMY_SERIALS.map { serial ->
+            val baseImei = "${tac}${serial}"
+            calculateCheckDigitForPartialImei(baseImei)
+        }
     }
 
     private fun calculateCheckDigitForFullImei(imei: String): Int {
@@ -61,8 +66,25 @@ data object IMEIGenerator {
 }
 
 data object IMEIDatabase {
-    const val DUMMY_SERIAL = "123456"
-    const val LIVE_ENDPOINT = "https://raw.githubusercontent.com/zacharee/SamloaderKotlin/master/common/src/commonMain/resources/MR/files/tacs.csv"
+    val DUMMY_SERIALS = arrayOf(
+        "123456",
+        "012345",
+        "0404047",
+        "0460924",
+        "0473430",
+        "0579509",
+        "0635434",
+        "0691114",
+        "0704982",
+        "0734609",
+        "0850017",
+        "0998709",
+        "5411427",
+        "5411468",
+        "7410385",
+    )
+    const val LIVE_ENDPOINT =
+        "https://raw.githubusercontent.com/zacharee/SamloaderKotlin/master/common/src/commonMain/resources/MR/files/tacs.csv"
 
     val imeis = MutableStateFlow<Map<String, String>>(mapOf())
 
@@ -94,7 +116,8 @@ data object IMEIDatabase {
         val firstSpace = trimmed.indexOfFirst { it == ' ' }.takeIf { it != -1 } ?: trimmed.length
         val beforeSpaces = trimmed.slice(0 until firstSpace)
 
-        val firstSlash = beforeSpaces.indexOfFirst { it == '/' }.takeIf { it != -1 } ?: beforeSpaces.length
+        val firstSlash =
+            beforeSpaces.indexOfFirst { it == '/' }.takeIf { it != -1 } ?: beforeSpaces.length
 
         return beforeSpaces.slice(0 until firstSlash)
     }
