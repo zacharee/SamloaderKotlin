@@ -1,3 +1,10 @@
+# 1.16.8
+- Add more TACs.
+- Rely on local TAC DB while remote is being fetched.
+- Rework parsing logic to allow for multiple TACs per model.
+- Add more dummy serials to try.
+- Add retry logic to loop through all provided IMEIs until one works.
+
 # 1.16.7
 - Add some more TACs.
 - Fetch the latest TACs database from GitHub if possible to avoid having to update Bifrost when new TACs are added.
