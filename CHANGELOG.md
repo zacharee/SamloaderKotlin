@@ -1,3 +1,8 @@
+# 1.16.10
+- Crash fixes.
+- Update CSC DB.
+- Limit generated IMEIs to 10.
+
 # 1.16.9
 - Rework settings model to hopefully reduce text scrambling.
 - Add an option under "More" to delete settings data.
