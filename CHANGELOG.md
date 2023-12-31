@@ -1,3 +1,8 @@
+# 1.16.11
+- Crash fixes.
+- Move CSC database to a CSV file for easier access by others.
+- Add logic to fetch remote CSC database so CSCs can be added without version updates.
+
 # 1.16.10
 - Crash fixes.
 - Update CSC DB.
