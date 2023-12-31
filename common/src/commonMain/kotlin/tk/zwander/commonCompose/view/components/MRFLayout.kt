@@ -164,7 +164,7 @@ internal fun MRFLayout(
                             }
                         },
                         singleLine = false,
-                        maxLines = 2,
+                        maxLines = 1,
                     ),
                 )
             }
