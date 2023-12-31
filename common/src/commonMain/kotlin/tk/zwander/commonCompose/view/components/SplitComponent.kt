@@ -44,15 +44,15 @@ internal fun SplitComponent(
         val transition = updateTransition(isOverThreshold)
 
         var initialLayoutDone by rememberSaveable(density) { mutableStateOf(false) }
-        var fieldHeight by rememberSaveable(density) { mutableStateOf(0) }
+        val fieldHeights = rememberSaveable(density) { mutableStateListOf(0, 0) }
 
-        val layoutHeight by if (fieldHeight == 0 || !initialLayoutDone) derivedStateOf {
-            fieldHeight.also {
-                if (fieldHeight != 0) {
+        val layoutHeight by if (fieldHeights.isEmpty() || !initialLayoutDone) derivedStateOf {
+            fieldHeights.sum().also {
+                if (fieldHeights.isNotEmpty()) {
                     initialLayoutDone = true
                 }
             }
-        } else animateIntAsState(if (isOverThreshold) fieldHeight else (2 * fieldHeight + verticalSpacingPx).toInt())
+        } else animateIntAsState(if (isOverThreshold) fieldHeights.max() else (fieldHeights.sum() + verticalSpacingPx).toInt())
 
         val startComponentWidth by derivedStateOf { constraints.maxWidth * startRatio - (horizontalSpacingPx / 2.0) }
         val endComponentWidth by derivedStateOf { constraints.maxWidth * endRatio - (horizontalSpacingPx / 2.0) }
@@ -60,12 +60,12 @@ internal fun SplitComponent(
         val endComponentOffset by if (!initialLayoutDone) derivedStateOf {
             IntOffset(
                 x = if (isOverThreshold) (startComponentWidth + horizontalSpacingPx).toInt() else 0,
-                y = if (isOverThreshold) 0 else (fieldHeight + verticalSpacingPx).toInt()
+                y = if (isOverThreshold) 0 else (fieldHeights.getOrElse(0) { 0 } + verticalSpacingPx).toInt()
             )
         } else transition.animateIntOffset {
             IntOffset(
                 x = if (it) (startComponentWidth + horizontalSpacingPx).toInt() else 0,
-                y = if (it) 0 else (fieldHeight + verticalSpacingPx).toInt()
+                y = if (it) 0 else (fieldHeights.getOrElse(0) { 0 } + verticalSpacingPx).toInt()
             )
         }
 
@@ -100,7 +100,7 @@ internal fun SplitComponent(
                         )
                     )
 
-                    fieldHeight = placeable.height
+                    fieldHeights[index] = placeable.height
 
                     placeable.place(if (index == 0) IntOffset.Zero else eOffset)
                 }
