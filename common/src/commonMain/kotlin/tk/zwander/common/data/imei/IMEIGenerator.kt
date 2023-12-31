@@ -4,6 +4,7 @@ package tk.zwander.common.data.imei
 
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.isSuccess
 import korlibs.io.serialization.csv.CSV
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -96,6 +97,10 @@ data object IMEIDatabase {
             try {
                 val response = client.get(LIVE_ENDPOINT)
                 val liveData = response.bodyAsText()
+
+                if (!response.status.isSuccess()) {
+                    error(response.status)
+                }
 
                 if (liveData.isNotBlank()) {
                     loadCsv(liveData)
