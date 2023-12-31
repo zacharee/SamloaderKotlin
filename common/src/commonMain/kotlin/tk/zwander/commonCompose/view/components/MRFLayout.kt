@@ -136,8 +136,8 @@ internal fun MRFLayout(
             if (showImeiSerial) {
                 items.add(
                     DynamicField(
-                        value = imeiState ?: "",
-                        onValueChange = { imeiState = it },
+                        value = imeiState?.replace("\n", ";") ?: "",
+                        onValueChange = { imeiState = it.replace(";", "\n") },
                         labelRes = MR.strings.imei_serial,
                         readOnly = !canChangeOption,
                         trailingIcon = {
@@ -163,8 +163,6 @@ internal fun MRFLayout(
                                 }
                             }
                         },
-                        singleLine = false,
-                        maxLines = 1,
                     ),
                 )
             }
