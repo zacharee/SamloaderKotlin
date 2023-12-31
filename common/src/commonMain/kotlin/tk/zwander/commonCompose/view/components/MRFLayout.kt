@@ -139,7 +139,7 @@ internal fun MRFLayout(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Info,
-                                    contentDescription = MR.strings.chooseCsc()
+                                    contentDescription = MR.strings.help()
                                 )
                             }
                         },
