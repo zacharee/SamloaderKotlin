@@ -6,14 +6,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -50,6 +54,9 @@ internal fun MRFLayout(
         mutableStateOf(false)
     }
     var showingImeiHelp by remember {
+        mutableStateOf(false)
+    }
+    var showingImeiEditor by remember {
         mutableStateOf(false)
     }
 
@@ -134,13 +141,26 @@ internal fun MRFLayout(
                         labelRes = MR.strings.imei_serial,
                         readOnly = !canChangeOption,
                         trailingIcon = {
-                            IconButton(
-                                onClick = { showingImeiHelp = true }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
                             ) {
-                                Icon(
-                                    imageVector = Icons.Default.Info,
-                                    contentDescription = MR.strings.help()
-                                )
+                                IconButton(
+                                    onClick = { showingImeiEditor = true }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Edit,
+                                        contentDescription = MR.strings.edit(),
+                                    )
+                                }
+
+                                IconButton(
+                                    onClick = { showingImeiHelp = true }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Info,
+                                        contentDescription = MR.strings.help()
+                                    )
+                                }
                             }
                         },
                         singleLine = false,
@@ -199,6 +219,24 @@ internal fun MRFLayout(
             }
         },
     )
+
+    AlertDialogDef(
+        showing = showingImeiEditor,
+        onDismissRequest = { showingImeiEditor = false },
+        title = { Text(text = MR.strings.edit()) },
+        text = {
+            TextField(
+                value = imeiState ?: "",
+                onValueChange = { imeiState = it },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        },
+        buttons = {
+            TextButton(onClick = { showingImeiEditor = false }) {
+                Text(text = MR.strings.close())
+            }
+        },
+    )
 }
 
 private fun String.transformText(allowLowercase: Boolean): String {
@@ -216,6 +254,7 @@ private data class DynamicField(
     val singleLine: Boolean = true,
     val maxLines: Int = Int.MAX_VALUE,
     val trailingIcon: (@Composable () -> Unit)? = null,
+    val leadingIcon: (@Composable () -> Unit)? = null,
 ) {
     @Composable
     fun render(modifier: Modifier = Modifier) {
@@ -231,6 +270,7 @@ private data class DynamicField(
             singleLine = singleLine,
             trailingIcon = trailingIcon,
             maxLines = maxLines,
+            leadingIcon = leadingIcon,
         )
     }
 }
