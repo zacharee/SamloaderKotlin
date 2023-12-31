@@ -1,5 +1,7 @@
 # 1.16.11
+- Add edit dialog to IMEI field and change how the field displays.
 - Crash fixes.
+- Layout fixes.
 - Move CSC database to a CSV file for easier access by others.
 - Add logic to fetch remote CSC database so CSCs can be added without version updates.
 
