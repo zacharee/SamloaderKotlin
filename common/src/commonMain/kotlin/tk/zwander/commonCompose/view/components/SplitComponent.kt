@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateIntOffset
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
@@ -44,7 +45,13 @@ internal fun SplitComponent(
         val transition = updateTransition(isOverThreshold)
 
         var initialLayoutDone by rememberSaveable(density) { mutableStateOf(false) }
-        val fieldHeights = rememberSaveable(density) { mutableStateListOf(0, 0) }
+        val fieldHeights = rememberSaveable(
+            density,
+            saver = listSaver(
+                save = { it.toList() },
+                restore = { it.toMutableStateList() },
+            ),
+        ) { mutableStateListOf(0, 0) }
 
         val layoutHeight by if (fieldHeights.isEmpty() || !initialLayoutDone) derivedStateOf {
             fieldHeights.sum().also {
