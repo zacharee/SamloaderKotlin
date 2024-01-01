@@ -1,3 +1,6 @@
+# 1.16.12
+- Fix a crash on Android.
+
 # 1.16.11
 - Add edit dialog to IMEI field and change how the field displays.
 - Crash fixes.
