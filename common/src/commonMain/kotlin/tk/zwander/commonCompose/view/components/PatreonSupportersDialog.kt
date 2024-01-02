@@ -27,7 +27,7 @@ internal fun PatreonSupportersDialog(
         } catch (_: Exception) {}
     }
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = showing,
         modifier = modifier,
         onDismissRequest = onDismissRequest,

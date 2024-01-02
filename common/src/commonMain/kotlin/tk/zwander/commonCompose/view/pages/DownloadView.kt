@@ -420,7 +420,7 @@ internal fun DownloadView() {
                         )
                     }
 
-                    AlertDialogDef(
+                    InWindowAlertDialog(
                         showing = showingRequestWarningDialog,
                         title = {
                             Text(text = MR.strings.moreInfo())
@@ -538,7 +538,7 @@ internal fun DownloadView() {
         }
     }
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = downloadErrorInfo != null,
         onDismissRequest = {
             model.launchJob {

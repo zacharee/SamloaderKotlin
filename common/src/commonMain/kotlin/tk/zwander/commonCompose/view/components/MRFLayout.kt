@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
-import kotlinx.coroutines.flow.StateFlow
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.BaseModel
@@ -206,7 +204,7 @@ internal fun MRFLayout(
         }
     )
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = showingImeiHelp,
         onDismissRequest = { showingImeiHelp = false },
         title = { Text(text = MR.strings.imei_serial()) },
@@ -218,7 +216,7 @@ internal fun MRFLayout(
         },
     )
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = showingImeiEditor,
         onDismissRequest = { showingImeiEditor = false },
         title = { Text(text = MR.strings.edit()) },

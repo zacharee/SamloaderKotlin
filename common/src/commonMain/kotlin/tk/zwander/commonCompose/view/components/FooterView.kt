@@ -150,7 +150,7 @@ fun FooterView(
         showingSupportersDialog = false
     }
 
-    AlertDialogDef(
+    InWindowAlertDialog(
         showing = showingAboutDialog,
         onDismissRequest = { showingAboutDialog = false },
         title = {

@@ -15,8 +15,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 
+/**
+ * An implementation of AlertDialog that doesn't open a separate window on desktop platforms.
+ */
 @Composable
-internal fun AlertDialogDef(
+internal fun InWindowAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable RowScope.() -> Unit,
@@ -27,8 +30,24 @@ internal fun AlertDialogDef(
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(backgroundColor)
 ) {
-    CAlertDialog(showing, onDismissRequest, buttons, modifier, title, text, shape, backgroundColor, contentColor)
+    PlatformAlertDialog(showing, onDismissRequest, buttons, modifier, title, text, shape, backgroundColor, contentColor)
 }
+
+/**
+ * Delegate the popup logic to the platform.
+ */
+@Composable
+internal expect fun PlatformAlertDialog(
+    showing: Boolean,
+    onDismissRequest: () -> Unit,
+    buttons: @Composable RowScope.() -> Unit,
+    modifier: Modifier,
+    title: (@Composable () -> Unit)?,
+    text: (@Composable ColumnScope.() -> Unit)?,
+    shape: Shape,
+    backgroundColor: Color,
+    contentColor: Color,
+)
 
 @Composable
 internal fun AlertDialogContents(

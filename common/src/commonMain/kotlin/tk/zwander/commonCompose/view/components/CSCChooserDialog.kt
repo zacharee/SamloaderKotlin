@@ -49,7 +49,7 @@ fun CSCChooserDialog(
     onDismissRequest: () -> Unit,
     onCscSelected: (String) -> Unit,
 ) {
-    AlertDialogDef(
+    InWindowAlertDialog(
         modifier = modifier,
         showing = showing,
         title = {

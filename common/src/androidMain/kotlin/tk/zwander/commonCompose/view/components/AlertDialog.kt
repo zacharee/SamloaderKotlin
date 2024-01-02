@@ -13,7 +13,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 
 @Composable
-internal actual fun CAlertDialog(
+internal actual fun PlatformAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable() RowScope.() -> Unit,

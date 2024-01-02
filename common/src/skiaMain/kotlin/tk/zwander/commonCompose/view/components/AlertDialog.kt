@@ -45,7 +45,7 @@ import kotlin.jvm.JvmName
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal actual fun CAlertDialog(
+internal actual fun PlatformAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
     buttons: @Composable() RowScope.() -> Unit,
