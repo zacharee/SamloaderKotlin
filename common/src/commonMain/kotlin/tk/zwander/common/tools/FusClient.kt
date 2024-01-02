@@ -85,7 +85,7 @@ class FusClient(
 
         val body = response.bodyAsText()
 
-        if (response.is401(body) && request != Request.GENERATE_NONCE) {
+        if (request != Request.GENERATE_NONCE && response.is401(body)) {
             generateNonce()
 
             return makeReq(request, data, includeNonce)
