@@ -3,6 +3,7 @@
 
 package tk.zwander.commonCompose.view.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.onClick
 import androidx.compose.runtime.*
@@ -70,6 +72,7 @@ internal actual fun CAlertDialog(
                     .background(Color.Black.copy(alpha = 0.7f * alpha))
                     .fillMaxSize()
                     .onClick { onDismissRequest() }
+                    .padding(vertical = 16.dp)
                     .alpha(alpha),
                 contentAlignment = Alignment.Center
             ) {
@@ -84,7 +87,7 @@ internal actual fun CAlertDialog(
                                 )
                             ).onClick {
                                 // To prevent the Box's onClick consuming clicks on the dialog itself.
-                            }
+                            }.animateContentSize()
                         ),
                         title,
                         text,

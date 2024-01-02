@@ -1,6 +1,5 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
@@ -20,10 +19,10 @@ import androidx.compose.ui.unit.dp
 internal fun AlertDialogDef(
     showing: Boolean,
     onDismissRequest: () -> Unit,
-    buttons: @Composable() RowScope.() -> Unit,
+    buttons: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
-    title: (@Composable() () -> Unit)?,
-    text: (@Composable() ColumnScope.() -> Unit)?,
+    title: (@Composable () -> Unit)?,
+    text: (@Composable ColumnScope.() -> Unit)?,
     shape: Shape = MaterialTheme.shapes.extraLarge,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = contentColorFor(backgroundColor)
@@ -33,10 +32,10 @@ internal fun AlertDialogDef(
 
 @Composable
 internal fun AlertDialogContents(
-    buttons: @Composable() RowScope.() -> Unit,
+    buttons: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
-    title: (@Composable() () -> Unit)?,
-    text: (@Composable() ColumnScope.() -> Unit)?,
+    title: (@Composable () -> Unit)?,
+    text: (@Composable ColumnScope.() -> Unit)?,
     shape: Shape = RoundedCornerShape(8.dp),
     backgroundColor: Color,
     contentColor: Color,
