@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import io.fluidsonic.country.Country
 import io.fluidsonic.i18n.name
+import io.fluidsonic.locale.Locale
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
@@ -90,7 +91,7 @@ data object CSCDB {
     fun rememberFilteredItems(query: String, sortBy: SortBy): List<CSCItem> {
         val originalItems by this.items.collectAsState()
 
-        val filteredItems by remember {
+        val filteredItems by remember(query, sortBy) {
             derivedStateOf {
                 findForGeneralQuery(query, originalItems).run {
                     if (sortBy.ascending) {
@@ -107,7 +108,9 @@ data object CSCDB {
 
     fun getCountryName(code: String): String {
         return try {
-            Country.forCode(code).name
+            Country.forCode(code).run {
+                name(Locale.forLanguageTag(androidx.compose.ui.text.intl.Locale.current.toLanguageTag())) ?: name
+            }
         } catch (e: Exception) {
             code
         }
@@ -152,11 +155,11 @@ data object CSCDB {
 
         class Country(ascending: Boolean) : SortBy(ascending) {
             override fun sortKey(item: CSCItem): String {
-                return item.countries.run {
+                return item.countries.map { getCountryName(it) }.run {
                     if (ascending) {
-                        minOf { it }
+                        minOf { it.lowercase() }
                     } else {
-                        maxOf { it }
+                        maxOf { it.lowercase() }
                     }
                 }
             }

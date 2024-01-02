@@ -174,12 +174,14 @@ fun CSCChooserDialog(
                             )
 
                             Text(
-                                text = it.countries.joinToString(",\n") { CSCDB.getCountryName(it) },
+                                text = it.countries.map { CSCDB.getCountryName(it) }
+                                    .sortedBy { it.lowercase() }.joinToString(",\n"),
                                 modifier = Modifier.weight(countryWeight)
                             )
 
                             Text(
-                                text = it.carriers?.joinToString(",\n") ?: "",
+                                text = it.carriers?.sortedBy { it.lowercase() }
+                                    ?.joinToString(",\n") ?: "",
                                 modifier = Modifier.weight(carrierWeight)
                             )
                         }
