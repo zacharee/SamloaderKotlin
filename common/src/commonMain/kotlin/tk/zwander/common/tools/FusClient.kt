@@ -8,6 +8,7 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import korlibs.io.net.http.Http
 import korlibs.io.net.http.HttpClient
+import korlibs.io.serialization.xml.Xml
 import korlibs.io.stream.AsyncInputStream
 import tk.zwander.common.util.client
 import tk.zwander.common.util.generateProperUrl
@@ -31,22 +32,6 @@ class FusClient(
 
     private var encNonce = ""
     private var nonce = ""
-
-    suspend fun getAuth(): String {
-        if (auth.isBlank()) {
-            generateNonce()
-        }
-
-        return auth
-    }
-
-    suspend fun getEncNonce(): String {
-        if (encNonce.isBlank()) {
-            generateNonce()
-        }
-
-        return encNonce
-    }
 
     suspend fun getNonce(): String {
         if (nonce.isBlank()) {
@@ -98,6 +83,14 @@ class FusClient(
             }
         }
 
+        val body = response.bodyAsText()
+
+        if (response.is401(body) && request != Request.GENERATE_NONCE) {
+            generateNonce()
+
+            return makeReq(request, data, includeNonce)
+        }
+
         if (response.headers["NONCE"] != null || response.headers["nonce"] != null) {
             encNonce = response.headers["NONCE"] ?: response.headers["nonce"] ?: ""
             nonce = CryptUtils.decryptNonce(encNonce)
@@ -113,7 +106,7 @@ class FusClient(
                 ?.replace(Regex(";.*$"), "") ?: sessId
         }
 
-        return response.bodyAsText()
+        return body
     }
 
     /**
@@ -141,5 +134,26 @@ class FusClient(
         )
 
         return response.content to response.headers["Content-MD5"]
+    }
+
+    private fun HttpResponse.is401(body: String): Boolean {
+        if (status.value == 401) {
+            return true
+        }
+
+        try {
+            val xml = Xml.parse(body)
+
+            val status = xml.child("FUSBody")
+                ?.child("Results")
+                ?.child("Status")
+                ?.text
+
+            if (status == "401") {
+                return true
+            }
+        } catch (_: Throwable) {}
+
+        return false
     }
 }
