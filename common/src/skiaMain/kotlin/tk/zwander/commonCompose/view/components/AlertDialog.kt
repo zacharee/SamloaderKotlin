@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupPositionProvider
+import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import kotlin.jvm.JvmName
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -72,7 +73,7 @@ internal actual fun PlatformAlertDialog(
                     .background(Color.Black.copy(alpha = 0.7f * alpha))
                     .fillMaxSize()
                     .onClick { onDismissRequest() }
-                    .padding(vertical = 16.dp)
+                    .padding(top = 16.dp + LocalMenuBarHeight.current, bottom = 16.dp)
                     .alpha(alpha),
                 contentAlignment = Alignment.Center
             ) {

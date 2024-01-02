@@ -1,4 +1,5 @@
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -21,6 +22,7 @@ import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.getThemeInfo
+import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.MacMenuBar
 import java.awt.Dimension
 import java.util.UUID
@@ -108,9 +110,13 @@ fun main() {
                 applicationScope = this@application,
             )
 
-            MainView(
-                fullPadding = PaddingValues(top = menuBarHeight),
-            )
+            CompositionLocalProvider(
+                LocalMenuBarHeight provides menuBarHeight,
+            ) {
+                MainView(
+                    fullPadding = PaddingValues(top = LocalMenuBarHeight.current),
+                )
+            }
         }
     }
 }
