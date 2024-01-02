@@ -22,8 +22,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(project(":common"))
-
-                implementation(compose.desktop.currentOs)
             }
         }
     }

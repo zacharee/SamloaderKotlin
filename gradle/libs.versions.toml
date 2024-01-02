@@ -27,6 +27,7 @@ moko-resources = "0.23.0"
 multiplatform-settings = "1.1.0"
 oshi = "6.4.9"
 slf4j = "2.0.9"
+windowStyler = "0.3.3-SNAPSHOT"
 
 [libraries]
 androidSvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidSvg" }
@@ -60,6 +61,7 @@ multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", versi
 multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+window-styler = { module = "com.mayakapps.compose:window-styler", version.ref = "windowStyler" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

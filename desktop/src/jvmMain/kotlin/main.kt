@@ -1,29 +1,27 @@
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.runtime.*
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPainter
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyShortcut
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import com.formdev.flatlaf.FlatDarkLaf
 import com.formdev.flatlaf.FlatLaf
-import io.github.mimoguz.customwindow.DwmAttribute
-import io.github.mimoguz.customwindow.WindowHandle
+import com.mayakapps.compose.windowstyler.WindowFrameStyle
+import com.mayakapps.compose.windowstyler.WindowStyle
 import korlibs.memory.Platform
-import org.jetbrains.skiko.OS
-import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.MainBase
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
-import tk.zwander.common.util.UrlHandler
-import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.getThemeInfo
-import tk.zwander.samloaderkotlin.resources.MR
+import tk.zwander.commonCompose.view.MacMenuBar
 import java.awt.Dimension
 import java.util.UUID
 import kotlin.time.ExperimentalTime
@@ -55,17 +53,27 @@ fun main() {
     MainBase()
 
     application {
-        var showingSupportersWindow by remember { mutableStateOf(false) }
         val mainWindowState = rememberWindowState()
         val themeInfo = getThemeInfo()
+        val density = LocalDensity.current
 
         Window(
             onCloseRequest = ::exitApplication,
             title = GradleConfig.appName,
             icon = getImage("icon.png")?.toPainter(),
-            state = mainWindowState
+            state = mainWindowState,
         ) {
-            LaunchedEffect(null) {
+            // For some reason this returns the title bar height on macOS.
+            val menuBarHeight = remember(window.height) {
+                if (Platform.isMac) window.height.dp else 0.dp
+            }
+
+            LaunchedEffect(window) {
+                window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
+                window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
+
+                FilePicker.init(window)
+
                 val map = mutableMapOf<String, String>()
 
                 themeInfo.colors?.primary?.toArgb()?.let {
@@ -76,124 +84,29 @@ fun main() {
                 }
 
                 FlatLaf.setGlobalExtraDefaults(map)
-
                 FlatDarkLaf.setup()
             }
 
-            // For some reason this returns the title bar height on macOS.
-            val menuBarHeight = remember {
-                if (hostOs == OS.MacOS) window.height.dp else 0.dp
-            }
-
-            val density = LocalDensity.current
-
-            LaunchedEffect(null) {
+            LaunchedEffect(density) {
                 // Set this after getting the original height.
                 window.minimumSize = with(density) {
                     Dimension(200.dp.roundToPx(), 200.dp.roundToPx())
                 }
-
-                window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
-                window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
             }
 
-            FilePicker.init(window)
+            WindowStyle(
+                isDarkTheme = themeInfo.isDarkMode,
+                frameStyle = WindowFrameStyle(
+                    borderColor = themeInfo.colors?.background ?: Color.Unspecified,
+                    captionColor = themeInfo.colors?.onBackground ?: Color.Unspecified,
+                    titleBarColor = themeInfo.colors?.background ?: Color.Unspecified,
+                ),
+            )
 
-            when (hostOs) {
-                OS.MacOS -> {
-                    MenuBar {
-                        Menu(
-                            text = MR.strings.window()
-                        ) {
-                            Item(
-                                text = MR.strings.minimize(),
-                                onClick = {
-                                    mainWindowState.isMinimized = true
-                                },
-                                shortcut = KeyShortcut(Key.M, meta = true)
-                            )
-
-                            Item(
-                                text = MR.strings.zoom(),
-                                onClick = {
-                                    mainWindowState.placement = WindowPlacement.Maximized
-                                }
-                            )
-
-                            Item(
-                                text = MR.strings.close(),
-                                onClick = {
-                                    exitApplication()
-                                },
-                                shortcut = KeyShortcut(Key.W, meta = true)
-                            )
-                        }
-
-                        Menu(
-                            text = MR.strings.help()
-                        ) {
-                            Item(
-                                text = MR.strings.github(),
-                                onClick = {
-                                    UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
-                                }
-                            )
-
-                            Item(
-                                text = MR.strings.mastodon(),
-                                onClick = {
-                                    UrlHandler.launchUrl("https://androiddev.social/@wander1236")
-                                }
-                            )
-
-                            Item(
-                                text = MR.strings.twitter(),
-                                onClick = {
-                                    UrlHandler.launchUrl("https://twitter.com/wander1236")
-                                }
-                            )
-
-                            Item(
-                                text = MR.strings.patreon(),
-                                onClick = {
-                                    UrlHandler.launchUrl("https://patreon.com/zacharywander")
-                                }
-                            )
-
-                            Item(
-                                text = MR.strings.supporters(),
-                                onClick = {
-                                    showingSupportersWindow = true
-                                }
-                            )
-                        }
-                    }
-                }
-                OS.Windows -> {
-                    LaunchedEffect(themeInfo) {
-                        try {
-                            val handle = WindowHandle.tryFind(window)
-
-                            handle.dwmSetBooleanValue(DwmAttribute.DWMWA_USE_IMMERSIVE_DARK_MODE, true)
-
-                            themeInfo.colors?.background?.let {
-                                handle.setCaptionColor(it)
-                            }
-
-                            themeInfo.colors?.primary?.let {
-                                handle.setBorderColor(it)
-                            }
-
-                            themeInfo.colors?.onBackground?.let {
-                                handle.setTextColor(it)
-                            }
-                        } catch (e: Throwable) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-                else -> {}
-            }
+            MacMenuBar(
+                mainWindowState = mainWindowState,
+                applicationScope = this@application,
+            )
 
             MainView(
                 fullPadding = PaddingValues(top = menuBarHeight),

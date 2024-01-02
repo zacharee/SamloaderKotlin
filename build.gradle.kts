@@ -38,6 +38,7 @@ allprojects {
             url = uri("https://plugins.gradle.org/m2/")
         }
         maven("https://oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

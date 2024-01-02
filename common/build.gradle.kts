@@ -100,6 +100,9 @@ kotlin {
                 api(libs.slf4j)
                 api(libs.jSystemThemeDetector)
                 api(libs.oshi.core)
+                api(libs.window.styler)
+
+                api(compose.desktop.currentOs)
             }
         }
 
