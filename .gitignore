@@ -20,4 +20,4 @@
 /desktop/generated.conveyor.conf
 /.idea/gradle.xml
 /.idea/misc.xml
-
+**/.DS_Store
