@@ -170,6 +170,11 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                         return
                     }
 
+                if (inputFile.name == null) {
+                    event.callback(this, null)
+                    return
+                }
+
                 val outputUri: Uri? = suspendCoroutine { cont ->
                     openCallback = cont
                     openDecryptOutput.launch(
