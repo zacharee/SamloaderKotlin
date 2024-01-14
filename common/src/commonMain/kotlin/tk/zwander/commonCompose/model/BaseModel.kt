@@ -3,7 +3,6 @@ package tk.zwander.commonCompose.model
 import androidx.compose.runtime.*
 import io.ktor.client.utils.*
 import io.ktor.util.*
-import korlibs.io.async.async
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -13,11 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import tk.zwander.common.data.imei.IMEIDatabase
-import tk.zwander.common.data.imei.IMEIGenerator
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.SettingsKey
 
@@ -115,17 +111,6 @@ abstract class BaseModel(
     protected open fun onEnd(text: String) {}
 
     suspend fun onCreate() = coroutineScope {
-        launch(Dispatchers.IO) {
-            model.combine(IMEIDatabase.tacs) { model, imeis ->
-                model to imeis
-            }.collect { (model, imeis) ->
-                launch(Dispatchers.IO) {
-                    imeiSerial.value = IMEIGenerator.makeImeisForModel(model, imeis)
-                        .take(10).joinToString("\n")
-                }
-            }
-        }
-
         createExtra()
     }
 

@@ -22,6 +22,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import tk.zwander.common.data.imei.IMEIGenerator
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.BaseModel
@@ -43,6 +46,8 @@ internal fun MRFLayout(
     showFirmware: Boolean = true,
     showImeiSerial: Boolean = false,
 ) {
+    val scope = rememberCoroutineScope()
+
     var modelState by model.model.collectAsMutableState()
     var regionState by model.region.collectAsMutableState()
     var firmwareState by model.fw.collectAsMutableState()
@@ -66,7 +71,15 @@ internal fun MRFLayout(
             OutlinedTextField(
                 value = modelState ?: "",
                 onValueChange = {
-                    modelState = it.transformText(allowLowercase ?: false)
+                    val new = it.transformText(allowLowercase ?: false)
+
+                    if (new != modelState) {
+                        scope.launch(Dispatchers.IO) {
+                            imeiState = IMEIGenerator.makeImeisForModel(new).joinToString("\n")
+                        }
+                    }
+
+                    modelState = new
                     if ((model is DownloadModel && model.manual.value == false)) {
                         model.fw.value = ""
                         model.osCode.value = ""
