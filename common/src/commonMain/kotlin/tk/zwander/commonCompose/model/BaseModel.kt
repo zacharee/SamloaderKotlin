@@ -82,7 +82,7 @@ abstract class BaseModel(
     protected val String.fullKey: String
         get() = "${modelKey}_$this"
 
-            /**
+    /**
      * Called when a Job should be ended.
      * @param text the text to show in the status message.
      */
