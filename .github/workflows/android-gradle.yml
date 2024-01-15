@@ -59,7 +59,7 @@ jobs:
         keyStorePassword: ${{ secrets.ANDROID_SIGNING_KEY_PWD }}
         keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PWD }}
       env:
-        BUILD_TOOLS_VERSION: "30.0.3"
+        BUILD_TOOLS_VERSION: "34.0.5"
     - name: Rename APK
       run: mv ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{ github.workspace }}/android/build/outputs/apk/release/bifrost_android_${{ steps.release.outputs.tag_name }}.apk
     - name: Upload APK
