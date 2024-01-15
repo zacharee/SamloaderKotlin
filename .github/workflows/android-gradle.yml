@@ -49,6 +49,13 @@ jobs:
         path: ${{ github.workspace }}/android/build/outputs/logs/
     - name: Check Output Exists
       run: ls -laR ${{ github.workspace }}/android/build/outputs/apk/
+    # https://github.com/r0adkll/sign-android-release/issues/84#issuecomment-1889636075
+    - name: Set up build tool version variable
+      shell: bash
+      run: |
+        BUILD_TOOL_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+        echo "BUILD_TOOL_VERSION=$BUILD_TOOL_VERSION" >> $GITHUB_ENV
+        echo Last build tool version is: $BUILD_TOOL_VERSION
     - name: Sign APK
       id: sign_apk
       uses: r0adkll/sign-android-release@v1
@@ -59,7 +66,7 @@ jobs:
         keyStorePassword: ${{ secrets.ANDROID_SIGNING_KEY_PWD }}
         keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PWD }}
       env:
-        BUILD_TOOLS_VERSION: "34.0.5"
+        BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
     - name: Rename APK
       run: mv ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{ github.workspace }}/android/build/outputs/apk/release/bifrost_android_${{ steps.release.outputs.tag_name }}.apk
     - name: Upload APK
