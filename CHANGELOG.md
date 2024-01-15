@@ -1,3 +1,13 @@
+# 1.16.13
+- Fix sorting in CSC picker.
+- Reduce dummy IMEI serials to just 123456 and 012345.
+- Fix an issue where the saved IMEI/Serial field value would be overwritten on startup.
+- Update window style on Windows.
+- Fix some backslashes showing up in text where they shouldn't.
+- Improve download reliability when Bifrost is open and inactive for a while.
+- Add some more TACs.
+- Crash fixes.
+
 # 1.16.12
 - Fix a crash on Android.
 
