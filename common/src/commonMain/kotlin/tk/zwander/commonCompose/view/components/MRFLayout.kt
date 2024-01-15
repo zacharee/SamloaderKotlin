@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.StringResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +28,7 @@ import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
+import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.samloaderkotlin.resources.MR
 
 /**
@@ -48,10 +48,10 @@ internal fun MRFLayout(
 ) {
     val scope = rememberCoroutineScope()
 
-    var modelState by model.model.collectAsMutableState()
-    var regionState by model.region.collectAsMutableState()
-    var firmwareState by model.fw.collectAsMutableState()
-    var imeiState by model.imeiSerial.collectAsMutableState()
+    var modelState by model.model.collectAsImmediateMutableState()
+    var regionState by model.region.collectAsImmediateMutableState()
+    var firmwareState by model.fw.collectAsImmediateMutableState()
+    var imeiState by model.imeiSerial.collectAsImmediateMutableState()
 
     var showingCscChooser by remember {
         mutableStateOf(false)
@@ -63,7 +63,7 @@ internal fun MRFLayout(
         mutableStateOf(false)
     }
 
-    val allowLowercase by BifrostSettings.Keys.allowLowercaseCharacters.collectAsMutableState()
+    val allowLowercase by BifrostSettings.Keys.allowLowercaseCharacters.asMutableStateFlow().collectAsImmediateMutableState()
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
 
     SplitComponent(

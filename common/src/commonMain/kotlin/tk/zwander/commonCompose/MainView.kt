@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import korlibs.io.async.launch
 import korlibs.memory.Platform
 import tk.zwander.commonCompose.locals.LocalDecryptModel
@@ -20,6 +19,7 @@ import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.locals.LocalMainModel
 import tk.zwander.commonCompose.locals.ProvideModels
+import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.util.pager.pagerTabIndicatorOffset
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.TabView
@@ -38,7 +38,7 @@ fun MainView(
     val scope = rememberCoroutineScope()
 
     ProvideModels {
-        var currentPage by LocalMainModel.current.currentPage.collectAsMutableState()
+        var currentPage by LocalMainModel.current.currentPage.collectAsImmediateMutableState()
         val pagerState = rememberPagerState { pages.size }
 
         LaunchedEffect(key1 = currentPage.index) {

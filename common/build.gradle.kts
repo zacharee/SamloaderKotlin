@@ -101,6 +101,7 @@ kotlin {
                 api(libs.jSystemThemeDetector)
                 api(libs.oshi.core)
                 api(libs.window.styler)
+                api(libs.kotlinx.coroutines.swing)
 
                 api(compose.desktop.currentOs)
             }

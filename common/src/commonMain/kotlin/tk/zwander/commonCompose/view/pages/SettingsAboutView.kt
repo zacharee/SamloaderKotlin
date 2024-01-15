@@ -44,6 +44,7 @@ import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.common.util.UrlHandler
+import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 
 sealed interface IOptionItem {
     val label: String
@@ -224,7 +225,7 @@ private fun BooleanPreference(
     item: IOptionItem.BasicOptionItem.BooleanItem,
     modifier: Modifier = Modifier,
 ) {
-    var state by item.key.collectAsMutableState()
+    var state by item.key.asMutableStateFlow().collectAsImmediateMutableState()
 
     Card(
         modifier = modifier,
