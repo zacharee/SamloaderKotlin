@@ -1,3 +1,6 @@
+# 1.16.14
+- Implement a workaround to prevent the cursor from skipping around in text fields until the Compose API is updated.
+
 # 1.16.13
 - Fix sorting in CSC picker.
 - Reduce dummy IMEI serials to just 123456 and 012345.
