@@ -152,7 +152,11 @@ On x64 Linux, download the `amd64` variant. On ARM64 Linux, choose `aarch64`.
 
 Bifrost uses Weblate for translations.
 
-Help translate Bifrost to your language on the [project page](https://hosted.weblate.org/projects/bifrost/)!
+Help translate Bifrost to your language on the [project page](https://hosted.weblate.org/engage/bifrost/)!
+
+<a href="https://hosted.weblate.org/engage/bifrost/">
+<img src="https://hosted.weblate.org/widget/bifrost/strings/multi-auto.svg" alt="Translation status" />
+</a>
 
 # Screenshots
 
