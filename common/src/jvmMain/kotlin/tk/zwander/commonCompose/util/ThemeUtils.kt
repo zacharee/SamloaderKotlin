@@ -17,6 +17,7 @@ import korlibs.memory.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.ui.GenericLinuxThemeDetector
+import tk.zwander.common.ui.LinuxAccentColorGetter
 import tk.zwander.common.util.UserDefaults
 import tk.zwander.commonCompose.monet.ColorScheme
 
@@ -60,7 +61,9 @@ actual fun getThemeInfo(): ThemeInfo {
         }
     }
     
-    val accentColor = remember { 
+    val accentColor = remember {
+        val defaultColor = Color(red = 208, green = 188, blue = 255)
+
         when (hostOs) {
             OS.Windows -> {
                 java.awt.Color(
@@ -74,8 +77,11 @@ actual fun getThemeInfo(): ThemeInfo {
             OS.MacOS -> {
                 UserDefaults.standardUserDefaults().getAccentColor().toArgb()
             }
+            OS.Linux -> {
+                (LinuxAccentColorGetter.getAccentColor() ?: defaultColor).toArgb()
+            }
             else -> {
-                Color(red = 208, green = 188, blue = 255).toArgb()
+                defaultColor.toArgb()
             }
         }
     }
