@@ -3,6 +3,7 @@ package tk.zwander.common.ui
 import androidx.compose.ui.graphics.Color
 import korlibs.io.annotations.Keep
 import tk.zwander.common.util.CrossPlatformBugsnag
+import java.io.File
 
 object LinuxAccentColorGetter {
     fun getAccentColor(): Color? {
@@ -50,6 +51,33 @@ sealed class DESpecificGetter(val sessionValue: String) {
             val (r, g, b) = rgb.split(",")
 
             return Color(r.toInt(), g.toInt(), b.toInt())
+        }
+    }
+
+    @Keep
+    data object LXDE : DESpecificGetter("LXDE") {
+        override fun getAccentColor(): Color? {
+            val file = File("${System.getProperty("user.home")}/.config/lxsession/LXDE/desktop.conf")
+            val line = file.useLines { lines ->
+                lines.find { it.startsWith("sGtk/ColorScheme") }
+            }
+
+            if (line.isNullOrBlank()) {
+                return null
+            }
+
+            val value = line.split("=").getOrNull(1) ?: return null
+            val selectedBgColor = value.split("\\n").find { it.startsWith("selected_bg_color") } ?: return null
+
+            val colorValue = selectedBgColor.split(":#").getOrNull(1) ?: return null
+
+            val realColor = if (colorValue.length == 6) colorValue else "${colorValue.slice(0..1)}${colorValue.slice(4..5)}${colorValue.slice(8..9)}"
+
+            return try {
+                Color(java.awt.Color.decode("#${realColor}").rgb)
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }
