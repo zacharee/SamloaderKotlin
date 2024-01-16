@@ -162,20 +162,16 @@ Help translate Bifrost to your language on the [project page](https://hosted.web
 
 ## Desktop:
 
-<img src="/screenshots/DesktopDownloadViewBlank.png" alt="Blank Desktop Downloader" width="400"></img>
-<img src="/screenshots/DesktopDecrypterViewBlank.png" alt="Blank Desktop Decrypter" width="400"></img>
-<img src="/screenshots/DesktopHistoryViewBlank.png" alt="Blank Desktop History" width="400"></img>
-<img src="/screenshots/DesktopDownloadViewProgress.png" alt="Desktop Download Progress" width="400"></img>
-<img src="/screenshots/DesktopDecrypterViewProgress.png" alt="Desktop Decrypter Progress" width="400"></img>
-<img src="/screenshots/DesktopHistoryViewPopulated.png" alt="Desktop History Populated" width="400"></img>
+<img src="/screenshots/DesktopDownload.png" alt="Desktop Downloader" width="400"></img>
+<img src="/screenshots/DesktopDecrypt.png" alt="Desktop Decrypter" width="400"></img>
+<img src="/screenshots/DesktopHistory.png" alt="Desktop History" width="400"></img>
+<img src="/screenshots/DesktopSettings.png" alt="Desktop Settings" width="400"></img>
 
 ## Mobile:
-<img src="/screenshots/AndroidDownloaderBlank.png" alt="Blank Android Downloader" width="400"></img>
-<img src="/screenshots/AndroidDecrypterBlank.png" alt="Blank Android Decrypter" width="400"></img>
-<img src="/screenshots/AndroidHistoryBlank.png" alt="Blank Android History" width="400"></img>
-<img src="/screenshots/AndroidDownloaderProgress.png" alt="Android Download Progress" width="400"></img>
-<img src="/screenshots/AndroidDecrypterProgress.png" alt="Android Decrypter Progress" width="400"></img>
-<img src="/screenshots/AndroidHistoryPopulated.png" alt="Android History Populated" width="400"></img>
+<img src="/screenshots/AndroidDownload.png" alt="Android Downloader" width="400"></img>
+<img src="/screenshots/AndroidDecrypt.png" alt="Android Decrypter" width="400"></img>
+<img src="/screenshots/AndroidHistory.png" alt="Android History" width="400"></img>
+<img src="/screenshots/AndroidSettings.png" alt="Android Settings" width="400"></img>
 
 # Error Reporting
 Bifrost uses Bugsnag for error reporting.
