@@ -1,12 +1,14 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
+import tk.zwander.commonCompose.util.FontMapper
 import tk.zwander.commonCompose.util.ThemeInfo
 import tk.zwander.commonCompose.util.getThemeInfo
 
@@ -14,7 +16,7 @@ import tk.zwander.commonCompose.util.getThemeInfo
  * A Material theme with custom colors and such.
  */
 @Composable
-fun CustomMaterialTheme(block: @Composable()() -> Unit) {
+fun CustomMaterialTheme(block: @Composable () -> Unit) {
     val themeInfo = getThemeInfo()
 
     val colorScheme = if (themeInfo.isDarkMode) {
@@ -26,7 +28,15 @@ fun CustomMaterialTheme(block: @Composable()() -> Unit) {
     MaterialTheme(
         colorScheme = colorScheme,
     ) {
-        block()
+        CompositionLocalProvider(
+            LocalTextStyle provides LocalTextStyle.current.copy(
+                fontFamily = LocalTextStyle.current.fontFamily?.let {
+                    FontMapper.mapGenericFontFamilyToSpecificFontFamily(it)
+                },
+            ),
+        ) {
+            block()
+        }
     }
 }
 
