@@ -162,20 +162,20 @@ Help translate Bifrost to your language on the [project page](https://hosted.web
 
 ## Desktop:
 
-![Blank Desktop Downloader](/screenshots/DesktopDownloadViewBlank.png)
-![Blank Desktop Decrypter](/screenshots/DesktopDecrypterViewBlank.png)
-![Blank Desktop History](/screenshots/DesktopHistoryViewBlank.png)
-![Desktop Download Progress](/screenshots/DesktopDownloadViewProgress.png)
-![Desktop Decrypter Progress](/screenshots/DesktopDecrypterViewProgress.png)
-![Desktop History Populated](/screenshots/DesktopHistoryViewPopulated.png)
+<img src="/screenshots/DesktopDownloadViewBlank.png" alt="Blank Desktop Downloader" width="400"></img>
+<img src="/screenshots/DesktopDecrypterViewBlank.png" alt="Blank Desktop Decrypter" width="400"></img>
+<img src="/screenshots/DesktopHistoryViewBlank.png" alt="Blank Desktop History" width="400"></img>
+<img src="/screenshots/DesktopDownloadViewProgress.png" alt="Desktop Download Progress" width="400"></img>
+<img src="/screenshots/DesktopDecrypterViewProgress.png" alt="Desktop Decrypter Progress" width="400"></img>
+<img src="/screenshots/DesktopHistoryViewPopulated.png" alt="Desktop History Populated" width="400"></img>
 
 ## Mobile:
-![Blank Android Downloader](/screenshots/AndroidDownloaderBlank.png)
-![Blank Android Decrypter](/screenshots/AndroidDecrypterBlank.png)
-![Blank Android History](/screenshots/AndroidHistoryBlank.png)
-![Android Download Progress](/screenshots/AndroidDownloaderProgress.png)
-![Android Decrypter Progress](/screenshots/AndroidDecrypterProgress.png)
-![Android History Populated](/screenshots/AndroidHistoryPopulated.png)
+<img src="/screenshots/AndroidDownloaderBlank.png" alt="Blank Android Downloader" width="400"></img>
+<img src="/screenshots/AndroidDecrypterBlank.png" alt="Blank Android Decrypter" width="400"></img>
+<img src="/screenshots/AndroidHistoryBlank.png" alt="Blank Android History" width="400"></img>
+<img src="/screenshots/AndroidDownloaderProgress.png" alt="Android Download Progress" width="400"></img>
+<img src="/screenshots/AndroidDecrypterProgress.png" alt="Android Decrypter Progress" width="400"></img>
+<img src="/screenshots/AndroidHistoryPopulated.png" alt="Android History Populated" width="400"></img>
 
 # Error Reporting
 Bifrost uses Bugsnag for error reporting.
