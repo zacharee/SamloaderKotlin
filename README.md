@@ -150,9 +150,9 @@ On x64 Linux, download the `amd64` variant. On ARM64 Linux, choose `aarch64`.
 
 # Translating
 
-Translations aren't currently supported. Multiplatform resources make this tricky.
+Bifrost uses Weblate for translations.
 
-I'm hoping to have a translation platform ready soon.
+Help translate Bifrost to your language on the [project page](https://hosted.weblate.org/projects/bifrost/)!
 
 # Screenshots
 
