@@ -70,8 +70,13 @@ sealed class DESpecificGetter(val sessionValue: String) {
             val selectedBgColor = value.split("\\n").find { it.startsWith("selected_bg_color") } ?: return null
 
             val colorValue = selectedBgColor.split(":#").getOrNull(1) ?: return null
-
-            val realColor = if (colorValue.length == 6) colorValue else "${colorValue.slice(0..1)}${colorValue.slice(4..5)}${colorValue.slice(8..9)}"
+            val realColor = if (colorValue.length == 6) {
+                colorValue
+            } else {
+                // LXDE sets a 12-character color with the 6-char color (sort of) interleaved.
+                // It isn't always exactly accurate, but the format makes no sense, and this is close enough.
+                "${colorValue.slice(0..1)}${colorValue.slice(4..5)}${colorValue.slice(8..9)}"
+            }
 
             return try {
                 Color(java.awt.Color.decode("#${realColor}").rgb)
