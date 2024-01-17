@@ -1,3 +1,4 @@
+@file:JvmName("FontMapperAndroid")
 package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable

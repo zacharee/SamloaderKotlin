@@ -1,3 +1,4 @@
+@file:JvmName("FontMapperJVM")
 package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable
@@ -8,7 +9,6 @@ import androidx.compose.ui.text.font.GenericFontFamily
 import korlibs.memory.Platform
 import tk.zwander.common.util.CrossPlatformBugsnag
 
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual object FontMapper {
     private val GenericFontFamiliesMapping: Map<String, List<String>> by lazy {
         when  {
