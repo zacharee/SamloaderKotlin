@@ -310,6 +310,8 @@ class ColorScheme(
                 inverseSurface = getColor(Type.Neutral, 1, 100),
                 inverseOnSurface = getColor(Type.Neutral, 1, 800),
                 outline = getColor(Type.Neutral, 2, 400),
+                outlineVariant = getColor(Type.Neutral, 2, 700),
+                scrim = getColor(Type.Neutral, 1, 1000),
             )
         } else {
             lightColorScheme(
@@ -335,6 +337,8 @@ class ColorScheme(
                 inverseSurface = getColor(Type.Neutral, 1, 800),
                 inverseOnSurface = getColor(Type.Neutral, 1, 50),
                 outline = getColor(Type.Neutral, 2, 500),
+                outlineVariant = getColor(Type.Neutral, 2, 200),
+                scrim = getColor(Type.Neutral, 1, 1000),
             )
         }
     }

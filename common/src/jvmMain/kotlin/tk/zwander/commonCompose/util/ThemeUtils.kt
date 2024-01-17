@@ -86,11 +86,12 @@ actual fun getThemeInfo(): ThemeInfo {
         }
     }
 
+    val composeColorScheme = remember(accentColor, dark) {
+        ColorScheme(accentColor, dark).toComposeColorScheme()
+    }
+
     return ThemeInfo(
         isDarkMode = dark,
-        colors = ColorScheme(
-            accentColor,
-            dark
-        ).toComposeColorScheme().toNullableColorScheme(),
+        colors = composeColorScheme,
     )
 }

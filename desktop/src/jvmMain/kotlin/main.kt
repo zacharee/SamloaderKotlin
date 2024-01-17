@@ -78,10 +78,10 @@ fun main() {
 
                 val map = mutableMapOf<String, String>()
 
-                themeInfo.colors?.primary?.toArgb()?.let {
+                themeInfo.colors.primary.toArgb().let {
                     map.put("@accentColor", String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)))
                 }
-                themeInfo.colors?.background?.toArgb()?.let {
+                themeInfo.colors.background.toArgb().let {
                     map.put("@background", String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)))
                 }
 
@@ -99,9 +99,9 @@ fun main() {
             WindowStyle(
                 isDarkTheme = themeInfo.isDarkMode,
                 frameStyle = WindowFrameStyle(
-                    borderColor = themeInfo.colors?.background ?: Color.Unspecified,
-                    captionColor = themeInfo.colors?.onBackground ?: Color.Unspecified,
-                    titleBarColor = themeInfo.colors?.background ?: Color.Unspecified,
+                    borderColor = themeInfo.colors.background,
+                    captionColor = themeInfo.colors.onBackground,
+                    titleBarColor = themeInfo.colors.background,
                 ),
             )
 
