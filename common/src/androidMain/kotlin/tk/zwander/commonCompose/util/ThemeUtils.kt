@@ -24,7 +24,7 @@ actual fun getThemeInfo(): ThemeInfo {
     }
 
     return ThemeInfo(
-        isDarkMode = isSystemInDarkTheme(),
-        colors = colorScheme.toNullableColorScheme()
+        isDarkMode = dark,
+        colors = colorScheme.toNullableColorScheme(),
     )
 }
