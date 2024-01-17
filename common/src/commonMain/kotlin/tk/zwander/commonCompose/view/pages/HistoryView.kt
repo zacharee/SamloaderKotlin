@@ -39,6 +39,7 @@ import korlibs.io.serialization.xml.Xml
 import korlibs.io.serialization.xml.firstDescendant
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.ChangelogHandler
+import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
@@ -123,41 +124,47 @@ private fun parseHistoryXml(xml: String): List<HistoryInfo> {
 }
 
 private suspend fun onFetch(model: HistoryModel) {
-    val historyString = getFirmwareHistoryString(model.model.value ?: "", model.region.value ?: "")
-    val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value ?: "", model.region.value ?: "")
+    try {
+        val historyString = getFirmwareHistoryString(model.model.value ?: "", model.region.value ?: "")
+        val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value ?: "", model.region.value ?: "")
 
-    if (historyString == null && historyStringXml == null) {
-        model.endJob(MR.strings.historyError())
-    } else {
-        try {
-            val parsed = when {
-                historyString != null -> {
-                    PlatformHistoryView.parseHistory(historyString)
+        if (historyString == null && historyStringXml == null) {
+            model.endJob(MR.strings.historyError())
+        } else {
+            try {
+                val parsed = when {
+                    historyString != null -> {
+                        PlatformHistoryView.parseHistory(historyString)
+                    }
+
+                    historyStringXml != null -> {
+                        parseHistoryXml(historyStringXml)
+                    }
+
+                    else -> {
+                        model.endJob(MR.strings.historyError())
+                        return
+                    }
                 }
 
-                historyStringXml != null -> {
-                    parseHistoryXml(historyStringXml)
+                model.changelogs.value = try {
+                    ChangelogHandler.getChangelogs(model.model.value ?: "", model.region.value ?: "")
+                } catch (e: Exception) {
+                    println("Error retrieving changelogs")
+                    e.printStackTrace()
+                    null
                 }
-
-                else -> {
-                    model.endJob(MR.strings.historyError())
-                    return
-                }
-            }
-
-            model.changelogs.value = try {
-                ChangelogHandler.getChangelogs(model.model.value ?: "", model.region.value ?: "")
+                model.historyItems.value = parsed
+                model.endJob("")
             } catch (e: Exception) {
-                println("Error retrieving changelogs")
                 e.printStackTrace()
-                null
+                model.endJob(MR.strings.historyErrorFormat(e.message.toString()))
             }
-            model.historyItems.value = parsed
-            model.endJob("")
-        } catch (e: Exception) {
-            e.printStackTrace()
-            model.endJob(MR.strings.historyErrorFormat(e.message.toString()))
         }
+    } catch (e: Throwable) {
+        CrossPlatformBugsnag.notify(e)
+
+        model.endJob("${MR.strings.historyError()}${e.message?.let { "\n\n$it" }}")
     }
 }
 

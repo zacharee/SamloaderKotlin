@@ -27,8 +27,12 @@
         </activity>
 
         <service android:name="tk.zwander.samsungfirmwaredownloader.DownloaderService"
-            android:foregroundServiceType="specialUse"
-            />
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="downloadProgress"
+                />
+        </service>
 
         <meta-data
             android:name="com.bugsnag.android.API_KEY"

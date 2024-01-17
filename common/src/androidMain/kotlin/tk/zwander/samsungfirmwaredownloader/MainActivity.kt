@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.documentfile.provider.DocumentFile
+import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import tk.zwander.common.data.DecryptFileInfo
@@ -36,11 +37,9 @@ import kotlin.time.ExperimentalTime
  */
 @ExperimentalTime
 class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventManager.EventListener {
-    /**
-     * Set whenever the DownloaderService needs to select a file or folder.
-     * Called once the user makes a selection.
-     */
-    private var openCallback: Continuation<Uri?>? = null
+    private val openDownloadContinuation = atomic<Continuation<Uri?>?>(null)
+    private val openDecryptInputContinuation = atomic<Continuation<Uri?>?>(null)
+    private val openDecryptOutputContinuation = atomic<Continuation<Uri?>?>(null)
 
     private val openDownloadTree = registerForActivityResult(object : ActivityResultContract<Uri?, Uri?>() {
         override fun createIntent(context: Context, input: Uri?): Intent {
@@ -60,15 +59,15 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
             return if (intent == null || resultCode != RESULT_OK) null else intent.data
         }
     }) {
-        openCallback?.resume(it)
+        openDownloadContinuation.getAndSet(null)?.resume(it)
     }
 
     private val openDecryptInput = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-        openCallback?.resume(it)
+        openDecryptInputContinuation.getAndSet(null)?.resume(it)
     }
 
     private val openDecryptOutput = registerForActivityResult(ActivityResultContracts.CreateDocument("*/*")) {
-        openCallback?.resume(it)
+        openDecryptOutputContinuation.getAndSet(null)?.resume(it)
     }
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
@@ -117,8 +116,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
         when (event) {
             is Event.Download.GetInput -> {
                 val inputUri: Uri? = suspendCoroutine { cont ->
-                    openCallback = cont
-
+                    openDownloadContinuation.value = cont
                     openDownloadTree.launch(null)
                 }
 
@@ -155,7 +153,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
             }
             is Event.Decrypt.GetInput -> {
                 val inputUri: Uri? = suspendCoroutine { cont ->
-                    openCallback = cont
+                    openDecryptInputContinuation.value = cont
                     openDecryptInput.launch(arrayOf("application/octet-stream"))
                 }
 
@@ -176,7 +174,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                 }
 
                 val outputUri: Uri? = suspendCoroutine { cont ->
-                    openCallback = cont
+                    openDecryptOutputContinuation.value = cont
                     openDecryptOutput.launch(
                         inputFile.name!!
                             .replace(".enc2", "")

@@ -3,6 +3,7 @@ package tk.zwander.samsungfirmwaredownloader
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -131,6 +132,7 @@ class DownloaderService : Service(), EventManager.EventListener {
 
         //Start in the foreground.
         startForeground(100, foregroundNotification)
+        ServiceCompat.startForeground(this, 100, foregroundNotification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
     }
 
     override fun onDestroy() {
@@ -189,6 +191,7 @@ class DownloaderService : Service(), EventManager.EventListener {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
                 )
             )
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .apply {
                 if (progress != null) {
                     setStyle(NotificationCompat.DecoratedCustomViewStyle())
