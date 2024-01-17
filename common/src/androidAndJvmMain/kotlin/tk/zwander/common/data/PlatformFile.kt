@@ -1,9 +1,12 @@
+@file:JvmName("AndroidJVMCommonPlatformFile")
 package tk.zwander.common.data
 
 import korlibs.io.stream.AsyncInputStream
 import korlibs.io.stream.AsyncOutputStream
-import korlibs.io.stream.toAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import tk.zwander.common.util.flushingAsync
+import tk.zwander.common.util.inputAsync
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
@@ -25,6 +28,7 @@ actual open class PlatformFile : File {
         wrappedFile = java.io.File(java.io.File(parent.getAbsolutePath()), child)
     }
 
+    @Suppress("unused")
     constructor(parent: java.io.File, child: String) {
         wrappedFile = java.io.File(parent, child)
     }
@@ -35,7 +39,7 @@ actual open class PlatformFile : File {
 
     override fun getName(): String = wrappedFile.name
     override suspend fun getParent(): String? = wrappedFile.parent
-    override suspend fun getParentFile(): IPlatformFile? = File(wrappedFile.parentFile.absolutePath)
+    override suspend fun getParentFile(): IPlatformFile? = wrappedFile.parentFile?.absolutePath?.let { File(it) }
     override fun getPath(): String = wrappedFile.path
     override suspend fun isAbsolute(): Boolean = wrappedFile.isAbsolute
     override fun getAbsolutePath(): String = wrappedFile.absolutePath
@@ -55,7 +59,9 @@ actual open class PlatformFile : File {
     override suspend fun getUsableSpace(): Long = wrappedFile.usableSpace
 
     override suspend fun createNewFile(): Boolean {
-        return wrappedFile.createNewFile()
+        return withContext(Dispatchers.IO) {
+            wrappedFile.createNewFile()
+        }
     }
 
     override suspend fun delete(): Boolean {
@@ -140,11 +146,15 @@ actual open class PlatformFile : File {
     }
 
     override suspend fun openOutputStream(append: Boolean): AsyncOutputStream {
-        return FileOutputStream(wrappedFile, append).flushingAsync()
+        return withContext(Dispatchers.IO) {
+            FileOutputStream(wrappedFile, append).flushingAsync()
+        }
     }
 
     override suspend fun openInputStream(): AsyncInputStream {
-        return FileInputStream(wrappedFile).toAsync()
+        return withContext(Dispatchers.IO) {
+            FileInputStream(wrappedFile).inputAsync()
+        }
     }
 
     override fun hashCode(): Int {

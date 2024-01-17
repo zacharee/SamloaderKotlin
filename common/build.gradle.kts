@@ -89,8 +89,13 @@ kotlin {
             dependsOn(commonMain)
         }
 
+        val androidAndJvmMain by creating {
+            dependsOn(commonMain)
+        }
+
         val jvmMain by getting {
             dependsOn(skiaMain)
+            dependsOn(androidAndJvmMain)
 
             dependencies {
                 api(libs.jsoup)
@@ -108,7 +113,7 @@ kotlin {
         }
 
         val androidMain by getting {
-            dependsOn(commonMain)
+            dependsOn(androidAndJvmMain)
 
             dependencies {
                 api(libs.kotlinx.coroutines.android)
