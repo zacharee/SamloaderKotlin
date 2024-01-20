@@ -2,7 +2,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.platform.LocalDensity
@@ -96,14 +95,16 @@ fun main() {
                 }
             }
 
-            WindowStyle(
-                isDarkTheme = themeInfo.isDarkMode,
-                frameStyle = WindowFrameStyle(
-                    borderColor = themeInfo.colors.background,
-                    captionColor = themeInfo.colors.onBackground,
-                    titleBarColor = themeInfo.colors.background,
-                ),
-            )
+            if (Platform.isWindows && oshi.SystemInfo().operatingSystem.versionInfo.version == "11") {
+                WindowStyle(
+                    isDarkTheme = themeInfo.isDarkMode,
+                    frameStyle = WindowFrameStyle(
+                        borderColor = themeInfo.colors.background,
+                        captionColor = themeInfo.colors.onBackground,
+                        titleBarColor = themeInfo.colors.background,
+                    ),
+                )
+            }
 
             MacMenuBar(
                 mainWindowState = mainWindowState,
