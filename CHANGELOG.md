@@ -1,3 +1,13 @@
+# 1.17.0
+- Add option on Windows 11 to apply Mica effect.
+- Add accent color detection for KDE and LXDE (requires app restart to respond to changes).
+- Add a generic font mapping utility to improve render reliability on Linux.
+- Fix wonky window styling on Windows 10.
+- Crash fixes.
+- Code cleanup.
+- Add some TACs for the S24 Ultra (U/U1, B).
+- Clean up TAC database.
+
 # 1.16.14
 - Implement a workaround to prevent the cursor from skipping around in text fields until the Compose API is updated.
 
