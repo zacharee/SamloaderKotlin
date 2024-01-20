@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import korlibs.io.async.launch
 import korlibs.memory.Platform
+import tk.zwander.common.util.isWindows11
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
@@ -71,10 +72,10 @@ fun MainView(
 
         CustomMaterialTheme {
             Surface(
-                color = if (Platform.isWindows) Color.Transparent else MaterialTheme.colorScheme.surface,
+                color = if (isWindows11) Color.Transparent else MaterialTheme.colorScheme.surface,
             ) {
                 CompositionLocalProvider(
-                    LocalContentColor provides if (Platform.isWindows) MaterialTheme.colorScheme.onBackground else LocalContentColor.current,
+                    LocalContentColor provides if (isWindows11) MaterialTheme.colorScheme.onBackground else LocalContentColor.current,
                 ) {
                     Column(
                         modifier = modifier.fillMaxSize()
