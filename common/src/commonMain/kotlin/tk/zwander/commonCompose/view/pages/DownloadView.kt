@@ -230,7 +230,7 @@ private suspend fun onFetch(model: DownloadModel) {
     val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model.value ?: "", model.region.value ?: "")
 
     if (error != null) {
-        model.endJob(MR.strings.firmwareCheckError(error.message.toString(), output))
+        model.endJob(MR.strings.firmwareCheckError(error.message.toString(), output.replace("\t", "  ")))
         return
     }
 
