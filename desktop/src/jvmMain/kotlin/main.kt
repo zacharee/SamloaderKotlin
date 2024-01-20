@@ -1,4 +1,3 @@
-//import com.mayakapps.compose.windowstyler.WindowStyle
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -67,8 +66,6 @@ fun main() {
             preferredBackdropType = WindowBackdrop.Mica(themeInfo.isDarkMode),
             frameStyle = WindowFrameStyle(
                 borderColor = themeInfo.colors.background,
-//                captionColor = themeInfo.colors.onBackground,
-//                titleBarColor = themeInfo.colors.background,
             ),
         ) {
             // For some reason this returns the title bar height on macOS.
@@ -85,10 +82,16 @@ fun main() {
                 val map = mutableMapOf<String, String>()
 
                 themeInfo.colors.primary.toArgb().let {
-                    map.put("@accentColor", String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)))
+                    map.put(
+                        "@accentColor",
+                        String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)),
+                    )
                 }
                 themeInfo.colors.background.toArgb().let {
-                    map.put("@background", String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)))
+                    map.put(
+                        "@background",
+                        String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)),
+                    )
                 }
 
                 FlatLaf.setGlobalExtraDefaults(map)
@@ -101,17 +104,6 @@ fun main() {
                     Dimension(200.dp.roundToPx(), 200.dp.roundToPx())
                 }
             }
-
-//            if (Platform.isWindows && oshi.SystemInfo().operatingSystem.versionInfo.version == "11") {
-//                WindowStyle(
-//                    isDarkTheme = themeInfo.isDarkMode,
-//                    frameStyle = WindowFrameStyle(
-//                        borderColor = themeInfo.colors.background,
-//                        captionColor = themeInfo.colors.onBackground,
-//                        titleBarColor = themeInfo.colors.background,
-//                    ),
-//                )
-//            }
 
             MacMenuBar(
                 mainWindowState = mainWindowState,
