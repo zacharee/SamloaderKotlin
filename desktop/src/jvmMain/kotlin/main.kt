@@ -1,7 +1,9 @@
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.platform.LocalDensity
@@ -13,11 +15,17 @@ import com.formdev.flatlaf.FlatLaf
 import com.mayakapps.compose.windowstyler.NativeLookWindow
 import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
+import com.sun.jna.ptr.IntByReference
 import korlibs.memory.Platform
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.MainBase
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
+import tk.zwander.common.util.isWindows11
+import tk.zwander.common.util.jna.DwmImpl
+import tk.zwander.common.util.jna.DwmWindowAttribute
+import tk.zwander.common.util.jna.hwnd
+import tk.zwander.common.util.jna.toBgr
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.getThemeInfo
@@ -57,6 +65,10 @@ fun main() {
         val mainWindowState = rememberWindowState()
         val themeInfo = getThemeInfo()
         val density = LocalDensity.current
+        val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
+
+        val captionColor = if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.onBackground
+        val titleBarColor = if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.background
 
         NativeLookWindow(
             onCloseRequest = ::exitApplication,
@@ -66,6 +78,8 @@ fun main() {
             preferredBackdropType = WindowBackdrop.MicaTabbed(themeInfo.isDarkMode),
             frameStyle = WindowFrameStyle(
                 borderColor = themeInfo.colors.background,
+                captionColor = captionColor,
+                titleBarColor = titleBarColor,
             ),
         ) {
             // For some reason this returns the title bar height on macOS.
@@ -102,6 +116,23 @@ fun main() {
                 // Set this after getting the original height.
                 window.minimumSize = with(density) {
                     Dimension(200.dp.roundToPx(), 200.dp.roundToPx())
+                }
+            }
+
+            LaunchedEffect(captionColor, titleBarColor) {
+                if (isWindows11) {
+                    DwmImpl.DwmSetWindowAttribute(
+                        hwnd = window.hwnd,
+                        attribute = DwmWindowAttribute.DWMWA_TEXT_COLOR.value,
+                        value = IntByReference(captionColor.toBgr()),
+                        valueSize = 4,
+                    )
+                    DwmImpl.DwmSetWindowAttribute(
+                        hwnd = window.hwnd,
+                        attribute = DwmWindowAttribute.DWMWA_CAPTION_COLOR.value,
+                        value = IntByReference(titleBarColor.toBgr()),
+                        valueSize = 4,
+                    )
                 }
             }
 

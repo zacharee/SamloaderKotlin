@@ -14,7 +14,7 @@ import dev.icerock.moko.resources.StringResource
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import korlibs.io.annotations.Keep
 import tk.zwander.common.util.invoke
-import tk.zwander.common.util.isWindows11
+import tk.zwander.commonCompose.view.LocalUseMicaEffect
 import tk.zwander.commonCompose.view.pages.DecryptView
 import tk.zwander.commonCompose.view.pages.DownloadView
 import tk.zwander.commonCompose.view.pages.HistoryView
@@ -59,7 +59,7 @@ internal fun TabView(
         selectedTabIndex = selectedPage.index,
         indicator = indicator,
         divider = {},
-        containerColor = if (isWindows11) Color.Transparent else TabRowDefaults.containerColor,
+        containerColor = if (LocalUseMicaEffect.current) Color.Transparent else TabRowDefaults.containerColor,
     ) {
         pages.forEach { page ->
             Tab(

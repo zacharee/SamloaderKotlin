@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import tk.zwander.common.util.isWindows11
+import tk.zwander.commonCompose.view.LocalUseMicaEffect
 
 @Composable
 fun TransparencyCard(
@@ -29,7 +29,7 @@ fun TransparencyCard(
         border = border,
         content = content,
         colors = CardDefaults.cardColors(
-            containerColor = if (isWindows11) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = if (LocalUseMicaEffect.current) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
         ),
     )
 }
@@ -52,7 +52,7 @@ fun TransparencyCard(
         border = border,
         content = content,
         colors = CardDefaults.cardColors(
-            containerColor = if (isWindows11) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = if (LocalUseMicaEffect.current) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
         ),
         enabled = enabled,
         interactionSource = interactionSource,

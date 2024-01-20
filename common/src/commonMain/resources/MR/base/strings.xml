@@ -110,4 +110,7 @@
 
     <string name="removeSavedData">Remove Saved Data</string>
     <string name="removeSavedDataDesc">Bifrost stores some data such as the last-entered device information and current settings states. Click here to remove that data.</string>
+
+    <string name="useMicaEffect">Use Mica Effect</string>
+    <string name="useMicaEffectDesc">On Windows 11 and later, Bifrost can apply the Windows Mica effect to the window background, making it look more like a native Windows app.</string>
 </resources>

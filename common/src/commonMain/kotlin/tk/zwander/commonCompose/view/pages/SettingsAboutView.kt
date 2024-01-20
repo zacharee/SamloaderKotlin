@@ -42,6 +42,7 @@ import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.common.util.UrlHandler
+import tk.zwander.common.util.isWindows11
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.view.components.TransparencyCard
 
@@ -76,6 +77,14 @@ val options = arrayListOf<IOptionItem>().apply {
             label = MR.strings.useNativeFilePicker(),
             desc = MR.strings.useNativeFilePickerDesc(),
             key = BifrostSettings.Keys.useNativeFileDialog,
+        ))
+    }
+
+    if (isWindows11) {
+        add(IOptionItem.BasicOptionItem.BooleanItem(
+            label = MR.strings.useMicaEffect(),
+            desc = MR.strings.useMicaEffectDesc(),
+            key = BifrostSettings.Keys.useMicaEffect,
         ))
     }
 

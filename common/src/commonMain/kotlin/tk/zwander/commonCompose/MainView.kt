@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import korlibs.io.async.launch
 import korlibs.memory.Platform
-import tk.zwander.common.util.isWindows11
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
@@ -25,6 +24,7 @@ import tk.zwander.commonCompose.locals.LocalMainModel
 import tk.zwander.commonCompose.locals.ProvideModels
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.util.pager.pagerTabIndicatorOffset
+import tk.zwander.commonCompose.view.LocalUseMicaEffect
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.TabView
 import tk.zwander.commonCompose.view.components.pages
@@ -71,11 +71,13 @@ fun MainView(
         }
 
         CustomMaterialTheme {
+            val useMicaEffect = LocalUseMicaEffect.current
+
             Surface(
-                color = if (isWindows11) Color.Transparent else MaterialTheme.colorScheme.surface,
+                color = if (useMicaEffect) Color.Transparent else MaterialTheme.colorScheme.surface,
             ) {
                 CompositionLocalProvider(
-                    LocalContentColor provides if (isWindows11) MaterialTheme.colorScheme.onBackground else LocalContentColor.current,
+                    LocalContentColor provides if (useMicaEffect) MaterialTheme.colorScheme.onBackground else LocalContentColor.current,
                 ) {
                     Column(
                         modifier = modifier.fillMaxSize()
