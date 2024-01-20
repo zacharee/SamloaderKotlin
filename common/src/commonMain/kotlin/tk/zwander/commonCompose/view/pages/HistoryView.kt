@@ -1,5 +1,6 @@
 package tk.zwander.commonCompose.view.pages
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -171,6 +172,7 @@ private suspend fun onFetch(model: HistoryModel) {
 /**
  * The History View.
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HistoryView() {
     val model = LocalHistoryModel.current
@@ -321,6 +323,7 @@ internal fun HistoryView() {
 
                     mainModel.currentPage.value = Page.Decrypter
                 },
+                modifier = Modifier.animateItemPlacement(),
             )
         }
     }

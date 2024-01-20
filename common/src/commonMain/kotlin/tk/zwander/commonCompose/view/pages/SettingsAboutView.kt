@@ -16,8 +16,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -45,6 +43,7 @@ import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
+import tk.zwander.commonCompose.view.components.TransparencyCard
 
 sealed interface IOptionItem {
     val label: String
@@ -219,7 +218,6 @@ private fun PhoneInfoView(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BooleanPreference(
     item: IOptionItem.BasicOptionItem.BooleanItem,
@@ -227,7 +225,7 @@ private fun BooleanPreference(
 ) {
     var state by item.key.asMutableStateFlow().collectAsImmediateMutableState()
 
-    Card(
+    TransparencyCard(
         modifier = modifier,
         onClick = {
             state = !(state ?: false)
@@ -252,7 +250,6 @@ private fun BooleanPreference(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ActionPreference(
     item: IOptionItem.ActionOptionItem,
@@ -260,7 +257,7 @@ private fun ActionPreference(
 ) {
     val scope = rememberCoroutineScope()
 
-    Card(
+    TransparencyCard(
         modifier = modifier,
         onClick = { scope.launch { item.action() } },
     ) {

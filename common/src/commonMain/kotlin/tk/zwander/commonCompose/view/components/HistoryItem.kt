@@ -33,7 +33,7 @@ internal fun HistoryItem(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier) {
-        Card(
+        TransparencyCard(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Column(

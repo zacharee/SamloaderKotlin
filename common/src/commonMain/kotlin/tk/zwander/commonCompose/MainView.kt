@@ -6,11 +6,14 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import korlibs.io.async.launch
 import korlibs.memory.Platform
@@ -67,37 +70,43 @@ fun MainView(
         }
 
         CustomMaterialTheme {
-            Surface {
-                Column(
-                    modifier = modifier.fillMaxSize()
-                        .padding(fullPadding),
+            Surface(
+                color = if (Platform.isWindows) Color.Transparent else MaterialTheme.colorScheme.surface,
+            ) {
+                CompositionLocalProvider(
+                    LocalContentColor provides if (Platform.isWindows) MaterialTheme.colorScheme.onBackground else LocalContentColor.current,
                 ) {
                     Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .widthIn(max = 1200.dp)
-                            .align(Alignment.CenterHorizontally)
+                        modifier = modifier.fillMaxSize()
+                            .padding(fullPadding),
                     ) {
-                        HorizontalPager(
-                            state = pagerState,
-                            pageSpacing = 8.dp,
-                            userScrollEnabled = Platform.isAndroid,
+                        Column(
+                            modifier = Modifier
+                                .weight(1f)
+                                .widthIn(max = 1200.dp)
+                                .align(Alignment.CenterHorizontally)
                         ) {
-                            pages[it].render()
+                            HorizontalPager(
+                                state = pagerState,
+                                pageSpacing = 8.dp,
+                                userScrollEnabled = Platform.isAndroid,
+                            ) {
+                                pages[it].render()
+                            }
                         }
-                    }
 
-                    TabView(
-                        selectedPage = currentPage,
-                        onPageSelected = {
-                            currentPage = it
-                        },
-                        indicator = { tabPositions ->
-                            TabRowDefaults.Indicator(
-                                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                            )
-                        },
-                    )
+                        TabView(
+                            selectedPage = currentPage,
+                            onPageSelected = {
+                                currentPage = it
+                            },
+                            indicator = { tabPositions ->
+                                TabRowDefaults.Indicator(
+                                    modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                                )
+                            },
+                        )
+                    }
                 }
             }
         }

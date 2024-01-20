@@ -1,3 +1,4 @@
+//import com.mayakapps.compose.windowstyler.WindowStyle
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -6,13 +7,13 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.formdev.flatlaf.FlatDarkLaf
 import com.formdev.flatlaf.FlatLaf
+import com.mayakapps.compose.windowstyler.NativeLookWindow
+import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
-import com.mayakapps.compose.windowstyler.WindowStyle
 import korlibs.memory.Platform
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.MainBase
@@ -58,11 +59,17 @@ fun main() {
         val themeInfo = getThemeInfo()
         val density = LocalDensity.current
 
-        Window(
+        NativeLookWindow(
             onCloseRequest = ::exitApplication,
             title = GradleConfig.appName,
             icon = getImage("icon.png")?.toPainter(),
             state = mainWindowState,
+            preferredBackdropType = WindowBackdrop.Mica(themeInfo.isDarkMode),
+            frameStyle = WindowFrameStyle(
+                borderColor = themeInfo.colors.background,
+//                captionColor = themeInfo.colors.onBackground,
+//                titleBarColor = themeInfo.colors.background,
+            ),
         ) {
             // For some reason this returns the title bar height on macOS.
             val menuBarHeight = remember(window.height) {
@@ -95,16 +102,16 @@ fun main() {
                 }
             }
 
-            if (Platform.isWindows && oshi.SystemInfo().operatingSystem.versionInfo.version == "11") {
-                WindowStyle(
-                    isDarkTheme = themeInfo.isDarkMode,
-                    frameStyle = WindowFrameStyle(
-                        borderColor = themeInfo.colors.background,
-                        captionColor = themeInfo.colors.onBackground,
-                        titleBarColor = themeInfo.colors.background,
-                    ),
-                )
-            }
+//            if (Platform.isWindows && oshi.SystemInfo().operatingSystem.versionInfo.version == "11") {
+//                WindowStyle(
+//                    isDarkTheme = themeInfo.isDarkMode,
+//                    frameStyle = WindowFrameStyle(
+//                        borderColor = themeInfo.colors.background,
+//                        captionColor = themeInfo.colors.onBackground,
+//                        titleBarColor = themeInfo.colors.background,
+//                    ),
+//                )
+//            }
 
             MacMenuBar(
                 mainWindowState = mainWindowState,

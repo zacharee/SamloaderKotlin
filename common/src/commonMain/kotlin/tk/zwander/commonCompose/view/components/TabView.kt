@@ -7,11 +7,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import korlibs.io.annotations.Keep
+import korlibs.memory.Platform
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.view.pages.DecryptView
 import tk.zwander.commonCompose.view.pages.DownloadView
@@ -57,6 +59,7 @@ internal fun TabView(
         selectedTabIndex = selectedPage.index,
         indicator = indicator,
         divider = {},
+        containerColor = if (Platform.isWindows) Color.Transparent else TabRowDefaults.containerColor,
     ) {
         pages.forEach { page ->
             Tab(
