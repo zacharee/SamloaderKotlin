@@ -63,7 +63,7 @@ fun main() {
             title = GradleConfig.appName,
             icon = getImage("icon.png")?.toPainter(),
             state = mainWindowState,
-            preferredBackdropType = WindowBackdrop.Mica(themeInfo.isDarkMode),
+            preferredBackdropType = WindowBackdrop.MicaTabbed(themeInfo.isDarkMode),
             frameStyle = WindowFrameStyle(
                 borderColor = themeInfo.colors.background,
             ),
