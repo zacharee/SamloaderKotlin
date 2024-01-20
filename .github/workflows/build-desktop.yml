@@ -54,8 +54,8 @@ jobs:
           path: |
             ~/Library/Caches/Hydraulic/Conveyor
           key: ${{ runner.os }}-conveyor
-        restore-keys: |
-          ${{ runner.os }}-conveyor
+          restore-keys: |
+            ${{ runner.os }}-conveyor
 
       - name: Build with Gradle
         id: gradle-build
