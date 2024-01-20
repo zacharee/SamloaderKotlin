@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.GenericFontFamily
+import androidx.compose.ui.text.platform.FontLoadResult
 import korlibs.memory.Platform
 import tk.zwander.common.util.CrossPlatformBugsnag
 
@@ -24,8 +25,8 @@ actual object FontMapper {
                 mapOf(
                     // Segoe UI is the Windows system font, so try it first.
                     // See https://learn.microsoft.com/en-us/windows/win32/uxguide/vis-fonts
-                    FontFamily.SansSerif.name to listOf("Segoe UI", "Arial"),
-                    FontFamily.Serif.name to listOf("Times New Roman"),
+                    FontFamily.SansSerif.name to listOf("Eeby Deeby", "Segoe UI", "Arial"),
+                    FontFamily.Serif.name to listOf("Eeby Deeby", "Times New Roman"),
                     FontFamily.Monospace.name to listOf("Consolas"),
                     FontFamily.Cursive.name to listOf("Comic Sans MS"),
                 )
@@ -67,11 +68,16 @@ actual object FontMapper {
 
         return mapped.firstNotNullOfOrNull { fontName ->
             try {
-                FontFamily(fontName).also {
-                    resolver.resolve()
+                FontFamily(fontName).also { mappedFamily ->
+                    resolver.resolve(mappedFamily).also { resolved ->
+                        if ((resolved.value as? FontLoadResult)?.typeface?.familyName != fontName) {
+                            return@firstNotNullOfOrNull null
+                        }
+                    }
                 }
             } catch (e: Throwable) {
                 CrossPlatformBugsnag.notify(Exception("Unable to load font $fontName.", e))
+                e.printStackTrace()
                 null
             }
         } ?: family
