@@ -107,6 +107,7 @@ kotlin {
                 api(libs.oshi.core)
                 api(libs.window.styler)
                 api(libs.kotlinx.coroutines.swing)
+                api(libs.java.objc.bridge)
 
                 api(compose.desktop.currentOs)
             }

@@ -22,10 +22,10 @@ import tk.zwander.common.MainBase
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.isWindows11
-import tk.zwander.common.util.jna.DwmImpl
-import tk.zwander.common.util.jna.DwmWindowAttribute
-import tk.zwander.common.util.jna.hwnd
-import tk.zwander.common.util.jna.toBgr
+import tk.zwander.common.util.jna.windows.DwmImpl
+import tk.zwander.common.util.jna.windows.DwmWindowAttribute
+import tk.zwander.common.util.jna.windows.hwnd
+import tk.zwander.common.util.jna.windows.toBgr
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.getThemeInfo
@@ -46,7 +46,8 @@ fun main() {
         System.setProperty("skiko.renderApi", "OPENGL")
     }
 
-    val uuid = BifrostSettings.settings.getStringOrNull(BugsnagUtils.UUID_KEY) ?: UUID.randomUUID().toString().also {
+    val uuid = BifrostSettings.settings.getStringOrNull(BugsnagUtils.UUID_KEY) ?: UUID.randomUUID()
+        .toString().also {
         BifrostSettings.settings.putString(BugsnagUtils.UUID_KEY, it)
     }
 
@@ -67,8 +68,10 @@ fun main() {
         val density = LocalDensity.current
         val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
 
-        val captionColor = if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.onBackground
-        val titleBarColor = if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.background
+        val captionColor =
+            if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.onBackground
+        val titleBarColor =
+            if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.background
 
         NativeLookWindow(
             onCloseRequest = ::exitApplication,
@@ -86,6 +89,22 @@ fun main() {
             val menuBarHeight = remember(window.height) {
                 if (Platform.isMac) window.height.dp else 0.dp
             }
+
+//            LaunchedEffect(null) {
+//                withContext(Dispatchers.IO) {
+//                    SwingUtilities.invokeAndWait {
+//                        if (!window.isTransparent) {
+//                            window.setComposeLayerTransparency(true)
+//                            window.hackContentPane()
+//                        }
+//                    }
+//                }
+//            }
+
+//            LaunchedEffect(window.isVisible) {
+//                delay(TimeSpan(1000.0))
+//                AppKit.NSWindow.getWindow()
+//            }
 
             LaunchedEffect(window) {
                 window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)

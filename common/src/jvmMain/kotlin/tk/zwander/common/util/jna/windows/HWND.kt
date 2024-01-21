@@ -1,4 +1,4 @@
-package tk.zwander.common.util.jna
+package tk.zwander.common.util.jna.windows
 
 import androidx.compose.ui.awt.ComposeWindow
 import com.sun.jna.Native

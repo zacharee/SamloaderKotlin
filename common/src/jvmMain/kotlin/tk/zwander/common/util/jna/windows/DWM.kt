@@ -1,4 +1,4 @@
-package tk.zwander.common.util.jna
+package tk.zwander.common.util.jna.windows
 
 import com.sun.jna.Native
 import com.sun.jna.PointerType

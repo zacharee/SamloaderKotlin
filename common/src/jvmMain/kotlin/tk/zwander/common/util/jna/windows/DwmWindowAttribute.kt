@@ -1,4 +1,4 @@
-package tk.zwander.common.util.jna
+package tk.zwander.common.util.jna.windows
 
 @Suppress("SpellCheckingInspection", "unused")
 enum class DwmWindowAttribute(val value: Int) {

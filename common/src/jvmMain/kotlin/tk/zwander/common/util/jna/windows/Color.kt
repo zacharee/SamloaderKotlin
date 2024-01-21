@@ -1,4 +1,4 @@
-package tk.zwander.common.util.jna
+package tk.zwander.common.util.jna.windows
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.connect
