@@ -65,6 +65,7 @@ oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 window-styler = { module = "com.github.alexfacciorusso.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }
 java-objc-bridge = { module = "ca.weblite:java-objc-bridge", version.ref = "javaObjcBridge" }
+compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
