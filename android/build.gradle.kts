@@ -78,6 +78,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
+
+    androidResources {
+        generateLocaleConfig = true
+    }
 }
 
 multiplatformResources {
