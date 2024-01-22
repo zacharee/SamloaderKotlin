@@ -36,9 +36,11 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fleeksoft.ksoup.Ksoup
 import dev.icerock.moko.resources.compose.painterResource
 import korlibs.io.serialization.xml.Xml
 import korlibs.io.serialization.xml.firstDescendant
+import korlibs.time.DateFormat
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.ChangelogHandler
@@ -47,6 +49,7 @@ import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
 import tk.zwander.common.util.invoke
+import tk.zwander.common.util.makeFirmwareString
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
@@ -57,13 +60,6 @@ import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.samloaderkotlin.resources.MR
-
-/**
- * Delegate HTML parsing to the platform until there's an MPP library.
- */
-expect object PlatformHistoryView {
-    suspend fun parseHistory(body: String): List<HistoryInfo>
-}
 
 private fun parseHistoryXml(xml: String): List<HistoryInfo> {
     val doc = Xml.parse(xml)
@@ -126,6 +122,46 @@ private fun parseHistoryXml(xml: String): List<HistoryInfo> {
     return items
 }
 
+private fun parseHistory(body: String): List<HistoryInfo> {
+    val doc = Ksoup.parse(body)
+
+    val listItems = doc.select(".index_list").apply {
+        removeAt(0)
+    }
+
+    return listItems.map {
+        val cols = it.select(".index_body_list")
+        val date = cols[6].text()
+        val version = cols[5].text()
+
+        val link = cols[0].children()[0].children().attr("href")
+        val split = link.split("-")
+
+        val pda = split[split.lastIndex - 1]
+        val csc = split[split.lastIndex].split(".")[0]
+
+        val formats = arrayOf(
+            "yyyy/M/d",
+            "yyyy-M-d",
+            "M/d/yyyy"
+        )
+
+        val parsed = formats.firstNotNullOfOrNull { format ->
+            try {
+                DateFormat(format).tryParse(date)
+            } catch (e: Exception) {
+                null
+            }
+        }
+
+        HistoryInfo(
+            parsed ?: throw IllegalArgumentException("Invalid date format $date"),
+            version,
+            makeFirmwareString(pda, csc)
+        )
+    }
+}
+
 private suspend fun onFetch(model: HistoryModel) {
     try {
         val historyString = getFirmwareHistoryString(model.model.value ?: "", model.region.value ?: "")
@@ -137,7 +173,7 @@ private suspend fun onFetch(model: HistoryModel) {
             try {
                 val parsed = when {
                     historyString != null -> {
-                        PlatformHistoryView.parseHistory(historyString)
+                        parseHistory(historyString)
                     }
 
                     historyStringXml != null -> {

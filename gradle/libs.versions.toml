@@ -15,7 +15,6 @@ flatlaf = "3.2.5"
 fluid = "0.13.0"
 google-material = "1.12.0-alpha03"
 android-gradle = "8.1.4"
-jsoup = "1.17.1"
 jsystemthemedetector = "3.8"
 korlibs = "4.0.10"
 kotlin = "1.9.22"
@@ -29,6 +28,7 @@ oshi = "6.4.9"
 slf4j = "2.0.9"
 windowStyler = "cad9442ec3"
 javaObjcBridge = "1.2"
+ksoup = "0.1.2"
 
 [libraries]
 androidSvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidSvg" }
@@ -44,7 +44,6 @@ flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 fluid-country = { module = "io.fluidsonic.country:fluid-country", version.ref = "fluid" }
 fluid-i18n = { module = "io.fluidsonic.i18n:fluid-i18n", version.ref = "fluid" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
-jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 jSystemThemeDetector = { module = "com.github.Dansoftowner:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 korlibs-korio = { module = "com.soywiz.korlibs.korio:korio", version.ref = "korlibs" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -66,6 +65,7 @@ slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 window-styler = { module = "com.github.alexfacciorusso.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }
 java-objc-bridge = { module = "ca.weblite:java-objc-bridge", version.ref = "javaObjcBridge" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }
+ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

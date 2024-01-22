@@ -83,6 +83,8 @@ kotlin {
                 api(libs.moko.mvvm.flow.compose)
                 api(libs.moko.resources)
                 api(libs.moko.resources.compose)
+
+                api(libs.ksoup)
             }
         }
 
@@ -99,7 +101,6 @@ kotlin {
             dependsOn(androidAndJvmMain)
 
             dependencies {
-                api(libs.jsoup)
                 api(libs.ktor.client.cio)
                 api(libs.flatlaf)
                 api(libs.bugsnag.jvm)
@@ -119,7 +120,6 @@ kotlin {
 
             dependencies {
                 api(libs.kotlinx.coroutines.android)
-                api(libs.jsoup)
 
                 api(libs.ktor.client.cio)
 
