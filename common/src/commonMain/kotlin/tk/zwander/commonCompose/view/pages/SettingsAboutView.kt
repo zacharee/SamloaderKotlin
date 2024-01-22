@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -236,15 +235,12 @@ private fun BooleanPreference(
 ) {
     var state by item.key.asMutableStateFlow().collectAsImmediateMutableState()
 
-    println("Outer local text color ${LocalContentColor.current}")
-
     TransparencyCard(
         modifier = modifier,
         onClick = {
             state = !(state ?: false)
         },
     ) {
-        println("Inner local text color ${LocalContentColor.current}")
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
