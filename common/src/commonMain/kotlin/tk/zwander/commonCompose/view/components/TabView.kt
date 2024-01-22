@@ -49,21 +49,19 @@ sealed class Page(
  */
 @Composable
 internal fun TabView(
-    selectedPage: Page,
-    onPageSelected: (Page) -> Unit,
-    indicator: @Composable ((List<TabPosition>) -> Unit),
+    selectedPage: Int,
+    onPageSelected: (Int) -> Unit,
 ) {
     TabRow(
         modifier = Modifier.fillMaxWidth()
             .height(48.dp),
-        selectedTabIndex = selectedPage.index,
-        indicator = indicator,
+        selectedTabIndex = selectedPage,
         divider = {},
         containerColor = if (LocalUseMicaEffect.current) Color.Transparent else TabRowDefaults.containerColor,
     ) {
         pages.forEach { page ->
             Tab(
-                selected = selectedPage == page,
+                selected = selectedPage == page.index,
                 text = {
                     Text(
                         text = page.labelRes(),
@@ -72,7 +70,7 @@ internal fun TabView(
                     )
                 },
                 onClick = {
-                    onPageSelected(page)
+                    onPageSelected(page.index)
                 },
             )
         }

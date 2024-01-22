@@ -28,6 +28,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
 import korlibs.io.serialization.xml.Xml
 import korlibs.io.serialization.xml.firstDescendant
+import kotlinx.coroutines.launch
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.CrossPlatformBugsnag
@@ -48,8 +50,8 @@ import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
-import tk.zwander.commonCompose.locals.LocalMainModel
 import tk.zwander.commonCompose.model.HistoryModel
+import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
@@ -178,8 +180,9 @@ internal fun HistoryView() {
     val model = LocalHistoryModel.current
     val downloadModel = LocalDownloadModel.current
     val decryptModel = LocalDecryptModel.current
-    val mainModel = LocalMainModel.current
+    val pagerState = LocalPagerState.current
 
+    val scope = rememberCoroutineScope()
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
     val modelModel by model.model.collectAsState()
     val region by model.region.collectAsState()
@@ -313,7 +316,9 @@ internal fun HistoryView() {
                     downloadModel.region.value = model.region.value
                     downloadModel.fw.value = it
 
-                    mainModel.currentPage.value = Page.Downloader
+                    scope.launch {
+                        pagerState.animateScrollToPage(Page.Downloader)
+                    }
                 },
                 onDecrypt = {
                     decryptModel.fileToDecrypt.value = null
@@ -321,7 +326,9 @@ internal fun HistoryView() {
                     decryptModel.region.value = model.region.value
                     decryptModel.fw.value = it
 
-                    mainModel.currentPage.value = Page.Decrypter
+                    scope.launch {
+                        pagerState.animateScrollToPage(Page.Decrypter)
+                    }
                 },
                 modifier = Modifier.animateItemPlacement(),
             )

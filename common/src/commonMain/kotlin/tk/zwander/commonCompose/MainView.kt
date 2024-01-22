@@ -1,15 +1,13 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 
 package tk.zwander.commonCompose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TabRowDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,10 +18,8 @@ import korlibs.memory.Platform
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
-import tk.zwander.commonCompose.locals.LocalMainModel
 import tk.zwander.commonCompose.locals.ProvideModels
-import tk.zwander.commonCompose.util.collectAsImmediateMutableState
-import tk.zwander.commonCompose.util.pager.pagerTabIndicatorOffset
+import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.LocalUseMicaEffect
 import tk.zwander.commonCompose.view.components.CustomMaterialTheme
 import tk.zwander.commonCompose.view.components.TabView
@@ -42,17 +38,7 @@ fun MainView(
     val scope = rememberCoroutineScope()
 
     ProvideModels {
-        var currentPage by LocalMainModel.current.currentPage.collectAsImmediateMutableState()
-        val pagerState = rememberPagerState { pages.size }
-
-        LaunchedEffect(key1 = currentPage.index) {
-            pagerState.animateScrollToPage(currentPage.index)
-        }
-        LaunchedEffect(key1 = pagerState.currentPage, key2 = pagerState.currentPageOffsetFraction) {
-            if (pagerState.currentPage == pagerState.targetPage && pagerState.currentPageOffsetFraction == 0f) {
-                currentPage = pages[pagerState.currentPage]
-            }
-        }
+        val pagerState = LocalPagerState.current
 
         val downloadModel = LocalDownloadModel.current
         val decryptModel = LocalDecryptModel.current
@@ -93,20 +79,18 @@ fun MainView(
                                 state = pagerState,
                                 pageSpacing = 8.dp,
                                 userScrollEnabled = Platform.isAndroid,
+                                beyondBoundsPageCount = pagerState.pageCount,
                             ) {
                                 pages[it].render()
                             }
                         }
 
                         TabView(
-                            selectedPage = currentPage,
+                            selectedPage = pagerState.currentPage,
                             onPageSelected = {
-                                currentPage = it
-                            },
-                            indicator = { tabPositions ->
-                                TabRowDefaults.Indicator(
-                                    modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-                                )
+                                scope.launch {
+                                    pagerState.animateScrollToPage(it)
+                                }
                             },
                         )
                     }
