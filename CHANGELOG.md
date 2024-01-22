@@ -1,3 +1,6 @@
+# 1.17.2
+- Fix a crash on Android when trying to display a progress bar.
+
 # 1.17.1
 - Make scrolling between pages less choppy.
 - Fix corrupt characters when displaying Samsung server result after errors.
