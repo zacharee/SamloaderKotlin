@@ -119,4 +119,6 @@
     <string name="manualWarningDetails2">este problema</string>
     <string name="statusFormat">Situación: %1$s</string>
     <string name="done">Hecho</string>
+    <string name="show">Mostrar</string>
+    <string name="hide">Ocultar</string>
 </resources>
