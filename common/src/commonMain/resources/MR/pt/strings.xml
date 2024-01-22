@@ -86,7 +86,7 @@
     <string name="history">Histórico</string>
     <string name="countries">Países</string>
     <string name="window">Janela</string>
-    <string name="fileIssue">Problema de arquivo</string>
+    <string name="fileIssue">Crear asunto</string>
     <string name="allowLowercaseCharactersDesc">Por conveniência, o Bifrost coloca automaticamente em maiúsculo todos os caracteres nos campos modelo, região e firmware. No entanto, alguns modelos de dispositivos contêm caracteres minúsculos. Habilite esta opção para baixar o firmware para esses modelos.</string>
     <string name="mib">MB</string>
     <string name="removeSavedDataDesc">O Bifrost armazena alguns dados, como as últimas informações do dispositivo inseridas e os estados atuais das configurações. Clique aqui para remover esses dados.</string>

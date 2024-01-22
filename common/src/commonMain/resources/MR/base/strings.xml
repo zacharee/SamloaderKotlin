@@ -94,7 +94,7 @@
     <string name="tacFormat">TAC: %s</string>
     <string name="modelFormat">Model: %s</string>
     <string name="copy">Copy</string>
-    <string name="fileIssue">File Issue</string>
+    <string name="fileIssue">Create Issue</string>
     <string name="edit">Edit</string>
     <string name="show">Show</string>
     <string name="hide">Hide</string>
