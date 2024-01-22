@@ -8,12 +8,12 @@ import tk.zwander.common.GradleConfig
 class App : Application() {
     companion object {
         @SuppressLint("StaticFieldLeak")
-        var instance: App? = null
+        lateinit var instance: App
     }
 
     override fun onCreate() {
-        super.onCreate()
         instance = this
+        super.onCreate()
 
         Bugsnag.start(this, GradleConfig.bugsnagAndroidApiKey)
     }

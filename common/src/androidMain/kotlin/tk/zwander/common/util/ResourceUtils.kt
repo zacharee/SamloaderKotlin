@@ -11,9 +11,9 @@ actual operator fun StringResource.invoke(vararg args: Any): String {
         format(*args)
     } else {
         this.desc()
-    }.toString(App.instance!!)
+    }.toString(App.instance)
 }
 
 actual operator fun FileResource.invoke(): ByteArray? {
-    return App.instance!!.resources.openRawResource(rawResId).use { it.readBytes() }
+    return App.instance.resources.openRawResource(rawResId).use { it.readBytes() }
 }
