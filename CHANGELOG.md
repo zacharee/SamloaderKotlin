@@ -1,3 +1,12 @@
+# 1.17.1
+- Make scrolling between pages less choppy.
+- Fix corrupt characters when displaying Samsung server result after errors.
+- Add some more TACs.
+- Fix Weblate translation state.
+- Move from Jsoup to Ksoup for HTML parsing.
+- Update Compose.
+- Lots of code cleanup.
+
 # 1.17.0
 - Add option on Windows 11 to apply Mica effect.
 - Add accent color detection for KDE and LXDE (requires app restart to respond to changes).
