@@ -1,11 +1,15 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material3.Card
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -23,15 +27,15 @@ import tk.zwander.samloaderkotlin.resources.MR
 internal fun ChangelogDisplay(
     changelog: Changelog?,
 ) {
-    Card(
-        elevation = CardDefaults.cardElevation(),
-        border = BorderStroke(1.dp, Color(255, 255, 255, 100)),
+    OutlinedCard(
         modifier = Modifier.padding(4.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+        colors = CardDefaults.outlinedCardColors(containerColor = Color.Transparent),
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
-                .padding(8.dp)
+                .heightIn(max = 500.dp)
+                .verticalScroll(rememberScrollState())
+                .padding(8.dp),
         ) {
             val infoItems by derivedStateOf {
                 val list = mutableListOf<String>()
