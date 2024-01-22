@@ -34,6 +34,7 @@ object BifrostSettings {
             SettingsKey.Boolean("allowLowercaseCharacters", false, settings)
         val autoDeleteEncryptedFirmware =
             SettingsKey.Boolean("autoDeleteEncryptedFirmware", false, settings)
+        val bugsnagUuid = SettingsKey.String("bugsnag_user_id", null, settings)
     }
 
     val settings = ObservableBifrostSettings(ObservableSettings())
@@ -111,6 +112,16 @@ sealed class SettingsKey<Type> {
     }
 
     operator fun invoke(): Type? = getValue()
+    operator fun invoke(value: Type?) = setValue(value)
+
+    fun getAndSetDefaultIfNonExistent(defValue: Type?): Type? {
+        return if (settings.hasKey(key)) {
+            getValue()
+        } else {
+            setValue(defValue)
+            defValue
+        }
+    }
 
     data class Boolean(
         override val key: kotlin.String,

@@ -33,9 +33,5 @@
                 android:value="downloadProgress"
                 />
         </service>
-
-        <meta-data
-            android:name="com.bugsnag.android.API_KEY"
-            android:value="3e0ed592029da1d5cc9b52160ef702ea"/>
     </application>
 </manifest>

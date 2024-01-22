@@ -175,6 +175,8 @@ buildkonfig {
         buildConfigField(STRING, "versionName", "${rootProject.extra["versionName"]}")
         buildConfigField(STRING, "versionCode", "${rootProject.extra["versionCode"]}")
         buildConfigField(STRING, "appName", "${rootProject.extra["appName"]}")
+        buildConfigField(STRING, "bugsnagJvmApiKey", "${rootProject.extra["bugsnagJvmApiKey"]}")
+        buildConfigField(STRING, "bugsnagAndroidApiKey", "${rootProject.extra["bugsnagAndroidApiKey"]}")
     }
 }
 

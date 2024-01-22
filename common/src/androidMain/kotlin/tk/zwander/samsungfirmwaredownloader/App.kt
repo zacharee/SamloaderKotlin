@@ -3,6 +3,7 @@ package tk.zwander.samsungfirmwaredownloader
 import android.annotation.SuppressLint
 import android.app.Application
 import com.bugsnag.android.Bugsnag
+import tk.zwander.common.GradleConfig
 
 class App : Application() {
     companion object {
@@ -14,6 +15,6 @@ class App : Application() {
         super.onCreate()
         instance = this
 
-        Bugsnag.start(this)
+        Bugsnag.start(this, GradleConfig.bugsnagAndroidApiKey)
     }
 }

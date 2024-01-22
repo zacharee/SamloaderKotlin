@@ -18,7 +18,7 @@ import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.sun.jna.ptr.IntByReference
 import korlibs.memory.Platform
 import tk.zwander.common.GradleConfig
-import tk.zwander.common.MainBase
+import tk.zwander.common.EventDelegate
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.isWindows11
@@ -32,7 +32,6 @@ import tk.zwander.commonCompose.util.getThemeInfo
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.MacMenuBar
 import java.awt.Dimension
-import java.util.UUID
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -41,21 +40,8 @@ fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
-    val uuid = BifrostSettings.settings.getStringOrNull(BugsnagUtils.UUID_KEY) ?: UUID.randomUUID()
-        .toString().also {
-        BifrostSettings.settings.putString(BugsnagUtils.UUID_KEY, it)
-    }
-
-    val bugsnag = BugsnagUtils.bugsnag
-    bugsnag.setAppVersion(GradleConfig.versionName)
-    bugsnag.addCallback {
-        it.setUserId(uuid)
-        it.addToTab("app", "version_code", GradleConfig.versionCode)
-        it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
-    }
-    bugsnag.setAutoCaptureSessions(true)
-
-    MainBase()
+    BugsnagUtils.create()
+    EventDelegate.create()
 
     application {
         val mainWindowState = rememberWindowState()

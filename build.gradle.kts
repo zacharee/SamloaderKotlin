@@ -11,6 +11,9 @@ val groupName by extra("tk.zwander")
 val packageName by extra("tk.zwander.samsungfirmwaredownloader")
 val appName by extra("Bifrost")
 
+val bugsnagJvmApiKey by extra("a5b9774e86bc615c2e49a572b8313489")
+val bugsnagAndroidApiKey by extra("3e0ed592029da1d5cc9b52160ef702ea")
+
 plugins {
     alias(libs.plugins.compose) apply false
     alias(libs.plugins.kotlin.android) apply false

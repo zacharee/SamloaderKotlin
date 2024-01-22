@@ -10,8 +10,8 @@ import tk.zwander.common.util.eventManager
 import tk.zwander.commonCompose.util.FilePicker
 import java.io.File
 
-class MainBase : EventManager.EventListener {
-    init {
+object EventDelegate : EventManager.EventListener {
+    fun create() {
         eventManager.addListener(this)
     }
 

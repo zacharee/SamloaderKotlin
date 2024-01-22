@@ -1,6 +1,8 @@
 package tk.zwander.common.util
 
 import com.bugsnag.Bugsnag
+import tk.zwander.common.GradleConfig
+import java.util.UUID
 
 data class Breadcrumb(
     val time: Long,
@@ -10,11 +12,21 @@ data class Breadcrumb(
 )
 
 actual object BugsnagUtils {
-    const val UUID_KEY = "bugsnag_user_id"
-
-    val bugsnag by lazy { Bugsnag("a5b9774e86bc615c2e49a572b8313489") }
+    val bugsnag by lazy { Bugsnag(GradleConfig.bugsnagJvmApiKey) }
 
     private val breadcrumbs = LinkedHashMap<Long, Breadcrumb>()
+
+    fun create() {
+        val uuid = BifrostSettings.Keys.bugsnagUuid.getAndSetDefaultIfNonExistent(UUID.randomUUID().toString())
+
+        bugsnag.setAppVersion(GradleConfig.versionName)
+        bugsnag.addCallback {
+            it.setUserId(uuid)
+            it.addToTab("app", "version_code", GradleConfig.versionCode)
+            it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
+        }
+        bugsnag.setAutoCaptureSessions(true)
+    }
 
     actual fun notify(e: Throwable) {
         val report = bugsnag.buildReport(e)
