@@ -135,6 +135,8 @@ configurations.all {
 }
 
 tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorConfig") {
+    dependsOn(tasks.named("build"))
+
     doLast {
         val config = StringBuilder()
         config.appendLine("app.fsname = bifrost")
