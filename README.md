@@ -30,7 +30,7 @@ Binaries are available for 64-bit versions Windows, Linux, macOS, and Android. J
 Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) page for the downloads.
 
 ## Note for Linux
-Make sure you have one of the following font families from each category installed.
+Make sure you have at least one of the following font families from each category installed.
 
 ### Sans Serif
 - Noto Sans
