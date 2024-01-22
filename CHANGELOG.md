@@ -1,3 +1,11 @@
+# 1.17.3
+- Add ability to drag a file from the file explorer to the file field in the Decrypt view.
+- Add ability to set per-app locale for Bifrost on Android.
+- Fix an issue where settings text was rendering in the wrong color.
+- Add Spanish translations.
+- Add Portuguese translations.
+- Code cleanup.
+
 # 1.17.2
 - Fix a crash on Android when trying to display a progress bar.
 
