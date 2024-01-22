@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -38,14 +39,14 @@ import korlibs.io.async.launch
 import korlibs.memory.Platform
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.SettingsKey
-import tk.zwander.common.util.rememberPhoneInfo
-import tk.zwander.commonCompose.view.components.ExpandButton
-import tk.zwander.commonCompose.view.components.FooterView
-import tk.zwander.samloaderkotlin.resources.MR
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.isWindows11
+import tk.zwander.common.util.rememberPhoneInfo
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
+import tk.zwander.commonCompose.view.components.ExpandButton
+import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.commonCompose.view.components.TransparencyCard
+import tk.zwander.samloaderkotlin.resources.MR
 
 sealed interface IOptionItem {
     val label: StringResource
@@ -235,12 +236,15 @@ private fun BooleanPreference(
 ) {
     var state by item.key.asMutableStateFlow().collectAsImmediateMutableState()
 
+    println("Outer local text color ${LocalContentColor.current}")
+
     TransparencyCard(
         modifier = modifier,
         onClick = {
             state = !(state ?: false)
         },
     ) {
+        println("Inner local text color ${LocalContentColor.current}")
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,

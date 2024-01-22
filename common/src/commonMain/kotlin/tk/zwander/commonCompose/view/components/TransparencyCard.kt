@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,9 +29,7 @@ fun TransparencyCard(
         elevation = elevation,
         border = border,
         content = content,
-        colors = CardDefaults.cardColors(
-            containerColor = if (LocalUseMicaEffect.current) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
-        ),
+        colors = cardColors(),
     )
 }
 
@@ -51,11 +50,25 @@ fun TransparencyCard(
         elevation = CardDefaults.outlinedCardElevation(),
         border = border,
         content = content,
-        colors = CardDefaults.cardColors(
-            containerColor = if (LocalUseMicaEffect.current) MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f) else MaterialTheme.colorScheme.surfaceVariant,
-        ),
+        colors = cardColors(),
         enabled = enabled,
         interactionSource = interactionSource,
         onClick = onClick,
+    )
+}
+
+@Composable
+private fun cardColors(): CardColors {
+    return CardDefaults.cardColors(
+        containerColor = if (LocalUseMicaEffect.current) {
+            MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
+        } else {
+            MaterialTheme.colorScheme.surfaceVariant
+        },
+        contentColor = if (LocalUseMicaEffect.current) {
+            MaterialTheme.colorScheme.onBackground
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        },
     )
 }
