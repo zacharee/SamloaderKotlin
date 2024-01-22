@@ -1,6 +1,7 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -10,11 +11,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.sp
+import dev.icerock.moko.resources.compose.stringResource
+import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
 internal fun ExpandButton(
@@ -28,6 +33,8 @@ internal fun ExpandButton(
         append(" ")
         appendInlineContent("expandIcon", "[icon]")
     }
+    val animatedRotation by animateFloatAsState(if (expanded) 180f else 0f)
+
     val inlineContent = mapOf(
         "expandIcon" to InlineTextContent(
             placeholder = Placeholder(
@@ -36,6 +43,11 @@ internal fun ExpandButton(
                 placeholderVerticalAlign = PlaceholderVerticalAlign.Center
             )
         ) {
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                contentDescription = stringResource(if (expanded) MR.strings.hide else MR.strings.show),
+                modifier = Modifier.rotate(animatedRotation),
+            )
             Crossfade(expanded) {
                 if (it) {
                     Icon(Icons.Filled.KeyboardArrowUp, "")
