@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.imei.IMEIGenerator
@@ -86,7 +87,7 @@ internal fun MRFLayout(
                     }
                 },
                 modifier = Modifier,
-                label = { Text(MR.strings.modelHint()) },
+                label = { Text(text = stringResource(MR.strings.modelHint)) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true,
@@ -103,7 +104,7 @@ internal fun MRFLayout(
                     }
                 },
                 modifier = Modifier,
-                label = { Text(MR.strings.regionHint()) },
+                label = { Text(text = stringResource(MR.strings.regionHint)) },
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true,
@@ -113,7 +114,7 @@ internal fun MRFLayout(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.List,
-                            contentDescription = MR.strings.chooseCsc()
+                            contentDescription = stringResource(MR.strings.chooseCsc),
                         )
                     }
                 },
@@ -160,7 +161,7 @@ internal fun MRFLayout(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Edit,
-                                        contentDescription = MR.strings.edit(),
+                                        contentDescription = stringResource(MR.strings.edit),
                                     )
                                 }
 
@@ -169,7 +170,7 @@ internal fun MRFLayout(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Info,
-                                        contentDescription = MR.strings.help()
+                                        contentDescription = stringResource(MR.strings.help),
                                     )
                                 }
                             }
@@ -220,11 +221,11 @@ internal fun MRFLayout(
     InWindowAlertDialog(
         showing = showingImeiHelp,
         onDismissRequest = { showingImeiHelp = false },
-        title = { Text(text = MR.strings.imei_serial()) },
-        text = { Text(text = MR.strings.imei_serial_help()) },
+        title = { Text(text = stringResource(MR.strings.imei_serial)) },
+        text = { Text(text = stringResource(MR.strings.imei_serial_help)) },
         buttons = {
             TextButton(onClick = { showingImeiHelp = false }) {
-                Text(text = MR.strings.ok())
+                Text(text = stringResource(MR.strings.ok))
             }
         },
     )
@@ -232,7 +233,7 @@ internal fun MRFLayout(
     InWindowAlertDialog(
         showing = showingImeiEditor,
         onDismissRequest = { showingImeiEditor = false },
-        title = { Text(text = MR.strings.edit()) },
+        title = { Text(text = stringResource(MR.strings.edit)) },
         text = {
             TextField(
                 value = imeiState ?: "",
@@ -242,7 +243,7 @@ internal fun MRFLayout(
         },
         buttons = {
             TextButton(onClick = { showingImeiEditor = false }) {
-                Text(text = MR.strings.close())
+                Text(text = stringResource(MR.strings.close))
             }
         },
     )
@@ -273,7 +274,7 @@ private data class DynamicField(
                 onValueChange(transform(it))
             },
             modifier = modifier,
-            label = { Text(text = labelRes()) },
+            label = { Text(text = stringResource(labelRes)) },
             readOnly = readOnly,
             keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
             singleLine = singleLine,

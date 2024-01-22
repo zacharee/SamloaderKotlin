@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fleeksoft.ksoup.Ksoup
 import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import korlibs.io.serialization.xml.Xml
 import korlibs.io.serialization.xml.firstDescendant
 import korlibs.time.DateFormat
@@ -281,8 +282,8 @@ internal fun HistoryView() {
                                 }
                             },
                             enabled = canCheckHistory,
-                            text = MR.strings.checkHistory(),
-                            description = MR.strings.checkHistory(),
+                            text = stringResource(MR.strings.checkHistory),
+                            description = stringResource(MR.strings.checkHistory),
                             vectorIcon = painterResource(MR.images.refresh),
                             parentSize = constraints.maxWidth
                         )
@@ -304,8 +305,8 @@ internal fun HistoryView() {
                                 model.endJob("")
                             },
                             enabled = hasRunningJobs,
-                            text = MR.strings.cancel(),
-                            description = MR.strings.cancel(),
+                            text = stringResource(MR.strings.cancel),
+                            description = stringResource(MR.strings.cancel),
                             vectorIcon = painterResource(MR.images.cancel),
                             parentSize = constraints.maxWidth
                         )

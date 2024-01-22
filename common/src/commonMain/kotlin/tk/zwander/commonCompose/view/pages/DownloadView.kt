@@ -17,6 +17,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import tk.zwander.common.GradleConfig
@@ -304,8 +305,8 @@ internal fun DownloadView() {
                         },
                         enabled = canDownload,
                         vectorIcon = painterResource(MR.images.download),
-                        text = MR.strings.download(),
-                        description = MR.strings.downloadFirmware(),
+                        text = stringResource(MR.strings.download),
+                        description = stringResource(MR.strings.downloadFirmware),
                         parentSize = constraints.maxWidth
                     )
 
@@ -318,9 +319,9 @@ internal fun DownloadView() {
                             }
                         },
                         enabled = canCheckVersion,
-                        text = MR.strings.checkForUpdates(),
+                        text = stringResource(MR.strings.checkForUpdates),
                         vectorIcon = painterResource(MR.images.refresh),
-                        description = MR.strings.checkForUpdatesDesc(),
+                        description = stringResource(MR.strings.checkForUpdatesDesc),
                         parentSize = constraints.maxWidth
                     )
 
@@ -334,8 +335,8 @@ internal fun DownloadView() {
                             model.endJob("")
                         },
                         enabled = hasRunningJobs,
-                        text = MR.strings.cancel(),
-                        description = MR.strings.cancel(),
+                        text = stringResource(MR.strings.cancel),
+                        description = stringResource(MR.strings.cancel),
                         vectorIcon = painterResource(MR.images.cancel),
                         parentSize = constraints.maxWidth
                     )
@@ -377,7 +378,7 @@ internal fun DownloadView() {
 
 
                     Text(
-                        text = MR.strings.manual(),
+                        text = stringResource(MR.strings.manual),
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                 }
@@ -423,7 +424,7 @@ internal fun DownloadView() {
                     InWindowAlertDialog(
                         showing = showingRequestWarningDialog,
                         title = {
-                            Text(text = MR.strings.moreInfo())
+                            Text(text = stringResource(MR.strings.moreInfo))
                         },
                         text = {
                             val info = buildAnnotatedString {
@@ -461,7 +462,7 @@ internal fun DownloadView() {
                                     showingRequestWarningDialog = false
                                 }
                             ) {
-                                Text(MR.strings.ok())
+                                Text(stringResource(MR.strings.ok))
                             }
                         },
                         onDismissRequest = {
@@ -490,7 +491,7 @@ internal fun DownloadView() {
                         Spacer(Modifier.height(4.dp))
 
                         Text(
-                            text = MR.strings.osVersion(osCode)
+                            text = stringResource(MR.strings.osVersion, osCode),
                         )
                     }
                 }
@@ -520,7 +521,7 @@ internal fun DownloadView() {
 
                         ExpandButton(
                             changelogExpanded,
-                            MR.strings.changelog(),
+                            stringResource(MR.strings.changelog),
                             modifier = Modifier.fillMaxWidth(),
                         ) { model.changelogExpanded.value = it }
 
@@ -547,7 +548,7 @@ internal fun DownloadView() {
             }
         },
         title = {
-            Text(text = MR.strings.warning())
+            Text(text = stringResource(MR.strings.warning))
         },
         text = {
             Text(text = downloadErrorInfo?.message ?: "")
@@ -564,7 +565,7 @@ internal fun DownloadView() {
                     }
                 }
             ) {
-                Text(text = MR.strings.no())
+                Text(text = stringResource(MR.strings.no))
             }
 
             TextButton(
@@ -577,7 +578,7 @@ internal fun DownloadView() {
                 }
             ) {
                 Text(
-                    text = MR.strings.yes(),
+                    text = stringResource(MR.strings.yes),
                     color = MaterialTheme.colorScheme.error
                 )
             }

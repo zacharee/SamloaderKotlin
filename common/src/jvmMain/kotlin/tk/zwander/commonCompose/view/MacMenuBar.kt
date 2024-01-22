@@ -8,11 +8,10 @@ import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
+import dev.icerock.moko.resources.compose.stringResource
 import korlibs.memory.Platform
 import tk.zwander.common.util.UrlHandler
-import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
-
 
 @Composable
 fun FrameWindowScope.MacMenuBar(
@@ -22,10 +21,10 @@ fun FrameWindowScope.MacMenuBar(
     if (Platform.isMac) {
         MenuBar {
             Menu(
-                text = MR.strings.window()
+                text = stringResource(MR.strings.window)
             ) {
                 Item(
-                    text = MR.strings.minimize(),
+                    text = stringResource(MR.strings.minimize),
                     onClick = {
                         mainWindowState.isMinimized = true
                     },
@@ -33,14 +32,14 @@ fun FrameWindowScope.MacMenuBar(
                 )
 
                 Item(
-                    text = MR.strings.zoom(),
+                    text = stringResource(MR.strings.zoom),
                     onClick = {
                         mainWindowState.placement = WindowPlacement.Maximized
                     }
                 )
 
                 Item(
-                    text = MR.strings.close(),
+                    text = stringResource(MR.strings.close),
                     onClick = {
                         applicationScope.exitApplication()
                     },
@@ -49,31 +48,31 @@ fun FrameWindowScope.MacMenuBar(
             }
 
             Menu(
-                text = MR.strings.help()
+                text = stringResource(MR.strings.help)
             ) {
                 Item(
-                    text = MR.strings.github(),
+                    text = stringResource(MR.strings.github),
                     onClick = {
                         UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
                     }
                 )
 
                 Item(
-                    text = MR.strings.mastodon(),
+                    text = stringResource(MR.strings.mastodon),
                     onClick = {
                         UrlHandler.launchUrl("https://androiddev.social/@wander1236")
                     }
                 )
 
                 Item(
-                    text = MR.strings.twitter(),
+                    text = stringResource(MR.strings.twitter),
                     onClick = {
                         UrlHandler.launchUrl("https://twitter.com/wander1236")
                     }
                 )
 
                 Item(
-                    text = MR.strings.patreon(),
+                    text = stringResource(MR.strings.patreon),
                     onClick = {
                         UrlHandler.launchUrl("https://patreon.com/zacharywander")
                     }

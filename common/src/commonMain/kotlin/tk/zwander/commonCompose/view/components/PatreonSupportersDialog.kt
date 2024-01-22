@@ -6,9 +6,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
 import tk.zwander.common.util.PatreonSupportersParser
 import tk.zwander.common.util.SupporterInfo
-import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
@@ -35,11 +35,11 @@ internal fun PatreonSupportersDialog(
             TextButton(
                 onClick = onDismissRequest
             ) {
-                Text(text = MR.strings.ok())
+                Text(text = stringResource(MR.strings.ok))
             }
         },
         title = {
-            Text(text = MR.strings.patreonSupporters())
+            Text(text = stringResource(MR.strings.patreonSupporters))
         },
         text = {
             PatreonSupportersList(

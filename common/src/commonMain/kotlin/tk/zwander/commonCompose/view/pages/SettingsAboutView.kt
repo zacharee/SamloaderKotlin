@@ -31,12 +31,13 @@ import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.StringResource
+import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.http.URLBuilder
 import korlibs.io.async.launch
 import korlibs.memory.Platform
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.SettingsKey
-import tk.zwander.common.util.invoke
 import tk.zwander.common.util.rememberPhoneInfo
 import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.FooterView
@@ -47,13 +48,13 @@ import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.view.components.TransparencyCard
 
 sealed interface IOptionItem {
-    val label: String
-    val desc: String?
+    val label: StringResource
+    val desc: StringResource?
     val listKey: String
 
     data class ActionOptionItem(
-        override val label: String,
-        override val desc: String?,
+        override val label: StringResource,
+        override val desc: StringResource?,
         override val listKey: String,
         val action: suspend () -> Unit,
     ) : IOptionItem
@@ -64,8 +65,8 @@ sealed interface IOptionItem {
             get() = key.key
 
         data class BooleanItem(
-            override val label: String,
-            override val desc: String?,
+            override val label: StringResource,
+            override val desc: StringResource?,
             override val key: SettingsKey<Boolean>,
         ) : BasicOptionItem<Boolean>
     }
@@ -74,33 +75,33 @@ sealed interface IOptionItem {
 val options = arrayListOf<IOptionItem>().apply {
     if (Platform.isJvm && !Platform.isAndroid) {
         add(IOptionItem.BasicOptionItem.BooleanItem(
-            label = MR.strings.useNativeFilePicker(),
-            desc = MR.strings.useNativeFilePickerDesc(),
+            label = MR.strings.useNativeFilePicker,
+            desc = MR.strings.useNativeFilePickerDesc,
             key = BifrostSettings.Keys.useNativeFileDialog,
         ))
     }
 
     if (isWindows11) {
         add(IOptionItem.BasicOptionItem.BooleanItem(
-            label = MR.strings.useMicaEffect(),
-            desc = MR.strings.useMicaEffectDesc(),
+            label = MR.strings.useMicaEffect,
+            desc = MR.strings.useMicaEffectDesc,
             key = BifrostSettings.Keys.useMicaEffect,
         ))
     }
 
     add(IOptionItem.BasicOptionItem.BooleanItem(
-        label = MR.strings.allowLowercaseCharacters(),
-        desc = MR.strings.allowLowercaseCharactersDesc(),
+        label = MR.strings.allowLowercaseCharacters,
+        desc = MR.strings.allowLowercaseCharactersDesc,
         key = BifrostSettings.Keys.allowLowercaseCharacters,
     ))
     add(IOptionItem.BasicOptionItem.BooleanItem(
-        label = MR.strings.autoDeleteEncryptedFirmware(),
-        desc = MR.strings.autoDeleteEncryptedFirmwareDesc(),
+        label = MR.strings.autoDeleteEncryptedFirmware,
+        desc = MR.strings.autoDeleteEncryptedFirmwareDesc,
         key = BifrostSettings.Keys.autoDeleteEncryptedFirmware,
     ))
     add(IOptionItem.ActionOptionItem(
-        label = MR.strings.removeSavedData(),
-        desc = MR.strings.removeSavedDataDesc(),
+        label = MR.strings.removeSavedData,
+        desc = MR.strings.removeSavedDataDesc,
         listKey = "remove_saved_data",
         action = {
             BifrostSettings.settings.clear()
@@ -167,7 +168,7 @@ private fun PhoneInfoView(
     ) {
         ExpandButton(
             expanded = expanded,
-            text = MR.strings.phoneInfo(),
+            text = stringResource(MR.strings.phoneInfo),
             onExpandChange = { expanded = it },
             modifier = Modifier.fillMaxWidth(),
         )
@@ -182,11 +183,11 @@ private fun PhoneInfoView(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        text = MR.strings.tacFormat(phoneInfo?.tac ?: ""),
+                        text = stringResource(MR.strings.tacFormat, phoneInfo?.tac ?: ""),
                     )
 
                     Text(
-                        text = MR.strings.modelFormat(phoneInfo?.model ?: ""),
+                        text = stringResource(MR.strings.modelFormat, phoneInfo?.model ?: ""),
                     )
 
                     FlowRow(
@@ -202,7 +203,7 @@ private fun PhoneInfoView(
                                 })
                             },
                         ) {
-                            Text(text = MR.strings.copy())
+                            Text(text = stringResource(MR.strings.copy))
                         }
 
                         Button(
@@ -218,7 +219,7 @@ private fun PhoneInfoView(
                                 UrlHandler.launchUrl(urlBuilder.buildString(), true)
                             },
                         ) {
-                            Text(text = MR.strings.fileIssue())
+                            Text(text = stringResource(MR.strings.fileIssue))
                         }
                     }
                 }
@@ -286,14 +287,14 @@ private fun LabelDesc(
         modifier = modifier,
     ) {
         Text(
-            text = item.label,
+            text = stringResource(item.label),
             style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
         )
 
         item.desc?.let {
             Text(
-                text = it,
+                text = stringResource(it),
                 style = MaterialTheme.typography.bodyMedium,
             )
         }

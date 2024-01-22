@@ -17,8 +17,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
 import korlibs.io.util.toStringDecimal
-import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.flow.FlowMainAxisAlignment
 import tk.zwander.commonCompose.flow.FlowRow
 import tk.zwander.commonCompose.flow.SizeMode
@@ -102,7 +102,7 @@ internal fun ProgressInfo(model: BaseModel) {
                             (((if (shouldUseMB) (speedKBps / 1024.0) else speedKBps) * 100.0).roundToInt() / 100.0).toStringDecimal(2)
 
                         FormatText(
-                            text = if (shouldUseMB) MR.strings.mibs() else MR.strings.kibs(),
+                            text = if (shouldUseMB) stringResource(MR.strings.mibs) else stringResource(MR.strings.kibs),
                             textFormat = finalSpeed,
                         )
 
@@ -110,7 +110,7 @@ internal fun ProgressInfo(model: BaseModel) {
                         val totalMB = ((progress.second.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0).toStringDecimal(2)
 
                         FormatText(
-                            text = MR.strings.mib(),
+                            text = stringResource(MR.strings.mib),
                             textFormat = "$currentMB / $totalMB",
                         )
                     }

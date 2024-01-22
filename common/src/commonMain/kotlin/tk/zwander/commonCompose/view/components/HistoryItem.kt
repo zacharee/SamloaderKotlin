@@ -10,6 +10,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.util.invoke
@@ -44,9 +45,9 @@ internal fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = "${index + 1}. ${MR.strings.android(info.androidVersion 
+                        text = "${index + 1}. ${stringResource(MR.strings.android, info.androidVersion 
                             ?: changelog?.androidVer?.let { Regex("[0-9]+").find(it)?.value } 
-                            ?: MR.strings.unknown())}",
+                            ?: stringResource(MR.strings.unknown))}",
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.align(Alignment.CenterVertically),
                         fontSize = 20.sp,
@@ -64,7 +65,7 @@ internal fun HistoryItem(
                     ) {
                         Icon(
                             painterResource(MR.images.download),
-                            MR.strings.download(),
+                            stringResource(MR.strings.download),
                             Modifier.size(24.dp)
                         )
                     }
@@ -80,7 +81,7 @@ internal fun HistoryItem(
                     ) {
                         Icon(
                             painterResource(MR.images.lock_open_outline),
-                            MR.strings.decrypt(),
+                            stringResource(MR.strings.decrypt),
                             Modifier.size(24.dp)
                         )
                     }
@@ -92,7 +93,7 @@ internal fun HistoryItem(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = MR.strings.buildDate(info.date?.format("MMM dd, yyyy") ?: MR.strings.unknown()),
+                        text = stringResource(MR.strings.buildDate, info.date?.format("MMM dd, yyyy") ?: stringResource(MR.strings.unknown)),
                         modifier = Modifier.align(Alignment.Bottom),
                         fontSize = 16.sp,
                         lineHeight = 16.sp
@@ -110,7 +111,7 @@ internal fun HistoryItem(
                         readOnly = true,
                         modifier = Modifier.weight(1f)
                             .align(Alignment.CenterVertically),
-                        label = { Text(MR.strings.firmware()) },
+                        label = { Text(stringResource(MR.strings.firmware)) },
                         singleLine = true
                     )
                 }
@@ -126,7 +127,7 @@ internal fun HistoryItem(
                         Column {
                             ExpandButton(
                                 changelogExpanded,
-                                MR.strings.changelog(),
+                                stringResource(MR.strings.changelog),
                                 modifier = Modifier.fillMaxWidth(),
                             ) { onChangelogExpanded(it) }
 

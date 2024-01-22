@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import tk.zwander.common.data.csc.CSCDB
 import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
@@ -53,7 +54,7 @@ fun CSCChooserDialog(
         modifier = modifier,
         showing = showing,
         title = {
-            Text(text = MR.strings.chooseCsc())
+            Text(text = stringResource(MR.strings.chooseCsc))
         },
         text = {
             var filter by remember {
@@ -99,7 +100,7 @@ fun CSCChooserDialog(
                 value = filter,
                 onValueChange = { filter = it },
                 label = {
-                    Text(text = MR.strings.search())
+                    Text(text = stringResource(MR.strings.search))
                 },
                 trailingIcon = if (filter.isNotBlank()) {
                     {
@@ -108,7 +109,7 @@ fun CSCChooserDialog(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = MR.strings.clear(),
+                                contentDescription = stringResource(MR.strings.clear),
                             )
                         }
                     }
@@ -133,21 +134,21 @@ fun CSCChooserDialog(
                         horizontalArrangement = Arrangement.spacedBy(2.dp),
                     ) {
                         HeaderItem(
-                            text = MR.strings.csc(),
+                            text = stringResource(MR.strings.csc),
                             modifier = Modifier.weight(codeWeight),
                             state = columnStates[Column.CSC]!!,
                             onClick = { onColumnClick(Column.CSC) }
                         )
 
                         HeaderItem(
-                            text = MR.strings.countries(),
+                            text = stringResource(MR.strings.countries),
                             modifier = Modifier.weight(countryWeight),
                             state = columnStates[Column.COUNTRY]!!,
                             onClick = { onColumnClick(Column.COUNTRY) }
                         )
 
                         HeaderItem(
-                            text = MR.strings.carriers(),
+                            text = stringResource(MR.strings.carriers),
                             modifier = Modifier.weight(carrierWeight),
                             state = columnStates[Column.CARRIER]!!,
                             onClick = { onColumnClick(Column.CARRIER) }
@@ -193,7 +194,7 @@ fun CSCChooserDialog(
             TextButton(
                 onClick = onDismissRequest
             ) {
-                Text(text = MR.strings.cancel())
+                Text(text = stringResource(MR.strings.cancel))
             }
         },
         onDismissRequest = onDismissRequest
@@ -227,9 +228,9 @@ private fun HeaderItem(
                 SelectionState.NONE -> painterResource(MR.images.unfold_more)
             },
             contentDescription = when (state) {
-                SelectionState.ASCENDING -> MR.strings.ascending()
-                SelectionState.DESCENDING -> MR.strings.descending()
-                SelectionState.NONE -> MR.strings.sort()
+                SelectionState.ASCENDING -> stringResource(MR.strings.ascending)
+                SelectionState.DESCENDING -> stringResource(MR.strings.descending)
+                SelectionState.NONE -> stringResource(MR.strings.sort)
             },
             modifier = Modifier.alpha(if (state == SelectionState.NONE) 0.5f else 1f)
                 .size(24.dp)

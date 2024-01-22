@@ -23,8 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import tk.zwander.common.util.UrlHandler
-import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.samloaderkotlin.resources.MR
 
@@ -72,7 +72,7 @@ fun FooterView(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Info,
-                                contentDescription = MR.strings.about()
+                                contentDescription = stringResource(MR.strings.about)
                             )
                         }
                     }
@@ -85,7 +85,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            painterResource(MR.images.heart), MR.strings.supporters(),
+                            painterResource(MR.images.heart), stringResource(MR.strings.supporters),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -98,7 +98,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            painterResource(MR.images.github), MR.strings.github(),
+                            painterResource(MR.images.github), stringResource(MR.strings.github),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -111,7 +111,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            painterResource(MR.images.mastodon), MR.strings.mastodon(),
+                            painterResource(MR.images.mastodon), stringResource(MR.strings.mastodon),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -124,7 +124,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            painterResource(MR.images.twitter), MR.strings.twitter(),
+                            painterResource(MR.images.twitter), stringResource(MR.strings.twitter),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -137,7 +137,7 @@ fun FooterView(
                         },
                     ) {
                         Icon(
-                            painterResource(MR.images.patreon), MR.strings.patreon(),
+                            painterResource(MR.images.patreon), stringResource(MR.strings.patreon),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }
@@ -154,14 +154,14 @@ fun FooterView(
         showing = showingAboutDialog,
         onDismissRequest = { showingAboutDialog = false },
         title = {
-            Text(text = MR.strings.about())
+            Text(text = stringResource(MR.strings.about))
         },
         text = {
             AboutInfo()
         },
         buttons = {
             TextButton(onClick = { showingAboutDialog = false }) {
-                Text(text = MR.strings.ok())
+                Text(text = stringResource(MR.strings.ok))
             }
         }
     )

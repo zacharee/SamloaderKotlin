@@ -10,6 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
+import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -136,8 +137,8 @@ internal fun DecryptView() {
                             }
                         },
                         enabled = canDecrypt,
-                        text = MR.strings.decrypt(),
-                        description = MR.strings.decryptFirmware(),
+                        text = stringResource(MR.strings.decrypt),
+                        description = stringResource(MR.strings.decryptFirmware),
                         vectorIcon = painterResource(MR.images.lock_open_outline),
                         parentSize = constraints.maxWidth
                     )
@@ -149,8 +150,8 @@ internal fun DecryptView() {
                             }
                         },
                         enabled = canChangeOption,
-                        text = MR.strings.openFile(),
-                        description = MR.strings.openFileDesc(),
+                        text = stringResource(MR.strings.openFile),
+                        description = stringResource(MR.strings.openFileDesc),
                         vectorIcon = painterResource(MR.images.open_in_new),
                         parentSize = constraints.maxWidth
                     )
@@ -163,8 +164,8 @@ internal fun DecryptView() {
                             model.endJob("")
                         },
                         enabled = hasRunningJobs,
-                        text = MR.strings.cancel(),
-                        description = MR.strings.cancel(),
+                        text = stringResource(MR.strings.cancel),
+                        description = stringResource(MR.strings.cancel),
                         vectorIcon = painterResource(MR.images.cancel),
                         parentSize = constraints.maxWidth
                     )
@@ -183,7 +184,7 @@ internal fun DecryptView() {
                 OutlinedTextField(
                     value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
                     onValueChange = {},
-                    label = { Text(MR.strings.file()) },
+                    label = { Text(text = stringResource(MR.strings.file)) },
                     modifier = Modifier.weight(1f),
                     readOnly = true,
                     singleLine = true,
