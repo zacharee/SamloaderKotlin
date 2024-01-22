@@ -41,11 +41,6 @@ fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
-    // Some GPUs don't like Direct3D
-    if (Platform.isWindows) {
-        System.setProperty("skiko.renderApi", "OPENGL")
-    }
-
     val uuid = BifrostSettings.settings.getStringOrNull(BugsnagUtils.UUID_KEY) ?: UUID.randomUUID()
         .toString().also {
         BifrostSettings.settings.putString(BugsnagUtils.UUID_KEY, it)
