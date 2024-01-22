@@ -1,8 +1,18 @@
 package tk.zwander.commonCompose.view.pages
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -11,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import io.ktor.utils.io.core.internal.*
+import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import tk.zwander.common.data.DecryptFileInfo
+import tk.zwander.common.data.PlatformFile
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.eventManager
@@ -24,6 +36,7 @@ import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
 import tk.zwander.samloaderkotlin.resources.MR
+import java.io.File
 import kotlin.time.ExperimentalTime
 
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
@@ -79,20 +92,33 @@ private suspend fun onDecrypt(model: DecryptModel) {
 private suspend fun onOpenFile(model: DecryptModel) {
     coroutineScope {
         eventManager.sendEvent(Event.Decrypt.GetInput { info ->
-            if (info != null) {
-                if (!info.encFile.getName().endsWith(".enc2") &&
-                    !info.encFile.getName().endsWith(".enc4")) {
-                    model.endJob(MR.strings.selectEncrypted())
-                } else {
-                    model.endJob("")
-                    model.fileToDecrypt.value = info
-                }
-            } else {
-                model.endJob("")
-            }
+            handleFileInput(model, info)
         })
     }
 }
+
+private fun handleFileInput(model: DecryptModel, info: DecryptFileInfo?) {
+    if (info != null) {
+        if (!info.encFile.getName().endsWith(".enc2") &&
+            !info.encFile.getName().endsWith(".enc4")) {
+            model.endJob(MR.strings.selectEncrypted())
+        } else {
+            model.endJob("")
+            model.fileToDecrypt.value = info
+        }
+    } else {
+        model.endJob("")
+    }
+}
+
+@Composable
+expect fun Modifier.handleFileDrag(
+    enabled: Boolean = true,
+    onDragStart: (PlatformFile?) -> Unit = {},
+    onDrag: (PlatformFile?) -> Unit = {},
+    onDragExit: () -> Unit = {},
+    onDrop: (PlatformFile?) -> Unit = {},
+): Modifier
 
 /**
  * The Decrypter View.
@@ -185,7 +211,19 @@ internal fun DecryptView() {
                     value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
                     onValueChange = {},
                     label = { Text(text = stringResource(MR.strings.file)) },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f)
+                        .handleFileDrag {
+                            if (it != null) {
+                                scope.launch {
+                                    val decInfo = DecryptFileInfo(
+                                        encFile = it,
+                                        decFile = PlatformFile(it.getParent()!!, File(it.getAbsolutePath()).nameWithoutExtension),
+                                    )
+
+                                    handleFileInput(model, decInfo)
+                                }
+                            }
+                        },
                     readOnly = true,
                     singleLine = true,
                 )
