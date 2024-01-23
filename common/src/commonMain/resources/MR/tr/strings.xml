@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="manualWarningDetails3">on GitHub.</string>
+    <string name="manualWarningDetails3">GitHub\'da.</string>
     <string name="checkingCRC">Checking CRC</string>
     <string name="checkForUpdatesDesc">Check for Firmware Updates</string>
     <string name="odinRom">OdinRom</string>
@@ -11,14 +11,14 @@
     <string name="modelFormat">Model: %s</string>
     <string name="retrieve">Retrieve</string>
     <string name="close">Close</string>
-    <string name="manualWarningDetails">For most devices, Samsung will only supply the latest firmware. Even if you request a different version, Samsung\'s servers will return the latest firmware file. To avoid potentially flashing the wrong firmware, %1$s will check to see if Samsung is supplying the requested firmware before attempting to download. If the requested and served versions do not match, %2$s will abort the download. For more information on this, check out</string>
-    <string name="manualWarning">Warning! Samsung may not supply the requested firmware!</string>
+    <string name="manualWarningDetails">Çoğu aygıt için Samsung yalnızca en son ürün yazılımını sağlayacaktır. Farklı bir sürüm talep etseniz bile, Samsung\'un sunucuları en son ürün yazılımı dosyasını verecektir. Yanlış ürün yazılımının kurulması olasılığını önlemek için, %1$s indirmeye çalışmadan önce Samsung\'un istenen ürün yazılımını sağlayıp sağlamadığını denetleyecektir. İstenen ve sunulan sürümler eşleşmezse, %2$s indirme işlemini iptal edecektir. Bu konuda daha fazla bilgi için</string>
+    <string name="manualWarning">Uyarı! Samsung istenen ürün yazılımını sağlayamayabilir!</string>
     <string name="openFileDesc">Open File to Decrypt</string>
     <string name="warning">Warning</string>
     <string name="kibs">KiB/s</string>
     <string name="minimize">Minimize</string>
     <string name="zoom">Zoom</string>
-    <string name="selectEncrypted">Please select an encrypted firmware file ending in enc2 or enc4.</string>
+    <string name="selectEncrypted">Lütfen enc2 veya enc4 ile biten şifreli bir ürün yazılımı dosyası seçin.</string>
     <string name="descending">Descending</string>
     <string name="carriers">Carriers</string>
     <string name="firmware">Firmware</string>
@@ -36,31 +36,31 @@
     <string name="twitter">Twitter</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
     <string name="useNativeFilePicker">Use native file picker</string>
-    <string name="historyErrorFormat">Unable to retrieve firmware history. Make sure the model and region are correct.
-\nError: %1$s</string>
+    <string name="historyErrorFormat">Ürün yazılımı geçmişi alınamıyor. Model ve bölgenin doğru olduğundan emin olun.
+\nHata: %1$s</string>
     <string name="modelHint">Model (e.g. SM-N986U1)</string>
     <string name="useMicaEffect">Use Mica Effect</string>
     <string name="yes">Yes</string>
     <string name="android">Android %1$s</string>
     <string name="downloadFirmware">Download Firmware</string>
-    <string name="noBinaryFile">No binary file found for %1$s, %2$s! Please try a different CSC.</string>
+    <string name="noBinaryFile">%1$s, %2$s için ikili dosya bulunamadı! Lütfen farklı bir CSC deneyin.</string>
     <string name="help">Help</string>
-    <string name="badReturnStatus">Bad return status: %1$s</string>
+    <string name="badReturnStatus">Hatalı dönüş durumu: %1$s</string>
     <string name="downloader">Downloader</string>
-    <string name="crcCheckFailed">CRC check failed. Please delete the file and download again.</string>
-    <string name="decryptError">Unable to decrypt firmware. Make sure model, region, and firmware are correct.
-\nError: %1$s</string>
+    <string name="crcCheckFailed">CRC denetimi başarısız oldu. Lütfen dosyayı silin ve tekrar indirin.</string>
+    <string name="decryptError">Ürün yazılımının şifresi çözülemiyor. Model, bölge ve ürün yazılımının doğru olduğundan emin olun.
+\nHata: %1$s</string>
     <string name="version">v%1$s</string>
     <string name="regionHint">Region (e.g. XAA)</string>
     <string name="ok">OK</string>
     <string name="patreonSupporters">Patreon Supporters</string>
     <string name="phoneInfo">Phone Info</string>
     <string name="checkHistory">Check History</string>
-    <string name="historyError">Unable to retrieve firmware history. Make sure the model and region are correct.</string>
+    <string name="historyError">Ürün yazılımı geçmişi alınamıyor. Model ve bölgenin doğru olduğundan emin olun.</string>
     <string name="imei_serial">IMEI/Serial</string>
     <string name="download">Download</string>
     <string name="autoDeleteEncryptedFirmware">Auto-Delete Encrypted Firmware</string>
-    <string name="md5CheckFailed">MD5 check failed. Please delete the file and download again.</string>
+    <string name="md5CheckFailed">MD5 denetimi başarısız oldu. Lütfen dosyayı silin ve tekrar indirin.</string>
     <string name="decrypting">Decrypting</string>
     <string name="patreon">Patreon</string>
     <string name="about">About</string>
@@ -70,15 +70,15 @@
     <string name="more">More</string>
     <string name="samloader">Samloader</string>
     <string name="decryptFirmware">Decrypt Firmware</string>
-    <string name="versionMismatch">You requested
+    <string name="versionMismatch">İstediğiniz:
 \n
 \n%1$s
 \n
-\nbut Samsung is attempting to serve
+\nancak Samsung bunun yerine
 \n
 \n%2$s
 \n
-\ninstead. Are you sure you want to continue downloading?</string>
+\nsunmaya çalışıyor. İndirmeye devam etmek istediğinizden emin misiniz?</string>
     <string name="canceled">Canceled</string>
     <string name="decrypt">Decrypt</string>
     <string name="cancel">Cancel</string>
@@ -105,18 +105,20 @@
     <string name="buildDate">Build Date: %1$s</string>
     <string name="tacFormat">TAC: %s</string>
     <string name="settings">Settings</string>
-    <string name="firmwareCheckError">Error checking for firmware. Make sure the model and region are correct.
-\nMore info: %1$s
+    <string name="firmwareCheckError">Ürün yazılımı denetlenirken hata oluştu. Modelin ve bölgenin doğru olduğundan emin olun.
+\nDaha fazla bilgi: %1$s
 \n
 \n%2$s</string>
     <string name="csc">CSC</string>
     <string name="checkingMD5">Checking MD5</string>
-    <string name="versionCheckError">Unable to verify that Samsung is serving the correct firmware. Are you sure you want to continue downloading?</string>
-    <string name="invalidFirmwareError">Invalid firmware string. Make sure all groups are specified.</string>
+    <string name="versionCheckError">Samsung\'un doğru ürün yazılımını sunduğu doğrulanamıyor. İndirmeye devam etmek istediğinizden emin misiniz?</string>
+    <string name="invalidFirmwareError">Geçersiz ürün yazılımı dizgesi. Tüm grupların belirtildiğinden emin olun.</string>
     <string name="source">Source:</string>
     <string name="file">File</string>
     <string name="useMicaEffectDesc">On Windows 11 and later, Bifrost can apply the Windows Mica effect to the window background, making it look more like a native Windows app.</string>
-    <string name="manualWarningDetails2">this issue</string>
+    <string name="manualWarningDetails2">bu sorun</string>
     <string name="statusFormat">Status: %1$s</string>
     <string name="done">Done</string>
+    <string name="show">Göster</string>
+    <string name="hide">Gizle</string>
 </resources>
