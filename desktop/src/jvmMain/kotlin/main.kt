@@ -5,7 +5,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.toPainter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.application
@@ -16,9 +15,10 @@ import com.mayakapps.compose.windowstyler.NativeLookWindow
 import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.sun.jna.ptr.IntByReference
+import dev.icerock.moko.resources.compose.painterResource
 import korlibs.memory.Platform
-import tk.zwander.common.GradleConfig
 import tk.zwander.common.EventDelegate
+import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.isWindows11
@@ -31,6 +31,7 @@ import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.getThemeInfo
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.MacMenuBar
+import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Dimension
 import kotlin.time.ExperimentalTime
 
@@ -54,10 +55,12 @@ fun main() {
         val titleBarColor =
             if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.background
 
+        val iconPainter = painterResource(MR.images.icon_rounded)
+
         NativeLookWindow(
             onCloseRequest = ::exitApplication,
             title = GradleConfig.appName,
-            icon = getImage("icon.png")?.toPainter(),
+            icon = iconPainter,
             state = mainWindowState,
             preferredBackdropType = WindowBackdrop.MicaTabbed(themeInfo.isDarkMode),
             frameStyle = WindowFrameStyle(
