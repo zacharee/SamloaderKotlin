@@ -31,7 +31,11 @@ actual fun Modifier.handleFileDrag(
 
 private fun ExternalDragValue.extractFile(): PlatformFile? {
     return try {
-        (dragData as? DragData.FilesList?)?.readFiles()?.firstOrNull()?.let { PlatformFile(URI.create(it).toPath().toFile()) }
+        val filesList = dragData as? DragData.FilesList?
+        val files = filesList?.readFiles()
+        val firstFile = files?.firstOrNull()
+
+        firstFile?.let { PlatformFile(URI.create(it).toPath().toFile()) }
     } catch (e: NullPointerException) {
         null
     }
