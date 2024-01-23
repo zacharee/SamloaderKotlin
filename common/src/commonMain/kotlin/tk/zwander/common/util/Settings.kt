@@ -19,10 +19,14 @@ expect fun ObservableSettings(): ObservableSettings
 class ObservableBifrostSettings(private val wrapped: ObservableSettings) :
     ObservableSettings by wrapped {
     override fun putString(key: String, value: String) {
-        wrapped.putString(
-            key,
-            value.replace("\u0000", ""),
-        )
+        try {
+            wrapped.putString(
+                key,
+                value.replace("\u0000", ""),
+            )
+        } catch (e: Throwable) {
+            throw IllegalArgumentException("Error saving value for $key", e)
+        }
     }
 }
 
