@@ -86,7 +86,7 @@
     <string name="history">Historial</string>
     <string name="countries">Países</string>
     <string name="window">Ventana</string>
-    <string name="fileIssue">Crear asunto</string>
+    <string name="fileIssue">Crear un problema</string>
     <string name="allowLowercaseCharactersDesc">Por comodidad, Bifrost escribe automáticamente en mayúsculas todos los caracteres de los campos de modelo, región y firmware. Sin embargo, algunos modelos de dispositivos contienen caracteres en minúsculas. Active esta opción para descargar el firmware para esos modelos.</string>
     <string name="mib">MiB</string>
     <string name="removeSavedDataDesc">Bifrost almacena algunos datos, como la última información introducida sobre el dispositivo y los estados actuales de los ajustes. Haga clic aquí para eliminar esos datos.</string>
