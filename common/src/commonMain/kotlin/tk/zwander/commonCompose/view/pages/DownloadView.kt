@@ -16,6 +16,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.*
@@ -253,7 +254,7 @@ internal fun DownloadView() {
     val model = LocalDownloadModel.current
 
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
-    val manual by model.manual.collectAsState()
+    var manual by model.manual.collectAsMutableState()
     val modelModel by model.model.collectAsState()
     val region by model.region.collectAsState()
     val fw by model.fw.collectAsState()
@@ -261,7 +262,7 @@ internal fun DownloadView() {
     val progress by model.progress.collectAsState()
     val statusText by model.statusText.collectAsState()
     val changelog by model.changelog.collectAsState()
-    val changelogExpanded by model.changelogExpanded.collectAsState()
+    var changelogExpanded by model.changelogExpanded.collectAsMutableState()
 
     val canCheckVersion = manual == false && !modelModel.isNullOrBlank()
             && !region.isNullOrBlank() && !hasRunningJobs
@@ -357,14 +358,14 @@ internal fun DownloadView() {
                         indication = null,
                         enabled = canChangeOption,
                     ) {
-                        model.manual.value = model.manual.value?.let { !it }
+                        manual = manual?.let { !it }
                     }
                         .padding(4.dp)
                 ) {
                     Checkbox(
                         checked = manual == true,
                         onCheckedChange = {
-                            model.manual.value = it
+                            manual = it
                         },
                         modifier = Modifier.align(Alignment.CenterVertically),
                         enabled = canChangeOption,
@@ -523,7 +524,7 @@ internal fun DownloadView() {
                             changelogExpanded,
                             stringResource(MR.strings.changelog),
                             modifier = Modifier.fillMaxWidth(),
-                        ) { model.changelogExpanded.value = it }
+                        ) { changelogExpanded = it }
 
                         Spacer(Modifier.height(8.dp))
                     }

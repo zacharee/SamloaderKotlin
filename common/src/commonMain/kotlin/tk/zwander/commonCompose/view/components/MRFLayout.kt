@@ -26,7 +26,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.imei.IMEIGenerator
 import tk.zwander.common.util.BifrostSettings
-import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
@@ -125,7 +124,7 @@ internal fun MRFLayout(
         modifier = Modifier.fillMaxWidth()
     )
 
-    val firmwareImeiSerial by remember {
+    val firmwareImeiSerial by remember(canChangeFirmware, canChangeOption) {
         derivedStateOf {
             val items = mutableListOf<DynamicField>()
 
