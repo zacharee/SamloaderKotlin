@@ -94,6 +94,10 @@ kotlin {
 
         val androidAndJvmMain by creating {
             dependsOn(commonMain)
+
+            dependencies {
+                api(libs.ktor.client.cio)
+            }
         }
 
         val jvmMain by getting {
@@ -101,7 +105,6 @@ kotlin {
             dependsOn(androidAndJvmMain)
 
             dependencies {
-                api(libs.ktor.client.cio)
                 api(libs.flatlaf)
                 api(libs.bugsnag.jvm)
                 api(libs.slf4j)
@@ -120,8 +123,6 @@ kotlin {
 
             dependencies {
                 api(libs.kotlinx.coroutines.android)
-
-                api(libs.ktor.client.cio)
 
                 api(libs.androidx.activity.compose)
                 api(libs.androidx.core.ktx)
