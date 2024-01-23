@@ -1,5 +1,6 @@
 package tk.zwander.commonCompose.view.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -26,10 +27,12 @@ import tk.zwander.samloaderkotlin.resources.MR
 @Composable
 internal fun ChangelogDisplay(
     changelog: Changelog?,
+    border: BorderStroke = CardDefaults.outlinedCardBorder(),
 ) {
     OutlinedCard(
         modifier = Modifier.padding(4.dp),
         colors = CardDefaults.outlinedCardColors(containerColor = Color.Transparent),
+        border = border,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()

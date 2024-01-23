@@ -1,6 +1,7 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -137,7 +138,13 @@ internal fun HistoryItem(
                                 Column {
                                     Spacer(Modifier.height(8.dp))
 
-                                    ChangelogDisplay(changelog)
+                                    ChangelogDisplay(
+                                        changelog = changelog,
+                                        border = BorderStroke(
+                                            width = 1.dp,
+                                            color = MaterialTheme.colorScheme.outline,
+                                        ),
+                                    )
                                 }
                             }
                         }
