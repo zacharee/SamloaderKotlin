@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import my.nanihadesuka.compose.LazyColumnScrollbarNew
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.PlatformFile
 import tk.zwander.common.tools.CryptUtils
@@ -137,106 +140,120 @@ internal fun DecryptView() {
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
     val canDecrypt = fileToDecrypt != null && !hasRunningJobs
             && !fw.isNullOrBlank() && !modelModel.isNullOrBlank() && !region.isNullOrBlank()
+    val statusText by model.statusText.collectAsState()
 
     val canChangeOption = !hasRunningJobs
 
     val scope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+    LazyColumnScrollbarNew(
+        state = listState,
+        thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+        alwaysShowScrollBar = true,
+        padding = 1.dp,
+        thickness = 4.dp,
     ) {
-        item {
-            BoxWithConstraints(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                val constraints = constraints
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            state = listState,
+        ) {
+            item {
+                BoxWithConstraints(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    val constraints = constraints
 
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        HybridButton(
+                            onClick = {
+                                model.launchJob {
+                                    onDecrypt(model)
+                                }
+                            },
+                            enabled = canDecrypt,
+                            text = stringResource(MR.strings.decrypt),
+                            description = stringResource(MR.strings.decryptFirmware),
+                            vectorIcon = painterResource(MR.images.lock_open_outline),
+                            parentSize = constraints.maxWidth
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        HybridButton(
+                            onClick = {
+                                model.launchJob {
+                                    onOpenFile(model)
+                                }
+                            },
+                            enabled = canChangeOption,
+                            text = stringResource(MR.strings.openFile),
+                            description = stringResource(MR.strings.openFileDesc),
+                            vectorIcon = painterResource(MR.images.open_in_new),
+                            parentSize = constraints.maxWidth
+                        )
+                        Spacer(Modifier.weight(1f))
+                        HybridButton(
+                            onClick = {
+                                scope.launch {
+                                    eventManager.sendEvent(Event.Decrypt.Finish)
+                                }
+                                model.endJob("")
+                            },
+                            enabled = hasRunningJobs,
+                            text = stringResource(MR.strings.cancel),
+                            description = stringResource(MR.strings.cancel),
+                            vectorIcon = painterResource(MR.images.cancel),
+                            parentSize = constraints.maxWidth
+                        )
+                    }
+                }
+            }
+
+            item {
+                MRFLayout(model, canChangeOption, canChangeOption, showImeiSerial = true)
+            }
+
+            item {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    HybridButton(
-                        onClick = {
-                            model.launchJob {
-                                onDecrypt(model)
-                            }
-                        },
-                        enabled = canDecrypt,
-                        text = stringResource(MR.strings.decrypt),
-                        description = stringResource(MR.strings.decryptFirmware),
-                        vectorIcon = painterResource(MR.images.lock_open_outline),
-                        parentSize = constraints.maxWidth
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    HybridButton(
-                        onClick = {
-                            model.launchJob {
-                                onOpenFile(model)
-                            }
-                        },
-                        enabled = canChangeOption,
-                        text = stringResource(MR.strings.openFile),
-                        description = stringResource(MR.strings.openFileDesc),
-                        vectorIcon = painterResource(MR.images.open_in_new),
-                        parentSize = constraints.maxWidth
-                    )
-                    Spacer(Modifier.weight(1f))
-                    HybridButton(
-                        onClick = {
-                            scope.launch {
-                                eventManager.sendEvent(Event.Decrypt.Finish)
-                            }
-                            model.endJob("")
-                        },
-                        enabled = hasRunningJobs,
-                        text = stringResource(MR.strings.cancel),
-                        description = stringResource(MR.strings.cancel),
-                        vectorIcon = painterResource(MR.images.cancel),
-                        parentSize = constraints.maxWidth
+                    OutlinedTextField(
+                        value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
+                        onValueChange = {},
+                        label = { Text(text = stringResource(MR.strings.file)) },
+                        modifier = Modifier.weight(1f)
+                            .handleFileDrag {
+                                if (it != null) {
+                                    scope.launch {
+                                        val decInfo = DecryptFileInfo(
+                                            encFile = it,
+                                            decFile = PlatformFile(it.getParent()!!, File(it.getAbsolutePath()).nameWithoutExtension),
+                                        )
+
+                                        handleFileInput(model, decInfo)
+                                    }
+                                }
+                            },
+                        readOnly = true,
+                        singleLine = true,
                     )
                 }
             }
-        }
 
-        item {
-            MRFLayout(model, canChangeOption, canChangeOption, showImeiSerial = true)
-        }
+            if (hasRunningJobs || statusText.isNotBlank()) {
+                item {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Spacer(Modifier.size(8.dp))
 
-        item {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                OutlinedTextField(
-                    value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
-                    onValueChange = {},
-                    label = { Text(text = stringResource(MR.strings.file)) },
-                    modifier = Modifier.weight(1f)
-                        .handleFileDrag {
-                            if (it != null) {
-                                scope.launch {
-                                    val decInfo = DecryptFileInfo(
-                                        encFile = it,
-                                        decFile = PlatformFile(it.getParent()!!, File(it.getAbsolutePath()).nameWithoutExtension),
-                                    )
-
-                                    handleFileInput(model, decInfo)
-                                }
-                            }
-                        },
-                    readOnly = true,
-                    singleLine = true,
-                )
-            }
-        }
-
-        item {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Spacer(Modifier.size(8.dp))
-
-                ProgressInfo(model)
+                        ProgressInfo(model)
+                    }
+                }
             }
         }
     }

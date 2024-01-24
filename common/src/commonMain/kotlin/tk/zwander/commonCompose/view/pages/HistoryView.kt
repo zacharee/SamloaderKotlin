@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LocalContentColor
@@ -43,6 +44,7 @@ import korlibs.io.serialization.xml.Xml
 import korlibs.io.serialization.xml.firstDescendant
 import korlibs.time.DateFormat
 import kotlinx.coroutines.launch
+import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.CrossPlatformBugsnag
@@ -254,121 +256,133 @@ internal fun HistoryView() {
         mutableStateMapOf<String, Boolean>()
     }
 
-    LazyVerticalStaggeredGrid(
-        modifier = Modifier.fillMaxSize(),
-        columns = StaggeredGridCells.Adaptive(minSize = 350.dp),
-        verticalItemSpacing = 8.dp,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(8.dp),
+    val gridState = rememberLazyStaggeredGridState()
+
+    LazyStaggeredGridVerticalScrollbarNew(
+        state = gridState,
+        thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+        alwaysShowScrollBar = true,
+        padding = 1.dp,
+        thickness = 4.dp,
     ) {
-        item(span = StaggeredGridItemSpan.FullLine) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                BoxWithConstraints(
+        LazyVerticalStaggeredGrid(
+            modifier = Modifier.fillMaxSize(),
+            columns = StaggeredGridCells.Adaptive(minSize = 350.dp),
+            verticalItemSpacing = 8.dp,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(8.dp),
+            state = gridState,
+        ) {
+            item(span = StaggeredGridItemSpan.FullLine) {
+                Column(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    val constraints = constraints
+                    BoxWithConstraints(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        val constraints = constraints
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            HybridButton(
+                                onClick = {
+                                    model.historyItems.value = listOf()
+
+                                    model.launchJob {
+                                        onFetch(model)
+                                    }
+                                },
+                                enabled = canCheckHistory,
+                                text = stringResource(MR.strings.checkHistory),
+                                description = stringResource(MR.strings.checkHistory),
+                                vectorIcon = painterResource(MR.images.refresh),
+                                parentSize = constraints.maxWidth
+                            )
+
+                            if (hasRunningJobs) {
+                                Spacer(Modifier.width(8.dp))
+
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(24.dp)
+                                        .align(Alignment.CenterVertically),
+                                    strokeWidth = 2.dp
+                                )
+                            }
+
+                            Spacer(Modifier.weight(1f))
+
+                            HybridButton(
+                                onClick = {
+                                    model.endJob("")
+                                },
+                                enabled = hasRunningJobs,
+                                text = stringResource(MR.strings.cancel),
+                                description = stringResource(MR.strings.cancel),
+                                vectorIcon = painterResource(MR.images.cancel),
+                                parentSize = constraints.maxWidth
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.height(8.dp))
+
+                    MRFLayout(model, !hasRunningJobs, !hasRunningJobs, false)
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        HybridButton(
+                        ClickableText(
+                            text = odinRomSource,
+                            modifier = Modifier.padding(start = 4.dp),
                             onClick = {
-                                model.historyItems.value = listOf()
-
-                                model.launchJob {
-                                    onFetch(model)
-                                }
+                                odinRomSource.getStringAnnotations("OdinRomLink", it, it)
+                                    .firstOrNull()?.let { item ->
+                                        UrlHandler.launchUrl(item.item)
+                                    }
                             },
-                            enabled = canCheckHistory,
-                            text = stringResource(MR.strings.checkHistory),
-                            description = stringResource(MR.strings.checkHistory),
-                            vectorIcon = painterResource(MR.images.refresh),
-                            parentSize = constraints.maxWidth
+                            style = LocalTextStyle.current.copy(LocalContentColor.current),
                         )
-
-                        if (hasRunningJobs) {
-                            Spacer(Modifier.width(8.dp))
-
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(24.dp)
-                                    .align(Alignment.CenterVertically),
-                                strokeWidth = 2.dp
-                            )
-                        }
 
                         Spacer(Modifier.weight(1f))
 
-                        HybridButton(
-                            onClick = {
-                                model.endJob("")
-                            },
-                            enabled = hasRunningJobs,
-                            text = stringResource(MR.strings.cancel),
-                            description = stringResource(MR.strings.cancel),
-                            vectorIcon = painterResource(MR.images.cancel),
-                            parentSize = constraints.maxWidth
-                        )
+                        Text(text = statusText)
                     }
-                }
-
-                Spacer(Modifier.height(8.dp))
-
-                MRFLayout(model, !hasRunningJobs, !hasRunningJobs, false)
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    ClickableText(
-                        text = odinRomSource,
-                        modifier = Modifier.padding(start = 4.dp),
-                        onClick = {
-                            odinRomSource.getStringAnnotations("OdinRomLink", it, it)
-                                .firstOrNull()?.let { item ->
-                                    UrlHandler.launchUrl(item.item)
-                                }
-                        },
-                        style = LocalTextStyle.current.copy(LocalContentColor.current),
-                    )
-
-                    Spacer(Modifier.weight(1f))
-
-                    Text(text = statusText)
                 }
             }
-        }
 
-        itemsIndexed(historyItems, { _, item -> item.toString() }) { index, historyInfo ->
-            HistoryItem(
-                index = index,
-                info = historyInfo,
-                changelog = changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
-                changelogExpanded = expanded[historyInfo.toString()] ?: false,
-                onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
-                onDownload = {
-                    downloadModel.manual.value = true
-                    downloadModel.osCode.value = ""
-                    downloadModel.model.value = model.model.value
-                    downloadModel.region.value = model.region.value
-                    downloadModel.fw.value = it
+            itemsIndexed(historyItems, { _, item -> item.toString() }) { index, historyInfo ->
+                HistoryItem(
+                    index = index,
+                    info = historyInfo,
+                    changelog = changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
+                    changelogExpanded = expanded[historyInfo.toString()] ?: false,
+                    onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
+                    onDownload = {
+                        downloadModel.manual.value = true
+                        downloadModel.osCode.value = ""
+                        downloadModel.model.value = model.model.value
+                        downloadModel.region.value = model.region.value
+                        downloadModel.fw.value = it
 
-                    scope.launch {
-                        pagerState.animateScrollToPage(Page.Downloader)
-                    }
-                },
-                onDecrypt = {
-                    decryptModel.fileToDecrypt.value = null
-                    decryptModel.model.value = model.model.value
-                    decryptModel.region.value = model.region.value
-                    decryptModel.fw.value = it
+                        scope.launch {
+                            pagerState.animateScrollToPage(Page.Downloader)
+                        }
+                    },
+                    onDecrypt = {
+                        decryptModel.fileToDecrypt.value = null
+                        decryptModel.model.value = model.model.value
+                        decryptModel.region.value = model.region.value
+                        decryptModel.fw.value = it
 
-                    scope.launch {
-                        pagerState.animateScrollToPage(Page.Decrypter)
-                    }
-                },
-                modifier = Modifier.animateItemPlacement(),
-            )
+                        scope.launch {
+                            pagerState.animateScrollToPage(Page.Decrypter)
+                        }
+                    },
+                    modifier = Modifier.animateItemPlacement(),
+                )
+            }
         }
     }
 }

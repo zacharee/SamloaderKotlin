@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import my.nanihadesuka.compose.ColumnScrollbarNew
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.util.parseHtml
@@ -29,50 +30,61 @@ internal fun ChangelogDisplay(
     changelog: Changelog?,
     border: BorderStroke = CardDefaults.outlinedCardBorder(),
 ) {
+    val scrollState = rememberScrollState()
+
     OutlinedCard(
-        modifier = Modifier.padding(4.dp),
+        modifier = Modifier.padding(vertical = 4.dp)
+            .heightIn(max = 500.dp),
         colors = CardDefaults.outlinedCardColors(containerColor = Color.Transparent),
         border = border,
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-                .heightIn(max = 500.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(8.dp),
+        ColumnScrollbarNew(
+            state = scrollState,
+            thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+            alwaysShowScrollBar = true,
+            padding = 1.dp,
+            thickness = 4.dp,
         ) {
-            val infoItems by derivedStateOf {
-                val list = mutableListOf<String>()
+            Column(
+                modifier = Modifier.fillMaxWidth()
+                    .verticalScroll(scrollState)
+                    .padding(8.dp),
+            ) {
+                val infoItems by derivedStateOf {
+                    val list = mutableListOf<String>()
 
-                changelog?.relDate?.let { relDate ->
-                    list.add(MR.strings.release(relDate))
+                    changelog?.relDate?.let { relDate ->
+                        list.add(MR.strings.release(relDate))
+                    }
+
+                    changelog?.secPatch?.let { secPatch ->
+                        list.add(MR.strings.security(secPatch))
+                    }
+
+                    list
                 }
 
-                changelog?.secPatch?.let { secPatch ->
-                    list.add(MR.strings.security(secPatch))
+                if (infoItems.isNotEmpty()) {
+                    Text(
+                        text = infoItems.joinToString("  •  "),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+
                 }
 
-                list
-            }
+                if (changelog?.notes != null) {
+                    SelectionContainer {
+                        val formatted = changelog.notes.replace("<br><br><br><br>", "<QUAD_BR>")
+                            .replace("<br><br>", "<DOUBLE_BR>")
+                            .replace("<br>\n", "\n")
+                            .replace("<br>", "")
+                            .replace("<QUAD_BR>", "\n\n")
+                            .replace("<DOUBLE_BR>", "\n\n")
 
-            if (infoItems.isNotEmpty()) {
-                Text(
-                    text = infoItems.joinToString("  •  "),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-
-            }
-
-            if (changelog?.notes != null) {
-                SelectionContainer {
-                    val formatted = changelog.notes.replace("<br><br><br><br>", "<QUAD_BR>")
-                        .replace("<br><br>", "<DOUBLE_BR>")
-                        .replace("<br>\n", "\n")
-                        .replace("<br>", "")
-                        .replace("<QUAD_BR>", "\n\n")
-                        .replace("<DOUBLE_BR>", "\n\n")
-
-                    Text(formatted.parseHtml())
+                        Text(formatted.parseHtml())
+                    }
                 }
             }
         }

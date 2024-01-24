@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +37,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.http.URLBuilder
 import korlibs.io.async.launch
 import korlibs.memory.Platform
+import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.SettingsKey
 import tk.zwander.common.util.UrlHandler
@@ -111,30 +113,42 @@ val options = arrayListOf<IOptionItem>().apply {
 
 @Composable
 fun SettingsAboutView() {
+    val gridState = rememberLazyStaggeredGridState()
+
     Column(
         modifier = Modifier.fillMaxSize().padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Adaptive(minSize = 300.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalItemSpacing = 8.dp,
+        LazyStaggeredGridVerticalScrollbarNew(
+            state = gridState,
             modifier = Modifier.weight(1f),
+            thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+            alwaysShowScrollBar = true,
+            padding = 1.dp,
+            thickness = 4.dp,
         ) {
-            items(items = options, key = { it.listKey }) { item ->
-                Box(
-                    modifier = Modifier.widthIn(max = 400.dp),
-                ) {
-                    when (item) {
-                        is IOptionItem.ActionOptionItem -> {
-                            ActionPreference(item = item)
-                        }
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Adaptive(minSize = 300.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalItemSpacing = 8.dp,
+                state = gridState,
+            ) {
+                items(items = options, key = { it.listKey }) { item ->
+                    Box(
+                        modifier = Modifier.widthIn(max = 400.dp),
+                    ) {
+                        when (item) {
+                            is IOptionItem.ActionOptionItem -> {
+                                ActionPreference(item = item)
+                            }
 
-                        is IOptionItem.BasicOptionItem.BooleanItem -> {
-                            BooleanPreference(item = item)
-                        }
+                            is IOptionItem.BasicOptionItem.BooleanItem -> {
+                                BooleanPreference(item = item)
+                            }
 
-                        // TODO: Layouts for other settings types.
+                            // TODO: Layouts for other settings types.
+                        }
                     }
                 }
             }

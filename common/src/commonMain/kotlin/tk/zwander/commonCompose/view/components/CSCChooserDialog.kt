@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import my.nanihadesuka.compose.LazyColumnScrollbarNew
 import tk.zwander.common.data.csc.CSCDB
 import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
@@ -117,74 +119,86 @@ fun CSCChooserDialog(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+            val listState = rememberLazyListState()
+
+            LazyColumnScrollbarNew(
+                state = listState,
+                thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+                alwaysShowScrollBar = true,
+                padding = 1.dp,
+                thickness = 4.dp,
             ) {
-                val codeWeight = 0.2f
-                val carrierWeight = 0.4f
-                val countryWeight = 0.4f
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    state = listState,
+                ) {
+                    val codeWeight = 0.2f
+                    val carrierWeight = 0.4f
+                    val countryWeight = 0.4f
 
-                stickyHeader {
-                    Row(
-                        modifier = Modifier.background(MaterialTheme.colorScheme.surface)
-                            .padding(horizontal = 4.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.Bottom,
-                        horizontalArrangement = Arrangement.spacedBy(2.dp),
-                    ) {
-                        HeaderItem(
-                            text = stringResource(MR.strings.csc),
-                            modifier = Modifier.weight(codeWeight),
-                            state = columnStates[Column.CSC]!!,
-                            onClick = { onColumnClick(Column.CSC) }
-                        )
-
-                        HeaderItem(
-                            text = stringResource(MR.strings.countries),
-                            modifier = Modifier.weight(countryWeight),
-                            state = columnStates[Column.COUNTRY]!!,
-                            onClick = { onColumnClick(Column.COUNTRY) }
-                        )
-
-                        HeaderItem(
-                            text = stringResource(MR.strings.carriers),
-                            modifier = Modifier.weight(carrierWeight),
-                            state = columnStates[Column.CARRIER]!!,
-                            onClick = { onColumnClick(Column.CARRIER) }
-                        )
-                    }
-                }
-                items(items, { it.code }) {
-                    OutlinedCard(
-                        onClick = {
-                            onCscSelected(it.code)
-                            onDismissRequest()
-                        }
-                    ) {
+                    stickyHeader {
                         Row(
-                            modifier = Modifier.fillMaxWidth()
-                                .heightIn(min = 48.dp)
-                                .padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            modifier = Modifier.background(MaterialTheme.colorScheme.surface)
+                                .padding(horizontal = 4.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.Bottom,
+                            horizontalArrangement = Arrangement.spacedBy(2.dp),
                         ) {
-                            Text(
-                                text = it.code,
-                                modifier = Modifier.weight(codeWeight)
+                            HeaderItem(
+                                text = stringResource(MR.strings.csc),
+                                modifier = Modifier.weight(codeWeight),
+                                state = columnStates[Column.CSC]!!,
+                                onClick = { onColumnClick(Column.CSC) }
                             )
 
-                            Text(
-                                text = it.countries.map { CSCDB.getCountryName(it) }
-                                    .sortedBy { it.lowercase() }.joinToString(",\n"),
-                                modifier = Modifier.weight(countryWeight)
+                            HeaderItem(
+                                text = stringResource(MR.strings.countries),
+                                modifier = Modifier.weight(countryWeight),
+                                state = columnStates[Column.COUNTRY]!!,
+                                onClick = { onColumnClick(Column.COUNTRY) }
                             )
 
-                            Text(
-                                text = it.carriers?.sortedBy { it.lowercase() }
-                                    ?.joinToString(",\n") ?: "",
-                                modifier = Modifier.weight(carrierWeight)
+                            HeaderItem(
+                                text = stringResource(MR.strings.carriers),
+                                modifier = Modifier.weight(carrierWeight),
+                                state = columnStates[Column.CARRIER]!!,
+                                onClick = { onColumnClick(Column.CARRIER) }
                             )
+                        }
+                    }
+                    items(items, { it.code }) {
+                        OutlinedCard(
+                            onClick = {
+                                onCscSelected(it.code)
+                                onDismissRequest()
+                            }
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
+                                    .heightIn(min = 48.dp)
+                                    .padding(8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            ) {
+                                Text(
+                                    text = it.code,
+                                    modifier = Modifier.weight(codeWeight)
+                                )
+
+                                Text(
+                                    text = it.countries.map { CSCDB.getCountryName(it) }
+                                        .sortedBy { it.lowercase() }.joinToString(",\n"),
+                                    modifier = Modifier.weight(countryWeight)
+                                )
+
+                                Text(
+                                    text = it.carriers?.sortedBy { it.lowercase() }
+                                        ?.joinToString(",\n") ?: "",
+                                    modifier = Modifier.weight(carrierWeight)
+                                )
+                            }
                         }
                     }
                 }
