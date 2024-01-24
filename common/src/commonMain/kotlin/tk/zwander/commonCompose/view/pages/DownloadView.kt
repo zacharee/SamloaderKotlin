@@ -508,7 +508,7 @@ internal fun DownloadView() {
                 }
             }
 
-            if (hasRunningJobs || statusText.isNotBlank()) {
+            if (hasRunningJobs || progress.first > 0 || progress.second > 0 || statusText.isNotBlank()) {
                 item {
                     ProgressInfo(model)
                 }
