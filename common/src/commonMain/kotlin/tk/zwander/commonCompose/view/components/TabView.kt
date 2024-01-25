@@ -2,16 +2,25 @@
 
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextOverflow
@@ -60,15 +69,18 @@ sealed class Page(
 /**
  * Allows the user to switch among the different app pages.
  */
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun TabView(
     selectedPage: Int,
     onPageSelected: (Int) -> Unit,
 ) {
     val density = LocalDensity.current
-    var anyEllipsis by remember(density.density, density.fontScale) {
-        mutableStateOf(false)
+
+    val ellipses = remember(density.fontScale, density.density) {
+        mutableStateMapOf<Int, Boolean>()
+    }
+    val anyEllipsis by remember {
+        derivedStateOf { ellipses.values.any { it } }
     }
 
     TabRow(
@@ -78,38 +90,57 @@ internal fun TabView(
         divider = {},
         containerColor = if (LocalUseMicaEffect.current) Color.Transparent else TabRowDefaults.containerColor,
     ) {
-        pages.forEach { page ->
-            val text: (@Composable () -> Unit)? = if (anyEllipsis) null else {
-                {
-                    Text(
-                        text = stringResource(page.labelRes),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                        onTextLayout = {
-                            if (!anyEllipsis) {
-                                anyEllipsis = it.isLineEllipsized(0)
-                            }
-                        },
-                    )
-                }
-            }
-
-            val icon: (@Composable () -> Unit)? = if (anyEllipsis) {
-                {
-                    Icon(
-                        painter = painterResource(page.iconRes),
-                        contentDescription = stringResource(page.labelRes),
-                    )
-                }
-            } else null
-
+        pages.forEachIndexed { index, page ->
             Tab(
                 selected = selectedPage == page.index,
-                text = text,
-                icon = icon,
+                text = {
+                    Crossfade(
+                        targetState = anyEllipsis,
+                    ) {
+                        if (it) {
+                            Box(
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Text(
+                                    text = stringResource(page.labelRes),
+                                    maxLines = 1,
+                                    onTextLayout = { layoutResult ->
+                                        ellipses[index] = layoutResult.multiParagraph.didExceedMaxLines
+                                    },
+                                    modifier = Modifier.alpha(0f),
+                                    overflow = TextOverflow.Clip,
+                                    color = Color.Transparent,
+                                )
+
+                                Icon(
+                                    painter = painterResource(page.iconRes),
+                                    contentDescription = stringResource(page.labelRes),
+                                    modifier = Modifier.size(24.dp),
+                                )
+                            }
+                        } else {
+                            Icon(
+                                painter = painterResource(page.iconRes),
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp)
+                                    .alpha(0f),
+                            )
+
+                            Text(
+                                text = stringResource(page.labelRes),
+                                maxLines = 1,
+                                onTextLayout = { layoutResult ->
+                                    ellipses[index] = layoutResult.multiParagraph.didExceedMaxLines
+                                },
+                                overflow = TextOverflow.Clip,
+                            )
+                        }
+                    }
+                },
                 onClick = {
                     onPageSelected(page.index)
                 },
+                modifier = Modifier.animateContentSize(),
             )
         }
     }
