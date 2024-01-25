@@ -20,8 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import my.nanihadesuka.compose.ColumnScrollbarNew
+import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.util.invoke
+import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.util.parseHtml
 import tk.zwander.samloaderkotlin.resources.MR
 
@@ -40,11 +42,12 @@ internal fun ChangelogDisplay(
     ) {
         ColumnScrollbarNew(
             state = scrollState,
-            thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+            thumbColor = ThemeConstants.Colors.scrollbarUnselected,
+            thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
             alwaysShowScrollBar = true,
-            padding = 1.dp,
-            thickness = 4.dp,
+            padding = ThemeConstants.Dimensions.scrollbarPadding,
+            thickness = ThemeConstants.Dimensions.scrollbarThickness,
+            selectionMode = ScrollbarSelectionMode.Disabled,
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()

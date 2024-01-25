@@ -40,8 +40,9 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import my.nanihadesuka.compose.LazyColumnScrollbarNew
+import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.csc.CSCDB
-import tk.zwander.common.util.invoke
+import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.samloaderkotlin.resources.MR
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -123,11 +124,12 @@ fun CSCChooserDialog(
 
             LazyColumnScrollbarNew(
                 state = listState,
-                thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+                thumbColor = ThemeConstants.Colors.scrollbarUnselected,
+                thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
                 alwaysShowScrollBar = true,
-                padding = 1.dp,
-                thickness = 4.dp,
+                padding = ThemeConstants.Dimensions.scrollbarPadding,
+                thickness = ThemeConstants.Dimensions.scrollbarThickness,
+                selectionMode = ScrollbarSelectionMode.Disabled,
             ) {
                 LazyColumn(
                     modifier = Modifier

@@ -23,6 +23,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.*
 import kotlinx.coroutines.*
 import my.nanihadesuka.compose.LazyColumnScrollbarNew
+import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.exception.VersionException
@@ -37,6 +38,7 @@ import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.model.DownloadModel
+import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.view.components.*
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.time.ExperimentalTime
@@ -284,11 +286,12 @@ internal fun DownloadView() {
 
     LazyColumnScrollbarNew(
         state = listState,
-        thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+        thumbColor = ThemeConstants.Colors.scrollbarUnselected,
+        thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
         alwaysShowScrollBar = true,
-        padding = 1.dp,
-        thickness = 4.dp,
+        padding = ThemeConstants.Dimensions.scrollbarPadding,
+        thickness = ThemeConstants.Dimensions.scrollbarThickness,
+        selectionMode = ScrollbarSelectionMode.Disabled,
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),

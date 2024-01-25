@@ -38,11 +38,13 @@ import io.ktor.http.URLBuilder
 import korlibs.io.async.launch
 import korlibs.memory.Platform
 import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
+import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.SettingsKey
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.isWindows11
 import tk.zwander.common.util.rememberPhoneInfo
+import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.FooterView
@@ -122,11 +124,12 @@ fun SettingsAboutView() {
         LazyStaggeredGridVerticalScrollbarNew(
             state = gridState,
             modifier = Modifier.weight(1f),
-            thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+            thumbColor = ThemeConstants.Colors.scrollbarUnselected,
+            thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
             alwaysShowScrollBar = true,
-            padding = 1.dp,
-            thickness = 4.dp,
+            padding = ThemeConstants.Dimensions.scrollbarPadding,
+            thickness = ThemeConstants.Dimensions.scrollbarThickness,
+            selectionMode = ScrollbarSelectionMode.Disabled,
         ) {
             LazyVerticalStaggeredGrid(
                 columns = StaggeredGridCells.Adaptive(minSize = 300.dp),

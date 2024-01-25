@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +26,7 @@ import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.LazyColumnScrollbarNew
+import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.PlatformFile
 import tk.zwander.common.tools.CryptUtils
@@ -35,6 +35,7 @@ import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.model.DecryptModel
+import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
@@ -149,11 +150,12 @@ internal fun DecryptView() {
 
     LazyColumnScrollbarNew(
         state = listState,
-        thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+        thumbColor = ThemeConstants.Colors.scrollbarUnselected,
+        thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
         alwaysShowScrollBar = true,
-        padding = 1.dp,
-        thickness = 4.dp,
+        padding = ThemeConstants.Dimensions.scrollbarPadding,
+        thickness = ThemeConstants.Dimensions.scrollbarThickness,
+        selectionMode = ScrollbarSelectionMode.Disabled,
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),

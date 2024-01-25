@@ -45,6 +45,7 @@ import korlibs.io.serialization.xml.firstDescendant
 import korlibs.time.DateFormat
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
+import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.CrossPlatformBugsnag
@@ -57,6 +58,7 @@ import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.model.HistoryModel
+import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
@@ -260,11 +262,12 @@ internal fun HistoryView() {
 
     LazyStaggeredGridVerticalScrollbarNew(
         state = gridState,
-        thumbColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        thumbSelectedColor = MaterialTheme.colorScheme.onSurface,
+        thumbColor = ThemeConstants.Colors.scrollbarUnselected,
+        thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
         alwaysShowScrollBar = true,
-        padding = 1.dp,
-        thickness = 4.dp,
+        padding = ThemeConstants.Dimensions.scrollbarPadding,
+        thickness = ThemeConstants.Dimensions.scrollbarThickness,
+        selectionMode = ScrollbarSelectionMode.Disabled,
     ) {
         LazyVerticalStaggeredGrid(
             modifier = Modifier.fillMaxSize(),
