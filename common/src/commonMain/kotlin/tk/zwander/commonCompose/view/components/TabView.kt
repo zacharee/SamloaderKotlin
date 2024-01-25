@@ -119,21 +119,25 @@ internal fun TabView(
                                 )
                             }
                         } else {
-                            Icon(
-                                painter = painterResource(page.iconRes),
-                                contentDescription = null,
-                                modifier = Modifier.size(24.dp)
-                                    .alpha(0f),
-                            )
+                            Box(
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Icon(
+                                    painter = painterResource(page.iconRes),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(24.dp)
+                                        .alpha(0f),
+                                )
 
-                            Text(
-                                text = stringResource(page.labelRes),
-                                maxLines = 1,
-                                onTextLayout = { layoutResult ->
-                                    ellipses[index] = layoutResult.multiParagraph.didExceedMaxLines
-                                },
-                                overflow = TextOverflow.Clip,
-                            )
+                                Text(
+                                    text = stringResource(page.labelRes),
+                                    maxLines = 1,
+                                    onTextLayout = { layoutResult ->
+                                        ellipses[index] = layoutResult.multiParagraph.didExceedMaxLines
+                                    },
+                                    overflow = TextOverflow.Clip,
+                                )
+                            }
                         }
                     }
                 },
