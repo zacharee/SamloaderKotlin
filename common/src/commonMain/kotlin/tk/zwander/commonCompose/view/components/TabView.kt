@@ -46,6 +46,7 @@ val pages = Page::class.sealedSubclasses
 /**
  * Represents the available pages.
  */
+@Suppress("unused")
 sealed class Page(
     val render: @Composable () -> Unit,
     val labelRes: StringResource,
