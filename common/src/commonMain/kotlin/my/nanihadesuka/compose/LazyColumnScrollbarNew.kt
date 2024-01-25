@@ -62,10 +62,11 @@ fun LazyColumnScrollbarNew(
     if (!enabled) content()
     else BoxWithConstraints {
         val coroutineScope = rememberCoroutineScope()
-        val stateAdapter = remember(thumbMinHeight, alwaysShowScrollBar) {
+        val stateAdapter = remember(thumbMinHeight, alwaysShowScrollBar, state) {
             object : StateAdapter(
                 thumbMinHeight = thumbMinHeight,
                 alwaysShowScrollBar = alwaysShowScrollBar,
+                scrollableState = state,
             ) {
                 fun LazyListItemInfo.fractionHiddenTop(firstItemOffset: Int) =
                     if (size == 0) 0f else firstItemOffset / size.toFloat()
@@ -89,12 +90,6 @@ fun LazyColumnScrollbarNew(
                         realVisibleSize / it.totalItemsCount.toFloat()
                     }
 
-                override val canScroll: Boolean
-                    get() = state.canScrollForward || state.canScrollBackward
-
-                override val isScrollInProgress: Boolean
-                    get() = state.isScrollInProgress
-
                 override val normalizedIndicatorContentOffset: Float
                     get() = state.firstVisibleItemIndex.toFloat()
 
@@ -108,9 +103,6 @@ fun LazyColumnScrollbarNew(
                         .run { index.toFloat() + fractionHiddenTop(state.firstVisibleItemScrollOffset) } / it.totalItemsCount.toFloat()
                     offsetCorrection(top)
                 }
-
-                override val isInActionInternal: Boolean
-                    get() = state.isScrollInProgress
 
                 override fun offsetCorrectionInverse(top: Float): Float {
                     if (normalizedThumbSizeReal >= thumbMinHeight)

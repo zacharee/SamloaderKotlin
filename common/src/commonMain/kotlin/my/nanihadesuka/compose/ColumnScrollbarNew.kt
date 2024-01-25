@@ -57,22 +57,17 @@ fun ColumnScrollbarNew(
         val visibleHeightDp by rememberUpdatedState(with(LocalDensity.current) { currentHeight.toDp() })
         val fullHeightDp by rememberUpdatedState(with(LocalDensity.current) { state.maxValue.toDp() + visibleHeightDp })
 
-        val stateAdapter = remember(thumbMinHeight, alwaysShowScrollBar) {
+        val stateAdapter = remember(thumbMinHeight, alwaysShowScrollBar, state) {
             object : StateAdapter(
                 thumbMinHeight = thumbMinHeight,
                 alwaysShowScrollBar = alwaysShowScrollBar,
+                scrollableState = state,
             ) {
                 override val normalizedThumbSizeReal: Float
                     get() = if (fullHeightDp == 0.dp) 1f else {
                         val normalizedDp = visibleHeightDp / fullHeightDp
                         normalizedDp.coerceIn(0f, 1f)
                     }
-
-                override val isScrollInProgress: Boolean
-                    get() = state.isScrollInProgress
-
-                override val canScroll: Boolean
-                    get() = state.canScrollForward || state.canScrollBackward
 
                 override val normalizedIndicatorContentOffset: Float
                     get() = offsetCorrectionInverse(normalizedOffsetPosition)
@@ -83,9 +78,6 @@ fun ColumnScrollbarNew(
                         val normalized = state.value.toFloat() / state.maxValue.toFloat()
                         return offsetCorrection(normalized)
                     }
-
-                override val isInActionInternal: Boolean
-                    get() = state.isScrollInProgress
 
                 override fun offsetCorrectionInverse(top: Float): Float {
                     val topRealMax = 1f

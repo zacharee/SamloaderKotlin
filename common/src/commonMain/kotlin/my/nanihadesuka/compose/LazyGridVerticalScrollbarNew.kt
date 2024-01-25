@@ -59,10 +59,11 @@ fun LazyGridVerticalScrollbarNew(
             realIndex != firstVisibleIndex
         })
 
-        val stateAdapter = remember(thumbMinHeight, alwaysShowScrollBar) {
+        val stateAdapter = remember(thumbMinHeight, alwaysShowScrollBar, state) {
             object : StateAdapter(
                 thumbMinHeight = thumbMinHeight,
                 alwaysShowScrollBar = alwaysShowScrollBar,
+                scrollableState = state,
             ) {
                 fun LazyGridItemInfo.fractionHiddenTop(firstItemOffset: Int) =
                     if (size.height == 0) 0f else firstItemOffset / size.height.toFloat()
@@ -70,10 +71,6 @@ fun LazyGridVerticalScrollbarNew(
                 fun LazyGridItemInfo.fractionVisibleBottom(viewportEndOffset: Int) =
                     if (size.height == 0) 0f else (viewportEndOffset - offset.y).toFloat() / size.height.toFloat()
 
-                override val isScrollInProgress: Boolean
-                    get() = state.isScrollInProgress
-                override val canScroll: Boolean
-                    get() = state.canScrollForward || state.canScrollBackward
                 override val normalizedThumbSizeReal: Float
                     get() = state.layoutInfo.let {
                         if (it.totalItemsCount == 0)
@@ -89,6 +86,7 @@ fun LazyGridVerticalScrollbarNew(
                         val realVisibleSize = realSize.toFloat() - firstPartial - lastPartial
                         realVisibleSize / it.totalItemsCount.toFloat()
                     }
+
                 override val normalizedOffsetPosition: Float
                     get() = state.layoutInfo.let {
                         if (it.totalItemsCount == 0 || it.visibleItemsInfo.isEmpty())
@@ -99,10 +97,9 @@ fun LazyGridVerticalScrollbarNew(
                             .run { index.toFloat() + fractionHiddenTop(state.firstVisibleItemScrollOffset) } / it.totalItemsCount.toFloat()
                         offsetCorrection(top)
                     }
+
                 override val normalizedIndicatorContentOffset: Float
                     get() = state.firstVisibleItemIndex.toFloat()
-                override val isInActionInternal: Boolean
-                    get() = isScrollInProgress
 
                 override fun setScrollOffset(newOffset: Float) {
                     setDragOffset(newOffset)

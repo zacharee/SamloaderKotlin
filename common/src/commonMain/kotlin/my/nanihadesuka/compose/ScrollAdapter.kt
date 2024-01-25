@@ -8,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
@@ -38,25 +39,96 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
+abstract class LazyStateAdapter<T : ScrollableState>(
+    thumbMinHeight: Float,
+    alwaysShowScrollBar: Boolean,
+    scrollableState: ScrollableState,
+) : StateAdapter(thumbMinHeight, alwaysShowScrollBar, scrollableState) {
+    abstract val totalItemsCount: Int
+    abstract val firstVisibleItemIndex: Int
+    abstract val realFirstVisibleItemIndex: Int?
+    abstract val lastVisibleItemIndex: Int
+    abstract val firstVisibleItemScrollOffset: Int
+    abstract val viewportEndOffset: Int
+    abstract val visibleItemsSize: Int
+    abstract val isStickyHeaderInAction: Boolean
+    abstract val reverseLayout: Boolean
+
+    abstract fun fractionHiddenTop(index: Int, firstItemOffset: Int): Float
+    abstract fun fractionVisibleBottom(index: Int, viewportEndOffset: Int): Float
+
+    override val normalizedThumbSizeReal: Float
+        get() {
+            if (totalItemsCount == 0)
+                return 0f
+
+            val firstItem = realFirstVisibleItemIndex ?: return 0f
+            val firstPartial =
+                fractionHiddenTop(firstItem, firstVisibleItemScrollOffset)
+            val lastPartial =
+                1f - fractionVisibleBottom(lastVisibleItemIndex, viewportEndOffset)
+
+            val realSize = visibleItemsSize - if (isStickyHeaderInAction) 1 else 0
+            val realVisibleSize = realSize.toFloat() - firstPartial - lastPartial
+            return realVisibleSize / totalItemsCount.toFloat()
+        }
+
+    override val normalizedOffsetPosition: Float
+        get() {
+            if (totalItemsCount == 0 || visibleItemsSize == 0)
+                return 0f
+
+            val firstItem = realFirstVisibleItemIndex ?: return 0f
+            val top = (firstItem.toFloat() + fractionHiddenTop(firstItem, firstVisibleItemScrollOffset)) / totalItemsCount.toFloat()
+            return offsetCorrection(top)
+        }
+
+    override val normalizedIndicatorContentOffset: Float
+        get() = firstVisibleItemIndex.toFloat()
+
+
+    override fun offsetCorrection(top: Float): Float {
+        val topRealMax = (1f - normalizedThumbSizeReal).coerceIn(0f, 1f)
+        if (normalizedThumbSizeReal >= thumbMinHeight) {
+            return when {
+                reverseLayout -> topRealMax - top
+                else -> top
+            }
+        }
+
+        val topMax = 1f - thumbMinHeight
+        return when {
+            reverseLayout -> (topRealMax - top) * topMax / topRealMax
+            else -> top * topMax / topRealMax
+        }
+    }
+
+    override fun offsetCorrectionInverse(top: Float): Float {
+        if (normalizedThumbSizeReal >= thumbMinHeight)
+            return top
+        val topRealMax = 1f - normalizedThumbSizeReal
+        val topMax = 1f - thumbMinHeight
+        return top * topRealMax / topMax
+    }
+}
+
 abstract class StateAdapter(
-    private val thumbMinHeight: Float,
-    private val alwaysShowScrollBar: Boolean,
+    val thumbMinHeight: Float,
+    val alwaysShowScrollBar: Boolean,
+    val scrollableState: ScrollableState,
 ) {
-    abstract val isScrollInProgress: Boolean
     abstract val normalizedThumbSizeReal: Float
     abstract val normalizedOffsetPosition: Float
     abstract val normalizedIndicatorContentOffset: Float
-    abstract val isInActionInternal: Boolean
-    abstract val canScroll: Boolean
 
     var isSelected by mutableStateOf(false)
     var isInActionSelectable by mutableStateOf(false)
     var dragOffsetState by mutableStateOf(0f)
         private set
 
-    val normalizedThumbSize: Float
-        get() = normalizedThumbSizeReal.coerceAtLeast(thumbMinHeight)
-    val isInAction: Boolean get() = isInActionInternal || isSelected || alwaysShowScrollBar
+    val normalizedThumbSize: Float get() = normalizedThumbSizeReal.coerceAtLeast(thumbMinHeight)
+    val isInAction: Boolean get() = scrollableState.isScrollInProgress || isSelected || alwaysShowScrollBar
+    val canScroll: Boolean get() = scrollableState.canScrollForward || scrollableState.canScrollBackward
 
     abstract fun setScrollOffset(newOffset: Float)
     abstract fun offsetCorrection(top: Float): Float
