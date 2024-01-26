@@ -233,6 +233,9 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
 }
 
 private suspend fun onFetch(model: DownloadModel) {
+    model.statusText.value = ""
+    model.changelog.value = null
+
     val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model.value ?: "", model.region.value ?: "")
 
     if (error != null) {
