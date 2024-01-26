@@ -1,3 +1,13 @@
+# 1.17.4
+- Attempt to fix a crash after checking for updates on Android.
+- Attempt to fix a crash when loading the app icon on Windows and Linux.
+- Add French translation.
+- Add partial Turkish translation.
+- Add scroll indicators.
+- Iconify tab navigation buttons when text overflows.
+- Improve error reports.
+- UI fixes.
+
 # 1.17.3
 - Add ability to drag a file from the file explorer to the file field in the Decrypt view.
 - Add ability to set per-app locale for Bifrost on Android.
