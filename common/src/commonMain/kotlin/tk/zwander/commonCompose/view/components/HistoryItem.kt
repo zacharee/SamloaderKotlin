@@ -15,6 +15,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.util.invoke
+import tk.zwander.commonCompose.util.OffsetCorrectedIdentityTransformation
 import tk.zwander.samloaderkotlin.resources.MR
 
 /**
@@ -113,7 +114,8 @@ internal fun HistoryItem(
                         modifier = Modifier.weight(1f)
                             .align(Alignment.CenterVertically),
                         label = { Text(stringResource(MR.strings.firmware)) },
-                        singleLine = true
+                        singleLine = true,
+                        visualTransformation = OffsetCorrectedIdentityTransformation(info.firmwareString),
                     )
                 }
 

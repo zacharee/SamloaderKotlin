@@ -28,6 +28,7 @@ import tk.zwander.common.data.imei.IMEIGenerator
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
+import tk.zwander.commonCompose.util.OffsetCorrectedIdentityTransformation
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.samloaderkotlin.resources.MR
 
@@ -90,6 +91,7 @@ internal fun MRFLayout(
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true,
+                visualTransformation = OffsetCorrectedIdentityTransformation(modelState ?: ""),
             )
         },
         endComponent = {
@@ -117,6 +119,7 @@ internal fun MRFLayout(
                         )
                     }
                 },
+                visualTransformation = OffsetCorrectedIdentityTransformation(regionState ?: ""),
             )
         },
         startRatio = 0.6,
@@ -249,7 +252,7 @@ internal fun MRFLayout(
 }
 
 private fun String.transformText(allowLowercase: Boolean): String {
-    val trimmed = trim()
+    val trimmed = trim().replace(" ", "")
 
     return if (allowLowercase) trimmed else trimmed.uppercase()
 }
@@ -280,6 +283,7 @@ private data class DynamicField(
             trailingIcon = trailingIcon,
             maxLines = maxLines,
             leadingIcon = leadingIcon,
+            visualTransformation = OffsetCorrectedIdentityTransformation(value),
         )
     }
 }

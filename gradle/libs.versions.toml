@@ -29,7 +29,7 @@ slf4j = "2.0.9"
 windowStyler = "cad9442ec3"
 javaObjcBridge = "1.2"
 ksoup = "0.1.2"
-material3-android = "1.2.0-beta02"
+material3-android = "1.2.0-rc01"
 
 [libraries]
 androidSvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidSvg" }

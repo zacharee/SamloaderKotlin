@@ -42,6 +42,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import my.nanihadesuka.compose.LazyColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.csc.CSCDB
+import tk.zwander.commonCompose.util.OffsetCorrectedIdentityTransformation
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.samloaderkotlin.resources.MR
 
@@ -117,7 +118,8 @@ fun CSCChooserDialog(
                         }
                     }
                 } else null,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = OffsetCorrectedIdentityTransformation(filter),
             )
 
             val listState = rememberLazyListState()

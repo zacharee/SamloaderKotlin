@@ -35,6 +35,7 @@ import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.model.DecryptModel
+import tk.zwander.commonCompose.util.OffsetCorrectedIdentityTransformation
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
@@ -223,8 +224,9 @@ internal fun DecryptView() {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    val value = fileToDecrypt?.encFile?.getAbsolutePath() ?: ""
                     OutlinedTextField(
-                        value = fileToDecrypt?.encFile?.getAbsolutePath() ?: "",
+                        value = value,
                         onValueChange = {},
                         label = { Text(text = stringResource(MR.strings.file)) },
                         modifier = Modifier.weight(1f)
@@ -242,6 +244,7 @@ internal fun DecryptView() {
                             },
                         readOnly = true,
                         singleLine = true,
+                        visualTransformation = OffsetCorrectedIdentityTransformation(value),
                     )
                 }
             }
