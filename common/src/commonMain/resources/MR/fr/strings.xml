@@ -1,122 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="manualWarning">Warning! Samsung may not supply the requested firmware!</string>
-    <string name="crcCheckFailed">CRC check failed. Please delete the file and download again.</string>
-    <string name="manualWarningDetails3">on GitHub.</string>
-    <string name="done">Done</string>
-    <string name="useNativeFilePicker">Use native file picker</string>
-    <string name="retrieve">Retrieve</string>
-    <string name="checkForUpdatesDesc">Check for Firmware Updates</string>
-    <string name="ascending">Ascending</string>
-    <string name="close">Close</string>
-    <string name="manualWarningDetails">For most devices, Samsung will only supply the latest firmware. Even if you request a different version, Samsung\'s servers will return the latest firmware file. To avoid potentially flashing the wrong firmware, %1$s will check to see if Samsung is supplying the requested firmware before attempting to download. If the requested and served versions do not match, %2$s will abort the download. For more information on this, check out</string>
-    <string name="openFileDesc">Open File to Decrypt</string>
-    <string name="warning">Warning</string>
-    <string name="kibs">KiB/s</string>
-    <string name="minimize">Minimize</string>
-    <string name="zoom">Zoom</string>
-    <string name="selectEncrypted">Please select an encrypted firmware file ending in enc2 or enc4.</string>
-    <string name="descending">Descending</string>
-    <string name="carriers">Carriers</string>
+    <string name="manualWarning">Attention ! Samsung pourrait ne pas proposer le firmware demandé !</string>
+    <string name="crcCheckFailed">Vérification CRC échouée. Veuillez supprimer le fichier et le télécharger à nouveau.</string>
+    <string name="manualWarningDetails3">sur GitHub.</string>
+    <string name="done">Terminé</string>
+    <string name="useNativeFilePicker">Utiliser le sélecteur de fichier natif</string>
+    <string name="retrieve">Récupérer</string>
+    <string name="checkForUpdatesDesc">Vérifier les mises à jour du firmware</string>
+    <string name="ascending">Croissant</string>
+    <string name="close">Fermer</string>
+    <string name="manualWarningDetails">Pour la plupart des appareils, Samsung propose seulement le dernier firmware. Même si vous demandez une version différente, les serveurs de Samsung renverront le fichier du dernier firmware. Pour éviter de potentiellement flasher le mauvais firmware, %1$s va vérifier si Samsung propose le firmware demandé avant de tenter le téléchargement. Si les versions demandées et proposées ne correspondent pas, %2$s va interrompre le téléchargement. Pour plus d\'informations à ce sujet, consultez</string>
+    <string name="openFileDesc">Ouvrir le fichier à décrypter</string>
+    <string name="warning">Attention</string>
+    <string name="kibs">kio/s</string>
+    <string name="minimize">Réduire</string>
+    <string name="zoom">Agrandir</string>
+    <string name="selectEncrypted">Veuillez sélectionner un fichier firmware crypté se terminant par enc2 ou enc4.</string>
+    <string name="descending">Décroissant</string>
+    <string name="carriers">Opérateurs</string>
     <string name="firmware">Firmware</string>
-    <string name="openFile">Open File</string>
-    <string name="downloading">Downloading</string>
-    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
-    <string name="unknown">Unknown</string>
-    <string name="no">No</string>
+    <string name="openFile">Ouvrir un fichier</string>
+    <string name="downloading">Téléchargement</string>
+    <string name="useNativeFilePickerDesc">Pourrait offrir une apparence plus native lors de l\'ouverture et de l\'enregistrement de fichiers.</string>
+    <string name="unknown">Inconnu</string>
+    <string name="no">Non</string>
     <string name="supporters">Supporters</string>
-    <string name="changelog">Changelog</string>
-    <string name="clear">Clear</string>
-    <string name="osVersion">OS Version: %1$s</string>
-    <string name="checkingCRC">Checking CRC</string>
-    <string name="imei_serial_help">Samsung has started requiring the use of an IMEI or serial number that matches the firmware being downloaded. In many cases, if you use your device\'s serial number, you\'ll be able to download firmware for any CSC for your model. Without the correct IMEI or serial, you\'ll receive error 408 when attempting to download. Bifrost will attempt to automatically generate up to 10 IMEIs to try for any model you enter. You can also set your own IMEIs that should be tried by putting each on its own line in the Edit dialog, or separated by semi-colons in the field itself.</string>
+    <string name="changelog">Notes de version</string>
+    <string name="clear">Effacer</string>
+    <string name="osVersion">Version de l\'OS : %1$s</string>
+    <string name="checkingCRC">Vérification du CRC</string>
+    <string name="imei_serial_help">Samsung a commencé à exiger l\'utilisation d\'un IMEI ou numéro de série correspondant au firmware à télécharger. Dans de nombreux cas, si vous utilisez le numéro de série de votre appareil, vous pourrez télécharger le firmware pour n\'importe quel CSC de votre modèle. Sans l\'IMEI ou numéro de série correct, vous recevrez une erreur 408 lors de la tentative de téléchargement. Bifrost tentera de générer automatiquement jusqu\'à 10 IMEI à essayer pour n\'importe quel modèle que vous saisissez. Vous pouvez également définir vos propres IMEI qui doivent être essayés en les mettant chacun sur une ligne dans la boîte de dialogue Modifier, ou en les séparant par des points-virgules dans le champ lui-même.</string>
     <string name="github">GitHub</string>
-    <string name="edit">Edit</string>
+    <string name="edit">Modifier</string>
     <string name="twitter">Twitter</string>
-    <string name="copy">Copy</string>
+    <string name="copy">Copier</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
-    <string name="historyErrorFormat">Unable to retrieve firmware history. Make sure the model and region are correct.
-\nError: %1$s</string>
-    <string name="modelHint">Model (e.g. SM-N986U1)</string>
-    <string name="useMicaEffect">Use Mica Effect</string>
-    <string name="yes">Yes</string>
+    <string name="historyErrorFormat">Impossible de récupérer l\'historique du firmware. Assurez-vous que le modèle et la région soient corrects.
+\nErreur : %1$s</string>
+    <string name="modelHint">Modèle (ex. : SM-N986U1)</string>
+    <string name="useMicaEffect">Utiliser l\'effet Mica</string>
+    <string name="yes">Oui</string>
     <string name="android">Android %1$s</string>
-    <string name="downloadFirmware">Download Firmware</string>
-    <string name="noBinaryFile">No binary file found for %1$s, %2$s! Please try a different CSC.</string>
-    <string name="help">Help</string>
+    <string name="downloadFirmware">Télécharger le firmware</string>
+    <string name="noBinaryFile">Aucun fichier binaire trouvé pour %1$s, %2$s ! Veuillez essayer avec un CSC différent.</string>
+    <string name="help">Aide</string>
     <string name="odinRom">OdinRom</string>
-    <string name="badReturnStatus">Bad return status: %1$s</string>
-    <string name="release">Release: %1$s</string>
-    <string name="downloader">Downloader</string>
+    <string name="badReturnStatus">Mauvais code de statut de réponse : %1$s</string>
+    <string name="release">Date de sortie : %1$s</string>
+    <string name="downloader">Télécharger</string>
     <string name="version">v%1$s</string>
-    <string name="decryptError">Unable to decrypt firmware. Make sure model, region, and firmware are correct.
-\nError: %1$s</string>
-    <string name="regionHint">Region (e.g. XAA)</string>
+    <string name="decryptError">Impossible de décrypter le firmware. Assurez-vous que le modèle, la région et le firmware soient corrects.
+\nErreur : %1$s</string>
+    <string name="regionHint">Région (ex. : XAA)</string>
     <string name="ok">OK</string>
-    <string name="patreonSupporters">Patreon Supporters</string>
-    <string name="phoneInfo">Phone Info</string>
-    <string name="checkHistory">Check History</string>
-    <string name="historyError">Unable to retrieve firmware history. Make sure the model and region are correct.</string>
-    <string name="imei_serial">IMEI/Serial</string>
-    <string name="download">Download</string>
-    <string name="autoDeleteEncryptedFirmware">Auto-Delete Encrypted Firmware</string>
-    <string name="md5CheckFailed">MD5 check failed. Please delete the file and download again.</string>
-    <string name="decrypting">Decrypting</string>
+    <string name="patreonSupporters">Membres Patreon</string>
+    <string name="phoneInfo">Infos sur le téléphone</string>
+    <string name="checkHistory">Vérifier l\'historique</string>
+    <string name="historyError">Impossible de récupérer l\'historique du firmware. Assurez-vous que le modèle et la région soient corrects.</string>
+    <string name="imei_serial">IMEI/Numéro de série</string>
+    <string name="download">Télécharger</string>
+    <string name="autoDeleteEncryptedFirmware">Supprimer automatiquement les firmwares cryptés</string>
+    <string name="md5CheckFailed">Vérification MD5 échouée. Veuillez supprimer le fichier et le télécharger à nouveau.</string>
+    <string name="decrypting">Décryptage</string>
     <string name="patreon">Patreon</string>
-    <string name="about">About</string>
-    <string name="removeSavedData">Remove Saved Data</string>
-    <string name="moreInfo">More Info</string>
-    <string name="manual">Manual</string>
-    <string name="more">More</string>
+    <string name="about">À propos</string>
+    <string name="removeSavedData">Supprimer les données sauvegardées</string>
+    <string name="moreInfo">Plus d\'infos</string>
+    <string name="manual">Manuel</string>
+    <string name="more">Plus</string>
     <string name="samloader">Samloader</string>
-    <string name="decryptFirmware">Decrypt Firmware</string>
-    <string name="versionMismatch">You requested
+    <string name="decryptFirmware">Décrypter le firmware</string>
+    <string name="versionMismatch">Vous avez demandé
 \n
 \n%1$s
 \n
-\nbut Samsung is attempting to serve
+\nmais Samsung propose
 \n
 \n%2$s
 \n
-\ninstead. Are you sure you want to continue downloading?</string>
-    <string name="canceled">Canceled</string>
-    <string name="decrypt">Decrypt</string>
-    <string name="cancel">Cancel</string>
-    <string name="modelFormat">Model: %s</string>
+\nà la place. Êtes-vous sûr de vouloir continuer le téléchargement ?</string>
+    <string name="canceled">Annulé</string>
+    <string name="decrypt">Décrypter</string>
+    <string name="cancel">Annuler</string>
+    <string name="modelFormat">Modèle : %s</string>
     <string name="mastodon">Mastodon</string>
-    <string name="history">History</string>
-    <string name="countries">Countries</string>
-    <string name="window">Window</string>
-    <string name="fileIssue">File Issue</string>
-    <string name="allowLowercaseCharactersDesc">For convenience, Bifrost automatically capitalizes all characters in the model, region, and firmware fields. However, a few device models contain lowercase characters. Enable this option to download firmware for those models.</string>
-    <string name="mib">MiB</string>
-    <string name="search">Search</string>
-    <string name="removeSavedDataDesc">Bifrost stores some data such as the last-entered device information and current settings states. Click here to remove that data.</string>
-    <string name="error">Error</string>
-    <string name="autoDeleteEncryptedFirmwareDesc">When downloading firmware from Samsung, Bifrost creates two files: the encrypted firmware from Samsung, and a ZIP containing the decrypted firmware files. Enable this option to automatically delete the encrypted file once it\'s been decrypted.</string>
-    <string name="sort">Sort</string>
+    <string name="history">Historique</string>
+    <string name="countries">Pays</string>
+    <string name="window">Fenêtre</string>
+    <string name="fileIssue">Signaler un problème</string>
+    <string name="allowLowercaseCharactersDesc">Pour des raisons de facilité, Bifrost met automatiquement en majuscule tous les caractères des champs Modèle, Région et Firmware. Cependant, quelques modèles d\'appareils contiennent des caractères minuscules. Activez cette option pour télécharger des firmwares pour ces modèles.</string>
+    <string name="mib">Mio</string>
+    <string name="search">Rechercher</string>
+    <string name="removeSavedDataDesc">Bifrost enregistre des données telles que les dernières informations entrées sur l\'appareil et l\'état des paramètres actuels. Cliquez ici pour supprimer ces données.</string>
+    <string name="error">Erreur</string>
+    <string name="autoDeleteEncryptedFirmwareDesc">Lors du téléchargement de firmware depuis les serveurs de Samsung, Bifrost crée deux fichiers : le firmware crypté de Samsung, et un ZIP contenant les fichiers du firmware décryptés. Activez cette option pour supprimer automatiquement le fichier crypté une fois qu\'il a été décrypté.</string>
+    <string name="sort">Trier</string>
     <string name="zacharyWander">Zachary Wander</string>
-    <string name="allowLowercaseCharacters">Allow Lowercase Characters</string>
-    <string name="basedOn">Based on</string>
-    <string name="decrypter">Decrypter</string>
-    <string name="checkForUpdates">Check for Updates</string>
-    <string name="mibs">MiB/s</string>
-    <string name="buildDate">Build Date: %1$s</string>
-    <string name="tacFormat">TAC: %s</string>
-    <string name="settings">Settings</string>
-    <string name="firmwareCheckError">Error checking for firmware. Make sure the model and region are correct.
-\nMore info: %1$s
+    <string name="allowLowercaseCharacters">Autoriser les caractères minuscules</string>
+    <string name="basedOn">Basé sur</string>
+    <string name="decrypter">Décrypter</string>
+    <string name="checkForUpdates">Vérifier les mises à jour</string>
+    <string name="mibs">Mio/s</string>
+    <string name="buildDate">Date de build : %1$s</string>
+    <string name="tacFormat">TAC : %s</string>
+    <string name="settings">Paramètres</string>
+    <string name="firmwareCheckError">Erreur lors de la recherche du firmware. Veuillez vérifier que le modèle et la région sont corrects.
+\nPlus d\'informations : %1$s
 \n
 \n%2$s</string>
     <string name="csc">CSC</string>
-    <string name="checkingMD5">Checking MD5</string>
-    <string name="security">Security: %1$s</string>
-    <string name="chooseCsc">Choose CSC</string>
-    <string name="versionCheckError">Unable to verify that Samsung is serving the correct firmware. Are you sure you want to continue downloading?</string>
-    <string name="invalidFirmwareError">Invalid firmware string. Make sure all groups are specified.</string>
-    <string name="source">Source:</string>
-    <string name="file">File</string>
-    <string name="useMicaEffectDesc">On Windows 11 and later, Bifrost can apply the Windows Mica effect to the window background, making it look more like a native Windows app.</string>
-    <string name="manualWarningDetails2">this issue</string>
-    <string name="statusFormat">Status: %1$s</string>
+    <string name="checkingMD5">Vérification du MD5</string>
+    <string name="security">Sécurité : %1$s</string>
+    <string name="chooseCsc">Choisir CSC</string>
+    <string name="versionCheckError">Impossible de vérifier que Samsung propose le bon firmware. Êtes-vous sûr de vouloir continuer le téléchargement ?</string>
+    <string name="invalidFirmwareError">Code de firmware invalide. Veuillez vous assurer que tous les groupes sont spécifiés.</string>
+    <string name="source">Source :</string>
+    <string name="file">Fichier</string>
+    <string name="useMicaEffectDesc">Sur Windows 11 et ultérieur, Bifrost peut appliquer l\'effet Mica de Windows sur l\'arrière-plan de la fenêtre, lui donnant une apparence plus proche d\'une application native Windows.</string>
+    <string name="manualWarningDetails2">cette page</string>
+    <string name="statusFormat">État : %1$s</string>
+    <string name="hide">Masquer</string>
+    <string name="show">Afficher</string>
 </resources>
