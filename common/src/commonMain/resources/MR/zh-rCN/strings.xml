@@ -1,122 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="manualWarning">Warning! Samsung may not supply the requested firmware!</string>
-    <string name="historyErrorFormat">Unable to retrieve firmware history. Make sure the model and region are correct.
-\nError: %1$s</string>
-    <string name="supporters">Supporters</string>
-    <string name="firmware">Firmware</string>
-    <string name="modelHint">Model (e.g. SM-N986U1)</string>
+    <string name="manualWarning">警告！三星也许不会提供请求的固件！</string>
+    <string name="historyErrorFormat">不能找到固件记录，请检查设备型号和地区是否正确。
+\n错误代码: %1$s</string>
+    <string name="supporters">支持者</string>
+    <string name="firmware">固件</string>
+    <string name="modelHint">设备型号 (例如: SM-N986U1)</string>
     <string name="kibs">KiB/s</string>
-    <string name="history">History</string>
-    <string name="edit">Edit</string>
-    <string name="retrieve">Retrieve</string>
-    <string name="checkForUpdatesDesc">Check for Firmware Updates</string>
-    <string name="openFileDesc">Open File to Decrypt</string>
-    <string name="ascending">Ascending</string>
-    <string name="close">Close</string>
-    <string name="manualWarningDetails">For most devices, Samsung will only supply the latest firmware. Even if you request a different version, Samsung\'s servers will return the latest firmware file. To avoid potentially flashing the wrong firmware, %1$s will check to see if Samsung is supplying the requested firmware before attempting to download. If the requested and served versions do not match, %2$s will abort the download. For more information on this, check out</string>
-    <string name="warning">Warning</string>
-    <string name="minimize">Minimize</string>
-    <string name="zoom">Zoom</string>
-    <string name="selectEncrypted">Please select an encrypted firmware file ending in enc2 or enc4.</string>
-    <string name="descending">Descending</string>
-    <string name="carriers">Carriers</string>
-    <string name="openFile">Open File</string>
-    <string name="downloading">Downloading</string>
-    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
-    <string name="no">No</string>
-    <string name="changelog">Changelog</string>
-    <string name="clear">Clear</string>
-    <string name="unknown">Unknown</string>
-    <string name="osVersion">OS Version: %1$s</string>
-    <string name="checkingCRC">Checking CRC</string>
-    <string name="imei_serial_help">Samsung has started requiring the use of an IMEI or serial number that matches the firmware being downloaded. In many cases, if you use your device\'s serial number, you\'ll be able to download firmware for any CSC for your model. Without the correct IMEI or serial, you\'ll receive error 408 when attempting to download. Bifrost will attempt to automatically generate up to 10 IMEIs to try for any model you enter. You can also set your own IMEIs that should be tried by putting each on its own line in the Edit dialog, or separated by semi-colons in the field itself.</string>
+    <string name="history">历史记录</string>
+    <string name="edit">编辑</string>
+    <string name="retrieve">检索</string>
+    <string name="checkForUpdatesDesc">检查固件更新</string>
+    <string name="openFileDesc">打开一个文件来开始解密</string>
+    <string name="ascending">升序</string>
+    <string name="close">关闭</string>
+    <string name="manualWarningDetails">对于大多数设备，三星只会提供最新的固件。即使你请求了一个不同的版本，三星服务器依旧只会返回最新的固件。为了有效防止刷入错误的固件， %1$s 在你试图下载之前会检查三星是否提供了请求的固件。如果请求的固件和提供的版本不一致，%2$s 会中止下载。要查看更多信息，查看</string>
+    <string name="warning">警告</string>
+    <string name="minimize">最小化</string>
+    <string name="zoom">最大化</string>
+    <string name="selectEncrypted">请选择一个以enc2或enc4为结尾的加密固件。</string>
+    <string name="descending">降序</string>
+    <string name="carriers">运营商</string>
+    <string name="openFile">打开文件</string>
+    <string name="downloading">下载中</string>
+    <string name="useNativeFilePickerDesc">在打开和保存文件时，可以提供更原生的外观。</string>
+    <string name="no">否</string>
+    <string name="changelog">更新日志</string>
+    <string name="clear">清除</string>
+    <string name="unknown">未知</string>
+    <string name="osVersion">系统版本: %1$s</string>
+    <string name="checkingCRC">校验 CRC</string>
+    <string name="imei_serial_help">三星开始在下载之前请求匹配固件的IMEI或serial代码。在许多的案例中，如果你使用设备的serial代码，你就可以为你的机型下载任何地区的固件。没有正确的IMEI和serial代码你会在试图下载的时候收到408错误代码。Bifrost 将尝试自动生成多达 10 个 IMEI，以尝试您输入的任何型号。您还可以设置自己的 IMEI，通过在“编辑”对话框中将每个 IMEI 放在自己的行上，或在字段本身中用分号分隔来尝试。</string>
     <string name="github">GitHub</string>
     <string name="twitter">Twitter</string>
-    <string name="copy">Copy</string>
-    <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">Use native file picker</string>
-    <string name="useMicaEffect">Use Mica Effect</string>
-    <string name="yes">Yes</string>
+    <string name="copy">复制</string>
+    <string name="firmwareHint">固件代码(PDA/CSC/CP/AP)</string>
+    <string name="useNativeFilePicker">使用本地文件选择器</string>
+    <string name="useMicaEffect">使用云母效果</string>
+    <string name="yes">是</string>
     <string name="android">Android %1$s</string>
-    <string name="downloadFirmware">Download Firmware</string>
-    <string name="noBinaryFile">No binary file found for %1$s, %2$s! Please try a different CSC.</string>
-    <string name="help">Help</string>
+    <string name="downloadFirmware">下载固件</string>
+    <string name="noBinaryFile">没有找到地区代码%1$s, %2$s! 请尝试一个不同的CSC代码。</string>
+    <string name="help">帮助</string>
     <string name="odinRom">OdinRom</string>
-    <string name="badReturnStatus">Bad return status: %1$s</string>
-    <string name="release">Release: %1$s</string>
-    <string name="downloader">Downloader</string>
-    <string name="crcCheckFailed">CRC check failed. Please delete the file and download again.</string>
-    <string name="decryptError">Unable to decrypt firmware. Make sure model, region, and firmware are correct.
-\nError: %1$s</string>
+    <string name="badReturnStatus">返回错误状态: %1$s</string>
+    <string name="release">发布: %1$s</string>
+    <string name="downloader">下载</string>
+    <string name="crcCheckFailed">CRC校验未通过. 请删除文件并重新下载。</string>
+    <string name="decryptError">不能解密固件。确保正确的设备型号，地区和固件。
+\n错误代码 %1$s</string>
     <string name="version">v%1$s</string>
-    <string name="regionHint">Region (e.g. XAA)</string>
-    <string name="ok">OK</string>
-    <string name="patreonSupporters">Patreon Supporters</string>
-    <string name="phoneInfo">Phone Info</string>
-    <string name="checkHistory">Check History</string>
-    <string name="historyError">Unable to retrieve firmware history. Make sure the model and region are correct.</string>
+    <string name="regionHint">地区代码 (例如: XAA)</string>
+    <string name="ok">确认</string>
+    <string name="patreonSupporters">Patreon赞助者</string>
+    <string name="phoneInfo">手机信息</string>
+    <string name="checkHistory">查看历史记录</string>
+    <string name="historyError">不能找到固件记录，请确认设备型号和地区是否正确。</string>
     <string name="imei_serial">IMEI/Serial</string>
-    <string name="download">Download</string>
-    <string name="autoDeleteEncryptedFirmware">Auto-Delete Encrypted Firmware</string>
-    <string name="md5CheckFailed">MD5 check failed. Please delete the file and download again.</string>
-    <string name="decrypting">Decrypting</string>
-    <string name="manualWarningDetails3">on GitHub.</string>
-    <string name="patreon">Patreon</string>
-    <string name="about">About</string>
-    <string name="removeSavedData">Remove Saved Data</string>
-    <string name="moreInfo">More Info</string>
-    <string name="manual">Manual</string>
-    <string name="more">More</string>
+    <string name="download">下载</string>
+    <string name="autoDeleteEncryptedFirmware">自动删除解密后的固件</string>
+    <string name="md5CheckFailed">MD5 校验失败. 请删除文件并重新下载。</string>
+    <string name="decrypting">解密中</string>
+    <string name="manualWarningDetails3">在Github上.</string>
+    <string name="patreon">Patreon(赞助)</string>
+    <string name="about">关于</string>
+    <string name="removeSavedData">删除保存的数据</string>
+    <string name="moreInfo">更多信息</string>
+    <string name="manual">手动</string>
+    <string name="more">更多</string>
     <string name="samloader">Samloader</string>
-    <string name="decryptFirmware">Decrypt Firmware</string>
-    <string name="versionMismatch">You requested
+    <string name="decryptFirmware">解密固件</string>
+    <string name="versionMismatch">你请求
 \n
 \n%1$s
 \n
-\nbut Samsung is attempting to serve
+\n但是三星服务器试图提供
 \n
 \n%2$s
 \n
-\ninstead. Are you sure you want to continue downloading?</string>
-    <string name="canceled">Canceled</string>
-    <string name="decrypt">Decrypt</string>
-    <string name="cancel">Cancel</string>
+\n你确定要继续下载吗？</string>
+    <string name="canceled">已取消</string>
+    <string name="decrypt">解密</string>
+    <string name="cancel">取消</string>
     <string name="modelFormat">Model: %s</string>
     <string name="mastodon">Mastodon</string>
-    <string name="countries">Countries</string>
-    <string name="window">Window</string>
-    <string name="fileIssue">File Issue</string>
-    <string name="allowLowercaseCharactersDesc">For convenience, Bifrost automatically capitalizes all characters in the model, region, and firmware fields. However, a few device models contain lowercase characters. Enable this option to download firmware for those models.</string>
+    <string name="countries">国家</string>
+    <string name="window">窗口化</string>
+    <string name="fileIssue">上传问题</string>
+    <string name="allowLowercaseCharactersDesc">为方便起见，Bifrost 会自动将型号、区域和固件字段中的所有字符大写。但是，一些设备型号包含小写字符。启用此选项可下载这些型号的固件。</string>
     <string name="mib">MiB</string>
-    <string name="removeSavedDataDesc">Bifrost stores some data such as the last-entered device information and current settings states. Click here to remove that data.</string>
-    <string name="search">Search</string>
-    <string name="autoDeleteEncryptedFirmwareDesc">When downloading firmware from Samsung, Bifrost creates two files: the encrypted firmware from Samsung, and a ZIP containing the decrypted firmware files. Enable this option to automatically delete the encrypted file once it\'s been decrypted.</string>
-    <string name="error">Error</string>
-    <string name="sort">Sort</string>
+    <string name="removeSavedDataDesc">Bifrost 存储一些数据，例如上次输入的设备信息和当前设置状态。单击此处删除该数据。</string>
+    <string name="search">搜索</string>
+    <string name="autoDeleteEncryptedFirmwareDesc">从三星下载固件时，Bifrost 会创建两个文件：三星的加密固件和包含解密固件文件的 ZIP。启用此选项可在解密文件后自动删除该文件。</string>
+    <string name="error">错误</string>
+    <string name="sort">排序</string>
     <string name="zacharyWander">Zachary Wander</string>
-    <string name="allowLowercaseCharacters">Allow Lowercase Characters</string>
-    <string name="basedOn">Based on</string>
-    <string name="decrypter">Decrypter</string>
-    <string name="checkForUpdates">Check for Updates</string>
+    <string name="allowLowercaseCharacters">允许使用小写字符</string>
+    <string name="basedOn">基于</string>
+    <string name="decrypter">解密</string>
+    <string name="checkForUpdates">检查更新</string>
     <string name="mibs">MiB/s</string>
-    <string name="buildDate">Build Date: %1$s</string>
+    <string name="buildDate">构建日期: %1$s</string>
     <string name="tacFormat">TAC: %s</string>
-    <string name="settings">Settings</string>
-    <string name="firmwareCheckError">Error checking for firmware. Make sure the model and region are correct.
-\nMore info: %1$s
+    <string name="settings">设置</string>
+    <string name="firmwareCheckError">找不到固件。请检查设备型号和地区是否正确。
+\n更多信息: %1$s
 \n
 \n%2$s</string>
     <string name="csc">CSC</string>
-    <string name="checkingMD5">Checking MD5</string>
-    <string name="security">Security: %1$s</string>
-    <string name="chooseCsc">Choose CSC</string>
-    <string name="versionCheckError">Unable to verify that Samsung is serving the correct firmware. Are you sure you want to continue downloading?</string>
-    <string name="invalidFirmwareError">Invalid firmware string. Make sure all groups are specified.</string>
-    <string name="source">Source:</string>
-    <string name="file">File</string>
-    <string name="useMicaEffectDesc">On Windows 11 and later, Bifrost can apply the Windows Mica effect to the window background, making it look more like a native Windows app.</string>
-    <string name="manualWarningDetails2">this issue</string>
-    <string name="statusFormat">Status: %1$s</string>
-    <string name="done">Done</string>
+    <string name="checkingMD5">校验 MD5</string>
+    <string name="security">安全状态: %1$s</string>
+    <string name="chooseCsc">选择 CSC</string>
+    <string name="versionCheckError">不能验证三星提供了正确的固件，你确定要下载吗？</string>
+    <string name="invalidFirmwareError">固件字符串无效。确保指定了所有组项。</string>
+    <string name="source">来源:</string>
+    <string name="file">文件</string>
+    <string name="useMicaEffectDesc">在 Windows 11 及更高版本上，Bifrost 可以将 Windows 云母效果应用于窗口背景，使其看起来更像是原生 Windows 应用程序。</string>
+    <string name="manualWarningDetails2">这个问题</string>
+    <string name="statusFormat">状态代码: %1$s</string>
+    <string name="done">完成</string>
+    <string name="show">显示</string>
+    <string name="hide">隐藏</string>
 </resources>
