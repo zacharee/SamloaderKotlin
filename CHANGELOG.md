@@ -1,3 +1,7 @@
+# Upcoming
+- Add Chinese (Simplified) translation.
+- Add complete Turkish translation.
+
 # 1.17.4
 - Attempt to fix a crash after checking for updates on Android.
 - Attempt to fix a crash when loading the app icon on Windows and Linux.
