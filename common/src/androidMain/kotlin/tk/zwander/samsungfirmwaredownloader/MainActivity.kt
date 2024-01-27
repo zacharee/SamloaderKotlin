@@ -1,11 +1,14 @@
 package tk.zwander.samsungfirmwaredownloader
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.provider.DocumentsContract
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,6 +23,7 @@ import androidx.documentfile.provider.DocumentFile
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import tk.zwander.common.IDownloaderService
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformUriFile
@@ -36,10 +40,12 @@ import kotlin.time.ExperimentalTime
  * The Activity to show the downloader UI.
  */
 @ExperimentalTime
-class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventManager.EventListener {
+class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventManager.EventListener, ServiceConnection {
     private val openDownloadContinuation = atomic<Continuation<Uri?>?>(null)
     private val openDecryptInputContinuation = atomic<Continuation<Uri?>?>(null)
     private val openDecryptOutputContinuation = atomic<Continuation<Uri?>?>(null)
+
+    private val downloaderService = atomic<IDownloaderService?>(null)
 
     private val openDownloadTree = registerForActivityResult(object : ActivityResultContract<Uri?, Uri?>() {
         override fun createIntent(context: Context, input: Uri?): Intent {
@@ -84,9 +90,6 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
 
         eventManager.addListener(this)
 
-        //Start the DownloaderService.
-        DownloaderService.start(this)
-
         //Set up windowing stuff.
         actionBar?.hide()
 
@@ -105,6 +108,21 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                     .systemBarsPadding()
             )
         }
+    }
+
+    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+        downloaderService.value = IDownloaderService.Stub.asInterface(service)
+    }
+
+    override fun onServiceDisconnected(name: ComponentName?) {
+        downloaderService.value = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        //Start the DownloaderService.
+        DownloaderService.bind(this, this)
     }
 
     override fun onDestroy() {

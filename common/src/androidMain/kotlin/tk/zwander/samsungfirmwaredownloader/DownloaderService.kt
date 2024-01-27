@@ -3,6 +3,7 @@ package tk.zwander.samsungfirmwaredownloader
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
+import tk.zwander.common.IDownloaderService
 import tk.zwander.common.R
 import tk.zwander.common.util.*
 import kotlin.math.max
@@ -32,6 +34,12 @@ class DownloaderService : Service(), EventManager.EventListener {
             val startIntent = Intent(context, DownloaderService::class.java)
 
             ContextCompat.startForegroundService(context, startIntent)
+        }
+
+        fun bind(context: Context, connection: ServiceConnection) {
+            val startIntent = Intent(context, DownloaderService::class.java)
+
+            context.bindService(startIntent, connection, Context.BIND_AUTO_CREATE)
         }
 
         /**
@@ -131,7 +139,6 @@ class DownloaderService : Service(), EventManager.EventListener {
         val foregroundNotification = makeForegroundNotification(null)
 
         //Start in the foreground.
-        startForeground(100, foregroundNotification)
         ServiceCompat.startForeground(this, 100, foregroundNotification, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
     }
 
@@ -142,8 +149,12 @@ class DownloaderService : Service(), EventManager.EventListener {
         super.onDestroy()
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
+    override fun onBind(intent: Intent?): IBinder {
+        return object : IDownloaderService.Stub() {
+            override fun destroy() {
+                stopSelf()
+            }
+        }
     }
 
     override suspend fun onEvent(event: Event) {
