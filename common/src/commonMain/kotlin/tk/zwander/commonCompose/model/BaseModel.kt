@@ -1,17 +1,13 @@
 package tk.zwander.commonCompose.model
 
-import androidx.compose.runtime.*
 import io.ktor.client.utils.*
 import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import tk.zwander.common.util.BifrostSettings
@@ -68,10 +64,8 @@ abstract class BaseModel(
 
     private val _jobs = MutableStateFlow(listOf<Job>())
 
-    val jobs: StateFlow<List<Job>> = _jobs.asStateFlow()
-
     val hasRunningJobs: Flow<Boolean>
-        get() = jobs.map { it.any { j -> j.isActive } }
+        get() = _jobs.map { it.any { j -> j.isActive } }
 
     /**
      * A coroutine scope.
@@ -86,7 +80,7 @@ abstract class BaseModel(
      * Called when a Job should be ended.
      * @param text the text to show in the status message.
      */
-    open val endJob = { text: String ->
+    fun endJob(text: String) {
         _jobs.value.forEach {
             it.cancelChildren()
             it.cancel()
