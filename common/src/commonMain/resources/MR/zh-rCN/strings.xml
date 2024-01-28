@@ -2,10 +2,10 @@
 <resources>
     <string name="manualWarning">警告！三星也许不会提供请求的固件！</string>
     <string name="historyErrorFormat">不能找到固件记录，请检查设备型号和地区是否正确。
-\n错误代码: %1$s</string>
+\n错误代码：%1$s</string>
     <string name="supporters">支持者</string>
     <string name="firmware">固件</string>
-    <string name="modelHint">设备型号 (例如: SM-N986U1)</string>
+    <string name="modelHint">设备型号（例如: SM-N986U1）</string>
     <string name="kibs">KiB/s</string>
     <string name="history">历史记录</string>
     <string name="edit">编辑</string>
@@ -14,7 +14,7 @@
     <string name="openFileDesc">打开一个文件来开始解密</string>
     <string name="ascending">升序</string>
     <string name="close">关闭</string>
-    <string name="manualWarningDetails">对于大多数设备，三星只会提供最新的固件。即使你请求了一个不同的版本，三星服务器依旧只会返回最新的固件。为了有效防止刷入错误的固件， %1$s 在你试图下载之前会检查三星是否提供了请求的固件。如果请求的固件和提供的版本不一致，%2$s 会中止下载。要查看更多信息，查看</string>
+    <string name="manualWarningDetails">对于大多数设备，三星只会提供最新的固件。即使你请求了一个不同的版本，三星服务器依旧只会返回最新的固件。为了有效防止刷入错误的固件，%1$s 在你试图下载之前会检查三星是否提供了请求的固件。如果请求的固件和提供的版本不一致，%2$s 会中止下载。要查看更多信息，查看</string>
     <string name="warning">警告</string>
     <string name="minimize">最小化</string>
     <string name="zoom">最大化</string>
@@ -28,7 +28,7 @@
     <string name="changelog">更新日志</string>
     <string name="clear">清除</string>
     <string name="unknown">未知</string>
-    <string name="osVersion">系统版本: %1$s</string>
+    <string name="osVersion">系统版本：%1$s</string>
     <string name="checkingCRC">校验 CRC</string>
     <string name="imei_serial_help">三星开始在下载之前请求匹配固件的IMEI或serial代码。在许多的案例中，如果你使用设备的serial代码，你就可以为你的机型下载任何地区的固件。没有正确的IMEI和serial代码你会在试图下载的时候收到408错误代码。Bifrost 将尝试自动生成多达 10 个 IMEI，以尝试您输入的任何型号。您还可以设置自己的 IMEI，通过在“编辑”对话框中将每个 IMEI 放在自己的行上，或在字段本身中用分号分隔来尝试。</string>
     <string name="github">GitHub</string>
@@ -40,17 +40,17 @@
     <string name="yes">是</string>
     <string name="android">Android %1$s</string>
     <string name="downloadFirmware">下载固件</string>
-    <string name="noBinaryFile">没有找到地区代码%1$s, %2$s! 请尝试一个不同的CSC代码。</string>
+    <string name="noBinaryFile">没有找到地区代码%1$s，%2$s! 请尝试一个不同的CSC代码。</string>
     <string name="help">帮助</string>
     <string name="odinRom">OdinRom</string>
-    <string name="badReturnStatus">返回错误状态: %1$s</string>
-    <string name="release">发布: %1$s</string>
+    <string name="badReturnStatus">返回错误状态：%1$s</string>
+    <string name="release">发布：%1$s</string>
     <string name="downloader">下载</string>
-    <string name="crcCheckFailed">CRC校验未通过. 请删除文件并重新下载。</string>
+    <string name="crcCheckFailed">CRC校验未通过。 请删除文件并重新下载。</string>
     <string name="decryptError">不能解密固件。确保正确的设备型号，地区和固件。
-\n错误代码 %1$s</string>
+\n错误代码：%1$s</string>
     <string name="version">v%1$s</string>
-    <string name="regionHint">地区代码 (例如: XAA)</string>
+    <string name="regionHint">地区代码（例如: XAA）</string>
     <string name="ok">确认</string>
     <string name="patreonSupporters">Patreon赞助者</string>
     <string name="phoneInfo">手机信息</string>
@@ -59,9 +59,9 @@
     <string name="imei_serial">IMEI/Serial</string>
     <string name="download">下载</string>
     <string name="autoDeleteEncryptedFirmware">自动删除解密后的固件</string>
-    <string name="md5CheckFailed">MD5 校验失败. 请删除文件并重新下载。</string>
+    <string name="md5CheckFailed">MD5 校验失败。 请删除文件并重新下载。</string>
     <string name="decrypting">解密中</string>
-    <string name="manualWarningDetails3">在Github上.</string>
+    <string name="manualWarningDetails3">在Github上。</string>
     <string name="patreon">Patreon(赞助)</string>
     <string name="about">关于</string>
     <string name="removeSavedData">删除保存的数据</string>
@@ -82,7 +82,7 @@
     <string name="canceled">已取消</string>
     <string name="decrypt">解密</string>
     <string name="cancel">取消</string>
-    <string name="modelFormat">Model: %s</string>
+    <string name="modelFormat">Model:%s</string>
     <string name="mastodon">Mastodon</string>
     <string name="countries">国家</string>
     <string name="window">窗口化</string>
@@ -100,24 +100,24 @@
     <string name="decrypter">解密</string>
     <string name="checkForUpdates">检查更新</string>
     <string name="mibs">MiB/s</string>
-    <string name="buildDate">构建日期: %1$s</string>
-    <string name="tacFormat">TAC: %s</string>
+    <string name="buildDate">构建日期：%1$s</string>
+    <string name="tacFormat">TAC:%s</string>
     <string name="settings">设置</string>
     <string name="firmwareCheckError">找不到固件。请检查设备型号和地区是否正确。
-\n更多信息: %1$s
+\n更多信息：%1$s
 \n
 \n%2$s</string>
     <string name="csc">CSC</string>
     <string name="checkingMD5">校验 MD5</string>
-    <string name="security">安全状态: %1$s</string>
+    <string name="security">谷歌安全补丁：%1$s</string>
     <string name="chooseCsc">选择 CSC</string>
     <string name="versionCheckError">不能验证三星提供了正确的固件，你确定要下载吗？</string>
     <string name="invalidFirmwareError">固件字符串无效。确保指定了所有组项。</string>
-    <string name="source">来源:</string>
+    <string name="source">来源：</string>
     <string name="file">文件</string>
     <string name="useMicaEffectDesc">在 Windows 11 及更高版本上，Bifrost 可以将 Windows 云母效果应用于窗口背景，使其看起来更像是原生 Windows 应用程序。</string>
     <string name="manualWarningDetails2">这个问题</string>
-    <string name="statusFormat">状态代码: %1$s</string>
+    <string name="statusFormat">状态代码：%1$s</string>
     <string name="done">完成</string>
     <string name="show">显示</string>
     <string name="hide">隐藏</string>
