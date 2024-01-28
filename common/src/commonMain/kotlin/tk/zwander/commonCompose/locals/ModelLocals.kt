@@ -15,10 +15,14 @@ val LocalHistoryModel = compositionLocalOfModel<HistoryModel>()
 
 @Composable
 internal fun ProvideModels(content: @Composable () -> Unit) {
+    val downloadModel = DownloadModel()
+    val decryptModel = DecryptModel()
+    val historyModel = HistoryModel()
+
     CompositionLocalProvider(
-        LocalDownloadModel provides DownloadModel(),
-        LocalDecryptModel provides DecryptModel(),
-        LocalHistoryModel provides HistoryModel(),
+        LocalDownloadModel provides downloadModel,
+        LocalDecryptModel provides decryptModel,
+        LocalHistoryModel provides historyModel,
     ) {
         content()
     }

@@ -109,10 +109,4 @@ abstract class BaseModel(
      * extra operations when a Job ends.
      */
     protected open fun onEnd(text: String) {}
-
-    suspend fun onCreate() = coroutineScope {
-        createExtra()
-    }
-
-    protected open suspend fun createExtra() {}
 }

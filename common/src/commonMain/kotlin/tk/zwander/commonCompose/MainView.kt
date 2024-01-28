@@ -3,21 +3,24 @@
 package tk.zwander.commonCompose
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import korlibs.io.async.launch
 import korlibs.memory.Platform
-import tk.zwander.commonCompose.locals.LocalDecryptModel
-import tk.zwander.commonCompose.locals.LocalDownloadModel
-import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.locals.ProvideModels
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.LocalUseMicaEffect
@@ -39,22 +42,6 @@ fun MainView(
 
     ProvideModels {
         val pagerState = LocalPagerState.current
-
-        val downloadModel = LocalDownloadModel.current
-        val decryptModel = LocalDecryptModel.current
-        val historyModel = LocalHistoryModel.current
-
-        scope.launch {
-            downloadModel.onCreate()
-        }
-
-        scope.launch {
-            decryptModel.onCreate()
-        }
-
-        scope.launch {
-            historyModel.onCreate()
-        }
 
         CustomMaterialTheme {
             val useMicaEffect = LocalUseMicaEffect.current
