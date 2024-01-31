@@ -12,7 +12,7 @@
     <string name="openFileDesc">打开一个文件来开始解密</string>
     <string name="ascending">升序</string>
     <string name="close">关闭</string>
-    <string name="manualWarningDetails">对于大多数设备，三星只会提供最新的固件。即使你请求了一个不同的版本，三星服务器依旧只会返回最新的固件。为了有效防止刷入错误的固件，%1$s 在你试图下载之前会检查三星是否提供了请求的固件。如果请求的固件和提供的版本不一致，%2$s 会中止下载。要查看更多信息，查看</string>
+    <string name="manualWarningDetails">对于大多数设备，三星只会提供最新的固件。即使你请求了一个不同的版本，三星服务器依旧只会返回最新的固件。为了有效防止刷入错误的固件，%1$s 在你下载之前会检查三星是否提供了请求的固件。如果请求的固件和提供的版本不一致，%2$s 会中止下载。要了解该问题的更多信息，查看</string>
     <string name="warning">警告</string>
     <string name="minimize">最小化</string>
     <string name="zoom">最大化</string>
@@ -26,9 +26,9 @@
     <string name="changelog">更新日志</string>
     <string name="clear">清除</string>
     <string name="unknown">未知</string>
-    <string name="osVersion">系统版本：%1$s</string>
+    <string name="osVersion">Android系统版本：%1$s</string>
     <string name="checkingCRC">校验 CRC</string>
-    <string name="imei_serial_help">三星开始在下载之前请求匹配固件的IMEI或serial代码。在许多的案例中，如果你使用设备的serial代码，你就可以为你的机型下载任何地区的固件。没有正确的IMEI和serial代码你会在试图下载的时候收到408错误代码。Bifrost 将尝试自动生成多达 10 个 IMEI，以尝试您输入的任何型号。您还可以设置自己的 IMEI，通过在“编辑”对话框中将每个 IMEI 放在自己的行上，或在字段本身中用分号分隔来尝试。</string>
+    <string name="imei_serial_help">三星开始在下载之前请求匹配固件的IMEI或serial代码。在许多的案例中，如果你使用设备的serial代码，你就可以为你的机型下载任何地区的固件。如果没有正确的IMEI和serial代码，你会在下载的时候收到错误代码408。Bifrost 将尝试自动生成多达10个 IMEI，以尝试匹配您输入的任何型号。您还可以设置自己的 IMEI，在“编辑”对话框中将每个 IMEI 放在单独的行上，或在字段本身中用分号分隔。</string>
     <string name="github">GitHub</string>
     <string name="twitter">Twitter</string>
     <string name="copy">复制</string>
@@ -116,4 +116,8 @@
     <string name="done">完成</string>
     <string name="show">显示</string>
     <string name="hide">隐藏</string>
+    <string name="notification_progress_channel_name">进度</string>
+    <string name="notification_progress_text">工作中…</string>
+    <string name="notification_finished_channel_name">完成</string>
+    <string name="notification_finished_channel_text">一个任务已完成！</string>
 </resources>
