@@ -5,7 +5,6 @@
     <string name="copy">Kopieren</string>
     <string name="edit">Editieren</string>
     <string name="useNativeFilePicker">Native Dateiauswahl benutzen</string>
-    <string name="retrieve">Abrufen</string>
     <string name="checkForUpdatesDesc">Auf Firmware Updates Prüfen</string>
     <string name="close">Schließen</string>
     <string name="manualWarningDetails">Für die meisten Geräte stellt Samsung nur die aktuelle Firmware-Version bereit. Selbst, wenn du eine andere Version ausgewählt hast, werden dir die Server von Samsung die aktuellste Version der Firmware geben. Um zu verhindern, dass du vielleicht eine falsche Firmware auf dein Gerät aufspielst, wird %1$s prüfen, ob Samsung die gewünschte Firmware bereitstellt bevor ein Versuch unternommen wird, die Firmware herunterzuladen. Wenn die gewünschte und die bereitgestellte Version der Firmware nicht übereinstimmen, wird %2$s den Download abbrechen. Mehr Informationen findest du hier</string>
@@ -23,7 +22,6 @@
     <string name="downloading">Lädt Herunter</string>
     <string name="useNativeFilePickerDesc">Bietet möglicherweise ein mehr Natives aussehen, wenn Dateien geöffnet und gespeichert werden.</string>
     <string name="no">Nein</string>
-    <string name="supporters">Unterstützer</string>
     <string name="changelog">Versionsgeschichte</string>
     <string name="clear">Leeren</string>
     <string name="unknown">Unbekannt</string>
@@ -78,7 +76,6 @@
 \n%2$s
 \n
 \nBereitzustellen. Möchtest du trotzdem mit dem Download fortfahren?</string>
-    <string name="canceled">Abgebrochen</string>
     <string name="decrypt">Entschlüsseln</string>
     <string name="cancel">Abbrechen</string>
     <string name="modelFormat">Model: %s</string>
@@ -102,7 +99,6 @@
     <string name="mibs">MiB/s</string>
     <string name="buildDate">Build Datum: %1$s</string>
     <string name="tacFormat">TAC: %s</string>
-    <string name="settings">Einstellungen</string>
     <string name="firmwareCheckError">Fehler beim Suchen nach Firmware. Stelle Sicher, dass das Model und die Region richtig sind.
 \nMehr Informationen: %1$s
 \n
@@ -117,7 +113,6 @@
     <string name="file">Datei</string>
     <string name="useMicaEffectDesc">Ab Windows 11 und neuer kann Bifrost den Mica Effekt von Windows im Hintergrund des Fensters benutzen, um das Fenster mehr so aussehen zu lassen, als sei es eine Native Windows App.</string>
     <string name="manualWarningDetails2">Dieses Problem</string>
-    <string name="statusFormat">Status: %1$s</string>
     <string name="done">Fertig</string>
     <string name="show">Anzeigen</string>
     <string name="hide">Verstecken</string>
