@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="manualWarningDetails3">Auf GitHub.</string>
+    <string name="manualWarningDetails3">auf GitHub.</string>
     <string name="ascending">Aufsteigend</string>
     <string name="copy">Kopieren</string>
     <string name="edit">Editieren</string>
     <string name="useNativeFilePicker">Native Dateiauswahl benutzen</string>
     <string name="checkForUpdatesDesc">Auf Firmware Updates Prüfen</string>
     <string name="close">Schließen</string>
-    <string name="manualWarningDetails">Für die meisten Geräte stellt Samsung nur die aktuelle Firmware-Version bereit. Selbst, wenn du eine andere Version ausgewählt hast, werden dir die Server von Samsung die aktuellste Version der Firmware geben. Um zu verhindern, dass du vielleicht eine falsche Firmware auf dein Gerät aufspielst, wird %1$s prüfen, ob Samsung die gewünschte Firmware bereitstellt bevor ein Versuch unternommen wird, die Firmware herunterzuladen. Wenn die gewünschte und die bereitgestellte Version der Firmware nicht übereinstimmen, wird %2$s den Download abbrechen. Mehr Informationen findest du hier</string>
+    <string name="manualWarningDetails">Für die meisten Geräte stellt Samsung nur die aktuelle Firmware-Version bereit. Selbst, wenn du eine andere Version ausgewählt hast, werden dir die Server von Samsung die aktuellste Version der Firmware geben. Um zu verhindern, dass du vielleicht eine falsche Firmware auf dein Gerät aufspielst, wird %1$s prüfen, ob Samsung die gewünschte Firmware bereitstellt bevor ein Versuch unternommen wird, die Firmware herunterzuladen. Wenn die gewünschte und die bereitgestellte Version der Firmware nicht übereinstimmen, wird %2$s den Download abbrechen. Mehr Informationen findest du für</string>
     <string name="manualWarning">Warnung! Samsung kann die angefragte Firmware möglicherweise nicht bereitstellen!</string>
     <string name="openFileDesc">Datei zum Entschlüsseln Öffnen</string>
     <string name="warning">Warnung</string>
     <string name="kibs">KiB/s</string>
     <string name="minimize">Minimieren</string>
-    <string name="zoom">Zoom</string>
+    <string name="zoom">Maximieren</string>
     <string name="selectEncrypted">Bitte wähle eine verschlüsselte Firmware-Datei, die mit enc2 oder enc4 endet.</string>
     <string name="descending">Absteigend</string>
-    <string name="carriers">Carriers</string>
+    <string name="carriers">Mobilfunkanbieter</string>
     <string name="firmware">Firmware</string>
     <string name="openFile">Datei Öffnen</string>
     <string name="downloading">Lädt Herunter</string>
@@ -50,9 +50,9 @@
     <string name="version">v%1$s</string>
     <string name="regionHint">Region (z.B. XAA)</string>
     <string name="ok">OK</string>
-    <string name="patreonSupporters">Patreon Unterstützer</string>
+    <string name="patreonSupporters">Patreon unterstützer</string>
     <string name="phoneInfo">Smartphone Info</string>
-    <string name="checkHistory">Verlauf überprüfen</string>
+    <string name="checkHistory">Versionsverlauf überprüfen</string>
     <string name="historyError">Es wurde kein Versionsverlauf gefunden. Stelle Sicher, dass das Model und die Region korrekt sind.</string>
     <string name="imei_serial">IMEI/Serial</string>
     <string name="download">Herunterladen</string>
@@ -62,8 +62,8 @@
     <string name="patreon">Patreon</string>
     <string name="about">Über</string>
     <string name="removeSavedData">Gespeicherte Daten Entfernen</string>
-    <string name="moreInfo">Mehr Infos</string>
-    <string name="manual">Anleitung</string>
+    <string name="moreInfo">Mehr infos</string>
+    <string name="manual">Manuelle Eingabe</string>
     <string name="more">Mehr</string>
     <string name="samloader">Samloader</string>
     <string name="decryptFirmware">Firmware Entschlüsseln</string>
@@ -80,10 +80,10 @@
     <string name="cancel">Abbrechen</string>
     <string name="modelFormat">Model: %s</string>
     <string name="mastodon">Mastodon</string>
-    <string name="history">Verlauf</string>
+    <string name="history">Versionsverlauf</string>
     <string name="countries">Länder</string>
     <string name="window">Fenster</string>
-    <string name="fileIssue">File Issue</string>
+    <string name="fileIssue">Problem Melden</string>
     <string name="allowLowercaseCharactersDesc">Bifrost schreibt für die Bequemlichkeit alle Zeichen im Modell, Region und Firmware Feldern automatisch groß. Allerdings haben einige Modelle auch kleingeschriebene Zeichen in diesen Bereichen. Aktiviere diese Option, um Firmware auch für diese Modelle herunterzuladen.</string>
     <string name="mib">MiB</string>
     <string name="removeSavedDataDesc">Bifrost speichert einige Daten wie etwa die zuletzt eingegebenen Geräteinformationen und die aktuellen Einstellungen. Klicke hier um diese Daten zu Entfernen.</string>
@@ -106,14 +106,18 @@
     <string name="csc">CSC</string>
     <string name="checkingMD5">MD5 wird überprüft</string>
     <string name="chooseCsc">CSC Auswählen</string>
-    <string name="security">Sicherheit: %1$s</string>
+    <string name="security">Sicherheitspatch: %1$s</string>
     <string name="versionCheckError">Es konnte nicht verifiziert werden, ob Samsung die richtige Firmware bereitstellt. Möchtest du mit dem Download trotzdem fortfahren?</string>
     <string name="invalidFirmwareError">Ungültige Firmware-Zeichenfolge. Stelle bitte Sicher, dass alle Gruppen angegeben sind.</string>
     <string name="source">Quelle:</string>
     <string name="file">Datei</string>
     <string name="useMicaEffectDesc">Ab Windows 11 und neuer kann Bifrost den Mica Effekt von Windows im Hintergrund des Fensters benutzen, um das Fenster mehr so aussehen zu lassen, als sei es eine Native Windows App.</string>
-    <string name="manualWarningDetails2">Dieses Problem</string>
+    <string name="manualWarningDetails2">dieses Problem</string>
     <string name="done">Fertig</string>
     <string name="show">Anzeigen</string>
     <string name="hide">Verstecken</string>
+    <string name="notification_progress_channel_name">Fortschritt</string>
+    <string name="notification_progress_text">Arbeitet…</string>
+    <string name="notification_finished_channel_name">Abgeschlossen</string>
+    <string name="notification_finished_channel_text">Eine Aufgabe wurde abgeschlossen!</string>
 </resources>
