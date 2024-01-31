@@ -5,7 +5,6 @@
     <string name="manualWarningDetails3">sur GitHub.</string>
     <string name="done">Terminé</string>
     <string name="useNativeFilePicker">Utiliser le sélecteur de fichier natif</string>
-    <string name="retrieve">Récupérer</string>
     <string name="checkForUpdatesDesc">Vérifier les mises à jour du firmware</string>
     <string name="ascending">Croissant</string>
     <string name="close">Fermer</string>
@@ -24,7 +23,6 @@
     <string name="useNativeFilePickerDesc">Pourrait offrir une apparence plus native lors de l\'ouverture et de l\'enregistrement de fichiers.</string>
     <string name="unknown">Inconnu</string>
     <string name="no">Non</string>
-    <string name="supporters">Supporters</string>
     <string name="changelog">Notes de version</string>
     <string name="clear">Effacer</string>
     <string name="osVersion">Version de l\'OS : %1$s</string>
@@ -79,7 +77,6 @@
 \n%2$s
 \n
 \nà la place. Êtes-vous sûr de vouloir continuer le téléchargement ?</string>
-    <string name="canceled">Annulé</string>
     <string name="decrypt">Décrypter</string>
     <string name="cancel">Annuler</string>
     <string name="modelFormat">Modèle : %s</string>
@@ -103,7 +100,6 @@
     <string name="mibs">Mio/s</string>
     <string name="buildDate">Date de build : %1$s</string>
     <string name="tacFormat">TAC : %s</string>
-    <string name="settings">Paramètres</string>
     <string name="firmwareCheckError">Erreur lors de la recherche du firmware. Veuillez vérifier que le modèle et la région sont corrects.
 \nPlus d\'informations : %1$s
 \n
@@ -118,7 +114,6 @@
     <string name="file">Fichier</string>
     <string name="useMicaEffectDesc">Sur Windows 11 et ultérieur, Bifrost peut appliquer l\'effet Mica de Windows sur l\'arrière-plan de la fenêtre, lui donnant une apparence plus proche d\'une application native Windows.</string>
     <string name="manualWarningDetails2">cette page</string>
-    <string name="statusFormat">État : %1$s</string>
     <string name="hide">Masquer</string>
     <string name="show">Afficher</string>
 </resources>
