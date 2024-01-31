@@ -9,7 +9,6 @@
     <string name="descending">Ordem decrescente</string>
     <string name="edit">Editar</string>
     <string name="useNativeFilePickerDesc">Pode fornecer uma aparência mais nativa ao abrir e salvar arquivos.</string>
-    <string name="retrieve">Obter</string>
     <string name="checkForUpdatesDesc">Verificar por atualizações de firmware</string>
     <string name="manualWarningDetails">Para a maioria dos dispositivos, a Samsung fornecerá apenas o firmware mais recente. Mesmo se você solicitar uma versão diferente, os servidores da Samsung retornarão o arquivo de firmware mais recente. Para evitar a possibilidade de atualizar o firmware errado, o %1$s verificará se a Samsung está fornecendo o firmware solicitado antes de tentar fazer o download. Se as versões solicitada e fornecida não corresponderem,o %2$s cancelará o download. Para mais informações sobre isso, confira</string>
     <string name="manualWarning">Aviso! A Samsumg pode não fornecer o firmware solicitado!</string>
@@ -22,7 +21,6 @@
     <string name="openFile">Abrir arquivo</string>
     <string name="downloading">Baixando</string>
     <string name="no">Não</string>
-    <string name="supporters">Apoiadores</string>
     <string name="changelog">Registro de alterações</string>
     <string name="clear">Limpar</string>
     <string name="unknown">Desconhecido</string>
@@ -79,7 +77,6 @@
 \n%2$s
 \n
 \nVocê deseja continuar com o download?</string>
-    <string name="canceled">Cancelado</string>
     <string name="cancel">Cancelar</string>
     <string name="modelFormat">Modelo: %s</string>
     <string name="mastodon">Mastodon</string>
@@ -102,7 +99,6 @@
     <string name="mibs">MB/s</string>
     <string name="buildDate">Data da compilação: %1$s</string>
     <string name="tacFormat">TAC: %s</string>
-    <string name="settings">Configurações</string>
     <string name="firmwareCheckError">Erro ao verificar pelo firmware. Veja se o modelo e região estão corretos.
 \nMais informações: %1$s
 \n
@@ -117,7 +113,6 @@
     <string name="file">Arquivo</string>
     <string name="useMicaEffectDesc">No Windows 11 e posterior, o Bifrost pode aplicar o efeito Mica ao fundo da janela, fazendo com que pareça mais um aplicativo nativo do Windows.</string>
     <string name="manualWarningDetails2">este problema</string>
-    <string name="statusFormat">Status: %1$s</string>
     <string name="done">Concluído</string>
     <string name="hide">Ocultar</string>
     <string name="show">Exibir</string>
