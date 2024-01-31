@@ -46,18 +46,10 @@ jobs:
             ~/.gradle/wrapper
             ${{ github.workspace }}/common/build
             ${{ github.workspace }}/desktop/build
+            ~/Library/Caches/Hydraulic/Conveyor
           key: ${{ runner.os }}-gradle-desktop
           restore-keys: |
             ${{ runner.os }}-gradle-desktop
-
-      - name: Cache Conveyor
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/Library/Caches/Hydraulic/Conveyor
-          key: ${{ runner.os }}-conveyor
-          restore-keys: |
-            ${{ runner.os }}-conveyor
 
       - name: Build with Gradle
         id: gradle-build
