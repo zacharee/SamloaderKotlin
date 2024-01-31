@@ -1,3 +1,4 @@
+@file:JvmName("PhoneInfoUtilsAndroid")
 package tk.zwander.common.util
 
 import android.annotation.SuppressLint
