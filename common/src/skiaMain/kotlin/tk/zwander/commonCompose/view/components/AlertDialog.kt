@@ -48,10 +48,10 @@ import kotlin.jvm.JvmName
 internal actual fun PlatformAlertDialog(
     showing: Boolean,
     onDismissRequest: () -> Unit,
-    buttons: @Composable() RowScope.() -> Unit,
+    buttons: @Composable RowScope.() -> Unit,
     modifier: Modifier,
-    title: (@Composable() () -> Unit)?,
-    text: (@Composable() ColumnScope.() -> Unit)?,
+    title: (@Composable () -> Unit)?,
+    text: (@Composable ColumnScope.() -> Unit)?,
     shape: Shape,
     backgroundColor: Color,
     contentColor: Color
