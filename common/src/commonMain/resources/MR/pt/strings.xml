@@ -116,4 +116,8 @@
     <string name="done">Concluído</string>
     <string name="hide">Ocultar</string>
     <string name="show">Exibir</string>
+    <string name="notification_progress_channel_name">Progresso</string>
+    <string name="notification_progress_text">Trabalhando…</string>
+    <string name="notification_finished_channel_name">Concluído</string>
+    <string name="notification_finished_channel_text">A tarefa foi concluída!</string>
 </resources>
