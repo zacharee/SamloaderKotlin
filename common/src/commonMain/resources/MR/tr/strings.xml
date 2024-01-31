@@ -116,4 +116,8 @@
     <string name="done">Bitti</string>
     <string name="show">Göster</string>
     <string name="hide">Gizle</string>
+    <string name="notification_progress_channel_name">İlerleme</string>
+    <string name="notification_progress_text">Çalışıyor…</string>
+    <string name="notification_finished_channel_name">Tamamlandı</string>
+    <string name="notification_finished_channel_text">Bir iş tamamlandı!</string>
 </resources>
