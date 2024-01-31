@@ -14,7 +14,7 @@ data class ThemeInfo(
 )
 
 @Composable
-expect fun getThemeInfo(): ThemeInfo
+expect fun rememberThemeInfo(): ThemeInfo
 
 object ThemeConstants {
     object Colors {

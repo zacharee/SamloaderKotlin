@@ -22,7 +22,7 @@ import tk.zwander.common.util.UserDefaults
 import tk.zwander.commonCompose.monet.ColorScheme
 
 @Composable
-actual fun getThemeInfo(): ThemeInfo {
+actual fun rememberThemeInfo(): ThemeInfo {
     val (osThemeDetector, isSupported) = remember {
         OsThemeDetector.getDetector() to OsThemeDetector.isSupported()
     }
@@ -90,8 +90,10 @@ actual fun getThemeInfo(): ThemeInfo {
         ColorScheme(accentColor, dark).toComposeColorScheme()
     }
 
-    return ThemeInfo(
-        isDarkMode = dark,
-        colors = composeColorScheme,
-    )
+    return remember(composeColorScheme) {
+        ThemeInfo(
+            isDarkMode = dark,
+            colors = composeColorScheme,
+        )
+    }
 }

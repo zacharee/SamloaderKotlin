@@ -7,7 +7,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.commonCompose.util.FontMapper
-import tk.zwander.commonCompose.util.getThemeInfo
+import tk.zwander.commonCompose.util.rememberThemeInfo
 import tk.zwander.commonCompose.view.LocalUseMicaEffect
 
 /**
@@ -15,7 +15,7 @@ import tk.zwander.commonCompose.view.LocalUseMicaEffect
  */
 @Composable
 fun CustomMaterialTheme(block: @Composable () -> Unit) {
-    val themeInfo = getThemeInfo()
+    val themeInfo = rememberThemeInfo()
     val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
 
     MaterialTheme(

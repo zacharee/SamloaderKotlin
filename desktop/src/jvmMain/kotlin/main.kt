@@ -28,7 +28,7 @@ import tk.zwander.common.util.jna.windows.hwnd
 import tk.zwander.common.util.jna.windows.toBgr
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
-import tk.zwander.commonCompose.util.getThemeInfo
+import tk.zwander.commonCompose.util.rememberThemeInfo
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.MacMenuBar
 import tk.zwander.samloaderkotlin.resources.MR
@@ -46,7 +46,7 @@ fun main() {
 
     application {
         val mainWindowState = rememberWindowState()
-        val themeInfo = getThemeInfo()
+        val themeInfo = rememberThemeInfo()
         val density = LocalDensity.current
         val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
 
