@@ -85,7 +85,7 @@ fun FooterView(
                         }
                     ) {
                         Icon(
-                            painterResource(MR.images.heart), stringResource(MR.strings.supporters),
+                            painterResource(MR.images.heart), stringResource(MR.strings.patreonSupporters),
                             modifier = Modifier.padding(8.dp).size(24.dp)
                         )
                     }

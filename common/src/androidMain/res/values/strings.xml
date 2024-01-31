@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">Bifrost</string>
-
-    <string name="notification_progress_channel_name">Progress</string>
-    <string name="notification_progress_text">Working…</string>
-
-    <string name="notification_finished_channel_name">Finished</string>
-    <string name="notification_finished_channel_text">A job has finished!</string>
-</resources>
