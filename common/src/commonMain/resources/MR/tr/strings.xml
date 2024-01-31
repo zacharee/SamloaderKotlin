@@ -9,7 +9,6 @@
     <string name="edit">Düzenle</string>
     <string name="copy">Kopyala</string>
     <string name="modelFormat">Model: %s</string>
-    <string name="retrieve">Al</string>
     <string name="close">Kapat</string>
     <string name="manualWarningDetails">Çoğu aygıt için Samsung yalnızca en son ürün yazılımını sağlayacaktır. Farklı bir sürüm talep etseniz bile, Samsung\'un sunucuları en son ürün yazılımı dosyasını verecektir. Yanlış ürün yazılımının kurulması olasılığını önlemek için, %1$s indirmeye çalışmadan önce Samsung\'un istenen ürün yazılımını sağlayıp sağlamadığını denetleyecektir. İstenen ve sunulan sürümler eşleşmezse, %2$s indirme işlemini iptal edecektir. Bu konuda daha fazla bilgi için</string>
     <string name="manualWarning">Uyarı! Samsung istenen ürün yazılımını sağlayamayabilir!</string>
@@ -26,7 +25,6 @@
     <string name="downloading">İndiriliyor</string>
     <string name="useNativeFilePickerDesc">Dosyaları açarken ve kaydederken daha yerel bir görünüm ve deneyim sağlayabilir.</string>
     <string name="no">Hayır</string>
-    <string name="supporters">Destekleyenler</string>
     <string name="changelog">Değişiklik Günlüğü</string>
     <string name="clear">Temizle</string>
     <string name="unknown">Bilinmiyor</string>
@@ -79,7 +77,6 @@
 \n%2$s
 \n
 \nsunmaya çalışıyor. İndirmeye devam etmek istediğinizden emin misiniz?</string>
-    <string name="canceled">İptal edildi</string>
     <string name="decrypt">Şifresini çöz</string>
     <string name="cancel">İptal</string>
     <string name="mastodon">Mastodon</string>
@@ -104,7 +101,6 @@
     <string name="mibs">MiB/s</string>
     <string name="buildDate">Derleme Tarihi: %1$s</string>
     <string name="tacFormat">TAC: %s</string>
-    <string name="settings">Ayarlar</string>
     <string name="firmwareCheckError">Ürün yazılımı denetlenirken hata oluştu. Modelin ve bölgenin doğru olduğundan emin olun.
 \nDaha fazla bilgi: %1$s
 \n
@@ -117,7 +113,6 @@
     <string name="file">Dosya</string>
     <string name="useMicaEffectDesc">Windows 11 ve sonraki sürümlerde Bifrost, pencere arka planına Windows Mica efekti uygulayarak yerel bir Windows uygulaması gibi görünmesini sağlayabilir.</string>
     <string name="manualWarningDetails2">bu sorun</string>
-    <string name="statusFormat">Durum: %1$s</string>
     <string name="done">Bitti</string>
     <string name="show">Göster</string>
     <string name="hide">Gizle</string>
