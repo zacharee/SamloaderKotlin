@@ -1,6 +1,13 @@
-# Upcoming
+# 1.17.5
+- Clear status text and current changelog when checking for latest firmware again.
+- Work on fixing crashes on Android related to the downloader Service.
+- Make some more strings translatable.
+- Add German translation.
 - Add Chinese (Simplified) translation.
 - Add complete Turkish translation.
+- Crash fixes.
+- More TAC cleanup.
+- Code cleanup.
 
 # 1.17.4
 - Attempt to fix a crash after checking for updates on Android.
