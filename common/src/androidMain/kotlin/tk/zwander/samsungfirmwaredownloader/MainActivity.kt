@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.documentfile.provider.DocumentFile
@@ -29,7 +30,9 @@ import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformUriFile
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.EventManager
+import tk.zwander.common.util.LocalPhoneInfo
 import tk.zwander.common.util.eventManager
+import tk.zwander.common.util.rememberPhoneInfo
 import tk.zwander.commonCompose.MainView
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
@@ -102,11 +105,15 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                 isAppearanceLightNavigationBars = isAppearanceLightStatusBars
             }
 
-            MainView(
-                Modifier
-                    .imePadding()
-                    .systemBarsPadding()
-            )
+            CompositionLocalProvider(
+                LocalPhoneInfo provides rememberPhoneInfo(),
+            ) {
+                MainView(
+                    modifier = Modifier
+                        .imePadding()
+                        .systemBarsPadding(),
+                )
+            }
         }
     }
 

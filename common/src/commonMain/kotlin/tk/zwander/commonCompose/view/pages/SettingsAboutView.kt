@@ -40,10 +40,10 @@ import korlibs.memory.Platform
 import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.util.BifrostSettings
+import tk.zwander.common.util.LocalPhoneInfo
 import tk.zwander.common.util.SettingsKey
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.isWindows11
-import tk.zwander.common.util.rememberPhoneInfo
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.view.components.ExpandButton
@@ -172,7 +172,7 @@ fun SettingsAboutView() {
 private fun PhoneInfoView(
     modifier: Modifier = Modifier,
 ) {
-    val phoneInfo = rememberPhoneInfo()
+    val phoneInfo = LocalPhoneInfo.current
     val clipboard = LocalClipboardManager.current
     var expanded by remember {
         mutableStateOf(true)

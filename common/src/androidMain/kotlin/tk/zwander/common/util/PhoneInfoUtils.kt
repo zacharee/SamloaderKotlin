@@ -23,7 +23,7 @@ import kotlin.coroutines.suspendCoroutine
 
 @SuppressLint("MissingPermission", "NewApi")
 @Composable
-actual fun rememberPhoneInfo(): PhoneInfo? {
+fun rememberPhoneInfo(): PhoneInfo {
     var permissionContinuation by remember {
         mutableStateOf<Continuation<String?>?>(null)
     }
