@@ -1,6 +1,5 @@
 [versions]
-androidSvg = "1.4"
-androidx-activity-compose = "1.8.2"
+androidx-activity-compose = "1.9.0-alpha02"
 androidx-core = "1.13.0-alpha04"
 androidx-documentfile = "1.1.0-alpha01"
 androidx-preference = "1.2.1"
@@ -10,8 +9,8 @@ bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.6.0-dev1397"
 compose-compiler = "1.5.8.1-beta01"
-conveyor = "1.6"
-flatlaf = "3.2.5"
+conveyor = "1.8"
+flatlaf = "3.3"
 fluid = "0.13.0"
 google-material = "1.12.0-alpha03"
 android-gradle = "8.1.4"
@@ -20,19 +19,18 @@ korlibs = "4.0.10"
 kotlin = "1.9.22"
 kotlinx-coroutines = "1.8.0-RC2"
 kotlinx-serialization = "1.6.2"
-ktor = "2.3.7"
+ktor = "2.3.8"
 moko-mvvm = "0.16.1"
 moko-resources = "0.23.0"
-multiplatform-settings = "1.1.0"
-oshi = "6.4.9"
-slf4j = "2.0.9"
+multiplatform-settings = "1.1.1"
+oshi = "6.4.11"
+slf4j = "2.0.11"
 windowStyler = "cad9442ec3"
 javaObjcBridge = "1.2"
 ksoup = "0.1.2"
 material3-android = "1.2.0-rc01"
 
 [libraries]
-androidSvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidSvg" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "androidx-documentfile" }

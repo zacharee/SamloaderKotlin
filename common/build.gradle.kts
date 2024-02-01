@@ -131,8 +131,6 @@ kotlin {
 
                 api(libs.google.material)
 
-                api(libs.androidSvg)
-
                 api(libs.bugsnag.android)
                 api(libs.compose.material3.android)
             }
