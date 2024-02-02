@@ -9,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import my.nanihadesuka.compose.ColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.changelog.Changelog
@@ -86,7 +88,10 @@ internal fun ChangelogDisplay(
                             .replace("<QUAD_BR>", "\n\n")
                             .replace("<DOUBLE_BR>", "\n\n")
 
-                        Text(formatted.parseHtml())
+                        Text(
+                            text = formatted.parseHtml(),
+                            lineHeight = (LocalTextStyle.current.fontSize.value + 2).sp,
+                        )
                     }
                 }
             }
