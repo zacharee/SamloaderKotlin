@@ -31,6 +31,7 @@ import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.rememberThemeInfo
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.MacMenuBar
+import tk.zwander.commonCompose.view.keyCodeHandler
 import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Dimension
 import kotlin.time.ExperimentalTime
@@ -68,6 +69,7 @@ fun main() {
                 captionColor = captionColor,
                 titleBarColor = titleBarColor,
             ),
+            onPreviewKeyEvent = keyCodeHandler(),
         ) {
             // For some reason this returns the title bar height on macOS.
             val menuBarHeight = remember(window.height) {
