@@ -13,11 +13,11 @@
     <string name="versionCheckError">ไม่สามารถตรวจสอบได้ว่า Samsung ให้บริการเฟิร์มแวร์ที่ถูกต้องหรือไม่ คุณแน่ใจหรือไม่ว่าต้องการดาวน์โหลดต่อ?</string>
     <string name="selectEncrypted">โปรดเลือกไฟล์เฟิร์มแวร์ที่ลงท้ายด้วย enc2 หรือ enc4</string>
     <string name="badReturnStatus">สถานะการส่งกลับไม่ดี: %1$s</string>
-    <string name="manualWarning">Warning! Samsung may not supply the requested firmware!</string>
+    <string name="manualWarning">คำเตือน! ซัมซุงอาจจะไม่จัดหา firmware ที่คุณขอ!</string>
     <string name="checkForUpdatesDesc">ตรวจสอบสำหรับการอัพเดตของเฟิร์มแวร์</string>
     <string name="openFile">เปิดไฟล์</string>
     <string name="warning">คำเตือน</string>
-    <string name="minimize">Minimize</string>
+    <string name="minimize">ย่อหน้าต่าง</string>
     <string name="zoom">ซูม</string>
     <string name="carriers">ผู้ให้บริการ</string>
     <string name="no">ไม่ใช่</string>
@@ -35,7 +35,7 @@
     <string name="close">ปิด</string>
     <string name="openFileDesc">เปิดไฟล์เพื่อถอดรหัส</string>
     <string name="kibs">KiB/s</string>
-    <string name="manualWarningDetails">For most devices, Samsung will only supply the latest firmware. Even if you request a different version, Samsung\'s servers will return the latest firmware file. To avoid potentially flashing the wrong firmware, %1$s will check to see if Samsung is supplying the requested firmware before attempting to download. If the requested and served versions do not match, %2$s will abort the download. For more information on this, check out</string>
+    <string name="manualWarningDetails">สำหรับอุปกรณ์มากส่วนใหญ่, ซัมซุงจะจัดหา firmware เวอร์ชันล่าสุดเท่านั้น แม้คุณจะขอเวอร์ชันที่แตกต่าง แต่เซิร์ฟเวอร์ของซัมซุงจะส่งคืนไฟล์ firmware เวอร์ชันล่าสุด ในการหลีกเลี่ยงการแฟลช firmware ที่ผิดพลาด, %1$s จะตรวจสอบเพื่อดูว่าซัมซุงจะจัดหา firmware ที่คุณขอหรือไม่ก่อนพยายามดาวน์โหลด หากเวอร์ชันที่ขอและที่ได้รับไม่ตรงกัน, %2$s จะยุติการดาวน์โหลด</string>
     <string name="descending">จากมากไปน้อย</string>
     <string name="firmware">เฟิร์มแวร์</string>
     <string name="downloading">กำลังดาวน์โหลด</string>
@@ -59,7 +59,7 @@
     <string name="regionHint">ภูมิภาค (เช่น XAA)</string>
     <string name="release">ปล่อย: %1$s</string>
     <string name="downloader">ผู้ดาวน์โหลด</string>
-    <string name="crcCheckFailed">CRC check failed. Please delete the file and download again.</string>
+    <string name="crcCheckFailed">การตรวจสอบ CRC ล้มเหลว โปรดลบไฟล์และดาวน์โหลดอีกครั้ง.</string>
     <string name="decryptError">ไม่สามารถถอดรหัสเฟิร์มแวร์ โปรดตรวจสอบว่ารุ่นมือถือ, ภูมิภาคและเฟิร์มแวร์ถูกต้องหรือไม่
 \nError: %1$s</string>
     <string name="ok">OK</string>
@@ -69,8 +69,8 @@
     <string name="historyError">ไม่สามารถดึงประวัติเฟิร์มแวร์ โปรดตรวจสอบว่ารุ่นโมเดล์และภูมิภาคถูกต้องหรือไม่.</string>
     <string name="imei_serial">IMEI/Serial</string>
     <string name="download">ดาวน์โหลด</string>
-    <string name="autoDeleteEncryptedFirmware">Auto-Delete Encrypted Firmware</string>
-    <string name="md5CheckFailed">MD5 check failed. Please delete the file and download again.</string>
+    <string name="autoDeleteEncryptedFirmware">ลบ firmware ที่ถอดรหัสโดยอัตโนมัติ</string>
+    <string name="md5CheckFailed">การตรวจสอบ MD5 ล้มเหลว โปรดลบไฟล์และดาวน์โหลดใหม่.</string>
     <string name="decrypting">กำลังถอดรหัส</string>
     <string name="manualWarningDetails3">บน Github</string>
     <string name="about">เกี่ยวกับ</string>
@@ -98,8 +98,7 @@
     <string name="mibs">MiB/s</string>
     <string name="buildDate">วันที่สร้าง: %1$s</string>
     <string name="tacFormat">TAC: %s</string>
-    <string name="firmwareCheckError">Error checking for firmware. Make sure the model and region are correct.
-\nMore info: %1$s
+    <string name="firmwareCheckError">เกิดข้อผิดพลาดในการตรวจสอบ firmware โปรดตรวจสอบว่ารุ่นและภูมิภาคถูกต้อง ข้อมูลเพิ่มเติม: %1$s
 \n
 \n%2$s</string>
     <string name="csc">CSC</string>
