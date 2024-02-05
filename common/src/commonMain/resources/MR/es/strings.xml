@@ -116,4 +116,8 @@
     <string name="done">Hecho</string>
     <string name="show">Mostrar</string>
     <string name="hide">Ocultar</string>
+    <string name="notification_progress_text">Working…</string>
+    <string name="notification_finished_channel_text">A job has finished!</string>
+    <string name="notification_finished_channel_name">Finished</string>
+    <string name="notification_progress_channel_name">Progress</string>
 </resources>
