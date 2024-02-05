@@ -114,4 +114,10 @@
     <string name="useMicaEffectDesc">On Windows 11 and later, Bifrost can apply the Windows Mica effect to the window background, making it look more like a native Windows app।</string>
     <string name="manualWarningDetails2">this issue</string>
     <string name="done">Done</string>
+    <string name="notification_finished_channel_text">A job has finished!</string>
+    <string name="notification_progress_channel_name">Progress</string>
+    <string name="notification_progress_text">Working…</string>
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
+    <string name="notification_finished_channel_name">Finished</string>
 </resources>
