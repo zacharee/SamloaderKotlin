@@ -53,6 +53,9 @@ Release notes are available in [CHANGELOG.md](CHANGELOG.md).
 
 # FAQ & Troubleshooting
 
+## Bifrost isn't downloading watch firmware.
+Unfortunately, Samsung doesn't serve the full firmware files for watches, so Bifrost can't download them.
+
 ## Bifrost is returning error 400/401 when downloading
 These errors are on Samsung's end. If you can, try using a different region/CSC.
 
