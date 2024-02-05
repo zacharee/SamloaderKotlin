@@ -1,17 +1,17 @@
 package tk.zwander.commonCompose.view.pages
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +25,7 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import my.nanihadesuka.compose.LazyColumnScrollbarNew
+import my.nanihadesuka.compose.ColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.PlatformFile
@@ -147,10 +147,10 @@ internal fun DecryptView() {
     val canChangeOption = !hasRunningJobs
 
     val scope = rememberCoroutineScope()
-    val listState = rememberLazyListState()
+    val scrollState = rememberScrollState()
 
-    LazyColumnScrollbarNew(
-        state = listState,
+    ColumnScrollbarNew(
+        state = scrollState,
         thumbColor = ThemeConstants.Colors.scrollbarUnselected,
         thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
         alwaysShowScrollBar = true,
@@ -158,106 +158,100 @@ internal fun DecryptView() {
         thickness = ThemeConstants.Dimensions.scrollbarThickness,
         selectionMode = ScrollbarSelectionMode.Disabled,
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            state = listState,
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .padding(8.dp)
+                .verticalScroll(scrollState),
         ) {
-            item {
-                BoxWithConstraints(
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    val constraints = constraints
+            BoxWithConstraints(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(bottom = 8.dp),
+            ) {
+                val constraints = constraints
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        HybridButton(
-                            onClick = {
-                                model.launchJob {
-                                    onDecrypt(model)
-                                }
-                            },
-                            enabled = canDecrypt,
-                            text = stringResource(MR.strings.decrypt),
-                            description = stringResource(MR.strings.decryptFirmware),
-                            vectorIcon = painterResource(MR.images.lock_open_outline),
-                            parentSize = constraints.maxWidth
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        HybridButton(
-                            onClick = {
-                                model.launchJob {
-                                    onOpenFile(model)
-                                }
-                            },
-                            enabled = canChangeOption,
-                            text = stringResource(MR.strings.openFile),
-                            description = stringResource(MR.strings.openFileDesc),
-                            vectorIcon = painterResource(MR.images.open_in_new),
-                            parentSize = constraints.maxWidth
-                        )
-                        Spacer(Modifier.weight(1f))
-                        HybridButton(
-                            onClick = {
-                                scope.launch {
-                                    eventManager.sendEvent(Event.Decrypt.Finish)
-                                }
-                                model.endJob("")
-                            },
-                            enabled = hasRunningJobs,
-                            text = stringResource(MR.strings.cancel),
-                            description = stringResource(MR.strings.cancel),
-                            vectorIcon = painterResource(MR.images.cancel),
-                            parentSize = constraints.maxWidth
-                        )
-                    }
-                }
-            }
-
-            item {
-                MRFLayout(model, canChangeOption, canChangeOption, showImeiSerial = true)
-            }
-
-            item {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    val value = fileToDecrypt?.encFile?.getAbsolutePath() ?: ""
-                    OutlinedTextField(
-                        value = value,
-                        onValueChange = {},
-                        label = { Text(text = stringResource(MR.strings.file)) },
-                        modifier = Modifier.weight(1f)
-                            .handleFileDrag {
-                                if (it != null) {
-                                    scope.launch {
-                                        val decInfo = DecryptFileInfo(
-                                            encFile = it,
-                                            decFile = PlatformFile(it.getParent()!!, File(it.getAbsolutePath()).nameWithoutExtension),
-                                        )
-
-                                        handleFileInput(model, decInfo)
-                                    }
-                                }
-                            },
-                        readOnly = true,
-                        singleLine = true,
-                        visualTransformation = OffsetCorrectedIdentityTransformation(value),
+                    HybridButton(
+                        onClick = {
+                            model.launchJob {
+                                onDecrypt(model)
+                            }
+                        },
+                        enabled = canDecrypt,
+                        text = stringResource(MR.strings.decrypt),
+                        description = stringResource(MR.strings.decryptFirmware),
+                        vectorIcon = painterResource(MR.images.lock_open_outline),
+                        parentSize = constraints.maxWidth
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    HybridButton(
+                        onClick = {
+                            model.launchJob {
+                                onOpenFile(model)
+                            }
+                        },
+                        enabled = canChangeOption,
+                        text = stringResource(MR.strings.openFile),
+                        description = stringResource(MR.strings.openFileDesc),
+                        vectorIcon = painterResource(MR.images.open_in_new),
+                        parentSize = constraints.maxWidth
+                    )
+                    Spacer(Modifier.weight(1f))
+                    HybridButton(
+                        onClick = {
+                            scope.launch {
+                                eventManager.sendEvent(Event.Decrypt.Finish)
+                            }
+                            model.endJob("")
+                        },
+                        enabled = hasRunningJobs,
+                        text = stringResource(MR.strings.cancel),
+                        description = stringResource(MR.strings.cancel),
+                        vectorIcon = painterResource(MR.images.cancel),
+                        parentSize = constraints.maxWidth
                     )
                 }
             }
 
-            if (hasRunningJobs || statusText.isNotBlank()) {
-                item {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Spacer(Modifier.size(8.dp))
+            MRFLayout(model, canChangeOption, canChangeOption, showImeiSerial = true)
 
-                        ProgressInfo(model)
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                val value = fileToDecrypt?.encFile?.getAbsolutePath() ?: ""
+                OutlinedTextField(
+                    value = value,
+                    onValueChange = {},
+                    label = { Text(text = stringResource(MR.strings.file)) },
+                    modifier = Modifier.weight(1f)
+                        .handleFileDrag {
+                            if (it != null) {
+                                scope.launch {
+                                    val decInfo = DecryptFileInfo(
+                                        encFile = it,
+                                        decFile = PlatformFile(it.getParent()!!, File(it.getAbsolutePath()).nameWithoutExtension),
+                                    )
+
+                                    handleFileInput(model, decInfo)
+                                }
+                            }
+                        },
+                    readOnly = true,
+                    singleLine = true,
+                    visualTransformation = OffsetCorrectedIdentityTransformation(value),
+                )
+            }
+
+            AnimatedVisibility(
+                visible = hasRunningJobs || statusText.isNotBlank(),
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Spacer(Modifier.size(8.dp))
+
+                    ProgressInfo(model)
                 }
             }
         }
