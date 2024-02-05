@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="noBinaryFile">ไม่พบ­ไฟล์ binary สำหรับ %1$s, %2$s! โปรดลอง CSC อื่น.</string>
+    <string name="versionMismatch">คุณร้องขอ
+\n
+\n%1$s
+\n
+\nแต่ Samsung พยายามจะส่ง
+\n
+\n%2$s
+\n
+\nคุณแน่ใจใช่ไหมที่จะดาวน์โหลดต่อ?</string>
+    <string name="versionCheckError">ไม่สามารถตรวจสอบได้ว่า Samsung ให้บริการเฟิร์มแวร์ที่ถูกต้องหรือไม่ คุณแน่ใจหรือไม่ว่าต้องการดาวน์โหลดต่อ?</string>
+    <string name="selectEncrypted">โปรดเลือกไฟล์เฟิร์มแวร์ที่ลงท้ายด้วย enc2 หรือ enc4</string>
+</resources>
