@@ -24,7 +24,7 @@ import kotlin.coroutines.suspendCoroutine
 
 @SuppressLint("MissingPermission", "NewApi")
 @Composable
-fun rememberPhoneInfo(): PhoneInfo {
+fun rememberPhoneInfo(): PhoneInfo? {
     var permissionContinuation by remember {
         mutableStateOf<Continuation<String?>?>(null)
     }
@@ -61,11 +61,13 @@ fun rememberPhoneInfo(): PhoneInfo {
 
     return remember {
         derivedStateOf {
-            PhoneInfo(
-                tac = tac,
-                model = Class.forName("android.os.SystemProperties")
-                    .getMethod("get", String::class.java).invoke(null, "ro.product.model") as String,
-            )
+            tac.takeIf { !it.isNullOrBlank() }?.let {
+                PhoneInfo(
+                    tac = tac,
+                    model = Class.forName("android.os.SystemProperties")
+                        .getMethod("get", String::class.java).invoke(null, "ro.product.model") as String,
+                )
+            }
         }
     }.value
 }
