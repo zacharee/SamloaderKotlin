@@ -1,3 +1,11 @@
+# 1.17.6
+- Fix a crash on Android when retrieving the device IMEI.
+- Hide TAC info when TAC is blank.
+- UI tweaks.
+- Update Compose.
+- Update TACs.
+- Update translations.
+
 # 1.17.5
 - Clear status text and current changelog when checking for latest firmware again.
 - Work on fixing crashes on Android related to the downloader Service.
