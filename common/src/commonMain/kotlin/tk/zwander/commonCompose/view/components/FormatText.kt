@@ -1,6 +1,7 @@
 package tk.zwander.commonCompose.view.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +23,7 @@ internal fun FormatText(
     ) {
         Text(
             text = textFormat.toString(),
+            lineHeight = LocalTextStyle.current.fontSize,
         )
 
         ProvideTextStyle(
@@ -32,6 +34,7 @@ internal fun FormatText(
             Text(
                 text = text,
                 fontSize = 12.sp,
+                lineHeight = 12.sp,
             )
         }
     }
