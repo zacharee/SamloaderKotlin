@@ -321,10 +321,10 @@ internal fun DownloadView() {
         mutableStateOf<DownloadErrorInfo?>(null)
     }
 
-    val scrolLState = rememberScrollState()
+    val scrollState = rememberScrollState()
 
     ColumnScrollbarNew(
-        state = scrolLState,
+        state = scrollState,
         thumbColor = ThemeConstants.Colors.scrollbarUnselected,
         thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
         alwaysShowScrollBar = true,
@@ -335,7 +335,7 @@ internal fun DownloadView() {
         Column(
             modifier = Modifier.fillMaxSize()
                 .padding(8.dp)
-                .verticalScroll(scrolLState),
+                .verticalScroll(scrollState),
         ) {
             BoxWithConstraints(
                 modifier = Modifier.fillMaxWidth()
