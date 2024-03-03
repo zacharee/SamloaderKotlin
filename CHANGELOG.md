@@ -2,6 +2,7 @@
 - Add 011111 dummy serial since 123456 and 012345 aren't working for everything anymore.
 - Add TACs for US S24.
 - TAC cleanup.
+- Update translations.
 
 # 1.17.6
 - Fix a crash on Android when retrieving the device IMEI.
