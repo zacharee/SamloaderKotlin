@@ -72,7 +72,7 @@ internal fun ProgressInfo(model: BaseModel) {
                     )
 
                     LinearProgressIndicator(
-                        progress = animatedProgress,
+                        progress = { animatedProgress },
                         modifier = Modifier.height(16.dp)
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(8.dp)),

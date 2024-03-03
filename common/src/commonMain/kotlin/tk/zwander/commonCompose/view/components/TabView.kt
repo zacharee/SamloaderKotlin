@@ -89,7 +89,7 @@ internal fun TabView(
             .height(48.dp),
         selectedTabIndex = selectedPage,
         divider = {},
-        containerColor = if (LocalUseMicaEffect.current) Color.Transparent else TabRowDefaults.containerColor,
+        containerColor = if (LocalUseMicaEffect.current) Color.Transparent else TabRowDefaults.primaryContainerColor,
     ) {
         pages.forEachIndexed { index, page ->
             Tab(
