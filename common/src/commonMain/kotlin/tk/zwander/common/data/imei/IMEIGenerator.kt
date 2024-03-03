@@ -72,6 +72,7 @@ data object IMEIDatabase {
     val DUMMY_SERIALS = arrayOf(
         "123456",
         "012345",
+        "011111",
     )
     const val LIVE_ENDPOINT =
         "https://raw.githubusercontent.com/zacharee/SamloaderKotlin/master/common/src/commonMain/resources/MR/files/tacs.csv"
