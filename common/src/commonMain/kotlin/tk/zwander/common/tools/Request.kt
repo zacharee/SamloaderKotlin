@@ -219,6 +219,14 @@ object Request {
                 )
             }
 
+            if (status == "408") {
+                return FetchResult.GetBinaryFileResult(
+                    error = Exception(MR.strings.invalid_imei_or_serial()),
+                    rawOutput = responseXml.toString(),
+                    requestBody = request,
+                )
+            }
+
             if (status != "200") {
                 return FetchResult.GetBinaryFileResult(
                     error = Exception(MR.strings.badReturnStatus(status.toString())),
