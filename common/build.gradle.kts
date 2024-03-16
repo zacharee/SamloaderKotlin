@@ -162,7 +162,7 @@ android {
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].res.srcDir(File(buildDir, "generated/moko/androidMain/res"))
+    sourceSets["main"].res.srcDir(layout.buildDirectory.file("generated/moko/androidMain/res"))
 }
 
 buildkonfig {
