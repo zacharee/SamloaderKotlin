@@ -85,9 +85,9 @@
     <string name="countries">Kraje</string>
     <string name="window">Okno</string>
     <string name="fileIssue">Utwórz raport</string>
-    <string name="allowLowercaseCharactersDesc">Bifrost dla lepszej czytelności zamienia wszystkie litery w nazwie modelu, regionu i w wersji oprogramowania na WIELKIE. Jenakże, niektóre modele mają w nazwie małe litery. Włącz tę opcję, aby móc pobierać oprogramowanie dla tych modeli.</string>
+    <string name="allowLowercaseCharactersDesc">Bifrost dla lepszej czytelności zamienia wszystkie litery w nazwie modelu, regionu i w wersji oprogramowania na WIELKIE. Jednakże, niektóre modele mają w nazwie małe litery. Włącz tę opcję, aby móc pobierać oprogramowanie dla tych modeli.</string>
     <string name="mib">MiB</string>
-    <string name="removeSavedDataDesc">Bifrost przechowuje pewne dane jak np. ostatnio wproawdzone informacje o urządzeniu i stany ustawień. Naciśnij tutaj, aby usunąć te dane.</string>
+    <string name="removeSavedDataDesc">Bifrost przechowuje sobie pewne dane (np. ostatnio wprowadzone informacje o urządzeniu i stany ustawień). Naciśnij tutaj, aby usunąć te dane.</string>
     <string name="search">Szukaj</string>
     <string name="autoDeleteEncryptedFirmwareDesc">Bifrost przy pobieraniu oprogramowania tworzy dwa pliki: pierwszy to zaszyfrowane oprogramowanie, drugi to archiwum ZIP z odszyfrowanymi plikami oprogramowania. Włącz tę opcję, aby po odszyfrowaniu od razu usuwać ten pierwszy plik.</string>
     <string name="error">Błąd</string>
@@ -113,4 +113,5 @@
     <string name="useMicaEffectDesc">Bifrost może w Windowsie 11 i późniejszych zastosować efekt Mica do tła okna, wyglądając wtedy jak natywny windowsowy program.</string>
     <string name="manualWarningDetails2">pod tym adresem</string>
     <string name="notification_finished_channel_text">Zadanie zostało ukończone!</string>
+    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
 </resources>
