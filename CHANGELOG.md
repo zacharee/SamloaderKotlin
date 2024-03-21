@@ -1,3 +1,12 @@
+# 1.17.8
+- Add a clearer message for error 408, returned when an invalid IMEI or serial is given.
+- Add another dummy serial for IMEI generation.
+- Add more TACs.
+- Clean up some TAC associations.
+- Update dialog implementation.
+- Crash fixes.
+- Update translations.
+
 # 1.17.7
 - Add 011111 dummy serial since 123456 and 012345 aren't working for everything anymore.
 - Add TACs for US S24.
