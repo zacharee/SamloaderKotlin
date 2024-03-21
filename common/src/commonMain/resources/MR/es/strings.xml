@@ -120,5 +120,5 @@
     <string name="notification_finished_channel_text">¡Se ha completado una tarea!</string>
     <string name="notification_finished_channel_name">Terminado</string>
     <string name="notification_progress_channel_name">Progreso</string>
-    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
+    <string name="invalid_imei_or_serial">¡IMEI o número de serie especificado no son válidos! Si copió el valor desde su dispositivo, asegúrese de que esté escrito correctamente. Si Bifrost generó el IMEI para usted, abra un problema en GitHub con el modelo, la región y el TAC de un dispositivo real (si lo tiene).</string>
 </resources>
