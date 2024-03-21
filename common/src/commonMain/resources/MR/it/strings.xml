@@ -113,4 +113,5 @@
     <string name="minimize">Riduci a icona</string>
     <string name="zoom">Zoom</string>
     <string name="no">No</string>
+    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
 </resources>
