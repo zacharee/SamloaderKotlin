@@ -75,7 +75,7 @@ object ChangelogHandler {
 
         for (i in 3 until divs.size step 2) {
             val row = divs[i].children()
-            val log = divs[i + 1]
+            val log = divs.getOrNull(i + 1)
 
             //This is kind of messy, but Samsung doesn't have a proper API for retrieving
             //version info. Some firmware entries don't have a security patch field, so
@@ -105,7 +105,7 @@ object ChangelogHandler {
                 }
             }
 
-            val logText = log.children()[0].childNodes().joinToString(
+            val logText = log?.children()?.getOrNull(0)?.childNodes()?.joinToString(
                 separator = "",
                 transform = {
                     it.outerHtml().lines().joinToString("\n") { line ->
@@ -120,7 +120,7 @@ object ChangelogHandler {
 
             if (build != null) {
                 changelogs[build] = Changelog(
-                    build, androidVer, relDate, secPatch, logText
+                    build, androidVer, relDate, secPatch, logText,
                 )
             }
         }
