@@ -113,5 +113,5 @@
     <string name="useMicaEffectDesc">Bifrost może w Windowsie 11 i późniejszych zastosować efekt Mica do tła okna, wyglądając wtedy jak natywny windowsowy program.</string>
     <string name="manualWarningDetails2">pod tym adresem</string>
     <string name="notification_finished_channel_text">Zadanie zostało ukończone!</string>
-    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
+    <string name="invalid_imei_or_serial">Podano nieprawidłowy numer IMEI lub numer seryjny! Jeśli skopiowano wartość ze swojego urządzenia, upewnij się, że została wprowadzona poprawnie. Jeśli Bifrost wygenerował dla Ciebie numery IMEI, otwórz zgłoszenie na GitHubie, podając model, region i TAC prawdziwego urządzenia (jeśli je posiadasz).</string>
 </resources>
