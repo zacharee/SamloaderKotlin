@@ -6,7 +6,6 @@ import korlibs.crypto.AES
 import korlibs.crypto.CipherPadding
 import korlibs.crypto.MD5
 import korlibs.crypto.encoding.Base64
-import korlibs.io.serialization.xml.Xml
 import korlibs.io.stream.AsyncInputStream
 import korlibs.io.stream.AsyncOutputStream
 import korlibs.io.util.checksum.CRC32

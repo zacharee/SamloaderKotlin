@@ -71,14 +71,14 @@ private suspend fun onDecrypt(model: DecryptModel) {
     }
 
     val inputStream = try {
-        inputFile.openInputStream()
+        inputFile.openInputStream() ?: return
     } catch (e: Throwable) {
         model.endJob(MR.strings.decryptError(e.message.toString()))
         return
     }
 
     val outputStream = try {
-        outputFile.openOutputStream()
+        outputFile.openOutputStream() ?: return
     } catch (e: Throwable) {
         model.endJob(MR.strings.decryptError(e.message.toString()))
         return

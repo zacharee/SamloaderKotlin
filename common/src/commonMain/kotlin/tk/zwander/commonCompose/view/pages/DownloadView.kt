@@ -167,7 +167,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                         Downloader.download(
                             response,
                             size,
-                            inputInfo.downloadFile.openOutputStream(true),
+                            inputInfo.downloadFile.openOutputStream(true) ?: return@GetInput,
                             inputInfo.downloadFile.getLength(),
                         ) { current, max, bps ->
                             model.progress.value = current to max
@@ -180,7 +180,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             model.speed.value = 0L
                             model.statusText.value = MR.strings.checkingCRC()
                             val result = CryptUtils.checkCrc32(
-                                inputInfo.downloadFile.openInputStream(),
+                                inputInfo.downloadFile.openInputStream() ?: return@GetInput,
                                 size,
                                 crc32,
                             ) { current, max, bps ->
@@ -234,8 +234,8 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             }
 
                         CryptUtils.decryptProgress(
-                            inputInfo.downloadFile.openInputStream(),
-                            inputInfo.decryptFile.openOutputStream(),
+                            inputInfo.downloadFile.openInputStream() ?: return@GetInput,
+                            inputInfo.decryptFile.openOutputStream() ?: return@GetInput,
                             key,
                             size,
                         ) { current, max, bps ->

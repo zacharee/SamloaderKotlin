@@ -145,13 +145,13 @@ actual open class PlatformFile : File {
         return wrappedFile.canExecute()
     }
 
-    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream {
+    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream? {
         return withContext(Dispatchers.IO) {
             FileOutputStream(wrappedFile, append).flushingAsync()
         }
     }
 
-    override suspend fun openInputStream(): AsyncInputStream {
+    override suspend fun openInputStream(): AsyncInputStream? {
         return withContext(Dispatchers.IO) {
             FileInputStream(wrappedFile).inputAsync()
         }

@@ -19,15 +19,15 @@ class PlatformUriFile(
     constructor(context: Context, uri: Uri, isTree: Boolean) : this(
         context,
         if (isTree) {
-            DocumentFile.fromTreeUri(context, uri)!!
+            DocumentFile.fromTreeUri(context, uri)
         } else {
-            DocumentFile.fromSingleUri(context, uri)!!
-        },
+            DocumentFile.fromSingleUri(context, uri)
+        }!!,
     )
 
-    override fun getName(): String = wrappedFile.name!!
-    override suspend fun getParent(): String = wrappedFile.parentFile!!.uri.toString()
-    override suspend fun getParentFile(): IPlatformFile = PlatformUriFile(context, wrappedFile.parentFile!!)
+    override fun getName(): String = wrappedFile.name ?: wrappedFile.uri.toString()
+    override suspend fun getParent(): String? = wrappedFile.parentFile?.uri?.toString()
+    override suspend fun getParentFile(): IPlatformFile? = wrappedFile.parentFile?.let { PlatformUriFile(context, it) }
     override fun getPath(): String = wrappedFile.uri.toString()
     override suspend fun isAbsolute(): Boolean = false
     override fun getAbsolutePath(): String = getPath()
@@ -60,13 +60,13 @@ class PlatformUriFile(
     }
 
     override suspend fun list(): Array<String> {
-        return wrappedFile.listFiles().map { it.name!! }.toTypedArray()
+        return wrappedFile.listFiles().map { it.name ?: it.uri.toString() }.toTypedArray()
     }
 
     override suspend fun list(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<String> {
-        return wrappedFile.listFiles().filter { filter(PlatformUriFile(context, it.parentFile!!), it.name!!) }
-            .map { it.name!! }
-            .toTypedArray()
+        return wrappedFile.listFiles().filter {
+            filter(PlatformUriFile(context, it.parentFile!!), it.name ?: it.uri.toString())
+        }.map { it.name ?: it.uri.toString() }.toTypedArray()
     }
 
     override suspend fun listFiles(): Array<IPlatformFile> {
@@ -75,7 +75,7 @@ class PlatformUriFile(
     }
 
     override suspend fun listFiles(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<IPlatformFile> {
-        return wrappedFile.listFiles().filter { filter(PlatformUriFile(context, it.parentFile!!), it.name!!) }
+        return wrappedFile.listFiles().filter { filter(PlatformUriFile(context, it.parentFile!!), it.name ?: it.uri.toString()) }
             .map { PlatformUriFile(context, it) }
             .toTypedArray()
     }
@@ -134,12 +134,12 @@ class PlatformUriFile(
         throw IllegalAccessException("Not Supported")
     }
 
-    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream {
-        return context.contentResolver.openOutputStream(wrappedFile.uri, "w${if (append) "a" else ""}")!!.flushingAsync()
+    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream? {
+        return context.contentResolver.openOutputStream(wrappedFile.uri, "w${if (append) "a" else ""}")?.flushingAsync()
     }
 
-    override suspend fun openInputStream(): AsyncInputStream {
-        return context.contentResolver.openInputStream(wrappedFile.uri)!!.inputAsync()
+    override suspend fun openInputStream(): AsyncInputStream? {
+        return context.contentResolver.openInputStream(wrappedFile.uri)?.inputAsync()
     }
 
     override fun compareTo(other: IPlatformFile): Int {
