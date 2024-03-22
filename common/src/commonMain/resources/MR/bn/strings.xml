@@ -14,9 +14,9 @@
     <string name="kibs">KiB/s</string>
     <string name="minimize">Minimize</string>
     <string name="zoom">Zoom</string>
-    <string name="selectEncrypted">Please select an encrypted firmware file ending in enc2 or enc4।</string>
+    <string name="selectEncrypted">Please select an encrypted firmware file ending in enc2 or enc4.</string>
     <string name="descending">Descending</string>
-    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files।</string>
+    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
     <string name="carriers">Carriers</string>
     <string name="firmware">Firmware</string>
     <string name="no">No</string>
@@ -27,7 +27,7 @@
     <string name="unknown">Unknown</string>
     <string name="osVersion">OS Version: %1$s</string>
     <string name="checkingCRC">Checking CRC</string>
-    <string name="imei_serial_help">Samsung has started requiring the use of an IMEI or serial number that matches the firmware being downloaded. In many cases, if you use your device\'s serial number, you\'ll be able to download firmware for any CSC for your model. Without the correct IMEI or serial, you\'ll receive error 408 when attempting to download. Bifrost will attempt to automatically generate up to 10 IMEIs to try for any model you enter. You can also set your own IMEIs that should be tried by putting each on its own line in the Edit dialog, or separated by semi-colons in the field itself।</string>
+    <string name="imei_serial_help">Samsung has started requiring the use of an IMEI or serial number that matches the firmware being downloaded. In many cases, if you use your device\'s serial number, you\'ll be able to download firmware for any CSC for your model. Without the correct IMEI or serial, you\'ll receive error 408 when attempting to download. Bifrost will attempt to automatically generate up to 10 IMEIs to try for any model you enter. You can also set your own IMEIs that should be tried by putting each on its own line in the Edit dialog, or separated by semi-colons in the field itself.</string>
     <string name="github">GitHub</string>
     <string name="twitter">Twitter</string>
     <string name="copy">Copy</string>
@@ -39,13 +39,13 @@
     <string name="yes">Yes</string>
     <string name="android">Android %1$s</string>
     <string name="downloadFirmware">Download Firmware</string>
-    <string name="noBinaryFile">No binary file found for %1$s, %2$s! Please try a different CSC।</string>
+    <string name="noBinaryFile">No binary file found for %1$s, %2$s! Please try a different CSC.</string>
     <string name="help">Help</string>
     <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">Bad return status: %1$s</string>
     <string name="release">Release: %1$s</string>
     <string name="downloader">Downloader</string>
-    <string name="crcCheckFailed">CRC check failed. Please delete the file and download again।</string>
+    <string name="crcCheckFailed">CRC check failed. Please delete the file and download again.</string>
     <string name="decryptError">Unable to decrypt firmware. Make sure model, region, and firmware are correct.
 \nError: %1$s</string>
     <string name="version">v%1$s</string>
@@ -54,12 +54,12 @@
     <string name="patreonSupporters">Patreon Supporters</string>
     <string name="phoneInfo">Phone Info</string>
     <string name="checkHistory">Check History</string>
-    <string name="historyError">Unable to retrieve firmware history. Make sure the model and region are correct।</string>
+    <string name="historyError">Unable to retrieve firmware history. Make sure the model and region are correct.</string>
     <string name="imei_serial">IMEI/Serial</string>
     <string name="download">Download</string>
-    <string name="md5CheckFailed">MD5 check failed. Please delete the file and download again।</string>
+    <string name="md5CheckFailed">MD5 check failed. Please delete the file and download again.</string>
     <string name="decrypting">Decrypting</string>
-    <string name="manualWarningDetails3">on GitHub।</string>
+    <string name="manualWarningDetails3">on GitHub.</string>
     <string name="patreon">Patreon</string>
     <string name="about">About</string>
     <string name="removeSavedData">Remove Saved Data</string>
@@ -85,11 +85,11 @@
     <string name="countries">Countries</string>
     <string name="window">Window</string>
     <string name="fileIssue">File Issue</string>
-    <string name="allowLowercaseCharactersDesc">For convenience, Bifrost automatically capitalizes all characters in the model, region, and firmware fields. However, a few device models contain lowercase characters. Enable this option to download firmware for those models।</string>
+    <string name="allowLowercaseCharactersDesc">For convenience, Bifrost automatically capitalizes all characters in the model, region, and firmware fields. However, a few device models contain lowercase characters. Enable this option to download firmware for those models.</string>
     <string name="mib">MiB</string>
-    <string name="removeSavedDataDesc">Bifrost stores some data such as the last-entered device information and current settings states. Click here to remove that data।</string>
+    <string name="removeSavedDataDesc">Bifrost stores some data such as the last-entered device information and current settings states. Click here to remove that data.</string>
     <string name="search">Search</string>
-    <string name="autoDeleteEncryptedFirmwareDesc">When downloading firmware from Samsung, Bifrost creates two files: the encrypted firmware from Samsung, and a ZIP containing the decrypted firmware files. Enable this option to automatically delete the encrypted file once it\'s been decrypted।</string>
+    <string name="autoDeleteEncryptedFirmwareDesc">When downloading firmware from Samsung, Bifrost creates two files: the encrypted firmware from Samsung, and a ZIP containing the decrypted firmware files. Enable this option to automatically delete the encrypted file once it\'s been decrypted.</string>
     <string name="error">Error</string>
     <string name="sort">Sort</string>
     <string name="zacharyWander">Zachary Wander</string>
@@ -108,10 +108,10 @@
     <string name="security">Security: %1$s</string>
     <string name="chooseCsc">Choose CSC</string>
     <string name="versionCheckError">Unable to verify that Samsung is serving the correct firmware. Are you sure you want to continue downloading?</string>
-    <string name="invalidFirmwareError">Invalid firmware string. Make sure all groups are specified।</string>
+    <string name="invalidFirmwareError">Invalid firmware string. Make sure all groups are specified.</string>
     <string name="source">Source:</string>
     <string name="file">File</string>
-    <string name="useMicaEffectDesc">On Windows 11 and later, Bifrost can apply the Windows Mica effect to the window background, making it look more like a native Windows app।</string>
+    <string name="useMicaEffectDesc">On Windows 11 and later, Bifrost can apply the Windows Mica effect to the window background, making it look more like a native Windows app.</string>
     <string name="manualWarningDetails2">this issue</string>
     <string name="done">Done</string>
     <string name="hide">Hide</string>
@@ -120,5 +120,5 @@
     <string name="notification_progress_text">Working…</string>
     <string name="notification_finished_channel_name">Finished</string>
     <string name="notification_finished_channel_text">A job has finished!</string>
-    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it)।</string>
+    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
 </resources>
