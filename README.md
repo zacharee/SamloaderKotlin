@@ -13,6 +13,8 @@ The U/U1 variants (US/US Unlocked) are interchangeable. An IMEI for the SM-S918U
 
 If you know a model and TAC you want added to the database, please [open an issue](https://github.com/zacharee/SamloaderKotlin/issues/new?assignees=&labels=&projects=&template=imei-database-request.md&title=).
 
+Thank you [VanVuong41429](https://github.com/VanVuong41429) for contributing so many TACs!
+
 # Bifrost - Samsung Firmware Downloader
 This is yet another firmware downloader for Samsung devices, but it has some special features.
 
