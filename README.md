@@ -105,6 +105,8 @@ Building this project should be fairly easy.
 2. Clone this project into Android Studio and let it import.
 
 ## Desktop
+
+## Conveyor
 Bifrost makes use of [Conveyor](https://www.hydraulic.dev/) to create binaries for different desktop platforms.
 
 Conveyor can build for Windows and Linux from any host OS, but macOS is required to build for macOS.
@@ -119,6 +121,11 @@ Conveyor can build for Windows and Linux from any host OS, but macOS is required
    4.4. Intel Macs: `conveyor -Kapp.machines=mac.amd64 make unnotarized-mac-zip`.  
    4.5. Apple Silicon Macs: `conveyor -Kapp.machines=mac.arm64 make unnotarized-mac-zip`.
 5. Check the `output` folder in the root of the project for the binary.
+
+## Gradle
+Alternatively, you can run a debug binary by executing the `:desktop:run` task.
+
+`./gradlew :desktop:run` (`.\gradlew :desktop:run` on Windows).
 
 ## Android:
 
