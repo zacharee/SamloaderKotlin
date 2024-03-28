@@ -569,7 +569,7 @@ internal fun DownloadView() {
             }
 
             AnimatedVisibility(
-                visible = changelogExpanded,
+                visible = changelogExpanded && changelogCondition,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 ChangelogDisplay(changelog)
