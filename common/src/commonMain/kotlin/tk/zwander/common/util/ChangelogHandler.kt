@@ -16,39 +16,44 @@ object ChangelogHandler {
     }
 
     suspend fun getChangelogs(device: String, region: String, useProxy: Boolean = tk.zwander.common.util.useProxy): Changelogs? {
-        val outerUrl = generateUrlForDeviceAndRegion(device, region, useProxy)
-        val outerResponse = try {
-            client.use {
+        try {
+            val outerUrl = generateUrlForDeviceAndRegion(device, region, useProxy)
+            val outerResponse = try {
+                client.use {
+                    it.get {
+                        url(outerUrl)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return null
+            }
+
+            val iframeUrl = if (outerResponse.status.isSuccess()) {
+                parseDocUrl(outerResponse.bodyAsText())
+                    ?.replace("../../", generateProperUrl(useProxy, "$DOMAIN_URL/"))
+            } else {
+                println("No changelogs found for $device $region")
+                return null
+            }
+
+            val iframeResponse = client.use {
                 it.get {
-                    url(outerUrl)
+                    url(iframeUrl ?: return null)
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null
-        }
 
-        val iframeUrl = if (outerResponse.status.isSuccess()) {
-            parseDocUrl(outerResponse.bodyAsText())
-                ?.replace("../../", generateProperUrl(useProxy, "$DOMAIN_URL/"))
-        } else {
-            println("No changelogs found for $device $region")
-            return null
-        }
-
-        val iframeResponse = client.use {
-            it.get {
-                url(iframeUrl ?: return null)
+            return if (iframeResponse.status.isSuccess()) {
+                Changelogs(device, region, parseChangelogs(
+                    iframeResponse.bodyAsText()
+                ))
+            } else {
+                println("Unable to load changelogs for $device $region")
+                null
             }
-        }
-
-        return if (iframeResponse.status.isSuccess()) {
-            Changelogs(device, region, parseChangelogs(
-                iframeResponse.bodyAsText()
-            ))
-        } else {
-            println("Unable to load changelogs for $device $region")
-            null
+        } catch (e: Throwable) {
+            CrossPlatformBugsnag.notify(e)
+            return null
         }
     }
 
