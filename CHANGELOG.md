@@ -1,3 +1,9 @@
+# 1.17.9
+- UI fixes.
+- Update translations.
+- Add more TACs.
+- Crash fixes.
+
 # 1.17.8
 - Add a clearer message for error 408, returned when an invalid IMEI or serial is given.
 - Add another dummy serial for IMEI generation.
