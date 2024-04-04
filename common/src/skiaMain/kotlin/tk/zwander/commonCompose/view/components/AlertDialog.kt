@@ -67,8 +67,8 @@ internal actual fun PlatformAlertDialog(
     )
     val focusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(showing, alpha, showingForAnimation) {
-        if (showing && alpha == 1f) {
+    LaunchedEffect(showing, alpha, showingForAnimation, focusRequester.focusRequesterNodes.size) {
+        if (showing && alpha == 1f && focusRequester.focusRequesterNodes.isNotEmpty()) {
             focusRequester.requestFocus()
         }
 
