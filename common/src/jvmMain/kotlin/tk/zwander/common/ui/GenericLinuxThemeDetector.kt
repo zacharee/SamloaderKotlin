@@ -85,12 +85,12 @@ internal class GenericLinuxThemeDetector {
                 BufferedReader(InputStreamReader(monitoringProcess.inputStream)).use { reader ->
                     while (!this.isInterrupted) {
                         //Expected input = gtk-theme: '$GtkThemeName'
-                        val readLine = reader.readLine()
+                        val readLine = reader.readLine() ?: ""
                         val keyValue =
                             readLine.split("\\s".toRegex()).dropLastWhile { it.isEmpty() }
                                 .toTypedArray()
-                        val value = keyValue[1]
-                        val currentDetection = detector.isDarkTheme(value)
+                        val value = keyValue.getOrNull(1)
+                        val currentDetection = detector.isDarkTheme(value ?: "")
                         println("Theme changed detection, dark: $currentDetection")
                         if (currentDetection != lastValue) {
                             lastValue = currentDetection
