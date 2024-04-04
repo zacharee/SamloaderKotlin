@@ -76,7 +76,9 @@ internal fun MRFLayout(
 
                     if (new != modelState) {
                         scope.launch(Dispatchers.IO) {
-                            imeiState = IMEIGenerator.makeImeisForModel(new).joinToString("\n")
+                            imeiState = IMEIGenerator.makeImeisForModel(new)
+                                .take(100)
+                                .joinToString("\n")
                         }
                     }
 
