@@ -20,9 +20,12 @@ class ObservableBifrostSettings(private val wrapped: ObservableSettings) :
     ObservableSettings by wrapped {
     override fun putString(key: String, value: String) {
         try {
+            val newValue = value.replace("\u0000", "")
+            val truncatedValue = newValue.take(8192)
+
             wrapped.putString(
                 key,
-                value.replace("\u0000", ""),
+                truncatedValue,
             )
         } catch (e: Throwable) {
             throw IllegalArgumentException("Error saving value for $key", e)
