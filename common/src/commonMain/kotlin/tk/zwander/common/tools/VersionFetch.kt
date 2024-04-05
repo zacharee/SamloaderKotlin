@@ -1,12 +1,13 @@
 package tk.zwander.common.tools
 
+import com.fleeksoft.ksoup.Ksoup
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.core.*
-import korlibs.io.serialization.xml.Xml
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.util.client
+import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.generateProperUrl
 
 /**
@@ -29,11 +30,11 @@ object VersionFetch {
                 }
             }
 
-            val responseXml = Xml.parse(response.bodyAsText())
+            val responseXml = Ksoup.parse(response.bodyAsText())
 
-            if (responseXml.name == "Error") {
-                val code = responseXml.child("Code")!!.text
-                val message = responseXml.child("Message")!!.text
+            if (responseXml.tagName() == "Error") {
+                val code = responseXml.firstElementByTagName("Code")!!.text()
+                val message = responseXml.firstElementByTagName("Message")!!.text()
 
                 return FetchResult.VersionFetchResult(
                     error = IllegalStateException("Code: ${code}, Message: $message"),
@@ -42,11 +43,11 @@ object VersionFetch {
             }
 
             try {
-                val latest = responseXml.child("firmware")
-                    ?.child("version")
-                    ?.child("latest")!!
+                val latest = responseXml.firstElementByTagName("firmware")
+                    ?.firstElementByTagName("version")
+                    ?.firstElementByTagName("latest")!!
 
-                val vc = latest.text.split("/").toMutableList()
+                val vc = latest.text().split("/").toMutableList()
 
                 if (vc.size == 3) {
                     vc.add(vc[0])
@@ -57,7 +58,7 @@ object VersionFetch {
 
                 return FetchResult.VersionFetchResult(
                     versionCode = vc.joinToString("/"),
-                    androidVersion = latest.attribute("o") ?: "",
+                    androidVersion = latest.attribute("o")?.value ?: "",
                     rawOutput = responseXml.toString()
                 )
             } catch (e: Exception) {

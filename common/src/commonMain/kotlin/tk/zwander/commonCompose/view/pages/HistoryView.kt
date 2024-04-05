@@ -40,8 +40,6 @@ import androidx.compose.ui.unit.sp
 import com.fleeksoft.ksoup.Ksoup
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import korlibs.io.serialization.xml.Xml
-import korlibs.io.serialization.xml.firstDescendant
 import korlibs.time.DateFormat
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
@@ -50,6 +48,7 @@ import tk.zwander.common.data.HistoryInfo
 import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.UrlHandler
+import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.getFirmwareHistoryString
 import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
 import tk.zwander.common.util.invoke
@@ -67,11 +66,13 @@ import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.samloaderkotlin.resources.MR
 
 private fun parseHistoryXml(xml: String): List<HistoryInfo> {
-    val doc = Xml.parse(xml)
+    val doc = Ksoup.parse(xml)
 
-    val latest = doc.firstDescendant("firmware")?.firstDescendant("version")?.firstDescendant("latest")
-    val historical = doc.firstDescendant("firmware")?.firstDescendant("version")?.firstDescendant("upgrade")
-        ?.get("value")
+    val latest = doc.firstElementByTagName("firmware")?.firstElementByTagName("version")?.firstElementByTagName("latest")
+    val historical = doc.firstElementByTagName("firmware")?.firstElementByTagName("version")?.firstElementByTagName("upgrade")
+        ?.getElementsByTag("value")
+
+    println(historical)
 
     val items = arrayListOf<HistoryInfo>()
 
@@ -91,13 +92,13 @@ private fun parseHistoryXml(xml: String): List<HistoryInfo> {
     }
 
     latest?.apply {
-        val androidVersion = latest.attribute("o")
+        val androidVersion = latest.attribute("o")?.value
 
         items.add(
             HistoryInfo(
                 date = null,
                 androidVersion = androidVersion,
-                firmwareString = parseFirmware(latest.text)
+                firmwareString = parseFirmware(latest.text())
             )
         )
     }
@@ -105,7 +106,7 @@ private fun parseHistoryXml(xml: String): List<HistoryInfo> {
     historical?.apply {
         items.addAll(
             mapNotNull {
-                val firmware = parseFirmware(it.text)
+                val firmware = parseFirmware(it.text())
 
                 if (firmware.isNotBlank()) {
                     HistoryInfo(

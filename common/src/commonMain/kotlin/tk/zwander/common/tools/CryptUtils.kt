@@ -11,6 +11,7 @@ import korlibs.io.stream.AsyncOutputStream
 import korlibs.io.util.checksum.CRC32
 import kotlinx.coroutines.*
 import tk.zwander.common.util.Averager
+import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.streamOperationWithProgress
 import kotlin.time.*
 
@@ -135,21 +136,21 @@ object CryptUtils {
         val (_, responseXml) = Request.performBinaryInformRetry(client, version.uppercase(), model, region, imeiSerial, true)
 
         return try {
-            val fwVer = responseXml.child("FUSBody")
-                ?.child("Results")
-                ?.child("LATEST_FW_VERSION")
-                ?.child("Data")
-                ?.text!!
+            val fwVer = responseXml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Results")
+                ?.firstElementByTagName("LATEST_FW_VERSION")
+                ?.firstElementByTagName("Data")
+                ?.text()!!
 
-            val logicVal = responseXml.child("FUSBody")
-                ?.child("Put")
+            val logicVal = responseXml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Put")
                 .run {
-                    this?.child("LOGIC_VALUE_FACTORY")
-                        ?.child("Data")
-                        ?.text ?: 
-                    this?.child("LOGIC_VALUE_HOME")
-                        ?.child("Data")
-                        ?.text!!
+                    this?.firstElementByTagName("LOGIC_VALUE_FACTORY")
+                        ?.firstElementByTagName("Data")
+                        ?.text() ?:
+                    this?.firstElementByTagName("LOGIC_VALUE_HOME")
+                        ?.firstElementByTagName("Data")
+                        ?.text()!!
                 }
 
             val decKey = Request.getLogicCheck(fwVer, logicVal)

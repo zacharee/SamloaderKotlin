@@ -1,9 +1,10 @@
 package tk.zwander.common.tools
 
+import com.fleeksoft.ksoup.Ksoup
+import com.fleeksoft.ksoup.nodes.Document
 import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import korlibs.crypto.MD5
-import korlibs.io.serialization.xml.Xml
 import korlibs.io.serialization.xml.buildXml
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
@@ -11,6 +12,7 @@ import tk.zwander.common.data.exception.VersionCheckException
 import tk.zwander.common.data.exception.VersionMismatchException
 import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.dataNode
+import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.invoke
 import tk.zwander.common.util.textNode
 import tk.zwander.samloaderkotlin.resources.MR
@@ -38,29 +40,31 @@ object Request {
         }
     }
 
-    suspend fun performBinaryInformRetry(client: FusClient, fw: String, model: String, region: String, imeiSerial: String, includeNonce: Boolean): Pair<String, Xml> {
+    suspend fun performBinaryInformRetry(client: FusClient, fw: String, model: String, region: String, imeiSerial: String, includeNonce: Boolean): Pair<String, Document> {
         val splitImeiSerial = imeiSerial.split("\n")
 
         var latestRequest = ""
-        var latestResult: Xml = Xml.Text("")
+        var latestResult: Document = Ksoup.parse("")
         var latestError: Throwable? = null
 
         splitImeiSerial.forEach { imei ->
             latestRequest = createBinaryInform(fw, model, region, client.getNonce(), imei)
 
             latestResult = try {
-                Xml.parse(client.makeReq(FusClient.Request.BINARY_INFORM, latestRequest, includeNonce))
+                val response = client.makeReq(FusClient.Request.BINARY_INFORM, latestRequest, includeNonce)
+
+                Ksoup.parse(response)
             } catch (e: Throwable) {
                 latestError = e
-                Xml.Text("")
+                e.printStackTrace()
                 return@forEach
             }
 
             latestResult.let { result ->
-                val status = result.child("FUSBody")
-                    ?.child("Results")
-                    ?.child("Status")
-                    ?.text
+                val status = result.firstElementByTagName("FUSBody")
+                    ?.firstElementByTagName("Results")
+                    ?.firstElementByTagName("Status")
+                    ?.text()
 
                 println("Status for IMEI $imei: $status")
 
@@ -206,10 +210,10 @@ object Request {
         }
 
         try {
-            val status = responseXml.child("FUSBody")
-                ?.child("Results")
-                ?.child("Status")
-                ?.text
+            val status = responseXml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Results")
+                ?.firstElementByTagName("Status")
+                ?.text()
 
             if (status == "F01") {
                 return FetchResult.GetBinaryFileResult(
@@ -243,11 +247,11 @@ object Request {
                 )
             }
 
-            val size = responseXml.child("FUSBody")
-                ?.child("Put")
-                ?.child("BINARY_BYTE_SIZE")
-                ?.child("Data")
-                ?.text.run {
+            val size = responseXml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Put")
+                ?.firstElementByTagName("BINARY_BYTE_SIZE")
+                ?.firstElementByTagName("Data")
+                ?.text().run {
                     if (isNullOrBlank()) {
                         return noBinaryError()
                     } else {
@@ -255,11 +259,11 @@ object Request {
                     }
                 }
 
-            val fileName = responseXml.child("FUSBody")
-                ?.child("Put")
-                ?.child("BINARY_NAME")
-                ?.child("Data")
-                ?.text ?: return noBinaryError()
+            val fileName = responseXml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Put")
+                ?.firstElementByTagName("BINARY_NAME")
+                ?.firstElementByTagName("Data")
+                ?.text() ?: return noBinaryError()
 
             fun getIndex(file: String?): Int? {
                 if (file.isNullOrBlank()) return null
@@ -274,33 +278,33 @@ object Request {
             }
 
             fun generateInfo(): BinaryFileInfo {
-                val path = responseXml.child("FUSBody")
-                    ?.child("Put")
-                    ?.child("MODEL_PATH")
-                    ?.child("Data")
-                    ?.text!!
+                val path = responseXml.firstElementByTagName("FUSBody")
+                    ?.firstElementByTagName("Put")
+                    ?.firstElementByTagName("MODEL_PATH")
+                    ?.firstElementByTagName("Data")
+                    ?.text()!!
 
-                val crc32 = responseXml.child("FUSBody")
-                    ?.child("Put")
-                    ?.child("BINARY_CRC")
-                    ?.child("Data")
-                    ?.text?.toLong()
+                val crc32 = responseXml.firstElementByTagName("FUSBody")
+                    ?.firstElementByTagName("Put")
+                    ?.firstElementByTagName("BINARY_CRC")
+                    ?.firstElementByTagName("Data")
+                    ?.text()?.toLongOrNull()
 
                 val v4Key = try {
-                    val fwVer = responseXml.child("FUSBody")
-                        ?.child("Results")
-                        ?.child("LATEST_FW_VERSION")
-                        ?.child("Data")
-                        ?.text!!
+                    val fwVer = responseXml.firstElementByTagName("FUSBody")
+                        ?.firstElementByTagName("Results")
+                        ?.firstElementByTagName("LATEST_FW_VERSION")
+                        ?.firstElementByTagName("Data")
+                        ?.text()!!
 
-                    val logicVal = responseXml.child("FUSBody")
-                        ?.child("Put")
+                    val logicVal = responseXml.firstElementByTagName("FUSBody")
+                        ?.firstElementByTagName("Put")
                         .run {
-                            this?.child("LOGIC_VALUE_FACTORY")
-                                ?.child("Data")
-                                ?.text ?: this?.child("LOGIC_VALUE_HOME")
-                                ?.child("Data")
-                                ?.text!!
+                            this?.firstElementByTagName("LOGIC_VALUE_FACTORY")
+                                ?.firstElementByTagName("Data")
+                                ?.text() ?: this?.firstElementByTagName("LOGIC_VALUE_HOME")
+                                ?.firstElementByTagName("Data")
+                                ?.text()!!
                         }
 
                     val decKey = getLogicCheck(fwVer, logicVal)
@@ -324,11 +328,11 @@ object Request {
             )
 
             val dataFile = dataKeys.firstNotNullOfOrNull {
-                responseXml.child("FUSBody")
-                    ?.child("Put")
-                    ?.child(it)
-                    ?.child("Data")
-                    ?.text.run { if (isNullOrBlank()) null else this }
+                responseXml.firstElementByTagName("FUSBody")
+                    ?.firstElementByTagName("Put")
+                    ?.firstElementByTagName(it)
+                    ?.firstElementByTagName("Data")
+                    ?.text().run { if (isNullOrBlank()) null else this }
             }
 
             if (dataFile.isNullOrBlank()) {
@@ -341,16 +345,16 @@ object Request {
 
             val dataIndex = getIndex(dataFile)
 
-            val cscFile = responseXml.child("FUSBody")
-                ?.child("Put")
-                ?.child("DEVICE_CSC_HOME_FILE")
-                ?.text.run {
+            val cscFile = responseXml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Put")
+                ?.firstElementByTagName("DEVICE_CSC_HOME_FILE")
+                ?.text().run {
                     if (isNullOrBlank()) {
-                        responseXml.child("FUSBody")
-                            ?.child("Put")
-                            ?.child("DEVICE_CSC_FILE")
-                            ?.child("Data")
-                            ?.text
+                        responseXml.firstElementByTagName("FUSBody")
+                            ?.firstElementByTagName("Put")
+                            ?.firstElementByTagName("DEVICE_CSC_FILE")
+                            ?.firstElementByTagName("Data")
+                            ?.text()
                     } else {
                         this
                     }
@@ -358,17 +362,17 @@ object Request {
 
             val cscIndex = getIndex(cscFile)
 
-            val cpFile = responseXml.child("FUSBody")
-                ?.child("Put")
-                ?.child("DEVICE_PHONE_FONT_FILE")
-                ?.text
+            val cpFile = responseXml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Put")
+                ?.firstElementByTagName("DEVICE_PHONE_FONT_FILE")
+                ?.text()
 
             val cpIndex = getIndex(cpFile)
 
-            val pdaFile = responseXml.child("FUSBody")
-                ?.child("Put")
-                ?.child("DEVICE_PDA_CODE1_FILE")
-                ?.text
+            val pdaFile = responseXml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Put")
+                ?.firstElementByTagName("DEVICE_PDA_CODE1_FILE")
+                ?.text()
 
             val pdaIndex = getIndex(pdaFile)
 

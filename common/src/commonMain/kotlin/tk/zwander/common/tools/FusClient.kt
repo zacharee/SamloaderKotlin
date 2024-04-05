@@ -1,5 +1,6 @@
 package tk.zwander.common.tools
 
+import com.fleeksoft.ksoup.Ksoup
 import io.ktor.client.request.*
 import io.ktor.client.request.request
 import io.ktor.client.statement.*
@@ -8,9 +9,9 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import korlibs.io.net.http.Http
 import korlibs.io.net.http.HttpClient
-import korlibs.io.serialization.xml.Xml
 import korlibs.io.stream.AsyncInputStream
 import tk.zwander.common.util.client
+import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.generateProperUrl
 import kotlin.time.ExperimentalTime
 
@@ -142,12 +143,12 @@ class FusClient(
         }
 
         try {
-            val xml = Xml.parse(body)
+            val xml = Ksoup.parse(body)
 
-            val status = xml.child("FUSBody")
-                ?.child("Results")
-                ?.child("Status")
-                ?.text
+            val status = xml.firstElementByTagName("FUSBody")
+                ?.firstElementByTagName("Results")
+                ?.firstElementByTagName("Status")
+                ?.text()
 
             if (status == "401") {
                 return true
