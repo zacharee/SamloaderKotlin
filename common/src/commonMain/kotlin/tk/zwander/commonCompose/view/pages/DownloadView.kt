@@ -286,7 +286,8 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
             }
         )
     } catch (e: Throwable) {
-        model.endJob("${e.message}")
+        val message = if (e !is CancellationException) "${e.message}" else ""
+        model.endJob(message)
     }
 
     eventManager.sendEvent(Event.Download.Finish)
