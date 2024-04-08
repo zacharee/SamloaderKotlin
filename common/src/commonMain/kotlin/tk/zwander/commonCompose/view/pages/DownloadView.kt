@@ -45,7 +45,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import my.nanihadesuka.compose.ColumnScrollbarNew
@@ -144,7 +143,7 @@ private suspend fun onDownload(
 
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
 private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, client: FusClient) {
-    coroutineScope {
+    try {
         val (path, fileName, size, crc32, v4Key) = info
         val request = Request.createBinaryInit(fileName, client.getNonce())
 
@@ -173,7 +172,13 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             model.progress.value = current to max
                             model.speed.value = bps
 
-                            eventManager.sendEvent(Event.Download.Progress(MR.strings.downloading(), current, max))
+                            eventManager.sendEvent(
+                                Event.Download.Progress(
+                                    MR.strings.downloading(),
+                                    current,
+                                    max
+                                )
+                            )
                         }
 
                         if (crc32 != null) {
@@ -187,7 +192,13 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                                 model.progress.value = current to max
                                 model.speed.value = bps
 
-                                eventManager.sendEvent(Event.Download.Progress(MR.strings.checkingCRC(), current, max))
+                                eventManager.sendEvent(
+                                    Event.Download.Progress(
+                                        MR.strings.checkingCRC(),
+                                        current,
+                                        max
+                                    )
+                                )
                             }
 
                             if (!result) {
@@ -200,7 +211,13 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             model.speed.value = 0L
                             model.statusText.value = MR.strings.checkingMD5()
 
-                            eventManager.sendEvent(Event.Download.Progress(MR.strings.checkingMD5(), 0, 1))
+                            eventManager.sendEvent(
+                                Event.Download.Progress(
+                                    MR.strings.checkingMD5(),
+                                    0,
+                                    1
+                                )
+                            )
 
                             val result = withContext(Dispatchers.Default) {
                                 CryptUtils.checkMD5(
@@ -242,7 +259,13 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             model.progress.value = current to max
                             model.speed.value = bps
 
-                            eventManager.sendEvent(Event.Download.Progress(MR.strings.decrypting(), current, max))
+                            eventManager.sendEvent(
+                                Event.Download.Progress(
+                                    MR.strings.decrypting(),
+                                    current,
+                                    max
+                                )
+                            )
                         }
 
                         if (BifrostSettings.Keys.autoDeleteEncryptedFirmware() == true) {
@@ -262,9 +285,11 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                 }
             }
         )
-
-        eventManager.sendEvent(Event.Download.Finish)
+    } catch (e: Throwable) {
+        model.endJob("${e.message}")
     }
+
+    eventManager.sendEvent(Event.Download.Finish)
 }
 
 private suspend fun onFetch(model: DownloadModel) {
@@ -272,14 +297,26 @@ private suspend fun onFetch(model: DownloadModel) {
     model.changelog.value = null
     model.osCode.value = ""
 
-    val (fw, os, error, output) = VersionFetch.getLatestVersion(model.model.value ?: "", model.region.value ?: "")
+    val (fw, os, error, output) = VersionFetch.getLatestVersion(
+        model.model.value ?: "",
+        model.region.value ?: ""
+    )
 
     if (error != null) {
-        model.endJob(MR.strings.firmwareCheckError(error.message.toString(), output.replace("\t", "  ")))
+        model.endJob(
+            MR.strings.firmwareCheckError(
+                error.message.toString(),
+                output.replace("\t", "  ")
+            )
+        )
         return
     }
 
-    model.changelog.value = ChangelogHandler.getChangelog(model.model.value ?: "", model.region.value ?: "", fw.split("/")[0])
+    model.changelog.value = ChangelogHandler.getChangelog(
+        model.model.value ?: "",
+        model.region.value ?: "",
+        fw.split("/")[0]
+    )
 
     model.fw.value = fw
     model.osCode.value = os
@@ -482,7 +519,12 @@ internal fun DownloadView() {
                         },
                         text = {
                             val info = buildAnnotatedString {
-                                append(MR.strings.manualWarningDetails(GradleConfig.appName, GradleConfig.appName))
+                                append(
+                                    MR.strings.manualWarningDetails(
+                                        GradleConfig.appName,
+                                        GradleConfig.appName
+                                    )
+                                )
                                 append(" ")
                                 pushStringAnnotation(
                                     "IssueLink",
@@ -526,7 +568,12 @@ internal fun DownloadView() {
                 }
             }
 
-            MRFLayout(model, canChangeOption, manual == true && canChangeOption, showImeiSerial = true)
+            MRFLayout(
+                model,
+                canChangeOption,
+                manual == true && canChangeOption,
+                showImeiSerial = true
+            )
 
             AnimatedVisibility(
                 visible = manual == false && osCode.isNotEmpty(),
