@@ -4,20 +4,18 @@ repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    maven {
-        url = uri("https://plugins.gradle.org/m2/")
-    }
+    maven("https://plugins.gradle.org/m2/")
 }
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.buildkonfig)
-    alias(libs.plugins.compose)
     alias(libs.plugins.moko.resources)
     alias(libs.plugins.kotlin.atomicfu)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.bugsnag.android)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.kotlin.multiplatform)
 }
 
 
@@ -88,10 +86,6 @@ kotlin {
             }
         }
 
-        val skiaMain by creating {
-            dependsOn(commonMain)
-        }
-
         val androidAndJvmMain by creating {
             dependsOn(commonMain)
 
@@ -100,9 +94,13 @@ kotlin {
             }
         }
 
+        val skiaMain by creating {
+            dependsOn(commonMain)
+        }
+
         val jvmMain by getting {
-            dependsOn(skiaMain)
             dependsOn(androidAndJvmMain)
+            dependsOn(skiaMain)
 
             dependencies {
                 api(libs.flatlaf)

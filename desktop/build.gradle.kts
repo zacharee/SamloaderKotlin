@@ -2,9 +2,9 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.Properties
 
 plugins {
+    alias(libs.plugins.conveyor)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.multiplatform)
-    alias(libs.plugins.conveyor)
 }
 
 group = rootProject.extra["groupName"].toString()
