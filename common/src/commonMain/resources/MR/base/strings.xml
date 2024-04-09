@@ -219,4 +219,7 @@
 
     <!-- Displayed when attempting to download firmware using an IMEI or serial number that doesn't match the given variant -->
     <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
+
+    <!-- Displayed when a user enters a model number that might not be a phone or tablet. -->
+    <string name="invalid_model">Warning! Bifrost can\'t download firmware for watches or other accessories. Only phones and tablets are supported.</string>
 </resources>

@@ -2,8 +2,10 @@ package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandIn
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -554,6 +556,18 @@ internal fun DownloadView() {
                         }
                     )
                 }
+            }
+
+            AnimatedVisibility(
+                visible = modelModel?.startsWith("SM-R") == true,
+                enter = fadeIn() + expandIn(expandFrom = Alignment.CenterStart),
+                exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterStart),
+            ) {
+                Text(
+                    text = stringResource(MR.strings.invalid_model),
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
             }
 
             MRFLayout(
