@@ -28,7 +28,7 @@
     <string name="unknown">未知</string>
     <string name="osVersion">Android系统版本：%1$s</string>
     <string name="checkingCRC">校验 CRC</string>
-    <string name="imei_serial_help">三星开始在下载之前请求匹配固件的IMEI或serial代码。在许多的案例中，如果你使用设备的serial代码，你就可以为你的机型下载任何地区的固件。如果没有正确的IMEI和serial代码，你会在下载的时候收到错误代码408。Bifrost 将尝试自动生成多达10个 IMEI，以尝试匹配您输入的任何型号。您还可以设置自己的 IMEI，在“编辑”对话框中将每个 IMEI 放在单独的行上，或在字段本身中用分号分隔。</string>
+    <string name="imei_serial_help">三星开始在下载之前请求匹配固件的IMEI或serial代码。在许多的案例中，如果你使用设备的serial代码，你就可以为你的机型下载任何地区的固件。如果没有正确的IMEI和serial代码，你会在下载的时候收到错误代码408。Bifrost 将尝试自动生成多达100 个 IMEI，以尝试匹配您输入的任何型号。您还可以设置自己的 IMEI，在“编辑”对话框中将每个 IMEI 放在单独的行上，或在字段本身中用分号分隔。</string>
     <string name="github">GitHub</string>
     <string name="twitter">Twitter</string>
     <string name="copy">复制</string>

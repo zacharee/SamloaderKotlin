@@ -29,7 +29,7 @@
     <string name="clear">Temizle</string>
     <string name="unknown">Bilinmiyor</string>
     <string name="osVersion">İS Sürümü: %1$s</string>
-    <string name="imei_serial_help">Samsung, indirilen ürün yazılımıyla eşleşen bir IMEI veya seri numarası kullanılmasını zorunlu tutmaya başladı. Çoğu durumda, aygıtınızın seri numarasını kullanırsanız, modeliniz için herhangi bir CSC için ürün yazılımı indirebilirsiniz. Doğru IMEI veya seri numarası olmadan, indirmeye çalıştığınızda 408 hatası alırsınız. Bifrost, girdiğiniz herhangi bir model için denemek üzere otomatik olarak 10 adede kadar IMEI oluşturmaya çalışacaktır. Ayrıca, her birini \"Düzenle\" iletişim kutusunda kendi satırına koyarak veya alanın kendisinde noktalı virgüllerle ayırarak denenmesi gereken kendi IMEI\'lerinizi de ayarlayabilirsiniz.</string>
+    <string name="imei_serial_help">Samsung, indirilen ürün yazılımıyla eşleşen bir IMEI veya seri numarası kullanılmasını zorunlu tutmaya başladı. Çoğu durumda, aygıtınızın seri numarasını kullanırsanız, modeliniz için herhangi bir CSC için ürün yazılımı indirebilirsiniz. Doğru IMEI veya seri numarası olmadan, indirmeye çalıştığınızda 408 hatası alırsınız. Bifrost, girdiğiniz herhangi bir model için denemek üzere otomatik olarak 100 adede kadar IMEI oluşturmaya çalışacaktır. Ayrıca, her birini \"Düzenle\" iletişim kutusunda kendi satırına koyarak veya alanın kendisinde noktalı virgüllerle ayırarak denenmesi gereken kendi IMEI\'lerinizi de ayarlayabilirsiniz.</string>
     <string name="github">GitHub</string>
     <string name="twitter">Twitter</string>
     <string name="firmwareHint">Ürün Yazılımı (PDA/CSC/CP/AP)</string>

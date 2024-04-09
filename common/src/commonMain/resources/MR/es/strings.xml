@@ -31,7 +31,7 @@
     <string name="github">GitHub</string>
     <string name="twitter">Twitter</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
-    <string name="imei_serial_help">Samsung ha empezado a exigir el uso de un IMEI o número de serie que coincida con el firmware que se está descargando. En muchos casos, si utilizas el número de serie de tu dispositivo, podrás descargar el firmware de cualquier CSC para tu modelo. Sin el IMEI o el número de serie correctos, recibirás el error 408 al intentar la descarga. Bifrost intentará generar automáticamente hasta 10 IMEI para probar cualquier modelo que introduzcas. También puede establecer sus propios IMEIs que deben ser probados poniendo cada uno en su propia línea en el cuadro de diálogo Editar, o separados por punto y coma en el propio campo.</string>
+    <string name="imei_serial_help">Samsung ha empezado a exigir el uso de un IMEI o número de serie que coincida con el firmware que se está descargando. En muchos casos, si utilizas el número de serie de tu dispositivo, podrás descargar el firmware de cualquier CSC para tu modelo. Sin el IMEI o el número de serie correctos, recibirás el error 408 al intentar la descarga. Bifrost intentará generar automáticamente hasta 100 IMEI para probar cualquier modelo que introduzcas. También puede establecer sus propios IMEIs que deben ser probados poniendo cada uno en su propia línea en el cuadro de diálogo Editar, o separados por punto y coma en el propio campo.</string>
     <string name="historyErrorFormat">No se puede recuperar el historial del firmware. Asegúrese de que el modelo y la región son correctos.
 \nError: %1$s</string>
     <string name="modelHint">Modelo (por ejemplo, SM-N986U1)</string>

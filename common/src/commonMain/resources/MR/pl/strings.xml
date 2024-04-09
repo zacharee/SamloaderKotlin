@@ -33,7 +33,7 @@
     <string name="osVersion">Wersja systemu: %1$s</string>
     <string name="notification_progress_channel_name">Postęp</string>
     <string name="checkingCRC">Sprawdzanie CRC</string>
-    <string name="imei_serial_help">Samsung zaczął wymagać numeru seryjnego lub IMEI zgodnego z pobieranym oprogramowaniem. W wielu przypadkach, gdy użyjesz numeru seryjnego urządzenia, będziesz w stanie pobrać oprogramowanie z dowolnym CSC dla danego modelu. Bez tych numerów zobaczysz tylko błąd 408. Bifrost spróbuje wygenerować do 10 numerów IMEI dla dowolnego wpisanego przez Ciebie modelu. Możesz też samodzielnie wprowadzić te numery w oknie edycji, lub w bezpośrednio w polu tekstowym, oddzielając je średnikiem.</string>
+    <string name="imei_serial_help">Samsung zaczął wymagać numeru seryjnego lub IMEI zgodnego z pobieranym oprogramowaniem. W wielu przypadkach, gdy użyjesz numeru seryjnego urządzenia, będziesz w stanie pobrać oprogramowanie z dowolnym CSC dla danego modelu. Bez tych numerów zobaczysz tylko błąd 408. Bifrost spróbuje wygenerować do 100 numerów IMEI dla dowolnego wpisanego przez Ciebie modelu. Możesz też samodzielnie wprowadzić te numery w oknie edycji, lub w bezpośrednio w polu tekstowym, oddzielając je średnikiem.</string>
     <string name="edit">Edytuj</string>
     <string name="copy">Kopiuj</string>
     <string name="firmwareHint">Oprogramowanie (PDA/CSC/CP/AP)</string>

@@ -21,7 +21,7 @@
     <string name="unknown">Sconosciuto</string>
     <string name="notification_progress_channel_name">Stato progresso</string>
     <string name="checkingCRC">Controllo CRC</string>
-    <string name="imei_serial_help">Samsung ha iniziato a richiedere l\'utilizzo di un numero IMEI o seriale che corrisponda al firmware in fase di download. In molti casi, se si utilizza il numero seriale del proprio dispositivo, sarà possibile scaricare il firmware per qualsiasi CSC relativo al proprio modello. Senza l\'IMEI o seriale corretto, si riceverà un errore 408 durante il tentativo di download. Bifrost cercherà automaticamente di generare fino a 10 IMEI da provare per qualsiasi modello inserito. È anche possibile impostare i propri IMEI che dovrebbero essere testati inserendoli uno per riga nella finestra di modifica o separati da punti e virgola nel campo stesso.</string>
+    <string name="imei_serial_help">Samsung ha iniziato a richiedere l\'utilizzo di un numero IMEI o seriale che corrisponda al firmware in fase di download. In molti casi, se si utilizza il numero seriale del proprio dispositivo, sarà possibile scaricare il firmware per qualsiasi CSC relativo al proprio modello. Senza l\'IMEI o seriale corretto, si riceverà un errore 408 durante il tentativo di download. Bifrost cercherà automaticamente di generare fino a 100 IMEI da provare per qualsiasi modello inserito. È anche possibile impostare i propri IMEI che dovrebbero essere testati inserendoli uno per riga nella finestra di modifica o separati da punti e virgola nel campo stesso.</string>
     <string name="edit">Modifica</string>
     <string name="copy">Copia</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
