@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -477,28 +478,20 @@ internal fun DownloadView() {
                     Row {
                         Spacer(Modifier.width(32.dp))
 
-                        val info = buildAnnotatedString {
-                            pushStyle(SpanStyle(color = MaterialTheme.colorScheme.error))
-                            append("${MR.strings.manualWarning()} ")
-                            pushStringAnnotation(
-                                "MoreInfo",
-                                "MoreInfo",
-                            )
-                            pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                            append(MR.strings.moreInfo())
-                            pop()
-                            pop()
-                        }
+                        Text(
+                            text = stringResource(MR.strings.manualWarning),
+                            color = MaterialTheme.colorScheme.error,
+                        )
 
-                        ClickableText(
-                            text = info,
-                            onClick = {
-                                info.getStringAnnotations("MoreInfo", it, it)
-                                    .firstOrNull()?.let {
-                                        showingRequestWarningDialog = true
-                                    }
+                        Spacer(Modifier.size(4.dp))
+
+                        Text(
+                            text = stringResource(MR.strings.moreInfo),
+                            textDecoration = TextDecoration.Underline,
+                            modifier = Modifier.clickable {
+                                showingRequestWarningDialog = true
                             },
-                            style = textStyle,
+                            color = MaterialTheme.colorScheme.error,
                         )
                     }
 
