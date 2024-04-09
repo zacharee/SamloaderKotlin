@@ -1,18 +1,32 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
+
 package tk.zwander.common.tools
 
 import com.fleeksoft.ksoup.Ksoup
-import io.ktor.client.request.*
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.timeout
+import io.ktor.client.request.headers
+import io.ktor.client.request.prepareRequest
 import io.ktor.client.request.request
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.utils.io.core.*
-import io.ktor.utils.io.core.internal.*
-import korlibs.io.net.http.Http
-import korlibs.io.net.http.HttpClient
-import korlibs.io.stream.AsyncInputStream
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsChannel
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.utils.io.core.internal.DangerousInternalIoApi
+import io.ktor.utils.io.core.isEmpty
+import io.ktor.utils.io.core.readBytes
+import io.ktor.utils.io.core.toByteArray
+import io.ktor.utils.io.core.use
+import korlibs.io.stream.AsyncOutputStream
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.util.client
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.generateProperUrl
+import tk.zwander.common.util.trackOperationProgress
 import kotlin.time.ExperimentalTime
 
 /**
@@ -54,7 +68,10 @@ class FusClient(
     }
 
     fun getDownloadUrl(path: String): String {
-        return generateProperUrl(useProxy, "http://cloud-neofussvr.samsungmobile.com/NF_DownloadBinaryForMass.do?file=${path}")
+        return generateProperUrl(
+            useProxy,
+            "http://cloud-neofussvr.samsungmobile.com/NF_DownloadBinaryForMass.do?file=${path}"
+        )
     }
 
     /**
@@ -71,7 +88,12 @@ class FusClient(
         val authV = getAuthV(includeNonce)
 
         val response = client.use {
-            it.request(generateProperUrl(useProxy, "https://neofussvr.sslcs.cdngc.net/${request.value}")) {
+            it.request(
+                generateProperUrl(
+                    useProxy,
+                    "https://neofussvr.sslcs.cdngc.net/${request.value}"
+                )
+            ) {
                 method = HttpMethod.Post
                 headers {
                     append("Authorization", authV)
@@ -115,26 +137,57 @@ class FusClient(
      * @param fileName the name of the file to download.
      * @param start an optional offset. Used for resuming downloads.
      */
-    suspend fun downloadFile(fileName: String, start: Long = 0): Pair<AsyncInputStream, String?> {
+    suspend fun downloadFile(
+        fileName: String,
+        start: Long = 0,
+        size: Long,
+        output: AsyncOutputStream,
+        outputSize: Long,
+        progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit,
+    ): String? {
         val authV = getAuthV()
         val url = getDownloadUrl(fileName)
 
-        val httpClient = HttpClient()
-
-        val response = httpClient.request(
-            Http.Method.GET,
-            url,
-            headers = Http.Headers(
-                "Authorization" to authV,
-                "User-Agent" to "Kies2.0_FUS",
-            ).run {
+        val request = client.prepareRequest {
+            method = HttpMethod.Get
+            url(url)
+            headers {
+                append("Authorization", authV)
+                append("User-Agent", "Kies2.0_FUS")
                 if (start > 0) {
-                    this.plus(Http.Headers("Range" to "bytes=$start-"))
-                } else this
+                    append("Range", "bytes=${start}-")
+                }
             }
-        )
+            timeout {
+                this.requestTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
+            }
+        }
 
-        return response.content to response.headers["Content-MD5"]
+        return request.execute { response ->
+            coroutineScope {
+                val md5 = response.headers["Content-MD5"]
+                val channel = response.bodyAsChannel()
+
+                trackOperationProgress(
+                    size = size,
+                    progressCallback = progressCallback,
+                    operation = {
+                        val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
+                        var len = 0
+                        while (!packet.isEmpty) {
+                            val bytes = packet.readBytes()
+                            len += bytes.size
+                            output.write(bytes)
+                        }
+                        len
+                    },
+                    progressOffset = outputSize,
+                    condition = { !channel.isClosedForRead },
+                )
+
+                md5
+            }
+        }
     }
 
     private fun HttpResponse.is401(body: String): Boolean {
@@ -153,7 +206,8 @@ class FusClient(
             if (status == "401") {
                 return true
             }
-        } catch (_: Throwable) {}
+        } catch (_: Throwable) {
+        }
 
         return false
     }

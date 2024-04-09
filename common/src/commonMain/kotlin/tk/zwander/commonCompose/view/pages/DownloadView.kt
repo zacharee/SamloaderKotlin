@@ -54,7 +54,6 @@ import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.exception.VersionException
 import tk.zwander.common.exceptions.DownloadError
 import tk.zwander.common.tools.CryptUtils
-import tk.zwander.common.tools.Downloader
 import tk.zwander.common.tools.FusClient
 import tk.zwander.common.tools.Request
 import tk.zwander.common.tools.VersionFetch
@@ -156,132 +155,120 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
 
         eventManager.sendEvent(
             Event.Download.GetInput(fullFileName) { inputInfo ->
-                try {
-                    if (inputInfo != null) {
-                        val (response, md5) = client.downloadFile(
-                            path + fileName,
-                            inputInfo.downloadFile.getLength(),
-                        )
+                if (inputInfo != null) {
+                    val md5 = client.downloadFile(
+                        path + fileName,
+                        inputInfo.downloadFile.getLength(),
+                        size,
+                        inputInfo.downloadFile.openOutputStream(true) ?: return@GetInput,
+                        inputInfo.downloadFile.getLength(),
+                    ) { current, max, bps ->
+                        model.progress.value = current to max
+                        model.speed.value = bps
 
-                        Downloader.download(
-                            response,
+                        eventManager.sendEvent(
+                            Event.Download.Progress(
+                                MR.strings.downloading(),
+                                current,
+                                max,
+                            )
+                        )
+                    }
+
+                    if (crc32 != null) {
+                        model.speed.value = 0L
+                        model.statusText.value = MR.strings.checkingCRC()
+                        val result = CryptUtils.checkCrc32(
+                            inputInfo.downloadFile.openInputStream() ?: return@GetInput,
                             size,
-                            inputInfo.downloadFile.openOutputStream(true) ?: return@GetInput,
-                            inputInfo.downloadFile.getLength(),
+                            crc32,
                         ) { current, max, bps ->
                             model.progress.value = current to max
                             model.speed.value = bps
 
                             eventManager.sendEvent(
                                 Event.Download.Progress(
-                                    MR.strings.downloading(),
+                                    MR.strings.checkingCRC(),
                                     current,
                                     max
                                 )
                             )
                         }
 
-                        if (crc32 != null) {
-                            model.speed.value = 0L
-                            model.statusText.value = MR.strings.checkingCRC()
-                            val result = CryptUtils.checkCrc32(
-                                inputInfo.downloadFile.openInputStream() ?: return@GetInput,
-                                size,
-                                crc32,
-                            ) { current, max, bps ->
-                                model.progress.value = current to max
-                                model.speed.value = bps
-
-                                eventManager.sendEvent(
-                                    Event.Download.Progress(
-                                        MR.strings.checkingCRC(),
-                                        current,
-                                        max
-                                    )
-                                )
-                            }
-
-                            if (!result) {
-                                model.endJob(MR.strings.crcCheckFailed())
-                                return@GetInput
-                            }
+                        if (!result) {
+                            model.endJob(MR.strings.crcCheckFailed())
+                            return@GetInput
                         }
+                    }
 
-                        if (md5 != null) {
-                            model.speed.value = 0L
-                            model.statusText.value = MR.strings.checkingMD5()
-
-                            eventManager.sendEvent(
-                                Event.Download.Progress(
-                                    MR.strings.checkingMD5(),
-                                    0,
-                                    1
-                                )
-                            )
-
-                            val result = withContext(Dispatchers.Default) {
-                                CryptUtils.checkMD5(
-                                    md5,
-                                    inputInfo.downloadFile.openInputStream(),
-                                )
-                            }
-
-                            if (!result) {
-                                model.endJob(MR.strings.md5CheckFailed())
-                                return@GetInput
-                            }
-                        }
-
+                    if (md5 != null) {
                         model.speed.value = 0L
-                        model.statusText.value = MR.strings.decrypting()
+                        model.statusText.value = MR.strings.checkingMD5()
 
-                        val key =
-                            if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
+                        eventManager.sendEvent(
+                            Event.Download.Progress(
+                                MR.strings.checkingMD5(),
+                                0,
+                                1
+                            )
+                        )
+
+                        val result = withContext(Dispatchers.Default) {
+                            CryptUtils.checkMD5(
+                                md5,
+                                inputInfo.downloadFile.openInputStream(),
+                            )
+                        }
+
+                        if (!result) {
+                            model.endJob(MR.strings.md5CheckFailed())
+                            return@GetInput
+                        }
+                    }
+
+                    model.speed.value = 0L
+                    model.statusText.value = MR.strings.decrypting()
+
+                    val key =
+                        if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
+                            model.fw.value ?: "",
+                            model.model.value ?: "",
+                            model.region.value ?: "",
+                        ) else {
+                            v4Key ?: CryptUtils.getV4Key(
+                                client,
                                 model.fw.value ?: "",
                                 model.model.value ?: "",
                                 model.region.value ?: "",
-                            ) else {
-                                v4Key ?: CryptUtils.getV4Key(
-                                    client,
-                                    model.fw.value ?: "",
-                                    model.model.value ?: "",
-                                    model.region.value ?: "",
-                                    model.imeiSerial.value ?: "",
-                                )
-                            }
-
-                        CryptUtils.decryptProgress(
-                            inputInfo.downloadFile.openInputStream() ?: return@GetInput,
-                            inputInfo.decryptFile.openOutputStream() ?: return@GetInput,
-                            key,
-                            size,
-                        ) { current, max, bps ->
-                            model.progress.value = current to max
-                            model.speed.value = bps
-
-                            eventManager.sendEvent(
-                                Event.Download.Progress(
-                                    MR.strings.decrypting(),
-                                    current,
-                                    max
-                                )
+                                model.imeiSerial.value ?: "",
                             )
                         }
 
-                        if (BifrostSettings.Keys.autoDeleteEncryptedFirmware() == true) {
-                            inputInfo.downloadFile.delete()
-                        }
+                    CryptUtils.decryptProgress(
+                        inputInfo.downloadFile.openInputStream() ?: return@GetInput,
+                        inputInfo.decryptFile.openOutputStream() ?: return@GetInput,
+                        key,
+                        size,
+                    ) { current, max, bps ->
+                        model.progress.value = current to max
+                        model.speed.value = bps
 
-                        model.endJob(MR.strings.done())
-                    } else {
-                        model.endJob("")
-                    }
-                } catch (e: Throwable) {
-                    if (e is CancellationException) {
-                        return@GetInput
+                        eventManager.sendEvent(
+                            Event.Download.Progress(
+                                MR.strings.decrypting(),
+                                current,
+                                max
+                            )
+                        )
                     }
 
-                    model.endJob("${e.message}")
+                    if (BifrostSettings.Keys.autoDeleteEncryptedFirmware() == true) {
+                        inputInfo.downloadFile.delete()
+                    }
+
+                    model.endJob(MR.strings.done())
+                } else {
+                    model.endJob("")
                 }
             }
         )

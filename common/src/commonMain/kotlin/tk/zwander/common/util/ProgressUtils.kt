@@ -4,8 +4,8 @@ import korlibs.io.stream.AsyncInputStream
 import korlibs.io.stream.AsyncOutputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.time.measureTime
 
@@ -18,30 +18,52 @@ suspend fun streamOperationWithProgress(
     chunkSize: Int = 0x300000,
     progressOffset: Long = 0L,
 ) {
-    withContext(Dispatchers.IO) {
-        val buffer = ByteArray(chunkSize)
+    val buffer = ByteArray(chunkSize)
 
+    trackOperationProgress(
+        size = size,
+        progressCallback = progressCallback,
+        operation = {
+            val len = input.read(buffer, 0, buffer.size)
+
+            if (len > 0) {
+                val exactData = if (len == buffer.size) {
+                    buffer
+                } else {
+                    buffer.sliceArray(0 until len)
+                }
+
+                val result = operation?.invoke(this, exactData) ?: exactData
+
+                output.write(result, 0, result.size)
+            }
+
+            len
+        },
+        progressOffset = progressOffset,
+    )
+
+    input.close()
+    output.close()
+}
+
+suspend fun trackOperationProgress(
+    size: Long,
+    progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit,
+    operation: suspend CoroutineScope.() -> Int,
+    progressOffset: Long = 0L,
+    condition: () -> Boolean = { true },
+) {
+    withContext(Dispatchers.IO) {
         var len: Int
         var totalLen = 0L
 
         val averager = Averager()
 
-        while (isActive) {
+        while (isActive && condition()) {
             val nano = measureTime {
-                len = input.read(buffer, 0, buffer.size)
+                len = operation()
                 totalLen += len
-
-                if (len > 0) {
-                    val exactData = if (len == buffer.size) {
-                        buffer
-                    } else {
-                        buffer.sliceArray(0 until len)
-                    }
-
-                    val result = operation?.invoke(this, exactData) ?: exactData
-
-                    output.write(result, 0, result.size)
-                }
             }.inWholeNanoseconds
 
             if (len <= 0) break
@@ -49,7 +71,7 @@ suspend fun streamOperationWithProgress(
             val lenF = len
             val totalLenF = totalLen
 
-            async {
+            launch {
                 averager.update(nano, lenF.toLong())
                 val (totalTime, totalRead, _) = averager.sum()
 
@@ -60,8 +82,5 @@ suspend fun streamOperationWithProgress(
                 )
             }
         }
-
-        input.close()
-        output.close()
     }
 }
