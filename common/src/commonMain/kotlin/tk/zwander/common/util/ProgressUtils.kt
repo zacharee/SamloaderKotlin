@@ -13,7 +13,6 @@ import kotlinx.datetime.Instant
 import okio.BufferedSink
 import okio.BufferedSource
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.measureTime
 import kotlin.time.measureTimedValue
 
 const val DEFAULT_CHUNK_SIZE = 1024 * 512
