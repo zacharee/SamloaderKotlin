@@ -378,35 +378,30 @@ object Request {
 
             dataFile.let { f ->
                 val (fwVersion, fwCsc, fwCp, fwPda) = fw.split("/")
-                val fwVersionSuffix = getSuffix(fwVersion)
                 val fwCscSuffix = getSuffix(fwCsc)
                 val fwCpSuffix = getSuffix(fwCp)
-                val fwPdaSuffix = getSuffix(fwPda)
 
                 val split = f.split("_")
                 val (version, versionSuffix) = split[dataIndex!!] to split.getOrNull(dataIndex + 1)
 
-                val (servedCsc, cscSuffix) = cscFile!!.split("_")
-                    .run { get(cscIndex!!) to getOrNull(cscIndex + 1) }
+                val (servedCsc, cscSuffix) = cscFile?.split("_")
+                    ?.takeIf { cscIndex != null }
+                    ?.run { getOrNull(cscIndex!!) to getOrNull(cscIndex + 1) } ?: (null to null)
                 val (servedCp, cpSuffix) = cpFile?.split("_").run {
                     this?.getOrNull(cpIndex ?: -1) to this?.getOrNull(
                         cpIndex?.plus(1) ?: -1
                     )
                 }
-                val (servedPda, pdaSuffix) = pdaFile?.split("_").run {
-                    this?.getOrNull(pdaIndex ?: -1) to this?.getOrNull(
-                        pdaIndex?.plus(1) ?: -1
-                    )
-                }
+                val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex ?: -1)
 
-                val served = "$version/$servedCsc/${servedCp ?: version}/${servedPda ?: version}"
+                val served = "$version/${servedCsc ?: versionSuffix}/${servedCp ?: version}/${servedPda ?: version}"
 
-                val versionSuffixMatch = fwVersionSuffix == versionSuffix
                 val cscSuffixMatch = fwCscSuffix == cscSuffix
-                val cpSuffixMatch = fwCpSuffix == (cpSuffix ?: versionSuffix)
-                val pdaSuffixMatch = fwPdaSuffix == (pdaSuffix ?: versionSuffix)
+                val cpSuffixMatch = fwCpSuffix == cpSuffix
+                val fwVersionMatch = fwVersion == version
+                val fwPdaMatch = fwPda == servedPda
 
-                if (served != fw && !versionSuffixMatch && !cscSuffixMatch && !cpSuffixMatch && !pdaSuffixMatch) {
+                if (served != fw || !cscSuffixMatch || !cpSuffixMatch || !fwVersionMatch || !fwPdaMatch) {
                     return FetchResult.GetBinaryFileResult(
                         info = generateInfo(),
                         error = VersionMismatchException(MR.strings.versionMismatch(fw, served)),
