@@ -7,6 +7,7 @@ import korlibs.ffi.osx.NSString
 import korlibs.ffi.osx.ObjcRef
 
 class UserDefaults(id: Long) : NSObject(id) {
+    @Suppress("MemberVisibilityCanBePrivate")
     fun objectForKey(key: String): String? =
         ObjcRef(msgSend("objectForKey:", NSString(key).ref.id))
             .msgSend("description")
