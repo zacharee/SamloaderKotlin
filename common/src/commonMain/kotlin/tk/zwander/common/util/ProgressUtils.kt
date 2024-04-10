@@ -14,6 +14,7 @@ import okio.BufferedSink
 import okio.BufferedSource
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.measureTime
+import kotlin.time.measureTimedValue
 
 const val DEFAULT_CHUNK_SIZE = 1024 * 512
 
@@ -64,6 +65,7 @@ suspend fun trackOperationProgress(
     operation: suspend () -> Long,
     progressOffset: Long = 0L,
     condition: () -> Boolean = { true },
+    throttle: Boolean = true,
 ) {
     coroutineScope {
         val len = atomic(0L)
@@ -74,19 +76,24 @@ suspend fun trackOperationProgress(
         val averager = Averager()
 
         while (isActive && condition()) {
-            val nano = measureTime {
-                val newLen = operation()
-                len.value = newLen
-                totalLen += newLen
-            }.inWholeNanoseconds
+            val timedValue = measureTimedValue {
+                operation()
+            }
+
+            len.value = timedValue.value
+            totalLen += timedValue.value
+
+            val nano = timedValue.duration.inWholeNanoseconds
 
             if (len.value <= 0) break
 
-            val currentTime = Clock.System.now()
-            if (currentTime - lastUpdateTime.value < 50.milliseconds) {
-                continue
+            if (throttle) {
+                val currentTime = Clock.System.now()
+                if (currentTime - lastUpdateTime.value < 50.milliseconds) {
+                    continue
+                }
+                lastUpdateTime.value = currentTime
             }
-            lastUpdateTime.value = currentTime
 
             GlobalScope.launch {
                 val current = totalLen.value + progressOffset

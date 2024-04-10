@@ -175,6 +175,7 @@ class FusClient(
                 },
                 progressOffset = outputSize,
                 condition = { !channel.isClosedForRead },
+                throttle = false,
             )
 
             md5
