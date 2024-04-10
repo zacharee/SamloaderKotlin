@@ -7,7 +7,7 @@ import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.key
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import kotlinx.coroutines.launch
 
 @Composable

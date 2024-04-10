@@ -7,7 +7,7 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.GenericFontFamily
 import androidx.compose.ui.text.platform.FontLoadResult
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import tk.zwander.common.util.CrossPlatformBugsnag
 
 actual object FontMapper {
@@ -30,7 +30,7 @@ actual object FontMapper {
                     FontFamily.Monospace.name to listOf("Consolas"),
                     FontFamily.Cursive.name to listOf("Comic Sans MS"),
                 )
-            Platform.isMac || Platform.isIos || Platform.isTvos || Platform.isWatchos ->
+            Platform.isApple ->
                 mapOf(
                     // .AppleSystem* aliases is the only legal way to get default SF and NY fonts.
                     FontFamily.SansSerif.name to listOf(".AppleSystemUIFont", "Helvetica Neue", "Helvetica"),

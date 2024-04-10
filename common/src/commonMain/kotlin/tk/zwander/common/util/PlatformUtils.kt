@@ -1,6 +1,6 @@
 package tk.zwander.common.util
 
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 
 data class OSVersion(
     val major: Int?,

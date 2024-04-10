@@ -1,7 +1,7 @@
 package tk.zwander.commonCompose.util
 
 import jnafilechooser.api.WindowsFileChooser
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import tk.zwander.common.data.PlatformFile
 import tk.zwander.common.util.BifrostSettings
 import java.awt.FileDialog

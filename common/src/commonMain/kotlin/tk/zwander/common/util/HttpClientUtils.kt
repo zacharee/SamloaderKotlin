@@ -6,7 +6,7 @@ import io.ktor.client.*
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.statement.*
 import io.ktor.utils.io.ByteReadChannel
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 
 val client: HttpClient
     get() = HttpClient {

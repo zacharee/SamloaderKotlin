@@ -16,7 +16,7 @@ import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.sun.jna.ptr.IntByReference
 import dev.icerock.moko.resources.compose.painterResource
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import tk.zwander.common.EventDelegate
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.BifrostSettings
@@ -75,22 +75,6 @@ fun main() {
             val menuBarHeight = remember(window.height) {
                 if (Platform.isMac) window.height.dp else 0.dp
             }
-
-//            LaunchedEffect(null) {
-//                withContext(Dispatchers.IO) {
-//                    SwingUtilities.invokeAndWait {
-//                        if (!window.isTransparent) {
-//                            window.setComposeLayerTransparency(true)
-//                            window.hackContentPane()
-//                        }
-//                    }
-//                }
-//            }
-
-//            LaunchedEffect(window.isVisible) {
-//                delay(TimeSpan(1000.0))
-//                AppKit.NSWindow.getWindow()
-//            }
 
             LaunchedEffect(window) {
                 window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)

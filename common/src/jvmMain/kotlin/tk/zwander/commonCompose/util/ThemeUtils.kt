@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.toArgb
 import com.jthemedetecor.OsThemeDetector
 import com.sun.jna.platform.win32.Advapi32Util
 import com.sun.jna.platform.win32.WinReg
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.ui.GenericLinuxThemeDetector

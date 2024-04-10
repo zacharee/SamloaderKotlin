@@ -9,7 +9,7 @@ import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
 import dev.icerock.moko.resources.compose.stringResource
-import korlibs.memory.Platform
+import korlibs.platform.Platform
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.samloaderkotlin.resources.MR
 

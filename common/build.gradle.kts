@@ -68,7 +68,9 @@ kotlin {
                 api(libs.kotlinx.serialization.json)
                 api(libs.kotlinx.datetime)
 
-                api(libs.korlibs.korio)
+                api(libs.korlibs.io)
+                api(libs.korlibs.platform)
+                api(libs.korlibs.serialization.csv)
 
                 api(libs.ktor.client.auth)
                 api(libs.ktor.client.core)

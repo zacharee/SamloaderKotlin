@@ -1,14 +1,14 @@
 package tk.zwander.common.util
 
 import androidx.compose.ui.graphics.Color
-import korlibs.memory.dyn.osx.NSClass
-import korlibs.memory.dyn.osx.NSObject
-import korlibs.memory.dyn.osx.NSString
-import korlibs.memory.dyn.osx.msgSend
+import korlibs.ffi.osx.NSClass
+import korlibs.ffi.osx.NSObject
+import korlibs.ffi.osx.NSString
+import korlibs.ffi.osx.ObjcRef
 
 class UserDefaults(id: Long) : NSObject(id) {
     fun objectForKey(key: String): String? =
-        id.msgSend("objectForKey:", NSString(key))
+        ObjcRef(msgSend("objectForKey:", NSString(key).ref.id))
             .msgSend("description")
             .takeIf { it != 0L }
             ?.let { NSString(it).cString }
