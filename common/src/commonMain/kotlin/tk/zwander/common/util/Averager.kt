@@ -1,8 +1,8 @@
 package tk.zwander.common.util
 
-import korlibs.time.DateTime
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.datetime.Clock
 
 class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1_000_000_000) {
     data class ChunkData(
@@ -33,6 +33,6 @@ class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1
     }
 
     private fun currentTimeNano(): Long {
-        return DateTime.now().unixMillisLong * 1_000_000
+        return Clock.System.now().toEpochMilliseconds() * 1_000_000
     }
 }

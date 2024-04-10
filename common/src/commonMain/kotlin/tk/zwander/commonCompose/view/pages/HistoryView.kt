@@ -44,8 +44,10 @@ import androidx.compose.ui.unit.sp
 import com.fleeksoft.ksoup.Ksoup
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import korlibs.time.DateFormat
 import kotlinx.coroutines.launch
+import kotlinx.datetime.format.DateTimeComponents
+import kotlinx.datetime.format.Padding
+import kotlinx.datetime.format.char
 import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.HistoryInfo
@@ -151,14 +153,32 @@ private fun parseHistory(body: String): List<HistoryInfo> {
         val csc = split[split.lastIndex].split(".")[0]
 
         val formats = arrayOf(
-            "yyyy/M/d",
-            "yyyy-M-d",
-            "M/d/yyyy"
+            DateTimeComponents.Format {
+                year()
+                char('/')
+                monthNumber(Padding.NONE)
+                char('/')
+                dayOfMonth(Padding.NONE)
+            },
+            DateTimeComponents.Format {
+                year()
+                char('-')
+                monthNumber(Padding.NONE)
+                char('-')
+                dayOfMonth(Padding.NONE)
+            },
+            DateTimeComponents.Format {
+                monthNumber(Padding.NONE)
+                char('/')
+                dayOfMonth(Padding.NONE)
+                char('/')
+                year()
+            },
         )
 
         val parsed = formats.firstNotNullOfOrNull { format ->
             try {
-                DateFormat(format).tryParse(date)
+                format.parse(date).toLocalDate()
             } catch (e: Exception) {
                 null
             }

@@ -1,12 +1,12 @@
 package tk.zwander.common.data
 
-import korlibs.time.DateTimeTz
+import kotlinx.datetime.LocalDate
 
 /**
  * Data for a firmware history item.
  */
 data class HistoryInfo(
-    val date: DateTimeTz?,
+    val date: LocalDate?,
     val androidVersion: String?,
     val firmwareString: String
 )

@@ -66,6 +66,7 @@ kotlin {
                 api(libs.kotlin.reflect)
                 api(libs.kotlinx.coroutines)
                 api(libs.kotlinx.serialization.json)
+                api(libs.kotlinx.datetime)
 
                 api(libs.korlibs.korio)
 
