@@ -1,7 +1,5 @@
 package tk.zwander.commonCompose.model
 
-import io.ktor.client.utils.*
-import io.ktor.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -70,8 +68,7 @@ abstract class BaseModel(
     /**
      * A coroutine scope.
      */
-    @OptIn(InternalAPI::class)
-    private val scope = CoroutineScope(Dispatchers.clientDispatcher(5, "Background${this::class.simpleName}"))
+    private val scope = CoroutineScope(Dispatchers.IO + Job())
 
     protected val String.fullKey: String
         get() = "${modelKey}_$this"

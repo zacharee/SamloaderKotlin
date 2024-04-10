@@ -1,14 +1,13 @@
 @file:JvmName("AndroidJVMCommonPlatformFile")
 package tk.zwander.common.data
 
-import korlibs.io.stream.AsyncInputStream
-import korlibs.io.stream.AsyncOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import tk.zwander.common.util.flushingAsync
-import tk.zwander.common.util.inputAsync
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import okio.BufferedSink
+import okio.BufferedSource
+import okio.buffer
+import okio.sink
+import okio.source
 
 /**
  * A File implementation that wraps Java's File class.
@@ -145,15 +144,15 @@ actual open class PlatformFile : File {
         return wrappedFile.canExecute()
     }
 
-    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream? {
+    override suspend fun openOutputStream(append: Boolean): BufferedSink? {
         return withContext(Dispatchers.IO) {
-            FileOutputStream(wrappedFile, append).flushingAsync()
+            wrappedFile.sink(append).buffer()
         }
     }
 
-    override suspend fun openInputStream(): AsyncInputStream? {
+    override suspend fun openInputStream(): BufferedSource? {
         return withContext(Dispatchers.IO) {
-            FileInputStream(wrappedFile).inputAsync()
+            wrappedFile.source().buffer()
         }
     }
 

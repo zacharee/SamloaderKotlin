@@ -20,10 +20,11 @@ kotlin = "1.9.23"
 kotlinx-coroutines = "1.8.0"
 kotlinx-datetime = "0.6.0-RC.2"
 kotlinx-serialization = "1.6.3"
-ktor = "2.3.9"
+ktor = "2.3.10"
 moko-mvvm = "0.16.1"
 moko-resources = "0.23.0"
 multiplatform-settings = "1.1.1"
+okio = "3.9.0"
 oshi = "6.5.0"
 slf4j = "2.0.12"
 windowStyler = "cad9442ec3"
@@ -56,13 +57,14 @@ kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 moko-mvvm-flow-compose = { module = "dev.icerock.moko:mvvm-flow-compose", version.ref = "moko-mvvm" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
 moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
 multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 window-styler = { module = "com.github.alexfacciorusso.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }

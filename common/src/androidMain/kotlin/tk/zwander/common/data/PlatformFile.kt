@@ -3,10 +3,11 @@ package tk.zwander.common.data
 import android.content.Context
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
-import korlibs.io.stream.AsyncInputStream
-import korlibs.io.stream.AsyncOutputStream
-import tk.zwander.common.util.flushingAsync
-import tk.zwander.common.util.inputAsync
+import okio.BufferedSink
+import okio.BufferedSource
+import okio.buffer
+import okio.sink
+import okio.source
 
 class PlatformUriFile(
     private val context: Context,
@@ -134,12 +135,12 @@ class PlatformUriFile(
         throw IllegalAccessException("Not Supported")
     }
 
-    override suspend fun openOutputStream(append: Boolean): AsyncOutputStream? {
-        return context.contentResolver.openOutputStream(wrappedFile.uri, "w${if (append) "a" else ""}")?.flushingAsync()
+    override suspend fun openOutputStream(append: Boolean): BufferedSink? {
+        return context.contentResolver.openOutputStream(wrappedFile.uri, "w${if (append) "a" else ""}")?.sink()?.buffer()
     }
 
-    override suspend fun openInputStream(): AsyncInputStream? {
-        return context.contentResolver.openInputStream(wrappedFile.uri)?.inputAsync()
+    override suspend fun openInputStream(): BufferedSource? {
+        return context.contentResolver.openInputStream(wrappedFile.uri)?.source()?.buffer()
     }
 
     override fun compareTo(other: IPlatformFile): Int {

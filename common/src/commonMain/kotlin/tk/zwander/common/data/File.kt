@@ -1,7 +1,7 @@
 package tk.zwander.common.data
 
-import korlibs.io.stream.AsyncInputStream
-import korlibs.io.stream.AsyncOutputStream
+import okio.BufferedSink
+import okio.BufferedSource
 
 /**
  * Platforms should actuate this class to implement
@@ -81,8 +81,8 @@ interface IPlatformFile : Comparable<IPlatformFile> {
     suspend fun setExecutable(executable: Boolean): Boolean
     suspend fun canExecute(): Boolean
 
-    suspend fun openOutputStream(append: Boolean = false): AsyncOutputStream?
-    suspend fun openInputStream(): AsyncInputStream?
+    suspend fun openOutputStream(append: Boolean = false): BufferedSink?
+    suspend fun openInputStream(): BufferedSource?
 
     override fun hashCode(): Int
     override fun equals(other: Any?): Boolean

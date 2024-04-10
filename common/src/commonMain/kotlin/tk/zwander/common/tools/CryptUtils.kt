@@ -1,20 +1,26 @@
 package tk.zwander.common.tools
 
-import io.ktor.utils.io.core.*
-import io.ktor.utils.io.core.internal.*
+import io.ktor.utils.io.core.internal.DangerousInternalIoApi
+import io.ktor.utils.io.core.toByteArray
 import korlibs.crypto.AES
 import korlibs.crypto.CipherPadding
 import korlibs.crypto.MD5
-import korlibs.io.stream.AsyncInputStream
-import korlibs.io.stream.AsyncOutputStream
 import korlibs.io.util.checksum.CRC32
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okio.BufferedSink
+import okio.BufferedSource
 import tk.zwander.common.util.Averager
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.streamOperationWithProgress
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.time.*
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTime
 
 /**
  * Handle encryption and decryption stuff.
@@ -190,8 +196,8 @@ object CryptUtils {
      * @param progressCallback a callback to keep track of the progress.
      */
     suspend fun decryptProgress(
-        inf: AsyncInputStream,
-        outf: AsyncOutputStream,
+        inf: BufferedSource,
+        outf: BufferedSink,
         key: ByteArray,
         length: Long,
         chunkSize: Int = 0x300000,
@@ -218,7 +224,7 @@ object CryptUtils {
      * @return true if the file's CRC32 matches the expected value.
      */
     suspend fun checkCrc32(
-        enc: AsyncInputStream,
+        enc: BufferedSource,
         encSize: Long,
         expected: Long,
         progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit
@@ -249,7 +255,7 @@ object CryptUtils {
                     val lenF = len
                     val totalLenF = count
 
-                    async {
+                    launch {
                         averager.update(nano, lenF.toLong())
                         val (totalTime, totalRead, _) = averager.sum()
 
@@ -286,7 +292,7 @@ object CryptUtils {
      * @param updateFile the file to check.
      * @return true if the hashes match.
      */
-    suspend fun checkMD5(md5: String, updateFile: AsyncInputStream?): Boolean {
+    suspend fun checkMD5(md5: String, updateFile: BufferedSource?): Boolean {
         if (md5.isBlank() || updateFile == null) {
             return false
         }
@@ -301,7 +307,7 @@ object CryptUtils {
      * @param updateFile the file used to calculate.
      * @return the MD5 hash.
      */
-    suspend fun calculateMD5(updateFile: AsyncInputStream): String? {
+    suspend fun calculateMD5(updateFile: BufferedSource): String? {
         val md5 = MD5.create()
         val buffer = ByteArray(8192)
         var read: Int

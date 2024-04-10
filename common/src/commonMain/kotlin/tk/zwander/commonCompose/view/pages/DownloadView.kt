@@ -162,23 +162,29 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
         eventManager.sendEvent(
             Event.Download.GetInput(fullFileName) { inputInfo ->
                 if (inputInfo != null) {
-                    val md5 = client.downloadFile(
-                        path + fileName,
-                        inputInfo.downloadFile.getLength(),
-                        size,
-                        inputInfo.downloadFile.openOutputStream(true) ?: return@GetInput,
-                        inputInfo.downloadFile.getLength(),
-                    ) { current, max, bps ->
-                        model.progress.value = current to max
-                        model.speed.value = bps
+                    val outputStream = inputInfo.downloadFile.openOutputStream(true) ?: return@GetInput
+                    val md5 = try {
+                        client.downloadFile(
+                            path + fileName,
+                            inputInfo.downloadFile.getLength(),
+                            size,
+                            outputStream,
+                            inputInfo.downloadFile.getLength(),
+                        ) { current, max, bps ->
+                            model.progress.value = current to max
+                            model.speed.value = bps
 
-                        eventManager.sendEvent(
-                            Event.Download.Progress(
-                                MR.strings.downloading(),
-                                current,
-                                max,
+                            eventManager.sendEvent(
+                                Event.Download.Progress(
+                                    MR.strings.downloading(),
+                                    current,
+                                    max,
+                                )
                             )
-                        )
+                        }
+                    } finally {
+                        outputStream.flush()
+                        outputStream.close()
                     }
 
                     if (crc32 != null) {

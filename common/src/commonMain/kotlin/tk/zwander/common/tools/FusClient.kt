@@ -16,13 +16,11 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
-import io.ktor.utils.io.core.isEmpty
-import io.ktor.utils.io.core.readBytes
 import io.ktor.utils.io.core.toByteArray
 import io.ktor.utils.io.core.use
-import korlibs.io.stream.AsyncOutputStream
+import io.ktor.utils.io.jvm.nio.copyTo
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
+import okio.BufferedSink
 import tk.zwander.common.util.client
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.generateProperUrl
@@ -141,7 +139,7 @@ class FusClient(
         fileName: String,
         start: Long = 0,
         size: Long,
-        output: AsyncOutputStream,
+        output: BufferedSink,
         outputSize: Long,
         progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit,
     ): String? {
@@ -164,29 +162,22 @@ class FusClient(
         }
 
         return request.execute { response ->
-            coroutineScope {
-                val md5 = response.headers["Content-MD5"]
-                val channel = response.bodyAsChannel()
+            val md5 = response.headers["Content-MD5"]
+            val channel = response.bodyAsChannel()
 
-                trackOperationProgress(
-                    size = size,
-                    progressCallback = progressCallback,
-                    operation = {
-                        val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
-                        var len = 0
-                        while (!packet.isEmpty) {
-                            val bytes = packet.readBytes()
-                            len += bytes.size
-                            output.write(bytes)
-                        }
-                        len
-                    },
-                    progressOffset = outputSize,
-                    condition = { !channel.isClosedForRead },
-                )
+            trackOperationProgress(
+                size = size,
+                progressCallback = progressCallback,
+                operation = {
+                    channel.copyTo(output, 1024 * 100L).also {
+                        output.flush()
+                    }
+                },
+                progressOffset = outputSize,
+                condition = { !channel.isClosedForRead },
+            )
 
-                md5
-            }
+            md5
         }
     }
 

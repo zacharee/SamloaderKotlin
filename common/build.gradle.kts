@@ -86,6 +86,7 @@ kotlin {
                 api(libs.moko.resources.compose)
 
                 api(libs.ksoup)
+                api(libs.okio)
             }
         }
 
@@ -93,7 +94,7 @@ kotlin {
             dependsOn(commonMain)
 
             dependencies {
-                api(libs.ktor.client.cio)
+                api(libs.ktor.client.okhttp)
             }
         }
 

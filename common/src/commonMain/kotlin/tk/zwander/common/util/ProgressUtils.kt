@@ -1,17 +1,17 @@
 package tk.zwander.common.util
 
-import korlibs.io.stream.AsyncInputStream
-import korlibs.io.stream.AsyncOutputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okio.BufferedSink
+import okio.BufferedSource
 import kotlin.time.measureTime
 
 suspend fun streamOperationWithProgress(
-    input: AsyncInputStream,
-    output: AsyncOutputStream,
+    input: BufferedSource,
+    output: BufferedSink,
     size: Long,
     progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit,
     operation: (suspend CoroutineScope.(buffer: ByteArray) -> ByteArray)? = null,
@@ -38,7 +38,7 @@ suspend fun streamOperationWithProgress(
                 output.write(result, 0, result.size)
             }
 
-            len
+            len.toLong()
         },
         progressOffset = progressOffset,
     )
@@ -50,12 +50,12 @@ suspend fun streamOperationWithProgress(
 suspend fun trackOperationProgress(
     size: Long,
     progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit,
-    operation: suspend CoroutineScope.() -> Int,
+    operation: suspend CoroutineScope.() -> Long,
     progressOffset: Long = 0L,
     condition: () -> Boolean = { true },
 ) {
     withContext(Dispatchers.IO) {
-        var len: Int
+        var len: Long
         var totalLen = 0L
 
         val averager = Averager()
@@ -72,7 +72,7 @@ suspend fun trackOperationProgress(
             val totalLenF = totalLen
 
             launch {
-                averager.update(nano, lenF.toLong())
+                averager.update(nano, lenF)
                 val (totalTime, totalRead, _) = averager.sum()
 
                 progressCallback(
