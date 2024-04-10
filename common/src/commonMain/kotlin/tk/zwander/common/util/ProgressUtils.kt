@@ -77,7 +77,7 @@ suspend fun trackOperationProgress(
             val nano = measureTime {
                 val newLen = operation()
                 len.value = newLen
-                totalLen.addAndGet(newLen)
+                totalLen += newLen
             }.inWholeNanoseconds
 
             if (len.value <= 0) break
