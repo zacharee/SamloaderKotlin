@@ -1,7 +1,6 @@
 package tk.zwander.common.ui
 
 import androidx.compose.ui.graphics.Color
-import korlibs.io.annotations.Keep
 import tk.zwander.common.util.CrossPlatformBugsnag
 import java.io.File
 
@@ -38,7 +37,6 @@ sealed class DESpecificGetter(val sessionValue: String) {
 
     abstract fun getAccentColor(): Color?
 
-    @Keep
     data object KDE : DESpecificGetter("KDE") {
         override fun getAccentColor(): Color? {
             val rgb = runtime?.getLinesFromCommand(arrayOf("kreadconfig5", "--key", "AccentColor", "--group", "General"))
@@ -54,7 +52,6 @@ sealed class DESpecificGetter(val sessionValue: String) {
         }
     }
 
-    @Keep
     data object LXDE : DESpecificGetter("LXDE") {
         override fun getAccentColor(): Color? {
             val file = File("${System.getProperty("user.home")}/.config/lxsession/LXDE/desktop.conf")

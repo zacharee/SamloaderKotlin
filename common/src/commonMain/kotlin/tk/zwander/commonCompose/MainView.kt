@@ -19,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import korlibs.io.async.launch
 import korlibs.memory.Platform
+import kotlinx.coroutines.launch
 import tk.zwander.commonCompose.locals.ProvideModels
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.LocalUseMicaEffect

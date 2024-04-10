@@ -7,8 +7,8 @@ import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.key
-import korlibs.io.async.launch
 import korlibs.memory.Platform
+import kotlinx.coroutines.launch
 
 @Composable
 fun keyCodeHandler(): (KeyEvent) -> Boolean {

@@ -2,7 +2,6 @@ package tk.zwander.commonCompose.monet
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import korlibs.crypto.encoding.hex
 import kotlin.math.abs
 import kotlin.math.round
 
@@ -196,10 +195,11 @@ class WallpaperColors {
         return (31 * mMainColors.hashCode() * mAllColors.hashCode()) + colorHints
     }
 
+    @OptIn(ExperimentalStdlibApi::class)
     override fun toString(): String {
         val colors = StringBuilder()
         for (i in mMainColors.indices) {
-            colors.append(mMainColors[i].toArgb().hex).append(" ")
+            colors.append(mMainColors[i].toArgb().toHexString()).append(" ")
         }
         return "[WallpaperColors: " + colors.toString() + "h: " + colorHints + "]"
     }

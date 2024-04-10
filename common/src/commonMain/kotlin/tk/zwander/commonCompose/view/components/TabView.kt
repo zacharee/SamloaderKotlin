@@ -30,7 +30,6 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
-import korlibs.io.annotations.Keep
 import tk.zwander.commonCompose.view.LocalUseMicaEffect
 import tk.zwander.commonCompose.view.pages.DecryptView
 import tk.zwander.commonCompose.view.pages.DownloadView
@@ -53,17 +52,13 @@ sealed class Page(
     val iconRes: ImageResource,
     val index: Int,
 ) {
-    @Keep
     data object Downloader : Page({ DownloadView() }, MR.strings.downloader, MR.images.download, 0)
 
-    @Keep
     data object Decrypter :
         Page({ DecryptView() }, MR.strings.decrypter, MR.images.lock_open_outline, 1)
 
-    @Keep
     data object History : Page({ HistoryView() }, MR.strings.history, MR.images.history, 2)
 
-    @Keep
     data object SettingsAbout : Page({ SettingsAboutView() }, MR.strings.more, MR.images.cog, 3)
 }
 

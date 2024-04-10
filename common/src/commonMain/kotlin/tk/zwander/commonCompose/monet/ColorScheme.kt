@@ -4,7 +4,6 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import korlibs.crypto.encoding.hex
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -489,13 +488,14 @@ class ColorScheme(
             return 180f - ((a - b).absoluteValue - 180f).absoluteValue
         }
 
+        @OptIn(ExperimentalStdlibApi::class)
         private fun stringForColor(color: Int): String {
             val width = 4
             val hct = Cam.fromInt(color)
             val h = "H${hct.hue.roundToInt().toString().padEnd(width)}"
             val c = "C${hct.chroma.roundToInt().toString().padEnd(width)}"
             val t = "T${CamUtils.lstarFromInt(color).roundToInt().toString().padEnd(width)}"
-            val hex = (color and 0xffffff).hex.padStart(6, '0').uppercase()
+            val hex = (color and 0xffffff).toHexString().uppercase()
             return "$h$c$t = #$hex"
         }
 

@@ -2,7 +2,6 @@ package tk.zwander.commonCompose.monet
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import korlibs.memory.clamp
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -23,9 +22,9 @@ object ColorUtils {
         b = if (b > 0.0031308) 1.055 * b.pow(1 / 2.4) - 0.055 else 12.92 * b
 
         return Color(
-            red = r.clamp(0.0, 1.0).toFloat(),
-            green = g.clamp(0.0, 1.0).toFloat(),
-            blue = b.clamp(0.0, 1.0).toFloat(),
+            red = r.coerceIn(0.0, 1.0).toFloat(),
+            green = g.coerceIn(0.0, 1.0).toFloat(),
+            blue = b.coerceIn(0.0, 1.0).toFloat(),
         ).toArgb()
     }
 
@@ -117,9 +116,9 @@ object ColorUtils {
         if (h < 0) {
             h += 360f
         }
-        outHsl[0] = h.clamp(0f, 360f)
-        outHsl[1] = s.clamp(0f, 1f)
-        outHsl[2] = l.clamp(0f, 1f)
+        outHsl[0] = h.coerceIn(0f, 360f)
+        outHsl[1] = s.coerceIn(0f, 1f)
+        outHsl[2] = l.coerceIn(0f, 1f)
     }
 
     /**

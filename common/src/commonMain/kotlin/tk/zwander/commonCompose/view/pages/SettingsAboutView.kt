@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.http.URLBuilder
-import korlibs.io.async.launch
 import korlibs.memory.Platform
+import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.util.BifrostSettings
