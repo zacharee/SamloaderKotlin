@@ -11,25 +11,25 @@ class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1
         val currentTimeNano: Long
     )
 
-    private val chunkMutex = Mutex()
+    private val mutex = Mutex()
     private val chunk = ArrayList<ChunkData>(initialCapacity)
 
-    suspend fun update(durationNano: Long, read: Long) {
-        val currentTimeNano = currentTimeNano()
-        chunkMutex.withLock {
-            chunk.add(ChunkData(durationNano, read, currentTimeNano))
-            chunk.removeAll { currentTimeNano - it.currentTimeNano > thresholdNanos }
+    suspend fun updateAndSum(durationNano: Long, read: Long): Pair<Long, Long> {
+        return mutex.withLock {
+            unsafeUpdate(durationNano, read)
+            unsafeSum()
         }
     }
 
-    suspend fun sum(): ChunkData {
-        return chunkMutex.withLock {
-            ChunkData(
-                chunk.sumOf { it.durationNano },
-                chunk.sumOf { it.read },
-                currentTimeNano()
-            )
-        }
+    private fun unsafeUpdate(durationNano: Long, read: Long) {
+        val currentTimeNano = currentTimeNano()
+        chunk.add(ChunkData(durationNano, read, currentTimeNano))
+        chunk.removeAll { currentTimeNano - it.currentTimeNano > thresholdNanos }
+    }
+
+    private fun unsafeSum(): Pair<Long, Long> {
+        return (chunk.sumOf { it.durationNano } to
+                chunk.sumOf { it.read })
     }
 
     private fun currentTimeNano(): Long {

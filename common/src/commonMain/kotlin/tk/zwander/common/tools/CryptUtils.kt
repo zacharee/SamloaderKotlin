@@ -6,21 +6,17 @@ import korlibs.crypto.AES
 import korlibs.crypto.CipherPadding
 import korlibs.crypto.MD5
 import korlibs.io.util.checksum.CRC32
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.BufferedSink
 import okio.BufferedSource
-import tk.zwander.common.util.Averager
+import tk.zwander.common.util.DEFAULT_CHUNK_SIZE
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.streamOperationWithProgress
+import tk.zwander.common.util.trackOperationProgress
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
 
 /**
  * Handle encryption and decryption stuff.
@@ -200,8 +196,8 @@ object CryptUtils {
         outf: BufferedSink,
         key: ByteArray,
         length: Long,
-        chunkSize: Int = 0x300000,
-        progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit
+        chunkSize: Int = DEFAULT_CHUNK_SIZE,
+        progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit
     ) {
         streamOperationWithProgress(
             input = inf,
@@ -227,49 +223,27 @@ object CryptUtils {
         enc: BufferedSource,
         encSize: Long,
         expected: Long,
-        progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit
+        progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit
     ): Boolean {
         var crcVal = CRC32.initialValue
 
-        coroutineScope {
-            withContext(Dispatchers.Default) {
-                val buffer = ByteArray(0x300000)
+        trackOperationProgress(
+            size = encSize,
+            progressCallback = progressCallback,
+            operation = {
+                val buffer = ByteArray(DEFAULT_CHUNK_SIZE)
+                val len = enc.read(buffer, 0, buffer.size)
 
-                var len: Int
-                var count = 0L
-
-                val averager = Averager()
-
-                while (isActive) {
-                    val nano = measureTime {
-                        len = enc.read(buffer, 0, buffer.size)
-                        count += len
-
-                        if (len > 0) {
-                            crcVal = CRC32.update(crcVal, buffer, 0, len)
-                        }
-                    }.inWholeNanoseconds
-
-                    if (len <= 0) break
-
-                    val lenF = len
-                    val totalLenF = count
-
-                    launch {
-                        averager.update(nano, lenF.toLong())
-                        val (totalTime, totalRead, _) = averager.sum()
-
-                        progressCallback(
-                            totalLenF,
-                            encSize,
-                            (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
-                        )
-                    }
+                if (len > 0) {
+                    crcVal = CRC32.update(crcVal, buffer, 0, len)
                 }
-            }
-        }
+                len.toLong()
+            },
+        )
 
-        enc.close()
+        withContext(Dispatchers.IO) {
+            enc.close()
+        }
 
         return crcVal == expected.toInt()
     }
@@ -322,7 +296,9 @@ object CryptUtils {
             throw RuntimeException("Unable to process file for MD5", e)
         } finally {
             try {
-                updateFile.close()
+                withContext(Dispatchers.IO) {
+                    updateFile.close()
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }

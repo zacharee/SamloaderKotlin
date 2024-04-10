@@ -141,7 +141,7 @@ class FusClient(
         size: Long,
         output: BufferedSink,
         outputSize: Long,
-        progressCallback: suspend CoroutineScope.(current: Long, max: Long, bps: Long) -> Unit,
+        progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ): String? {
         val authV = getAuthV()
         val url = getDownloadUrl(fileName)
