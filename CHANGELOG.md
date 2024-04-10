@@ -1,3 +1,14 @@
+# 1.17.10
+- Download and decrypt speeds should be improved in most cases.
+- Fix an issue where the served version check would fail and cause the download to fail.
+- Add a warning when entering a model number beginning with "SM-R", noting that only tablet and phone firmware can be downloaded.
+- Surface some download errors in the UI that previously caused crashes.
+- Use Ksoup for XML parsing to avoid some crashes with malformed responses.
+- Add more TACs.
+- Update translations.
+- Update dependencies.
+- Update Compose.
+
 # 1.17.9
 - UI fixes.
 - Update translations.
