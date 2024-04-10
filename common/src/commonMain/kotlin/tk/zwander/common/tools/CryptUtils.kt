@@ -5,7 +5,6 @@ import io.ktor.utils.io.core.internal.*
 import korlibs.crypto.AES
 import korlibs.crypto.CipherPadding
 import korlibs.crypto.MD5
-import korlibs.crypto.encoding.Base64
 import korlibs.io.stream.AsyncInputStream
 import korlibs.io.stream.AsyncOutputStream
 import korlibs.io.util.checksum.CRC32
@@ -13,6 +12,8 @@ import kotlinx.coroutines.*
 import tk.zwander.common.util.Averager
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.streamOperationWithProgress
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.time.*
 
 /**
@@ -106,11 +107,12 @@ object CryptUtils {
      * @param nonce the nonce seed.
      * @return an auth token based on the nonce.
      */
+    @OptIn(ExperimentalEncodingApi::class)
     fun getAuth(nonce: String): String {
         val keyData = nonce.map { (it.code % 16).toByte() }.toByteArray()
         val fKey = getFKey(keyData)
 
-        return Base64.encode(aesEncrypt(nonce.toByteArray(), fKey))
+        return Base64.Default.encode(aesEncrypt(nonce.toByteArray(), fKey))
     }
 
     /**
@@ -118,8 +120,9 @@ object CryptUtils {
      * @param input the nonce to decrypt.
      * @return the decrypted nonce.
      */
+    @OptIn(ExperimentalEncodingApi::class)
     fun decryptNonce(input: String): String {
-        val d = Base64.decode(input)
+        val d = Base64.Default.decode(input)
         return aesDecrypt(d, KEY_1.toByteArray())
             .decodeToString()
     }
