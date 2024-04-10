@@ -37,9 +37,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withAnnotation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
@@ -317,6 +321,7 @@ private suspend fun onFetch(model: DownloadModel) {
 /**
  * The Downloader View.
  */
+@OptIn(ExperimentalTextApi::class)
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
@@ -477,20 +482,34 @@ internal fun DownloadView() {
                     Row {
                         Spacer(Modifier.width(32.dp))
 
-                        Text(
-                            text = stringResource(MR.strings.manualWarning),
-                            color = MaterialTheme.colorScheme.error,
-                        )
+                        val manualWarning = buildAnnotatedString {
+                            withStyle(
+                                SpanStyle(
+                                    color = MaterialTheme.colorScheme.error,
+                                ),
+                            ) {
+                                append(MR.strings.manualWarning())
+                                append(" ")
 
-                        Spacer(Modifier.size(4.dp))
+                                withStyle(
+                                    SpanStyle(textDecoration = TextDecoration.Underline),
+                                ) {
+                                    withAnnotation(UrlAnnotation("https://nothing.com")) {
+                                        append(MR.strings.moreInfo())
+                                    }
+                                }
+                            }
+                        }
 
-                        Text(
-                            text = stringResource(MR.strings.moreInfo),
-                            textDecoration = TextDecoration.Underline,
-                            modifier = Modifier.clickable {
-                                showingRequestWarningDialog = true
+                        ClickableText(
+                            text = manualWarning,
+                            onClick = {
+                                manualWarning.getUrlAnnotations(it, it)
+                                    .firstOrNull()?.let {
+                                        showingRequestWarningDialog = true
+                                    }
                             },
-                            color = MaterialTheme.colorScheme.error,
+                            style = LocalTextStyle.current,
                         )
                     }
 
@@ -508,14 +527,11 @@ internal fun DownloadView() {
                                     )
                                 )
                                 append(" ")
-                                pushStringAnnotation(
-                                    "IssueLink",
-                                    "https://github.com/zacharee/SamloaderKotlin/issues/10"
-                                )
-                                pushStyle(SpanStyle(textDecoration = TextDecoration.Underline))
-                                append(MR.strings.manualWarningDetails2())
-                                pop()
-                                pop()
+                                withAnnotation(UrlAnnotation("https://github.com/zacharee/SamloaderKotlin/issues/10")) {
+                                    withStyle(SpanStyle(textDecoration = TextDecoration.Underline)) {
+                                        append(MR.strings.manualWarningDetails2())
+                                    }
+                                }
                                 append(" ")
                                 append(MR.strings.manualWarningDetails3())
                             }
@@ -525,13 +541,13 @@ internal fun DownloadView() {
                             ClickableText(
                                 text = info,
                                 onClick = {
-                                    info.getStringAnnotations("IssueLink", it, it)
+                                    info.getUrlAnnotations(it, it)
                                         .firstOrNull()?.let { item ->
-                                            UrlHandler.launchUrl(item.item)
+                                            UrlHandler.launchUrl(item.item.url)
                                         }
                                 },
                                 style = textStyle,
-                                modifier = Modifier.verticalScroll(scroll)
+                                modifier = Modifier.verticalScroll(scroll),
                             )
                         },
                         buttons = {
@@ -545,7 +561,7 @@ internal fun DownloadView() {
                         },
                         onDismissRequest = {
                             showingRequestWarningDialog = false
-                        }
+                        },
                     )
                 }
             }

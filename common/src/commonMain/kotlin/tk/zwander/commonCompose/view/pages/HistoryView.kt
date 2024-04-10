@@ -32,9 +32,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withAnnotation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fleeksoft.ksoup.Ksoup
@@ -216,13 +220,15 @@ private suspend fun onFetch(model: HistoryModel) {
 /**
  * The History View.
  */
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalTextApi::class)
 @Composable
 internal fun HistoryView() {
     val model = LocalHistoryModel.current
     val downloadModel = LocalDownloadModel.current
     val decryptModel = LocalDecryptModel.current
     val pagerState = LocalPagerState.current
+    val contentColor = LocalContentColor.current
+    val primaryColor = MaterialTheme.colorScheme.primary
 
     val scope = rememberCoroutineScope()
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
@@ -233,23 +239,26 @@ internal fun HistoryView() {
             && !region.isNullOrBlank() && !hasRunningJobs
 
     val odinRomSource = buildAnnotatedString {
-        pushStyle(
+        withStyle(
             SpanStyle(
-                color = LocalContentColor.current,
-                fontSize = 16.sp
-            )
-        )
-        append(MR.strings.source())
-        append(" ")
-        pushStyle(
-            SpanStyle(
-                color = MaterialTheme.colorScheme.primary,
-                textDecoration = TextDecoration.Underline
-            )
-        )
-        pushStringAnnotation("OdinRomLink", "https://odinrom.com")
-        append(MR.strings.odinRom())
-        pop()
+                color = contentColor,
+                fontSize = 16.sp,
+            ),
+        ) {
+            append(MR.strings.source())
+            append(" ")
+
+            withStyle(
+                SpanStyle(
+                    color = primaryColor,
+                    textDecoration = TextDecoration.Underline,
+                ),
+            ) {
+                withAnnotation(UrlAnnotation("https://odinrom.com")) {
+                    append(MR.strings.odinRom())
+                }
+            }
+        }
     }
 
     val historyItems by model.historyItems.collectAsState()
@@ -341,9 +350,9 @@ internal fun HistoryView() {
                             text = odinRomSource,
                             modifier = Modifier.padding(start = 4.dp),
                             onClick = {
-                                odinRomSource.getStringAnnotations("OdinRomLink", it, it)
+                                odinRomSource.getUrlAnnotations(it, it)
                                     .firstOrNull()?.let { item ->
-                                        UrlHandler.launchUrl(item.item)
+                                        UrlHandler.launchUrl(item.item.url)
                                     }
                             },
                             style = LocalTextStyle.current.copy(LocalContentColor.current),
