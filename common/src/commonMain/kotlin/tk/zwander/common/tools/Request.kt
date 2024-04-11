@@ -6,6 +6,8 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import korlibs.crypto.MD5
 import korlibs.io.serialization.xml.buildXml
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.data.exception.VersionCheckException
@@ -40,24 +42,36 @@ object Request {
         }
     }
 
-    suspend fun performBinaryInformRetry(client: FusClient, fw: String, model: String, region: String, imeiSerial: String, includeNonce: Boolean): Pair<String, Document> {
+    suspend fun performBinaryInformRetry(
+        client: FusClient,
+        fw: String,
+        model: String,
+        region: String,
+        imeiSerial: String,
+        includeNonce: Boolean,
+    ): Pair<String, Document> {
         val splitImeiSerial = imeiSerial.split("\n")
 
         var latestRequest = ""
         var latestResult: Document = Ksoup.parse("")
         var latestError: Throwable? = null
 
-        splitImeiSerial.forEach { imei ->
+        splitImeiSerial.forEachIndexed { index, imei ->
             latestRequest = createBinaryInform(fw, model, region, client.getNonce(), imei)
 
+            if (index % 10 == 0) {
+                delay(1000)
+            }
+
             latestResult = try {
-                val response = client.makeReq(FusClient.Request.BINARY_INFORM, latestRequest, includeNonce)
+                val response =
+                    client.makeReq(FusClient.Request.BINARY_INFORM, latestRequest, includeNonce)
 
                 Ksoup.parse(response)
             } catch (e: Throwable) {
                 latestError = e
                 e.printStackTrace()
-                return@forEach
+                return@forEachIndexed
             }
 
             latestResult.let { result ->
@@ -68,7 +82,7 @@ object Request {
 
                 println("Status for IMEI $imei: $status")
 
-                if (status == "200") {
+                if (status != "408") {
                     return (latestRequest to result)
                 }
             }
@@ -87,7 +101,13 @@ object Request {
      * @param nonce the session nonce.
      * @return the needed XML.
      */
-    fun createBinaryInform(fw: String, model: String, region: String, nonce: String, imeiSerial: String): String {
+    fun createBinaryInform(
+        fw: String,
+        model: String,
+        region: String,
+        nonce: String,
+        imeiSerial: String
+    ): String {
         val split = fw.split("/")
         val (pda, csc, phone, data) = Array(4) { split.getOrNull(it) }
         val logicCheck = try {
@@ -399,7 +419,8 @@ object Request {
                 }
                 val servedPda = pdaFile?.split("_")?.getOrNull(pdaIndex ?: -1)
 
-                val served = "$version/${servedCsc ?: versionSuffix}/${servedCp ?: version}/${servedPda ?: version}"
+                val served =
+                    "$version/${servedCsc ?: versionSuffix}/${servedCp ?: version}/${servedPda ?: version}"
 
                 val cscSuffixMatch = fwCscSuffix == cscSuffix
                 val cpSuffixMatch = fwCpSuffix == cpSuffix
