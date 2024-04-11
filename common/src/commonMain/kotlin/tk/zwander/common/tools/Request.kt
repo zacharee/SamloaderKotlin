@@ -6,7 +6,6 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import korlibs.crypto.MD5
 import korlibs.io.serialization.xml.buildXml
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
