@@ -125,7 +125,10 @@ private suspend fun onDownload(
     if (error != null && error !is VersionException) {
         Exception(error).printStackTrace()
         model.endJob("${error.message ?: MR.strings.error()}\n\n${output}")
-        if (result.isReportableCode() && !model.model.value.isAccessoryModel && !output.contains("Incapsula")) {
+        if (result.isReportableCode() &&
+            !model.model.value.isAccessoryModel &&
+            !output.contains("Incapsula") &&
+            error !is CancellationException) {
             CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
         }
         eventManager.sendEvent(Event.Download.Finish)
