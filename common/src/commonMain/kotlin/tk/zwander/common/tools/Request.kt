@@ -220,6 +220,7 @@ object Request {
                     error = Exception(MR.strings.invalidFirmwareError()),
                     rawOutput = responseXml.toString(),
                     requestBody = request,
+                    responseCode = status,
                 )
             }
 
@@ -228,6 +229,7 @@ object Request {
                     error = Exception(MR.strings.invalid_imei_or_serial()),
                     rawOutput = responseXml.toString(),
                     requestBody = request,
+                    responseCode = status,
                 )
             }
 
@@ -236,6 +238,7 @@ object Request {
                     error = Exception(MR.strings.badReturnStatus(status.toString())),
                     rawOutput = responseXml.toString(),
                     requestBody = request,
+                    responseCode = status,
                 )
             }
 
@@ -244,6 +247,7 @@ object Request {
                     error = Exception(MR.strings.noBinaryFile(model, region)),
                     rawOutput = responseXml.toString(),
                     requestBody = request,
+                    responseCode = status,
                 )
             }
 
@@ -340,6 +344,7 @@ object Request {
                     info = generateInfo(),
                     error = VersionCheckException(MR.strings.versionCheckError()),
                     requestBody = request,
+                    responseCode = status,
                 )
             }
 
@@ -406,6 +411,7 @@ object Request {
                         info = generateInfo(),
                         error = VersionMismatchException(MR.strings.versionMismatch(fw, served)),
                         requestBody = request,
+                        responseCode = status,
                     )
                 }
             }
@@ -413,6 +419,7 @@ object Request {
             return FetchResult.GetBinaryFileResult(
                 info = generateInfo(),
                 requestBody = request,
+                responseCode = status,
             )
         } catch (e: Exception) {
             return FetchResult.GetBinaryFileResult(

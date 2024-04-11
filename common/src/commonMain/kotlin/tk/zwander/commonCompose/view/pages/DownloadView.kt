@@ -70,6 +70,7 @@ import tk.zwander.common.util.Event
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
+import tk.zwander.common.util.isAccessoryModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.commonCompose.util.ThemeConstants
@@ -111,7 +112,7 @@ private suspend fun onDownload(
     eventManager.sendEvent(Event.Download.Start)
     model.statusText.value = MR.strings.downloading()
 
-    val (info, error, output, requestBody) = Request.getBinaryFile(
+    val result = Request.getBinaryFile(
         client,
         model.fw.value ?: "",
         model.model.value ?: "",
@@ -119,10 +120,14 @@ private suspend fun onDownload(
         model.imeiSerial.value ?: "",
     )
 
+    val (info, error, output, requestBody) = result
+
     if (error != null && error !is VersionException) {
         Exception(error).printStackTrace()
         model.endJob("${error.message ?: MR.strings.error()}\n\n${output}")
-        CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
+        if (result.isReportableCode() && !model.model.value.isAccessoryModel) {
+            CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
+        }
         eventManager.sendEvent(Event.Download.Finish)
     } else {
         if (error is VersionException) {
@@ -573,7 +578,7 @@ internal fun DownloadView() {
             }
 
             AnimatedVisibility(
-                visible = modelModel?.startsWith("SM-R") == true,
+                visible = modelModel.isAccessoryModel,
                 enter = fadeIn() + expandIn(expandFrom = Alignment.CenterStart),
                 exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterStart),
             ) {
