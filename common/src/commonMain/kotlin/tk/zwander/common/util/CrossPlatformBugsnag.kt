@@ -3,6 +3,8 @@ package tk.zwander.common.util
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.HttpRequestTimeoutException
+import kotlinx.coroutines.CancellationException
+import tk.zwander.common.exceptions.DownloadError
 
 object CrossPlatformBugsnag {
     fun notify(e: Throwable) {
@@ -22,6 +24,24 @@ object CrossPlatformBugsnag {
 
         if (e is kotlin.coroutines.cancellation.CancellationException) {
             return
+        }
+
+        if (e is DownloadError) {
+            if (e.cause is SocketTimeoutException) {
+                return
+            }
+
+            if (e.cause is CancellationException) {
+                return
+            }
+
+            if (e.cause is HttpRequestTimeoutException) {
+                return
+            }
+
+            if (e.cause is ConnectTimeoutException) {
+                return
+            }
         }
 
         BugsnagUtils.notify(e)
