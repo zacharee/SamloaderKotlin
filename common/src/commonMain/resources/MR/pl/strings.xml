@@ -114,4 +114,17 @@
     <string name="manualWarningDetails2">pod tym adresem</string>
     <string name="notification_finished_channel_text">Zadanie zostało ukończone!</string>
     <string name="invalid_imei_or_serial">Podano nieprawidłowy numer IMEI lub numer seryjny! Jeśli skopiowano wartość ze swojego urządzenia, upewnij się, że została wprowadzona poprawnie. Jeśli Bifrost wygenerował dla Ciebie numery IMEI, otwórz zgłoszenie na GitHubie, podając model, region i TAC prawdziwego urządzenia (jeśli je posiadasz).</string>
+    <string name="february_short">Feb</string>
+    <string name="march_short">Mar</string>
+    <string name="october_short">Oct</string>
+    <string name="may_short">May</string>
+    <string name="august_short">Aug</string>
+    <string name="january_short">Jan</string>
+    <string name="june_short">Jun</string>
+    <string name="april_short">Apr</string>
+    <string name="july_short">Jul</string>
+    <string name="september_short">Sep</string>
+    <string name="invalid_model">Warning! Bifrost can\'t download firmware for watches or other accessories. Only phones and tablets are supported.</string>
+    <string name="december_short">Dec</string>
+    <string name="november_short">Nov</string>
 </resources>
