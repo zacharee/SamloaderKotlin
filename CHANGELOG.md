@@ -1,3 +1,10 @@
+# 1.17.11
+- Fix cleartext errors on Android.
+- Fix some more issues with served version check.
+- Add some rate limiting to try to avoid Samsung's captcha when iterating through generated IMEIs.
+- Update translations.
+- Reduce error reporting.
+
 # 1.17.10
 - Download and decrypt speeds should be improved in most cases.
 - Fix an issue where the served version check would fail and cause the download to fail.
