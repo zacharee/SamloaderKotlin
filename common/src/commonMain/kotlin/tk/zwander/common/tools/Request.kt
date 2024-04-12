@@ -421,12 +421,16 @@ object Request {
                 val served =
                     "$version/${servedCsc ?: versionSuffix}/${servedCp ?: version}/${servedPda ?: version}"
 
-                val cscSuffixMatch = fwCscSuffix == cscSuffix
-                val cpSuffixMatch = fwCpSuffix == cpSuffix
+                val cscMatch = fwCsc == servedCsc
+                val cpMatch = fwCp == servedCp
                 val fwVersionMatch = fwVersion == version
                 val fwPdaMatch = fwPda == servedPda
 
-                if (served != fw || !cscSuffixMatch || !cpSuffixMatch || !fwVersionMatch || !fwPdaMatch) {
+                val cscSuffixMatch = if (fwCscSuffix != null) fwCscSuffix == cscSuffix else true
+                val cpSuffixMatch = if (fwCpSuffix != null) fwCpSuffix == cpSuffix else true
+
+                if (served != fw || !cscMatch || !cpMatch || !fwVersionMatch ||
+                    !fwPdaMatch || !cscSuffixMatch || !cpSuffixMatch) {
                     return FetchResult.GetBinaryFileResult(
                         info = generateInfo(),
                         error = VersionMismatchException(MR.strings.versionMismatch(fw, served)),
