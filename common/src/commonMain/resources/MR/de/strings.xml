@@ -121,4 +121,17 @@
     <string name="notification_finished_channel_name">Abgeschlossen</string>
     <string name="notification_finished_channel_text">Eine Aufgabe wurde abgeschlossen!</string>
     <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
+    <string name="february_short">Feb</string>
+    <string name="march_short">Mar</string>
+    <string name="october_short">Oct</string>
+    <string name="may_short">May</string>
+    <string name="august_short">Aug</string>
+    <string name="january_short">Jan</string>
+    <string name="june_short">Jun</string>
+    <string name="april_short">Apr</string>
+    <string name="july_short">Jul</string>
+    <string name="september_short">Sep</string>
+    <string name="invalid_model">Warning! Bifrost can\'t download firmware for watches or other accessories. Only phones and tablets are supported.</string>
+    <string name="december_short">Dec</string>
+    <string name="november_short">Nov</string>
 </resources>
