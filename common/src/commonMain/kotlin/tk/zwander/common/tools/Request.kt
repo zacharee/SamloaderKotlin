@@ -11,6 +11,7 @@ import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.data.exception.VersionCheckException
 import tk.zwander.common.data.exception.VersionMismatchException
+import tk.zwander.common.exceptions.NoBinaryFileError
 import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.dataNode
 import tk.zwander.common.util.firstElementByTagName
@@ -263,7 +264,7 @@ object Request {
 
             val noBinaryError = {
                 FetchResult.GetBinaryFileResult(
-                    error = Exception(MR.strings.noBinaryFile(model, region)),
+                    error = NoBinaryFileError(model, region),
                     rawOutput = responseXml.toString(),
                     requestBody = request,
                     responseCode = status,

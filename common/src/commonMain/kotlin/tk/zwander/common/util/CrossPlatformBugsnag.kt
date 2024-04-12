@@ -5,6 +5,7 @@ import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import kotlinx.coroutines.CancellationException
 import tk.zwander.common.exceptions.DownloadError
+import tk.zwander.common.exceptions.NoBinaryFileError
 
 object CrossPlatformBugsnag {
     fun notify(e: Throwable) {
@@ -40,6 +41,10 @@ object CrossPlatformBugsnag {
             }
 
             if (e.cause is ConnectTimeoutException) {
+                return
+            }
+
+            if (e.cause is NoBinaryFileError) {
                 return
             }
         }
