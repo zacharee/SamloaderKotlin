@@ -19,7 +19,6 @@ import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import io.ktor.utils.io.core.toByteArray
 import io.ktor.utils.io.core.use
 import io.ktor.utils.io.jvm.nio.copyTo
-import kotlinx.coroutines.CoroutineScope
 import okio.BufferedSink
 import tk.zwander.common.util.client
 import tk.zwander.common.util.firstElementByTagName
@@ -158,6 +157,8 @@ class FusClient(
             }
             timeout {
                 this.requestTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
+                this.socketTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
+                this.connectTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
             }
         }
 
