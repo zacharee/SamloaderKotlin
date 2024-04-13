@@ -315,25 +315,7 @@ object Request {
                     ?.text()?.toLongOrNull()
 
                 val v4Key = try {
-                    val fwVer = responseXml.firstElementByTagName("FUSBody")
-                        ?.firstElementByTagName("Results")
-                        ?.firstElementByTagName("LATEST_FW_VERSION")
-                        ?.firstElementByTagName("Data")
-                        ?.text()!!
-
-                    val logicVal = responseXml.firstElementByTagName("FUSBody")
-                        ?.firstElementByTagName("Put")
-                        .run {
-                            this?.firstElementByTagName("LOGIC_VALUE_FACTORY")
-                                ?.firstElementByTagName("Data")
-                                ?.text() ?: this?.firstElementByTagName("LOGIC_VALUE_HOME")
-                                ?.firstElementByTagName("Data")
-                                ?.text()!!
-                        }
-
-                    val decKey = getLogicCheck(fwVer, logicVal)
-
-                    MD5.digest(decKey.toByteArray()).bytes
+                    responseXml.extractV4Key()
                 } catch (e: Exception) {
                     null
                 }
@@ -454,4 +436,27 @@ object Request {
             )
         }
     }
+}
+
+fun Document.extractV4Key(): ByteArray {
+    val fwVer = firstElementByTagName("FUSBody")
+        ?.firstElementByTagName("Results")
+        ?.firstElementByTagName("LATEST_FW_VERSION")
+        ?.firstElementByTagName("Data")
+        ?.text()!!
+
+    val logicVal = firstElementByTagName("FUSBody")
+        ?.firstElementByTagName("Put")
+        .run {
+            this?.firstElementByTagName("LOGIC_VALUE_FACTORY")
+                ?.firstElementByTagName("Data")
+                ?.text() ?:
+            this?.firstElementByTagName("LOGIC_VALUE_HOME")
+                ?.firstElementByTagName("Data")
+                ?.text()!!
+        }
+
+    val decKey = Request.getLogicCheck(fwVer, logicVal)
+
+    return MD5.digest(decKey.toByteArray()).bytes
 }

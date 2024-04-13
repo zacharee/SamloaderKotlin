@@ -11,7 +11,6 @@ import kotlinx.coroutines.withContext
 import okio.BufferedSink
 import okio.BufferedSource
 import tk.zwander.common.util.DEFAULT_CHUNK_SIZE
-import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.streamOperationWithProgress
 import tk.zwander.common.util.trackOperationProgress
 import kotlin.io.encoding.Base64
@@ -141,26 +140,7 @@ object CryptUtils {
         val (_, responseXml) = Request.performBinaryInformRetry(client, version.uppercase(), model, region, imeiSerial, true)
 
         return try {
-            val fwVer = responseXml.firstElementByTagName("FUSBody")
-                ?.firstElementByTagName("Results")
-                ?.firstElementByTagName("LATEST_FW_VERSION")
-                ?.firstElementByTagName("Data")
-                ?.text()!!
-
-            val logicVal = responseXml.firstElementByTagName("FUSBody")
-                ?.firstElementByTagName("Put")
-                .run {
-                    this?.firstElementByTagName("LOGIC_VALUE_FACTORY")
-                        ?.firstElementByTagName("Data")
-                        ?.text() ?:
-                    this?.firstElementByTagName("LOGIC_VALUE_HOME")
-                        ?.firstElementByTagName("Data")
-                        ?.text()!!
-                }
-
-            val decKey = Request.getLogicCheck(fwVer, logicVal)
-
-            return MD5.digest(decKey.toByteArray()).bytes
+            responseXml.extractV4Key()
         } catch (e: Exception) {
             if (tries > 4) {
                 throw e

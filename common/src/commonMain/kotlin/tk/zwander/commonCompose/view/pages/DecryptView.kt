@@ -65,6 +65,7 @@ private suspend fun onDecrypt(model: DecryptModel) {
                 model.imeiSerial.value ?: "",
             )
         } catch (e: Throwable) {
+            println("Unable to retrieve v4 key ${e.message}.")
             model.endJob(MR.strings.decryptError(e.message.toString()))
             return
         }
@@ -73,6 +74,7 @@ private suspend fun onDecrypt(model: DecryptModel) {
     val inputStream = try {
         inputFile.openInputStream() ?: return
     } catch (e: Throwable) {
+        println("Unable to open input file ${e.message}.")
         model.endJob(MR.strings.decryptError(e.message.toString()))
         return
     }
@@ -80,6 +82,7 @@ private suspend fun onDecrypt(model: DecryptModel) {
     val outputStream = try {
         outputFile.openOutputStream() ?: return
     } catch (e: Throwable) {
+        println("Unable to open output file ${e.message}.")
         model.endJob(MR.strings.decryptError(e.message.toString()))
         return
     }
