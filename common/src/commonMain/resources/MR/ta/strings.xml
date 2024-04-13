@@ -134,4 +134,8 @@
     <string name="invalid_model">Warning! Bifrost can\'t download firmware for watches or other accessories. Only phones and tablets are supported.</string>
     <string name="december_short">Dec</string>
     <string name="november_short">Nov</string>
+    <string name="decryption_key">Decryption Key</string>
+    <string name="enable_offline_decryption">Offline Decryption</string>
+    <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect.</string>
+    <string name="decryption_key_help">If you know the decryption key for the file you\'re trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung\'s servers.</string>
 </resources>
