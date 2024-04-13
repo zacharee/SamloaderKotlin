@@ -128,7 +128,8 @@ private suspend fun onDownload(
         if (result.isReportableCode() &&
             !model.model.value.isAccessoryModel &&
             !output.contains("Incapsula") &&
-            error !is CancellationException
+            error !is CancellationException &&
+            model.manual.value != true
         ) {
             CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
         }
