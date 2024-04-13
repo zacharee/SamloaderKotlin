@@ -438,7 +438,7 @@ object Request {
     }
 }
 
-fun Document.extractV4Key(): ByteArray {
+fun Document.extractV4Key(): Pair<ByteArray, String> {
     val fwVer = firstElementByTagName("FUSBody")
         ?.firstElementByTagName("Results")
         ?.firstElementByTagName("LATEST_FW_VERSION")
@@ -458,5 +458,5 @@ fun Document.extractV4Key(): ByteArray {
 
     val decKey = Request.getLogicCheck(fwVer, logicVal)
 
-    return MD5.digest(decKey.toByteArray()).bytes
+    return MD5.digest(decKey.toByteArray()).bytes to decKey
 }

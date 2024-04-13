@@ -52,6 +52,7 @@ sealed class Event {
     sealed class Download : Event() {
         data class GetInput(
             val fileName: String,
+            val decryptKeyFileName: String?,
             val callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit,
         ) : Download()
         data class Progress(

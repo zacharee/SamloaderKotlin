@@ -136,7 +136,7 @@ object CryptUtils {
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV4Key(client: FusClient, version: String, model: String, region: String, imeiSerial: String, tries: Int = 0): ByteArray {
+    suspend fun getV4Key(client: FusClient, version: String, model: String, region: String, imeiSerial: String, tries: Int = 0): Pair<ByteArray, String> {
         val (_, responseXml) = Request.performBinaryInformRetry(client, version.uppercase(), model, region, imeiSerial, true)
 
         return try {
@@ -158,9 +158,9 @@ object CryptUtils {
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV2Key(version: String, model: String, region: String): ByteArray {
+    suspend fun getV2Key(version: String, model: String, region: String): Pair<ByteArray, String> {
         val decKey = "${region}:${model}:${version}"
-        return MD5.digest(decKey.toByteArray()).bytes
+        return MD5.digest(decKey.toByteArray()).bytes to decKey
     }
 
     /**

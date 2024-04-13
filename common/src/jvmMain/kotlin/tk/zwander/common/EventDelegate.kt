@@ -45,11 +45,19 @@ object EventDelegate : EventManager.EventListener {
                                 .replace(".enc4", ""),
                         )
 
+                        val decKeyFile = event.decryptKeyFileName?.let {
+                            PlatformFile(
+                                file.getParent()!!,
+                                event.decryptKeyFileName,
+                            )
+                        }
+
                         event.callback(
                             this,
                             DownloadFileInfo(
                                 file,
-                                decFile
+                                decFile,
+                                decKeyFile,
                             ),
                         )
                     }

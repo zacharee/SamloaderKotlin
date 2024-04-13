@@ -15,5 +15,6 @@ data class DecryptFileInfo(
  */
 data class DownloadFileInfo(
     val downloadFile: IPlatformFile,
-    val decryptFile: IPlatformFile
+    val decryptFile: IPlatformFile,
+    val decryptKeyFile: IPlatformFile?,
 )

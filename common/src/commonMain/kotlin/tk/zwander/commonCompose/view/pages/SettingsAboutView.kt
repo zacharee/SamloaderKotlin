@@ -103,6 +103,11 @@ val options = arrayListOf<IOptionItem>().apply {
         desc = MR.strings.autoDeleteEncryptedFirmwareDesc,
         key = BifrostSettings.Keys.autoDeleteEncryptedFirmware,
     ))
+    add(IOptionItem.BasicOptionItem.BooleanItem(
+        label = MR.strings.enable_offline_decryption,
+        desc = MR.strings.enable_offline_decryption_desc,
+        key = BifrostSettings.Keys.enableDecryptKeySave,
+    ))
     add(IOptionItem.ActionOptionItem(
         label = MR.strings.removeSavedData,
         desc = MR.strings.removeSavedDataDesc,

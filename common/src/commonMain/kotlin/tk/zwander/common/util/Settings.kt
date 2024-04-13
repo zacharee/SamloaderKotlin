@@ -42,6 +42,7 @@ object BifrostSettings {
         val autoDeleteEncryptedFirmware =
             SettingsKey.Boolean("autoDeleteEncryptedFirmware", false, settings)
         val bugsnagUuid = SettingsKey.String("bugsnag_user_id", null, settings)
+        val enableDecryptKeySave = SettingsKey.Boolean("enable_decryption_key_download", false, settings)
     }
 
     val settings = ObservableBifrostSettings(ObservableSettings())

@@ -128,7 +128,8 @@ private suspend fun onDownload(
         if (result.isReportableCode() &&
             !model.model.value.isAccessoryModel &&
             !output.contains("Incapsula") &&
-            error !is CancellationException) {
+            error !is CancellationException
+        ) {
             CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
         }
         eventManager.sendEvent(Event.Download.Finish)
@@ -167,10 +168,33 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
             "_${model.fw.value?.replace("/", "_")}_${model.region.value}.zip",
         )
 
+        val decryptionKeyFileName = if (BifrostSettings.Keys.enableDecryptKeySave() == true) {
+            "DecryptionKey_${fullFileName}.txt"
+        } else {
+            null
+        }
+
         eventManager.sendEvent(
-            Event.Download.GetInput(fullFileName) { inputInfo ->
+            Event.Download.GetInput(fullFileName, decryptionKeyFileName) { inputInfo ->
                 if (inputInfo != null) {
-                    val outputStream = inputInfo.downloadFile.openOutputStream(true) ?: return@GetInput
+                    inputInfo.decryptKeyFile?.openOutputStream(false)?.use { output ->
+                        if (fullFileName.endsWith(".enc2")) {
+                            output.write(
+                                CryptUtils.getV2Key(
+                                    model.fw.value ?: "",
+                                    model.model.value ?: "",
+                                    model.region.value ?: "",
+                                ).second.toByteArray(),
+                            )
+                        }
+
+                        v4Key?.let {
+                            output.write(v4Key.second.toByteArray())
+                        }
+                    }
+
+                    val outputStream =
+                        inputInfo.downloadFile.openOutputStream(true) ?: return@GetInput
                     val md5 = try {
                         client.downloadFile(
                             path + fileName,
@@ -250,18 +274,20 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                     model.statusText.value = MR.strings.decrypting()
 
                     val key =
-                        if (fullFileName.endsWith(".enc2")) CryptUtils.getV2Key(
-                            model.fw.value ?: "",
-                            model.model.value ?: "",
-                            model.region.value ?: "",
-                        ) else {
-                            v4Key ?: CryptUtils.getV4Key(
+                        if (fullFileName.endsWith(".enc2")) {
+                            CryptUtils.getV2Key(
+                                model.fw.value ?: "",
+                                model.model.value ?: "",
+                                model.region.value ?: "",
+                            ).first
+                        } else {
+                            v4Key?.first ?: CryptUtils.getV4Key(
                                 client,
                                 model.fw.value ?: "",
                                 model.model.value ?: "",
                                 model.region.value ?: "",
                                 model.imeiSerial.value ?: "",
-                            )
+                            ).first
                         }
 
                     CryptUtils.decryptProgress(

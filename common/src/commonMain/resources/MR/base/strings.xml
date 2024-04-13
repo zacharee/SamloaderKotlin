@@ -235,4 +235,15 @@
     <string name="october_short">Oct</string>
     <string name="november_short">Nov</string>
     <string name="december_short">Dec</string>
+
+    <!-- An option to allow the user to save a decryption key when downloading firmware. -->
+    <string name="enable_offline_decryption">Offline Decryption</string>
+    <!-- An option to allow the user to save a decryption key when downloading firmware. -->
+    <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect.</string>
+
+    <!-- Hint text for the field where the user should enter a known decryption key for offline decryption. -->
+    <string name="decryption_key">Decryption Key</string>
+
+    <!-- Detailed explanation for the decryption key text field on the Decrypter page. -->
+    <string name="decryption_key_help">If you know the decryption key for the file you\'re trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung\'s servers.</string>
 </resources>

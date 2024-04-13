@@ -168,11 +168,16 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                 val dec =
                     dir.findFile(decName) ?: dir.createFile("application/zip", decName) ?: return
 
+                val decKey = event.decryptKeyFileName?.let {
+                    dir.findFile(event.decryptKeyFileName) ?: dir.createFile("text/plain", event.decryptKeyFileName)
+                }
+
                 event.callback(
                     this,
                     DownloadFileInfo(
                         PlatformUriFile(this@MainActivity, enc),
-                        PlatformUriFile(this@MainActivity, dec)
+                        PlatformUriFile(this@MainActivity, dec),
+                        decKey?.let { PlatformUriFile(this@MainActivity, it) },
                     )
                 )
             }
