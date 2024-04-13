@@ -1,3 +1,10 @@
+# 1.18.0
+- Add setting to save firmware decryption key during download that can be used for offline decryption later on.
+- Add "Decryption Key" field to Decrypter field that can be used to decrypt offline.
+- Work on online decrypt request cleanups.
+- Update TACs.
+- Update Translations.
+
 # 1.17.11
 - Fix cleartext errors on Android.
 - Fix some more issues with served version check.
