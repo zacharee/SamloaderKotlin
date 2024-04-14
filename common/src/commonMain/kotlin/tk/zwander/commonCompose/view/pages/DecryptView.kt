@@ -190,7 +190,7 @@ internal fun DecryptView() {
                         },
                     )
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 startRatio = 0.6,
                 endRatio = 0.4,
             )
