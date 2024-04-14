@@ -170,9 +170,7 @@ class FusClient(
                 size = size,
                 progressCallback = progressCallback,
                 operation = {
-                    channel.copyTo(output, 1024 * 256L).also {
-                        output.flush()
-                    }
+                    channel.copyTo(output, 1024 * 256L)
                 },
                 progressOffset = outputSize,
                 condition = { !channel.isClosedForRead },
