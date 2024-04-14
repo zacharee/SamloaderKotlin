@@ -1,5 +1,6 @@
 package tk.zwander.commonCompose.view.pages
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -10,16 +11,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -30,8 +30,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.UrlAnnotation
@@ -157,16 +157,6 @@ internal fun HistoryView() {
                                 parentSize = constraints.maxWidth
                             )
 
-                            if (hasRunningJobs) {
-                                Spacer(Modifier.width(8.dp))
-
-                                CircularProgressIndicator(
-                                    modifier = Modifier.size(24.dp)
-                                        .align(Alignment.CenterVertically),
-                                    strokeWidth = 2.dp
-                                )
-                            }
-
                             Spacer(Modifier.weight(1f))
 
                             HybridButton(
@@ -191,7 +181,6 @@ internal fun HistoryView() {
                     ) {
                         ClickableText(
                             text = odinRomSource,
-                            modifier = Modifier.padding(start = 4.dp),
                             onClick = {
                                 odinRomSource.getUrlAnnotations(it, it)
                                     .firstOrNull()?.let { item ->
@@ -204,6 +193,23 @@ internal fun HistoryView() {
                         Spacer(Modifier.weight(1f))
 
                         Text(text = statusText)
+                    }
+
+                    AnimatedVisibility(
+                        visible = hasRunningJobs,
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Spacer(modifier = Modifier.size(8.dp))
+
+                            LinearProgressIndicator(
+                                modifier = Modifier.height(16.dp)
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(8.dp)),
+                            )
+                        }
                     }
                 }
             }
