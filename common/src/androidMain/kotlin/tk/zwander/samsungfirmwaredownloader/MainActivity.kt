@@ -146,7 +146,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                 }
 
                 if (inputUri == null) {
-                    event.callback(this, null)
+                    event.callback(null)
                     return
                 }
 
@@ -162,7 +162,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                 val enc = dir.findFile(event.fileName)
                     ?: dir.createFile("application/octet-stream", event.fileName)
                     ?: run {
-                        event.callback(this, null)
+                        event.callback(null)
                         return
                     }
                 val dec =
@@ -173,7 +173,6 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                 }
 
                 event.callback(
-                    this,
                     DownloadFileInfo(
                         PlatformUriFile(this@MainActivity, enc),
                         PlatformUriFile(this@MainActivity, dec),
@@ -188,18 +187,18 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                 }
 
                 if (inputUri == null) {
-                    event.callback(this, null)
+                    event.callback(null)
                     return
                 }
 
                 val inputFile =
                     DocumentFile.fromSingleUri(this@MainActivity, inputUri) ?: run {
-                        event.callback(this, null)
+                        event.callback(null)
                         return
                     }
 
                 if (inputFile.name == null) {
-                    event.callback(this, null)
+                    event.callback(null)
                     return
                 }
 
@@ -213,18 +212,17 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
                 }
 
                 if (outputUri == null) {
-                    event.callback(this, null)
+                    event.callback(null)
                     return
                 }
 
                 val outputFile =
                     DocumentFile.fromSingleUri(this@MainActivity, outputUri) ?: run {
-                        event.callback(this, null)
+                        event.callback(null)
                         return
                     }
 
                 event.callback(
-                    this,
                     DecryptFileInfo(
                         PlatformUriFile(this@MainActivity, inputFile),
                         PlatformUriFile(this@MainActivity, outputFile)
