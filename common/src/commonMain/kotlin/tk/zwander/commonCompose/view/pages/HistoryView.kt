@@ -23,7 +23,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -77,7 +76,6 @@ internal fun HistoryView() {
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
     val modelModel by model.model.collectAsState()
     val region by model.region.collectAsState()
-    val statusText by model.statusText.collectAsState()
     val canCheckHistory = !modelModel.isNullOrBlank()
             && !region.isNullOrBlank() && !hasRunningJobs
 
@@ -189,10 +187,6 @@ internal fun HistoryView() {
                             },
                             style = LocalTextStyle.current.copy(LocalContentColor.current),
                         )
-
-                        Spacer(Modifier.weight(1f))
-
-                        Text(text = statusText)
                     }
 
                     AnimatedVisibility(
