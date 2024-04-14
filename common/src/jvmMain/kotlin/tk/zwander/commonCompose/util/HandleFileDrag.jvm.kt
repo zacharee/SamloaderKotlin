@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalComposeUiApi::class)
-
-package tk.zwander.commonCompose.view.pages
+package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.DragData
@@ -12,6 +10,7 @@ import tk.zwander.common.data.PlatformFile
 import java.net.URI
 import kotlin.io.path.toPath
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 actual fun Modifier.handleFileDrag(
     enabled: Boolean,
@@ -29,6 +28,7 @@ actual fun Modifier.handleFileDrag(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 private fun ExternalDragValue.extractFile(): PlatformFile? {
     return try {
         val filesList = dragData as? DragData.FilesList?

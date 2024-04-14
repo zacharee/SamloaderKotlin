@@ -1,4 +1,4 @@
-package tk.zwander.commonCompose.view.pages
+package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

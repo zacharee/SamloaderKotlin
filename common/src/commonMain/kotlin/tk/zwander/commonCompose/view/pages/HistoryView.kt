@@ -41,28 +41,17 @@ import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.fleeksoft.ksoup.Ksoup
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.launch
-import kotlinx.datetime.format.DateTimeComponents
-import kotlinx.datetime.format.Padding
-import kotlinx.datetime.format.char
 import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
-import tk.zwander.common.data.HistoryInfo
-import tk.zwander.common.util.ChangelogHandler
-import tk.zwander.common.util.CrossPlatformBugsnag
+import tk.zwander.common.tools.delegates.History
 import tk.zwander.common.util.UrlHandler
-import tk.zwander.common.util.firstElementByTagName
-import tk.zwander.common.util.getFirmwareHistoryString
-import tk.zwander.common.util.getFirmwareHistoryStringFromSamsung
 import tk.zwander.common.util.invoke
-import tk.zwander.common.util.makeFirmwareString
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
-import tk.zwander.commonCompose.model.HistoryModel
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.components.HistoryItem
@@ -70,175 +59,6 @@ import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.samloaderkotlin.resources.MR
-
-private fun parseHistoryXml(xml: String): List<HistoryInfo> {
-    val doc = Ksoup.parse(xml)
-
-    val latest = doc.firstElementByTagName("firmware")?.firstElementByTagName("version")?.firstElementByTagName("latest")
-    val historical = doc.firstElementByTagName("firmware")?.firstElementByTagName("version")?.firstElementByTagName("upgrade")
-        ?.getElementsByTag("value")
-
-    println(historical)
-
-    val items = arrayListOf<HistoryInfo>()
-
-    fun parseFirmware(string: String): String {
-        val firmwareParts = string.split("/").filterNot { it.isBlank() }.toMutableList()
-
-        if (firmwareParts.size == 2) {
-            firmwareParts.add(firmwareParts[0])
-            firmwareParts.add(firmwareParts[0])
-        }
-
-        if (firmwareParts.size == 3) {
-            firmwareParts.add(firmwareParts[0])
-        }
-
-        return firmwareParts.joinToString("/")
-    }
-
-    latest?.apply {
-        val androidVersion = latest.attribute("o")?.value
-
-        items.add(
-            HistoryInfo(
-                date = null,
-                androidVersion = androidVersion,
-                firmwareString = parseFirmware(latest.text())
-            )
-        )
-    }
-
-    historical?.apply {
-        items.addAll(
-            mapNotNull {
-                val firmware = parseFirmware(it.text())
-
-                if (firmware.isNotBlank()) {
-                    HistoryInfo(
-                        date = null,
-                        androidVersion = null,
-                        firmwareString = firmware
-                    )
-                } else {
-                    null
-                }
-            }.sortedByDescending {
-                it.firmwareString.let { f ->
-                    f.substring(f.lastIndex - 3)
-                }
-            }
-        )
-    }
-
-    return items
-}
-
-private fun parseHistory(body: String): List<HistoryInfo> {
-    val doc = Ksoup.parse(body)
-
-    val listItems = doc.select(".index_list").apply {
-        removeAt(0)
-    }
-
-    return listItems.map {
-        val cols = it.select(".index_body_list")
-        val date = cols[6].text()
-        val version = cols[5].text()
-
-        val link = cols[0].children()[0].children().attr("href")
-        val split = link.split("-")
-
-        val pda = split[split.lastIndex - 1]
-        val csc = split[split.lastIndex].split(".")[0]
-
-        val formats = arrayOf(
-            DateTimeComponents.Format {
-                year()
-                char('/')
-                monthNumber(Padding.NONE)
-                char('/')
-                dayOfMonth(Padding.NONE)
-            },
-            DateTimeComponents.Format {
-                year()
-                char('-')
-                monthNumber(Padding.NONE)
-                char('-')
-                dayOfMonth(Padding.NONE)
-            },
-            DateTimeComponents.Format {
-                monthNumber(Padding.NONE)
-                char('/')
-                dayOfMonth(Padding.NONE)
-                char('/')
-                year()
-            },
-        )
-
-        val parsed = formats.firstNotNullOfOrNull { format ->
-            try {
-                format.parse(date).toLocalDate()
-            } catch (e: Exception) {
-                null
-            }
-        }
-
-        HistoryInfo(
-            parsed ?: throw IllegalArgumentException("Invalid date format $date"),
-            version,
-            makeFirmwareString(pda, csc)
-        )
-    }
-}
-
-private suspend fun onFetch(model: HistoryModel) {
-    try {
-        val historyString = getFirmwareHistoryString(model.model.value ?: "", model.region.value ?: "")
-        val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value ?: "", model.region.value ?: "")
-
-        if (historyString == null && historyStringXml == null) {
-            model.endJob(MR.strings.historyError())
-        } else {
-            try {
-                val parsed = when {
-                    historyString != null -> {
-                        parseHistory(historyString)
-                    }
-
-                    historyStringXml != null -> {
-                        parseHistoryXml(historyStringXml)
-                    }
-
-                    else -> {
-                        model.endJob(MR.strings.historyError())
-                        return
-                    }
-                }
-
-                model.changelogs.value = try {
-                    ChangelogHandler.getChangelogs(
-                        model.model.value ?: "",
-                        model.region.value ?: ""
-                    )
-                } catch (e: Exception) {
-                    println("Error retrieving changelogs")
-                    e.printStackTrace()
-                    null
-                }
-                model.historyItems.value = parsed
-                model.endJob("")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                model.endJob(MR.strings.historyErrorFormat(e.message.toString()))
-            }
-        }
-    } catch (e: Throwable) {
-        CrossPlatformBugsnag.notify(e)
-
-        model.endJob("${MR.strings.historyError()}${e.message?.let { "\n\n$it" }}")
-    }
-}
 
 /**
  * The History View.
@@ -327,7 +147,7 @@ internal fun HistoryView() {
                                     model.historyItems.value = listOf()
 
                                     model.launchJob {
-                                        onFetch(model)
+                                        History.onFetch(model)
                                     }
                                 },
                                 enabled = canCheckHistory,
