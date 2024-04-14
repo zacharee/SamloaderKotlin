@@ -5,6 +5,7 @@ import io.ktor.utils.io.core.toByteArray
 import korlibs.crypto.MD5
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.tools.CryptUtils
+import tk.zwander.common.tools.Request
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
@@ -32,12 +33,15 @@ object Decrypter {
             }
             else -> {
                 try {
-                    CryptUtils.getV4Key(
-                        model.fw.value ?: "",
-                        model.model.value ?: "",
-                        model.region.value ?: "",
-                        model.imeiSerial.value ?: "",
-                    ).first
+                    Request.retrieveBinaryFileInfo(
+                        fw = model.fw.value ?: "",
+                        model = model.model.value ?: "",
+                        region = model.region.value ?: "",
+                        imeiSerial = model.imeiSerial.value ?: "",
+                        onFinish = {
+                            model.endJob(it)
+                        },
+                    )?.v4Key?.first!!
                 } catch (e: Throwable) {
                     println("Unable to retrieve v4 key ${e.message}.")
                     model.endJob(MR.strings.decryptError(e.message.toString()))

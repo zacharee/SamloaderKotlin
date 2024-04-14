@@ -5,15 +5,12 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tk.zwander.common.data.BinaryFileInfo
-import tk.zwander.common.data.exception.VersionException
-import tk.zwander.common.exceptions.DownloadError
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.common.tools.FusClient
 import tk.zwander.common.tools.Request
 import tk.zwander.common.tools.VersionFetch
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.ChangelogHandler
-import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
@@ -44,32 +41,15 @@ object Downloader {
         eventManager.sendEvent(Event.Download.Start)
         model.statusText.value = MR.strings.downloading()
 
-        val result = Request.getBinaryFile(
-            model.fw.value ?: "",
-            model.model.value ?: "",
-            model.region.value ?: "",
-            model.imeiSerial.value ?: "",
-        )
-
-        val (info, error, output, requestBody) = result
-
-        if (error != null && error !is VersionException) {
-            Exception(error).printStackTrace()
-            model.endJob("${error.message ?: MR.strings.error()}\n\n${output}")
-            if (result.isReportableCode() &&
-                !model.model.value.isAccessoryModel &&
-                !output.contains("Incapsula") &&
-                error !is CancellationException &&
-                model.manual.value != true
-            ) {
-                CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
-            }
-            eventManager.sendEvent(Event.Download.Finish)
-        } else {
-            if (error is VersionException) {
+        val info = Request.retrieveBinaryFileInfo(
+            fw = model.fw.value ?: "",
+            model = model.model.value ?: "",
+            region = model.region.value ?: "",
+            imeiSerial = model.imeiSerial.value ?: "",
+            onVersionException = { exception, info ->
                 confirmCallback.onError(
                     info = DownloadErrorInfo(
-                        message = error.message!!,
+                        message = exception.message!!,
                         callback = DownloadErrorConfirmCallback(
                             onAccept = {
                                 performDownload(info!!, model)
@@ -77,13 +57,22 @@ object Downloader {
                             onCancel = {
                                 model.endJob("")
                                 eventManager.sendEvent(Event.Download.Finish)
-                            }
+                            },
                         )
-                    )
+                    ),
                 )
-            } else {
-                performDownload(info!!, model)
-            }
+            },
+            onFinish = {
+                model.endJob(it)
+                eventManager.sendEvent(Event.Download.Finish)
+            },
+            shouldReportError = {
+                model.model.value.isAccessoryModel && model.manual.value != true
+            },
+        )
+
+        if (info != null) {
+            performDownload(info, model)
         }
     }
 
@@ -213,12 +202,7 @@ object Downloader {
                                     model.region.value ?: "",
                                 ).first
                             } else {
-                                v4Key?.first ?: CryptUtils.getV4Key(
-                                    model.fw.value ?: "",
-                                    model.model.value ?: "",
-                                    model.region.value ?: "",
-                                    model.imeiSerial.value ?: "",
-                                ).first
+                                info.v4Key?.first!!
                             }
 
                         CryptUtils.decryptProgress(

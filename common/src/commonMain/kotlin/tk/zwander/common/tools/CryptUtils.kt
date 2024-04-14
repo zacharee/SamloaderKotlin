@@ -26,8 +26,8 @@ object CryptUtils {
     /**
      * Decryption keys for the firmware and other data.
      */
-    const val KEY_1 = "vicopx7dqu06emacgpnpy8j8zwhduwlh"
-    const val KEY_2 = "9u7qab84rpc16gvk"
+    private const val KEY_1 = "vicopx7dqu06emacgpnpy8j8zwhduwlh"
+    private const val KEY_2 = "9u7qab84rpc16gvk"
 
     /**
      * Samsung uses its own padding for its AES
@@ -37,7 +37,7 @@ object CryptUtils {
      * @param d the data to unpad.
      * @return the unpadded data.
      */
-    fun unpad(d: ByteArray): ByteArray {
+    private fun unpad(d: ByteArray): ByteArray {
         val lastByte = d.last().toInt()
         val padIndex = (d.size - (lastByte % d.size))
 
@@ -50,7 +50,7 @@ object CryptUtils {
      * @param d the data to pad.
      * @return the padded data.
      */
-    fun pad(d: ByteArray): ByteArray {
+    private fun pad(d: ByteArray): ByteArray {
         val size = 16 - (d.size % 16)
         val array = ByteArray(size)
 
@@ -67,7 +67,7 @@ object CryptUtils {
      * @param key the key to use for encryption.
      * @return the encrypted data.
      */
-    fun aesEncrypt(input: ByteArray, key: ByteArray): ByteArray {
+    private fun aesEncrypt(input: ByteArray, key: ByteArray): ByteArray {
         val paddedInput = pad(input)
         val iv = key.slice(0 until 16).toByteArray()
 
@@ -80,7 +80,7 @@ object CryptUtils {
      * @param key the key to use for decryption.
      * @return the decrypted data.
      */
-    fun aesDecrypt(input: ByteArray, key: ByteArray): ByteArray {
+    private fun aesDecrypt(input: ByteArray, key: ByteArray): ByteArray {
         val iv = key.slice(0 until 16).toByteArray()
 
         return unpad(AES.decryptAesCbc(input, key, iv, CipherPadding.NoPadding))
@@ -91,7 +91,7 @@ object CryptUtils {
      * @param input the input seed.
      * @return the generated key.
      */
-    fun getFKey(input: ByteArray): ByteArray {
+    private fun getFKey(input: ByteArray): ByteArray {
         var key = ""
 
         for (i in 0 until 16) {
@@ -135,8 +135,8 @@ object CryptUtils {
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV4Key(version: String, model: String, region: String, imeiSerial: String, tries: Int = 0): Pair<ByteArray, String> {
-        val (_, responseXml) = Request.performBinaryInformRetry(version.uppercase(), model, region, imeiSerial, true)
+    suspend fun getV4Key(version: String, model: String, region: String, imeiSerial: String, tries: Int = 0, includeNonce: Boolean = true): Pair<ByteArray, String>? {
+        val (_, responseXml) = Request.performBinaryInformRetry(version.uppercase(), model, region, imeiSerial, includeNonce)
 
         return try {
             responseXml.extractV4Key()
@@ -157,7 +157,7 @@ object CryptUtils {
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV2Key(version: String, model: String, region: String): Pair<ByteArray, String> {
+    fun getV2Key(version: String, model: String, region: String): Pair<ByteArray, String> {
         val decKey = "${region}:${model}:${version}"
         return MD5.digest(decKey.toByteArray()).bytes to decKey
     }
@@ -260,7 +260,7 @@ object CryptUtils {
      * @param updateFile the file used to calculate.
      * @return the MD5 hash.
      */
-    suspend fun calculateMD5(updateFile: BufferedSource): String? {
+    private suspend fun calculateMD5(updateFile: BufferedSource): String? {
         val md5 = MD5.create()
         val buffer = ByteArray(8192)
         var read: Int
@@ -269,7 +269,7 @@ object CryptUtils {
                 md5.update(buffer, 0, read)
             }
             val hex = md5.digest().hex
-            val output = hex.padStart(32, '0');
+            val output = hex.padStart(32, '0')
             output
         } catch (e: Exception) {
             throw RuntimeException("Unable to process file for MD5", e)

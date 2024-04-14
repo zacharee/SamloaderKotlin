@@ -6,11 +6,14 @@ import io.ktor.utils.io.core.*
 import io.ktor.utils.io.core.internal.*
 import korlibs.crypto.MD5
 import korlibs.io.serialization.xml.buildXml
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.data.exception.VersionCheckException
+import tk.zwander.common.data.exception.VersionException
 import tk.zwander.common.data.exception.VersionMismatchException
+import tk.zwander.common.exceptions.DownloadError
 import tk.zwander.common.exceptions.NoBinaryFileError
 import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.dataNode
@@ -18,6 +21,7 @@ import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.invoke
 import tk.zwander.common.util.textNode
 import tk.zwander.samloaderkotlin.resources.MR
+import kotlin.time.ExperimentalTime
 
 /**
  * Handle some requests to Samsung's servers.
@@ -197,6 +201,37 @@ object Request {
         return xml.outerXml
     }
 
+    suspend fun retrieveBinaryFileInfo(
+        fw: String,
+        model: String,
+        region: String,
+        imeiSerial: String,
+        onFinish: suspend (String) -> Unit,
+        onVersionException: (suspend (VersionException, BinaryFileInfo?) -> Unit)? = null,
+        shouldReportError: suspend (Exception) -> Boolean = { true },
+    ): BinaryFileInfo? {
+        val result = getBinaryFile(
+            fw, model, region, imeiSerial,
+        )
+
+        val (info, error, output, requestBody) = result
+
+        if (error is VersionException && onVersionException != null) {
+            onVersionException(error, info)
+        } else if (error != null) {
+            onFinish("${error.message ?: MR.strings.error()}\n\n${output}")
+            if (result.isReportableCode() &&
+                !output.contains("Incapsula") &&
+                error !is CancellationException &&
+                shouldReportError(error)
+            ) {
+                CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
+            }
+        }
+
+        return info
+    }
+
     /**
      * Retrieve the file information for a given firmware.
      * @param fw the firmware version string.
@@ -204,7 +239,8 @@ object Request {
      * @param region the device region.
      * @return a BinaryFileInfo instance representing the file.
      */
-    suspend fun getBinaryFile(
+    @OptIn(ExperimentalTime::class)
+    private suspend fun getBinaryFile(
         fw: String,
         model: String,
         region: String,
@@ -298,7 +334,7 @@ object Request {
                 }
             }
 
-            fun generateInfo(): BinaryFileInfo {
+            suspend fun generateInfo(): BinaryFileInfo {
                 val path = responseXml.firstElementByTagName("FUSBody")
                     ?.firstElementByTagName("Put")
                     ?.firstElementByTagName("MODEL_PATH")
@@ -312,7 +348,7 @@ object Request {
                     ?.text()?.toLongOrNull()
 
                 val v4Key = try {
-                    responseXml.extractV4Key()
+                    responseXml.extractV4Key() ?: CryptUtils.getV4Key(fw, model, region, imeiSerial)
                 } catch (e: Exception) {
                     null
                 }
@@ -410,7 +446,8 @@ object Request {
                 val cpSuffixMatch = if (fwCpSuffix != null) fwCpSuffix == cpSuffix else true
 
                 if (served != fw || !cscMatch || !cpMatch || !fwVersionMatch ||
-                    !fwPdaMatch || !cscSuffixMatch || !cpSuffixMatch) {
+                    !fwPdaMatch || !cscSuffixMatch || !cpSuffixMatch
+                ) {
                     return FetchResult.GetBinaryFileResult(
                         info = generateInfo(),
                         error = VersionMismatchException(MR.strings.versionMismatch(fw, served)),
@@ -435,25 +472,28 @@ object Request {
     }
 }
 
-fun Document.extractV4Key(): Pair<ByteArray, String> {
+fun Document.extractV4Key(): Pair<ByteArray, String>? {
     val fwVer = firstElementByTagName("FUSBody")
         ?.firstElementByTagName("Results")
         ?.firstElementByTagName("LATEST_FW_VERSION")
         ?.firstElementByTagName("Data")
-        ?.text()!!
+        ?.text()
 
     val logicVal = firstElementByTagName("FUSBody")
         ?.firstElementByTagName("Put")
         .run {
             this?.firstElementByTagName("LOGIC_VALUE_FACTORY")
                 ?.firstElementByTagName("Data")
-                ?.text() ?:
-            this?.firstElementByTagName("LOGIC_VALUE_HOME")
+                ?.text() ?: this?.firstElementByTagName("LOGIC_VALUE_HOME")
                 ?.firstElementByTagName("Data")
-                ?.text()!!
+                ?.text()
         }
 
-    val decKey = Request.getLogicCheck(fwVer, logicVal)
+    return if (fwVer != null && logicVal != null) {
+        val decKey = Request.getLogicCheck(fwVer, logicVal)
 
-    return MD5.digest(decKey.toByteArray()).bytes to decKey
+        MD5.digest(decKey.toByteArray()).bytes to decKey
+    } else {
+        null
+    }
 }
