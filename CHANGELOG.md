@@ -2,6 +2,7 @@
 - Add setting to save firmware decryption key during download that can be used for offline decryption later on.
 - Add "Decryption Key" field to Decrypter field that can be used to decrypt offline.
 - Work on online decrypt request cleanups.
+- More work on download speeds.
 - Reduce error reporting.
 - Update TACs.
 - Update Translations.
