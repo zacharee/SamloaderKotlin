@@ -1,6 +1,5 @@
 package tk.zwander.common
 
-import kotlinx.coroutines.coroutineScope
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
 import tk.zwander.common.data.PlatformFile
@@ -16,54 +15,55 @@ object EventDelegate : EventManager.EventListener {
     }
 
     override suspend fun onEvent(event: Event) {
-        coroutineScope {
-            when (event) {
-                is Event.Decrypt.GetInput -> {
-                    val file = FilePicker.pickFile()
+        when (event) {
+            is Event.Decrypt.GetInput -> {
+                val file = FilePicker.pickFile()
 
-                    if (file != null) {
-                        event.callback(
-                            this,
-                            DecryptFileInfo(
-                                file,
-                                PlatformFile(file.getParent()!!, File(file.getAbsolutePath()).nameWithoutExtension),
-                            ),
-                        )
-                    } else {
-                        event.callback(this, null)
-                    }
-                }
-                is Event.Download.GetInput -> {
-                    val file = FilePicker.createFile(name = event.fileName)
-
-                    if (file == null) {
-                        event.callback(this, null)
-                    } else {
-                        val decFile = PlatformFile(
-                            file.getParent()!!,
-                            event.fileName.replace(".enc2", "")
-                                .replace(".enc4", ""),
-                        )
-
-                        val decKeyFile = event.decryptKeyFileName?.let {
+                if (file != null) {
+                    event.callback(
+                        DecryptFileInfo(
+                            file,
                             PlatformFile(
                                 file.getParent()!!,
-                                event.decryptKeyFileName,
-                            )
-                        }
-
-                        event.callback(
-                            this,
-                            DownloadFileInfo(
-                                file,
-                                decFile,
-                                decKeyFile,
+                                File(file.getAbsolutePath()).nameWithoutExtension
                             ),
+                        ),
+                    )
+                } else {
+                    event.callback(null)
+                }
+            }
+
+            is Event.Download.GetInput -> {
+                val file = FilePicker.createFile(name = event.fileName)
+
+                if (file == null) {
+                    event.callback(null)
+                } else {
+                    val decFile = PlatformFile(
+                        file.getParent()!!,
+                        event.fileName.replace(".enc2", "")
+                            .replace(".enc4", ""),
+                    )
+
+                    val decKeyFile = event.decryptKeyFileName?.let {
+                        PlatformFile(
+                            file.getParent()!!,
+                            event.decryptKeyFileName,
                         )
                     }
+
+                    event.callback(
+                        DownloadFileInfo(
+                            file,
+                            decFile,
+                            decKeyFile,
+                        ),
+                    )
                 }
-                else -> {}
             }
+
+            else -> {}
         }
     }
 }

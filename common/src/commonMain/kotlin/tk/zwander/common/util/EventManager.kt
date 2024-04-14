@@ -1,7 +1,6 @@
 package tk.zwander.common.util
 
 import io.ktor.util.collections.ConcurrentSet
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import tk.zwander.common.data.DecryptFileInfo
@@ -53,7 +52,7 @@ sealed class Event {
         data class GetInput(
             val fileName: String,
             val decryptKeyFileName: String?,
-            val callback: suspend CoroutineScope.(DownloadFileInfo?) -> Unit,
+            val callback: suspend (DownloadFileInfo?) -> Unit,
         ) : Download()
         data class Progress(
             val status: String,
@@ -65,7 +64,7 @@ sealed class Event {
     }
     sealed class Decrypt : Event() {
         data class GetInput(
-            val callback: suspend CoroutineScope.(DecryptFileInfo?) -> Unit,
+            val callback: suspend (DecryptFileInfo?) -> Unit,
         ) : Decrypt()
         data class Progress(
             val status: String,

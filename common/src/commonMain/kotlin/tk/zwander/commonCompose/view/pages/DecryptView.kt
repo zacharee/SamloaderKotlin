@@ -33,7 +33,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import io.ktor.utils.io.core.toByteArray
 import korlibs.crypto.MD5
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.ColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
@@ -118,11 +117,9 @@ private suspend fun onDecrypt(model: DecryptModel) {
 }
 
 private suspend fun onOpenFile(model: DecryptModel) {
-    coroutineScope {
-        eventManager.sendEvent(Event.Decrypt.GetInput { info ->
-            handleFileInput(model, info)
-        })
-    }
+    eventManager.sendEvent(Event.Decrypt.GetInput { info ->
+        handleFileInput(model, info)
+    })
 }
 
 private fun handleFileInput(model: DecryptModel, info: DecryptFileInfo?) {
