@@ -6,9 +6,8 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.core.*
 import tk.zwander.common.data.FetchResult
-import tk.zwander.common.util.client
+import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.firstElementByTagName
-import tk.zwander.common.util.generateProperUrl
 
 /**
  * Handle fetching the latest version for a given model and region.
@@ -20,11 +19,11 @@ object VersionFetch {
      * @param region the device region.
      * @return a Pair(FirmwareString, AndroidVersion).
      */
-    suspend fun getLatestVersion(model: String, region: String, useProxy: Boolean = tk.zwander.common.util.useProxy): FetchResult.VersionFetchResult {
+    suspend fun getLatestVersion(model: String, region: String): FetchResult.VersionFetchResult {
         try {
-            val response = client.use {
+            val response = globalHttpClient.use {
                 it.get(
-                    urlString = generateProperUrl(useProxy, "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml")
+                    urlString = "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml"
                 ) {
                     userAgent("Kies2.0_FUS")
                 }

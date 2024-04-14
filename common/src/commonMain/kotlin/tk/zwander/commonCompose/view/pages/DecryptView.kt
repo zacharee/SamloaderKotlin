@@ -76,7 +76,6 @@ private suspend fun onDecrypt(model: DecryptModel) {
         else -> {
             try {
                 CryptUtils.getV4Key(
-                    client,
                     model.fw.value ?: "",
                     model.model.value ?: "",
                     model.region.value ?: "",

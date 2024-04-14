@@ -1,6 +1,5 @@
 package tk.zwander.common.util
 
-import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.client.utils.*
@@ -36,9 +35,9 @@ class PatreonSupportersParser private constructor() {
 
         withContext(Dispatchers.clientDispatcher(5, "Supporters")) {
             try {
-                val statement = client.use {
+                val statement = globalHttpClient.use {
                     it.get {
-                        url(generateProperUrl(useProxy, "https://raw.githubusercontent.com/zacharee/PatreonSupportersRetrieval/master/app/src/main/assets/supporters.json"))
+                        url("https://raw.githubusercontent.com/zacharee/PatreonSupportersRetrieval/master/app/src/main/assets/supporters.json")
                     }
                 }
 

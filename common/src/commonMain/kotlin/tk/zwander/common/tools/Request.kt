@@ -43,7 +43,6 @@ object Request {
     }
 
     suspend fun performBinaryInformRetry(
-        client: FusClient,
         fw: String,
         model: String,
         region: String,
@@ -57,7 +56,7 @@ object Request {
         var latestError: Throwable? = null
 
         splitImeiSerial.forEachIndexed { index, imei ->
-            latestRequest = createBinaryInform(fw, model, region, client.getNonce(), imei)
+            latestRequest = createBinaryInform(fw, model, region, FusClient.getNonce(), imei)
 
             if (index % 10 == 0) {
                 delay(1000)
@@ -65,7 +64,7 @@ object Request {
 
             latestResult = try {
                 val response =
-                    client.makeReq(FusClient.Request.BINARY_INFORM, latestRequest, includeNonce)
+                    FusClient.makeReq(FusClient.Request.BINARY_INFORM, latestRequest, includeNonce)
 
                 Ksoup.parse(response)
             } catch (e: Throwable) {
@@ -200,21 +199,19 @@ object Request {
 
     /**
      * Retrieve the file information for a given firmware.
-     * @param client the FusClient used to request the data.
      * @param fw the firmware version string.
      * @param model the device model.
      * @param region the device region.
      * @return a BinaryFileInfo instance representing the file.
      */
     suspend fun getBinaryFile(
-        client: FusClient,
         fw: String,
         model: String,
         region: String,
         imeiSerial: String,
     ): FetchResult.GetBinaryFileResult {
         val (request, responseXml) = try {
-            performBinaryInformRetry(client, fw.uppercase(), model, region, imeiSerial, false)
+            performBinaryInformRetry(fw.uppercase(), model, region, imeiSerial, false)
         } catch (e: Exception) {
             CrossPlatformBugsnag.notify(e)
 

@@ -217,7 +217,10 @@ private suspend fun onFetch(model: HistoryModel) {
                 }
 
                 model.changelogs.value = try {
-                    ChangelogHandler.getChangelogs(model.model.value ?: "", model.region.value ?: "")
+                    ChangelogHandler.getChangelogs(
+                        model.model.value ?: "",
+                        model.region.value ?: ""
+                    )
                 } catch (e: Exception) {
                     println("Error retrieving changelogs")
                     e.printStackTrace()

@@ -130,14 +130,13 @@ object CryptUtils {
 
     /**
      * Retrieve the decryption key for a .enc4 firmware file.
-     * @param client the [FusClient] instance to use.
      * @param version the firmware string corresponding to the file.
      * @param model the device model corresponding to the file.
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV4Key(client: FusClient, version: String, model: String, region: String, imeiSerial: String, tries: Int = 0): Pair<ByteArray, String> {
-        val (_, responseXml) = Request.performBinaryInformRetry(client, version.uppercase(), model, region, imeiSerial, true)
+    suspend fun getV4Key(version: String, model: String, region: String, imeiSerial: String, tries: Int = 0): Pair<ByteArray, String> {
+        val (_, responseXml) = Request.performBinaryInformRetry(version.uppercase(), model, region, imeiSerial, true)
 
         return try {
             responseXml.extractV4Key()
@@ -145,8 +144,8 @@ object CryptUtils {
             if (tries > 4) {
                 throw e
             } else {
-                client.makeReq(FusClient.Request.GENERATE_NONCE)
-                getV4Key(client, version, model, region, imeiSerial, tries + 1)
+                FusClient.makeReq(FusClient.Request.GENERATE_NONCE)
+                getV4Key(version, model, region, imeiSerial, tries + 1)
             }
         }
     }

@@ -4,27 +4,11 @@ package tk.zwander.common.util
 
 import io.ktor.client.*
 import io.ktor.client.plugins.HttpTimeout
-import io.ktor.client.statement.*
-import io.ktor.utils.io.ByteReadChannel
-import korlibs.platform.Platform
 
-val client: HttpClient
+val globalHttpClient: HttpClient
     get() = HttpClient {
+        this.followRedirects = true
         this.expectSuccess = false
 
         install(HttpTimeout)
     }
-
-val useProxy = Platform.isJsBrowser
-
-class CloseableByteReadChannel(
-    private val statement: HttpStatement,
-    private val response: HttpResponse,
-    wrapped: ByteReadChannel,
-) : ByteReadChannel by wrapped {
-    suspend fun close() {
-        with (statement) {
-            response.cleanup()
-        }
-    }
-}

@@ -20,9 +20,8 @@ import io.ktor.utils.io.core.toByteArray
 import io.ktor.utils.io.core.use
 import io.ktor.utils.io.jvm.nio.copyTo
 import okio.BufferedSink
-import tk.zwander.common.util.client
+import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.firstElementByTagName
-import tk.zwander.common.util.generateProperUrl
 import tk.zwander.common.util.trackOperationProgress
 import kotlin.time.ExperimentalTime
 
@@ -31,11 +30,7 @@ import kotlin.time.ExperimentalTime
  */
 @DangerousInternalIoApi
 @OptIn(ExperimentalTime::class)
-class FusClient(
-    private var auth: String = "",
-    private var sessId: String = "",
-    private val useProxy: Boolean = tk.zwander.common.util.useProxy
-) {
+object FusClient {
     enum class Request(val value: String) {
         GENERATE_NONCE("NF_DownloadGenerateNonce.do"),
         BINARY_INFORM("NF_DownloadBinaryInform.do"),
@@ -44,6 +39,9 @@ class FusClient(
 
     private var encNonce = ""
     private var nonce = ""
+
+    private var auth: String = ""
+    private var sessId: String = ""
 
     suspend fun getNonce(): String {
         if (nonce.isBlank()) {
@@ -65,10 +63,7 @@ class FusClient(
     }
 
     fun getDownloadUrl(path: String): String {
-        return generateProperUrl(
-            useProxy,
-            "http://cloud-neofussvr.samsungmobile.com/NF_DownloadBinaryForMass.do?file=${path}"
-        )
+        return "http://cloud-neofussvr.samsungmobile.com/NF_DownloadBinaryForMass.do?file=${path}"
     }
 
     /**
@@ -84,13 +79,8 @@ class FusClient(
 
         val authV = getAuthV(includeNonce)
 
-        val response = client.use {
-            it.request(
-                generateProperUrl(
-                    useProxy,
-                    "https://neofussvr.sslcs.cdngc.net/${request.value}"
-                )
-            ) {
+        val response = globalHttpClient.use {
+            it.request("https://neofussvr.sslcs.cdngc.net/${request.value}") {
                 method = HttpMethod.Post
                 headers {
                     append("Authorization", authV)
@@ -145,7 +135,7 @@ class FusClient(
         val authV = getAuthV()
         val url = getDownloadUrl(fileName)
 
-        val request = client.prepareRequest {
+        val request = globalHttpClient.prepareRequest {
             method = HttpMethod.Get
             url(url)
             headers {

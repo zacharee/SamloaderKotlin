@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import tk.zwander.common.util.client
+import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
 import java.util.TreeSet
@@ -36,7 +36,7 @@ data object CSCDB {
         GlobalScope.launch(Dispatchers.IO) {
             loadLocalCsv()
             try {
-                val response = client.get(LIVE_ENDPOINT)
+                val response = globalHttpClient.get(LIVE_ENDPOINT)
                 val liveData = response.bodyAsText()
 
                 if (!response.status.isSuccess()) {

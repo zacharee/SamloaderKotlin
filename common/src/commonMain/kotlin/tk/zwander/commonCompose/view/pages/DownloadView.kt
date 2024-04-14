@@ -83,12 +83,6 @@ import tk.zwander.commonCompose.view.components.ProgressInfo
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.time.ExperimentalTime
 
-/**
- * The FusClient for retrieving firmware.
- */
-@OptIn(DangerousInternalIoApi::class)
-val client = FusClient()
-
 interface DownloadErrorCallback {
     fun onError(info: DownloadErrorInfo)
 }
@@ -106,14 +100,12 @@ data class DownloadErrorConfirmCallback(
 @OptIn(DangerousInternalIoApi::class)
 private suspend fun onDownload(
     model: DownloadModel,
-    client: FusClient,
     confirmCallback: DownloadErrorCallback
 ) {
     eventManager.sendEvent(Event.Download.Start)
     model.statusText.value = MR.strings.downloading()
 
     val result = Request.getBinaryFile(
-        client,
         model.fw.value ?: "",
         model.model.value ?: "",
         model.region.value ?: "",
@@ -141,7 +133,7 @@ private suspend fun onDownload(
                     message = error.message!!,
                     callback = DownloadErrorConfirmCallback(
                         onAccept = {
-                            performDownload(info!!, model, client)
+                            performDownload(info!!, model)
                         },
                         onCancel = {
                             model.endJob("")
@@ -151,18 +143,18 @@ private suspend fun onDownload(
                 )
             )
         } else {
-            performDownload(info!!, model, client)
+            performDownload(info!!, model)
         }
     }
 }
 
 @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
-private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, client: FusClient) {
+private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel) {
     try {
         val (path, fileName, size, crc32, v4Key) = info
-        val request = Request.createBinaryInit(fileName, client.getNonce())
+        val request = Request.createBinaryInit(fileName, FusClient.getNonce())
 
-        client.makeReq(FusClient.Request.BINARY_INIT, request)
+        FusClient.makeReq(FusClient.Request.BINARY_INIT, request)
 
         val fullFileName = fileName.replace(
             ".zip",
@@ -197,7 +189,7 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                     val outputStream =
                         inputInfo.downloadFile.openOutputStream(true) ?: return@GetInput
                     val md5 = try {
-                        client.downloadFile(
+                        FusClient.downloadFile(
                             path + fileName,
                             inputInfo.downloadFile.getLength(),
                             size,
@@ -283,7 +275,6 @@ private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel, 
                             ).first
                         } else {
                             v4Key?.first ?: CryptUtils.getV4Key(
-                                client,
                                 model.fw.value ?: "",
                                 model.model.value ?: "",
                                 model.region.value ?: "",
@@ -422,7 +413,7 @@ internal fun DownloadView() {
                         onClick = {
                             model.launchJob {
                                 onDownload(
-                                    model, client,
+                                    model,
                                     confirmCallback = object : DownloadErrorCallback {
                                         override fun onError(info: DownloadErrorInfo) {
                                             downloadErrorInfo = info

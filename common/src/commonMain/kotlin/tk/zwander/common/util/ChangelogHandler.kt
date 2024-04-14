@@ -11,15 +11,15 @@ import tk.zwander.common.data.changelog.Changelogs
 object ChangelogHandler {
     private const val DOMAIN_URL = "https://doc.samsungmobile.com:443"
 
-    suspend fun getChangelog(device: String, region: String, firmware: String, useProxy: Boolean = tk.zwander.common.util.useProxy): Changelog? {
-        return getChangelogs(device, region, useProxy)?.changelogs?.get(firmware)
+    suspend fun getChangelog(device: String, region: String, firmware: String): Changelog? {
+        return getChangelogs(device, region)?.changelogs?.get(firmware)
     }
 
-    suspend fun getChangelogs(device: String, region: String, useProxy: Boolean = tk.zwander.common.util.useProxy): Changelogs? {
+    suspend fun getChangelogs(device: String, region: String): Changelogs? {
         try {
-            val outerUrl = generateUrlForDeviceAndRegion(device, region, useProxy)
+            val outerUrl = generateUrlForDeviceAndRegion(device, region)
             val outerResponse = try {
-                client.use {
+                globalHttpClient.use {
                     it.get {
                         url(outerUrl)
                     }
@@ -31,13 +31,13 @@ object ChangelogHandler {
 
             val iframeUrl = if (outerResponse.status.isSuccess()) {
                 parseDocUrl(outerResponse.bodyAsText())
-                    ?.replace("../../", generateProperUrl(useProxy, "$DOMAIN_URL/"))
+                    ?.replace("../../", "$DOMAIN_URL/")
             } else {
                 println("No changelogs found for $device $region")
                 return null
             }
 
-            val iframeResponse = client.use {
+            val iframeResponse = globalHttpClient.use {
                 it.get {
                     url(iframeUrl ?: return null)
                 }
@@ -57,8 +57,8 @@ object ChangelogHandler {
         }
     }
 
-    private fun generateUrlForDeviceAndRegion(device: String, region: String, useProxy: Boolean): String {
-        return generateProperUrl(useProxy, "$DOMAIN_URL/${device}/${region}/doc.html")
+    private fun generateUrlForDeviceAndRegion(device: String, region: String): String {
+        return "$DOMAIN_URL/${device}/${region}/doc.html"
     }
 
     private fun parseDocUrl(body: String): String? {
