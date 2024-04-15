@@ -27,6 +27,14 @@ object CrossPlatformBugsnag {
             return
         }
 
+        if (e.javaClass.canonicalName == "java.net.SocketException") {
+            return
+        }
+
+        if (e.javaClass.canonicalName == "javax.net.ssl.SSLHandshakeException") {
+            return
+        }
+
         if (e is DownloadError) {
             if (e.cause is SocketTimeoutException) {
                 return
@@ -45,6 +53,14 @@ object CrossPlatformBugsnag {
             }
 
             if (e.cause is NoBinaryFileError) {
+                return
+            }
+
+            if (e.cause?.javaClass?.canonicalName == "java.net.SocketException") {
+                return
+            }
+
+            if (e.cause?.javaClass?.canonicalName == "javax.net.ssl.SSLHandshakeException") {
                 return
             }
         }
