@@ -38,7 +38,6 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx
 androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "androidx-documentfile" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx-preference" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
-bugsnag-android-gradle-plugin = { module = "com.bugsnag:bugsnag-android-gradle-plugin", version.ref = "bugsnag-android-gradle" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }

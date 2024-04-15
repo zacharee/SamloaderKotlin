@@ -28,44 +28,9 @@ plugins {
     alias(libs.plugins.compose) apply false
 }
 
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap/") }
-        maven {
-            url = uri("https://jitpack.io")
-        }
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
-        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-    }
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + listOf("-Xskip-prerelease-check")
-        }
-    }
-}
-
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
-        maven {
-            url = uri("https://jitpack.io")
-        }
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
-    }
-    dependencies {
-        classpath(libs.bugsnag.android.gradle.plugin)
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = freeCompilerArgs + listOf("-Xskip-prerelease-check")
     }
 }
 

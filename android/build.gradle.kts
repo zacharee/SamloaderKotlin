@@ -8,10 +8,6 @@ plugins {
 group = rootProject.extra["groupName"].toString()
 version = rootProject.extra["versionName"].toString()
 
-repositories {
-    google()
-}
-
 dependencies {
     implementation(project(":common"))
 }

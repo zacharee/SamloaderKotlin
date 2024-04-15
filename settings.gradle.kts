@@ -1,11 +1,27 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
         google()
 
-        maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven("https://maven.hq.hydraulic.software")
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        google()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap/")
+        maven("https://jitpack.io")
+        maven("https://plugins.gradle.org/m2/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 
