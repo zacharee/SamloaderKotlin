@@ -1,3 +1,8 @@
+# 1.18.1
+- Work on standalone decryption reliability by unifying the the request logic with the downloader's.
+- Update translations.
+- More error report filtering.
+
 # 1.18.0
 - Add setting to save firmware decryption key during download that can be used for offline decryption later on.
 - Add "Decryption Key" field to Decrypter field that can be used to decrypt offline.
