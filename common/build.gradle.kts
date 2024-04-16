@@ -175,7 +175,7 @@ buildkonfig {
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.resources" // required
+    resourcesPackage.set("tk.zwander.samloaderkotlin.resources")
 }
 
 tasks.withType<Copy> {

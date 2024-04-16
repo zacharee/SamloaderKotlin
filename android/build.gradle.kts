@@ -81,7 +81,7 @@ android {
 }
 
 multiplatformResources {
-    multiplatformResourcesPackage = "tk.zwander.samloaderkotlin.android" // required
+    resourcesPackage.set("tk.zwander.samloaderkotlin.android")
 }
 
 compose {
