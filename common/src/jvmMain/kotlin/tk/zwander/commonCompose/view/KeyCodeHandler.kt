@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.type
 import korlibs.platform.Platform
 import kotlinx.coroutines.launch
 
@@ -16,10 +18,9 @@ fun keyCodeHandler(): (KeyEvent) -> Boolean {
     val pagerState = LocalPagerState.current
 
     return { keyEvent ->
-        val nativeEvent = keyEvent.nativeKeyEvent as java.awt.event.KeyEvent
         val isModifierPressed = if (Platform.isMac) keyEvent.isCtrlPressed else keyEvent.isAltPressed
 
-        if (isModifierPressed && nativeEvent.id == java.awt.event.KeyEvent.KEY_PRESSED) {
+        if (isModifierPressed && keyEvent.type == KeyEventType.KeyDown) {
             val multiplier = when (keyEvent.key) {
                 Key.DirectionRight -> 1
                 Key.DirectionLeft -> -1
