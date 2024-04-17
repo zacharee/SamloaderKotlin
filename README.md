@@ -27,9 +27,17 @@ Most of the functionality in Bifrost is based on [Samloader](https://github.com/
 Bifrost uses Jetpack Compose, JetBrains Compose for Desktop, and Kotlin Multiplatform to create a shared codebase for all supported platforms.
 
 # Download
-Binaries are available for 64-bit versions Windows, Linux, macOS, and Android. JetBrains Compose can't currently build for 32-bit operating systems.
-
 Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) page for the downloads.
+
+## Platform Compatibility
+
+|               | x86 | ARMv7 | x86_64 | ARM64                                                                       |
+|---------------|-----|-------|--------|-----------------------------------------------------------------------------|
+| Windows       | ❌   | ❌     | ✅      | ❌ ([#2584](https://github.com/JetBrains/compose-multiplatform/issues/2584)) |
+| macOS         | ❌   | ❌     | ✅      | ✅                                                                           |
+| Android       | ✅   | ✅     | ✅      | ✅                                                                           |
+| Debian-Based  | ❌   | ❌     | ✅      | ✅                                                                           |
+| Generic Linux | ❌   | ❌     | ✅      | ✅                                                                           |
 
 ## Note for Linux
 Make sure you have at least one of the following font families from each category installed.
