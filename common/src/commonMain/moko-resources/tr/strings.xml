@@ -138,4 +138,5 @@
     <string name="enable_offline_decryption_desc">Bu seçenek etkinleştirildiğinde, ürün yazılımı indirilirken Samsung tarafından sağlanan şifre çözme anahtarını içeren bir metin dosyası kaydedilecektir. Bu anahtar daha sonra internet bağlantısı olmadan ürün yazılımının şifresini çözmek için şifre çözücü sayfasına girilebilir.</string>
     <string name="decryption_key_help">Şifresini çözmeye çalıştığınız dosyanın şifre çözme anahtarını biliyorsanız, buraya girebilirsiniz. Yoksa boş bırakın ve Bifrost anahtarı Samsung\'un sunucularından alacaktır.</string>
     <string name="enable_offline_decryption">Çevrim Dışı Şifre Çözme</string>
+    <string name="app_name" translatable="false">Bifrost</string>
 </resources>
