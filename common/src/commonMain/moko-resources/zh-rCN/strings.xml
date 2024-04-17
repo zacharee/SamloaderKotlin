@@ -60,7 +60,7 @@
     <string name="md5CheckFailed">MD5 校验失败。 请删除文件并重新下载。</string>
     <string name="decrypting">解密中</string>
     <string name="manualWarningDetails3">在Github上。</string>
-    <string name="patreon">Patreon(赞助)</string>
+    <string name="patreon">Patreon</string>
     <string name="about">关于</string>
     <string name="removeSavedData">删除保存的数据</string>
     <string name="moreInfo">更多信息</string>
@@ -138,4 +138,5 @@
     <string name="enable_offline_decryption_desc">启用此选项后，下载固件时将保存一个额外的文本文件，其中包含三星提供的解密密钥。你可以在解密页面上输入此密钥，以便在没有互联网连接的情况下解密固件。</string>
     <string name="decryption_key_help">如果您知道文件的解密密钥，则可以在此处输入。否则请将其留空，Bifrost 将从三星的服务器中取回密钥。</string>
     <string name="enable_offline_decryption">离线解密</string>
+    <string name="app_name" translatable="false">Bifrost</string>
 </resources>
