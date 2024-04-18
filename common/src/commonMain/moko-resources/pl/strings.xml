@@ -114,23 +114,23 @@
     <string name="manualWarningDetails2">pod tym adresem</string>
     <string name="notification_finished_channel_text">Zadanie zostało ukończone!</string>
     <string name="invalid_imei_or_serial">Podano nieprawidłowy numer IMEI lub numer seryjny! Jeśli skopiowano wartość ze swojego urządzenia, upewnij się, że została wprowadzona poprawnie. Jeśli Bifrost wygenerował dla Ciebie numery IMEI, otwórz zgłoszenie na GitHubie, podając model, region i TAC prawdziwego urządzenia (jeśli je posiadasz).</string>
-    <string name="february_short">Feb</string>
+    <string name="february_short">Lut</string>
     <string name="march_short">Mar</string>
-    <string name="october_short">Oct</string>
-    <string name="may_short">May</string>
-    <string name="august_short">Aug</string>
-    <string name="january_short">Jan</string>
-    <string name="june_short">Jun</string>
-    <string name="april_short">Apr</string>
-    <string name="july_short">Jul</string>
-    <string name="september_short">Sep</string>
-    <string name="invalid_model">Warning! Bifrost can\'t download firmware for watches or other accessories. Only phones and tablets are supported.</string>
-    <string name="december_short">Dec</string>
-    <string name="november_short">Nov</string>
-    <string name="decryption_key">Decryption Key</string>
-    <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect.</string>
-    <string name="decryption_key_help">If you know the decryption key for the file you\'re trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung\'s servers.</string>
-    <string name="enable_offline_decryption">Offline Decryption</string>
+    <string name="october_short">Paź</string>
+    <string name="may_short">Maj</string>
+    <string name="august_short">Sie</string>
+    <string name="january_short">Sty</string>
+    <string name="june_short">Cze</string>
+    <string name="april_short">Kwi</string>
+    <string name="july_short">Lip</string>
+    <string name="september_short">Wrz</string>
+    <string name="invalid_model">Uwaga! Bifrost nie wspiera pobierania oprogramowania dla zegarków i innych akcesoriów. Wspierane są tylko smartfony i tablety.</string>
+    <string name="december_short">Gru</string>
+    <string name="november_short">Lis</string>
+    <string name="decryption_key">Klucz deszyfrujący</string>
+    <string name="enable_offline_decryption_desc">Gdy ta opcja jest włączona, to przy pobieraniu oprogramowania będzie zapisywany dodatkowy plik tekstowy zawierający klucz deszyfrujący od Samsunga. Wprowadź go w zakładce \"Odszyfrowywanie\", aby odszyfrować oprogramowanie bez połączenia z internetem.</string>
+    <string name="decryption_key_help">Jeśli masz klucz deszyfrujący do pliku, który chcesz odszyfrować, wprowadź go tutaj. W przeciwnym razie Bifrost pozyska ten klucz z serwerów Samsunga.</string>
+    <string name="enable_offline_decryption">Odszyfrowywanie offline</string>
     <string name="twitter" translatable="false">Twitter</string>
     <string name="odinRom" translatable="false">OdinRom</string>
     <string name="patreon" translatable="false">Patreon</string>
