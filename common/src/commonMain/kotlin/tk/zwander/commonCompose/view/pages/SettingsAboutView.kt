@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import tk.zwander.common.data.IOptionItem
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.isWindows11
 import tk.zwander.commonCompose.util.ThemeConstants
+import tk.zwander.commonCompose.util.grid.AdaptiveFixed
 import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.commonCompose.view.components.PhoneInfoView
 import tk.zwander.commonCompose.view.components.settingsitems.ActionPreference
@@ -95,7 +95,7 @@ fun SettingsAboutView() {
             selectionMode = ScrollbarSelectionMode.Disabled,
         ) {
             LazyVerticalStaggeredGrid(
-                columns = StaggeredGridCells.Adaptive(minSize = 300.dp),
+                columns = AdaptiveFixed(minSize = 300.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalItemSpacing = 8.dp,
                 state = gridState,
