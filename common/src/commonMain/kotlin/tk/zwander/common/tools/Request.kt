@@ -438,8 +438,8 @@ object Request {
                 val served =
                     "$version/${servedCsc ?: versionSuffix}/${servedCp ?: version}/${servedPda ?: version}"
 
-                val cscMatch = fwCsc == servedCsc
-                val cpMatch = fwCp == servedCp
+                val cscMatch = fwCsc == (servedCsc ?: versionSuffix)
+                val cpMatch = fwCp == (servedCp ?: version)
                 val fwVersionMatch = fwVersion == version
                 val fwPdaMatch = fwPda == servedPda
 
