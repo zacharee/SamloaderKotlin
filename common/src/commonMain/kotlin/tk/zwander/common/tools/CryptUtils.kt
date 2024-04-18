@@ -176,7 +176,7 @@ object CryptUtils {
         key: ByteArray,
         length: Long,
         chunkSize: Int = DEFAULT_CHUNK_SIZE,
-        progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit
+        progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ) {
         streamOperationWithProgress(
             input = inf,

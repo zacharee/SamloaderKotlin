@@ -22,63 +22,68 @@ object Decrypter {
         val outputFile = info.decFile
         val modelKey = model.decryptionKey.value
 
-        val key = when {
-            !modelKey.isNullOrBlank() -> MD5.digest(modelKey.toByteArray()).bytes
-            inputFile.getName().endsWith(".enc2") -> {
-                CryptUtils.getV2Key(
-                    model.fw.value ?: "",
-                    model.model.value ?: "",
-                    model.region.value ?: "",
-                ).first
-            }
-            else -> {
-                try {
-                    Request.retrieveBinaryFileInfo(
-                        fw = model.fw.value ?: "",
-                        model = model.model.value ?: "",
-                        region = model.region.value ?: "",
-                        imeiSerial = model.imeiSerial.value ?: "",
-                        onFinish = {
-                            model.endJob(it)
-                        },
-                    )?.v4Key?.first!!
-                } catch (e: Throwable) {
-                    println("Unable to retrieve v4 key ${e.message}.")
-                    model.endJob(MR.strings.decryptError(e.message.toString()))
-                    return
+        try {
+            val key = when {
+                !modelKey.isNullOrBlank() -> MD5.digest(modelKey.toByteArray()).bytes
+                inputFile.getName().endsWith(".enc2") -> {
+                    CryptUtils.getV2Key(
+                        model.fw.value ?: "",
+                        model.model.value ?: "",
+                        model.region.value ?: "",
+                    ).first
+                }
+                else -> {
+                    try {
+                        Request.retrieveBinaryFileInfo(
+                            fw = model.fw.value ?: "",
+                            model = model.model.value ?: "",
+                            region = model.region.value ?: "",
+                            imeiSerial = model.imeiSerial.value ?: "",
+                            onFinish = {
+                                model.endJob(it)
+                            },
+                        )?.v4Key?.first!!
+                    } catch (e: Throwable) {
+                        println("Unable to retrieve v4 key ${e.message}.")
+                        model.endJob(MR.strings.decryptError(e.message.toString()))
+                        return
+                    }
                 }
             }
-        }
 
-        val inputStream = try {
-            inputFile.openInputStream() ?: return
+            val inputStream = try {
+                inputFile.openInputStream() ?: return
+            } catch (e: Throwable) {
+                println("Unable to open input file ${e.message}.")
+                model.endJob(MR.strings.decryptError(e.message.toString()))
+                return
+            }
+
+            val outputStream = try {
+                outputFile.openOutputStream() ?: return
+            } catch (e: Throwable) {
+                println("Unable to open output file ${e.message}.")
+                model.endJob(MR.strings.decryptError(e.message.toString()))
+                return
+            }
+
+            CryptUtils.decryptProgress(
+                inputStream,
+                outputStream,
+                key,
+                inputFile.getLength()
+            ) { current, max, bps ->
+                model.progress.value = current to max
+                model.speed.value = bps
+                eventManager.sendEvent(Event.Decrypt.Progress(MR.strings.decrypting(), current, max))
+            }
+
+            eventManager.sendEvent(Event.Decrypt.Finish)
+            model.endJob(MR.strings.done())
         } catch (e: Throwable) {
-            println("Unable to open input file ${e.message}.")
-            model.endJob(MR.strings.decryptError(e.message.toString()))
-            return
+            eventManager.sendEvent(Event.Decrypt.Finish)
+            model.endJob(MR.strings.decryptError((e.localizedMessage ?: e.message).toString()))
         }
-
-        val outputStream = try {
-            outputFile.openOutputStream() ?: return
-        } catch (e: Throwable) {
-            println("Unable to open output file ${e.message}.")
-            model.endJob(MR.strings.decryptError(e.message.toString()))
-            return
-        }
-
-        CryptUtils.decryptProgress(
-            inputStream,
-            outputStream,
-            key,
-            inputFile.getLength()
-        ) { current, max, bps ->
-            model.progress.value = current to max
-            model.speed.value = bps
-            eventManager.sendEvent(Event.Decrypt.Progress(MR.strings.decrypting(), current, max))
-        }
-
-        eventManager.sendEvent(Event.Decrypt.Finish)
-        model.endJob(MR.strings.done())
     }
 
     suspend fun onOpenFile(model: DecryptModel) {
