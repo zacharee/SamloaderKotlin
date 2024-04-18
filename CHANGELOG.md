@@ -1,3 +1,6 @@
+# 1.18.3
+- Hotfix for desktop build.
+
 # 1.18.2
 - Fix an issue where the version mismatch alert would be ignored and the download initiated anyway.
 - Fix false positives for version mismatch detection.
