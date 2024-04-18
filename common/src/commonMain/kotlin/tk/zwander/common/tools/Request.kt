@@ -218,6 +218,7 @@ object Request {
 
         if (error is VersionException && onVersionException != null) {
             onVersionException(error, info)
+            return null
         } else if (error != null) {
             onFinish("${error.message ?: MR.strings.error()}\n\n${output}")
             if (result.isReportableCode() &&
