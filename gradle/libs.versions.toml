@@ -1,6 +1,6 @@
 [versions]
-androidx-activity-compose = "1.9.0-rc01"
-androidx-core = "1.13.0-rc01"
+androidx-activity-compose = "1.9.0"
+androidx-core = "1.13.0"
 androidx-documentfile = "1.1.0-alpha01"
 androidx-preference = "1.2.1"
 bugsnag-android = "6.4.0"
@@ -70,7 +70,7 @@ multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-n
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
-window-styler = { module = "com.github.alexfacciorusso.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }
+window-styler = { module = "com.github.zacharee.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
