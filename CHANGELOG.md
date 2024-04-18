@@ -1,3 +1,10 @@
+# 1.18.2
+- Fix an issue where the version mismatch alert would be ignored and the download initiated anyway.
+- Fix false positives for version mismatch detection.
+- Update TACs.
+- Update Compose.
+- Update translations.
+
 # 1.18.1
 - Work on standalone decryption reliability by unifying the the request logic with the downloader's.
 - Update translations.
