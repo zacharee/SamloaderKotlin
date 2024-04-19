@@ -34,15 +34,22 @@ object Decrypter {
                 }
                 else -> {
                     try {
-                        Request.retrieveBinaryFileInfo(
+                        val binaryFileInfo = Request.retrieveBinaryFileInfo(
                             fw = model.fw.value ?: "",
                             model = model.model.value ?: "",
                             region = model.region.value ?: "",
                             imeiSerial = model.imeiSerial.value ?: "",
                             onFinish = {
                                 model.endJob(it)
+                                eventManager.sendEvent(Event.Decrypt.Finish)
                             },
-                        )?.v4Key?.first!!
+                        )
+
+                        if (binaryFileInfo != null) {
+                            binaryFileInfo.v4Key?.first!!
+                        } else {
+                            return
+                        }
                     } catch (e: Throwable) {
                         println("Unable to retrieve v4 key ${e.message}.")
                         model.endJob(MR.strings.decryptError(e.message.toString()))
