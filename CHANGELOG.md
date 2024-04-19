@@ -1,3 +1,8 @@
+# Upcoming
+- Fix a few crashes.
+- Update translations.
+- Clean up error reporting.
+
 # 1.18.3
 - Hotfix for desktop build.
 
