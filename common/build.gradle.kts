@@ -103,11 +103,15 @@ kotlin {
                 api(libs.flatlaf)
                 api(libs.bugsnag.jvm)
                 api(libs.slf4j)
-                api(libs.jSystemThemeDetector)
                 api(libs.oshi.core)
                 api(libs.window.styler)
                 api(libs.kotlinx.coroutines.swing)
                 api(libs.java.objc.bridge)
+                api(libs.jna)
+                api(libs.jna.platform)
+                api(libs.jSystemThemeDetector.get().let { "${it.module}:${it.versionConstraint.requiredVersion}" }) {
+                    exclude("net.java.dev.jna", "jna")
+                }
 
                 api(compose.desktop.currentOs)
             }
@@ -127,7 +131,6 @@ kotlin {
                 api(libs.google.material)
 
                 api(libs.bugsnag.android)
-                api(libs.compose.material3.android)
             }
         }
     }

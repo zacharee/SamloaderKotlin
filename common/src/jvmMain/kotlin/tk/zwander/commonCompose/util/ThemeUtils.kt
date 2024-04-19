@@ -13,10 +13,8 @@ import androidx.compose.ui.graphics.toArgb
 import com.jthemedetecor.OsThemeDetector
 import com.sun.jna.platform.win32.Advapi32Util
 import com.sun.jna.platform.win32.WinReg
-import korlibs.platform.Platform
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
-import tk.zwander.common.ui.GenericLinuxThemeDetector
 import tk.zwander.common.ui.LinuxAccentColorGetter
 import tk.zwander.common.util.UserDefaults
 import tk.zwander.commonCompose.monet.ColorScheme
@@ -24,38 +22,29 @@ import tk.zwander.commonCompose.monet.ColorScheme
 @Composable
 actual fun rememberThemeInfo(): ThemeInfo {
     val (osThemeDetector, isSupported) = remember {
-        OsThemeDetector.getDetector() to OsThemeDetector.isSupported()
-    }
-
-    val genericDetector = remember {
-        GenericLinuxThemeDetector()
+        OsThemeDetector.detector to OsThemeDetector.isSupported
     }
 
     var dark by remember {
         mutableStateOf(
             when {
-                Platform.isLinux -> genericDetector.isDark
                 isSupported -> osThemeDetector.isDark
                 else -> true
             }
         )
     }
 
-    DisposableEffect(osThemeDetector, isSupported, genericDetector) {
+    DisposableEffect(osThemeDetector, isSupported) {
         val listener = { darkMode: Boolean ->
             dark = darkMode
         }
 
-        if (Platform.isLinux) {
-            genericDetector.registerListener(listener)
-        } else if (isSupported) {
+        if (isSupported) {
             osThemeDetector.registerListener(listener)
         }
 
         onDispose {
-            if (Platform.isLinux) {
-                genericDetector.removeListener(listener)
-            } else if (isSupported) {
+            if (isSupported) {
                 osThemeDetector.removeListener(listener)
             }
         }

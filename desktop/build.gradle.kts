@@ -18,6 +18,7 @@ kotlin {
         jvmToolchain(rootProject.extra["javaVersionEnum"].toString().toInt())
         withJava()
     }
+
     sourceSets {
         val jvmMain by getting {
             dependencies {
