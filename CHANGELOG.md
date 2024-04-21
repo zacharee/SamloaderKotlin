@@ -1,4 +1,5 @@
-# Upcoming
+# 1.18.4
+- Only show TAC info and report button if the device has an IMEI.
 - Fix a few crashes.
 - Update translations.
 - Clean up error reporting.
