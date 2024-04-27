@@ -117,7 +117,7 @@ data object CSCDB {
     }
 
     private fun loadLocalCsv() {
-        val cscString = MR.files.cscs()?.decodeToString() ?: return
+        val cscString = MR.files.cscs_csv()?.decodeToString() ?: return
 
         loadCsv(cscString)
     }

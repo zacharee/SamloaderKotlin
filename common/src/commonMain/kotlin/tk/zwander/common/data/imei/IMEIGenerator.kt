@@ -118,7 +118,7 @@ data object IMEIDatabase {
     }
 
     private fun loadLocalCsv() {
-        loadCsv(MR.files.tacs()!!.decodeToString())
+        loadCsv(MR.files.tacs_csv()!!.decodeToString())
     }
 
     private fun loadCsv(csvString: String) {
