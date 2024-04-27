@@ -93,18 +93,18 @@ object ChangelogHandler {
             val (build, androidVer, relDate, secPatch, _) = when {
                 row.count() == 4 -> {
                     Changelog(
-                        row[0].text().split(":")[1].trim(),
-                        row[1].text().split(":")[1].trim(),
-                        row[2].text().split(":")[1].trim(),
-                        row[3].text().split(":")[1].trim(),
+                        row.getOrNull(0)?.text()?.split(":")?.getOrNull(1)?.trim(),
+                        row.getOrNull(1)?.text()?.split(":")?.getOrNull(1)?.trim(),
+                        row.getOrNull(2)?.text()?.split(":")?.getOrNull(1)?.trim(),
+                        row.getOrNull(3)?.text()?.split(":")?.getOrNull(1)?.trim(),
                         null
                     )
                 }
                 row.count() == 3 -> {
                     Changelog(
-                        row[0].text().split(":")[1].trim(),
-                        row[1].text().split(":")[1].trim(),
-                        row[2].text().split(":")[1].trim(),
+                        row.getOrNull(0)?.text()?.split(":")?.getOrNull(1)?.trim(),
+                        row.getOrNull(1)?.text()?.split(":")?.getOrNull(1)?.trim(),
+                        row.getOrNull(2)?.text()?.split(":")?.getOrNull(1)?.trim(),
                         null, null
                     )
                 }
