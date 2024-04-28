@@ -28,17 +28,17 @@ jobs:
         view_top: 1
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Cache Gradle and Build
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-          ${{ github.workspace }}/common/build
-          ${{ github.workspace }}/android/build
-        key: ${{ runner.os }}-gradle-android
-        restore-keys: |
-          ${{ runner.os }}-gradle-android
+#    - name: Cache Gradle and Build
+#      uses: actions/cache@v4
+#      with:
+#        path: |
+#          ~/.gradle/caches
+#          ~/.gradle/wrapper
+#          ${{ github.workspace }}/common/build
+#          ${{ github.workspace }}/android/build
+#        key: ${{ runner.os }}-gradle-android
+#        restore-keys: |
+#          ${{ runner.os }}-gradle-android
     - name: Build with Gradle
       run: |
         ./gradlew :android:packageRelease

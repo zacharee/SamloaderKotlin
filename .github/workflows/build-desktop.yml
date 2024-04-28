@@ -38,18 +38,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Cache Gradle and Build
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ${{ github.workspace }}/common/build
-            ${{ github.workspace }}/desktop/build
-            ~/Library/Caches/Hydraulic/Conveyor
-          key: ${{ runner.os }}-gradle-desktop
-          restore-keys: |
-            ${{ runner.os }}-gradle-desktop
+#      - name: Cache Gradle and Build
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.gradle/wrapper
+#            ${{ github.workspace }}/common/build
+#            ${{ github.workspace }}/desktop/build
+#            ~/Library/Caches/Hydraulic/Conveyor
+#          key: ${{ runner.os }}-gradle-desktop
+#          restore-keys: |
+#            ${{ runner.os }}-gradle-desktop
 
       - name: Build with Gradle
         id: gradle-build
