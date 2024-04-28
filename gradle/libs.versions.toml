@@ -1,8 +1,8 @@
 [versions]
+android-gradle = "8.3.2"
 androidx-activity-compose = "1.9.0"
 androidx-core = "1.13.0"
 androidx-documentfile = "1.1.0-alpha01"
-android-gradle = "8.3.2"
 androidx-preference = "1.2.1"
 bugsnag-android = "6.4.0"
 bugsnag-android-gradle = "8.1.0"
@@ -38,9 +38,9 @@ bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
+jSystemThemeDetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
-jSystemThemeDetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 korlibs-io = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
 korlibs-platform = { module = "com.soywiz:korlibs-platform", version.ref = "korlibs" }
 korlibs-serialization-csv = { module = "com.soywiz:korlibs-serialization-csv", version.ref = "korlibs" }
@@ -53,8 +53,8 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
 moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
