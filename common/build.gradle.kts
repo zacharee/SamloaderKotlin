@@ -118,10 +118,7 @@ kotlin {
                 api(libs.jna)
                 api(libs.jna.platform)
 
-                // https://stackoverflow.com/a/73710583/5496177
-                api(libs.jSystemThemeDetector.get().let { "${it.module}:${it.versionConstraint.requiredVersion}" }) {
-                    exclude("net.java.dev.jna", "jna")
-                }
+                api(libs.jSystemThemeDetector)
 
                 api(compose.desktop.currentOs)
             }

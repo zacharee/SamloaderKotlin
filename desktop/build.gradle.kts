@@ -152,3 +152,17 @@ tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorCon
         destination.get().asFile.appendText(config.toString())
     }
 }
+
+// jSystemThemeDetector does something weird with including JNA, causing Gradle to try to resolve `jna-jpms.jar`
+// inside the base JNA artifact directory. This redirects the artifact selection to not add `-jpms`.
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.name == "jna") {
+            this.artifactSelection {
+                if (this.requestedSelectors.firstOrNull()?.classifier == "jpms") {
+                    this.selectArtifact("jar", "jar", null)
+                }
+            }
+        }
+    }
+}
