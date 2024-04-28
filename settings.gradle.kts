@@ -7,6 +7,7 @@ pluginManagement {
         google()
 
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev/")
         maven("https://maven.hq.hydraulic.software")
     }
 }
@@ -18,6 +19,7 @@ dependencyResolutionManagement {
         google()
 
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev/")
         maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap/")
         maven("https://jitpack.io")
         maven("https://oss.sonatype.org/content/repositories/snapshots/")

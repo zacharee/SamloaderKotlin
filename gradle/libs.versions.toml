@@ -9,7 +9,7 @@ bugsnag-android-gradle = "8.1.0"
 bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.6.10-dev1608"
-compose-compiler = "1.5.10.2"
+compose-compiler = "1.5.11-kt-2.0.0-RC1"
 conveyor = "1.9"
 flatlaf = "3.4.1"
 fluid = "0.13.0"
@@ -18,7 +18,7 @@ javaObjcBridge = "1.2"
 jna = "5.14.0"
 jsystemthemedetector = "f1710df70d"
 korlibs = "5.5.0-alpha3"
-kotlin = "1.9.23"
+kotlin = "2.0.0-RC2-277"
 kotlinx-coroutines = "1.8.1-Beta"
 kotlinx-datetime = "0.6.0-RC.2"
 kotlinx-serialization = "1.6.3"
@@ -82,6 +82,7 @@ compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }

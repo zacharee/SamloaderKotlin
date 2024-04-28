@@ -21,6 +21,7 @@ plugins {
     alias(libs.plugins.buildkonfig) apply false
     alias(libs.plugins.moko.resources) apply false
     alias(libs.plugins.kotlin.atomicfu) apply false
+    alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.bugsnag.android) apply false
     alias(libs.plugins.conveyor) apply false
@@ -29,8 +30,8 @@ plugins {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = freeCompilerArgs + listOf("-Xskip-prerelease-check")
+    compilerOptions {
+        freeCompilerArgs.add("-Xskip-prerelease-check")
     }
 }
 

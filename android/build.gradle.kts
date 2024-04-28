@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.moko.resources)
+    alias(libs.plugins.kotlin.compose)
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -76,15 +77,11 @@ android {
     }
 
     androidResources {
+        @Suppress("UnstableApiUsage")
         generateLocaleConfig = true
     }
 }
 
 multiplatformResources {
     resourcesPackage.set("tk.zwander.samloaderkotlin.android")
-}
-
-compose {
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
 }

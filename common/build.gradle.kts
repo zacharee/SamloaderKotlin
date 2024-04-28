@@ -1,10 +1,12 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.moko.resources)
     alias(libs.plugins.kotlin.atomicfu)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.bugsnag.android)
     alias(libs.plugins.compose)
@@ -19,27 +21,38 @@ kotlin.sourceSets.all {
     languageSettings.optIn("kotlin.RequiresOptIn")
 }
 
+val javaVersionEnum: JavaVersion by rootProject.extra
+
 kotlin {
     androidTarget {
-        compilations.forEach {
-            it.kotlinOptions {
-                freeCompilerArgs = freeCompilerArgs + "-Xopt-in=kotlin.RequiresOptIn"
-                jvmTarget = rootProject.extra["javaVersionEnum"].toString()
+        compilations.all {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    freeCompilerArgs.add("-Xopt-in=kotlin.RequiresOptIn")
+                    jvmTarget = JvmTarget.fromTarget(javaVersionEnum.toString())
+                }
             }
         }
     }
 
+    jvmToolchain(javaVersionEnum.toString().toInt())
+
     jvm("jvm") {
         compilations.all {
-            kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
+            compileTaskProvider.configure {
+                compilerOptions {
+                    jvmTarget = JvmTarget.fromTarget(javaVersionEnum.toString())
+                }
+            }
         }
-        jvmToolchain(rootProject.extra["javaVersionEnum"].toString().toInt())
     }
 
     targets.all {
         compilations.all {
-            compilerOptions.configure {
-                freeCompilerArgs.add("-Xexpect-actual-classes")
+            compileTaskProvider.configure {
+                compilerOptions {
+                    freeCompilerArgs.add("-Xexpect-actual-classes")
+                }
             }
         }
     }
@@ -187,7 +200,6 @@ tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-compose {
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
+composeCompiler {
+    enableIntrinsicRemember
 }

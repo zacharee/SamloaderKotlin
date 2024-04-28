@@ -1,22 +1,31 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
     alias(libs.plugins.conveyor)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.compose)
 }
 
 group = rootProject.extra["groupName"].toString()
 version = rootProject.extra["versionName"].toString()
 
+val javaVersionEnum: JavaVersion by rootProject.extra
+
 kotlin {
+    jvmToolchain(javaVersionEnum.toString().toInt())
+
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
+            compileTaskProvider.configure {
+                compilerOptions {
+                    jvmTarget = JvmTarget.fromTarget(javaVersionEnum.toString())
+                }
+            }
         }
-        jvmToolchain(rootProject.extra["javaVersionEnum"].toString().toInt())
-        withJava()
+//        withJava()
     }
 
     sourceSets {
@@ -29,7 +38,9 @@ kotlin {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = rootProject.extra["javaVersionEnum"].toString()
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(javaVersionEnum.toString()))
+    }
 }
 
 tasks.withType<org.gradle.jvm.tasks.Jar> {
@@ -111,11 +122,6 @@ compose.desktop {
             this.packageName = appName
         }
     }
-}
-
-compose {
-    kotlinCompilerPlugin.set("org.jetbrains.compose.compiler:compiler:${libs.versions.compose.compiler.get()}")
-    kotlinCompilerPluginArgs.add("suppressKotlinVersionCompatibilityCheck=${libs.versions.kotlin.get()}")
 }
 
 dependencies {
