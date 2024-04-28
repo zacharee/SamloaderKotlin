@@ -198,7 +198,3 @@ multiplatformResources {
 tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
-composeCompiler {
-    enableIntrinsicRemember
-}
