@@ -24,6 +24,8 @@ kotlin.sourceSets.all {
 val javaVersionEnum: JavaVersion by rootProject.extra
 
 kotlin {
+    jvmToolchain(javaVersionEnum.toString().toInt())
+
     androidTarget {
         compilations.all {
             compileTaskProvider.configure {
@@ -35,9 +37,7 @@ kotlin {
         }
     }
 
-    jvmToolchain(javaVersionEnum.toString().toInt())
-
-    jvm("jvm") {
+    jvm {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
@@ -117,7 +117,7 @@ kotlin {
                 api(libs.jna)
                 api(libs.jna.platform)
 
-                api(libs.jSystemThemeDetector)
+                api(libs.jsystemthemedetector)
 
                 api(compose.desktop.currentOs)
             }

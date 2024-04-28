@@ -25,7 +25,6 @@ kotlin {
                 }
             }
         }
-//        withJava()
     }
 
     sourceSets {
@@ -96,9 +95,12 @@ compose.desktop {
                 }
 
                 notarization {
-                    val macosNotarizationEmail = localProperties.getProperty("macosNotarizationEmail", null)
-                    val macosNotarizationPassword = localProperties.getProperty("macosNotarizationPassword", null)
-                    val macosNotarizationTeamId = localProperties.getProperty("macosNotarizationTeamId", null)
+                    val macosNotarizationEmail =
+                        localProperties.getProperty("macosNotarizationEmail", null)
+                    val macosNotarizationPassword =
+                        localProperties.getProperty("macosNotarizationPassword", null)
+                    val macosNotarizationTeamId =
+                        localProperties.getProperty("macosNotarizationTeamId", null)
 
                     if (macosNotarizationEmail != null) {
                         appleID.set(macosNotarizationEmail)
@@ -124,21 +126,16 @@ compose.desktop {
     }
 }
 
-dependencies {
-    // Use the configurations created by the Conveyor plugin to tell Gradle/Conveyor where to find the artifacts for each platform.
-    linuxAmd64(compose.desktop.linux_x64)
-    linuxAarch64(compose.desktop.linux_arm64)
-    macAmd64(compose.desktop.macos_x64)
-    macAarch64(compose.desktop.macos_arm64)
-    windowsAmd64(compose.desktop.windows_x64)
-}
-
 // region Work around temporary Compose bugs.
 configurations.all {
     attributes {
         // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
         attribute(Attribute.of("ui", String::class.java), "awt")
     }
+}
+
+project.configurations.create("desktopRuntimeClasspath") {
+    extendsFrom(project.configurations.findByName("jvmRuntimeClasspath"))
 }
 
 tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorConfig") {
@@ -153,16 +150,11 @@ tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorCon
     }
 }
 
-// jSystemThemeDetector does something weird with including JNA, causing Gradle to try to resolve `jna-jpms.jar`
-// inside the base JNA artifact directory. This redirects the artifact selection to not add `-jpms`.
-configurations.all {
-    resolutionStrategy.eachDependency {
-        if (requested.name == "jna") {
-            this.artifactSelection {
-                if (this.requestedSelectors.firstOrNull()?.classifier == "jpms") {
-                    this.selectArtifact("jar", "jar", null)
-                }
-            }
-        }
-    }
+dependencies {
+    // Use the configurations created by the Conveyor plugin to tell Gradle/Conveyor where to find the artifacts for each platform.
+    linuxAmd64(compose.desktop.linux_x64)
+    linuxAarch64(compose.desktop.linux_arm64)
+    macAmd64(compose.desktop.macos_x64)
+    macAarch64(compose.desktop.macos_arm64)
+    windowsAmd64(compose.desktop.windows_x64)
 }
