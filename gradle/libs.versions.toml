@@ -11,7 +11,6 @@ buildkonfig-gradle = "0.15.1"
 compose = "1.6.10-dev1608"
 conveyor = "1.9"
 flatlaf = "3.4.1"
-fluid = "0.13.0"
 google-material = "1.13.0-alpha01"
 javaObjcBridge = "1.2"
 jna = "5.14.0"
@@ -40,8 +39,6 @@ bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsn
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
-fluid-country = { module = "io.fluidsonic.country:fluid-country", version.ref = "fluid" }
-fluid-i18n = { module = "io.fluidsonic.i18n:fluid-i18n", version.ref = "fluid" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 java-objc-bridge = { module = "ca.weblite:java-objc-bridge", version.ref = "javaObjcBridge" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }

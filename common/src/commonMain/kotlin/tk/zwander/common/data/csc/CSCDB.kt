@@ -5,9 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import io.fluidsonic.country.Country
-import io.fluidsonic.i18n.name
-import io.fluidsonic.locale.Locale
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
@@ -17,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import tk.zwander.common.util.I18n.getCountryNameForCode
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
@@ -108,9 +106,7 @@ data object CSCDB {
 
     fun getCountryName(code: String): String {
         return try {
-            Country.forCode(code).run {
-                name(Locale.forLanguageTag(androidx.compose.ui.text.intl.Locale.current.toLanguageTag())) ?: name
-            }
+            getCountryNameForCode(code) ?: code
         } catch (e: Exception) {
             code
         }

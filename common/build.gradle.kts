@@ -80,9 +80,6 @@ kotlin {
                 api(libs.ktor.client.auth)
                 api(libs.ktor.client.core)
 
-                api(libs.fluid.country)
-                api(libs.fluid.i18n)
-
                 api(libs.multiplatformSettings)
                 api(libs.multiplatformSettings.noArg)
 
