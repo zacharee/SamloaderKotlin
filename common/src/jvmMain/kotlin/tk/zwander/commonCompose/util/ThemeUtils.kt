@@ -26,12 +26,7 @@ actual fun rememberThemeInfo(): ThemeInfo {
     }
 
     var dark by remember {
-        mutableStateOf(
-            when {
-                isSupported -> osThemeDetector.isDark
-                else -> true
-            }
-        )
+        mutableStateOf(isSupported && osThemeDetector.isDark)
     }
 
     DisposableEffect(osThemeDetector, isSupported) {
