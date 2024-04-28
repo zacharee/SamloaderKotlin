@@ -1,3 +1,11 @@
+# Upcoming
+- Crash fixes.
+- Update to Kotlin 2.0.0.
+- Update Compose.
+- Update TACs.
+- Update dependencies.
+- Clean up some unneeded dependencies.
+
 # 1.18.4
 - Only show TAC info and report button if the device has an IMEI.
 - Fix a few crashes.
