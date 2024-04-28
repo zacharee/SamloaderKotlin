@@ -28,7 +28,7 @@ kotlin {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    freeCompilerArgs.add("-Xopt-in=kotlin.RequiresOptIn")
+                    freeCompilerArgs.addAll("-Xopt-in=kotlin.RequiresOptIn", "-Xdont-warn-on-error-suppression")
                     jvmTarget = JvmTarget.fromTarget(javaVersionEnum.toString())
                 }
             }
@@ -51,7 +51,7 @@ kotlin {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    freeCompilerArgs.add("-Xexpect-actual-classes")
+                    freeCompilerArgs.addAll("-Xexpect-actual-classes", "-Xdont-warn-on-error-suppression")
                 }
             }
         }
