@@ -12,7 +12,6 @@ compose = "1.6.10-dev1608"
 conveyor = "1.9"
 flatlaf = "3.4.1"
 google-material = "1.13.0-alpha01"
-javaObjcBridge = "1.2"
 jna = "5.14.0"
 jsystemthemedetector = "f1710df70d"
 korlibs = "5.5.0-alpha3"
@@ -39,7 +38,6 @@ bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
-java-objc-bridge = { module = "ca.weblite:java-objc-bridge", version.ref = "javaObjcBridge" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 jSystemThemeDetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }

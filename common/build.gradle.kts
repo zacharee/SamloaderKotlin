@@ -114,7 +114,6 @@ kotlin {
                 api(libs.oshi.core)
                 api(libs.window.styler)
                 api(libs.kotlinx.coroutines.swing)
-                api(libs.java.objc.bridge)
                 api(libs.jna)
                 api(libs.jna.platform)
 
