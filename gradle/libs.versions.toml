@@ -22,7 +22,6 @@ kotlinx-datetime = "0.6.0-RC.2"
 kotlinx-serialization = "1.6.3"
 ksoup = "0.1.2"
 ktor = "2.3.10"
-moko-mvvm = "0.16.1"
 moko-resources = "0.24.0-beta-2"
 multiplatform-settings = "1.1.1"
 okio = "3.9.0"
@@ -58,7 +57,6 @@ ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-moko-mvvm-flow-compose = { module = "dev.icerock.moko:mvvm-flow-compose", version.ref = "moko-mvvm" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
 moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }

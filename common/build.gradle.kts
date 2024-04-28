@@ -83,7 +83,6 @@ kotlin {
                 api(libs.multiplatformSettings)
                 api(libs.multiplatformSettings.noArg)
 
-                api(libs.moko.mvvm.flow.compose)
                 api(libs.moko.resources)
                 api(libs.moko.resources.compose)
 

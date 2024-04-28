@@ -45,7 +45,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withAnnotation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
@@ -61,6 +60,7 @@ import tk.zwander.common.util.invoke
 import tk.zwander.common.util.isAccessoryModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.util.ThemeConstants
+import tk.zwander.commonCompose.util.collectAsMutableState
 import tk.zwander.commonCompose.view.components.ChangelogDisplay
 import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.HybridButton

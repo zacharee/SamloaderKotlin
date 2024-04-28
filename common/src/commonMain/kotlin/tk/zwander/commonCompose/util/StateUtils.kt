@@ -2,7 +2,6 @@ package tk.zwander.commonCompose.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import dev.icerock.moko.mvvm.flow.compose.collectAsMutableState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 
