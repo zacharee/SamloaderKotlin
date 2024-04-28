@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import tk.zwander.commonCompose.locals.ProvideModels
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.LocalUseMicaEffect
-import tk.zwander.commonCompose.view.components.CustomMaterialTheme
+import tk.zwander.commonCompose.view.components.BifrostTheme
 import tk.zwander.commonCompose.view.components.TabView
 import tk.zwander.commonCompose.view.components.pages
 import kotlin.time.ExperimentalTime
@@ -43,7 +43,7 @@ fun MainView(
     ProvideModels {
         val pagerState = LocalPagerState.current
 
-        CustomMaterialTheme {
+        BifrostTheme {
             val useMicaEffect = LocalUseMicaEffect.current
 
             Surface(

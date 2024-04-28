@@ -8,11 +8,8 @@ import tk.zwander.common.util.BifrostSettings
 import tk.zwander.commonCompose.util.rememberThemeInfo
 import tk.zwander.commonCompose.view.LocalUseMicaEffect
 
-/**
- * A Material theme with custom colors and such.
- */
 @Composable
-fun CustomMaterialTheme(block: @Composable () -> Unit) {
+fun BifrostTheme(block: @Composable () -> Unit) {
     val themeInfo = rememberThemeInfo()
     val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
 
