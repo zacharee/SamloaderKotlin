@@ -9,7 +9,6 @@ bugsnag-android-gradle = "8.1.0"
 bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.6.10-dev1608"
-compose-compiler = "1.5.11-kt-2.0.0-RC1"
 conveyor = "1.9"
 flatlaf = "3.4.1"
 fluid = "0.13.0"
@@ -39,7 +38,6 @@ androidx-documentfile = { module = "androidx.documentfile:documentfile", version
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx-preference" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
-compose-compiler = { module = "org.jetbrains.compose.compiler:compiler", version.ref = "compose-compiler" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 fluid-country = { module = "io.fluidsonic.country:fluid-country", version.ref = "fluid" }

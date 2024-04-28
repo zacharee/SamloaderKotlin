@@ -72,10 +72,6 @@ android {
         resources.excludes.add("META-INF/versions/9/previous-compilation-data.bin")
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-    }
-
     androidResources {
         @Suppress("UnstableApiUsage")
         generateLocaleConfig = true
