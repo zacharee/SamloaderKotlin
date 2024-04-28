@@ -1,4 +1,4 @@
-# Upcoming
+# 1.18.5
 - Crash fixes.
 - Update to Kotlin 2.0.0.
 - Update Compose.
