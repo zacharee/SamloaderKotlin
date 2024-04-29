@@ -2,8 +2,6 @@ package tk.zwander.common.util
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.client.utils.*
-import io.ktor.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -28,11 +26,10 @@ class PatreonSupportersParser private constructor() {
         }
     }
 
-    @OptIn(InternalAPI::class)
     suspend fun parseSupporters(): List<SupporterInfo> {
         val supportersString = StringBuilder()
 
-        withContext(Dispatchers.clientDispatcher(5, "Supporters")) {
+        withContext(Dispatchers.IO) {
             try {
                 val statement = globalHttpClient.get("https://raw.githubusercontent.com/zacharee/PatreonSupportersRetrieval/master/app/src/main/assets/supporters.json")
 
