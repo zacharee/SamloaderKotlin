@@ -24,7 +24,7 @@ import java.util.TreeSet
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 data object CSCDB {
     const val LIVE_ENDPOINT =
-        "https://raw.githubusercontent.com/zacharee/SamloaderKotlin/master/common/src/commonMain/resources/MR/files/cscs.csv"
+        "https://raw.githubusercontent.com/zacharee/SamloaderKotlin/master/common/src/commonMain/moko-resources/files/cscs.csv"
 
     // Most of these are from:
     // https://tsar3000.com/list-of-samsung-csc-codes-samsung-firmware-csc-codes/
