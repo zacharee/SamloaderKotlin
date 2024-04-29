@@ -379,11 +379,7 @@ class ColorScheme(
                 val distinctColors = wallpaperColors.mainColors.map {
                     it.toArgb()
                 }.distinct().filter {
-                    if (!filter) {
-                        true
-                    } else {
-                        Cam.fromInt(it).chroma >= MIN_CHROMA
-                    }
+                    !filter || Cam.fromInt(it).chroma >= MIN_CHROMA
                 }.toList()
                 if (distinctColors.isEmpty()) {
                     return listOf(GOOGLE_BLUE)
@@ -470,7 +466,7 @@ class ColorScheme(
             }
         }
 
-        public fun wrapDegreesDouble(degrees: Double): Double {
+        fun wrapDegreesDouble(degrees: Double): Double {
             return when {
                 degrees < 0 -> {
                     (degrees % 360) + 360
