@@ -40,7 +40,7 @@ object FusClient {
     private var nonce = ""
 
     private var auth: String = ""
-    private var sessId: String = ""
+    private var sessionId: String = ""
 
     suspend fun getNonce(): String {
         if (nonce.isBlank()) {
@@ -50,18 +50,18 @@ object FusClient {
         return nonce
     }
 
-    suspend fun generateNonce() {
+    private suspend fun generateNonce() {
         println("Generating nonce.")
         makeReq(Request.GENERATE_NONCE)
         println("Nonce: $nonce")
         println("Auth: $auth")
     }
 
-    fun getAuthV(includeNonce: Boolean = true): String {
+    private fun getAuthV(includeNonce: Boolean = true): String {
         return "FUS nonce=\"${if (includeNonce) encNonce else ""}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
     }
 
-    fun getDownloadUrl(path: String): String {
+    private fun getDownloadUrl(path: String): String {
         return "http://cloud-neofussvr.samsungmobile.com/NF_DownloadBinaryForMass.do?file=${path}"
     }
 
@@ -82,9 +82,9 @@ object FusClient {
             method = HttpMethod.Post
             headers {
                 append("Authorization", authV)
-                append("User-Agent", "Kies2.0_FUS")
-                append("Cookie", "JSESSIONID=${sessId}")
-                append("Set-Cookie", "JSESSIONID=${sessId}")
+                append("User-Agent", "Kiss2.0_FUS")
+                append("Cookie", "JSESSIONID=${sessionId}")
+                append("Set-Cookie", "JSESSIONID=${sessionId}")
                 append(HttpHeaders.ContentLength, "${data.toByteArray().size}")
             }
             setBody(data)
@@ -105,12 +105,12 @@ object FusClient {
         }
 
         if (response.headers["Set-Cookie"] != null || response.headers["set-cookie"] != null) {
-            sessId = response.headers.entries().find { it.value.any { it.contains("JSESSIONID=") } }
+            sessionId = response.headers.entries().find { it.value.any { value -> value.contains("JSESSIONID=") } }
                 ?.value?.find {
                     it.contains("JSESSIONID=")
                 }
                 ?.replace("JSESSIONID=", "")
-                ?.replace(Regex(";.*$"), "") ?: sessId
+                ?.replace(Regex(";.*$"), "") ?: sessionId
         }
 
         return body

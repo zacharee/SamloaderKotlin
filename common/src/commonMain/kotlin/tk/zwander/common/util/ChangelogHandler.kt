@@ -5,7 +5,6 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.utils.io.charsets.MalformedInputException
-import io.ktor.utils.io.core.*
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.data.changelog.Changelogs
 
