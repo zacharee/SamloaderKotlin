@@ -3,7 +3,6 @@ package tk.zwander.common.util
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.utils.io.core.*
 
 /**
  * Make a firmware string given the PDA and CSC versions.
