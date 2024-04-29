@@ -4,7 +4,6 @@ import com.fleeksoft.ksoup.Ksoup
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import io.ktor.utils.io.core.*
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.firstElementByTagName
@@ -21,12 +20,10 @@ object VersionFetch {
      */
     suspend fun getLatestVersion(model: String, region: String): FetchResult.VersionFetchResult {
         try {
-            val response = globalHttpClient.use {
-                it.get(
-                    urlString = "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml"
-                ) {
-                    userAgent("Kies2.0_FUS")
-                }
+            val response = globalHttpClient.get(
+                urlString = "https://fota-cloud-dn.ospserver.net:443/firmware/${region}/${model}/version.xml",
+            ) {
+                userAgent("Kies2.0_FUS")
             }
 
             val responseXml = Ksoup.parse(response.bodyAsText())

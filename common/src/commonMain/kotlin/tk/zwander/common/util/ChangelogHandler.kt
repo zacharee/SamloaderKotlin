@@ -20,11 +20,7 @@ object ChangelogHandler {
         try {
             val outerUrl = generateUrlForDeviceAndRegion(device, region)
             val outerResponse = try {
-                globalHttpClient.use {
-                    it.get {
-                        url(outerUrl)
-                    }
-                }
+                globalHttpClient.get(outerUrl)
             } catch (e: Exception) {
                 e.printStackTrace()
                 return null
@@ -38,11 +34,7 @@ object ChangelogHandler {
                 return null
             }
 
-            val iframeResponse = globalHttpClient.use {
-                it.get {
-                    url(iframeUrl ?: return null)
-                }
-            }
+            val iframeResponse = globalHttpClient.get(iframeUrl ?: return null)
 
             return if (iframeResponse.status.isSuccess()) {
                 Changelogs(device, region, parseChangelogs(

@@ -4,7 +4,6 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.client.utils.*
 import io.ktor.util.*
-import io.ktor.utils.io.core.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -35,11 +34,7 @@ class PatreonSupportersParser private constructor() {
 
         withContext(Dispatchers.clientDispatcher(5, "Supporters")) {
             try {
-                val statement = globalHttpClient.use {
-                    it.get {
-                        url("https://raw.githubusercontent.com/zacharee/PatreonSupportersRetrieval/master/app/src/main/assets/supporters.json")
-                    }
-                }
+                val statement = globalHttpClient.get("https://raw.githubusercontent.com/zacharee/PatreonSupportersRetrieval/master/app/src/main/assets/supporters.json")
 
                 supportersString.append(statement.bodyAsText())
             } catch (e: Exception) {

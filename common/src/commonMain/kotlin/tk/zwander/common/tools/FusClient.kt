@@ -17,7 +17,6 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import io.ktor.utils.io.core.toByteArray
-import io.ktor.utils.io.core.use
 import io.ktor.utils.io.jvm.nio.copyTo
 import okio.BufferedSink
 import tk.zwander.common.util.globalHttpClient
@@ -79,18 +78,16 @@ object FusClient {
 
         val authV = getAuthV(includeNonce)
 
-        val response = globalHttpClient.use {
-            it.request("https://neofussvr.sslcs.cdngc.net/${request.value}") {
-                method = HttpMethod.Post
-                headers {
-                    append("Authorization", authV)
-                    append("User-Agent", "Kies2.0_FUS")
-                    append("Cookie", "JSESSIONID=${sessId}")
-                    append("Set-Cookie", "JSESSIONID=${sessId}")
-                    append(HttpHeaders.ContentLength, "${data.toByteArray().size}")
-                }
-                setBody(data)
+        val response = globalHttpClient.request("https://neofussvr.sslcs.cdngc.net/${request.value}") {
+            method = HttpMethod.Post
+            headers {
+                append("Authorization", authV)
+                append("User-Agent", "Kies2.0_FUS")
+                append("Cookie", "JSESSIONID=${sessId}")
+                append("Set-Cookie", "JSESSIONID=${sessId}")
+                append(HttpHeaders.ContentLength, "${data.toByteArray().size}")
             }
+            setBody(data)
         }
 
         val body = response.bodyAsText()
