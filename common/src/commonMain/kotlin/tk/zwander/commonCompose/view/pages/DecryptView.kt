@@ -50,7 +50,6 @@ import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
 import tk.zwander.commonCompose.view.components.SplitComponent
 import tk.zwander.samloaderkotlin.resources.MR
-import java.io.File
 import kotlin.time.ExperimentalTime
 
 /**
@@ -160,7 +159,7 @@ internal fun DecryptView() {
                                     scope.launch {
                                         val decInfo = DecryptFileInfo(
                                             encFile = it,
-                                            decFile = PlatformFile(it.getParent()!!, File(it.getAbsolutePath()).nameWithoutExtension),
+                                            decFile = PlatformFile(it.getParent()!!, PlatformFile(it.getAbsolutePath()).nameWithoutExtension),
                                         )
 
                                         Decrypter.handleFileInput(model, decInfo)

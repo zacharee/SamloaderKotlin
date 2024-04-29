@@ -13,7 +13,9 @@ import okio.source
 /**
  * A File implementation that wraps Java's File class.
  */
-actual open class PlatformFile : File {
+actual open class PlatformFile : IPlatformFile {
+    actual companion object;
+
     private val wrappedFile: java.io.File
 
     actual constructor(pathName: String) {
@@ -24,7 +26,7 @@ actual open class PlatformFile : File {
         wrappedFile = java.io.File(parent, child)
     }
 
-    actual constructor(parent: File, child: String) {
+    actual constructor(parent: PlatformFile, child: String) {
         wrappedFile = java.io.File(java.io.File(parent.getAbsolutePath()), child)
     }
 
@@ -37,20 +39,23 @@ actual open class PlatformFile : File {
         wrappedFile = file
     }
 
+    actual override val nameWithoutExtension: String
+        get() = wrappedFile.nameWithoutExtension
+
     actual override fun getName(): String = wrappedFile.name
     actual override suspend fun getParent(): String? = wrappedFile.parent
     actual override suspend fun getParentFile(): IPlatformFile? =
-        wrappedFile.parentFile?.absolutePath?.let { File(it) }
+        wrappedFile.parentFile?.absolutePath?.let { PlatformFile(it) }
 
     actual override fun getPath(): String = wrappedFile.path
     actual override suspend fun isAbsolute(): Boolean = wrappedFile.isAbsolute
     actual override fun getAbsolutePath(): String = wrappedFile.absolutePath
     actual override fun getAbsoluteFile(): IPlatformFile =
-        File(wrappedFile.absoluteFile.absolutePath)
+        PlatformFile(wrappedFile.absoluteFile.absolutePath)
 
     actual override suspend fun getCanonicalPath(): String = wrappedFile.canonicalPath
     actual override suspend fun getCanonicalFile(): IPlatformFile =
-        File(wrappedFile.canonicalFile.absolutePath)
+        PlatformFile(wrappedFile.canonicalFile.absolutePath)
 
     actual override suspend fun getCanRead(): Boolean = wrappedFile.canRead()
     actual override suspend fun getCanWrite(): Boolean = wrappedFile.canWrite()
@@ -83,23 +88,23 @@ actual open class PlatformFile : File {
     }
 
     actual override suspend fun list(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<String>? {
-        return wrappedFile.list { dir, name -> filter(File(dir.absolutePath), name) }
+        return wrappedFile.list { dir, name -> filter(PlatformFile(dir.absolutePath), name) }
     }
 
     actual override suspend fun listFiles(): Array<IPlatformFile>? {
-        return wrappedFile.listFiles()?.map { File(it.absolutePath) }
+        return wrappedFile.listFiles()?.map { PlatformFile(it.absolutePath) }
             ?.toTypedArray()
     }
 
     actual override suspend fun listFiles(filter: (dir: IPlatformFile, name: String) -> Boolean): Array<IPlatformFile>? {
-        return wrappedFile.listFiles { dir, name -> filter(File(dir.absolutePath), name) }
-            ?.map { File(it.absolutePath) }
+        return wrappedFile.listFiles { dir, name -> filter(PlatformFile(dir.absolutePath), name) }
+            ?.map { PlatformFile(it.absolutePath) }
             ?.toTypedArray()
     }
 
     actual override suspend fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile>? {
-        return wrappedFile.listFiles { pathname -> filter(File(pathname.absolutePath)) }
-            ?.map { File(it.absolutePath) }
+        return wrappedFile.listFiles { pathname -> filter(PlatformFile(pathname.absolutePath)) }
+            ?.map { PlatformFile(it.absolutePath) }
             ?.toTypedArray()
     }
 
@@ -111,7 +116,7 @@ actual open class PlatformFile : File {
         return wrappedFile.mkdirs()
     }
 
-    actual override suspend fun renameTo(dest: File): Boolean {
+    actual override suspend fun renameTo(dest: IPlatformFile): Boolean {
         return wrappedFile.renameTo(java.io.File(dest.getAbsolutePath()))
     }
 

@@ -26,6 +26,9 @@ class PlatformUriFile(
         }!!,
     )
 
+    override val nameWithoutExtension: String
+        get() = wrappedFile.name?.substringBeforeLast(".") ?: wrappedFile.uri.toString()
+
     override fun getName(): String = wrappedFile.name ?: wrappedFile.uri.toString()
     override suspend fun getParent(): String? = wrappedFile.parentFile?.uri?.toString()
     override suspend fun getParentFile(): IPlatformFile? = wrappedFile.parentFile?.let { PlatformUriFile(context, it) }
@@ -34,7 +37,7 @@ class PlatformUriFile(
     override fun getAbsolutePath(): String = getPath()
     override fun getAbsoluteFile(): IPlatformFile = this
     override suspend fun getCanonicalPath(): String = throw IllegalAccessException("Not Supported")
-    override suspend fun getCanonicalFile(): File = throw IllegalAccessException("Not Supported")
+    override suspend fun getCanonicalFile(): IPlatformFile = throw IllegalAccessException("Not Supported")
     override suspend fun getCanRead(): Boolean = wrappedFile.canRead()
     override suspend fun getCanWrite(): Boolean = wrappedFile.canWrite()
     override suspend fun getExists(): Boolean = wrappedFile.exists()
@@ -95,7 +98,7 @@ class PlatformUriFile(
         return true
     }
 
-    override suspend fun renameTo(dest: File): Boolean {
+    override suspend fun renameTo(dest: IPlatformFile): Boolean {
         return wrappedFile.renameTo(dest.getName())
     }
 

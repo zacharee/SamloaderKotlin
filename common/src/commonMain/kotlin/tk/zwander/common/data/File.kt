@@ -7,10 +7,14 @@ import okio.BufferedSource
  * Platforms should actuate this class to implement
  * various filesystem classes they use.
  */
-expect open class PlatformFile : File {
+expect open class PlatformFile : IPlatformFile {
+    companion object;
+
     constructor(pathName: String)
     constructor(parent: String, child: String)
-    constructor(parent: File, child: String)
+    constructor(parent: PlatformFile, child: String)
+
+    override val nameWithoutExtension: String
 
     override fun getName(): String
     override suspend fun getParent(): String?
@@ -43,7 +47,7 @@ expect open class PlatformFile : File {
     override suspend fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile>?
     override suspend fun mkdir(): Boolean
     override suspend fun mkdirs(): Boolean
-    override suspend fun renameTo(dest: File): Boolean
+    override suspend fun renameTo(dest: IPlatformFile): Boolean
     override suspend fun setLastModified(time: Long): Boolean
     override suspend fun setReadOnly(): Boolean
     override suspend fun setWritable(writable: Boolean, ownerOnly: Boolean): Boolean
@@ -62,25 +66,16 @@ expect open class PlatformFile : File {
     override fun compareTo(other: IPlatformFile): Int
 }
 
-/**
- * A "File" representation for Kotlin MPP, to
- * allow easier interaction with platform filesystem
- * stuff.
- */
-abstract class File : IPlatformFile {
-    companion object {
-        operator fun invoke(pathName: String): File {
-            return PlatformFile(pathName)
-        }
+operator fun PlatformFile.Companion.invoke(pathName: String): PlatformFile {
+    return PlatformFile(pathName)
+}
 
-        operator fun invoke(parent: String, child: String): File {
-            return PlatformFile(parent, child)
-        }
+operator fun PlatformFile.Companion.invoke(parent: String, child: String): PlatformFile {
+    return PlatformFile(parent, child)
+}
 
-        operator fun invoke(parent: File, child: String): File {
-            return PlatformFile(parent, child)
-        }
-    }
+operator fun PlatformFile.Companion.invoke(parent: PlatformFile, child: String): PlatformFile {
+    return PlatformFile(parent, child)
 }
 
 /**
@@ -88,6 +83,8 @@ abstract class File : IPlatformFile {
  * override if needed.
  */
 interface IPlatformFile : Comparable<IPlatformFile> {
+    val nameWithoutExtension: String
+
     fun getName(): String
     suspend fun getParent(): String?
     suspend fun getParentFile(): IPlatformFile?
@@ -119,7 +116,7 @@ interface IPlatformFile : Comparable<IPlatformFile> {
     suspend fun listFiles(filter: (pathName: IPlatformFile) -> Boolean): Array<IPlatformFile>?
     suspend fun mkdir(): Boolean
     suspend fun mkdirs(): Boolean
-    suspend fun renameTo(dest: File): Boolean
+    suspend fun renameTo(dest: IPlatformFile): Boolean
     suspend fun setLastModified(time: Long): Boolean
     suspend fun setReadOnly(): Boolean
     suspend fun setWritable(writable: Boolean, ownerOnly: Boolean): Boolean
