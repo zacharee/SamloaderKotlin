@@ -20,7 +20,7 @@ object Shades {
      * lstar 49.6 is the smallest lstar that will lead to a contrast ratio >= 4.5 with lstar 100,
      * and it also contrasts >= 4.5 with lstar 100.
      */
-    private const val MIDDLE_LSTAR = 49.6f
+    private const val MIDDLE_LSTAR = 49.6
 
     /**
      * Generate shades of a color. Ordered in lightness _descending_.
@@ -32,14 +32,14 @@ object Shades {
      * @param chroma chroma in CAM16 color space
      * @return shades of a color, as argb integers. Ordered by lightness descending.
      */
-    fun of(hue: Float, chroma: Float): IntArray {
+    fun of(hue: Double, chroma: Double): IntArray {
         val shades = IntArray(12)
         // At tone 90 and above, blue and yellow hues can reach a much higher chroma.
         // To preserve a consistent appearance across all hues, use a maximum chroma of 40.
-        shades[0] = ColorUtils.CAMToColor(hue, min(40f, chroma), 99f)
-        shades[1] = ColorUtils.CAMToColor(hue, min(40f, chroma), 95f)
+        shades[0] = ColorUtils.CAMToColor(hue, min(40.0, chroma), 99.0)
+        shades[1] = ColorUtils.CAMToColor(hue, min(40.0, chroma), 95.0)
         for (i in 2..11) {
-            val lStar = if (i == 6) MIDDLE_LSTAR else (100 - 10 * (i - 1)).toFloat()
+            val lStar = if (i == 6) MIDDLE_LSTAR else (100 - 10 * (i - 1)).toDouble()
             shades[i] = ColorUtils.CAMToColor(hue, chroma, lStar)
         }
         return shades

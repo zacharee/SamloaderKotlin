@@ -104,7 +104,7 @@ object Request {
      * @param nonce the session nonce.
      * @return the needed XML.
      */
-    fun createBinaryInform(
+    private fun createBinaryInform(
         fw: String,
         model: String,
         region: String,

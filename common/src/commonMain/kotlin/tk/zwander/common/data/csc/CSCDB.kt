@@ -21,7 +21,7 @@ import tk.zwander.samloaderkotlin.resources.MR
 import java.util.TreeSet
 
 @OptIn(DelicateCoroutinesApi::class)
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate", "unused")
 data object CSCDB {
     const val LIVE_ENDPOINT =
         "https://raw.githubusercontent.com/zacharee/SamloaderKotlin/master/common/src/commonMain/resources/MR/files/cscs.csv"

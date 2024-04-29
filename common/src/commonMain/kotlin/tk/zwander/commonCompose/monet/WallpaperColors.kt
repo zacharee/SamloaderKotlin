@@ -14,6 +14,7 @@ import kotlin.math.round
  * [WallpaperColors.primaryColor], [WallpaperColors.secondaryColor]
  * or [WallpaperColors.tertiaryColor].
  */
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 class WallpaperColors {
     annotation class ColorsHints
 
@@ -41,7 +42,7 @@ class WallpaperColors {
     ) : this(primaryColor, secondaryColor, tertiaryColor, 0) {
 
         // Calculate dark theme support based on primary color.
-        val tmpHsl = FloatArray(3)
+        val tmpHsl = DoubleArray(3)
         ColorUtils.colorToHSL(primaryColor.toArgb(), tmpHsl)
         val luminance = tmpHsl[2]
         if (luminance < DARK_THEME_MEAN_LUMINANCE) {
@@ -252,7 +253,7 @@ class WallpaperColors {
         private const val MAX_DARK_AREA = 0.05f
 
         private fun hueDiff(a: Cam?, b: Cam?): Double {
-            return (180f - abs(abs(a!!.hue - b!!.hue) - 180f)).toDouble()
+            return (180f - abs(abs(a!!.hue - b!!.hue) - 180f))
         }
 
         private fun score(cam: Cam?, proportion: Double): Double {

@@ -6,6 +6,6 @@ fun pow(b: Double, p: Double): Double {
     return b.pow(p)
 }
 
-fun lerp(start: Float, stop: Float, amount: Float): Float {
+fun lerp(start: Double, stop: Double, amount: Double): Double {
     return start + (stop - start) * amount
 }

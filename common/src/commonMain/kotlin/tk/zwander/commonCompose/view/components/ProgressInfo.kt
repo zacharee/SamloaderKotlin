@@ -2,7 +2,10 @@ package tk.zwander.commonCompose.view.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,9 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import korlibs.io.util.toStringDecimal
-import tk.zwander.commonCompose.flow.FlowMainAxisAlignment
-import tk.zwander.commonCompose.flow.FlowRow
-import tk.zwander.commonCompose.flow.SizeMode
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.math.round
@@ -31,6 +31,7 @@ import kotlin.math.roundToInt
  * A progress indicator.
  * @param model the view model to use as a data source.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun ProgressInfo(model: BaseModel) {
     Column(
@@ -82,10 +83,8 @@ internal fun ProgressInfo(model: BaseModel) {
 
                     FlowRow(
                         modifier = Modifier.fillMaxWidth(),
-                        mainAxisAlignment = FlowMainAxisAlignment.SpaceEvenly,
-                        mainAxisSize = SizeMode.Expand,
-                        mainAxisSpacing = 16.dp,
-                        crossAxisSpacing = 16.dp
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         FormatText(
                             text = "%",

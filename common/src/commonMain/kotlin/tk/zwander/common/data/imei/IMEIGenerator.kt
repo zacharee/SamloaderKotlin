@@ -76,7 +76,7 @@ data object IMEIDatabase {
         "005555",
         "020202",
     )
-    const val LIVE_ENDPOINT =
+    private const val LIVE_ENDPOINT =
         "https://raw.githubusercontent.com/zacharee/SamloaderKotlin/master/common/src/commonMain/resources/MR/files/tacs.csv"
 
     val tacs = MutableStateFlow<Map<String, Set<String>>>(mapOf())

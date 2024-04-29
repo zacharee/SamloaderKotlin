@@ -7,7 +7,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 
-
+@Suppress("FunctionName", "MemberVisibilityCanBePrivate")
 object ColorUtils {
     fun XYZToColor(
         x: Double,
@@ -40,7 +40,7 @@ object ColorUtils {
      * @param chroma chroma in CAM coordinates.
      * @param lstar perceptual luminance, L* in L*a*b*
      */
-    fun CAMToColor(hue: Float, chroma: Float, lstar: Float): Int {
+    fun CAMToColor(hue: Double, chroma: Double, lstar: Double): Int {
         return Cam.getInt(hue, chroma, lstar)
     }
 
@@ -55,7 +55,7 @@ object ColorUtils {
      * @param color  the ARGB color to convert. The alpha component is ignored
      * @param outHsl 3-element array which holds the resulting HSL components
      */
-    fun colorToHSL(color: Int, outHsl: FloatArray) {
+    fun colorToHSL(color: Int, outHsl: DoubleArray) {
         val c = Color(color)
 
         RGBToHSL(
@@ -83,20 +83,20 @@ object ColorUtils {
         r: Int,
         g: Int, 
         b: Int,
-        outHsl: FloatArray
+        outHsl: DoubleArray
     ) {
-        val rf = r / 255f
-        val gf = g / 255f
-        val bf = b / 255f
-        val max: Float = max(rf, max(gf, bf))
-        val min: Float = min(rf, min(gf, bf))
+        val rf = r / 255.0
+        val gf = g / 255.0
+        val bf = b / 255.0
+        val max: Double = max(rf, max(gf, bf))
+        val min: Double = min(rf, min(gf, bf))
         val deltaMaxMin = max - min
-        var h: Float
-        val s: Float
+        var h: Double
+        val s: Double
         val l = (max + min) / 2f
         if (max == min) {
             // Monochromatic
-            s = 0f
+            s = 0.0
             h = s
         } else {
             h = when (max) {
@@ -116,9 +116,9 @@ object ColorUtils {
         if (h < 0) {
             h += 360f
         }
-        outHsl[0] = h.coerceIn(0f, 360f)
-        outHsl[1] = s.coerceIn(0f, 1f)
-        outHsl[2] = l.coerceIn(0f, 1f)
+        outHsl[0] = h.coerceIn(0.0, 360.0)
+        outHsl[1] = s.coerceIn(0.0, 1.0)
+        outHsl[2] = l.coerceIn(0.0, 1.0)
     }
 
     /**

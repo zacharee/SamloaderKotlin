@@ -34,25 +34,26 @@ import kotlin.math.round
  * consistent, and reasonably good. It worked." - Fairchild, Color Models and Systems: Handbook of
  * Color Psychology, 2015
  */
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 object CamUtils {
     // Transforms XYZ color space coordinates to 'cone'/'RGB' responses in CAM16.
     val XYZ_TO_CAM16RGB = arrayOf(
-        floatArrayOf(0.401288f, 0.650173f, -0.051461f),
-        floatArrayOf(-0.250268f, 1.204414f, 0.045854f),
-        floatArrayOf(-0.002079f, 0.048952f, 0.953127f)
+        doubleArrayOf(0.401288, 0.650173, -0.051461),
+        doubleArrayOf(-0.250268, 1.204414, 0.045854),
+        doubleArrayOf(-0.002079, 0.048952, 0.953127)
     )
 
     // Transforms 'cone'/'RGB' responses in CAM16 to XYZ color space coordinates.
     val CAM16RGB_TO_XYZ = arrayOf(
-        floatArrayOf(1.86206786f, -1.01125463f, 0.14918677f),
-        floatArrayOf(0.38752654f, 0.62144744f, -0.00897398f),
-        floatArrayOf(-0.01584150f, -0.03412294f, 1.04996444f)
+        doubleArrayOf(1.86206786, -1.01125463, 0.14918677),
+        doubleArrayOf(0.38752654, 0.62144744, -0.00897398),
+        doubleArrayOf(-0.01584150, -0.03412294, 1.04996444)
     )
 
     // Need this, XYZ coordinates in internal ColorUtils are private
     // sRGB specification has D65 whitepoint - Stokes, Anderson, Chandrasekar, Motta - A Standard
     // Default Color Space for the Internet: sRGB, 1996
-    val WHITE_POINT_D65 = floatArrayOf(95.047f, 100.0f, 108.883f)
+    val WHITE_POINT_D65 = doubleArrayOf(95.047, 100.0, 108.883)
 
     // This is a more precise sRGB to XYZ transformation matrix than traditionally
     // used. It was derived using Schlomer's technique of transforming the xyY
@@ -167,7 +168,7 @@ object CamUtils {
         return 255 shl 24 or (red and 255 shl 16) or (green and 255 shl 8) or (blue and 255)
     }
 
-    fun intFromLstar(lstar: Float): Int {
+    fun intFromLstar(lstar: Double): Int {
         if (lstar < 1) {
             return -0x1000000
         } else if (lstar > 99) {
@@ -175,7 +176,7 @@ object CamUtils {
         }
 
         // XYZ to LAB conversion routine, assume a and b are 0.
-        val fy = (lstar + 16.0f) / 116.0f
+        val fy = (lstar + 16.0) / 116.0
 
         // fz = fx = fy because a and b are 0
         val kappa = 24389f / 27f
@@ -186,38 +187,38 @@ object CamUtils {
         val xT = if (cubeExceedEpsilon) fy * fy * fy else (116f * fy - 16f) / kappa
         val zT = if (cubeExceedEpsilon) fy * fy * fy else (116f * fy - 16f) / kappa
         return ColorUtils.XYZToColor(
-            (xT * WHITE_POINT_D65[0]).toDouble(),
-            (yT * WHITE_POINT_D65[1]).toDouble(), (zT * WHITE_POINT_D65[2]).toDouble()
+            (xT * WHITE_POINT_D65[0]),
+            (yT * WHITE_POINT_D65[1]), (zT * WHITE_POINT_D65[2])
         )
     }
 
     /** Returns L* from L*a*b*, perceptual luminance, from an ARGB integer (ColorInt).  */
-    fun lstarFromInt(argb: Int): Float {
+    fun lstarFromInt(argb: Int): Double {
         return lstarFromY(yFromInt(argb))
     }
 
-    fun lstarFromY(y: Float): Float {
-        val yMutable = y / 100.0f
-        val e = 216f / 24389f
+    fun lstarFromY(y: Double): Double {
+        val yMutable = y / 100.0
+        val e = 216.0 / 24389.0
         val yIntermediate = if (yMutable <= e) {
-            return 24389f / 27f * yMutable
+            return 24389.0 / 27.0 * yMutable
         } else {
-            cbrt(yMutable.toDouble()).toFloat()
+            cbrt(yMutable)
         }
-        return 116f * yIntermediate - 16f
+        return 116.0 * yIntermediate - 16.0
     }
 
-    fun yFromInt(argb: Int): Float {
+    fun yFromInt(argb: Int): Double {
         val color = Color(argb)
         val r = linearized((color.red * 255).toInt())
         val g = linearized((color.green * 255).toInt())
         val b = linearized((color.blue * 255).toInt())
         val matrix = SRGB_TO_XYZ
         val y = r * matrix[1][0] + g * matrix[1][1] + b * matrix[1][2]
-        return y.toFloat()
+        return y
     }
 
-    fun xyzFromInt(argb: Int): FloatArray {
+    fun xyzFromInt(argb: Int): DoubleArray {
         val color = Color(argb)
         val r = linearized((color.red * 255).toInt())
         val g = linearized((color.green * 255).toInt())
@@ -226,7 +227,7 @@ object CamUtils {
         val x = r * matrix[0][0] + g * matrix[0][1] + b * matrix[0][2]
         val y = r * matrix[1][0] + g * matrix[1][1] + b * matrix[1][2]
         val z = r * matrix[2][0] + g * matrix[2][1] + b * matrix[2][2]
-        return floatArrayOf(x.toFloat(), y.toFloat(), z.toFloat())
+        return doubleArrayOf(x, y, z)
     }
 
     /**
@@ -251,12 +252,12 @@ object CamUtils {
         }
     }
 
-    fun linearized(rgbComponent: Int): Float {
-        val normalized = rgbComponent.toFloat() / 255.0f
-        return if (normalized <= 0.04045f) {
-            normalized / 12.92f * 100.0f
+    fun linearized(rgbComponent: Int): Double {
+        val normalized = rgbComponent.toDouble() / 255.0
+        return if (normalized <= 0.04045) {
+            normalized / 12.92 * 100.0
         } else {
-            ((normalized + 0.055f) / 1.055f).toDouble().pow(2.4).toFloat() * 100.0f
+            ((normalized + 0.055) / 1.055).pow(2.4) * 100.0
         }
     }
 }

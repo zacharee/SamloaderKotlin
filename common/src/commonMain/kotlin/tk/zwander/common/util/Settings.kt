@@ -48,6 +48,7 @@ object BifrostSettings {
     val settings = ObservableBifrostSettings(ObservableSettings())
 }
 
+@Suppress("unused")
 sealed class SettingsKey<Type> {
     abstract val key: kotlin.String
     abstract val default: Type?

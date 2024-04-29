@@ -1,3 +1,5 @@
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package tk.zwander.commonCompose.monet
 
 import androidx.compose.material3.darkColorScheme
@@ -22,38 +24,37 @@ internal interface Hue {
      * @param hueAndRotations list of pairs, where the first item in a pair is a hue, and the
      *    second item in the pair is a hue rotation that should be applied
      */
-    fun getHueRotation(sourceHue: Float, hueAndRotations: List<Pair<Int, Int>>): Double {
-        val sanitizedSourceHue = (if (sourceHue < 0 || sourceHue >= 360) 0 else sourceHue).toFloat()
+    fun getHueRotation(sourceHue: Double, hueAndRotations: List<Pair<Int, Int>>): Double {
+        val sanitizedSourceHue = (if (sourceHue < 0 || sourceHue >= 360) 0.0 else sourceHue)
         for (i in 0..hueAndRotations.size - 2) {
-            val thisHue = hueAndRotations[i].first.toFloat()
-            val nextHue = hueAndRotations[i + 1].first.toFloat()
+            val thisHue = hueAndRotations[i].first
+            val nextHue = hueAndRotations[i + 1].first
             if (thisHue <= sanitizedSourceHue && sanitizedSourceHue < nextHue) {
-                return ColorScheme.wrapDegreesDouble(sanitizedSourceHue.toDouble() +
-                        hueAndRotations[i].second)
+                return ColorScheme.wrapDegreesDouble(sanitizedSourceHue + hueAndRotations[i].second)
             }
         }
 
         // If this statement executes, something is wrong, there should have been a rotation
         // found using the arrays.
-        return sourceHue.toDouble()
+        return sourceHue
     }
 }
 
 internal class HueSource : Hue {
     override fun get(sourceColor: Cam): Double {
-        return sourceColor.hue.toDouble()
+        return sourceColor.hue
     }
 }
 
 internal class HueAdd(val amountDegrees: Double) : Hue {
     override fun get(sourceColor: Cam): Double {
-        return ColorScheme.wrapDegreesDouble(sourceColor.hue.toDouble() + amountDegrees)
+        return ColorScheme.wrapDegreesDouble(sourceColor.hue + amountDegrees)
     }
 }
 
 internal class HueSubtract(val amountDegrees: Double) : Hue {
     override fun get(sourceColor: Cam): Double {
-        return ColorScheme.wrapDegreesDouble(sourceColor.hue.toDouble() - amountDegrees)
+        return ColorScheme.wrapDegreesDouble(sourceColor.hue - amountDegrees)
     }
 }
 
@@ -65,7 +66,7 @@ internal class HueVibrantSecondary : Hue {
     }
 }
 
-internal class HueVibrantTertiary() : Hue {
+internal class HueVibrantTertiary : Hue {
     val hueToRotations = listOf(Pair(0, 35), Pair(41, 30), Pair(61, 20), Pair(101, 25),
             Pair(131, 30), Pair(181, 35), Pair(251, 30), Pair(301, 25), Pair(360, 25))
     override fun get(sourceColor: Cam): Double {
@@ -115,7 +116,7 @@ internal class ChromaConstant(val chroma: Double) : Chroma {
 
 internal class ChromaSource : Chroma {
     override fun get(sourceColor: Cam): Double {
-        return sourceColor.chroma.toDouble()
+        return sourceColor.chroma
     }
 }
 
@@ -123,7 +124,7 @@ internal class TonalSpec(val hue: Hue = HueSource(), val chroma: Chroma) {
     fun shades(sourceColor: Cam): List<Int> {
         val hue = hue.get(sourceColor)
         val chroma = chroma.get(sourceColor)
-        return Shades.of(hue.toFloat(), chroma.toFloat()).toList()
+        return Shades.of(hue, chroma).toList()
     }
 }
 
@@ -368,8 +369,8 @@ class ColorScheme(
          */
         fun getSeedColors(wallpaperColors: WallpaperColors, filter: Boolean = true): List<Int> {
             val totalPopulation = wallpaperColors.allColors.values.reduce { a, b -> a + b }
-                    .toDouble()
-            val totalPopulationMeaningless = (totalPopulation == 0.0)
+                    
+            val totalPopulationMeaningless = (totalPopulation.toDouble() == 0.0)
             if (totalPopulationMeaningless) {
                 // WallpaperColors with a population of 0 indicate the colors didn't come from
                 // quantization. Instead of scoring, trust the ordering of the provided primary
@@ -388,7 +389,7 @@ class ColorScheme(
             }
 
             val intToProportion = wallpaperColors.allColors.mapValues {
-                it.value.toDouble() / totalPopulation
+                it.value / totalPopulation.toDouble()
             }
             val intToCam = wallpaperColors.allColors.mapValues { Cam.fromInt(it.key) }
 
@@ -480,8 +481,8 @@ class ColorScheme(
             }
         }
 
-        private fun hueDiff(a: Float, b: Float): Float {
-            return 180f - ((a - b).absoluteValue - 180f).absoluteValue
+        private fun hueDiff(a: Double, b: Double): Double {
+            return 180.0 - ((a - b).absoluteValue - 180.0).absoluteValue
         }
 
         @OptIn(ExperimentalStdlibApi::class)
