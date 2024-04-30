@@ -1,3 +1,8 @@
+# 1.18.6
+- Fix live URLs for CSCs and TACs.
+- Add workaround for proper dynamic colors on One UI 6.
+- Cleanup.
+
 # 1.18.5
 - Crash fixes.
 - Update to Kotlin 2.0.0.
