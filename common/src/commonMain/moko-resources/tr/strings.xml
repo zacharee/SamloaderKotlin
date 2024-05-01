@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="manualWarningDetails3">GitHub\'da.</string>
+    <string name="manualWarningDetails3">GitHub'da.</string>
     <string name="checkingCRC">CRC Denetleniyor</string>
     <string name="checkForUpdatesDesc">Ürün Yazılımı Güncellemelerini Denetle</string>
     <string name="odinRom">OdinRom</string>
@@ -10,7 +10,7 @@
     <string name="copy">Kopyala</string>
     <string name="modelFormat">Model: %s</string>
     <string name="close">Kapat</string>
-    <string name="manualWarningDetails">Çoğu aygıt için Samsung yalnızca en son ürün yazılımını sağlayacaktır. Farklı bir sürüm talep etseniz bile, Samsung\'un sunucuları en son ürün yazılımı dosyasını verecektir. Yanlış ürün yazılımının kurulması olasılığını önlemek için, %1$s indirmeye çalışmadan önce Samsung\'un istenen ürün yazılımını sağlayıp sağlamadığını denetleyecektir. İstenen ve sunulan sürümler eşleşmezse, %2$s indirme işlemini iptal edecektir. Bu konuda daha fazla bilgi için</string>
+    <string name="manualWarningDetails">Çoğu aygıt için Samsung yalnızca en son ürün yazılımını sağlayacaktır. Farklı bir sürüm talep etseniz bile, Samsung'un sunucuları en son ürün yazılımı dosyasını verecektir. Yanlış ürün yazılımının kurulması olasılığını önlemek için, %1$s indirmeye çalışmadan önce Samsung'un istenen ürün yazılımını sağlayıp sağlamadığını denetleyecektir. İstenen ve sunulan sürümler eşleşmezse, %2$s indirme işlemini iptal edecektir. Bu konuda daha fazla bilgi için</string>
     <string name="manualWarning">Uyarı! Samsung istenen ürün yazılımını sağlayamayabilir!</string>
     <string name="openFileDesc">Şifresini Çözmek İçin Dosya Aç</string>
     <string name="warning">Uyarı</string>
@@ -29,7 +29,7 @@
     <string name="clear">Temizle</string>
     <string name="unknown">Bilinmiyor</string>
     <string name="osVersion">İS Sürümü: %1$s</string>
-    <string name="imei_serial_help">Samsung, indirilen ürün yazılımıyla eşleşen bir IMEI veya seri numarası kullanılmasını zorunlu tutmaya başladı. Çoğu durumda, aygıtınızın seri numarasını kullanırsanız, modeliniz için herhangi bir CSC için ürün yazılımı indirebilirsiniz. Doğru IMEI veya seri numarası olmadan, indirmeye çalıştığınızda 408 hatası alırsınız. Bifrost, girdiğiniz herhangi bir model için denemek üzere otomatik olarak 100 adede kadar IMEI oluşturmaya çalışacaktır. Ayrıca, her birini \"Düzenle\" iletişim kutusunda kendi satırına koyarak veya alanın kendisinde noktalı virgüllerle ayırarak denenmesi gereken kendi IMEI\'lerinizi de ayarlayabilirsiniz.</string>
+    <string name="imei_serial_help">Samsung, indirilen ürün yazılımıyla eşleşen bir IMEI veya seri numarası kullanılmasını zorunlu tutmaya başladı. Çoğu durumda, aygıtınızın seri numarasını kullanırsanız, modeliniz için herhangi bir CSC için ürün yazılımı indirebilirsiniz. Doğru IMEI veya seri numarası olmadan, indirmeye çalıştığınızda 408 hatası alırsınız. Bifrost, girdiğiniz herhangi bir model için denemek üzere otomatik olarak 100 adede kadar IMEI oluşturmaya çalışacaktır. Ayrıca, her birini \"Düzenle\" iletişim kutusunda kendi satırına koyarak veya alanın kendisinde noktalı virgüllerle ayırarak denenmesi gereken kendi IMEI'lerinizi de ayarlayabilirsiniz.</string>
     <string name="github">GitHub</string>
     <string name="twitter">Twitter</string>
     <string name="firmwareHint">Ürün Yazılımı (PDA/CSC/CP/AP)</string>
@@ -88,7 +88,7 @@
     <string name="mib">MiB</string>
     <string name="removeSavedDataDesc">Bifrost, son girilen aygıt bilgileri ve geçerli ayar durumları gibi bazı verileri kaydeder. Bu verileri kaldırmak için buraya tıklayın.</string>
     <string name="search">Ara</string>
-    <string name="autoDeleteEncryptedFirmwareDesc">Samsung\'dan ürün yazılımı indirirken, Bifrost iki dosya oluşturur: Samsung\'dan şifrelenen ürün yazılımı ve şifresi çözülen ürün yazılımı dosyalarını içeren bir ZIP. Şifrelenen dosyanın şifresi çözüldükten sonra otomatik olarak silmek için bu seçeneği etkinleştirin.</string>
+    <string name="autoDeleteEncryptedFirmwareDesc">Samsung'dan ürün yazılımı indirirken, Bifrost iki dosya oluşturur: Samsung'dan şifrelenen ürün yazılımı ve şifresi çözülen ürün yazılımı dosyalarını içeren bir ZIP. Şifrelenen dosyanın şifresi çözüldükten sonra otomatik olarak silmek için bu seçeneği etkinleştirin.</string>
     <string name="error">Hata</string>
     <string name="sort">Sırala</string>
     <string name="zacharyWander">Zachary Wander</string>
@@ -107,7 +107,7 @@
 \n%2$s</string>
     <string name="csc">CSC</string>
     <string name="checkingMD5">MD5 Denetleniyor</string>
-    <string name="versionCheckError">Samsung\'un doğru ürün yazılımını sunduğu doğrulanamıyor. İndirmeye devam etmek istediğinizden emin misiniz?</string>
+    <string name="versionCheckError">Samsung'un doğru ürün yazılımını sunduğu doğrulanamıyor. İndirmeye devam etmek istediğinizden emin misiniz?</string>
     <string name="invalidFirmwareError">Geçersiz ürün yazılımı dizgesi. Tüm grupların belirtildiğinden emin olun.</string>
     <string name="source">Kaynak:</string>
     <string name="file">Dosya</string>
@@ -120,7 +120,7 @@
     <string name="notification_progress_text">Çalışıyor…</string>
     <string name="notification_finished_channel_name">Tamamlandı</string>
     <string name="notification_finished_channel_text">Bir iş tamamlandı!</string>
-    <string name="invalid_imei_or_serial">Geçersiz IMEI veya seri numarası belirtildi! Değeri cihazınızdan kopyaladıysanız doğru girildiğinden emin olun. Bifrost sizin için IMEI\'ler oluşturduysa lütfen GitHub\'da gerçek bir cihazın modeli, bölgesi ve TAC\'sini (eğer varsa) içeren bir sorun açın.</string>
+    <string name="invalid_imei_or_serial">Geçersiz IMEI veya seri numarası belirtildi! Değeri cihazınızdan kopyaladıysanız doğru girildiğinden emin olun. Bifrost sizin için IMEI'ler oluşturduysa lütfen GitHub'da gerçek bir cihazın modeli, bölgesi ve TAC'sini (eğer varsa) içeren bir sorun açın.</string>
     <string name="february_short">Şub</string>
     <string name="march_short">Mar</string>
     <string name="may_short">May</string>
@@ -136,7 +136,7 @@
     <string name="november_short">Kas</string>
     <string name="decryption_key">Şifre Çözme Anahtarı</string>
     <string name="enable_offline_decryption_desc">Bu seçenek etkinleştirildiğinde, ürün yazılımı indirilirken Samsung tarafından sağlanan şifre çözme anahtarını içeren bir metin dosyası kaydedilecektir. Bu anahtar daha sonra internet bağlantısı olmadan ürün yazılımının şifresini çözmek için şifre çözücü sayfasına girilebilir.</string>
-    <string name="decryption_key_help">Şifresini çözmeye çalıştığınız dosyanın şifre çözme anahtarını biliyorsanız, buraya girebilirsiniz. Yoksa boş bırakın ve Bifrost anahtarı Samsung\'un sunucularından alacaktır.</string>
+    <string name="decryption_key_help">Şifresini çözmeye çalıştığınız dosyanın şifre çözme anahtarını biliyorsanız, buraya girebilirsiniz. Yoksa boş bırakın ve Bifrost anahtarı Samsung'un sunucularından alacaktır.</string>
     <string name="enable_offline_decryption">Çevrim Dışı Şifre Çözme</string>
     <string name="app_name" translatable="false">Bifrost</string>
 </resources>

@@ -10,18 +10,18 @@
 \n
 \n%2$s</string>
     <string name="manualWarning">Attenzione! Samsung potrebbe non fornire il firmware richiesto!</string>
-    <string name="manualWarningDetails">Per la maggior parte dei dispositivi, Samsung fornirà solo l\'ultimo firmware. Anche se richiedi una versione differente, i server di Samsung forniranno sempre il file dell\'ultimo firmware. Per evitare di utilizzare il firmware errato, %1$s controllerà per vedere se Samsung sta fornendo il firmware richiesto prima di tentare di scaricarlo. Se il firmware richiesto e quello fornito non corrispondono, %2$s annullerà il download. Per maggiori informazioni su questo vedi</string>
+    <string name="manualWarningDetails">Per la maggior parte dei dispositivi, Samsung fornirà solo l'ultimo firmware. Anche se richiedi una versione differente, i server di Samsung forniranno sempre il file dell'ultimo firmware. Per evitare di utilizzare il firmware errato, %1$s controllerà per vedere se Samsung sta fornendo il firmware richiesto prima di tentare di scaricarlo. Se il firmware richiesto e quello fornito non corrispondono, %2$s annullerà il download. Per maggiori informazioni su questo vedi</string>
     <string name="crcCheckFailed">Errore nella verifica del CRC. Per favore cancella il file e prova a scaricare nuovamente.</string>
     <string name="close">Chiudi</string>
     <string name="kibs">KiB/s</string>
     <string name="selectEncrypted">Per favore seleziona un file crittografato con estensione enc2 o enc4.</string>
     <string name="descending">Decrescente</string>
     <string name="firmware">Firmware</string>
-    <string name="useNativeFilePickerDesc">Potrebbe offrire un aspetto più nativo e piacevole durante l\'apertura e il salvataggio dei file.</string>
+    <string name="useNativeFilePickerDesc">Potrebbe offrire un aspetto più nativo e piacevole durante l'apertura e il salvataggio dei file.</string>
     <string name="unknown">Sconosciuto</string>
     <string name="notification_progress_channel_name">Stato progresso</string>
     <string name="checkingCRC">Controllo CRC</string>
-    <string name="imei_serial_help">Samsung ha iniziato a richiedere l\'utilizzo di un numero IMEI o seriale che corrisponda al firmware in fase di download. In molti casi, se si utilizza il numero seriale del proprio dispositivo, sarà possibile scaricare il firmware per qualsiasi CSC relativo al proprio modello. Senza l\'IMEI o seriale corretto, si riceverà un errore 408 durante il tentativo di download. Bifrost cercherà automaticamente di generare fino a 100 IMEI da provare per qualsiasi modello inserito. È anche possibile impostare i propri IMEI che dovrebbero essere testati inserendoli uno per riga nella finestra di modifica o separati da punti e virgola nel campo stesso.</string>
+    <string name="imei_serial_help">Samsung ha iniziato a richiedere l'utilizzo di un numero IMEI o seriale che corrisponda al firmware in fase di download. In molti casi, se si utilizza il numero seriale del proprio dispositivo, sarà possibile scaricare il firmware per qualsiasi CSC relativo al proprio modello. Senza l'IMEI o seriale corretto, si riceverà un errore 408 durante il tentativo di download. Bifrost cercherà automaticamente di generare fino a 100 IMEI da provare per qualsiasi modello inserito. È anche possibile impostare i propri IMEI che dovrebbero essere testati inserendoli uno per riga nella finestra di modifica o separati da punti e virgola nel campo stesso.</string>
     <string name="edit">Modifica</string>
     <string name="copy">Copia</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
@@ -108,7 +108,7 @@
     <string name="useNativeFilePicker">Usa il selettore di file nativo</string>
     <string name="useMicaEffect">Utilizza effetto Mica</string>
     <string name="removeSavedDataDesc">Bifrost salva alcuni dati come le ultime informazioni inserite riguardo i dispositivi e le impostazioni correnti. Clicca qui per rimuovere questi dati.</string>
-    <string name="useMicaEffectDesc">Su Windows 11 e versioni successive, Bifrost può applicare l\'effetto Mica di Windows allo sfondo della finestra, rendendolo simile a un\'applicazione nativa di Windows.</string>
+    <string name="useMicaEffectDesc">Su Windows 11 e versioni successive, Bifrost può applicare l'effetto Mica di Windows allo sfondo della finestra, rendendolo simile a un'applicazione nativa di Windows.</string>
     <string name="warning">Attenzione</string>
     <string name="minimize">Riduci a icona</string>
     <string name="zoom">Zoom</string>

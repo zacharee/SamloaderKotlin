@@ -8,7 +8,7 @@
     <string name="checkForUpdatesDesc">Vérifier les mises à jour du firmware</string>
     <string name="ascending">Croissant</string>
     <string name="close">Fermer</string>
-    <string name="manualWarningDetails">Pour la plupart des appareils, Samsung propose seulement le dernier firmware. Même si vous demandez une version différente, les serveurs de Samsung renverront le fichier du dernier firmware. Pour éviter de potentiellement flasher le mauvais firmware, %1$s va vérifier si Samsung propose le firmware demandé avant de tenter le téléchargement. Si les versions demandées et proposées ne correspondent pas, %2$s va interrompre le téléchargement. Pour plus d\'informations à ce sujet, consultez</string>
+    <string name="manualWarningDetails">Pour la plupart des appareils, Samsung propose seulement le dernier firmware. Même si vous demandez une version différente, les serveurs de Samsung renverront le fichier du dernier firmware. Pour éviter de potentiellement flasher le mauvais firmware, %1$s va vérifier si Samsung propose le firmware demandé avant de tenter le téléchargement. Si les versions demandées et proposées ne correspondent pas, %2$s va interrompre le téléchargement. Pour plus d'informations à ce sujet, consultez</string>
     <string name="openFileDesc">Ouvrir le fichier à décrypter</string>
     <string name="warning">Attention</string>
     <string name="kibs">kio/s</string>
@@ -20,23 +20,23 @@
     <string name="firmware">Firmware</string>
     <string name="openFile">Ouvrir un fichier</string>
     <string name="downloading">Téléchargement</string>
-    <string name="useNativeFilePickerDesc">Pourrait offrir une apparence plus native lors de l\'ouverture et de l\'enregistrement de fichiers.</string>
+    <string name="useNativeFilePickerDesc">Pourrait offrir une apparence plus native lors de l'ouverture et de l'enregistrement de fichiers.</string>
     <string name="unknown">Inconnu</string>
     <string name="no">Non</string>
     <string name="changelog">Notes de version</string>
     <string name="clear">Effacer</string>
-    <string name="osVersion">Version de l\'OS : %1$s</string>
+    <string name="osVersion">Version de l'OS : %1$s</string>
     <string name="checkingCRC">Vérification du CRC</string>
-    <string name="imei_serial_help">Samsung a commencé à exiger l\'utilisation d\'un IMEI ou numéro de série correspondant au firmware à télécharger. Dans de nombreux cas, si vous utilisez le numéro de série de votre appareil, vous pourrez télécharger le firmware pour n\'importe quel CSC de votre modèle. Sans l\'IMEI ou numéro de série correct, vous recevrez une erreur 408 lors de la tentative de téléchargement. Bifrost tentera de générer automatiquement jusqu\'à 100 IMEI à essayer pour n\'importe quel modèle que vous saisissez. Vous pouvez également définir vos propres IMEI qui doivent être essayés en les mettant chacun sur une ligne dans la boîte de dialogue Modifier, ou en les séparant par des points-virgules dans le champ lui-même.</string>
+    <string name="imei_serial_help">Samsung a commencé à exiger l'utilisation d'un IMEI ou numéro de série correspondant au firmware à télécharger. Dans de nombreux cas, si vous utilisez le numéro de série de votre appareil, vous pourrez télécharger le firmware pour n'importe quel CSC de votre modèle. Sans l'IMEI ou numéro de série correct, vous recevrez une erreur 408 lors de la tentative de téléchargement. Bifrost tentera de générer automatiquement jusqu'à 100 IMEI à essayer pour n'importe quel modèle que vous saisissez. Vous pouvez également définir vos propres IMEI qui doivent être essayés en les mettant chacun sur une ligne dans la boîte de dialogue Modifier, ou en les séparant par des points-virgules dans le champ lui-même.</string>
     <string name="github">GitHub</string>
     <string name="edit">Modifier</string>
     <string name="twitter">Twitter</string>
     <string name="copy">Copier</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
-    <string name="historyErrorFormat">Impossible de récupérer l\'historique du firmware. Assurez-vous que le modèle et la région soient corrects.
+    <string name="historyErrorFormat">Impossible de récupérer l'historique du firmware. Assurez-vous que le modèle et la région soient corrects.
 \nErreur : %1$s</string>
     <string name="modelHint">Modèle (ex. : SM-N986U1)</string>
-    <string name="useMicaEffect">Utiliser l\'effet Mica</string>
+    <string name="useMicaEffect">Utiliser l'effet Mica</string>
     <string name="yes">Oui</string>
     <string name="android">Android %1$s</string>
     <string name="downloadFirmware">Télécharger le firmware</string>
@@ -53,8 +53,8 @@
     <string name="ok">OK</string>
     <string name="patreonSupporters">Membres Patreon</string>
     <string name="phoneInfo">Infos sur le téléphone</string>
-    <string name="checkHistory">Vérifier l\'historique</string>
-    <string name="historyError">Impossible de récupérer l\'historique du firmware. Assurez-vous que le modèle et la région soient corrects.</string>
+    <string name="checkHistory">Vérifier l'historique</string>
+    <string name="historyError">Impossible de récupérer l'historique du firmware. Assurez-vous que le modèle et la région soient corrects.</string>
     <string name="imei_serial">IMEI/Numéro de série</string>
     <string name="download">Télécharger</string>
     <string name="autoDeleteEncryptedFirmware">Supprimer automatiquement les firmwares cryptés</string>
@@ -63,7 +63,7 @@
     <string name="patreon">Patreon</string>
     <string name="about">À propos</string>
     <string name="removeSavedData">Supprimer les données sauvegardées</string>
-    <string name="moreInfo">Plus d\'infos</string>
+    <string name="moreInfo">Plus d'infos</string>
     <string name="manual">Manuel</string>
     <string name="more">Plus</string>
     <string name="samloader">Samloader</string>
@@ -85,12 +85,12 @@
     <string name="countries">Pays</string>
     <string name="window">Fenêtre</string>
     <string name="fileIssue">Signaler un problème</string>
-    <string name="allowLowercaseCharactersDesc">Pour des raisons de facilité, Bifrost met automatiquement en majuscule tous les caractères des champs Modèle, Région et Firmware. Cependant, quelques modèles d\'appareils contiennent des caractères minuscules. Activez cette option pour télécharger des firmwares pour ces modèles.</string>
+    <string name="allowLowercaseCharactersDesc">Pour des raisons de facilité, Bifrost met automatiquement en majuscule tous les caractères des champs Modèle, Région et Firmware. Cependant, quelques modèles d'appareils contiennent des caractères minuscules. Activez cette option pour télécharger des firmwares pour ces modèles.</string>
     <string name="mib">Mio</string>
     <string name="search">Rechercher</string>
-    <string name="removeSavedDataDesc">Bifrost enregistre des données telles que les dernières informations entrées sur l\'appareil et l\'état des paramètres actuels. Cliquez ici pour supprimer ces données.</string>
+    <string name="removeSavedDataDesc">Bifrost enregistre des données telles que les dernières informations entrées sur l'appareil et l'état des paramètres actuels. Cliquez ici pour supprimer ces données.</string>
     <string name="error">Erreur</string>
-    <string name="autoDeleteEncryptedFirmwareDesc">Lors du téléchargement de firmware depuis les serveurs de Samsung, Bifrost crée deux fichiers : le firmware crypté de Samsung, et un ZIP contenant les fichiers du firmware décryptés. Activez cette option pour supprimer automatiquement le fichier crypté une fois qu\'il a été décrypté.</string>
+    <string name="autoDeleteEncryptedFirmwareDesc">Lors du téléchargement de firmware depuis les serveurs de Samsung, Bifrost crée deux fichiers : le firmware crypté de Samsung, et un ZIP contenant les fichiers du firmware décryptés. Activez cette option pour supprimer automatiquement le fichier crypté une fois qu'il a été décrypté.</string>
     <string name="sort">Trier</string>
     <string name="zacharyWander">Zachary Wander</string>
     <string name="allowLowercaseCharacters">Autoriser les caractères minuscules</string>
@@ -101,7 +101,7 @@
     <string name="buildDate">Date de build : %1$s</string>
     <string name="tacFormat">TAC : %s</string>
     <string name="firmwareCheckError">Erreur lors de la recherche du firmware. Veuillez vérifier que le modèle et la région sont corrects.
-\nPlus d\'informations : %1$s
+\nPlus d'informations : %1$s
 \n
 \n%2$s</string>
     <string name="csc">CSC</string>
@@ -112,7 +112,7 @@
     <string name="invalidFirmwareError">Code de firmware invalide. Veuillez vous assurer que tous les groupes sont spécifiés.</string>
     <string name="source">Source :</string>
     <string name="file">Fichier</string>
-    <string name="useMicaEffectDesc">Sur Windows 11 et ultérieur, Bifrost peut appliquer l\'effet Mica de Windows sur l\'arrière-plan de la fenêtre, lui donnant une apparence plus proche d\'une application native Windows.</string>
+    <string name="useMicaEffectDesc">Sur Windows 11 et ultérieur, Bifrost peut appliquer l'effet Mica de Windows sur l'arrière-plan de la fenêtre, lui donnant une apparence plus proche d'une application native Windows.</string>
     <string name="manualWarningDetails2">cette page</string>
     <string name="hide">Masquer</string>
     <string name="show">Afficher</string>
@@ -120,7 +120,7 @@
     <string name="notification_progress_text">Working…</string>
     <string name="notification_finished_channel_name">Finished</string>
     <string name="notification_finished_channel_text">A job has finished!</string>
-    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
+    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it's entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
     <string name="february_short">Feb</string>
     <string name="march_short">Mar</string>
     <string name="october_short">Oct</string>
@@ -131,12 +131,12 @@
     <string name="april_short">Apr</string>
     <string name="july_short">Jul</string>
     <string name="september_short">Sep</string>
-    <string name="invalid_model">Warning! Bifrost can\'t download firmware for watches or other accessories. Only phones and tablets are supported.</string>
+    <string name="invalid_model">Warning! Bifrost can't download firmware for watches or other accessories. Only phones and tablets are supported.</string>
     <string name="december_short">Dec</string>
     <string name="november_short">Nov</string>
     <string name="decryption_key">Decryption Key</string>
     <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect.</string>
-    <string name="decryption_key_help">If you know the decryption key for the file you\'re trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung\'s servers.</string>
+    <string name="decryption_key_help">If you know the decryption key for the file you're trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung's servers.</string>
     <string name="enable_offline_decryption">Offline Decryption</string>
     <string name="app_name" translatable="false">Bifrost</string>
 </resources>

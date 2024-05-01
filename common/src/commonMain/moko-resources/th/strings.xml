@@ -112,7 +112,7 @@
     <string name="manualWarningDetails2">ปัญหานี้</string>
     <string name="notification_finished_channel_text">งานเสร็จสิ้นแล้ว!</string>
     <string name="done">เสร็จแล้ว</string>
-    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it\'s entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
+    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it's entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
     <string name="october_short">Oct</string>
     <string name="september_short">Sep</string>
     <string name="december_short">Dec</string>
@@ -125,10 +125,10 @@
     <string name="june_short">Jun</string>
     <string name="april_short">Apr</string>
     <string name="july_short">Jul</string>
-    <string name="invalid_model">Warning! Bifrost can\'t download firmware for watches or other accessories. Only phones and tablets are supported.</string>
+    <string name="invalid_model">Warning! Bifrost can't download firmware for watches or other accessories. Only phones and tablets are supported.</string>
     <string name="decryption_key">Decryption Key</string>
     <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect.</string>
-    <string name="decryption_key_help">If you know the decryption key for the file you\'re trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung\'s servers.</string>
+    <string name="decryption_key_help">If you know the decryption key for the file you're trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung's servers.</string>
     <string name="enable_offline_decryption">Offline Decryption</string>
     <string name="odinRom" translatable="false">OdinRom</string>
     <string name="patreon" translatable="false">Patreon</string>
