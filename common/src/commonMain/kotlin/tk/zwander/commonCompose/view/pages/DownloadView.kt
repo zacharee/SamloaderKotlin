@@ -217,14 +217,14 @@ internal fun DownloadView() {
 
                     Text(
                         text = stringResource(MR.strings.manual),
-                        modifier = Modifier.align(Alignment.CenterVertically)
+                        modifier = Modifier.align(Alignment.CenterVertically),
                     )
                 }
 
                 AnimatedVisibility(
                     visible = manual == true,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                    enter = fadeIn() + expandIn(expandFrom = Alignment.CenterStart),
+                    exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterStart),
                 ) {
                     var showingRequestWarningDialog by remember { mutableStateOf(false) }
 
