@@ -1,3 +1,10 @@
+# 1.18.7
+- Fix an issue where the window on desktop would flash when closing the app.
+- Fix strings with apostrophes showing backslashes.
+- Update Compose.
+- Update Kotlin.
+- Clean up error reporting.
+
 # 1.18.6
 - Fix live URLs for CSCs and TACs.
 - Add workaround for proper dynamic colors on One UI 6.
