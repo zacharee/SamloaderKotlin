@@ -29,6 +29,7 @@ import tk.zwander.common.util.jna.windows.toBgr
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.rememberThemeInfo
+import tk.zwander.commonCompose.util.toAwtColor
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.MacMenuBar
 import tk.zwander.commonCompose.view.keyCodeHandler
@@ -75,25 +76,25 @@ fun main() {
             val menuBarHeight = remember(window.height) {
                 if (Platform.isMac) window.height.dp else 0.dp
             }
-
             LaunchedEffect(window) {
                 window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
                 window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
+                window.background = themeInfo.colors.background.toAwtColor()
 
                 FilePicker.init(window)
 
                 val map = mutableMapOf<String, String>()
 
-                themeInfo.colors.primary.toArgb().let {
+                themeInfo.colors.primary.toAwtColor().let {
                     map.put(
                         "@accentColor",
-                        String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)),
+                        String.format("#%06x", (it.rgb and 0xffffff)),
                     )
                 }
-                themeInfo.colors.background.toArgb().let {
+                themeInfo.colors.background.toAwtColor().let {
                     map.put(
                         "@background",
-                        String.format("#%06x", (java.awt.Color(it, true).rgb and 0xffffff)),
+                        String.format("#%06x", (it.rgb and 0xffffff)),
                     )
                 }
 
