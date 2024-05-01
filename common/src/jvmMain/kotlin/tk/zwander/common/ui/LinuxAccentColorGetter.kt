@@ -1,7 +1,6 @@
 package tk.zwander.common.ui
 
 import androidx.compose.ui.graphics.Color
-import tk.zwander.common.util.CrossPlatformBugsnag
 import java.io.File
 
 object LinuxAccentColorGetter {
@@ -12,7 +11,6 @@ object LinuxAccentColorGetter {
             DESpecificGetter.findGetter(environmentValue)?.getAccentColor()
         } catch (e: Throwable) {
             e.printStackTrace()
-            CrossPlatformBugsnag.notify(e)
             null
         }
     }
