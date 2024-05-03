@@ -25,7 +25,7 @@ actual object BugsnagUtils {
             it.addToTab("app", "version_code", GradleConfig.versionCode)
             it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
         }
-        bugsnag.setAutoCaptureSessions(true)
+        bugsnag.startSession()
     }
 
     actual fun notify(e: Throwable) {
