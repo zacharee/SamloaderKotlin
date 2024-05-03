@@ -17,7 +17,7 @@ object FilePicker {
     }
 
     fun createFile(name: String): PlatformFile? {
-        if (BifrostSettings.Keys.useNativeFileDialog() == true) {
+        if (BifrostSettings.Keys.useNativeFileDialog()) {
             return if (Platform.isWindows) {
                 val dialog = WindowsFileChooser()
                 dialog.defaultFilename = name
@@ -47,7 +47,7 @@ object FilePicker {
     }
 
     fun pickFile(): PlatformFile? {
-        if (BifrostSettings.Keys.useNativeFileDialog() == true) {
+        if (BifrostSettings.Keys.useNativeFileDialog()) {
             return if (Platform.isWindows) {
                 val dialog = WindowsFileChooser()
                 dialog.showOpenDialog(frame!!)

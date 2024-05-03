@@ -17,7 +17,7 @@ fun BifrostTheme(block: @Composable () -> Unit) {
         colorScheme = themeInfo.colors,
     ) {
         CompositionLocalProvider(
-            LocalUseMicaEffect provides (useMicaEffect == true),
+            LocalUseMicaEffect provides useMicaEffect,
         ) {
             block()
         }

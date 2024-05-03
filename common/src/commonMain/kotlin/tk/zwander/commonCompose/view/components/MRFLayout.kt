@@ -70,9 +70,9 @@ internal fun MRFLayout(
     SplitComponent(
         startComponent = {
             OutlinedTextField(
-                value = modelState ?: "",
+                value = modelState,
                 onValueChange = {
-                    val new = it.transformText(allowLowercase ?: false)
+                    val new = it.transformText(allowLowercase)
 
                     if (new != modelState) {
                         scope.launch(Dispatchers.IO) {
@@ -83,7 +83,7 @@ internal fun MRFLayout(
                     }
 
                     modelState = new
-                    if ((model is DownloadModel && model.manual.value == false)) {
+                    if (model is DownloadModel && !model.manual.value) {
                         model.fw.value = ""
                         model.osCode.value = ""
                     }
@@ -93,15 +93,15 @@ internal fun MRFLayout(
                 readOnly = !canChangeOption,
                 keyboardOptions = KeyboardOptions(KeyboardCapitalization.Characters),
                 singleLine = true,
-                visualTransformation = OffsetCorrectedIdentityTransformation(modelState ?: ""),
+                visualTransformation = OffsetCorrectedIdentityTransformation(modelState),
             )
         },
         endComponent = {
             OutlinedTextField(
-                value = regionState ?: "",
+                value = regionState,
                 onValueChange = {
-                    regionState = it.transformText(allowLowercase ?: false)
-                    if ((model is DownloadModel && model.manual.value == false)) {
+                    regionState = it.transformText(allowLowercase)
+                    if (model is DownloadModel && !model.manual.value) {
                         model.fw.value = ""
                         model.osCode.value = ""
                     }
@@ -121,7 +121,7 @@ internal fun MRFLayout(
                         )
                     }
                 },
-                visualTransformation = OffsetCorrectedIdentityTransformation(regionState ?: ""),
+                visualTransformation = OffsetCorrectedIdentityTransformation(regionState),
             )
         },
         startRatio = 0.6,
@@ -136,14 +136,12 @@ internal fun MRFLayout(
             if (showFirmware) {
                 items.add(
                     DynamicField(
-                        value = firmwareState ?: "",
+                        value = firmwareState,
                         onValueChange = { firmwareState = it },
                         labelRes = MR.strings.firmware,
                         readOnly = !canChangeFirmware,
                         transform = {
-                            it.transformText(
-                                allowLowercase ?: false
-                            )
+                            it.transformText(allowLowercase)
                         },
                     ),
                 )
@@ -152,7 +150,7 @@ internal fun MRFLayout(
             if (showImeiSerial) {
                 items.add(
                     DynamicField(
-                        value = imeiState?.replace("\n", ";") ?: "",
+                        value = imeiState.replace("\n", ";"),
                         onValueChange = { imeiState = it.replace(";", "\n") },
                         labelRes = MR.strings.imei_serial,
                         readOnly = !canChangeOption,
@@ -240,7 +238,7 @@ internal fun MRFLayout(
         title = { Text(text = stringResource(MR.strings.edit)) },
         text = {
             TextField(
-                value = imeiState ?: "",
+                value = imeiState,
                 onValueChange = { imeiState = it },
                 modifier = Modifier.fillMaxWidth(),
             )

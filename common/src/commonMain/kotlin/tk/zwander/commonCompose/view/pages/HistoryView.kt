@@ -76,8 +76,8 @@ internal fun HistoryView() {
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
     val modelModel by model.model.collectAsState()
     val region by model.region.collectAsState()
-    val canCheckHistory = !modelModel.isNullOrBlank()
-            && !region.isNullOrBlank() && !hasRunningJobs
+    val canCheckHistory = modelModel.isNotBlank()
+            && region.isNotBlank() && !hasRunningJobs
 
     val odinRomSource = buildAnnotatedString {
         withStyle(

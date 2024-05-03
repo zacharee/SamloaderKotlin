@@ -91,10 +91,9 @@ internal fun DownloadView() {
     val changelog by model.changelog.collectAsState()
     var changelogExpanded by model.changelogExpanded.collectAsMutableState()
 
-    val canCheckVersion = manual == false && !modelModel.isNullOrBlank()
-            && !region.isNullOrBlank() && !hasRunningJobs
+    val canCheckVersion = !manual && modelModel.isNotBlank() && region.isNotBlank() && !hasRunningJobs
 
-    val canDownload = !modelModel.isNullOrBlank() && !region.isNullOrBlank() && !fw.isNullOrBlank()
+    val canDownload = modelModel.isNotBlank() && region.isNotBlank() && fw.isNotBlank()
             && !hasRunningJobs
 
     val canChangeOption = !hasRunningJobs
@@ -195,12 +194,12 @@ internal fun DownloadView() {
                         indication = null,
                         enabled = canChangeOption,
                     ) {
-                        manual = manual?.let { !it }
+                        manual = !manual
                     }
                         .padding(4.dp)
                 ) {
                     Checkbox(
-                        checked = manual == true,
+                        checked = manual,
                         onCheckedChange = {
                             manual = it
                         },
@@ -222,7 +221,7 @@ internal fun DownloadView() {
                 }
 
                 AnimatedVisibility(
-                    visible = manual == true,
+                    visible = manual,
                     enter = fadeIn() + expandIn(expandFrom = Alignment.CenterStart),
                     exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterStart),
                 ) {
@@ -333,12 +332,12 @@ internal fun DownloadView() {
             MRFLayout(
                 model,
                 canChangeOption,
-                manual == true && canChangeOption,
+                manual && canChangeOption,
                 showImeiSerial = true
             )
 
             AnimatedVisibility(
-                visible = manual == false && osCode.isNotEmpty(),
+                visible = !manual && osCode.isNotEmpty(),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 val displayCode = remember {
@@ -365,7 +364,7 @@ internal fun DownloadView() {
             }
 
             val changelogCondition =
-                changelog != null && manual == false && !hasRunningJobs && !fw.isNullOrBlank()
+                changelog != null && !manual && !hasRunningJobs && fw.isNotBlank()
 
             AnimatedVisibility(
                 visible = changelogCondition,

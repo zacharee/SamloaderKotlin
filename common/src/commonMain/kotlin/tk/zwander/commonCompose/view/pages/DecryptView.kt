@@ -68,7 +68,7 @@ internal fun DecryptView() {
 
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
     val canDecrypt = fileToDecrypt != null && !hasRunningJobs
-            && !fw.isNullOrBlank() && !modelModel.isNullOrBlank() && !region.isNullOrBlank()
+            && fw.isNotBlank() && modelModel.isNotBlank() && region.isNotBlank()
     val statusText by model.statusText.collectAsState()
 
     val canChangeOption = !hasRunningJobs
@@ -173,7 +173,7 @@ internal fun DecryptView() {
                 },
                 endComponent = {
                     OutlinedTextField(
-                        value = decryptKey ?: "",
+                        value = decryptKey,
                         onValueChange = { decryptKey = it },
                         label = { Text(text = stringResource(MR.strings.decryption_key)) },
                         singleLine = true,

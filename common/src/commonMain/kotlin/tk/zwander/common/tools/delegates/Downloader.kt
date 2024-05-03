@@ -42,10 +42,10 @@ object Downloader {
         model.statusText.value = MR.strings.downloading()
 
         val info = Request.retrieveBinaryFileInfo(
-            fw = model.fw.value ?: "",
-            model = model.model.value ?: "",
-            region = model.region.value ?: "",
-            imeiSerial = model.imeiSerial.value ?: "",
+            fw = model.fw.value,
+            model = model.model.value,
+            region = model.region.value,
+            imeiSerial = model.imeiSerial.value,
             onVersionException = { exception, info ->
                 confirmCallback.onError(
                     info = DownloadErrorInfo(
@@ -67,7 +67,7 @@ object Downloader {
                 eventManager.sendEvent(Event.Download.Finish)
             },
             shouldReportError = {
-                model.model.value.isAccessoryModel && model.manual.value != true
+                model.model.value.isAccessoryModel && !model.manual.value
             },
         )
 
@@ -86,10 +86,10 @@ object Downloader {
 
             val fullFileName = fileName.replace(
                 ".zip",
-                "_${model.fw.value?.replace("/", "_")}_${model.region.value}.zip",
+                "_${model.fw.value.replace("/", "_")}_${model.region.value}.zip",
             )
 
-            val decryptionKeyFileName = if (BifrostSettings.Keys.enableDecryptKeySave() == true) {
+            val decryptionKeyFileName = if (BifrostSettings.Keys.enableDecryptKeySave()) {
                 "DecryptionKey_${fullFileName}.txt"
             } else {
                 null
@@ -102,9 +102,9 @@ object Downloader {
                             if (fullFileName.endsWith(".enc2")) {
                                 output.write(
                                     CryptUtils.getV2Key(
-                                        model.fw.value ?: "",
-                                        model.model.value ?: "",
-                                        model.region.value ?: "",
+                                        model.fw.value,
+                                        model.model.value,
+                                        model.region.value,
                                     ).second.toByteArray(),
                                 )
                             }
@@ -197,9 +197,9 @@ object Downloader {
                         val key =
                             if (fullFileName.endsWith(".enc2")) {
                                 CryptUtils.getV2Key(
-                                    model.fw.value ?: "",
-                                    model.model.value ?: "",
-                                    model.region.value ?: "",
+                                    model.fw.value,
+                                    model.model.value,
+                                    model.region.value,
                                 ).first
                             } else {
                                 info.v4Key?.first!!
@@ -223,7 +223,7 @@ object Downloader {
                             )
                         }
 
-                        if (BifrostSettings.Keys.autoDeleteEncryptedFirmware() == true) {
+                        if (BifrostSettings.Keys.autoDeleteEncryptedFirmware()) {
                             inputInfo.downloadFile.delete()
                         }
 
@@ -247,8 +247,8 @@ object Downloader {
         model.osCode.value = ""
 
         val (fw, os, error, output) = VersionFetch.getLatestVersion(
-            model.model.value ?: "",
-            model.region.value ?: ""
+            model.model.value,
+            model.region.value,
         )
 
         if (error != null) {
@@ -262,9 +262,9 @@ object Downloader {
         }
 
         model.changelog.value = ChangelogHandler.getChangelog(
-            model.model.value ?: "",
-            model.region.value ?: "",
-            fw.split("/")[0]
+            model.model.value,
+            model.region.value,
+            fw.split("/")[0],
         )
 
         model.fw.value = fw

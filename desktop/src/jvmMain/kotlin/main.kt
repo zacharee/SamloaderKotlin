@@ -52,9 +52,9 @@ fun main() {
         val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
 
         val captionColor =
-            if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.onBackground
+            if (useMicaEffect) Color.Unspecified else themeInfo.colors.onBackground
         val titleBarColor =
-            if (useMicaEffect == true) Color.Unspecified else themeInfo.colors.background
+            if (useMicaEffect) Color.Unspecified else themeInfo.colors.background
 
         val iconPainter = painterResource(MR.images.icon_rounded)
 
