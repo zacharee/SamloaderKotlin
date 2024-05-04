@@ -1,6 +1,8 @@
 package tk.zwander.common.util
 
 import com.bugsnag.Bugsnag
+import com.bugsnag.Report
+import com.bugsnag.Severity
 import tk.zwander.common.GradleConfig
 import java.util.UUID
 
@@ -25,11 +27,21 @@ actual object BugsnagUtils {
             it.addToTab("app", "version_code", GradleConfig.versionCode)
             it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
         }
+        bugsnag.setSendThreads(true)
         bugsnag.startSession()
     }
 
+    fun destroy() {
+        bugsnag.close()
+    }
+
     actual fun notify(e: Throwable) {
+        notify(e, Severity.WARNING)
+    }
+
+    fun notify(e: Throwable, severity: Severity) {
         val report = bugsnag.buildReport(e)
+        report.setSeverity(severity)
 
         breadcrumbs.forEach { (time, data) ->
             report.addToTab("breadcrumbs", "$time", "${data.message}\n\n" +
@@ -38,6 +50,10 @@ actual object BugsnagUtils {
         }
         addBreadcrumb(e.message.toString(), mapOf(), BreadcrumbType.ERROR)
 
+        notify(report)
+    }
+
+    fun notify(report: Report) {
         bugsnag.notify(report)
     }
 
