@@ -18,7 +18,6 @@ import tk.zwander.common.util.I18n.getCountryNameForCode
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
-import java.util.TreeSet
 
 @OptIn(DelicateCoroutinesApi::class)
 @Suppress("MemberVisibilityCanBePrivate", "unused")
@@ -28,7 +27,7 @@ data object CSCDB {
 
     // Most of these are from:
     // https://tsar3000.com/list-of-samsung-csc-codes-samsung-firmware-csc-codes/
-    private val items = MutableStateFlow<TreeSet<CSCItem>>(TreeSet())
+    private val items = MutableStateFlow<Set<CSCItem>>(setOf())
 
     init {
         GlobalScope.launch(Dispatchers.IO) {
@@ -57,9 +56,11 @@ data object CSCDB {
     fun findForCountryQuery(query: String): List<CSCItem> {
         if (query.isBlank()) return items.value.toList()
 
-        return items.value.filter { item -> item.countries.any {
-            getCountryName(it).contains(query, true)
-        } }
+        return items.value.filter { item ->
+            item.countries.any {
+                getCountryName(it).contains(query, true)
+            }
+        }
     }
 
     fun findForCscQuery(query: String): List<CSCItem> {
@@ -71,8 +72,10 @@ data object CSCDB {
     fun findForCarrierQuery(query: String): List<CSCItem> {
         if (query.isBlank()) return items.value.toList()
 
-        return items.value.filter { item -> item.carriers != null
-                && item.carriers.any { it.contains(query, true) } }
+        return items.value.filter { item ->
+            item.carriers != null
+                    && item.carriers.any { it.contains(query, true) }
+        }
     }
 
     fun findForGeneralQuery(query: String, items: Set<CSCItem> = this.items.value): List<CSCItem> {
@@ -129,15 +132,15 @@ data object CSCDB {
             }
 
             if (code != null && countries != null) {
-                items.value = TreeSet(
-                    items.value + CSCItem(
-                        code = code,
-                        countries = countries.split(";"),
-                        carriers = carriers?.split(";"),
-                    ),
-                )
+                items.value = (items.value + CSCItem(
+                    code = code,
+                    countries = countries.split(";"),
+                    carriers = carriers?.split(";"),
+                )).toSet()
             }
         }
+
+        items.value = items.value.sorted().toSet()
     }
 
     sealed class SortBy(val ascending: Boolean) {
