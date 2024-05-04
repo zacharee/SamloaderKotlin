@@ -66,116 +66,114 @@ fun main() {
         }
     }
 
-    try {
-        System.setProperty("apple.laf.useScreenMenuBar", "true")
-        System.setProperty("apple.awt.application.appearance", "system")
-        System.setProperty("apple.awt.application.name", GradleConfig.appName)
+    System.setProperty("apple.laf.useScreenMenuBar", "true")
+    System.setProperty("apple.awt.application.appearance", "system")
+    System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
-        EventDelegate.create()
+    EventDelegate.create()
 
-        application(
-            exitProcessOnExit = false,
+    application(
+        exitProcessOnExit = false,
+    ) {
+        val mainWindowState = rememberWindowState()
+        val themeInfo = rememberThemeInfo()
+        val density = LocalDensity.current
+        val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
+
+        val captionColor =
+            if (useMicaEffect) Color.Unspecified else themeInfo.colors.onBackground
+        val titleBarColor =
+            if (useMicaEffect) Color.Unspecified else themeInfo.colors.background
+
+        val iconPainter = painterResource(MR.images.icon_rounded)
+
+        CompositionLocalProvider(
+            LocalWindowExceptionHandlerFactory provides exceptionHandlerFactory,
         ) {
-            val mainWindowState = rememberWindowState()
-            val themeInfo = rememberThemeInfo()
-            val density = LocalDensity.current
-            val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
-
-            val captionColor =
-                if (useMicaEffect) Color.Unspecified else themeInfo.colors.onBackground
-            val titleBarColor =
-                if (useMicaEffect) Color.Unspecified else themeInfo.colors.background
-
-            val iconPainter = painterResource(MR.images.icon_rounded)
-
-            CompositionLocalProvider(
-                LocalWindowExceptionHandlerFactory provides exceptionHandlerFactory,
+            NativeLookWindow(
+                onCloseRequest = ::exitApplication,
+                title = GradleConfig.appName,
+                icon = iconPainter,
+                state = mainWindowState,
+                preferredBackdropType = WindowBackdrop.MicaTabbed(themeInfo.isDarkMode),
+                frameStyle = WindowFrameStyle(
+                    borderColor = themeInfo.colors.background,
+                    captionColor = captionColor,
+                    titleBarColor = titleBarColor,
+                ),
+                onPreviewKeyEvent = keyCodeHandler(),
             ) {
-                NativeLookWindow(
-                    onCloseRequest = ::exitApplication,
-                    title = GradleConfig.appName,
-                    icon = iconPainter,
-                    state = mainWindowState,
-                    preferredBackdropType = WindowBackdrop.MicaTabbed(themeInfo.isDarkMode),
-                    frameStyle = WindowFrameStyle(
-                        borderColor = themeInfo.colors.background,
-                        captionColor = captionColor,
-                        titleBarColor = titleBarColor,
-                    ),
-                    onPreviewKeyEvent = keyCodeHandler(),
-                ) {
-                    // For some reason this returns the title bar height on macOS.
-                    val menuBarHeight = remember(window.height) {
-                        if (Platform.isMac) window.height.dp else 0.dp
+                // For some reason this returns the title bar height on macOS.
+                val menuBarHeight = remember(window.height) {
+                    if (Platform.isMac) window.height.dp else 0.dp
+                }
+                LaunchedEffect(window) {
+                    window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
+                    window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
+                    window.background = themeInfo.colors.background.toAwtColor()
+
+                    FilePicker.init(window)
+
+                    val map = mutableMapOf<String, String>()
+
+                    themeInfo.colors.primary.toAwtColor().let {
+                        map.put(
+                            "@accentColor",
+                            String.format("#%06x", (it.rgb and 0xffffff)),
+                        )
                     }
-                    LaunchedEffect(window) {
-                        window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
-                        window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
-                        window.background = themeInfo.colors.background.toAwtColor()
-
-                        FilePicker.init(window)
-
-                        val map = mutableMapOf<String, String>()
-
-                        themeInfo.colors.primary.toAwtColor().let {
-                            map.put(
-                                "@accentColor",
-                                String.format("#%06x", (it.rgb and 0xffffff)),
-                            )
-                        }
-                        themeInfo.colors.background.toAwtColor().let {
-                            map.put(
-                                "@background",
-                                String.format("#%06x", (it.rgb and 0xffffff)),
-                            )
-                        }
-
-                        FlatLaf.setGlobalExtraDefaults(map)
-                        FlatDarkLaf.setup()
+                    themeInfo.colors.background.toAwtColor().let {
+                        map.put(
+                            "@background",
+                            String.format("#%06x", (it.rgb and 0xffffff)),
+                        )
                     }
 
-                    LaunchedEffect(density) {
-                        // Set this after getting the original height.
-                        window.minimumSize = with(density) {
-                            Dimension(200.dp.roundToPx(), 200.dp.roundToPx())
-                        }
+                    FlatLaf.setGlobalExtraDefaults(map)
+                    FlatDarkLaf.setup()
+                }
+
+                LaunchedEffect(density) {
+                    // Set this after getting the original height.
+                    window.minimumSize = with(density) {
+                        Dimension(200.dp.roundToPx(), 200.dp.roundToPx())
                     }
+                }
 
-                    LaunchedEffect(captionColor, titleBarColor) {
-                        if (isWindows11) {
-                            DwmImpl.DwmSetWindowAttribute(
-                                hwnd = window.hwnd,
-                                attribute = DwmWindowAttribute.DWMWA_TEXT_COLOR.value,
-                                value = IntByReference(captionColor.toBgr()),
-                                valueSize = 4,
-                            )
-                            DwmImpl.DwmSetWindowAttribute(
-                                hwnd = window.hwnd,
-                                attribute = DwmWindowAttribute.DWMWA_CAPTION_COLOR.value,
-                                value = IntByReference(titleBarColor.toBgr()),
-                                valueSize = 4,
-                            )
-                        }
-                    }
-
-                    MacMenuBar(
-                        mainWindowState = mainWindowState,
-                        applicationScope = this@application,
-                    )
-
-                    CompositionLocalProvider(
-                        LocalMenuBarHeight provides menuBarHeight,
-                    ) {
-                        MainView(
-                            fullPadding = PaddingValues(top = LocalMenuBarHeight.current),
+                LaunchedEffect(captionColor, titleBarColor) {
+                    if (isWindows11) {
+                        DwmImpl.DwmSetWindowAttribute(
+                            hwnd = window.hwnd,
+                            attribute = DwmWindowAttribute.DWMWA_TEXT_COLOR.value,
+                            value = IntByReference(captionColor.toBgr()),
+                            valueSize = 4,
+                        )
+                        DwmImpl.DwmSetWindowAttribute(
+                            hwnd = window.hwnd,
+                            attribute = DwmWindowAttribute.DWMWA_CAPTION_COLOR.value,
+                            value = IntByReference(titleBarColor.toBgr()),
+                            valueSize = 4,
                         )
                     }
                 }
+
+                MacMenuBar(
+                    mainWindowState = mainWindowState,
+                    applicationScope = this@application,
+                )
+
+                CompositionLocalProvider(
+                    LocalMenuBarHeight provides menuBarHeight,
+                ) {
+                    MainView(
+                        fullPadding = PaddingValues(top = LocalMenuBarHeight.current),
+                    )
+                }
             }
         }
-    } finally {
-        BugsnagUtils.destroy()
     }
+    BugsnagUtils.destroy()
+    exitProcess(0)
 }
 
 private fun showErrorDialog(parentComponent: Window?, throwable: Throwable) {
