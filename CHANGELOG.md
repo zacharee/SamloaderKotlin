@@ -1,3 +1,11 @@
+# 1.18.8
+- Work on improving error reporting on desktop.
+- Update Compose.
+- Update AGP.
+- Update Gradle.
+- Update TACs.
+- Code cleanup.
+
 # 1.18.7
 - Fix an issue where the window on desktop would flash when closing the app.
 - Fix strings with apostrophes showing backslashes.
