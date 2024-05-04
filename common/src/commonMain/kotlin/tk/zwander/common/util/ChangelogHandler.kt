@@ -1,5 +1,6 @@
 package tk.zwander.common.util
 
+import androidx.compose.ui.text.intl.Locale
 import com.fleeksoft.ksoup.Ksoup
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -58,7 +59,15 @@ object ChangelogHandler {
     private fun parseDocUrl(body: String): String? {
         val doc = Ksoup.parse(body)
         val selector = doc.selectFirst("#sel_lang_hidden")
-        val engOption = selector?.children()?.run { find { it.attr("value") == "EN" } ?: first() }
+        val currentLocale = Locale.current.toLanguageTag().uppercase()
+        val engOption = selector?.children()?.run {
+            find {
+                val value = it.attr("value")
+                currentLocale.startsWith(value)
+            } ?: find {
+                it.attr("value") == "EN"
+            } ?: first()
+        }
 
         return engOption?.text()
     }
