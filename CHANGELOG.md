@@ -1,3 +1,6 @@
+# 1.18.9
+- Fix an issue where closing the window on macOS wouldn't quit the app.
+
 # 1.18.8
 - Work on improving error reporting on desktop.
 - Update Compose.
