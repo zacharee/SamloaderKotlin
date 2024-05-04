@@ -60,7 +60,7 @@ object ChangelogHandler {
         val doc = Ksoup.parse(body)
         val selector = doc.selectFirst("#sel_lang_hidden")
         val currentLocale = Locale.current.toLanguageTag().uppercase()
-        val engOption = selector?.children()?.run {
+        val localeOption = selector?.children()?.run {
             find {
                 val value = it.attr("value")
                 currentLocale.startsWith(value)
@@ -69,7 +69,7 @@ object ChangelogHandler {
             } ?: first()
         }
 
-        return engOption?.text()
+        return localeOption?.text()
     }
 
     private fun parseChangelogs(body: String): Map<String, Changelog> {
