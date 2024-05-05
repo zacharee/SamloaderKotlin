@@ -75,21 +75,21 @@ fun main() {
     application(
         exitProcessOnExit = false,
     ) {
-        val mainWindowState = rememberWindowState()
-        val themeInfo = rememberThemeInfo()
-        val density = LocalDensity.current
-        val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
-
-        val captionColor =
-            if (useMicaEffect) Color.Unspecified else themeInfo.colors.onBackground
-        val titleBarColor =
-            if (useMicaEffect) Color.Unspecified else themeInfo.colors.background
-
-        val iconPainter = painterResource(MR.images.icon_rounded)
-
         CompositionLocalProvider(
             LocalWindowExceptionHandlerFactory provides exceptionHandlerFactory,
         ) {
+            val mainWindowState = rememberWindowState()
+            val themeInfo = rememberThemeInfo()
+            val density = LocalDensity.current
+            val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
+
+            val captionColor =
+                if (useMicaEffect) Color.Unspecified else themeInfo.colors.onBackground
+            val titleBarColor =
+                if (useMicaEffect) Color.Unspecified else themeInfo.colors.background
+
+            val iconPainter = painterResource(MR.images.icon_rounded)
+
             NativeLookWindow(
                 onCloseRequest = ::exitApplication,
                 title = GradleConfig.appName,
