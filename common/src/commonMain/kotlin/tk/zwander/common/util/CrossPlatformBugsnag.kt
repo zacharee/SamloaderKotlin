@@ -16,6 +16,7 @@ val exceptionsAndCausesToIgnore = arrayOf(
     "SSLHandshakeException",
     NoBinaryFileError::class.portableSimpleName,
     "UnresolvedAddressException",
+    "UnknownHostException",
 )
 
 private fun Throwable.shouldIgnore(): Boolean {
