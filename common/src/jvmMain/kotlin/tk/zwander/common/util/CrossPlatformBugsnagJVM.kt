@@ -15,6 +15,7 @@ data class Breadcrumb(
     val type: BreadcrumbType,
 )
 
+@Suppress("MemberVisibilityCanBePrivate")
 actual object BugsnagUtils {
     val bugsnag by lazy { Bugsnag(GradleConfig.bugsnagJvmApiKey) }
 
