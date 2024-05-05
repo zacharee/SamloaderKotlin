@@ -19,6 +19,7 @@ import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.dataNode
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.invoke
+import tk.zwander.common.util.isAccessoryModel
 import tk.zwander.common.util.textNode
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.time.ExperimentalTime
@@ -224,7 +225,8 @@ object Request {
             if (result.isReportableCode() &&
                 !output.contains("Incapsula") &&
                 error !is CancellationException &&
-                shouldReportError(error)
+                shouldReportError(error) &&
+                !model.isAccessoryModel
             ) {
                 CrossPlatformBugsnag.notify(DownloadError(requestBody, output, error))
             }

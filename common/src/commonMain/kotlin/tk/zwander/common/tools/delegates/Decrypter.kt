@@ -24,21 +24,21 @@ object Decrypter {
 
         try {
             val key = when {
-                !modelKey.isNullOrBlank() -> MD5.digest(modelKey.toByteArray()).bytes
+                modelKey.isNotBlank() -> MD5.digest(modelKey.toByteArray()).bytes
                 inputFile.getName().endsWith(".enc2") -> {
                     CryptUtils.getV2Key(
-                        model.fw.value ?: "",
-                        model.model.value ?: "",
-                        model.region.value ?: "",
+                        model.fw.value,
+                        model.model.value,
+                        model.region.value,
                     ).first
                 }
                 else -> {
                     try {
                         val binaryFileInfo = Request.retrieveBinaryFileInfo(
-                            fw = model.fw.value ?: "",
-                            model = model.model.value ?: "",
-                            region = model.region.value ?: "",
-                            imeiSerial = model.imeiSerial.value ?: "",
+                            fw = model.fw.value,
+                            model = model.model.value,
+                            region = model.region.value,
+                            imeiSerial = model.imeiSerial.value,
                             onFinish = {
                                 model.endJob(it)
                                 eventManager.sendEvent(Event.Decrypt.Finish)

@@ -67,7 +67,7 @@ object Downloader {
                 eventManager.sendEvent(Event.Download.Finish)
             },
             shouldReportError = {
-                model.model.value.isAccessoryModel && !model.manual.value
+                !model.manual.value
             },
         )
 
