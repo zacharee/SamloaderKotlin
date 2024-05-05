@@ -1,9 +1,11 @@
 package tk.zwander.common.util
 
 import com.bugsnag.Bugsnag
+import com.bugsnag.CustomReport
 import com.bugsnag.Report
 import com.bugsnag.Severity
 import tk.zwander.common.GradleConfig
+import java.lang.reflect.Proxy
 import java.util.UUID
 
 data class Breadcrumb(
@@ -18,8 +20,11 @@ actual object BugsnagUtils {
 
     private val breadcrumbs = LinkedHashMap<Long, Breadcrumb>()
 
+    @Suppress("UNCHECKED_CAST")
     fun create() {
-        val uuid = BifrostSettings.Keys.bugsnagUuid.getAndSetDefaultIfNonExistent(UUID.randomUUID().toString())
+        val uuid = BifrostSettings.Keys.bugsnagUuid.getAndSetDefaultIfNonExistent(
+            UUID.randomUUID().toString()
+        )
 
         bugsnag.setAppVersion(GradleConfig.versionName)
         bugsnag.addCallback {
@@ -27,6 +32,33 @@ actual object BugsnagUtils {
             it.addToTab("app", "version_code", GradleConfig.versionCode)
             it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
         }
+        val beforeSendSessionClass = Class.forName("com.bugsnag.BeforeSendSession")
+        val sessionPayloadClass = Class.forName("com.bugsnag.SessionPayload")
+        val diagnosticsClass = Class.forName("com.bugsnag.Diagnostics")
+        bugsnag::class.java.getDeclaredMethod("addBeforeSendSession", beforeSendSessionClass)
+            .apply {
+                isAccessible = true
+            }.invoke(
+                bugsnag,
+                Proxy.newProxyInstance(
+                    beforeSendSessionClass.classLoader,
+                    arrayOf(beforeSendSessionClass)
+                ) { _, _, args ->
+                    val payload = args[0]
+
+                    val diagnostics = sessionPayloadClass.getDeclaredField("diagnostics")
+                        .apply { isAccessible = true }
+                        .get(payload)
+
+                    val userMap = diagnosticsClass.getDeclaredField("user")
+                        .apply { isAccessible = true }
+                        .get(diagnostics) as HashMap<String, String?>
+
+                    userMap["id"] = uuid
+
+                    Unit
+                }
+            )
         bugsnag.setSendThreads(true)
         bugsnag.startSession()
     }
@@ -40,7 +72,7 @@ actual object BugsnagUtils {
     }
 
     fun notify(e: Throwable, severity: Severity) {
-        val report = bugsnag.buildReport(e)
+        val report = CustomReport(bugsnag, e)
         report.setSeverity(severity)
 
         breadcrumbs.forEach { (time, data) ->
