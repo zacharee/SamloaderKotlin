@@ -56,7 +56,7 @@ actual object BugsnagUtils {
 
                     userMap["id"] = uuid
 
-                    Unit
+                    null
                 }
             )
         bugsnag.setSendThreads(true)
