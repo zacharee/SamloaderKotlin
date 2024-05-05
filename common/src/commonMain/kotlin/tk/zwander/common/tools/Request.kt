@@ -54,7 +54,7 @@ object Request {
         imeiSerial: String,
         includeNonce: Boolean,
     ): Pair<String, Document> {
-        val splitImeiSerial = imeiSerial.split("\n")
+        val splitImeiSerial = imeiSerial.split("\n").flatMap { it.split(";") }
 
         var latestRequest = ""
         var latestResult: Document = Ksoup.parse("")
