@@ -3,66 +3,35 @@ package tk.zwander.common.util
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.HttpRequestTimeoutException
+import korlibs.io.lang.portableSimpleName
 import kotlinx.coroutines.CancellationException
-import tk.zwander.common.exceptions.DownloadError
 import tk.zwander.common.exceptions.NoBinaryFileError
+
+val exceptionsAndCausesToIgnore = arrayOf(
+    SocketTimeoutException::class.portableSimpleName,
+    HttpRequestTimeoutException::class.portableSimpleName,
+    ConnectTimeoutException::class.portableSimpleName,
+    CancellationException::class.portableSimpleName,
+    "SocketException",
+    "SSLHandshakeException",
+    NoBinaryFileError::class.portableSimpleName,
+    "UnresolvedAddressException",
+)
+
+private fun Throwable.shouldIgnore(): Boolean {
+    if (exceptionsAndCausesToIgnore.contains(this::class.portableSimpleName)) {
+        return true
+    }
+
+    return this.cause?.shouldIgnore() ?: false
+}
 
 object CrossPlatformBugsnag {
     fun notify(e: Throwable) {
         e.printStackTrace()
 
-        if (e is SocketTimeoutException) {
+        if (e.shouldIgnore()) {
             return
-        }
-
-        if (e is HttpRequestTimeoutException) {
-            return
-        }
-
-        if (e is ConnectTimeoutException) {
-            return
-        }
-
-        if (e is kotlin.coroutines.cancellation.CancellationException) {
-            return
-        }
-
-        if (e.javaClass.canonicalName == "java.net.SocketException") {
-            return
-        }
-
-        if (e.javaClass.canonicalName == "javax.net.ssl.SSLHandshakeException") {
-            return
-        }
-
-        if (e is DownloadError) {
-            if (e.cause is SocketTimeoutException) {
-                return
-            }
-
-            if (e.cause is CancellationException) {
-                return
-            }
-
-            if (e.cause is HttpRequestTimeoutException) {
-                return
-            }
-
-            if (e.cause is ConnectTimeoutException) {
-                return
-            }
-
-            if (e.cause is NoBinaryFileError) {
-                return
-            }
-
-            if (e.cause?.javaClass?.canonicalName == "java.net.SocketException") {
-                return
-            }
-
-            if (e.cause?.javaClass?.canonicalName == "javax.net.ssl.SSLHandshakeException") {
-                return
-            }
         }
 
         BugsnagUtils.notify(e)
