@@ -9,7 +9,7 @@ import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import tk.zwander.common.exceptions.NoBinaryFileError
 
 object CrossPlatformBugsnag {
-    val exceptionsAndCausesToIgnore = arrayOf(
+    private val exceptionsAndCausesToIgnore = arrayOf(
         SocketTimeoutException::class.portableSimpleName,
         HttpRequestTimeoutException::class.portableSimpleName,
         ConnectTimeoutException::class.portableSimpleName,
@@ -25,7 +25,7 @@ object CrossPlatformBugsnag {
         ClosedReceiveChannelException::class.portableSimpleName,
     )
 
-    val messagesToIgnore = arrayOf(
+    private val messagesToIgnore = arrayOf(
         "Software caused connection abort",
         "Failed to parse HTTP response: unexpected EOF",
         "Context.startForegroundService() did not then call Service.startForeground()",
