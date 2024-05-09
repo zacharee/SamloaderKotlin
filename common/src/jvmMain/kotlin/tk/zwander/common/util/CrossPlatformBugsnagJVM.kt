@@ -27,6 +27,7 @@ actual object BugsnagUtils {
             UUID.randomUUID().toString()
         )
 
+        bugsnag.setProjectPackages(*CrossPlatformBugsnag.appPackages)
         bugsnag.setAppVersion(GradleConfig.versionName)
         bugsnag.addCallback {
             it.setUserId(uuid)
