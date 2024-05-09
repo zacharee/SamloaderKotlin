@@ -26,7 +26,7 @@ import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.util.ThemeConstants
-import tk.zwander.commonCompose.util.parseHtml
+import tk.zwander.commonCompose.util.toRichHtmlString
 import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
@@ -81,15 +81,8 @@ internal fun ChangelogDisplay(
 
                 if (changelog?.notes != null) {
                     SelectionContainer {
-                        val formatted = changelog.notes.replace("<br><br><br><br>", "<QUAD_BR>")
-                            .replace("<br><br>", "<DOUBLE_BR>")
-                            .replace("<br>\n", "\n")
-                            .replace("<br>", "")
-                            .replace("<QUAD_BR>", "\n\n")
-                            .replace("<DOUBLE_BR>", "\n\n")
-
                         Text(
-                            text = formatted.parseHtml(),
+                            text = changelog.notes.toRichHtmlString(),
                             lineHeight = (LocalTextStyle.current.fontSize.value + 2).sp,
                         )
                     }

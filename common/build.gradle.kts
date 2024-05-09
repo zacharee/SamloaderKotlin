@@ -88,6 +88,8 @@ kotlin {
 
                 api(libs.ksoup)
                 api(libs.okio)
+
+                api(libs.richeditor.compose)
             }
         }
 
