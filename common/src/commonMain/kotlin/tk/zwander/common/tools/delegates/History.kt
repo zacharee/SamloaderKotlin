@@ -139,8 +139,8 @@ object History {
 
     suspend fun onFetch(model: HistoryModel) {
         try {
-            val historyString = getFirmwareHistoryString(model.model.value ?: "", model.region.value ?: "")
-            val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value ?: "", model.region.value ?: "")
+            val historyString = getFirmwareHistoryString(model.model.value, model.region.value)
+            val historyStringXml = getFirmwareHistoryStringFromSamsung(model.model.value, model.region.value)
 
             if (historyString == null && historyStringXml == null) {
                 model.endJob(MR.strings.historyError())
@@ -163,8 +163,8 @@ object History {
 
                     model.changelogs.value = try {
                         ChangelogHandler.getChangelogs(
-                            model.model.value ?: "",
-                            model.region.value ?: ""
+                            model.model.value,
+                            model.region.value
                         )
                     } catch (e: Exception) {
                         println("Error retrieving changelogs")
