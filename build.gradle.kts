@@ -1,5 +1,5 @@
-val versionCode by extra(68)
-val versionName by extra("1.18.9")
+val versionCode by extra(69)
+val versionName by extra("1.18.10")
 
 val compileSdk by extra(34)
 val targetSdk by extra(34)

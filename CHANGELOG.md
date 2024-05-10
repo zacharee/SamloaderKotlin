@@ -1,3 +1,14 @@
+# 1.18.10
+- Bifrost will now attempt to fetch firmware changelogs in the app's current language.
+- Replace manual HTML format parsing for changelogs with a proper library.
+- Hopefully improve error reporting on desktop.
+- Ignore some more errors.
+- Fix an issue where accessory download errors weren't properly ignored.
+- Trim firmware request body values.
+- Remove some JVM-specific APIs in common code.
+- Update Kotlin.
+- Update Compose.
+
 # 1.18.9
 - Fix an issue where closing the window on macOS wouldn't quit the app.
 
