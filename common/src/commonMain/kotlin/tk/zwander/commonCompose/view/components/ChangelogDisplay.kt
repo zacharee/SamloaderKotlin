@@ -76,7 +76,6 @@ internal fun ChangelogDisplay(
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
                     )
-
                 }
 
                 if (changelog?.notes != null) {
