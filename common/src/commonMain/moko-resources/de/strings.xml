@@ -119,7 +119,7 @@
     <string name="notification_progress_text">Arbeitet…</string>
     <string name="notification_finished_channel_name">Abgeschlossen</string>
     <string name="notification_finished_channel_text">Eine Aufgabe wurde abgeschlossen!</string>
-    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it's entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
+    <string name="invalid_imei_or_serial">Ungültige IMEI oder Seriennummer Spezifiziert! Wenn du den Wert von deinem Gerät kopiert hast, stelle Sicher, das der Wert richtig eingegeben wurde. Wenn Bifrost eine IMEI für dich Generiert hat, öffne bitte eine Meldung auf Github mit dem Model, der Region und der TAC von einem echtem Gerät (Wenn du eines hast).</string>
     <string name="february_short">Feb</string>
     <string name="march_short">Mar</string>
     <string name="october_short">Oct</string>
@@ -130,12 +130,12 @@
     <string name="april_short">Apr</string>
     <string name="july_short">Jul</string>
     <string name="september_short">Sep</string>
-    <string name="invalid_model">Warning! Bifrost can't download firmware for watches or other accessories. Only phones and tablets are supported.</string>
+    <string name="invalid_model">Warnung! Bifrost kann keine Firmware für Smartwatches und anderes Zubehör Herunterladen. Nur Smartphones und Tablets werden unterstützt.</string>
     <string name="december_short">Dec</string>
     <string name="november_short">Nov</string>
-    <string name="decryption_key">Decryption Key</string>
-    <string name="decryption_key_help">If you know the decryption key for the file you're trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung's servers.</string>
-    <string name="enable_offline_decryption">Offline Decryption</string>
-    <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect.</string>
+    <string name="decryption_key">Schlüssel zur Entschlüsselung</string>
+    <string name="decryption_key_help">Wenn du einen Schlüssel zur Entschlüsselung der Datei hast, welche du gerade versuchst zu Entschlüsseln, kannst du diesen hier eingeben. Wenn du dieses Feld leer lässt, wird sich Bifrost den Schlüssel von Samsungs Servern holen.</string>
+    <string name="enable_offline_decryption">Offline Entschlüsselung</string>
+    <string name="enable_offline_decryption_desc">Wenn diese Option aktiviert wird, wird beim Herunterladen von Firmware eine extra Textdatei gespeichert, welche einen Schlüssel zur Entschlüsselung enthält, der von Samsung bereitgestellt wurde. Dieser Schlüssel kann in der Entschlüsselungsseite eingegeben werden, um Firmware ohne Internetverbindung zu Entschlüsseln.</string>
     <string name="app_name" translatable="false">Bifrost</string>
 </resources>
