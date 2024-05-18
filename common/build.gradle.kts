@@ -30,7 +30,7 @@ kotlin {
         compilations.all {
             compileTaskProvider.configure {
                 compilerOptions {
-                    freeCompilerArgs.addAll("-Xopt-in=kotlin.RequiresOptIn", "-Xdont-warn-on-error-suppression")
+                    freeCompilerArgs.addAll("-opt-in=kotlin.RequiresOptIn", "-Xdont-warn-on-error-suppression")
                     jvmTarget = JvmTarget.fromTarget(javaVersionEnum.toString())
                 }
             }
@@ -160,6 +160,7 @@ android {
         val javaVersionEnum: JavaVersion by rootProject.extra
         sourceCompatibility = javaVersionEnum
         targetCompatibility = javaVersionEnum
+        isCoreLibraryDesugaringEnabled = true
     }
 
     buildFeatures {
@@ -169,6 +170,10 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].res.srcDir(layout.buildDirectory.file("generated/moko/androidMain/res"))
+
+    dependencies {
+        coreLibraryDesugaring(libs.desugar.jdk.libs)
+    }
 }
 
 buildkonfig {

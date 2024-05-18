@@ -10,6 +10,7 @@ bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.6.10-rc03"
 conveyor = "1.9"
+desugar_jdk_libs = "2.0.4"
 flatlaf = "3.4.1"
 google-material = "1.13.0-alpha02"
 jna = "5.14.0"
@@ -37,6 +38,7 @@ androidx-preference-ktx = { module = "androidx.preference:preference-ktx", versi
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }

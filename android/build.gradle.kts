@@ -11,6 +11,7 @@ version = rootProject.extra["versionName"].toString()
 
 dependencies {
     implementation(project(":common"))
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 android {
@@ -58,6 +59,7 @@ android {
         val javaVersionEnum: JavaVersion by rootProject.extra
         sourceCompatibility = javaVersionEnum
         targetCompatibility = javaVersionEnum
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
