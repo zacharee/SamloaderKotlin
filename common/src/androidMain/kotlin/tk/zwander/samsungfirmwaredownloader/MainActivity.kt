@@ -12,14 +12,13 @@ import android.os.IBinder
 import android.provider.DocumentsContract
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.core.view.WindowCompat
 import androidx.documentfile.provider.DocumentFile
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
@@ -82,7 +81,12 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isNavigationBarContrastEnforced = false
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkCallingOrSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
@@ -96,15 +100,8 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), EventMa
         //Set up windowing stuff.
         actionBar?.hide()
 
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
         //Set the Compose content.
         setContent {
-            WindowCompat.getInsetsController(window, window.decorView).apply {
-                isAppearanceLightStatusBars = !isSystemInDarkTheme()
-                isAppearanceLightNavigationBars = isAppearanceLightStatusBars
-            }
-
             CompositionLocalProvider(
                 LocalPhoneInfo provides rememberPhoneInfo(),
             ) {
