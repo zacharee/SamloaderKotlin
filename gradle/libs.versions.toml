@@ -5,7 +5,7 @@ androidx-core = "1.14.0-alpha01"
 androidx-documentfile = "1.1.0-alpha01"
 androidx-preference = "1.2.1"
 bugsnag-android = "6.5.0"
-bugsnag-android-gradle = "8.1.0"
+bugsnag-gradle = "0.1.0"
 bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.6.20-dev1646"
@@ -71,7 +71,7 @@ window-styler = { module = "com.github.zacharee.ComposeWindowStyler:window-style
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
-bugsnag-android = { id = "com.bugsnag.android.gradle", version.ref = "bugsnag-android-gradle" }
+bugsnag-gradle = { id = "com.bugsnag.gradle", version.ref = "bugsnag-gradle" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig-gradle" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }

@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.atomicfu)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.bugsnag.android)
+    alias(libs.plugins.bugsnag.gradle)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.multiplatform)
 }
