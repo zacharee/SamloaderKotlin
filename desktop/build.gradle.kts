@@ -67,6 +67,7 @@ compose.desktop {
         nativeDistributions {
             modules("jdk.crypto.ec")
             modules("java.management")
+            modules("jdk.accessibility")
 
             this.packageName = packageName
 
