@@ -1,3 +1,10 @@
+# 1.18.11
+- Fix a crash on Android pre-8.0 related to date parsing.
+- Fix a crash on desktop related to accessibility APIs.
+- Improve edge-to-edge appearance on Android.
+- Add some more TACs.
+- Update dependencies.
+
 # 1.18.10
 - Bifrost will now attempt to fetch firmware changelogs in the app's current language.
 - Replace manual HTML format parsing for changelogs with a proper library.
