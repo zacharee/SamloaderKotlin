@@ -87,30 +87,21 @@ compose.desktop {
                 this.packageName = appName
 
                 signing {
-                    val macosSigningId = localProperties.getProperty("macosSigningId", null)
-
-                    if (macosSigningId != null) {
+                    localProperties.getProperty("macosSigningId", null)?.let {
                         sign.set(true)
-                        identity.set(macosSigningId)
+                        identity.set(it)
                     }
                 }
 
                 notarization {
-                    val macosNotarizationEmail =
-                        localProperties.getProperty("macosNotarizationEmail", null)
-                    val macosNotarizationPassword =
-                        localProperties.getProperty("macosNotarizationPassword", null)
-                    val macosNotarizationTeamId =
-                        localProperties.getProperty("macosNotarizationTeamId", null)
-
-                    if (macosNotarizationEmail != null) {
-                        appleID.set(macosNotarizationEmail)
+                    localProperties.getProperty("macosNotarizationEmail", null)?.let {
+                        appleID.set(it)
                     }
-                    if (macosNotarizationPassword != null) {
-                        password.set(macosNotarizationPassword)
+                    localProperties.getProperty("macosNotarizationPassword", null)?.let {
+                        password.set(it)
                     }
-                    if (macosNotarizationTeamId != null) {
-                        teamID.set(macosNotarizationTeamId)
+                    localProperties.getProperty("macosNotarizationTeamId", null)?.let {
+                        teamID.set(it)
                     }
                 }
             }
