@@ -30,7 +30,6 @@
     <string name="imei_serial_help">Samsung a commencé à exiger l'utilisation d'un IMEI ou numéro de série correspondant au firmware à télécharger. Dans de nombreux cas, si vous utilisez le numéro de série de votre appareil, vous pourrez télécharger le firmware pour n'importe quel CSC de votre modèle. Sans l'IMEI ou numéro de série correct, vous recevrez une erreur 408 lors de la tentative de téléchargement. Bifrost tentera de générer automatiquement jusqu'à 100 IMEI à essayer pour n'importe quel modèle que vous saisissez. Vous pouvez également définir vos propres IMEI qui doivent être essayés en les mettant chacun sur une ligne dans la boîte de dialogue Modifier, ou en les séparant par des points-virgules dans le champ lui-même.</string>
     <string name="github">GitHub</string>
     <string name="edit">Modifier</string>
-    <string name="twitter">Twitter</string>
     <string name="copy">Copier</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
     <string name="historyErrorFormat">Impossible de récupérer l'historique du firmware. Assurez-vous que le modèle et la région soient corrects.

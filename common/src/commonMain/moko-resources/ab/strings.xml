@@ -133,7 +133,6 @@
     <string name="enable_offline_decryption">Offline Decryption</string>
     <string name="odinRom" translatable="false">OdinRom</string>
     <string name="github" translatable="false">GitHub</string>
-    <string name="twitter" translatable="false">Twitter</string>
     <string name="patreon" translatable="false">Patreon</string>
     <string name="mastodon" translatable="false">Mastodon</string>
     <string name="samloader" translatable="false">Samloader</string>

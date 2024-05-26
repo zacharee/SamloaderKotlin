@@ -120,19 +120,6 @@ fun FooterView(
                 item {
                     IconButton(
                         onClick = {
-                            UrlHandler.launchUrl("https://twitter.com/wander1236")
-                        },
-                    ) {
-                        Icon(
-                            painterResource(MR.images.twitter), stringResource(MR.strings.twitter),
-                            modifier = Modifier.padding(8.dp).size(24.dp)
-                        )
-                    }
-                }
-
-                item {
-                    IconButton(
-                        onClick = {
                             UrlHandler.launchUrl("https://patreon.com/zacharywander")
                         },
                     ) {

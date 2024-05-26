@@ -29,7 +29,6 @@
     <string name="checkingCRC">CRC wird überprüft</string>
     <string name="imei_serial_help">Samsung hat damit begonnen, die Nutzung einer IMEI oder Seriennummer zu erfordern, die identisch mit der Firmware ist, welche Heruntergeladen werden soll. Wenn du die Seriennummer deines Gerätes benutzt, wird es in den meisten Fällen möglich sein, Firmware für jede CSC deines Models herunterzuladen. Ohne die Korrekte IMEI oder Seriennummer wirst du den Fehler 408 erhalten, wenn du versuchst, die Firmware herunterzuladen. Bifrost wird versuchen, für dich bis zu 100 IMEIs zu Generieren, die du für jedes Model nutzen kannst. Du kannst auch eigene IMEIs eintragen, allerdings solltest du für jede IMEI eine eigene Zeile im Editieren Dialog verwenden oder die IMEIs mithilfe eines Semikolon im Feld voneinander trennen.</string>
     <string name="github">GitHub</string>
-    <string name="twitter">Twitter</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
     <string name="historyErrorFormat">Es wurde kein Versionsverlauf gefunden. Stelle Sicher, dass das Model und die Region korrekt sind.
 \nFehler: %1$s</string>

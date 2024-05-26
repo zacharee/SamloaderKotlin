@@ -65,13 +65,6 @@ fun FrameWindowScope.MacMenuBar(
                 )
 
                 Item(
-                    text = stringResource(MR.strings.twitter),
-                    onClick = {
-                        UrlHandler.launchUrl("https://twitter.com/wander1236")
-                    }
-                )
-
-                Item(
                     text = stringResource(MR.strings.patreon),
                     onClick = {
                         UrlHandler.launchUrl("https://patreon.com/zacharywander")

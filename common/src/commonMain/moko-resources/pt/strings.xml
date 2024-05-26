@@ -26,7 +26,6 @@
     <string name="unknown">Desconhecido</string>
     <string name="osVersion">Versão do sistema: %1$s</string>
     <string name="checkingCRC">Verificando CRC</string>
-    <string name="twitter">Twitter</string>
     <string name="imei_serial_help">A Samsung começou a exigir o uso de um IMEI ou número de série que corresponda ao firmware que está sendo baixado. Em muitos casos, se você usar o número de série do seu dispositivo, poderá baixar firmware para qualquer CSC do seu modelo. Sem o IMEI ou serial correto, você receberá o erro 408 ao tentar fazer o download. O Bifrost tentará gerar automaticamente até 100 IMEIs para testar qualquer modelo que você inserir. Você também pode definir seus próprios IMEIs que podem ser testados, colocando cada um em sua própria linha na caixa de diálogo Editar ou separados por ponto e vírgula no próprio campo.</string>
     <string name="copy">Copiar</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
