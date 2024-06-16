@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
@@ -19,10 +20,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import korlibs.io.util.toStringDecimal
 import tk.zwander.commonCompose.model.BaseModel
+import tk.zwander.commonCompose.util.CustomArrangement
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.math.round
 import kotlin.math.roundToInt
@@ -43,17 +46,13 @@ internal fun ProgressInfo(model: BaseModel) {
         val speed by model.speed.collectAsState()
 
         if (statusText.isNotBlank()) {
-            Text(
-                text = statusText
-            )
+            Text(text = statusText)
         }
 
         val isIndeterminate = progress.first <= 0 || progress.second <= 0
         val hasProgress = hasRunningJobs || (progress.first > 0 && progress.second > 0)
 
-        AnimatedVisibility(
-            visible = hasProgress
-        ) {
+        AnimatedVisibility(visible = hasProgress) {
             Column {
                 Spacer(Modifier.size(8.dp))
 
@@ -82,19 +81,10 @@ internal fun ProgressInfo(model: BaseModel) {
                     Spacer(Modifier.size(8.dp))
 
                     FlowRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                        horizontalArrangement = CustomArrangement.SpaceBetweenWithSpacing(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        FormatText(
-                            text = "%",
-                            textFormat = try {
-                                (progress.first.toFloat() / progress.second * 100 * 100.0).roundToInt() / 100.0
-                            } catch (e: IllegalArgumentException) {
-                                0.0
-                            }.toStringDecimal(2),
-                        )
-
                         val speedKBps = speed / 1024.0
                         val shouldUseMB = speedKBps >= 1 * 1024
                         val finalSpeed =
@@ -103,6 +93,7 @@ internal fun ProgressInfo(model: BaseModel) {
                         FormatText(
                             text = if (shouldUseMB) stringResource(MR.strings.mibs) else stringResource(MR.strings.kibs),
                             textFormat = finalSpeed,
+                            valueFontFamily = FontFamily.Monospace,
                         )
 
                         val currentMB = ((progress.first.toFloat() / 1024.0 / 1024.0 * 100.0).roundToInt() / 100.0).toStringDecimal(2)
@@ -110,7 +101,18 @@ internal fun ProgressInfo(model: BaseModel) {
 
                         FormatText(
                             text = stringResource(MR.strings.mib),
-                            textFormat = "$currentMB / $totalMB",
+                            textFormat = "$currentMB/$totalMB",
+                            valueFontFamily = FontFamily.Monospace,
+                        )
+
+                        FormatText(
+                            text = "%",
+                            textFormat = try {
+                                (progress.first.toFloat() / progress.second * 100 * 100.0).roundToInt() / 100.0
+                            } catch (e: IllegalArgumentException) {
+                                0.0
+                            }.toStringDecimal(2),
+                            valueFontFamily = FontFamily.Monospace,
                         )
                     }
                 }
