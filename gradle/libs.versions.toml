@@ -1,7 +1,7 @@
 [versions]
 android-gradle = "8.5.0"
 androidx-activity-compose = "1.9.0"
-androidx-core = "1.15.0-alpha01"
+androidx-core = "1.13.1"
 androidx-documentfile = "1.1.0-alpha01"
 androidx-preference = "1.2.1"
 bugsnag-android = "6.5.0"
