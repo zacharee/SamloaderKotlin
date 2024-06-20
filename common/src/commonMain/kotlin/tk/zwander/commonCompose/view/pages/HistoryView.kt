@@ -1,7 +1,6 @@
 package tk.zwander.commonCompose.view.pages
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -17,11 +16,11 @@ import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,12 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withAnnotation
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,7 +43,6 @@ import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.tools.delegates.History
-import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
@@ -62,7 +59,6 @@ import tk.zwander.samloaderkotlin.resources.MR
 /**
  * The History View.
  */
-@OptIn(ExperimentalFoundationApi::class, ExperimentalTextApi::class)
 @Composable
 internal fun HistoryView() {
     val model = LocalHistoryModel.current
@@ -95,7 +91,7 @@ internal fun HistoryView() {
                     textDecoration = TextDecoration.Underline,
                 ),
             ) {
-                withAnnotation(UrlAnnotation("https://odinrom.com")) {
+                withLink(LinkAnnotation.Url("https://odinrom.com")) {
                     append(MR.strings.odinRom())
                 }
             }
@@ -177,14 +173,8 @@ internal fun HistoryView() {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        ClickableText(
+                        Text(
                             text = odinRomSource,
-                            onClick = {
-                                odinRomSource.getUrlAnnotations(it, it)
-                                    .firstOrNull()?.let { item ->
-                                        UrlHandler.launchUrl(item.item.url)
-                                    }
-                            },
                             style = LocalTextStyle.current.copy(LocalContentColor.current),
                         )
                     }
@@ -236,7 +226,7 @@ internal fun HistoryView() {
                             pagerState.animateScrollToPage(Page.Decrypter)
                         }
                     },
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                 )
             }
         }

@@ -1,8 +1,5 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
-
 package tk.zwander.commonCompose
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -66,7 +63,7 @@ fun MainView(
                                 state = pagerState,
                                 pageSpacing = 8.dp,
                                 userScrollEnabled = Platform.isAndroid,
-                                beyondBoundsPageCount = pagerState.pageCount,
+                                beyondViewportPageCount = pagerState.pageCount,
                             ) {
                                 pages[it].render()
                             }

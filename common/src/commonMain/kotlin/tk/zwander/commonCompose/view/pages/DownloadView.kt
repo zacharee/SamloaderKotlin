@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -38,11 +37,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.UrlAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withAnnotation
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
@@ -54,7 +53,6 @@ import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.tools.delegates.Downloader
 import tk.zwander.common.util.Event
-import tk.zwander.common.util.UrlHandler
 import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
 import tk.zwander.common.util.isAccessoryModel
@@ -245,21 +243,17 @@ internal fun DownloadView() {
                                 withStyle(
                                     SpanStyle(textDecoration = TextDecoration.Underline),
                                 ) {
-                                    withAnnotation(UrlAnnotation("https://nothing.com")) {
+                                    withLink(LinkAnnotation.Clickable("moreInfo", linkInteractionListener = {
+                                        showingRequestWarningDialog = true
+                                    })) {
                                         append(MR.strings.moreInfo())
                                     }
                                 }
                             }
                         }
 
-                        ClickableText(
+                        Text(
                             text = manualWarning,
-                            onClick = {
-                                manualWarning.getUrlAnnotations(it, it)
-                                    .firstOrNull()?.let {
-                                        showingRequestWarningDialog = true
-                                    }
-                            },
                             style = LocalTextStyle.current,
                         )
                     }
@@ -278,7 +272,7 @@ internal fun DownloadView() {
                                     )
                                 )
                                 append(" ")
-                                withAnnotation(UrlAnnotation("https://github.com/zacharee/SamloaderKotlin/issues/10")) {
+                                withLink(LinkAnnotation.Url("https://github.com/zacharee/SamloaderKotlin/issues/10")) {
                                     withStyle(SpanStyle(textDecoration = TextDecoration.Underline)) {
                                         append(MR.strings.manualWarningDetails2())
                                     }
@@ -289,14 +283,8 @@ internal fun DownloadView() {
 
                             val scroll = rememberScrollState()
 
-                            ClickableText(
+                            Text(
                                 text = info,
-                                onClick = {
-                                    info.getUrlAnnotations(it, it)
-                                        .firstOrNull()?.let { item ->
-                                            UrlHandler.launchUrl(item.item.url)
-                                        }
-                                },
                                 style = textStyle,
                                 modifier = Modifier.verticalScroll(scroll),
                             )
