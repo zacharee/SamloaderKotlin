@@ -31,6 +31,7 @@ class DownloaderService : Service(), EventManager.EventListener {
          * Start the Service.
          * @param context a Context object.
          */
+        @Suppress("unused")
         fun start(context: Context) {
             val startIntent = Intent(context, DownloaderService::class.java)
 
@@ -47,6 +48,7 @@ class DownloaderService : Service(), EventManager.EventListener {
          * Stop the Service.
          * @param context a Context object.
          */
+        @Suppress("unused")
         fun stop(context: Context) {
             val stopIntent = Intent(context, DownloaderService::class.java)
 
