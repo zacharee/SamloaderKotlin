@@ -1,19 +1,29 @@
 package tk.zwander.commonCompose.util.jetbrains
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.*
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathFillType
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.vector.DefaultPivotX
+import androidx.compose.ui.graphics.vector.DefaultPivotY
+import androidx.compose.ui.graphics.vector.DefaultRotation
+import androidx.compose.ui.graphics.vector.DefaultScaleX
+import androidx.compose.ui.graphics.vector.DefaultScaleY
+import androidx.compose.ui.graphics.vector.DefaultTranslationX
+import androidx.compose.ui.graphics.vector.DefaultTranslationY
+import androidx.compose.ui.graphics.vector.EmptyPath
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.addPathNodes
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.w3c.dom.Element
 import org.w3c.dom.Node
-import java.util.*
+import java.util.LinkedList
 
 /**
  * A hacky file thrown together from JetBrains and Google components to parse
@@ -140,7 +150,6 @@ private fun Element.parseGradient(): Brush? {
     }
 }
 
-@Suppress("CHANGING_ARGUMENTS_EXECUTION_ORDER_FOR_NAMED_VARARGS")
 private fun Element.parseLinearGradient() = Brush.linearGradient(
     colorStops = parseColorStops(),
     start = Offset(
@@ -154,7 +163,6 @@ private fun Element.parseLinearGradient() = Brush.linearGradient(
     tileMode = attributeOrNull(ANDROID_NS, "tileMode")?.let(::parseTileMode) ?: TileMode.Clamp
 )
 
-@Suppress("CHANGING_ARGUMENTS_EXECUTION_ORDER_FOR_NAMED_VARARGS")
 private fun Element.parseRadialGradient() = Brush.radialGradient(
     colorStops = parseColorStops(),
     center = Offset(
@@ -165,7 +173,6 @@ private fun Element.parseRadialGradient() = Brush.radialGradient(
     tileMode = attributeOrNull(ANDROID_NS, "tileMode")?.let(::parseTileMode) ?: TileMode.Clamp
 )
 
-@Suppress("CHANGING_ARGUMENTS_EXECUTION_ORDER_FOR_NAMED_VARARGS")
 private fun Element.parseSweepGradient() = Brush.sweepGradient(
     colorStops = parseColorStops(),
     center = Offset(
@@ -211,7 +218,7 @@ private fun Element.parseColorStop(defaultOffset: Float): Pair<Float, Color>? {
 
 private fun Element.attributeOrNull(namespace: String, name: String): String? {
     val value = getAttributeNS(namespace, name)
-    return if (value.isNotBlank()) value else null
+    return value.ifBlank { null }
 }
 
 /**

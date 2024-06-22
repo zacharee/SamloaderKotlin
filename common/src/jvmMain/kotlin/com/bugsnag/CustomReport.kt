@@ -1,4 +1,4 @@
-package com.bugsnag;
+package com.bugsnag
 
 import tk.zwander.common.util.BifrostSettings
 

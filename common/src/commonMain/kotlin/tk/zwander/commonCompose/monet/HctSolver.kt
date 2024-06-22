@@ -593,7 +593,7 @@ object HctSolver {
         // ===========================================================
         val viewingConditions = Frame.DEFAULT
         val tInnerCoeff: Double = 1 / pow(
-            1.64 - pow(0.29, viewingConditions.n.toDouble()),
+            1.64 - pow(0.29, viewingConditions.n),
             0.73
         )
         val eHue: Double = 0.25 * (cos(hueRadians + 2.0) + 3.8)

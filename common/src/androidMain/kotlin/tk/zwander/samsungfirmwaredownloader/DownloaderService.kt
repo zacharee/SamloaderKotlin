@@ -1,5 +1,6 @@
 package tk.zwander.samsungfirmwaredownloader
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -112,6 +113,7 @@ class DownloaderService : Service(), EventManager.EventListener {
         }
     }
 
+    @SuppressLint("InlinedApi")
     override fun onCreate() {
         super.onCreate()
 

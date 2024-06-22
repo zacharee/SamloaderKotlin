@@ -14,7 +14,6 @@ import tk.zwander.common.util.ChangelogHandler
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
-import tk.zwander.common.util.isAccessoryModel
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.time.ExperimentalTime

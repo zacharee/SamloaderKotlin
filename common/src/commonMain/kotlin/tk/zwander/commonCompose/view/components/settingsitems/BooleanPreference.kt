@@ -24,7 +24,7 @@ fun BooleanPreference(
     TransparencyCard(
         modifier = modifier,
         onClick = {
-            state = !(state ?: false)
+            state = !state
         },
     ) {
         Row(
@@ -37,7 +37,7 @@ fun BooleanPreference(
             )
 
             Switch(
-                checked = state ?: false,
+                checked = state,
                 onCheckedChange = {
                     state = it
                 },

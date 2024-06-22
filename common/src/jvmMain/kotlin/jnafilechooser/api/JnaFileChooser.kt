@@ -61,17 +61,13 @@ class JnaFileChooser() {
 
     /**
      * sets whether to enable multiselection
-     *
-     * @param enabled true to enable multiselection, false to disable it
      */
     var isMultiSelectionEnabled = false
 
     /**
      * sets the selection mode
-     *
-     * @param mode the selection mode
      */
-    var mode: Mode
+    var mode: Mode = Mode.Files
     protected var defaultFile = ""
     protected var dialogTitle = ""
     var openButtonText = ""
@@ -82,7 +78,6 @@ class JnaFileChooser() {
      * to allow file selection only.
      */
     init {
-        mode = Mode.Files
         selectedFiles = arrayOf(null)
     }
 
@@ -167,16 +162,16 @@ class JnaFileChooser() {
         fc.setFileSelectionMode(mode.jFileChooserValue)
 
         // set select file
-        if (!defaultFile.isEmpty() and (action == Action.Save)) {
+        if (defaultFile.isNotEmpty() and (action == Action.Save)) {
             val fsel = File(defaultFile)
             fc.setSelectedFile(fsel)
         }
-        if (!dialogTitle.isEmpty()) {
+        if (dialogTitle.isNotEmpty()) {
             fc.setDialogTitle(dialogTitle)
         }
-        if ((action == Action.Open) and !openButtonText.isEmpty()) {
+        if ((action == Action.Open) and openButtonText.isNotEmpty()) {
             fc.setApproveButtonText(openButtonText)
-        } else if ((action == Action.Save) and !saveButtonText.isEmpty()) {
+        } else if ((action == Action.Save) and saveButtonText.isNotEmpty()) {
             fc.setApproveButtonText(saveButtonText)
         }
 
@@ -232,7 +227,7 @@ class JnaFileChooser() {
 
     private fun showWindowsFolderBrowser(parent: Window): Boolean {
         val fb = WindowsFolderBrowser()
-        if (!dialogTitle.isEmpty()) {
+        if (dialogTitle.isNotEmpty()) {
             fb.setTitle(dialogTitle)
         }
         val file = fb.showDialog(parent)

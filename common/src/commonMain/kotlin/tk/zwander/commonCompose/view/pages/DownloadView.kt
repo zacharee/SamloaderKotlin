@@ -36,7 +36,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -71,7 +70,6 @@ import kotlin.time.ExperimentalTime
 /**
  * The Downloader View.
  */
-@OptIn(ExperimentalTextApi::class)
 @DangerousInternalIoApi
 @ExperimentalTime
 @Composable
