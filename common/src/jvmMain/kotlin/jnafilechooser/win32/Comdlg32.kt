@@ -14,6 +14,7 @@ import com.sun.jna.Pointer
 import com.sun.jna.Structure
 import com.sun.jna.WString
 
+@Suppress("unused", "FunctionName", "PropertyName")
 object Comdlg32 {
     init {
         Native.register("comdlg32")

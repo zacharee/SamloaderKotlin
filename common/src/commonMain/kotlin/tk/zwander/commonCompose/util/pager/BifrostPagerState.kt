@@ -10,6 +10,7 @@ class BifrostPagerState : PagerState() {
     override val pageCount: Int
         get() = pages.size
 
+    @Suppress("unused")
     val currentBifrostPage: Page
         get() = pages[currentPage]
 

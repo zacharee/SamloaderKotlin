@@ -13,6 +13,7 @@ import com.sun.jna.Native
 import com.sun.jna.Pointer
 import com.sun.jna.Structure
 
+@Suppress("unused", "FunctionName", "MemberVisibilityCanBePrivate")
 object Shell32 {
     init {
         Native.register("shell32")
