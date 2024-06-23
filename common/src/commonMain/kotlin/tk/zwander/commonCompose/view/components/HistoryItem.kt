@@ -50,7 +50,7 @@ internal fun HistoryItem(
     onDecrypt: (fw: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier) {
+    Box(modifier = modifier) {
         TransparencyCard(
             modifier = Modifier.fillMaxWidth(),
         ) {

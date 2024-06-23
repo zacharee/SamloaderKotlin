@@ -198,13 +198,13 @@ internal fun HistoryView() {
                 }
             }
 
-            itemsIndexed(historyItems, { _, item -> item.toString() }) { index, historyInfo ->
+            itemsIndexed(historyItems, { _, item -> item.firmwareString }) { index, historyInfo ->
                 HistoryItem(
                     index = index,
                     info = historyInfo,
                     changelog = changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
                     changelogExpanded = expanded[historyInfo.toString()] ?: false,
-                    onChangelogExpanded =  { expanded[historyInfo.toString()] = it },
+                    onChangelogExpanded = { expanded[historyInfo.toString()] = it },
                     onDownload = {
                         downloadModel.manual.value = true
                         downloadModel.osCode.value = ""
