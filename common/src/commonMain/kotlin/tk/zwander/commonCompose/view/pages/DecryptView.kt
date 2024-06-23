@@ -44,6 +44,7 @@ import tk.zwander.commonCompose.util.OffsetCorrectedIdentityTransformation
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.util.handleFileDrag
+import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.InWindowAlertDialog
 import tk.zwander.commonCompose.view.components.MRFLayout
@@ -95,7 +96,7 @@ internal fun DecryptView() {
         ) {
             BoxWithConstraints(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(bottom = 8.dp),
+                    .padding(bottom = 8.dp, top = LocalMenuBarHeight.current),
             ) {
                 val constraints = constraints
 

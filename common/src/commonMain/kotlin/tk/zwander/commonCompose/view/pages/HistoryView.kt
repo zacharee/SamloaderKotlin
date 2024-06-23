@@ -49,6 +49,7 @@ import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.util.grid.AdaptiveFixed
+import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.components.HistoryItem
 import tk.zwander.commonCompose.view.components.HybridButton
@@ -121,7 +122,12 @@ internal fun HistoryView() {
             columns = AdaptiveFixed(minSize = 350.dp),
             verticalItemSpacing = 8.dp,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(8.dp),
+            contentPadding = PaddingValues(
+                start = 8.dp,
+                end = 8.dp,
+                bottom = 8.dp,
+                top = 8.dp + LocalMenuBarHeight.current,
+            ),
             state = gridState,
         ) {
             item(span = StaggeredGridItemSpan.FullLine) {

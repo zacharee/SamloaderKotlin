@@ -1,4 +1,3 @@
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -165,9 +164,7 @@ fun main() {
                 CompositionLocalProvider(
                     LocalMenuBarHeight provides menuBarHeight,
                 ) {
-                    MainView(
-                        fullPadding = PaddingValues(top = LocalMenuBarHeight.current),
-                    )
+                    MainView()
                 }
             }
         }

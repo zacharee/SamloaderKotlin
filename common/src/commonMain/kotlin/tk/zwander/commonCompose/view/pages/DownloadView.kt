@@ -58,6 +58,7 @@ import tk.zwander.common.util.isAccessoryModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.util.collectAsMutableState
+import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.components.ChangelogDisplay
 import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.HybridButton
@@ -118,7 +119,7 @@ internal fun DownloadView() {
         ) {
             BoxWithConstraints(
                 modifier = Modifier.fillMaxWidth()
-                    .padding(bottom = 8.dp),
+                    .padding(bottom = 8.dp, top = LocalMenuBarHeight.current),
             ) {
                 val constraints = constraints
                 Row(

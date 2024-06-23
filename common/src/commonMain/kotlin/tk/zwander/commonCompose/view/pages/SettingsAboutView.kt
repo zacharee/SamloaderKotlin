@@ -3,9 +3,9 @@ package tk.zwander.commonCompose.view.pages
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -23,6 +23,7 @@ import tk.zwander.common.util.LocalPhoneInfo
 import tk.zwander.common.util.isWindows11
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.util.grid.AdaptiveFixed
+import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.components.FooterView
 import tk.zwander.commonCompose.view.components.PhoneInfoView
 import tk.zwander.commonCompose.view.components.settingsitems.ActionPreference
@@ -33,48 +34,54 @@ val options = arrayListOf<IOptionItem>().apply {
     if (Platform.isJvm && !Platform.isAndroid) {
         add(
             IOptionItem.BasicOptionItem.BooleanItem(
-            label = MR.strings.useNativeFilePicker,
-            desc = MR.strings.useNativeFilePickerDesc,
-            key = BifrostSettings.Keys.useNativeFileDialog,
-        ))
+                label = MR.strings.useNativeFilePicker,
+                desc = MR.strings.useNativeFilePickerDesc,
+                key = BifrostSettings.Keys.useNativeFileDialog,
+            ),
+        )
     }
 
     if (isWindows11) {
         add(
             IOptionItem.BasicOptionItem.BooleanItem(
-            label = MR.strings.useMicaEffect,
-            desc = MR.strings.useMicaEffectDesc,
-            key = BifrostSettings.Keys.useMicaEffect,
-        ))
+                label = MR.strings.useMicaEffect,
+                desc = MR.strings.useMicaEffectDesc,
+                key = BifrostSettings.Keys.useMicaEffect,
+            ),
+        )
     }
 
     add(
         IOptionItem.BasicOptionItem.BooleanItem(
-        label = MR.strings.allowLowercaseCharacters,
-        desc = MR.strings.allowLowercaseCharactersDesc,
-        key = BifrostSettings.Keys.allowLowercaseCharacters,
-    ))
+            label = MR.strings.allowLowercaseCharacters,
+            desc = MR.strings.allowLowercaseCharactersDesc,
+            key = BifrostSettings.Keys.allowLowercaseCharacters,
+        ),
+    )
     add(
         IOptionItem.BasicOptionItem.BooleanItem(
-        label = MR.strings.autoDeleteEncryptedFirmware,
-        desc = MR.strings.autoDeleteEncryptedFirmwareDesc,
-        key = BifrostSettings.Keys.autoDeleteEncryptedFirmware,
-    ))
+            label = MR.strings.autoDeleteEncryptedFirmware,
+            desc = MR.strings.autoDeleteEncryptedFirmwareDesc,
+            key = BifrostSettings.Keys.autoDeleteEncryptedFirmware,
+        ),
+    )
     add(
         IOptionItem.BasicOptionItem.BooleanItem(
-        label = MR.strings.enable_offline_decryption,
-        desc = MR.strings.enable_offline_decryption_desc,
-        key = BifrostSettings.Keys.enableDecryptKeySave,
-    ))
+            label = MR.strings.enable_offline_decryption,
+            desc = MR.strings.enable_offline_decryption_desc,
+            key = BifrostSettings.Keys.enableDecryptKeySave,
+        ),
+    )
     add(
         IOptionItem.ActionOptionItem(
-        label = MR.strings.removeSavedData,
-        desc = MR.strings.removeSavedDataDesc,
-        listKey = "remove_saved_data",
-        action = {
-            BifrostSettings.settings.clear()
-        },
-    ))
+            label = MR.strings.removeSavedData,
+            desc = MR.strings.removeSavedDataDesc,
+            listKey = "remove_saved_data",
+            action = {
+                BifrostSettings.settings.clear()
+            },
+        ),
+    )
 }
 
 @Composable
@@ -82,7 +89,7 @@ fun SettingsAboutView() {
     val gridState = rememberLazyStaggeredGridState()
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(8.dp),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         LazyStaggeredGridVerticalScrollbarNew(
@@ -100,6 +107,12 @@ fun SettingsAboutView() {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalItemSpacing = 8.dp,
                 state = gridState,
+                contentPadding = PaddingValues(
+                    start = 8.dp,
+                    end = 8.dp,
+                    top = 8.dp + LocalMenuBarHeight.current,
+                    bottom = 8.dp,
+                ),
             ) {
                 items(items = options, key = { it.listKey }) { item ->
                     Box(
