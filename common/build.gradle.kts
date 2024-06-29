@@ -146,7 +146,10 @@ kotlin {
 
 android {
     val compileSdk: Int by rootProject.extra
+    val compileSdkPreview: String by rootProject.extra
+
     this.compileSdk = compileSdk
+    this.compileSdkPreview = compileSdkPreview
 
     defaultConfig {
         val minSdk: Int by rootProject.extra
