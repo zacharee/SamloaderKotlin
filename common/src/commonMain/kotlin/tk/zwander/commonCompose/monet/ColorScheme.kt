@@ -5,8 +5,10 @@ package tk.zwander.commonCompose.monet
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.colorspace.ColorSpaces
 import androidx.compose.ui.graphics.toArgb
 import kotlin.math.absoluteValue
+import kotlin.math.pow
 import kotlin.math.roundToInt
 
 const val ACCENT1_CHROMA = 48.0f
@@ -310,8 +312,16 @@ class ColorScheme(
                 inverseSurface = getColor(Type.Neutral, 1, 100),
                 inverseOnSurface = getColor(Type.Neutral, 1, 800),
                 outline = getColor(Type.Neutral, 2, 400),
+                surfaceContainerLowest = getColor(Type.Neutral, 2, 600),
+                surfaceContainer = getColor(Type.Neutral, 2, 600).setLuminance(4f),
+                surfaceContainerLow = getColor(Type.Neutral, 2, 900),
+                surfaceContainerHigh = getColor(Type.Neutral, 2, 600).setLuminance(17f),
                 outlineVariant = getColor(Type.Neutral, 2, 700),
-                scrim = getColor(Type.Neutral, 1, 1000),
+                scrim = getColor(Type.Neutral, 2, 1000),
+                surfaceBright = getColor(Type.Neutral, 2, 600).setLuminance(98f),
+                surfaceDim = getColor(Type.Neutral, 2, 600).setLuminance(6f),
+                surfaceTint = getColor(Type.Accent, 1, 200),
+                surfaceContainerHighest = getColor(Type.Neutral, 2, 600).setLuminance(22f),
             )
         } else {
             lightColorScheme(
@@ -337,10 +347,62 @@ class ColorScheme(
                 inverseSurface = getColor(Type.Neutral, 1, 800),
                 inverseOnSurface = getColor(Type.Neutral, 1, 50),
                 outline = getColor(Type.Neutral, 2, 500),
+                surfaceContainerLowest = getColor(Type.Neutral, 2, 0),
+                surfaceContainer = getColor(Type.Neutral, 2, 600).setLuminance(94f),
+                surfaceContainerLow = getColor(Type.Neutral, 2, 600).setLuminance(96f),
+                surfaceContainerHigh = getColor(Type.Neutral, 2, 600).setLuminance(92f),
                 outlineVariant = getColor(Type.Neutral, 2, 200),
-                scrim = getColor(Type.Neutral, 1, 1000),
+                scrim = getColor(Type.Neutral, 2, 1000),
+                surfaceBright = getColor(Type.Neutral, 2, 600).setLuminance(98f),
+                surfaceDim = getColor(Type.Neutral, 2, 600).setLuminance(87f),
+                surfaceTint = getColor(Type.Accent, 1, 600),
+                surfaceContainerHighest = getColor(Type.Neutral, 2, 100),
             )
         }
+    }
+
+    internal fun Color.setLuminance(newLuminance: Float): Color {
+        if ((newLuminance < 0.0001) or (newLuminance > 99.9999)) {
+            // aRGBFromLstar() from monet ColorUtil.java
+            val y = 100 * labInvf((newLuminance + 16) / 116)
+            val component = delinearized(y)
+            return Color(
+                /* red = */ component,
+                /* green = */ component,
+                /* blue = */ component,
+            )
+        }
+
+        val sLAB = this.convert(ColorSpaces.CieLab)
+        return Color(
+            /* luminance = */ newLuminance,
+            /* a = */ sLAB.component2(),
+            /* b = */ sLAB.component3(),
+            colorSpace = ColorSpaces.CieLab
+        )
+            .convert(ColorSpaces.Srgb)
+    }
+
+    private fun labInvf(ft: Float): Float {
+        val e = 216f / 24389f
+        val kappa = 24389f / 27f
+        val ft3 = ft * ft * ft
+        return if (ft3 > e) {
+            ft3
+        } else {
+            (116 * ft - 16) / kappa
+        }
+    }
+
+    private fun delinearized(rgbComponent: Float): Int {
+        val normalized = rgbComponent / 100
+        val delinearized =
+            if (normalized <= 0.0031308) {
+                normalized * 12.92
+            } else {
+                1.055 * normalized.toDouble().pow(1.0 / 2.4) - 0.055
+            }
+        return (delinearized * 255.0).roundToInt().coerceAtLeast(0).coerceAtMost(255)
     }
 
     companion object {
