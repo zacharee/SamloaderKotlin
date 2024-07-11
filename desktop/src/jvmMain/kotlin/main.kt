@@ -45,7 +45,6 @@ import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Desktop
 import java.awt.Dimension
 import java.awt.Window
-import java.awt.desktop.AboutHandler
 import java.awt.event.WindowEvent
 import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
@@ -99,14 +98,12 @@ fun main() {
             val iconPainter = painterResource(MR.images.icon_rounded)
 
             DisposableEffect(null) {
-                val aboutHandler = AboutHandler {
-                    scope.launch {
-                        pagerState.animateScrollToPage(Page.SettingsAbout)
-                    }
-                }
-
                 if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT)) {
-                    Desktop.getDesktop().setAboutHandler(aboutHandler)
+                    Desktop.getDesktop().setAboutHandler {
+                        scope.launch {
+                            pagerState.animateScrollToPage(Page.SettingsAbout)
+                        }
+                    }
                 }
 
                 onDispose {
