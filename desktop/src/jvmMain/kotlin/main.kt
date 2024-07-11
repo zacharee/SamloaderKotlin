@@ -1,7 +1,9 @@
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
@@ -20,6 +22,7 @@ import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.sun.jna.ptr.IntByReference
 import dev.icerock.moko.resources.compose.painterResource
 import korlibs.platform.Platform
+import kotlinx.coroutines.launch
 import tk.zwander.common.EventDelegate
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.BifrostSettings
@@ -34,11 +37,15 @@ import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.rememberThemeInfo
 import tk.zwander.commonCompose.util.toAwtColor
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
+import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.MacMenuBar
+import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.commonCompose.view.keyCodeHandler
 import tk.zwander.samloaderkotlin.resources.MR
+import java.awt.Desktop
 import java.awt.Dimension
 import java.awt.Window
+import java.awt.desktop.AboutHandler
 import java.awt.event.WindowEvent
 import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
@@ -79,7 +86,9 @@ fun main() {
         ) {
             val mainWindowState = rememberWindowState()
             val themeInfo = rememberThemeInfo()
+            val scope = rememberCoroutineScope()
             val density = LocalDensity.current
+            val pagerState = LocalPagerState.current
             val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
 
             val captionColor =
@@ -88,6 +97,20 @@ fun main() {
                 if (useMicaEffect) Color.Unspecified else themeInfo.colors.background
 
             val iconPainter = painterResource(MR.images.icon_rounded)
+
+            DisposableEffect(null) {
+                val aboutHandler = AboutHandler {
+                    scope.launch {
+                        pagerState.animateScrollToPage(Page.SettingsAbout)
+                    }
+                }
+
+                Desktop.getDesktop().setAboutHandler(aboutHandler)
+
+                onDispose {
+                    Desktop.getDesktop().setAboutHandler(null)
+                }
+            }
 
             NativeLookWindow(
                 onCloseRequest = ::exitApplication,

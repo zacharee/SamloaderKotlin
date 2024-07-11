@@ -21,21 +21,21 @@ fun FrameWindowScope.MacMenuBar(
     if (Platform.isMac) {
         MenuBar {
             Menu(
-                text = stringResource(MR.strings.window)
+                text = stringResource(MR.strings.window),
             ) {
                 Item(
                     text = stringResource(MR.strings.minimize),
                     onClick = {
                         mainWindowState.isMinimized = true
                     },
-                    shortcut = KeyShortcut(Key.M, meta = true)
+                    shortcut = KeyShortcut(Key.M, meta = true),
                 )
 
                 Item(
                     text = stringResource(MR.strings.zoom),
                     onClick = {
                         mainWindowState.placement = WindowPlacement.Maximized
-                    }
+                    },
                 )
 
                 Item(
@@ -43,32 +43,32 @@ fun FrameWindowScope.MacMenuBar(
                     onClick = {
                         applicationScope.exitApplication()
                     },
-                    shortcut = KeyShortcut(Key.W, meta = true)
+                    shortcut = KeyShortcut(Key.W, meta = true),
                 )
             }
 
             Menu(
-                text = stringResource(MR.strings.help)
+                text = stringResource(MR.strings.help),
             ) {
                 Item(
                     text = stringResource(MR.strings.github),
                     onClick = {
                         UrlHandler.launchUrl("https://github.com/zacharee/SamloaderKotlin")
-                    }
+                    },
                 )
 
                 Item(
                     text = stringResource(MR.strings.mastodon),
                     onClick = {
                         UrlHandler.launchUrl("https://androiddev.social/@wander1236")
-                    }
+                    },
                 )
 
                 Item(
                     text = stringResource(MR.strings.patreon),
                     onClick = {
                         UrlHandler.launchUrl("https://patreon.com/zacharywander")
-                    }
+                    },
                 )
             }
         }

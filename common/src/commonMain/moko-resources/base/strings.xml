@@ -245,4 +245,7 @@
 
     <!-- Detailed explanation for the decryption key text field on the Decrypter page. -->
     <string name="decryption_key_help">If you know the decryption key for the file you're trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung's servers.</string>
+
+    <!-- Action to show info about Bifrost -->
+    <string name="about_bifrost">About Bifrost</string>
 </resources>
