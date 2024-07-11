@@ -105,10 +105,14 @@ fun main() {
                     }
                 }
 
-                Desktop.getDesktop().setAboutHandler(aboutHandler)
+                if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT)) {
+                    Desktop.getDesktop().setAboutHandler(aboutHandler)
+                }
 
                 onDispose {
-                    Desktop.getDesktop().setAboutHandler(null)
+                    if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT)) {
+                        Desktop.getDesktop().setAboutHandler(null)
+                    }
                 }
             }
 
