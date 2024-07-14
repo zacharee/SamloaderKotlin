@@ -1,3 +1,9 @@
+# 1.18.13
+- UI tweaks.
+- Update Compose.
+- Add more TACs.
+- Add "About Bifrost" handler on macOS so it doesn't show the default Java window.
+
 # 1.18.12
 - Disable console window on Windows.
 - UI tweaks.
