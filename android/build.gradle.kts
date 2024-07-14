@@ -1,9 +1,9 @@
 plugins {
-    alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
+    alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.moko.resources)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.moko.resources)
 }
 
 group = rootProject.extra["groupName"].toString()

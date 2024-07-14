@@ -3,14 +3,14 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.bugsnag.gradle)
     alias(libs.plugins.buildkonfig)
-    alias(libs.plugins.moko.resources)
+    alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.atomicfu)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.bugsnag.gradle)
-    alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.moko.resources)
 }
 
 
@@ -60,35 +60,27 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(compose.runtime)
                 api(compose.foundation)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 api(compose.material3)
+                api(compose.runtime)
                 api(compose.ui)
                 api(libs.compose.material.icons.core)
-
-                api(libs.kotlin)
-                api(libs.kotlin.reflect)
-                api(libs.kotlinx.coroutines)
-                api(libs.kotlinx.serialization.json)
-                api(libs.kotlinx.datetime)
-
                 api(libs.korlibs.io)
                 api(libs.korlibs.platform)
                 api(libs.korlibs.serialization.csv)
-
+                api(libs.kotlin)
+                api(libs.kotlin.reflect)
+                api(libs.kotlinx.coroutines)
+                api(libs.kotlinx.datetime)
+                api(libs.kotlinx.serialization.json)
+                api(libs.ksoup)
                 api(libs.ktor.client.auth)
                 api(libs.ktor.client.core)
-
-                api(libs.multiplatformSettings)
-                api(libs.multiplatformSettings.noArg)
-
                 api(libs.moko.resources)
                 api(libs.moko.resources.compose)
-
-                api(libs.ksoup)
+                api(libs.multiplatformSettings)
+                api(libs.multiplatformSettings.noArg)
                 api(libs.okio)
-
                 api(libs.richeditor.compose)
             }
         }
@@ -110,18 +102,16 @@ kotlin {
             dependsOn(skiaMain)
 
             dependencies {
-                api(libs.flatlaf)
+                api(compose.desktop.currentOs)
                 api(libs.bugsnag.jvm)
-                api(libs.slf4j)
-                api(libs.oshi.core)
-                api(libs.window.styler)
-                api(libs.kotlinx.coroutines.swing)
+                api(libs.flatlaf)
                 api(libs.jna)
                 api(libs.jna.platform)
-
                 api(libs.jsystemthemedetector)
-
-                api(compose.desktop.currentOs)
+                api(libs.kotlinx.coroutines.swing)
+                api(libs.oshi.core)
+                api(libs.slf4j)
+                api(libs.window.styler)
             }
         }
 
@@ -129,16 +119,13 @@ kotlin {
             dependsOn(androidAndJvmMain)
 
             dependencies {
-                api(libs.kotlinx.coroutines.android)
-
                 api(libs.androidx.activity.compose)
                 api(libs.androidx.core.ktx)
                 api(libs.androidx.documentfile)
                 api(libs.androidx.preference.ktx)
-
-                api(libs.google.material)
-
                 api(libs.bugsnag.android)
+                api(libs.google.material)
+                api(libs.kotlinx.coroutines.android)
             }
         }
     }
