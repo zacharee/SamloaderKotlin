@@ -1,8 +1,7 @@
 val versionCode by extra(72)
 val versionName by extra("1.18.13")
 
-val compileSdk by extra(35)
-val compileSdkPreview by extra("VanillaIceCream")
+val compileSdk by extra(34)
 val targetSdk by extra(34)
 val minSdk by extra(24)
 
