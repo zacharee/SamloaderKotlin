@@ -15,7 +15,8 @@ flatlaf = "3.4.1"
 google-material = "1.13.0-alpha04"
 jna = "5.14.0"
 jsystemthemedetector = "7dde337429"
-korlibs = "6.0.0-alpha2"
+korlibs = "6.0.0-alpha9"
+korlibs-csv = "6.0.0-alpha2"
 kotlin = "2.0.20-Beta2"
 kotlinx-coroutines = "1.9.0-RC"
 kotlinx-datetime = "0.6.0"
@@ -46,7 +47,7 @@ jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 jsystemthemedetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 korlibs-io = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
 korlibs-platform = { module = "com.soywiz:korlibs-platform", version.ref = "korlibs" }
-korlibs-serialization-csv = { module = "com.soywiz:korlibs-serialization-csv", version.ref = "korlibs" }
+korlibs-serialization-csv = { module = "com.soywiz:korlibs-serialization-csv", version.ref = "korlibs-csv" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
