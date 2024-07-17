@@ -138,4 +138,5 @@
     <string name="github" translatable="false">GitHub</string>
     <string name="patreon" translatable="false">Patreon</string>
     <string name="mastodon" translatable="false">Mastodon</string>
+    <string name="about_bifrost">About Bifrost</string>
 </resources>

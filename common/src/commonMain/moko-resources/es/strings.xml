@@ -138,4 +138,5 @@
     <string name="decryption_key_help">Si conoce la clave de descifrado del archivo que intenta descifrar, puede introducirla aquí. De lo contrario, déjelo en blanco y Bifrost recuperará la clave de los servidores de Samsung.</string>
     <string name="enable_offline_decryption">Descifrar sin conexión</string>
     <string name="app_name" translatable="false">Bifrost</string>
+    <string name="about_bifrost">About Bifrost</string>
 </resources>

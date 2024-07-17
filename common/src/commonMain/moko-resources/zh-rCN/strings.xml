@@ -138,4 +138,5 @@
     <string name="decryption_key_help">如果您知道文件的解密密钥，则可以在此处输入。否则请将其留空，Bifrost 将从三星的服务器中取回密钥。</string>
     <string name="enable_offline_decryption">离线解密</string>
     <string name="app_name" translatable="false">Bifrost</string>
+    <string name="about_bifrost">About Bifrost</string>
 </resources>
