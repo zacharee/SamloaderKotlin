@@ -137,4 +137,5 @@
     <string name="github" translatable="false">GitHub</string>
     <string name="mastodon" translatable="false">Mastodon</string>
     <string name="zacharyWander" translatable="false">Zachary Wander</string>
+    <string name="about_bifrost">About Bifrost</string>
 </resources>
