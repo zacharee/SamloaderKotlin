@@ -138,4 +138,5 @@
     <string name="samloader" translatable="false">Samloader</string>
     <string name="zacharyWander" translatable="false">Zachary Wander</string>
     <string name="app_name" translatable="false">Bifrost</string>
+    <string name="about_bifrost">About Bifrost</string>
 </resources>
