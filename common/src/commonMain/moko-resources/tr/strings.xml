@@ -138,4 +138,5 @@
     <string name="decryption_key_help">Şifresini çözmeye çalıştığınız dosyanın şifre çözme anahtarını biliyorsanız, buraya girebilirsiniz. Yoksa boş bırakın ve Bifrost anahtarı Samsung'un sunucularından alacaktır.</string>
     <string name="enable_offline_decryption">Çevrim Dışı Şifre Çözme</string>
     <string name="app_name" translatable="false">Bifrost</string>
+    <string name="about_bifrost">About Bifrost</string>
 </resources>
