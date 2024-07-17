@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="about">About</string>
     <string name="about_bifrost">About Bifrost</string>
@@ -125,4 +125,5 @@
     <string name="yes">Yes</string>
     <string name="zacharyWander" translatable="false">Zachary Wander</string>
     <string name="zoom">Zoom</string>
+    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
 </resources>
