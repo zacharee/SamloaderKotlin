@@ -138,4 +138,5 @@
     <string name="decryption_key_help">If you know the decryption key for the file you're trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung's servers।</string>
     <string name="enable_offline_decryption">Offline Decryption</string>
     <string name="app_name" translatable="false">Bifrost</string>
+    <string name="about_bifrost">About Bifrost</string>
 </resources>
