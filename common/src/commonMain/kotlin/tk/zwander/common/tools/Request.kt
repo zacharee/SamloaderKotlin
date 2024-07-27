@@ -3,7 +3,6 @@ package tk.zwander.common.tools
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
 import io.ktor.utils.io.core.*
-import io.ktor.utils.io.core.internal.*
 import korlibs.crypto.MD5
 import korlibs.io.serialization.xml.buildXml
 import kotlinx.coroutines.CancellationException
@@ -27,7 +26,6 @@ import kotlin.time.ExperimentalTime
 /**
  * Handle some requests to Samsung's servers.
  */
-@OptIn(DangerousInternalIoApi::class)
 object Request {
     /**
      * Generate a logic-check for a given input.

@@ -1,6 +1,5 @@
 package tk.zwander.common.tools
 
-import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import io.ktor.utils.io.core.toByteArray
 import korlibs.crypto.AES
 import korlibs.crypto.CipherPadding
@@ -20,7 +19,6 @@ import kotlin.time.ExperimentalTime
 /**
  * Handle encryption and decryption stuff.
  */
-@DangerousInternalIoApi
 @ExperimentalTime
 object CryptUtils {
     /**

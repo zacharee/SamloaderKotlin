@@ -1,6 +1,5 @@
 package tk.zwander.common.tools.delegates
 
-import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import io.ktor.utils.io.core.toByteArray
 import korlibs.crypto.MD5
 import tk.zwander.common.data.DecryptFileInfo
@@ -14,7 +13,7 @@ import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.time.ExperimentalTime
 
 object Decrypter {
-    @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
+    @OptIn(ExperimentalTime::class)
     suspend fun onDecrypt(model: DecryptModel) {
         eventManager.sendEvent(Event.Decrypt.Start)
         val info = model.fileToDecrypt.value!!

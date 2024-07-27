@@ -1,6 +1,5 @@
 package tk.zwander.common.tools.delegates
 
-import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -75,7 +74,7 @@ object Downloader {
         }
     }
 
-    @OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
+    @OptIn(ExperimentalTime::class)
     private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel) {
         try {
             val (path, fileName, size, crc32, v4Key) = info

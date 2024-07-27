@@ -45,7 +45,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.ColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
@@ -71,7 +70,6 @@ import kotlin.time.ExperimentalTime
 /**
  * The Downloader View.
  */
-@DangerousInternalIoApi
 @ExperimentalTime
 @Composable
 internal fun DownloadView() {

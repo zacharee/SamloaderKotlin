@@ -1,4 +1,4 @@
-@file:OptIn(DangerousInternalIoApi::class, ExperimentalTime::class)
+@file:OptIn(ExperimentalTime::class)
 
 package tk.zwander.commonCompose.view.components
 
@@ -29,7 +29,6 @@ import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import io.ktor.utils.io.core.internal.DangerousInternalIoApi
 import tk.zwander.commonCompose.view.LocalUseMicaEffect
 import tk.zwander.commonCompose.view.pages.DecryptView
 import tk.zwander.commonCompose.view.pages.DownloadView
