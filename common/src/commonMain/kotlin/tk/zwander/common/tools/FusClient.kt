@@ -3,7 +3,7 @@
 package tk.zwander.common.tools
 
 import com.fleeksoft.ksoup.Ksoup
-import io.ktor.client.plugins.HttpTimeoutConfig
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.headers
 import io.ktor.client.request.prepareRequest
@@ -15,8 +15,8 @@ import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.utils.io.copyTo
 import io.ktor.utils.io.core.toByteArray
+import io.ktor.utils.io.jvm.nio.copyTo
 import okio.BufferedSink
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.firstElementByTagName
@@ -141,9 +141,9 @@ object FusClient {
                 }
             }
             timeout {
-                this.requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                this.socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                this.connectTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                this.requestTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
+                this.socketTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
+                this.connectTimeoutMillis = HttpTimeout.INFINITE_TIMEOUT_MS
             }
         }
 
