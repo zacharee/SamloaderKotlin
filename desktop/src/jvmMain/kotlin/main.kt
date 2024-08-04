@@ -23,6 +23,7 @@ import com.sun.jna.ptr.IntByReference
 import dev.icerock.moko.resources.compose.painterResource
 import korlibs.platform.Platform
 import kotlinx.coroutines.launch
+import org.jetbrains.skia.DirectContext
 import tk.zwander.common.EventDelegate
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.BifrostSettings
@@ -74,6 +75,16 @@ fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
+
+if (Platform.isLinux) {
+    try {
+        DirectContext.makeGL().flush()
+            .close()
+    } catch (e: Throwable) {
+        BugsnagUtils.notify(IllegalStateException("Unable to flush OpenGL context, using software rendering.", e))
+        System.setProperty("skiko.renderApi", "SOFTWARE")
+    }
+}
 
     EventDelegate.create()
 
