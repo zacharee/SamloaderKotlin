@@ -1,3 +1,8 @@
+# 1.18.14
+- Work around an issue causing the app to crash on Raspberry Pis on launch.
+- Update translations.
+- Update dependencies.
+
 # 1.18.13
 - UI tweaks.
 - Update Compose.
