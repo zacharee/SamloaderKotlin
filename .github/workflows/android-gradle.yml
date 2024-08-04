@@ -25,8 +25,7 @@ jobs:
       uses: pozetroninc/github-action-get-latest-release@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        owner: zacharee
-        repo: SamloaderKotlin
+        repository: ${{ github.repository }}
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 #    - name: Cache Gradle and Build

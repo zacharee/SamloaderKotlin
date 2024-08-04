@@ -27,8 +27,7 @@ jobs:
         uses: pozetroninc/github-action-get-latest-release@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          owner: zacharee
-          repo: SamloaderKotlin
+          repository: ${{ github.repository }}
 
       - name: Retrieve macOS Certificate
         env:
