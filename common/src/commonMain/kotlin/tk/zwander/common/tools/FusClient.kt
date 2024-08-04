@@ -15,7 +15,7 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.utils.io.*
-import io.ktor.utils.io.core.toByteArray
+import io.ktor.utils.io.core.*
 import kotlinx.io.Sink
 import kotlinx.io.asByteChannel
 import tk.zwander.common.util.globalHttpClient
@@ -119,6 +119,7 @@ object FusClient {
      * @param fileName the name of the file to download.
      * @param start an optional offset. Used for resuming downloads.
      */
+    @OptIn(InternalAPI::class)
     suspend fun downloadFile(
         fileName: String,
         start: Long = 0,
@@ -155,6 +156,7 @@ object FusClient {
                 size = size,
                 progressCallback = progressCallback,
                 operation = {
+                    channel.awaitContent(min = minOf(1024 * 256L, channel.readBuffer.remaining).toInt())
                     channel.copyTo(output.asByteChannel(), 1024 * 256L)
                 },
                 progressOffset = outputSize,

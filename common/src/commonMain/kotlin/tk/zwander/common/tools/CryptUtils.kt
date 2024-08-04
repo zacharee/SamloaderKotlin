@@ -209,7 +209,7 @@ object CryptUtils {
             progressCallback = progressCallback,
             operation = {
                 val buffer = ByteArray(DEFAULT_CHUNK_SIZE)
-                val len = enc.readAvailable(buffer, 0, buffer.size)
+                val len = enc.readAtMostTo(buffer, 0, buffer.size)
 
                 if (len > 0) {
                     crcVal = CRC32.update(crcVal, buffer, 0, len)

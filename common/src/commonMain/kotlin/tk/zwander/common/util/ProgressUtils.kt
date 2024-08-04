@@ -1,6 +1,5 @@
 package tk.zwander.common.util
 
-import io.ktor.utils.io.core.*
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +32,7 @@ suspend fun streamOperationWithProgress(
         size = size,
         progressCallback = progressCallback,
         operation = {
-            val len = input.readAvailable(buffer, 0, buffer.size)
+            val len = input.readAtMostTo(buffer, 0, buffer.size)
 
             if (len > 0) {
                 val exactData = if (len == buffer.size) {
