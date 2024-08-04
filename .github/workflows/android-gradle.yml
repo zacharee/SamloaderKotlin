@@ -15,11 +15,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 18
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        distribution: 'zulu'
-        java-version: '18'
+        distribution: 'corretto'
+        java-version: '21'
     - name: Get Latest Release
       id: release
       uses: InsonusK/get-latest-release@v1.1.0
