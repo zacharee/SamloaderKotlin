@@ -22,10 +22,11 @@ jobs:
         java-version: '21'
     - name: Get Latest Release
       id: release
-      uses: InsonusK/get-latest-release@v1.1.0
+      uses: pozetroninc/github-action-get-latest-release@master
       with:
-        myToken: ${{ secrets.GITHUB_TOKEN }}
-        view_top: 1
+        token: ${{ secrets.GITHUB_TOKEN }}
+        owner: zacharee
+        repo: SamloaderKotlin
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 #    - name: Cache Gradle and Build
@@ -60,7 +61,7 @@ jobs:
         echo Last build tool version is: $BUILD_TOOL_VERSION
     - name: Sign APK
       id: sign_apk
-      uses: r0adkll/sign-android-release@v1
+      uses: filippoLeporati93/android-release-signer@v1
       with:
         releaseDirectory: android/build/outputs/apk/release
         signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
@@ -70,19 +71,19 @@ jobs:
       env:
         BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
     - name: Rename APK
-      run: mv ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{ github.workspace }}/android/build/outputs/apk/release/bifrost_android_${{ steps.release.outputs.tag_name }}.apk
+      run: mv ${{ steps.sign_apk.outputs.signedReleaseFile }} ${{ github.workspace }}/android/build/outputs/apk/release/bifrost_android_${{ steps.release.outputs.release }}.apk
     - name: Upload APK
       if: ${{ always() }}
       uses: actions/upload-artifact@v4
       with:
         name: Bifrost
-        path: ${{ github.workspace }}/android/build/outputs/apk/release/bifrost_android_${{ steps.release.outputs.tag_name }}.apk
+        path: ${{ github.workspace }}/android/build/outputs/apk/release/bifrost_android_${{ steps.release.outputs.release }}.apk
     - name: Upload Release APK
       uses: ncipollo/release-action@v1
       with:
-        artifacts: ${{ github.workspace }}/android/build/outputs/apk/release/bifrost_android_${{ steps.release.outputs.tag_name }}.apk
+        artifacts: ${{ github.workspace }}/android/build/outputs/apk/release/bifrost_android_${{ steps.release.outputs.release }}.apk
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: true
         replacesArtifacts: false
         omitBodyDuringUpdate: true
-        tag: ${{ steps.release.outputs.tag_name }}
+        tag: ${{ steps.release.outputs.release }}

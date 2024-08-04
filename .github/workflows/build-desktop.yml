@@ -24,10 +24,11 @@ jobs:
 
       - name: Get Latest Release
         id: release
-        uses: InsonusK/get-latest-release@v1.0.1
+        uses: pozetroninc/github-action-get-latest-release@master
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          view_top: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: zacharee
+          repo: SamloaderKotlin
 
       - name: Retrieve macOS Certificate
         env:
@@ -86,4 +87,4 @@ jobs:
           allowUpdates: true
           replacesArtifacts: false
           omitBodyDuringUpdate: true
-          tag: ${{ steps.release.outputs.tag_name }}
+          tag: ${{ steps.release.outputs.release }}
