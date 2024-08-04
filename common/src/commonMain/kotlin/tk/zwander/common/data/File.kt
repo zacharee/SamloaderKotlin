@@ -1,7 +1,7 @@
 package tk.zwander.common.data
 
-import okio.BufferedSink
-import okio.BufferedSource
+import kotlinx.io.Sink
+import kotlinx.io.Source
 
 /**
  * Platforms should actuate this class to implement
@@ -58,8 +58,8 @@ expect open class PlatformFile : IPlatformFile {
     override suspend fun setExecutable(executable: Boolean): Boolean
     override suspend fun canExecute(): Boolean
 
-    override suspend fun openOutputStream(append: Boolean): BufferedSink?
-    override suspend fun openInputStream(): BufferedSource?
+    override suspend fun openOutputStream(append: Boolean): Sink?
+    override suspend fun openInputStream(): Source?
 
     override fun hashCode(): Int
     override fun equals(other: Any?): Boolean
@@ -127,8 +127,8 @@ interface IPlatformFile : Comparable<IPlatformFile> {
     suspend fun setExecutable(executable: Boolean): Boolean
     suspend fun canExecute(): Boolean
 
-    suspend fun openOutputStream(append: Boolean = false): BufferedSink?
-    suspend fun openInputStream(): BufferedSource?
+    suspend fun openOutputStream(append: Boolean = false): Sink?
+    suspend fun openInputStream(): Source?
 
     override fun hashCode(): Int
     override fun equals(other: Any?): Boolean

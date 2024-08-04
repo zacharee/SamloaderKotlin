@@ -1,14 +1,14 @@
 package tk.zwander.common.tools
 
-import io.ktor.utils.io.core.toByteArray
+import io.ktor.utils.io.core.*
 import korlibs.crypto.AES
 import korlibs.crypto.CipherPadding
 import korlibs.crypto.MD5
 import korlibs.io.util.checksum.CRC32
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okio.BufferedSink
-import okio.BufferedSource
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import tk.zwander.common.util.DEFAULT_CHUNK_SIZE
 import tk.zwander.common.util.streamOperationWithProgress
 import tk.zwander.common.util.trackOperationProgress
@@ -169,8 +169,8 @@ object CryptUtils {
      * @param progressCallback a callback to keep track of the progress.
      */
     suspend fun decryptProgress(
-        inf: BufferedSource,
-        outf: BufferedSink,
+        inf: Source,
+        outf: Sink,
         key: ByteArray,
         length: Long,
         chunkSize: Int = DEFAULT_CHUNK_SIZE,
@@ -197,7 +197,7 @@ object CryptUtils {
      * @return true if the file's CRC32 matches the expected value.
      */
     suspend fun checkCrc32(
-        enc: BufferedSource,
+        enc: Source,
         encSize: Long,
         expected: Long,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit
@@ -209,7 +209,7 @@ object CryptUtils {
             progressCallback = progressCallback,
             operation = {
                 val buffer = ByteArray(DEFAULT_CHUNK_SIZE)
-                val len = enc.read(buffer, 0, buffer.size)
+                val len = enc.readAvailable(buffer, 0, buffer.size)
 
                 if (len > 0) {
                     crcVal = CRC32.update(crcVal, buffer, 0, len)
@@ -243,7 +243,7 @@ object CryptUtils {
      * @param updateFile the file to check.
      * @return true if the hashes match.
      */
-    suspend fun checkMD5(md5: String, updateFile: BufferedSource?): Boolean {
+    suspend fun checkMD5(md5: String, updateFile: Source?): Boolean {
         if (md5.isBlank() || updateFile == null) {
             return false
         }
@@ -258,12 +258,12 @@ object CryptUtils {
      * @param updateFile the file used to calculate.
      * @return the MD5 hash.
      */
-    private suspend fun calculateMD5(updateFile: BufferedSource): String? {
+    private suspend fun calculateMD5(updateFile: Source): String? {
         val md5 = MD5.create()
         val buffer = ByteArray(8192)
         var read: Int
         return try {
-            while (updateFile.read(buffer, 0, buffer.size).also { read = it } > 0) {
+            while (updateFile.readAvailable(buffer, 0, buffer.size).also { read = it } > 0) {
                 md5.update(buffer, 0, read)
             }
             val hex = md5.digest().hex

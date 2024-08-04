@@ -79,7 +79,6 @@ kotlin {
                 api(libs.moko.resources.compose)
                 api(libs.multiplatformSettings)
                 api(libs.multiplatformSettings.noArg)
-                api(libs.okio)
                 api(libs.richeditor.compose)
             }
         }

@@ -4,11 +4,9 @@ package tk.zwander.common.data
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okio.BufferedSink
-import okio.BufferedSource
-import okio.buffer
-import okio.sink
-import okio.source
+import kotlinx.io.*
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 /**
  * A File implementation that wraps Java's File class.
@@ -156,15 +154,15 @@ actual open class PlatformFile : IPlatformFile {
         return wrappedFile.canExecute()
     }
 
-    actual override suspend fun openOutputStream(append: Boolean): BufferedSink? {
+    actual override suspend fun openOutputStream(append: Boolean): Sink? {
         return withContext(Dispatchers.IO) {
-            wrappedFile.sink(append).buffer()
+            FileOutputStream(wrappedFile, append).asSink().buffered()
         }
     }
 
-    actual override suspend fun openInputStream(): BufferedSource? {
+    actual override suspend fun openInputStream(): Source? {
         return withContext(Dispatchers.IO) {
-            wrappedFile.source().buffer()
+            FileInputStream(wrappedFile).asSource().buffered()
         }
     }
 

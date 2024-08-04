@@ -16,7 +16,8 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.utils.io.*
 import io.ktor.utils.io.core.toByteArray
-import okio.BufferedSink
+import kotlinx.io.Sink
+import kotlinx.io.asByteChannel
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.trackOperationProgress
@@ -122,7 +123,7 @@ object FusClient {
         fileName: String,
         start: Long = 0,
         size: Long,
-        output: BufferedSink,
+        output: Sink,
         outputSize: Long,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ): String? {
@@ -154,7 +155,7 @@ object FusClient {
                 size = size,
                 progressCallback = progressCallback,
                 operation = {
-                    channel.copyTo(output, 1024 * 256L)
+                    channel.copyTo(output.asByteChannel(), 1024 * 256L)
                 },
                 progressOffset = outputSize,
                 condition = { !channel.isClosedForRead },

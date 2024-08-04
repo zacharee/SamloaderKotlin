@@ -24,7 +24,6 @@ ksoup = "0.1.2"
 ktor = "3.0.0-rc-1-eap-993"
 moko-resources = "0.24.1"
 multiplatform-settings = "1.1.1"
-okio = "3.9.0"
 oshi = "6.6.2"
 richeditorCompose = "1.0.0-rc05-k2"
 slf4j = "2.1.0-alpha1"
@@ -61,7 +60,6 @@ moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-re
 moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
 multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
-okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }

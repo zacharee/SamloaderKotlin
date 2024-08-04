@@ -1,5 +1,6 @@
 package tk.zwander.common.util
 
+import io.ktor.utils.io.core.*
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -10,16 +11,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import okio.BufferedSink
-import okio.BufferedSource
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.measureTimedValue
 
 const val DEFAULT_CHUNK_SIZE = 1024 * 512
 
 suspend fun streamOperationWithProgress(
-    input: BufferedSource,
-    output: BufferedSink,
+    input: Source,
+    output: Sink,
     size: Long,
     progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     operation: (suspend (buffer: ByteArray) -> ByteArray)? = null,
@@ -32,7 +33,7 @@ suspend fun streamOperationWithProgress(
         size = size,
         progressCallback = progressCallback,
         operation = {
-            val len = input.read(buffer, 0, buffer.size)
+            val len = input.readAvailable(buffer, 0, buffer.size)
 
             if (len > 0) {
                 val exactData = if (len == buffer.size) {
