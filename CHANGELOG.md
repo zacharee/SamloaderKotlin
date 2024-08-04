@@ -1,3 +1,8 @@
+# 1.18.15
+- Fix launching on Windows inside non-ASCII paths by updating to Java 21.
+- Reduce CPU usage when downloading firmware.
+- Update dependencies.
+
 # 1.18.14
 - Work around an issue causing the app to crash on Raspberry Pis on launch.
 - Update translations.
