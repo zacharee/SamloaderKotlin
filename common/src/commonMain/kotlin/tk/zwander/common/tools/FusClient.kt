@@ -156,6 +156,8 @@ object FusClient {
                 size = size,
                 progressCallback = progressCallback,
                 operation = {
+                    // awaitContent() should prevent unnecessary looping by making sure there are actually 1024 * 256
+                    // bytes available to read.
                     channel.awaitContent(min = minOf(1024 * 256L, channel.readBuffer.remaining).toInt())
                     channel.copyTo(output.asByteChannel(), 1024 * 256L)
                 },
