@@ -4,6 +4,7 @@ import com.bugsnag.Bugsnag
 import com.bugsnag.CustomReport
 import com.bugsnag.Report
 import com.bugsnag.Severity
+import oshi.SystemInfo
 import tk.zwander.common.GradleConfig
 import java.lang.reflect.Proxy
 import java.util.UUID
@@ -18,6 +19,7 @@ data class Breadcrumb(
 @Suppress("MemberVisibilityCanBePrivate")
 actual object BugsnagUtils {
     val bugsnag by lazy { Bugsnag(GradleConfig.bugsnagJvmApiKey) }
+    val oshiSystemInfo by lazy { SystemInfo() }
 
     private val breadcrumbs = LinkedHashMap<Long, Breadcrumb>()
 
@@ -31,6 +33,14 @@ actual object BugsnagUtils {
         bugsnag.setAppVersion(GradleConfig.versionName)
         bugsnag.addCallback {
             it.setUserId(uuid)
+            it.addToTab("device", "manufacturer", oshiSystemInfo.hardware.computerSystem.manufacturer)
+            it.addToTab("device", "model", oshiSystemInfo.hardware.computerSystem.model)
+            it.addToTab("device", "memory", oshiSystemInfo.hardware.memory.total)
+            it.addToTab("device", "motherboard", oshiSystemInfo.hardware.computerSystem.baseboard.model)
+            it.addToTab("device", "firmwareVersion", oshiSystemInfo.hardware.computerSystem.firmware.version)
+            it.addToTab("device", "processorModel", oshiSystemInfo.hardware.processor.processorIdentifier.model)
+            it.addToTab("device", "processorFamily", oshiSystemInfo.hardware.processor.processorIdentifier.family)
+            it.addToTab("device", "processorName", oshiSystemInfo.hardware.processor.processorIdentifier.name)
             it.addToTab("app", "version_code", GradleConfig.versionCode)
             it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
         }
