@@ -104,8 +104,6 @@ internal fun HistoryItem(
                     }
                 }
 
-                Spacer(Modifier.height(8.dp))
-
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
