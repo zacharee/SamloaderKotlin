@@ -80,6 +80,7 @@ kotlin {
                 api(libs.multiplatformSettings)
                 api(libs.multiplatformSettings.noArg)
                 api(libs.richeditor.compose)
+                api(libs.semver)
             }
         }
 
@@ -110,6 +111,7 @@ kotlin {
                 api(libs.oshi.core)
                 api(libs.slf4j)
                 api(libs.window.styler)
+                api(libs.conveyor.control)
             }
         }
 
@@ -124,6 +126,7 @@ kotlin {
                 api(libs.bugsnag.android)
                 api(libs.google.material)
                 api(libs.kotlinx.coroutines.android)
+                api(libs.github.api)
             }
         }
     }

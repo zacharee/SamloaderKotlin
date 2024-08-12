@@ -10,8 +10,10 @@ bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.7.0-dev1756"
 conveyor = "1.10"
+conveyor-control = "1.1"
 desugar_jdk_libs = "2.0.4"
 flatlaf = "3.5.1"
+githubApi = "1.323"
 google-material = "1.13.0-alpha05"
 jna = "5.14.0"
 jsystemthemedetector = "7dde337429"
@@ -26,6 +28,7 @@ moko-resources = "0.24.1"
 multiplatform-settings = "1.1.1"
 oshi = "6.6.2"
 richeditorCompose = "1.0.0-rc05-k2"
+semver = "2.0.0"
 slf4j = "2.0.16"
 windowStyler = "cad9442ec3"
 
@@ -36,9 +39,11 @@ androidx-documentfile = { module = "androidx.documentfile:documentfile", version
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx-preference" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
-compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref="compose" }
+compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "compose" }
+conveyor-control = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref = "conveyor-control" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
+github-api = { module = "org.kohsuke:github-api", version.ref = "githubApi" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
@@ -62,6 +67,7 @@ multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", versi
 multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatform-settings" }
 oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
+semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 window-styler = { module = "com.github.zacharee.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }
 
