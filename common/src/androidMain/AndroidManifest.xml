@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name="tk.zwander.samsungfirmwaredownloader.App"
@@ -34,5 +35,15 @@
                 android:value="downloadProgress"
                 />
         </service>
+
+        <provider
+            android:authorities="tk.zwander.samsungfirmwaredownloader.fileprovider"
+            android:name="tk.zwander.samsungfirmwaredownloader.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 </manifest>

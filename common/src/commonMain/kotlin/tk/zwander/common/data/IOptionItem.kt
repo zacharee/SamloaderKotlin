@@ -1,5 +1,7 @@
 package tk.zwander.common.data
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import dev.icerock.moko.resources.StringResource
 import tk.zwander.common.util.SettingsKey
 
@@ -13,6 +15,13 @@ sealed interface IOptionItem {
         override val desc: StringResource?,
         override val listKey: String,
         val action: suspend () -> Unit,
+    ) : IOptionItem
+
+    data class LiteralOptionItem(
+        override val label: StringResource,
+        override val desc: StringResource?,
+        override val listKey: String,
+        val render: @Composable (Modifier) -> Unit,
     ) : IOptionItem
 
     sealed interface BasicOptionItem<T> : IOptionItem {
