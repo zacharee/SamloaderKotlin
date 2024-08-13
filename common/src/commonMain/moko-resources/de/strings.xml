@@ -137,6 +137,5 @@
     <string name="decryption_key_help">Wenn du einen Schlüssel zur Entschlüsselung der Datei hast, welche du gerade versuchst zu Entschlüsseln, kannst du diesen hier eingeben. Wenn du dieses Feld leer lässt, wird sich Bifrost den Schlüssel von Samsungs Servern holen.</string>
     <string name="enable_offline_decryption">Offline Entschlüsselung</string>
     <string name="enable_offline_decryption_desc">Wenn diese Option aktiviert wird, wird beim Herunterladen von Firmware eine extra Textdatei gespeichert, welche einen Schlüssel zur Entschlüsselung enthält, der von Samsung bereitgestellt wurde. Dieser Schlüssel kann in der Entschlüsselungsseite eingegeben werden, um Firmware ohne Internetverbindung zu Entschlüsseln.</string>
-    <string name="app_name" translatable="false">Bifrost</string>
     <string name="about_bifrost">About Bifrost</string>
 </resources>

@@ -137,6 +137,5 @@
     <string name="decryption_key">Decryption Key</string>
     <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect।</string>
     <string name="enable_offline_decryption">Offline Decryption</string>
-    <string name="app_name" translatable="false">Bifrost</string>
     <string name="about_bifrost">About Bifrost</string>
 </resources>

@@ -137,6 +137,5 @@
     <string name="enable_offline_decryption_desc">Quando esta opção estiver habilitada, um arquivo de texto extra será salvo durante o download do firmware, contendo a chave de descriptografia fornecida pela Samsung. Essa chave pode então ser inserida na página 'Descriptografar' para descriptografar o firmware sem conexão com a Internet.</string>
     <string name="decryption_key_help">Se você souber a chave de descriptografia do arquivo que está tentando descriptografar, poderá inseri-la aqui. Caso contrário, deixe em branco e o Bifrost obterá a chave dos servidores da Samsung.</string>
     <string name="enable_offline_decryption">Descriptografia offline</string>
-    <string name="app_name" translatable="false">Bifrost</string>
     <string name="about_bifrost">About Bifrost</string>
 </resources>

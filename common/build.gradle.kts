@@ -141,6 +141,8 @@ android {
         val minSdk: Int by rootProject.extra
 
         this.minSdk = minSdk
+
+        resValue("string", "app_name", "${rootProject.extra["appName"]}")
     }
 
     namespace = "tk.zwander.common"

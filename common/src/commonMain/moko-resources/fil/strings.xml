@@ -5,7 +5,6 @@
     <string name="allowLowercaseCharacters">Allow Lowercase Characters</string>
     <string name="allowLowercaseCharactersDesc">For convenience, Bifrost automatically capitalizes all characters in the model, region, and firmware fields. However, a few device models contain lowercase characters. Enable this option to download firmware for those models.</string>
     <string name="android">Android %1$s</string>
-    <string name="app_name" translatable="false">Bifrost</string>
     <string name="april_short">Apr</string>
     <string name="ascending">Pataas</string>
     <string name="august_short">Aug</string>
