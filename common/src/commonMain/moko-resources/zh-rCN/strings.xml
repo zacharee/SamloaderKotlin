@@ -137,5 +137,5 @@
     <string name="enable_offline_decryption_desc">启用此选项后，下载固件时将保存一个额外的文本文件，其中包含三星提供的解密密钥。你可以在解密页面上输入此密钥，以便在没有互联网连接的情况下解密固件。</string>
     <string name="decryption_key_help">如果您知道文件的解密密钥，则可以在此处输入。否则请将其留空，Bifrost 将从三星的服务器中取回密钥。</string>
     <string name="enable_offline_decryption">离线解密</string>
-    <string name="about_bifrost">About Bifrost</string>
+    <string name="about_bifrost">关于 Bifrost</string>
 </resources>
