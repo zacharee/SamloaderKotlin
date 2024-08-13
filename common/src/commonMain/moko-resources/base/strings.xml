@@ -248,4 +248,17 @@
 
     <!-- Action to show info about Bifrost -->
     <string name="about_bifrost">About Bifrost</string>
+
+    <!-- Label for the settings section for checking for updates -->
+    <string name="updates">Updates</string>
+    <!-- Label for the action to check for updates -->
+    <string name="check">Check</string>
+    <!-- Label for action to install an available update -->
+    <string name="update">Update</string>
+    <!-- Message indicating there are no updates available -->
+    <string name="no_updates_available">No updates available</string>
+    <!-- Message indicating there is an update available, followed by the version -->
+    <string name="update_available">Update available: %s</string>
+    <!-- Message shown when updates haven't been checked yet -->
+    <string name="check_for_updates">Check for updates</string>
 </resources>
