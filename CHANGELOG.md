@@ -1,3 +1,9 @@
+# 1.19.0
+- Add in-app update checking.
+- Update translations.
+- UI tweaks.
+- Update error reporting.
+
 # 1.18.15
 - Fix launching on Windows inside non-ASCII paths by updating to Java 21.
 - Reduce CPU usage when downloading firmware.
