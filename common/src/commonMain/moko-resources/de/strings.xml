@@ -53,7 +53,7 @@
     <string name="phoneInfo">Smartphone Info</string>
     <string name="checkHistory">Versionsverlauf überprüfen</string>
     <string name="historyError">Es wurde kein Versionsverlauf gefunden. Stelle Sicher, dass das Model und die Region korrekt sind.</string>
-    <string name="imei_serial">IMEI/Serial</string>
+    <string name="imei_serial">IMEI/Seriennummer</string>
     <string name="download">Herunterladen</string>
     <string name="autoDeleteEncryptedFirmware">Verschlüsselte Firmware automatisch Löschen</string>
     <string name="md5CheckFailed">MD5 Check fehlgeschlagen. Bitte lösche die Datei und lade sie erneut herunter.</string>
@@ -138,5 +138,5 @@
     <string name="enable_offline_decryption">Offline Entschlüsselung</string>
     <string name="enable_offline_decryption_desc">Wenn diese Option aktiviert wird, wird beim Herunterladen von Firmware eine extra Textdatei gespeichert, welche einen Schlüssel zur Entschlüsselung enthält, der von Samsung bereitgestellt wurde. Dieser Schlüssel kann in der Entschlüsselungsseite eingegeben werden, um Firmware ohne Internetverbindung zu Entschlüsseln.</string>
     <string name="app_name" translatable="false">Bifrost</string>
-    <string name="about_bifrost">About Bifrost</string>
+    <string name="about_bifrost">Über Bifrost</string>
 </resources>
