@@ -138,10 +138,10 @@
     <string name="decryption_key_help">Şifresini çözmeye çalıştığınız dosyanın şifre çözme anahtarını biliyorsanız, buraya girebilirsiniz. Yoksa boş bırakın ve Bifrost anahtarı Samsung'un sunucularından alacaktır.</string>
     <string name="enable_offline_decryption">Çevrim Dışı Şifre Çözme</string>
     <string name="about_bifrost">Bifrost Hakkında</string>
-    <string name="updates">Updates</string>
-    <string name="update">Update</string>
-    <string name="check">Check</string>
-    <string name="update_available">Update available: %s</string>
-    <string name="no_updates_available">No updates available</string>
-    <string name="check_for_updates">Check for updates</string>
+    <string name="updates">Güncellemeler</string>
+    <string name="update">Güncelle</string>
+    <string name="check">Denetle</string>
+    <string name="update_available">Güncelleme var: %s</string>
+    <string name="no_updates_available">Güncelleme yok</string>
+    <string name="check_for_updates">Güncellemeleri denetle</string>
 </resources>
