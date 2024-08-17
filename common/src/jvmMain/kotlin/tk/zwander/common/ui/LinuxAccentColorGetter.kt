@@ -37,8 +37,13 @@ sealed class DESpecificGetter(val sessionValue: String) {
 
     data object KDE : DESpecificGetter("KDE") {
         override fun getAccentColor(): Color? {
-            val rgb = runtime?.getLinesFromCommand(arrayOf("kreadconfig5", "--key", "AccentColor", "--group", "General"))
-                ?.firstOrNull()
+            val rgb = runtime?.run {
+                try {
+                    getLinesFromCommand(arrayOf("kreadconfig5", "--key", "AccentColor", "--group", "General"))
+                } catch (e: Exception) {
+                    getLinesFromCommand(arrayOf("kreadconfig6", "--key", "AccentColor", "--group", "General"))
+                }
+            }?.firstOrNull()
 
             if (rgb.isNullOrBlank()) {
                 return null
