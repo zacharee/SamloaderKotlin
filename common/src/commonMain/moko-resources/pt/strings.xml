@@ -138,4 +138,10 @@
     <string name="decryption_key_help">Se você souber a chave de descriptografia do arquivo que está tentando descriptografar, poderá inseri-la aqui. Caso contrário, deixe em branco e o Bifrost obterá a chave dos servidores da Samsung.</string>
     <string name="enable_offline_decryption">Descriptografia offline</string>
     <string name="about_bifrost">About Bifrost</string>
+    <string name="updates">Updates</string>
+    <string name="update">Update</string>
+    <string name="update_available">Update available: %s</string>
+    <string name="no_updates_available">No updates available</string>
+    <string name="check_for_updates">Check for updates</string>
+    <string name="check">Check</string>
 </resources>
