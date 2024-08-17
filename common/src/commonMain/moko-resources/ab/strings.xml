@@ -138,4 +138,10 @@
     <string name="samloader" translatable="false">Samloader</string>
     <string name="zacharyWander" translatable="false">Zachary Wander</string>
     <string name="about_bifrost">About Bifrost</string>
+    <string name="updates">Updates</string>
+    <string name="update">Update</string>
+    <string name="check">Check</string>
+    <string name="update_available">Update available: %s</string>
+    <string name="no_updates_available">No updates available</string>
+    <string name="check_for_updates">Check for updates</string>
 </resources>
