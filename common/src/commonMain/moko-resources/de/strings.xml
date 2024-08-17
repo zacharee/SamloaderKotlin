@@ -138,4 +138,10 @@
     <string name="enable_offline_decryption">Offline Entschlüsselung</string>
     <string name="enable_offline_decryption_desc">Wenn diese Option aktiviert wird, wird beim Herunterladen von Firmware eine extra Textdatei gespeichert, welche einen Schlüssel zur Entschlüsselung enthält, der von Samsung bereitgestellt wurde. Dieser Schlüssel kann in der Entschlüsselungsseite eingegeben werden, um Firmware ohne Internetverbindung zu Entschlüsseln.</string>
     <string name="about_bifrost">Über Bifrost</string>
+    <string name="updates">Updates</string>
+    <string name="update">Update</string>
+    <string name="update_available">Update available: %s</string>
+    <string name="no_updates_available">No updates available</string>
+    <string name="check_for_updates">Check for updates</string>
+    <string name="check">Check</string>
 </resources>
