@@ -1,3 +1,8 @@
+# 1.19.1
+- Graphics fixes on Linux.
+- Update TACs.
+- Update dependencies.
+
 # 1.19.0
 - Add in-app update checking.
 - Update translations.
