@@ -77,12 +77,21 @@ fun main() {
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
     if (Platform.isLinux) {
+        val context = try {
+            DirectContext.makeGL()
+        } catch (e: Throwable) {
+            null
+        }
+
         try {
-            DirectContext.makeGL().flush()
-                .close()
+            context?.flush()
         } catch (e: Throwable) {
             BugsnagUtils.notify(IllegalStateException("Unable to flush OpenGL context, using software rendering.", e))
             System.setProperty("skiko.renderApi", "SOFTWARE")
+        } finally {
+            try {
+                context?.close()
+            } catch (_: Throwable) {}
         }
     }
 
