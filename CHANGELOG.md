@@ -1,3 +1,8 @@
+# 1.19.2
+- Fix issues launching on ARM Windows.
+- Fix blank file picker window on Linux.
+- Theme detection fixes for Linux.
+
 # 1.19.1
 - Graphics fixes on Linux.
 - Update TACs.
