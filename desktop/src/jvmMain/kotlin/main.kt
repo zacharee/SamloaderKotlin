@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
+
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -19,11 +21,22 @@ import com.formdev.flatlaf.FlatLaf
 import com.mayakapps.compose.windowstyler.NativeLookWindow
 import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
+import com.sun.jna.Native
+import com.sun.jna.platform.win32.WinDef
+import com.sun.jna.platform.win32.WinDef.USHORTByReference
+import com.sun.jna.platform.win32.WinNT
+import com.sun.jna.platform.win32.WinNT.HANDLE
+import com.sun.jna.platform.win32.Wincon
 import com.sun.jna.ptr.IntByReference
+import com.sun.jna.win32.StdCallLibrary
+import com.sun.jna.win32.W32APIOptions
 import dev.icerock.moko.resources.compose.painterResource
 import korlibs.platform.Platform
 import kotlinx.coroutines.launch
 import org.jetbrains.skia.DirectContext
+import org.jetbrains.skiko.GraphicsApi
+import org.jetbrains.skiko.RenderException
+import org.jetbrains.skiko.SkiaLayer
 import tk.zwander.common.EventDelegate
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.BifrostSettings
@@ -45,12 +58,39 @@ import tk.zwander.commonCompose.view.keyCodeHandler
 import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Desktop
 import java.awt.Dimension
+import java.awt.EventQueue
 import java.awt.Window
 import java.awt.event.WindowEvent
 import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
 import kotlin.system.exitProcess
 import kotlin.time.ExperimentalTime
+
+@Suppress("FunctionName")
+interface Kernel32 : StdCallLibrary, WinNT, Wincon {
+    companion object {
+        private const val IMAGE_FILE_MACHINE_ARM64 = 0xAA64L
+
+        private val INSTANCE =
+            Native.load("kernel32", Kernel32::class.java, W32APIOptions.DEFAULT_OPTIONS)
+
+        fun isEmulatedX86(): Boolean {
+            val processHandle = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentProcess()
+            val processMachine = USHORTByReference()
+            val nativeMachine = USHORTByReference()
+
+            INSTANCE.IsWow64Process2(processHandle, processMachine, nativeMachine)
+
+            return nativeMachine.value == WinDef.USHORT(IMAGE_FILE_MACHINE_ARM64)
+        }
+    }
+
+    fun IsWow64Process2(
+        hProcess: HANDLE,
+        pProcessMachine: USHORTByReference,
+        pNativeMachine: USHORTByReference
+    )
+}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalTime
@@ -76,22 +116,50 @@ fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
-    if (Platform.isLinux) {
-        val context = try {
-            DirectContext.makeGL()
-        } catch (e: Throwable) {
-            null
+    when {
+        Platform.isLinux -> {
+            val context = try {
+                DirectContext.makeGL()
+            } catch (e: Throwable) {
+                null
+            }
+
+            try {
+                context?.flush()
+            } catch (e: Throwable) {
+                BugsnagUtils.notify(
+                    IllegalStateException(
+                        "Unable to flush OpenGL context, using software rendering.",
+                        e
+                    )
+                )
+                System.setProperty("skiko.renderApi", "SOFTWARE_FAST")
+            } finally {
+                try {
+                    context?.close()
+                } catch (_: Throwable) {
+                }
+            }
         }
 
-        try {
-            context?.flush()
-        } catch (e: Throwable) {
-            BugsnagUtils.notify(IllegalStateException("Unable to flush OpenGL context, using software rendering.", e))
-            System.setProperty("skiko.renderApi", "SOFTWARE")
-        } finally {
-            try {
-                context?.close()
-            } catch (_: Throwable) {}
+        Platform.isWindows -> {
+            if (Kernel32.isEmulatedX86()) {
+                EventQueue.invokeAndWait {
+                    val layer = SkiaLayer()
+                    try {
+                        layer.inDrawScope {
+                            throw RenderException()
+                        }
+                    } catch (_: Throwable) {}
+
+                    if (layer.renderApi == GraphicsApi.OPENGL) {
+                        BugsnagUtils.notify(IllegalStateException("Skiko chose OpenGL on ARM, falling back to software rendering."))
+                        System.setProperty("skiko.renderApi", "SOFTWARE_FAST")
+                    }
+
+                    layer.dispose()
+                }
+            }
         }
     }
 
