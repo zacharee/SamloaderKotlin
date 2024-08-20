@@ -12,6 +12,7 @@ compose = "1.7.0-dev1762"
 conveyor = "1.10"
 conveyor-control = "1.1"
 desugar_jdk_libs = "2.0.4"
+filekitCore = "0.8.1"
 flatlaf = "3.5.1"
 githubApi = "1.323"
 google-material = "1.13.0-alpha05"
@@ -42,6 +43,7 @@ bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "compose" }
 conveyor-control = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref = "conveyor-control" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekitCore" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 github-api = { module = "org.kohsuke:github-api", version.ref = "githubApi" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }

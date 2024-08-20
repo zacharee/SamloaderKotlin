@@ -81,6 +81,7 @@ kotlin {
                 api(libs.multiplatformSettings.noArg)
                 api(libs.richeditor.compose)
                 api(libs.semver)
+                api(libs.filekit.core)
             }
         }
 

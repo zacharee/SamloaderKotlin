@@ -57,7 +57,7 @@ suspend fun streamOperationWithProgress(
     }
 }
 
-@OptIn(DelicateCoroutinesApi::class)
+@OptIn(DelicateCoroutinesApi::class, kotlin.time.ExperimentalTime::class)
 suspend fun trackOperationProgress(
     size: Long,
     progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
