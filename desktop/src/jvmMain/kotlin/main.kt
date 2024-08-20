@@ -21,15 +21,7 @@ import com.formdev.flatlaf.FlatLaf
 import com.mayakapps.compose.windowstyler.NativeLookWindow
 import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
-import com.sun.jna.Native
-import com.sun.jna.platform.win32.WinDef
-import com.sun.jna.platform.win32.WinDef.USHORTByReference
-import com.sun.jna.platform.win32.WinNT
-import com.sun.jna.platform.win32.WinNT.HANDLE
-import com.sun.jna.platform.win32.Wincon
 import com.sun.jna.ptr.IntByReference
-import com.sun.jna.win32.StdCallLibrary
-import com.sun.jna.win32.W32APIOptions
 import dev.icerock.moko.resources.compose.painterResource
 import korlibs.platform.Platform
 import kotlinx.coroutines.launch
@@ -48,6 +40,7 @@ import tk.zwander.common.util.jna.windows.hwnd
 import tk.zwander.common.util.jna.windows.toBgr
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.FilePicker
+import tk.zwander.commonCompose.util.jna.Kernel32
 import tk.zwander.commonCompose.util.rememberThemeInfo
 import tk.zwander.commonCompose.util.toAwtColor
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
@@ -65,32 +58,6 @@ import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
 import kotlin.system.exitProcess
 import kotlin.time.ExperimentalTime
-
-@Suppress("FunctionName")
-interface Kernel32 : StdCallLibrary, WinNT, Wincon {
-    companion object {
-        private const val IMAGE_FILE_MACHINE_ARM64 = 0xAA64L
-
-        private val INSTANCE =
-            Native.load("kernel32", Kernel32::class.java, W32APIOptions.DEFAULT_OPTIONS)
-
-        fun isEmulatedX86(): Boolean {
-            val processHandle = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentProcess()
-            val processMachine = USHORTByReference()
-            val nativeMachine = USHORTByReference()
-
-            INSTANCE.IsWow64Process2(processHandle, processMachine, nativeMachine)
-
-            return nativeMachine.value == WinDef.USHORT(IMAGE_FILE_MACHINE_ARM64)
-        }
-    }
-
-    fun IsWow64Process2(
-        hProcess: HANDLE,
-        pProcessMachine: USHORTByReference,
-        pNativeMachine: USHORTByReference
-    )
-}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalTime
