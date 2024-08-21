@@ -23,6 +23,7 @@ import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.sun.jna.ptr.IntByReference
 import dev.icerock.moko.resources.compose.painterResource
+import dev.zwander.compose.alertdialog.LocalWindowDecorations
 import korlibs.platform.Platform
 import kotlinx.coroutines.launch
 import org.jetbrains.skia.DirectContext
@@ -239,6 +240,7 @@ fun main() {
 
                 CompositionLocalProvider(
                     LocalMenuBarHeight provides menuBarHeight,
+                    LocalWindowDecorations provides LocalWindowDecorations.current.copy(top = menuBarHeight),
                 ) {
                     MainView()
                 }

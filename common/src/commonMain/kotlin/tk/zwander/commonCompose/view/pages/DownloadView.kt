@@ -45,6 +45,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.ColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
@@ -61,7 +62,6 @@ import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.components.ChangelogDisplay
 import tk.zwander.commonCompose.view.components.ExpandButton
 import tk.zwander.commonCompose.view.components.HybridButton
-import tk.zwander.commonCompose.view.components.InWindowAlertDialog
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
 import tk.zwander.samloaderkotlin.resources.MR

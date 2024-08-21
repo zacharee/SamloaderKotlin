@@ -30,3 +30,9 @@ rootProject.name = "SamloaderKotlin"
 include(":android")
 include(":desktop")
 include(":common")
+
+include(":alertdialog")
+project(":alertdialog").projectDir = File("./alertdialog")
+
+include(":alertdialog:library")
+project(":alertdialog:library").projectDir = File("./alertdialog/library")

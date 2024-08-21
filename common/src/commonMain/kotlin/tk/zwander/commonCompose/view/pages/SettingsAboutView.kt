@@ -39,7 +39,6 @@ import tk.zwander.common.data.IOptionItem
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.LocalPhoneInfo
 import tk.zwander.common.util.UpdateUtil
-import tk.zwander.common.util.isWindows11
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.commonCompose.util.grid.AdaptiveFixed
 import tk.zwander.commonCompose.view.LocalMenuBarHeight

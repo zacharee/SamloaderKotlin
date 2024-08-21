@@ -1,0 +1,3 @@
+[submodule "alertdialog"]
+	path = alertdialog
+	url = git@github.com:zacharee/ComposeInWindowAlertDialog.git

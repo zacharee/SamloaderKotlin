@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.commonCompose.util.rememberIsOverScaledThreshold
 import tk.zwander.samloaderkotlin.resources.MR

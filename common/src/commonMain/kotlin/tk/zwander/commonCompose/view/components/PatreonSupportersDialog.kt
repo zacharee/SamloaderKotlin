@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import tk.zwander.common.util.PatreonSupportersParser
 import tk.zwander.common.util.SupporterInfo
 import tk.zwander.samloaderkotlin.resources.MR

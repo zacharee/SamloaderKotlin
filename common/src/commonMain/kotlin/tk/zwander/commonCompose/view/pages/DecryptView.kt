@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.ColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
@@ -45,7 +46,6 @@ import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.util.handleFileDrag
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.components.HybridButton
-import tk.zwander.commonCompose.view.components.InWindowAlertDialog
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.ProgressInfo
 import tk.zwander.commonCompose.view.components.SplitComponent

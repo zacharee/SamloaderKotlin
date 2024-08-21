@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import my.nanihadesuka.compose.LazyColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.csc.CSCDB
