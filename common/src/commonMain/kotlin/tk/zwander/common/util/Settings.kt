@@ -35,7 +35,7 @@ class ObservableBifrostSettings(private val wrapped: ObservableSettings) :
 
 object BifrostSettings {
     object Keys {
-        val useMicaEffect = SettingsKey.Boolean("useMicaEffect", false, settings)
+        val useMicaEffect = SettingsKey.Boolean("useMicaEffect", false, settings, disabled = true)
         val allowLowercaseCharacters =
             SettingsKey.Boolean("allowLowercaseCharacters", false, settings)
         val autoDeleteEncryptedFirmware =
@@ -135,9 +135,10 @@ sealed class SettingsKey<Type : Any?> {
         override val key: kotlin.String,
         override val default: T,
         override val settings: ObservableSettings,
+        val disabled: kotlin.Boolean = false,
     ) : SettingsKey<T>() {
         override fun getValue(): T {
-            return (settings.getBooleanOrNull(key) ?: default) as T
+            return if (disabled) default else (settings.getBooleanOrNull(key) ?: default) as T
         }
 
         override fun setValue(value: T) {

@@ -51,15 +51,15 @@ import tk.zwander.commonCompose.view.components.settingsitems.LiteralPreference
 import tk.zwander.samloaderkotlin.resources.MR
 
 val options = arrayListOf<IOptionItem>().apply {
-    if (isWindows11) {
-        add(
-            IOptionItem.BasicOptionItem.BooleanItem(
-                label = MR.strings.useMicaEffect,
-                desc = MR.strings.useMicaEffectDesc,
-                key = BifrostSettings.Keys.useMicaEffect,
-            ),
-        )
-    }
+//    if (isWindows11) {
+//        add(
+//            IOptionItem.BasicOptionItem.BooleanItem(
+//                label = MR.strings.useMicaEffect,
+//                desc = MR.strings.useMicaEffectDesc,
+//                key = BifrostSettings.Keys.useMicaEffect,
+//            ),
+//        )
+//    }
 
     add(
         IOptionItem.BasicOptionItem.BooleanItem(
