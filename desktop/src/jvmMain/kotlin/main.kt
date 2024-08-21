@@ -39,7 +39,6 @@ import tk.zwander.common.util.jna.windows.DwmWindowAttribute
 import tk.zwander.common.util.jna.windows.hwnd
 import tk.zwander.common.util.jna.windows.toBgr
 import tk.zwander.commonCompose.MainView
-import tk.zwander.commonCompose.util.FilePicker
 import tk.zwander.commonCompose.util.jna.Kernel32
 import tk.zwander.commonCompose.util.rememberThemeInfo
 import tk.zwander.commonCompose.util.toAwtColor
@@ -189,8 +188,6 @@ fun main() {
                     window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
                     window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
                     window.background = themeInfo.colors.background.toAwtColor()
-
-                    FilePicker.init(window)
 
                     val map = mutableMapOf<String, String>()
 

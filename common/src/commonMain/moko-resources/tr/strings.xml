@@ -23,7 +23,6 @@
     <string name="firmware">Ürün Yazılımı</string>
     <string name="openFile">Dosya Aç</string>
     <string name="downloading">İndiriliyor</string>
-    <string name="useNativeFilePickerDesc">Dosyaları açarken ve kaydederken daha yerel bir görünüm ve deneyim sağlayabilir.</string>
     <string name="no">Hayır</string>
     <string name="changelog">Değişiklik Günlüğü</string>
     <string name="clear">Temizle</string>
@@ -32,7 +31,6 @@
     <string name="imei_serial_help">Samsung, indirilen ürün yazılımıyla eşleşen bir IMEI veya seri numarası kullanılmasını zorunlu tutmaya başladı. Çoğu durumda, aygıtınızın seri numarasını kullanırsanız, modeliniz için herhangi bir CSC için ürün yazılımı indirebilirsiniz. Doğru IMEI veya seri numarası olmadan, indirmeye çalıştığınızda 408 hatası alırsınız. Bifrost, girdiğiniz herhangi bir model için denemek üzere otomatik olarak 100 adede kadar IMEI oluşturmaya çalışacaktır. Ayrıca, her birini \"Düzenle\" iletişim kutusunda kendi satırına koyarak veya alanın kendisinde noktalı virgüllerle ayırarak denenmesi gereken kendi IMEI'lerinizi de ayarlayabilirsiniz.</string>
     <string name="github">GitHub</string>
     <string name="firmwareHint">Ürün Yazılımı (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">Yerel dosya seçiciyi kullan</string>
     <string name="historyErrorFormat">Ürün yazılımı geçmişi alınamıyor. Model ve bölgenin doğru olduğundan emin olun.
 \nHata: %1$s</string>
     <string name="modelHint">Model (örn. SM-N986U1)</string>

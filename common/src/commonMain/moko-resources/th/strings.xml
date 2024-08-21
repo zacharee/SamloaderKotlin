@@ -30,7 +30,6 @@
     <string name="fileIssue">ส่งปัญหา</string>
     <string name="show">แสดง</string>
     <string name="hide">ซ่อน</string>
-    <string name="useNativeFilePickerDesc">อาจให้ความรู้สึกและมีลักษณะที่เข้ากับระบบปฏิบัติการมากขึ้นเมื่อเปิดและบันทึกไฟล์.</string>
     <string name="ascending">จากน้อยไปมาก</string>
     <string name="close">ปิด</string>
     <string name="openFileDesc">เปิดไฟล์เพื่อถอดรหัส</string>
@@ -45,7 +44,6 @@
     <string name="checkingCRC">กำลังตรวจสอบ CRC</string>
     <string name="imei_serial_help">ซัมซุงได้เริ่มต้นจำเป็นต้องใช้หมายเลข IMEI หรือหมายเลขซีเรียลที่ตรงกับ firmware ที่กำลังดาวน์โหลด ในกรณีมากมายถ้าคุณใช้หมายเลขซีเรียลของอุปกรณ์คุณ คุณสามารถดาวน์โหลด firmware สำหรับ CSC ใดก็ได้สำหรับโมเดลของคุณ โดยไม่ต้องใส่หมายเลข IMEI หรือซีเรียลที่ถูกต้อง คุณจะได้รับข้อผิดพลาด 408 เมื่อพยายามดาวน์โหลด ไบโฟรสท์จะพยายามสร้าง IMEI โดยอัตโนมัติ สูงสุด 100 หมายเลขสำหรับการลองในทุกรุ่นที่คุณป้อน คุณยังสามารถตั้งค่า IMEI ของคุณเองที่ควรลอง โดยวางแต่ละตัวบนบรรทัดของตัวแก้ไข หรือคั่นด้วยเครื่องหมายอัฒภาคในฟิลด์ตนเอง</string>
     <string name="firmwareHint">เฟิร์มแวร์ (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">ใช่ตัวเลือกไฟล์เดิม</string>
     <string name="notification_progress_text">กำลังทำงาน…</string>
     <string name="historyErrorFormat">ไม่สามารถดึงประวัติเฟิร์มแวร์ โปรดตรวจสอบว่ารุ่นโมเดล์และภูมิภาคถูกต้องหรือไม่.
 \nError: %1$s</string>

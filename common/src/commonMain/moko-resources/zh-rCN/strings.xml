@@ -21,7 +21,6 @@
     <string name="carriers">运营商</string>
     <string name="openFile">打开文件</string>
     <string name="downloading">下载中</string>
-    <string name="useNativeFilePickerDesc">在打开和保存文件时，可以提供更原生的外观。</string>
     <string name="no">否</string>
     <string name="changelog">更新日志</string>
     <string name="clear">清除</string>
@@ -32,7 +31,6 @@
     <string name="github">GitHub</string>
     <string name="copy">复制</string>
     <string name="firmwareHint">固件代码(PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">使用本地文件选择器</string>
     <string name="useMicaEffect">使用云母效果</string>
     <string name="yes">是</string>
     <string name="android">Android %1$s</string>

@@ -21,7 +21,6 @@
     <string name="firmware">Прошивка</string>
     <string name="openFile">Открыть файл</string>
     <string name="downloading">Загрузка</string>
-    <string name="useNativeFilePickerDesc">Может обеспечить более естественный внешний вид при открытии и сохранении файлов.</string>
     <string name="no">Нет</string>
     <string name="changelog">Журнал изменений</string>
     <string name="clear">Очистка</string>
@@ -31,7 +30,6 @@
     <string name="github">GitHub</string>
     <string name="copy">Копировать</string>
     <string name="firmwareHint">Прошивка (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">Использовать собственный инструмент выбора файлов</string>
     <string name="historyErrorFormat">Не удается получить историю встроенного ПО. Убедитесь, что модель и регион указаны правильно.
 \nОшибка: %1$s</string>
     <string name="modelHint">Модель (например, SM-N986U1)</string>

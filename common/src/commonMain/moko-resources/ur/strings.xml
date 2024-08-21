@@ -26,7 +26,6 @@
     <string name="openFile">Open File</string>
     <string name="downloading">Downloading</string>
     <string name="no">No</string>
-    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
     <string name="changelog">Changelog</string>
     <string name="clear">Clear</string>
     <string name="unknown">Unknown</string>
@@ -36,7 +35,6 @@
     <string name="github">GitHub</string>
     <string name="copy">Copy</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">Use native file picker</string>
     <string name="modelHint">Model (e.g. SM-N986U1)</string>
     <string name="yes">Yes</string>
     <string name="android">Android %1$s</string>

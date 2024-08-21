@@ -4,7 +4,6 @@
     <string name="checkForUpdatesDesc">Buscar actualizaciones de firmware</string>
     <string name="edit">Editar</string>
     <string name="copy">Copiar</string>
-    <string name="useNativeFilePicker">Utilizar el selector de archivos nativo</string>
     <string name="useMicaEffect">Utilizar efecto mica</string>
     <string name="removeSavedData">Eliminar los datos guardados</string>
     <string name="ascending">Subiendo</string>
@@ -21,7 +20,6 @@
     <string name="firmware">Firmware</string>
     <string name="openFile">Abrir archivo</string>
     <string name="downloading">Descargando</string>
-    <string name="useNativeFilePickerDesc">Puede proporcionar una apariencia más nativa al abrir y guardar archivos.</string>
     <string name="changelog">Registro de cambios</string>
     <string name="no">No</string>
     <string name="clear">Limpiar</string>

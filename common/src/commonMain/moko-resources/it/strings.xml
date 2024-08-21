@@ -17,7 +17,6 @@
     <string name="selectEncrypted">Per favore seleziona un file crittografato con estensione enc2 o enc4.</string>
     <string name="descending">Decrescente</string>
     <string name="firmware">Firmware</string>
-    <string name="useNativeFilePickerDesc">Potrebbe offrire un aspetto più nativo e piacevole durante l'apertura e il salvataggio dei file.</string>
     <string name="unknown">Sconosciuto</string>
     <string name="notification_progress_channel_name">Stato progresso</string>
     <string name="checkingCRC">Controllo CRC</string>
@@ -105,7 +104,6 @@
     <string name="carriers">Operatori telefonici</string>
     <string name="countries">Paesi</string>
     <string name="sort">Ordina</string>
-    <string name="useNativeFilePicker">Usa il selettore di file nativo</string>
     <string name="useMicaEffect">Utilizza effetto Mica</string>
     <string name="removeSavedDataDesc">Bifrost salva alcuni dati come le ultime informazioni inserite riguardo i dispositivi e le impostazioni correnti. Clicca qui per rimuovere questi dati.</string>
     <string name="useMicaEffectDesc">Su Windows 11 e versioni successive, Bifrost può applicare l'effetto Mica di Windows allo sfondo della finestra, rendendolo simile a un'applicazione nativa di Windows.</string>

@@ -25,7 +25,6 @@
     <string name="carriers">Operatorzy</string>
     <string name="firmware">Oprogramowanie</string>
     <string name="downloading">Pobieranie</string>
-    <string name="useNativeFilePickerDesc">Może zapewnić bardziej natywny wygląd i działanie podczas otwierania i zapisywania plików.</string>
     <string name="no">Nie</string>
     <string name="changelog">Lista zmian</string>
     <string name="clear">Wyczyść</string>
@@ -37,7 +36,6 @@
     <string name="edit">Edytuj</string>
     <string name="copy">Kopiuj</string>
     <string name="firmwareHint">Oprogramowanie (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">Użyj natywnej funkcji wyboru plików</string>
     <string name="notification_progress_text">Działam…</string>
     <string name="historyErrorFormat">Nie udało się pobrać historii zmian oprogramowania. Upewnij się, że model i region są poprawne.
 \nBłąd: %1$s</string>

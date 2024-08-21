@@ -4,7 +4,6 @@
     <string name="ascending">Aufsteigend</string>
     <string name="copy">Kopieren</string>
     <string name="edit">Editieren</string>
-    <string name="useNativeFilePicker">Native Dateiauswahl benutzen</string>
     <string name="checkForUpdatesDesc">Auf Firmware Updates Prüfen</string>
     <string name="close">Schließen</string>
     <string name="manualWarningDetails">Für die meisten Geräte stellt Samsung nur die aktuelle Firmware-Version bereit. Selbst, wenn du eine andere Version ausgewählt hast, werden dir die Server von Samsung die aktuellste Version der Firmware geben. Um zu verhindern, dass du vielleicht eine falsche Firmware auf dein Gerät aufspielst, wird %1$s prüfen, ob Samsung die gewünschte Firmware bereitstellt bevor ein Versuch unternommen wird, die Firmware herunterzuladen. Wenn die gewünschte und die bereitgestellte Version der Firmware nicht übereinstimmen, wird %2$s den Download abbrechen. Mehr Informationen findest du für</string>
@@ -20,7 +19,6 @@
     <string name="firmware">Firmware</string>
     <string name="openFile">Datei Öffnen</string>
     <string name="downloading">Lädt Herunter</string>
-    <string name="useNativeFilePickerDesc">Bietet möglicherweise ein mehr Natives aussehen, wenn Dateien geöffnet und gespeichert werden.</string>
     <string name="no">Nein</string>
     <string name="changelog">Versionsgeschichte</string>
     <string name="clear">Leeren</string>

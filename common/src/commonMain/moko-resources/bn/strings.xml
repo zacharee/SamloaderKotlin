@@ -2,7 +2,6 @@
 <resources>
     <string name="csc">CSC</string>
     <string name="edit">Edit</string>
-    <string name="useNativeFilePicker">Use native file picker</string>
     <string name="autoDeleteEncryptedFirmware">Auto-Delete Encrypted Firmware</string>
     <string name="checkForUpdatesDesc">Check for Firmware Updates</string>
     <string name="ascending">Ascending</string>
@@ -16,7 +15,6 @@
     <string name="zoom">Zoom</string>
     <string name="selectEncrypted">Please select an encrypted firmware file ending in enc2 or enc4.</string>
     <string name="descending">Descending</string>
-    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
     <string name="carriers">Carriers</string>
     <string name="firmware">Firmware</string>
     <string name="no">No</string>

@@ -4,7 +4,6 @@
     <string name="crcCheckFailed">Vérification CRC échouée. Veuillez supprimer le fichier et le télécharger à nouveau.</string>
     <string name="manualWarningDetails3">sur GitHub.</string>
     <string name="done">Terminé</string>
-    <string name="useNativeFilePicker">Utiliser le sélecteur de fichier natif</string>
     <string name="checkForUpdatesDesc">Vérifier les mises à jour du firmware</string>
     <string name="ascending">Croissant</string>
     <string name="close">Fermer</string>
@@ -20,7 +19,6 @@
     <string name="firmware">Firmware</string>
     <string name="openFile">Ouvrir un fichier</string>
     <string name="downloading">Téléchargement</string>
-    <string name="useNativeFilePickerDesc">Pourrait offrir une apparence plus native lors de l'ouverture et de l'enregistrement de fichiers.</string>
     <string name="unknown">Inconnu</string>
     <string name="no">Non</string>
     <string name="changelog">Notes de version</string>

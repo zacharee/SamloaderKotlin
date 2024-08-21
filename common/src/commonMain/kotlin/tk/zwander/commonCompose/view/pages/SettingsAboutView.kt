@@ -51,16 +51,6 @@ import tk.zwander.commonCompose.view.components.settingsitems.LiteralPreference
 import tk.zwander.samloaderkotlin.resources.MR
 
 val options = arrayListOf<IOptionItem>().apply {
-    if (Platform.isJvm && !Platform.isAndroid) {
-        add(
-            IOptionItem.BasicOptionItem.BooleanItem(
-                label = MR.strings.useNativeFilePicker,
-                desc = MR.strings.useNativeFilePickerDesc,
-                key = BifrostSettings.Keys.useNativeFileDialog,
-            ),
-        )
-    }
-
     if (isWindows11) {
         add(
             IOptionItem.BasicOptionItem.BooleanItem(

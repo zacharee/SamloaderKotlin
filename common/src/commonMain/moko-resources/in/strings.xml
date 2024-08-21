@@ -19,7 +19,6 @@
     <string name="openFile">Open File</string>
     <string name="no">No</string>
     <string name="downloading">Downloading</string>
-    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
     <string name="clear">Clear</string>
     <string name="unknown">Unknown</string>
     <string name="osVersion">OS Version: %1$s</string>
@@ -28,7 +27,6 @@
     <string name="github">GitHub</string>
     <string name="edit">Edit</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">Use native file picker</string>
     <string name="copy">Copy</string>
     <string name="historyErrorFormat">Unable to retrieve firmware history. Make sure the model and region are correct.
 \nError: %1$s</string>

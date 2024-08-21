@@ -35,7 +35,6 @@ class ObservableBifrostSettings(private val wrapped: ObservableSettings) :
 
 object BifrostSettings {
     object Keys {
-        val useNativeFileDialog = SettingsKey.Boolean("useNativeFileDialog", true, settings)
         val useMicaEffect = SettingsKey.Boolean("useMicaEffect", false, settings)
         val allowLowercaseCharacters =
             SettingsKey.Boolean("allowLowercaseCharacters", false, settings)

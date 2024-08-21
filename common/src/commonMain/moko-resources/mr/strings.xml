@@ -7,7 +7,6 @@
     <string name="sort">Sort</string>
     <string name="edit">Edit</string>
     <string name="copy">Copy</string>
-    <string name="useNativeFilePickerDesc">May provide a more native look and feel when opening and saving files.</string>
     <string name="checkForUpdatesDesc">Check for Firmware Updates</string>
     <string name="ascending">Ascending</string>
     <string name="close">Close</string>
@@ -31,7 +30,6 @@
     <string name="imei_serial_help">Samsung has started requiring the use of an IMEI or serial number that matches the firmware being downloaded. In many cases, if you use your device's serial number, you'll be able to download firmware for any CSC for your model. Without the correct IMEI or serial, you'll receive error 408 when attempting to download. Bifrost will attempt to automatically generate up to 100 IMEIs to try for any model you enter. You can also set your own IMEIs that should be tried by putting each on its own line in the Edit dialog, or separated by semi-colons in the field itself.</string>
     <string name="github">GitHub</string>
     <string name="firmwareHint">Firmware (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">Use native file picker</string>
     <string name="historyErrorFormat">Unable to retrieve firmware history. Make sure the model and region are correct.
 \nError: %1$s</string>
     <string name="modelHint">Model (e.g. SM-N986U1)</string>
