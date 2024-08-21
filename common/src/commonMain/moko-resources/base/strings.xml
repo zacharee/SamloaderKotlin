@@ -237,7 +237,7 @@
     <!-- An option to allow the user to save a decryption key when downloading firmware. -->
     <string name="enable_offline_decryption">Offline Decryption</string>
     <!-- An option to allow the user to save a decryption key when downloading firmware. -->
-    <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect.</string>
+    <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connection.</string>
 
     <!-- Hint text for the field where the user should enter a known decryption key for offline decryption. -->
     <string name="decryption_key">Decryption Key</string>
