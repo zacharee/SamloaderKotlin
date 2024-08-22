@@ -36,3 +36,9 @@ project(":alertdialog").projectDir = File("./alertdialog")
 
 include(":alertdialog:library")
 project(":alertdialog:library").projectDir = File("./alertdialog/library")
+
+include(":kmpfile")
+project(":kmpfile").projectDir = File("./kmpfile")
+
+include(":kmpfile:library")
+project(":kmpfile:library").projectDir = File("./kmpfile/library")

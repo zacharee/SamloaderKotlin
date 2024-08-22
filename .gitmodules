@@ -1,3 +1,6 @@
 [submodule "alertdialog"]
 	path = alertdialog
 	url = git@github.com:zacharee/ComposeInWindowAlertDialog.git
+[submodule "kmpfile"]
+	path = kmpfile
+	url = git@github.com:zacharee/KMPFile.git
