@@ -1,8 +1,8 @@
 package tk.zwander.commonCompose.util
 
+import dev.zwander.kotlin.file.PlatformFile
 import io.github.vinceglb.filekit.core.FileKit
 import io.github.vinceglb.filekit.core.pickFile
-import tk.zwander.common.data.PlatformFile
 
 object FilePicker {
     suspend fun createFile(name: String): PlatformFile? {

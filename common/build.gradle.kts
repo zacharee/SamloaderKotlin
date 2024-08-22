@@ -84,6 +84,7 @@ kotlin {
                 api(libs.filekit.core)
 
                 api(project(":alertdialog:library"))
+                api(project(":kmpfile:library"))
             }
         }
 

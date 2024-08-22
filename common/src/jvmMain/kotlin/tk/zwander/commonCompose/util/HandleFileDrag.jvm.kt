@@ -6,7 +6,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.ExternalDragValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.onExternalDrag
-import tk.zwander.common.data.PlatformFile
+import dev.zwander.kotlin.file.PlatformFile
 import java.net.URI
 import kotlin.io.path.toPath
 
@@ -17,7 +17,7 @@ actual fun Modifier.handleFileDrag(
     onDragStart: (PlatformFile?) -> Unit,
     onDrag: (PlatformFile?) -> Unit,
     onDragExit: () -> Unit,
-    onDrop: (PlatformFile?) -> Unit
+    onDrop: (PlatformFile?) -> Unit,
 ): Modifier {
     return onExternalDrag(
         enabled = enabled,

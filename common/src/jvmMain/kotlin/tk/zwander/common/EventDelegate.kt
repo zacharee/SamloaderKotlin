@@ -1,8 +1,8 @@
 package tk.zwander.common
 
+import dev.zwander.kotlin.file.PlatformFile
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
-import tk.zwander.common.data.PlatformFile
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.EventManager
 import tk.zwander.common.util.eventManager

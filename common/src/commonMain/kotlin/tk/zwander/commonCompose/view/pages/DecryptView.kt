@@ -31,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.compose.alertdialog.InWindowAlertDialog
+import dev.zwander.kotlin.file.PlatformFile
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.ColumnScrollbarNew
 import my.nanihadesuka.compose.ScrollbarSelectionMode
 import tk.zwander.common.data.DecryptFileInfo
-import tk.zwander.common.data.PlatformFile
 import tk.zwander.common.tools.delegates.Decrypter
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.eventManager
