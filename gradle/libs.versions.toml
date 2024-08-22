@@ -9,6 +9,7 @@ bugsnag-gradle = "0.1.0"
 bugsnag-jvm = "3.7.1"
 buildkonfig-gradle = "0.15.1"
 compose = "1.7.0-alpha03"
+composedialog = "0.1.0"
 conveyor = "1.10"
 conveyor-control = "1.1"
 desugar_jdk_libs = "2.0.4"
@@ -18,6 +19,7 @@ githubApi = "1.323"
 google-material = "1.13.0-alpha05"
 jna = "5.14.0"
 jsystemthemedetector = "7dde337429"
+kmpfile = "0.1.0"
 korlibs = "6.0.0"
 kotlin = "2.0.20-358"
 kotlinx-coroutines = "1.9.0-RC.2"
@@ -50,6 +52,7 @@ google-material = { module = "com.google.android.material:material", version.ref
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 jsystemthemedetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
+kmpfile = { module = "dev.zwander:kmpfile", version.ref = "kmpfile" }
 korlibs-io = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
 korlibs-platform = { module = "com.soywiz:korlibs-platform", version.ref = "korlibs" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -72,6 +75,7 @@ richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose"
 semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 window-styler = { module = "com.github.zacharee.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }
+zwander-composedialog = { module = "dev.zwander:composedialog", version.ref = "composedialog" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

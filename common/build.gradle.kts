@@ -82,9 +82,8 @@ kotlin {
                 api(libs.richeditor.compose)
                 api(libs.semver)
                 api(libs.filekit.core)
-
-                api(project(":alertdialog:library"))
-                api(project(":kmpfile:library"))
+                api(libs.kmpfile)
+                api(libs.zwander.composedialog)
             }
         }
 
