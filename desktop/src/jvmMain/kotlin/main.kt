@@ -24,6 +24,7 @@ import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.sun.jna.ptr.IntByReference
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.compose.alertdialog.LocalWindowDecorations
+import dev.zwander.compose.rememberThemeInfo
 import korlibs.platform.Platform
 import kotlinx.coroutines.launch
 import org.jetbrains.skia.DirectContext
@@ -41,7 +42,6 @@ import tk.zwander.common.util.jna.windows.hwnd
 import tk.zwander.common.util.jna.windows.toBgr
 import tk.zwander.commonCompose.MainView
 import tk.zwander.commonCompose.util.jna.Kernel32
-import tk.zwander.commonCompose.util.rememberThemeInfo
 import tk.zwander.commonCompose.util.toAwtColor
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.LocalPagerState

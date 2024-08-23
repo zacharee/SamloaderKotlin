@@ -27,6 +27,7 @@ kotlinx-datetime = "0.6.0"
 kotlinx-serialization = "1.7.1"
 ksoup = "0.1.4"
 ktor = "3.0.0-rc-1-eap-999"
+materialyou = "0.1.0"
 moko-resources = "0.24.1"
 multiplatform-settings = "1.1.1"
 oshi = "6.6.2"
@@ -76,6 +77,7 @@ semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 window-styler = { module = "com.github.zacharee.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }
 zwander-composedialog = { module = "dev.zwander:composedialog", version.ref = "composedialog" }
+zwander-materialyou = { module = "dev.zwander:materialyou", version.ref = "materialyou" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle" }

@@ -84,6 +84,7 @@ kotlin {
                 api(libs.filekit.core)
                 api(libs.kmpfile)
                 api(libs.zwander.composedialog)
+                api(libs.zwander.materialyou)
             }
         }
 
