@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.documentfile.provider.DocumentFile
+import dev.zwander.kotlin.file.PlatformUriFile
 import io.github.vinceglb.filekit.core.FileKit
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +28,6 @@ import kotlinx.coroutines.MainScope
 import tk.zwander.common.IDownloaderService
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.data.DownloadFileInfo
-import tk.zwander.common.data.PlatformUriFile
 import tk.zwander.common.util.Event
 import tk.zwander.common.util.EventManager
 import tk.zwander.common.util.LocalPhoneInfo
