@@ -136,10 +136,10 @@
     <string name="decryption_key_help">如果您知道文件的解密密钥，则可以在此处输入。否则请将其留空，Bifrost 将从三星的服务器中取回密钥。</string>
     <string name="enable_offline_decryption">离线解密</string>
     <string name="about_bifrost">关于 Bifrost</string>
-    <string name="updates">Updates</string>
-    <string name="update">Update</string>
-    <string name="update_available">Update available: %s</string>
-    <string name="no_updates_available">No updates available</string>
-    <string name="check_for_updates">Check for updates</string>
-    <string name="check">Check</string>
+    <string name="updates">更新</string>
+    <string name="update">更新</string>
+    <string name="update_available">可用的更新: %s</string>
+    <string name="no_updates_available">没有可用的更新</string>
+    <string name="check_for_updates">检查更新</string>
+    <string name="check">检查</string>
 </resources>
