@@ -16,7 +16,6 @@
     <string name="firmware">البرنامج الثابت</string>
     <string name="openFile">فتح ملف</string>
     <string name="downloading">جاري التنزيل</string>
-    <string name="useNativeFilePickerDesc">قد يوفر مظهرًا وتجربة أكثر طبيعية عند فتح وحفظ الملفات.</string>
     <string name="no">لا</string>
     <string name="changelog">سجل التغييرات</string>
     <string name="clear">مسح</string>
@@ -28,7 +27,6 @@
     <string name="edit">تحرير</string>
     <string name="copy">نسخ</string>
     <string name="firmwareHint">البرنامج الثابت (PDA/CSC/CP/AP)</string>
-    <string name="useNativeFilePicker">استخدام محدد الملفات الأصلي</string>
     <string name="historyErrorFormat">غير قادر على استرجاع تاريخ البرنامج الثابت. تأكد من صحة الطراز والمنطقة.
 \nخطأ: %1$s</string>
     <string name="modelHint">الطراز (مثل SM-N986U1)</string>
