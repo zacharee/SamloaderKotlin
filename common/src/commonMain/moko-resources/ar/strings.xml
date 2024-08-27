@@ -34,7 +34,7 @@
     <string name="yes">نعم</string>
     <string name="android">أندرويد %1$s</string>
     <string name="downloadFirmware">تنزيل البرنامج الثابت</string>
-    <string name="noBinaryFile">لم يتم العثور على ملف ثنائي لـ %1$s، %2$s! يرجى تجربة CSC مختلف.</string>
+    <string name="noBinaryFile">لم يتم العثور على ملف ثنائي لـ%1$s، %2$s! يرجى تجربة CSC مختلف.</string>
     <string name="help">مساعدة</string>
     <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">حالة عودة غير صحيحة: %1$s</string>
@@ -108,7 +108,7 @@
     <string name="invalidFirmwareError">سلسلة البرنامج الثابت غير صالحة. تأكد من تحديد جميع المجموعات.</string>
     <string name="source">المصدر:</string>
     <string name="file">ملف</string>
-    <string name="useMicaEffectDesc">على ويندوز 11 وما بعده، يمكن لـ Bifrost تطبيق تأثير ميكا على خلفية النافذة، مما يجعلها تبدو أكثر مثل تطبيق ويندوز الأصلي.</string>
+    <string name="useMicaEffectDesc">على Windows 11 وما بعده، يمكن لـBifrost تطبيق تأثير Mica على خلفية النافذة، مما يجعلها تبدو أكثر مثل تطبيق Windows.</string>
     <string name="manualWarningDetails2">هذه المشكلة</string>
     <string name="done">تم</string>
     <string name="notification_progress_channel_name">التقدم</string>
@@ -130,7 +130,7 @@
     <string name="september_short">سبتمبر</string>
     <string name="december_short">ديسمبر</string>
     <string name="november_short">نوفمبر</string>
-    <string name="invalid_model">تحذير! لا يمكن لـ Bifrost تنزيل البرنامج الثابت للساعات أو الملحقات الأخرى. فقط الهواتف والأجهزة اللوحية مدعومة.</string>
+    <string name="invalid_model">تحذير! لا يمكن لـBifrost تنزيل البرنامج الثابت للساعات أو الملحقات الأخرى. فقط الهواتف والأجهزة اللوحية مدعومة.</string>
     <string name="decryption_key">مفتاح فك التشفير</string>
     <string name="enable_offline_decryption_desc">عند تمكين هذا الخيار، سيتم حفظ ملف نصي إضافي عند تنزيل البرنامج الثابت، يحتوي على مفتاح فك التشفير المقدم من سامسونج. يمكن إدخال هذا المفتاح بعد ذلك في صفحة فك التشفير لفك تشفير البرنامج الثابت بدون اتصال بالإنترنت.</string>
     <string name="decryption_key_help">إذا كنت تعرف مفتاح فك التشفير للملف الذي تحاول فك تشفيره، يمكنك إدخاله هنا. خلاف ذلك، اتركه فارغًا وسيقوم Bifrost باسترجاع المفتاح من خوادم سامسونج.</string>
