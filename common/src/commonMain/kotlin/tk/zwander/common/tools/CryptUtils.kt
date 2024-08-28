@@ -197,11 +197,15 @@ object CryptUtils {
      * @return true if the file's CRC32 matches the expected value.
      */
     suspend fun checkCrc32(
-        enc: Source,
+        enc: Source?,
         encSize: Long,
         expected: Long,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit
     ): Boolean {
+        if (enc == null) {
+            return false
+        }
+
         var crcVal = CRC32.initialValue
 
         trackOperationProgress(

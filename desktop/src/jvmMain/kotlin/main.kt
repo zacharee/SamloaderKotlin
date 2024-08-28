@@ -31,7 +31,6 @@ import org.jetbrains.skia.DirectContext
 import org.jetbrains.skiko.GraphicsApi
 import org.jetbrains.skiko.RenderException
 import org.jetbrains.skiko.SkiaLayer
-import tk.zwander.common.EventDelegate
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
@@ -129,8 +128,6 @@ fun main() {
             }
         }
     }
-
-    EventDelegate.create()
 
     application(
         exitProcessOnExit = false,

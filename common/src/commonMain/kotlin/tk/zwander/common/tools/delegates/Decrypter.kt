@@ -6,6 +6,7 @@ import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.common.tools.Request
 import tk.zwander.common.util.Event
+import tk.zwander.common.util.FileManager
 import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.DecryptModel
@@ -93,9 +94,16 @@ object Decrypter {
     }
 
     suspend fun onOpenFile(model: DecryptModel) {
-        eventManager.sendEvent(Event.Decrypt.GetInput { info ->
-            handleFileInput(model, info)
-        })
+        val encFile = FileManager.pickFile()
+        val decFile = encFile?.let {
+            FileManager.saveFile(
+                encFile.getName().replace(".enc2", "")
+                    .replace(".enc4", ""),
+            )
+        }
+        val info = decFile?.let { DecryptFileInfo(encFile, decFile) }
+
+        handleFileInput(model, info)
     }
 
     fun handleFileInput(model: DecryptModel, info: DecryptFileInfo?) {
