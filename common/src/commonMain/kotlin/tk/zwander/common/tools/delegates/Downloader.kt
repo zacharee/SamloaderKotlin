@@ -154,7 +154,7 @@ object Downloader {
                     model.statusText.value = MR.strings.checkingCRC()
                     val result = CryptUtils.checkCrc32(
                         encFile.openInputStream() ?: return,
-                        size,
+                        encFile.getLength(),
                         crc32,
                     ) { current, max, bps ->
                         model.progress.value = current to max
@@ -164,7 +164,7 @@ object Downloader {
                             Event.Download.Progress(
                                 MR.strings.checkingCRC(),
                                 current,
-                                max
+                                max,
                             )
                         )
                     }

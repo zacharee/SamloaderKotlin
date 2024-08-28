@@ -200,19 +200,19 @@ object CryptUtils {
         enc: Source?,
         encSize: Long,
         expected: Long,
-        progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit
+        progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ): Boolean {
         if (enc == null) {
             return false
         }
 
+        val buffer = ByteArray(DEFAULT_CHUNK_SIZE)
         var crcVal = CRC32.initialValue
 
         trackOperationProgress(
             size = encSize,
             progressCallback = progressCallback,
             operation = {
-                val buffer = ByteArray(DEFAULT_CHUNK_SIZE)
                 val len = enc.readAtMostTo(buffer, 0, buffer.size)
 
                 if (len > 0) {

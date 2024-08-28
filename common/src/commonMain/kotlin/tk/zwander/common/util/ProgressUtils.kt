@@ -117,5 +117,6 @@ suspend fun trackOperationProgress(
         }
 
         finished.value = true
+        averager.close()
     }
 }

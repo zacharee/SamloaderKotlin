@@ -21,6 +21,12 @@ class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1
         }
     }
 
+    suspend fun close() {
+        mutex.withLock {
+            chunk.clear()
+        }
+    }
+
     private fun unsafeUpdate(durationNano: Long, read: Long) {
         val currentTimeNano = currentTimeNano()
         chunk.add(ChunkData(durationNano, read, currentTimeNano))
