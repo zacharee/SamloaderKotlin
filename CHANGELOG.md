@@ -1,3 +1,9 @@
+# 1.19.3
+- File management improvements for better UX and to fix some issues in 1.19.2.
+- Remove option to show Mica effect on Windows since it's broken.
+- Add TACs.
+- Update translations.
+
 # 1.19.2
 - Fix issues launching on ARM Windows.
 - Fix blank file picker window on Linux.
