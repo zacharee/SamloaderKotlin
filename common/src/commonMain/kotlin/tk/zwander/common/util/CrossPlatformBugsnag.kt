@@ -3,27 +3,26 @@ package tk.zwander.common.util
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.HttpRequestTimeoutException
-import korlibs.io.lang.portableSimpleName
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.ClosedReceiveChannelException
 import tk.zwander.common.exceptions.NoBinaryFileError
 
 object CrossPlatformBugsnag {
     private val exceptionsAndCausesToIgnore = arrayOf(
-        SocketTimeoutException::class.portableSimpleName,
-        HttpRequestTimeoutException::class.portableSimpleName,
-        ConnectTimeoutException::class.portableSimpleName,
-        CancellationException::class.portableSimpleName,
+        SocketTimeoutException::class.simpleName,
+        HttpRequestTimeoutException::class.simpleName,
+        ConnectTimeoutException::class.simpleName,
+        CancellationException::class.simpleName,
         "SocketException",
         "SSLHandshakeException",
-        NoBinaryFileError::class.portableSimpleName,
+        NoBinaryFileError::class.simpleName,
         "UnresolvedAddressException",
         "UnknownHostException",
         "ForegroundServiceStartNotAllowedException",
         "CertPathValidatorException",
         "ConnectException",
-        ClosedReceiveChannelException::class.portableSimpleName,
-    )
+        ClosedReceiveChannelException::class.simpleName,
+    ).filterNotNull()
 
     private val messagesToIgnore = arrayOf(
         "Software caused connection abort",
@@ -42,7 +41,7 @@ object CrossPlatformBugsnag {
     )
 
     private fun Throwable.shouldIgnore(): Boolean {
-        if (exceptionsAndCausesToIgnore.contains(this::class.portableSimpleName) || messagesToIgnore.contains(message)) {
+        if (exceptionsAndCausesToIgnore.contains(this::class.simpleName) || messagesToIgnore.contains(message)) {
             return true
         }
 
