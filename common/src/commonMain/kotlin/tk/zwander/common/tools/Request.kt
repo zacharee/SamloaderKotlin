@@ -492,7 +492,7 @@ fun Document.extractV4Key(): Pair<ByteArray, String>? {
 
     return if (fwVer != null && logicVal != null) {
         val decKey = Request.getLogicCheck(fwVer, logicVal)
-
+        
         MD5.digest(decKey.toByteArray()).bytes to decKey
     } else {
         null

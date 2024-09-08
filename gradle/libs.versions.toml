@@ -12,6 +12,7 @@ compose = "1.7.0-beta01"
 composedialog = "0.1.0"
 conveyor = "1.10"
 conveyor-control = "1.1"
+csv = "0.11"
 desugar_jdk_libs = "2.1.2"
 filekitCore = "0.8.2"
 flatlaf = "3.5.1"
@@ -45,6 +46,7 @@ bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsn
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-material-icons-core = { module = "org.jetbrains.compose.material:material-icons-core", version.ref = "compose" }
 conveyor-control = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref = "conveyor-control" }
+csv = { module = "de.halfbit:csv", version.ref = "csv" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
 filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekitCore" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }

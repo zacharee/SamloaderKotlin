@@ -2,10 +2,10 @@
 
 package tk.zwander.common.data.imei
 
+import de.halfbit.csv.parseCsv
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
-import korlibs.io.serialization.csv.CSV
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -122,8 +122,8 @@ data object IMEIDatabase {
     }
 
     private fun loadCsv(csvString: String) {
-        val csv = CSV.parse(csvString)
-        csv.lines.forEach { line ->
+        val csv = parseCsv(csvString)
+        csv.rows.forEach { line ->
             if (line.size >= 2) {
                 val tac = line[0]
                 val model = line[1].cleanUpModel()

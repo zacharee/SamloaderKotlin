@@ -5,10 +5,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import de.halfbit.csv.parseCsv
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
-import korlibs.io.serialization.csv.CSV
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -122,9 +122,9 @@ data object CSCDB {
     }
 
     private fun loadCsv(csvString: String) {
-        val csv = CSV.parse(csvString)
+        val csv = parseCsv(csvString)
 
-        csv.lines.forEach { line ->
+        csv.rows.forEach { line ->
             val (code, countries, carriers) = if (line.size == 2) {
                 line + null
             } else {
