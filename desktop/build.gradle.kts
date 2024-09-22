@@ -107,6 +107,7 @@ compose.desktop {
             }
 
             linux {
+                modules("jdk.security.auth")
                 iconFile.set(project.file("src/jvmMain/resources/icon.png"))
                 packageVersion = rootProject.extra["versionCode"].toString()
                 targetFormats(TargetFormat.Deb, TargetFormat.AppImage)
