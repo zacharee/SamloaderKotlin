@@ -1,3 +1,9 @@
+# 1.19.4
+- Work on file picker fixes for Linux.
+- Update translations.
+- Update TACs.
+- Update dependencies.
+
 # 1.19.3
 - File management improvements for better UX and to fix some issues in 1.19.2.
 - Remove option to show Mica effect on Windows since it's broken.
