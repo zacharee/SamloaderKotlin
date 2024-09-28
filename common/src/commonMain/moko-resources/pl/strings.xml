@@ -20,7 +20,7 @@
     <string name="openFileDesc">Otwórz plik do odszyfrowania</string>
     <string name="minimize">Minimalizuj</string>
     <string name="zoom">Powiększ</string>
-    <string name="selectEncrypted">Wybierz plik z zaszyfrowanym oprogramowaniem kończący się na enc2 lub enc4</string>
+    <string name="selectEncrypted">Wybierz plik z zaszyfrowanym oprogramowaniem kończący się na enc2 lub enc4.</string>
     <string name="descending">Malejąco</string>
     <string name="carriers">Operatorzy</string>
     <string name="firmware">Oprogramowanie</string>
@@ -64,7 +64,7 @@
     <string name="md5CheckFailed">Nie udało się sprawdzić sumy kontrolnej MD5. Usuń i pobierz ponownie plik.</string>
     <string name="decrypting">Odszyfrowywanie</string>
     <string name="about">O programie</string>
-    <string name="removeSavedData">Usuń dane programu</string>
+    <string name="removeSavedData">Usuń dane aplikacji</string>
     <string name="moreInfo">Więcej informacji</string>
     <string name="manual">Tryb ręczny</string>
     <string name="more">Więcej</string>
@@ -85,7 +85,7 @@
     <string name="fileIssue">Utwórz raport</string>
     <string name="allowLowercaseCharactersDesc">Bifrost dla lepszej czytelności zamienia wszystkie litery w nazwie modelu, regionu i w wersji oprogramowania na WIELKIE. Jednakże, niektóre modele mają w nazwie małe litery. Włącz tę opcję, aby móc pobierać oprogramowanie dla tych modeli.</string>
     <string name="mib">MiB</string>
-    <string name="removeSavedDataDesc">Bifrost przechowuje sobie pewne dane (np. ostatnio wprowadzone informacje o urządzeniu i stany ustawień). Naciśnij tutaj, aby usunąć te dane.</string>
+    <string name="removeSavedDataDesc">Naciśnij tutaj, aby usunąć przechowywane przez aplikację dane (są to m.in. ostatnio wprowadzone informacje o urządzeniu i stany ustawień).</string>
     <string name="search">Szukaj</string>
     <string name="autoDeleteEncryptedFirmwareDesc">Bifrost przy pobieraniu oprogramowania tworzy dwa pliki: pierwszy to zaszyfrowane oprogramowanie, drugi to archiwum ZIP z odszyfrowanymi plikami oprogramowania. Włącz tę opcję, aby po odszyfrowaniu od razu usuwać ten pierwszy plik.</string>
     <string name="error">Błąd</string>
@@ -135,11 +135,11 @@
     <string name="mastodon" translatable="false">Mastodon</string>
     <string name="github" translatable="false">GitHub</string>
     <string name="zacharyWander" translatable="false">Zachary Wander</string>
-    <string name="about_bifrost">About Bifrost</string>
-    <string name="updates">Updates</string>
-    <string name="update">Update</string>
-    <string name="update_available">Update available: %s</string>
-    <string name="no_updates_available">No updates available</string>
-    <string name="check_for_updates">Check for updates</string>
-    <string name="check">Check</string>
+    <string name="about_bifrost">O aplikacji</string>
+    <string name="updates">Aktualizacje</string>
+    <string name="update">Aktualizuj</string>
+    <string name="update_available">Dostępna aktualizacja: %s</string>
+    <string name="no_updates_available">Nie znaleziono żadnych aktualizacji</string>
+    <string name="check_for_updates">Wyszukaj aktualizacje</string>
+    <string name="check">Sprawdź</string>
 </resources>
