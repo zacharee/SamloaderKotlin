@@ -7,10 +7,7 @@ import dev.zwander.kotlin.file.PlatformFile
 @Composable
 actual fun Modifier.handleFileDrag(
     enabled: Boolean,
-    onDragStart: (PlatformFile?) -> Unit,
-    onDrag: (PlatformFile?) -> Unit,
-    onDragExit: () -> Unit,
-    onDrop: (PlatformFile?) -> Unit,
+    onDrop: (PlatformFile?) -> Boolean,
 ): Modifier {
     // No-op
     return this

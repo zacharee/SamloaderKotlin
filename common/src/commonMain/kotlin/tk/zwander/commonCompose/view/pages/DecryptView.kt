@@ -163,6 +163,9 @@ internal fun DecryptView() {
 
                                         Decrypter.handleFileInput(model, decInfo)
                                     }
+                                    true
+                                } else {
+                                    false
                                 }
                             },
                         readOnly = true,
