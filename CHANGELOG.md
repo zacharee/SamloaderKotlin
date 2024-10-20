@@ -1,3 +1,10 @@
+# 1.19.5
+- Fix an issue where checking whether Bifrost is running in emulated x86 on ARM Windows would cause crashes on older Windows versions.
+- Fix an issue where retrieving the accent color on Windows would crash the app on older Windows versions.
+- Add more TACs.
+- Update translations.
+- Update dependencies.
+
 # 1.19.4
 - Work on file picker fixes for Linux.
 - Update translations.
