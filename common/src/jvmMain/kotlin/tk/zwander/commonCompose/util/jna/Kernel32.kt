@@ -26,7 +26,6 @@ interface Kernel32 : StdCallLibrary, WinNT, Wincon {
                 return nativeMachine.value == WinDef.USHORT(IMAGE_FILE_MACHINE_ARM64)
             } catch (e: Throwable) {
                 println("Unable to check for emulated x86.")
-                e.printStackTrace()
                 return false
             }
         }
