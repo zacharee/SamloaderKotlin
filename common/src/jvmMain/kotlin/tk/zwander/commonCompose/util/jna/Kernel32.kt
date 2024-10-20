@@ -16,13 +16,19 @@ interface Kernel32 : StdCallLibrary, WinNT, Wincon {
             Native.load("kernel32", Kernel32::class.java, W32APIOptions.DEFAULT_OPTIONS)
 
         fun isEmulatedX86(): Boolean {
-            val processHandle = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentProcess()
-            val processMachine = WinDef.USHORTByReference()
-            val nativeMachine = WinDef.USHORTByReference()
+            try {
+                val processHandle = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetCurrentProcess()
+                val processMachine = WinDef.USHORTByReference()
+                val nativeMachine = WinDef.USHORTByReference()
 
-            INSTANCE.IsWow64Process2(processHandle, processMachine, nativeMachine)
+                INSTANCE.IsWow64Process2(processHandle, processMachine, nativeMachine)
 
-            return nativeMachine.value == WinDef.USHORT(IMAGE_FILE_MACHINE_ARM64)
+                return nativeMachine.value == WinDef.USHORT(IMAGE_FILE_MACHINE_ARM64)
+            } catch (e: Throwable) {
+                println("Unable to check for emulated x86.")
+                e.printStackTrace()
+                return false
+            }
         }
     }
 
