@@ -20,13 +20,7 @@ data object IMEIGenerator {
         model: String?,
         imeis: Map<String, Set<String>> = IMEIDatabase.tacs.value,
     ): List<String> {
-        val adjustedModel = if (model?.endsWith("U1") == true) {
-            model.replace("U1", "U")
-        } else {
-            model
-        }
-
-        val tacs = imeis[adjustedModel] ?: return emptyList()
+        val tacs = imeis[model] ?: return emptyList()
 
         return IMEIDatabase.DUMMY_SERIALS.flatMap { serial ->
             tacs.map { tac ->
