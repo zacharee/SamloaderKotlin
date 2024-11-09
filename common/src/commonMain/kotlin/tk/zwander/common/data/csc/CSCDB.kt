@@ -5,7 +5,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import de.halfbit.csv.parseCsv
+import de.halfbit.csv.Csv
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
@@ -122,9 +122,9 @@ data object CSCDB {
     }
 
     private fun loadCsv(csvString: String) {
-        val csv = parseCsv(csvString)
+        val csv = Csv.parserText(csvString)
 
-        csv.rows.forEach { line ->
+        csv.allRows.forEach { line ->
             val (code, countries, carriers) = if (line.size == 2) {
                 line + null
             } else {
