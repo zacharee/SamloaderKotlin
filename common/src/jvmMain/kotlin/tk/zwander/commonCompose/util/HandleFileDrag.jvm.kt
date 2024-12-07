@@ -1,6 +1,5 @@
 package tk.zwander.commonCompose.util
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.draganddrop.dragAndDropTarget
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -15,7 +14,6 @@ import dev.zwander.kotlin.file.PlatformFile
 import java.net.URI
 import kotlin.io.path.toPath
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 actual fun Modifier.handleFileDrag(
     enabled: Boolean,
