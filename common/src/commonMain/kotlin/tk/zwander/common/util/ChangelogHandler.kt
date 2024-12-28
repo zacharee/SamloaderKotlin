@@ -73,12 +73,16 @@ object ChangelogHandler {
     }
 
     private fun parseChangelogs(body: String): Map<String, Changelog> {
-        val doc = Ksoup.parse(body)
+        val doc = try {
+            Ksoup.parse(body)
+        } catch (e: NullPointerException) {
+            return mapOf()
+        }
         val container = doc.selectFirst(".container")
 
-        val divs = container!!.children().apply {
+        val divs = container?.children()?.apply {
             removeIf { it.tagName() == "hr" }
-        }
+        } ?: return mapOf()
         val changelogs = LinkedHashMap<String, Changelog>()
 
         for (i in 3 until divs.size step 2) {
