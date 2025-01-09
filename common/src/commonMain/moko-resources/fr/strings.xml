@@ -42,7 +42,7 @@
     <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">Mauvais code de statut de réponse : %1$s</string>
     <string name="release">Date de sortie : %1$s</string>
-    <string name="downloader">Télécharger</string>
+    <string name="downloader">Téléchargement</string>
     <string name="version">v%1$s</string>
     <string name="decryptError">Impossible de décrypter le firmware. Assurez-vous que le modèle, la région et le firmware soient corrects.
 \nErreur : %1$s</string>
@@ -74,7 +74,7 @@
 \n%2$s
 \n
 \nà la place. Êtes-vous sûr de vouloir continuer le téléchargement ?</string>
-    <string name="decrypt">Décrypter</string>
+    <string name="decrypt">Décryptage</string>
     <string name="cancel">Annuler</string>
     <string name="modelFormat">Modèle : %s</string>
     <string name="mastodon">Mastodon</string>
@@ -92,7 +92,7 @@
     <string name="zacharyWander">Zachary Wander</string>
     <string name="allowLowercaseCharacters">Autoriser les caractères minuscules</string>
     <string name="basedOn">Basé sur</string>
-    <string name="decrypter">Décrypter</string>
+    <string name="decrypter">Décryptage</string>
     <string name="checkForUpdates">Vérifier les mises à jour</string>
     <string name="mibs">Mio/s</string>
     <string name="buildDate">Date de build : %1$s</string>
@@ -113,33 +113,33 @@
     <string name="manualWarningDetails2">cette page</string>
     <string name="hide">Masquer</string>
     <string name="show">Afficher</string>
-    <string name="notification_progress_channel_name">Progress</string>
-    <string name="notification_progress_text">Working…</string>
-    <string name="notification_finished_channel_name">Finished</string>
-    <string name="notification_finished_channel_text">A job has finished!</string>
-    <string name="invalid_imei_or_serial">Invalid IMEI or serial number specified! If you copied the value from your device, make sure it's entered correctly. If Bifrost generated IMEIs for you, please open an issue on GitHub with the model, region, and TAC of a real device (if you have it).</string>
-    <string name="february_short">Feb</string>
-    <string name="march_short">Mar</string>
-    <string name="october_short">Oct</string>
-    <string name="may_short">May</string>
-    <string name="august_short">Aug</string>
+    <string name="notification_progress_channel_name">Progression</string>
+    <string name="notification_progress_text">En cours…</string>
+    <string name="notification_finished_channel_name">Terminé</string>
+    <string name="notification_finished_channel_text">Action terminée!</string>
+    <string name="invalid_imei_or_serial">IMEI ou numéro de série Invalide! Si vous avez copié la valeur depuis l\'appareil, vérifier que les valeurs sont correctes. Si \"Bifrost\" à généré l\'IMEI pour vous, veuillez ouvrir une demande sur \"GitHub\" avec le modèle, la région, le TAC de l\'appareil, etc. (si vous les avez).</string>
+    <string name="february_short">Février</string>
+    <string name="march_short">Mars</string>
+    <string name="october_short">Octobre</string>
+    <string name="may_short">Mai</string>
+    <string name="august_short">Aout</string>
     <string name="january_short">Jan</string>
-    <string name="june_short">Jun</string>
-    <string name="april_short">Apr</string>
-    <string name="july_short">Jul</string>
-    <string name="september_short">Sep</string>
-    <string name="invalid_model">Warning! Bifrost can't download firmware for watches or other accessories. Only phones and tablets are supported.</string>
-    <string name="december_short">Dec</string>
-    <string name="november_short">Nov</string>
-    <string name="decryption_key">Decryption Key</string>
-    <string name="enable_offline_decryption_desc">When this option is enabled, an extra text file will be saved when downloading firmware, containing the decryption key provided by Samsung. This key can then be entered on the Decrypter page to decrypt firmware without an internet connect.</string>
-    <string name="decryption_key_help">If you know the decryption key for the file you're trying to decrypt, you can enter it here. Otherwise, leave it blank and Bifrost will retrieve the key from Samsung's servers.</string>
-    <string name="enable_offline_decryption">Offline Decryption</string>
-    <string name="about_bifrost">About Bifrost</string>
-    <string name="updates">Updates</string>
-    <string name="no_updates_available">No updates available</string>
-    <string name="check_for_updates">Check for updates</string>
-    <string name="check">Check</string>
-    <string name="update">Update</string>
-    <string name="update_available">Update available: %s</string>
+    <string name="june_short">Juin</string>
+    <string name="april_short">Avril</string>
+    <string name="july_short">Juillet</string>
+    <string name="september_short">Septembre</string>
+    <string name="invalid_model">Attention, Bifrost peut télécharger uniquement des firmwares pour les téléphones ou tablettes.</string>
+    <string name="december_short">Décembre</string>
+    <string name="november_short">Novembre</string>
+    <string name="decryption_key">Clé de décryptage</string>
+    <string name="enable_offline_decryption_desc">Lorsque cette option est activée, un fichier texte supplémentaire contenant la clé de décryptage fournie par Samsung est enregistré lors du téléchargement du firmware. Cette clé peut ensuite être saisie sur la page Decrypter pour décrypter le firmware sans connexion Internet.</string>
+    <string name="decryption_key_help">Si vous connaissez la clé de déchiffrement du fichier que vous essayez de déchiffrer, vous pouvez la saisir ici. Sinon, laissez ce champ vide et Bifrost récupérera la clé sur les serveurs de Samsung.</string>
+    <string name="enable_offline_decryption">Décryptage hors-ligne</string>
+    <string name="about_bifrost">A propos de \"Bifrost\"</string>
+    <string name="updates">Mises à jour</string>
+    <string name="no_updates_available">Aucune mise à jour disponible</string>
+    <string name="check_for_updates">Vérifier les mises à jour</string>
+    <string name="check">Vérifier les mises à jour</string>
+    <string name="update">mise à jour en cours</string>
+    <string name="update_available">Mise à jour disponible: %s</string>
 </resources>
