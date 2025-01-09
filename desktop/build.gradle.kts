@@ -1,3 +1,4 @@
+import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
@@ -15,7 +16,10 @@ version = rootProject.extra["versionName"].toString()
 val javaVersionEnum: JavaVersion by rootProject.extra
 
 kotlin {
-    jvmToolchain(javaVersionEnum.toString().toInt())
+    jvmToolchain {
+        this.languageVersion.set(JavaLanguageVersion.of(javaVersionEnum.toString().toInt()))
+        this.vendor.set(JvmVendorSpec.MICROSOFT)
+    }
 
     jvm {
         compilations.all {
@@ -148,5 +152,6 @@ dependencies {
     linuxAmd64(compose.desktop.linux_x64)
     macAarch64(compose.desktop.macos_arm64)
     macAmd64(compose.desktop.macos_x64)
+    windowsAarch64(compose("org.jetbrains.compose.desktop:desktop-jvm-windows-arm64"))
     windowsAmd64(compose.desktop.windows_x64)
 }

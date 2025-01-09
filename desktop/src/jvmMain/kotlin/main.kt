@@ -28,9 +28,11 @@ import dev.zwander.compose.rememberThemeInfo
 import korlibs.platform.Platform
 import kotlinx.coroutines.launch
 import org.jetbrains.skia.DirectContext
+import org.jetbrains.skiko.Arch
 import org.jetbrains.skiko.GraphicsApi
 import org.jetbrains.skiko.RenderException
 import org.jetbrains.skiko.SkiaLayer
+import org.jetbrains.skiko.hostArch
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
@@ -65,6 +67,7 @@ fun main() {
 
     val exceptionHandlerFactory = WindowExceptionHandlerFactory { window ->
         WindowExceptionHandler { throwable ->
+            throwable.printStackTrace()
             SwingUtilities.invokeLater {
                 // if there was an error during window init, we can't use it as a parent,
                 // otherwise we will have two exceptions in the log
@@ -109,7 +112,7 @@ fun main() {
         }
 
         Platform.isWindows -> {
-            if (Kernel32.isEmulatedX86()) {
+            if (hostArch == Arch.X64 && Kernel32.isEmulatedX86()) {
                 EventQueue.invokeAndWait {
                     val layer = SkiaLayer()
                     try {
