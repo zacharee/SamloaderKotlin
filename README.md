@@ -31,13 +31,13 @@ Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) p
 
 ## Platform Compatibility
 
-|               | x86 | x86_64 | ARMv7 | ARM64                                                         |
-|---------------|-----|--------|-------|---------------------------------------------------------------|
-| Windows       | ❌   | ✅      | ❌     | ❌ ([YouTrack](https://youtrack.jetbrains.com/issue/CMP-2584)) |
-| macOS         | ❌   | ✅      | ❌     | ✅                                                             |
-| Android       | ✅   | ✅      | ✅     | ✅                                                             |
-| Debian-Based  | ❌   | ✅      | ❌     | ✅                                                             |
-| Generic Linux | ❌   | ✅      | ❌     | ✅                                                             |
+|               | x86 | x86_64 | ARMv7 | ARM64 |
+|---------------|-----|--------|-------|-------|
+| Windows       | ❌   | ✅      | ❌     | ✅     |
+| macOS         | ❌   | ✅      | ❌     | ✅     |
+| Android       | ✅   | ✅      | ✅     | ✅     |
+| Debian-Based  | ❌   | ✅      | ❌     | ✅     |
+| Generic Linux | ❌   | ✅      | ❌     | ✅     |
 
 ## Note for Linux
 Make sure you have at least one of the following font families from each category installed.
