@@ -1,3 +1,11 @@
+# 1.19.6
+- Add native Windows ARM64 support.
+- Don't treat U and U1 variants as the same when generating IMEIs.
+- Fix some changelog parsing issues.
+- Update TACs.
+- Update translations.
+- Update dependencies.
+
 # 1.19.5
 - Fix an issue where checking whether Bifrost is running in emulated x86 on ARM Windows would cause crashes on older Windows versions.
 - Fix an issue where retrieving the accent color on Windows would crash the app on older Windows versions.
