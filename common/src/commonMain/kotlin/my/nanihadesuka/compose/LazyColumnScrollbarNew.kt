@@ -76,7 +76,7 @@ fun LazyColumnScrollbarNew(
 
                 override val normalizedThumbSizeReal: Float
                     get() = state.layoutInfo.let {
-                        if (it.totalItemsCount == 0)
+                        if (it.totalItemsCount == 0 || it.visibleItemsInfo.isEmpty())
                             return@let 0f
 
                         val firstItem = realFirstVisibleItem ?: return@let 1.0f
