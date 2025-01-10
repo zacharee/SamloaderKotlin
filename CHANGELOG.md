@@ -1,3 +1,6 @@
+# 1.19.7
+- Fix a crash.
+
 # 1.19.6
 - Add native Windows ARM64 support.
 - Don't treat U and U1 variants as the same when generating IMEIs.
