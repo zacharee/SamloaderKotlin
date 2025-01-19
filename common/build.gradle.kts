@@ -165,10 +165,6 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].res.srcDir(layout.buildDirectory.file("generated/moko/androidMain/res"))
-
-    dependencies {
-        coreLibraryDesugaring(libs.desugar.jdk.libs)
-    }
 }
 
 buildkonfig {
@@ -191,4 +187,8 @@ multiplatformResources {
 
 tasks.withType<Copy> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+dependencies {
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
