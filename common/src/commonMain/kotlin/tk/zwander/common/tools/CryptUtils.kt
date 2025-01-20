@@ -30,6 +30,8 @@ object CryptUtils {
     @OptIn(DelicateCryptographyApi::class)
     val md5Provider = CryptographyProvider.Default.get(MD5)
     val aesCbcProvider = CryptographyProvider.Default.get(AES.CBC)
+    @OptIn(DelicateCryptographyApi::class)
+    val aesEcbProvider = CryptographyProvider.Default.get(AES.ECB)
 
     /**
      * Samsung uses its own padding for its AES
@@ -185,6 +187,7 @@ object CryptUtils {
      * @param length the size of the encrypted file.
      * @param progressCallback a callback to keep track of the progress.
      */
+    @OptIn(DelicateCryptographyApi::class)
     suspend fun decryptProgress(
         inf: Source,
         outf: Sink,
@@ -193,7 +196,7 @@ object CryptUtils {
         chunkSize: Int = DEFAULT_CHUNK_SIZE,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ) {
-        val cipher = aesCbcProvider.keyDecoder()
+        val cipher = aesEcbProvider.keyDecoder()
             .decodeFromByteArrayBlocking(AES.Key.Format.RAW, key)
             .cipher(padding = false)
 
