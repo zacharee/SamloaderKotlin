@@ -3,7 +3,8 @@
 package tk.zwander.common.tools
 
 import com.fleeksoft.ksoup.Ksoup
-import io.ktor.client.plugins.*
+import io.ktor.client.plugins.HttpTimeoutConfig
+import io.ktor.client.plugins.timeout
 import io.ktor.client.request.headers
 import io.ktor.client.request.prepareRequest
 import io.ktor.client.request.request
@@ -14,19 +15,24 @@ import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.utils.io.*
-import io.ktor.utils.io.core.*
+import io.ktor.utils.io.InternalAPI
+import io.ktor.utils.io.copyTo
+import io.ktor.utils.io.core.remaining
+import io.ktor.utils.io.core.toByteArray
+import kotlinx.io.Buffer
+import kotlinx.io.InternalIoApi
+import kotlinx.io.RealSink
 import kotlinx.io.Sink
-import kotlinx.io.asByteChannel
-import tk.zwander.common.util.globalHttpClient
+import kotlinx.io.write
 import tk.zwander.common.util.firstElementByTagName
+import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.trackOperationProgress
-import kotlin.time.ExperimentalTime
+import java.nio.ByteBuffer
+import java.nio.channels.WritableByteChannel
 
 /**
  * Manage communications with Samsung's server.
  */
-@OptIn(ExperimentalTime::class)
 object FusClient {
     enum class Request(val value: String) {
         GENERATE_NONCE("NF_DownloadGenerateNonce.do"),
@@ -119,7 +125,7 @@ object FusClient {
      * @param fileName the name of the file to download.
      * @param start an optional offset. Used for resuming downloads.
      */
-    @OptIn(InternalAPI::class)
+    @OptIn(InternalAPI::class, InternalIoApi::class)
     suspend fun downloadFile(
         fileName: String,
         start: Long = 0,
@@ -151,15 +157,32 @@ object FusClient {
         return request.execute { response ->
             val md5 = response.headers["Content-MD5"]
             val channel = response.bodyAsChannel()
+            val outputChannel = object : WritableByteChannel {
+                override fun close() {
+                    output.close()
+                }
+
+                override fun isOpen(): Boolean {
+                    return when (output) {
+                        is RealSink -> output.closed
+                        is Buffer -> false
+                    }
+                }
+
+                override fun write(src: ByteBuffer): Int {
+                    return output.write(src)
+                }
+            }
 
             trackOperationProgress(
                 size = size,
                 progressCallback = progressCallback,
                 operation = {
-                    // awaitContent() should prevent unnecessary looping by making sure there are actually 1024 * 256
+                    val chunkSize = 1024 * 256L
+                    // awaitContent() should prevent unnecessary looping by making sure there are actually [chunkSize]
                     // bytes available to read.
-                    channel.awaitContent(min = minOf(1024 * 256L, channel.readBuffer.remaining).toInt())
-                    channel.copyTo(output.asByteChannel(), 1024 * 256L)
+                    channel.awaitContent(min = minOf(chunkSize, channel.readBuffer.remaining).toInt())
+                    channel.copyTo(outputChannel, chunkSize)
                 },
                 progressOffset = outputSize,
                 condition = { !channel.isClosedForRead },

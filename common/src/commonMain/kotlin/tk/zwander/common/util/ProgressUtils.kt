@@ -67,7 +67,6 @@ suspend fun trackOperationProgress(
     throttle: Boolean = true,
 ) {
     coroutineScope {
-        val len = atomic(0L)
         val totalLen = atomic(0L)
         val finished = atomic(false)
         val lastUpdateTime = atomic(Instant.DISTANT_PAST)
@@ -79,30 +78,29 @@ suspend fun trackOperationProgress(
                 operation()
             }
 
-            len.value = timedValue.value
-            totalLen += timedValue.value
+            if (timedValue.value <= 0) break
 
-            val nano = timedValue.duration.inWholeNanoseconds
+            GlobalScope.launch(Dispatchers.Unconfined) {
+                val len = timedValue.value
+                totalLen += len
 
-            if (len.value <= 0) break
-
-            if (throttle) {
-                val currentTime = Clock.System.now()
-                if (currentTime - lastUpdateTime.value < 50.milliseconds) {
-                    continue
-                }
-                lastUpdateTime.value = currentTime
-            }
-
-            GlobalScope.launch {
+                val nano = timedValue.duration.inWholeNanoseconds
                 val current = totalLen.value + progressOffset
 
                 if (finished.value || current >= size) {
                     return@launch
                 }
 
-                val (totalTime, totalRead) = averager.updateAndSum(nano, len.value)
+                val (totalTime, totalRead) = averager.updateAndSum(nano, len)
                 val bps = (totalRead / (totalTime.toDouble() / 1_000_000_000.0)).toLong()
+
+                if (throttle) {
+                    val currentTime = Clock.System.now()
+                    if (currentTime - lastUpdateTime.value < 100.milliseconds) {
+                        return@launch
+                    }
+                    lastUpdateTime.value = currentTime
+                }
 
                 if (finished.value) {
                     return@launch
