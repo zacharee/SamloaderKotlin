@@ -84,6 +84,8 @@ kotlin {
                 api(libs.zwander.composedialog)
                 api(libs.zwander.materialyou)
                 api(libs.csv)
+                api(libs.cryptography.core)
+                api(libs.kotlinx.crypto.crc32)
             }
         }
 
@@ -92,6 +94,7 @@ kotlin {
 
             dependencies {
                 api(libs.ktor.client.okhttp)
+                api(libs.cryptography.provider.jdk)
             }
         }
 

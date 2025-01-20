@@ -2,8 +2,8 @@ package tk.zwander.common.tools
 
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
-import io.ktor.utils.io.core.*
-import korlibs.crypto.MD5
+import dev.whyoleg.cryptography.DelicateCryptographyApi
+import io.ktor.utils.io.core.toByteArray
 import korlibs.io.serialization.xml.buildXml
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
@@ -473,6 +473,7 @@ object Request {
     }
 }
 
+@OptIn(DelicateCryptographyApi::class)
 fun Document.extractV4Key(): Pair<ByteArray, String>? {
     val fwVer = firstElementByTagName("FUSBody")
         ?.firstElementByTagName("Results")
@@ -492,8 +493,10 @@ fun Document.extractV4Key(): Pair<ByteArray, String>? {
 
     return if (fwVer != null && logicVal != null) {
         val decKey = Request.getLogicCheck(fwVer, logicVal)
-        
-        MD5.digest(decKey.toByteArray()).bytes to decKey
+
+        CryptUtils.md5Provider
+            .hasher()
+            .hashBlocking(decKey.toByteArray()) to decKey
     } else {
         null
     }

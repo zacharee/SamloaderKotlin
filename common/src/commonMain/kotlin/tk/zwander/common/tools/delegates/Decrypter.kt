@@ -1,7 +1,6 @@
 package tk.zwander.common.tools.delegates
 
 import io.ktor.utils.io.core.toByteArray
-import korlibs.crypto.MD5
 import tk.zwander.common.data.DecryptFileInfo
 import tk.zwander.common.tools.CryptUtils
 import tk.zwander.common.tools.Request
@@ -11,20 +10,18 @@ import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.model.DecryptModel
 import tk.zwander.samloaderkotlin.resources.MR
-import kotlin.time.ExperimentalTime
 
 object Decrypter {
-    @OptIn(ExperimentalTime::class)
     suspend fun onDecrypt(model: DecryptModel) {
         eventManager.sendEvent(Event.Decrypt.Start)
         val info = model.fileToDecrypt.value!!
         val inputFile = info.encFile
         val outputFile = info.decFile
-        val modelKey = model.decryptionKey.value
+        val decKey = model.decryptionKey.value
 
         try {
             val key = when {
-                modelKey.isNotBlank() -> MD5.digest(modelKey.toByteArray()).bytes
+                decKey.isNotBlank() -> CryptUtils.md5Provider.hasher().hash(decKey.toByteArray())
                 inputFile.getName().endsWith(".enc2") -> {
                     CryptUtils.getV2Key(
                         model.fw.value,

@@ -1,31 +1,35 @@
 package tk.zwander.common.tools
 
+import dev.whyoleg.cryptography.CryptographyProvider
+import dev.whyoleg.cryptography.DelicateCryptographyApi
+import dev.whyoleg.cryptography.algorithms.AES
+import dev.whyoleg.cryptography.algorithms.MD5
+import io.github.andreypfau.kotlinx.crypto.CRC32
 import io.ktor.utils.io.core.*
-import korlibs.crypto.AES
-import korlibs.crypto.CipherPadding
-import korlibs.crypto.MD5
-import korlibs.io.util.checksum.CRC32
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlinx.io.bytestring.toHexString
 import tk.zwander.common.util.DEFAULT_CHUNK_SIZE
 import tk.zwander.common.util.streamOperationWithProgress
 import tk.zwander.common.util.trackOperationProgress
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.time.ExperimentalTime
 
 /**
  * Handle encryption and decryption stuff.
  */
-@ExperimentalTime
 object CryptUtils {
     /**
      * Decryption keys for the firmware and other data.
      */
     private const val KEY_1 = "vicopx7dqu06emacgpnpy8j8zwhduwlh"
     private const val KEY_2 = "9u7qab84rpc16gvk"
+
+    @OptIn(DelicateCryptographyApi::class)
+    val md5Provider = CryptographyProvider.Default.get(MD5)
+    val aesCbcProvider = CryptographyProvider.Default.get(AES.CBC)
 
     /**
      * Samsung uses its own padding for its AES
@@ -65,11 +69,16 @@ object CryptUtils {
      * @param key the key to use for encryption.
      * @return the encrypted data.
      */
+    @OptIn(DelicateCryptographyApi::class)
     private fun aesEncrypt(input: ByteArray, key: ByteArray): ByteArray {
         val paddedInput = pad(input)
         val iv = key.slice(0 until 16).toByteArray()
 
-        return AES.encryptAesCbc(paddedInput, key, iv, CipherPadding.NoPadding)
+        return aesCbcProvider
+            .keyDecoder()
+            .decodeFromByteArrayBlocking(AES.Key.Format.RAW, key)
+            .cipher(padding = false)
+            .encryptWithIvBlocking(iv, paddedInput)
     }
 
     /**
@@ -78,10 +87,17 @@ object CryptUtils {
      * @param key the key to use for decryption.
      * @return the decrypted data.
      */
+    @OptIn(DelicateCryptographyApi::class)
     private fun aesDecrypt(input: ByteArray, key: ByteArray): ByteArray {
         val iv = key.slice(0 until 16).toByteArray()
 
-        return unpad(AES.decryptAesCbc(input, key, iv, CipherPadding.NoPadding))
+        return unpad(
+            aesCbcProvider
+                .keyDecoder()
+                .decodeFromByteArrayBlocking(AES.Key.Format.RAW, key)
+                .cipher(padding = false)
+                .decryptWithIvBlocking(iv, input)
+        )
     }
 
     /**
@@ -157,7 +173,8 @@ object CryptUtils {
      */
     fun getV2Key(version: String, model: String, region: String): Pair<ByteArray, String> {
         val decKey = "${region}:${model}:${version}"
-        return MD5.digest(decKey.toByteArray()).bytes to decKey
+
+        return md5Provider.hasher().hashBlocking(decKey.toByteArray()) to decKey
     }
 
     /**
@@ -176,6 +193,10 @@ object CryptUtils {
         chunkSize: Int = DEFAULT_CHUNK_SIZE,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ) {
+        val cipher = aesCbcProvider.keyDecoder()
+            .decodeFromByteArrayBlocking(AES.Key.Format.RAW, key)
+            .cipher(padding = false)
+
         streamOperationWithProgress(
             input = inf,
             output = outf,
@@ -183,7 +204,7 @@ object CryptUtils {
             chunkSize = chunkSize,
             progressCallback = progressCallback,
             operation = {
-                AES.decryptAesEcb(it, key, CipherPadding.NoPadding)
+                cipher.decryptBlocking(it)
             },
         )
     }
@@ -207,7 +228,7 @@ object CryptUtils {
         }
 
         val buffer = ByteArray(DEFAULT_CHUNK_SIZE)
-        var crcVal = CRC32.initialValue
+        val crc = CRC32()
 
         trackOperationProgress(
             size = encSize,
@@ -216,7 +237,7 @@ object CryptUtils {
                 val len = enc.readAtMostTo(buffer, 0, buffer.size)
 
                 if (len > 0) {
-                    crcVal = CRC32.update(crcVal, buffer, 0, len)
+                    crc.update(buffer, 0, len)
                 }
                 len.toLong()
             },
@@ -226,7 +247,7 @@ object CryptUtils {
             enc.close()
         }
 
-        return crcVal == expected.toInt()
+        return crc.intDigest() == expected.toInt()
     }
 
     /*
@@ -262,15 +283,16 @@ object CryptUtils {
      * @param updateFile the file used to calculate.
      * @return the MD5 hash.
      */
+    @OptIn(ExperimentalStdlibApi::class)
     private suspend fun calculateMD5(updateFile: Source): String? {
-        val md5 = MD5.create()
+        val md5 = md5Provider.hasher().createHashFunction()
         val buffer = ByteArray(8192)
         var read: Int
         return try {
             while (updateFile.readAvailable(buffer, 0, buffer.size).also { read = it } > 0) {
                 md5.update(buffer, 0, read)
             }
-            val hex = md5.digest().hex
+            val hex = md5.hash().toHexString(format = HexFormat.UpperCase)
             val output = hex.padStart(32, '0')
             output
         } catch (e: Exception) {
