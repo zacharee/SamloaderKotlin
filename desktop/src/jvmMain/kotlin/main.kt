@@ -25,14 +25,15 @@ import com.sun.jna.ptr.IntByReference
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.compose.alertdialog.LocalWindowDecorations
 import dev.zwander.compose.rememberThemeInfo
-import korlibs.platform.Platform
 import kotlinx.coroutines.launch
 import org.jetbrains.skia.DirectContext
 import org.jetbrains.skiko.Arch
 import org.jetbrains.skiko.GraphicsApi
+import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.RenderException
 import org.jetbrains.skiko.SkiaLayer
 import org.jetbrains.skiko.hostArch
+import org.jetbrains.skiko.hostOs
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.BugsnagUtils
@@ -85,8 +86,8 @@ fun main() {
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
 
-    when {
-        Platform.isLinux -> {
+    when (hostOs) {
+        OS.Linux -> {
             val context = try {
                 DirectContext.makeGL()
             } catch (e: Throwable) {
@@ -111,7 +112,7 @@ fun main() {
             }
         }
 
-        Platform.isWindows -> {
+        OS.Windows -> {
             if (hostArch == Arch.X64 && Kernel32.isEmulatedX86()) {
                 EventQueue.invokeAndWait {
                     val layer = SkiaLayer()
@@ -130,6 +131,8 @@ fun main() {
                 }
             }
         }
+
+        else -> {}
     }
 
     application(
@@ -183,7 +186,7 @@ fun main() {
             ) {
                 // For some reason this returns the title bar height on macOS.
                 val menuBarHeight = remember(window.height) {
-                    if (Platform.isMac) window.height.dp else 0.dp
+                    if (hostOs == OS.MacOS) window.height.dp else 0.dp
                 }
                 LaunchedEffect(window) {
                     window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)

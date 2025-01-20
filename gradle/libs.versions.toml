@@ -21,7 +21,7 @@ google-material = "1.13.0-alpha09"
 jna = "5.16.0"
 jsystemthemedetector = "7dde337429"
 kmpfile = "0.7.0"
-korlibs = "6.0.0"
+korlibs = "6.0.1"
 kotlin = "2.1.0"
 kotlinx-coroutines = "1.10.1"
 kotlinx-datetime = "0.6.1"
@@ -56,7 +56,6 @@ jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 jsystemthemedetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 kmpfile = { module = "dev.zwander:kmpfile", version.ref = "kmpfile" }
 korlibs-io = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
-korlibs-platform = { module = "com.soywiz:korlibs-platform", version.ref = "korlibs" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }

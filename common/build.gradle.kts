@@ -65,7 +65,6 @@ kotlin {
                 api(compose.runtime)
                 api(compose.ui)
                 api(libs.korlibs.io)
-                api(libs.korlibs.platform)
                 api(libs.kotlin)
                 api(libs.kotlin.reflect)
                 api(libs.kotlinx.coroutines)

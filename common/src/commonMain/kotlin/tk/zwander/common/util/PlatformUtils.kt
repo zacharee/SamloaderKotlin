@@ -1,6 +1,7 @@
 package tk.zwander.common.util
 
-import korlibs.platform.Platform
+import org.jetbrains.skiko.OS
+import org.jetbrains.skiko.hostOs
 
 data class OSVersion(
     val major: Int?,
@@ -11,4 +12,4 @@ data class OSVersion(
 expect val hostOsVersion: OSVersion
 
 val isWindows11: Boolean
-    get() = Platform.isWindows && (hostOsVersion.major ?: 0) >= 11
+    get() = hostOs == OS.Windows && (hostOsVersion.major ?: 0) >= 11

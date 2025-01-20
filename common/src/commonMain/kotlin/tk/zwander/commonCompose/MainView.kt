@@ -16,8 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import korlibs.platform.Platform
 import kotlinx.coroutines.launch
+import org.jetbrains.skiko.OS
+import org.jetbrains.skiko.hostOs
 import tk.zwander.commonCompose.locals.ProvideModels
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.LocalUseMicaEffect
@@ -62,7 +63,7 @@ fun MainView(
                             HorizontalPager(
                                 state = pagerState,
                                 pageSpacing = 8.dp,
-                                userScrollEnabled = Platform.isAndroid,
+                                userScrollEnabled = hostOs == OS.Android,
                                 beyondViewportPageCount = pagerState.pageCount,
                             ) {
                                 pages[it].render()
