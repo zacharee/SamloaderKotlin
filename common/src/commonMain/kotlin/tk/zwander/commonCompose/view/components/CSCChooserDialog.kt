@@ -215,7 +215,8 @@ fun CSCChooserDialog(
                 Text(text = stringResource(MR.strings.cancel))
             }
         },
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
+        contentsScrollable = false,
     )
 }
 
@@ -232,11 +233,11 @@ private fun HeaderItem(
             .clickable(onClick = onClick)
             .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
             text = text,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         Icon(
@@ -251,7 +252,7 @@ private fun HeaderItem(
                 SelectionState.NONE -> stringResource(MR.strings.sort)
             },
             modifier = Modifier.alpha(if (state == SelectionState.NONE) 0.5f else 1f)
-                .size(24.dp)
+                .size(24.dp),
         )
     }
 }
