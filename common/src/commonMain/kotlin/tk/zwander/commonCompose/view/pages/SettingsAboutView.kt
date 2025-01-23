@@ -32,8 +32,7 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
-import my.nanihadesuka.compose.ScrollbarSelectionMode
+import my.nanihadesuka.compose.LazyVerticalStaggeredGridScrollbar
 import org.jetbrains.skiko.OS
 import org.jetbrains.skiko.hostOs
 import tk.zwander.common.data.IOptionItem
@@ -201,15 +200,10 @@ fun SettingsAboutView() {
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        LazyStaggeredGridVerticalScrollbarNew(
+        LazyVerticalStaggeredGridScrollbar(
             state = gridState,
             modifier = Modifier.weight(1f),
-            thumbColor = ThemeConstants.Colors.scrollbarUnselected,
-            thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
-            alwaysShowScrollBar = true,
-            padding = ThemeConstants.Dimensions.scrollbarPadding,
-            thickness = ThemeConstants.Dimensions.scrollbarThickness,
-            selectionMode = ScrollbarSelectionMode.Disabled,
+            settings = ThemeConstants.ScrollBarSettings.Default,
         ) {
             LazyVerticalStaggeredGrid(
                 columns = AdaptiveFixed(minSize = 300.dp),

@@ -40,8 +40,7 @@ import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.launch
-import my.nanihadesuka.compose.LazyStaggeredGridVerticalScrollbarNew
-import my.nanihadesuka.compose.ScrollbarSelectionMode
+import my.nanihadesuka.compose.LazyVerticalStaggeredGridScrollbar
 import tk.zwander.common.tools.delegates.History
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDecryptModel
@@ -108,14 +107,9 @@ internal fun HistoryView() {
 
     val gridState = rememberLazyStaggeredGridState()
 
-    LazyStaggeredGridVerticalScrollbarNew(
+    LazyVerticalStaggeredGridScrollbar(
         state = gridState,
-        thumbColor = ThemeConstants.Colors.scrollbarUnselected,
-        thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
-        alwaysShowScrollBar = true,
-        padding = ThemeConstants.Dimensions.scrollbarPadding,
-        thickness = ThemeConstants.Dimensions.scrollbarThickness,
-        selectionMode = ScrollbarSelectionMode.Disabled,
+        settings = ThemeConstants.ScrollBarSettings.Default,
     ) {
         LazyVerticalStaggeredGrid(
             modifier = Modifier.fillMaxSize(),

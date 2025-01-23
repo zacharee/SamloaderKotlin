@@ -6,6 +6,8 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import my.nanihadesuka.compose.ScrollbarSelectionMode
+import my.nanihadesuka.compose.ScrollbarSettings
 
 object ThemeConstants {
     object Colors {
@@ -30,5 +32,19 @@ object ThemeConstants {
             @Composable
             @ReadOnlyComposable
             get() = 4.dp
+    }
+
+    object ScrollBarSettings {
+        val Default: ScrollbarSettings
+            @Composable
+            @ReadOnlyComposable
+            get() = ScrollbarSettings.Default.copy(
+                thumbUnselectedColor = Colors.scrollbarUnselected,
+                thumbSelectedColor = Colors.scrollbarSelected,
+                alwaysShowScrollbar = false,
+                scrollbarPadding = Dimensions.scrollbarPadding,
+                thumbThickness = Dimensions.scrollbarThickness,
+                selectionMode = ScrollbarSelectionMode.Disabled,
+            )
     }
 }

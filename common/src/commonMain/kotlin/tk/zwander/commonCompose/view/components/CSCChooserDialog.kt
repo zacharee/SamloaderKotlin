@@ -1,6 +1,5 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,14 +38,12 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.compose.alertdialog.InWindowAlertDialog
-import my.nanihadesuka.compose.LazyColumnScrollbarNew
-import my.nanihadesuka.compose.ScrollbarSelectionMode
+import my.nanihadesuka.compose.LazyColumnScrollbar
 import tk.zwander.common.data.csc.CSCDB
 import tk.zwander.commonCompose.util.OffsetCorrectedIdentityTransformation
 import tk.zwander.commonCompose.util.ThemeConstants
 import tk.zwander.samloaderkotlin.resources.MR
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CSCChooserDialog(
     modifier: Modifier = Modifier,
@@ -124,14 +121,9 @@ fun CSCChooserDialog(
 
             val listState = rememberLazyListState()
 
-            LazyColumnScrollbarNew(
+            LazyColumnScrollbar(
                 state = listState,
-                thumbColor = ThemeConstants.Colors.scrollbarUnselected,
-                thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
-                alwaysShowScrollBar = true,
-                padding = ThemeConstants.Dimensions.scrollbarPadding,
-                thickness = ThemeConstants.Dimensions.scrollbarThickness,
-                selectionMode = ScrollbarSelectionMode.Disabled,
+                settings = ThemeConstants.ScrollBarSettings.Default,
             ) {
                 LazyColumn(
                     modifier = Modifier

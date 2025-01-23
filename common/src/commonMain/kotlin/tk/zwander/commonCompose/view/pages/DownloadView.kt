@@ -47,8 +47,7 @@ import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import kotlinx.coroutines.launch
-import my.nanihadesuka.compose.ColumnScrollbarNew
-import my.nanihadesuka.compose.ScrollbarSelectionMode
+import my.nanihadesuka.compose.ColumnScrollbar
 import tk.zwander.common.GradleConfig
 import tk.zwander.common.tools.delegates.Downloader
 import tk.zwander.common.util.Event
@@ -101,14 +100,9 @@ internal fun DownloadView() {
 
     val scrollState = rememberScrollState()
 
-    ColumnScrollbarNew(
+    ColumnScrollbar(
         state = scrollState,
-        thumbColor = ThemeConstants.Colors.scrollbarUnselected,
-        thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
-        alwaysShowScrollBar = true,
-        padding = ThemeConstants.Dimensions.scrollbarPadding,
-        thickness = ThemeConstants.Dimensions.scrollbarThickness,
-        selectionMode = ScrollbarSelectionMode.Disabled,
+        settings = ThemeConstants.ScrollBarSettings.Default,
     ) {
         Column(
             modifier = Modifier.fillMaxSize()

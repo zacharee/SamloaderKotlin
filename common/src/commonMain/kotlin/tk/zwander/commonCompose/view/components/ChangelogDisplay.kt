@@ -16,13 +16,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
-import my.nanihadesuka.compose.ColumnScrollbarNew
-import my.nanihadesuka.compose.ScrollbarSelectionMode
+import my.nanihadesuka.compose.ColumnScrollbar
 import tk.zwander.common.data.changelog.Changelog
 import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.util.ThemeConstants
@@ -35,25 +40,28 @@ internal fun ChangelogDisplay(
     border: BorderStroke = CardDefaults.outlinedCardBorder(),
 ) {
     val scrollState = rememberScrollState()
+    val density = LocalDensity.current
+
+    var scrollHeightDp by remember {
+        mutableStateOf(0.dp)
+    }
 
     OutlinedCard(
         modifier = Modifier.padding(vertical = 4.dp)
-            .heightIn(max = 500.dp),
+            .heightIn(max = min(500.dp, scrollHeightDp)),
         colors = CardDefaults.outlinedCardColors(containerColor = Color.Transparent),
         border = border,
     ) {
-        ColumnScrollbarNew(
+        ColumnScrollbar(
             state = scrollState,
-            thumbColor = ThemeConstants.Colors.scrollbarUnselected,
-            thumbSelectedColor = ThemeConstants.Colors.scrollbarSelected,
-            alwaysShowScrollBar = true,
-            padding = ThemeConstants.Dimensions.scrollbarPadding,
-            thickness = ThemeConstants.Dimensions.scrollbarThickness,
-            selectionMode = ScrollbarSelectionMode.Disabled,
+            settings = ThemeConstants.ScrollBarSettings.Default,
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
                     .verticalScroll(scrollState)
+                    .onSizeChanged {
+                        scrollHeightDp = with (density) { it.height.toDp() }
+                    }
                     .padding(8.dp),
             ) {
                 val infoItems by derivedStateOf {
