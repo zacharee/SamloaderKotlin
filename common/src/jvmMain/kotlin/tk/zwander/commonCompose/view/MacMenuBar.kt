@@ -9,8 +9,7 @@ import androidx.compose.ui.window.MenuBar
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowState
 import dev.icerock.moko.resources.compose.stringResource
-import org.jetbrains.skiko.OS
-import org.jetbrains.skiko.hostOs
+import dev.zwander.kmp.platform.HostOS
 import tk.zwander.common.util.UrlHandler
 import tk.zwander.samloaderkotlin.resources.MR
 
@@ -19,7 +18,7 @@ fun FrameWindowScope.MacMenuBar(
     mainWindowState: WindowState,
     applicationScope: ApplicationScope,
 ) {
-    if (hostOs == OS.MacOS) {
+    if (HostOS.current == HostOS.MacOS) {
         MenuBar {
             Menu(
                 text = stringResource(MR.strings.window),

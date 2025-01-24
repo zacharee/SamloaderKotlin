@@ -9,9 +9,8 @@ import androidx.compose.ui.input.key.isAltPressed
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.type
+import dev.zwander.kmp.platform.HostOS
 import kotlinx.coroutines.launch
-import org.jetbrains.skiko.OS
-import org.jetbrains.skiko.hostOs
 
 @Composable
 fun keyCodeHandler(): (KeyEvent) -> Boolean {
@@ -19,7 +18,7 @@ fun keyCodeHandler(): (KeyEvent) -> Boolean {
     val pagerState = LocalPagerState.current
 
     return { keyEvent ->
-        val isModifierPressed = if (hostOs == OS.MacOS) keyEvent.isCtrlPressed else keyEvent.isAltPressed
+        val isModifierPressed = if (HostOS.current == HostOS.MacOS) keyEvent.isCtrlPressed else keyEvent.isAltPressed
 
         if (isModifierPressed && keyEvent.type == KeyEventType.KeyDown) {
             val multiplier = when (keyEvent.key) {

@@ -30,11 +30,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
+import dev.zwander.kmp.platform.HostOS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.LazyVerticalStaggeredGridScrollbar
-import org.jetbrains.skiko.OS
-import org.jetbrains.skiko.hostOs
 import tk.zwander.common.data.IOptionItem
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.common.util.LocalPhoneInfo
@@ -241,7 +240,7 @@ fun SettingsAboutView() {
             }
         }
 
-        if (hostOs == OS.Android && LocalPhoneInfo.current != null) {
+        if (HostOS.current == HostOS.Android && LocalPhoneInfo.current != null) {
             PhoneInfoView(modifier = Modifier.fillMaxWidth())
         }
 

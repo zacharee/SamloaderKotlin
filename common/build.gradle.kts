@@ -81,6 +81,7 @@ kotlin {
                 api(libs.semver)
                 api(libs.filekit.core)
                 api(libs.kmpfile)
+                api(libs.kmpplatform)
                 api(libs.zwander.composedialog)
                 api(libs.zwander.materialyou)
                 api(libs.csv)
