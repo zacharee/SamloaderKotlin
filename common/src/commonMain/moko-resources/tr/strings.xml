@@ -3,7 +3,6 @@
     <string name="manualWarningDetails3">GitHub'da.</string>
     <string name="checkingCRC">CRC Denetleniyor</string>
     <string name="checkForUpdatesDesc">Ürün Yazılımı Güncellemelerini Denetle</string>
-    <string name="odinRom">OdinRom</string>
     <string name="release">Yayın: %1$s</string>
     <string name="ascending">Artan</string>
     <string name="edit">Düzenle</string>

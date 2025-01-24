@@ -15,12 +15,12 @@ fun makeFirmwareString(pda: String, csc: String): String {
 }
 
 /**
- * Get the HTML from OdinRom to scrape for version history.
+ * Get the HTML from Samfrew to scrape for version history.
  * @param model the device model.
  * @param region the device region.
  */
 suspend fun getFirmwareHistoryString(model: String, region: String): String? {
-    val origUrl = "https://www.odinrom.com/samsung/${model}-${region}/"
+    val origUrl = "https://samfrew.com/firmware/model/${model}/region/${region}/upload/Desc/0/1000"
 
     val response = globalHttpClient.get {
         userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36")

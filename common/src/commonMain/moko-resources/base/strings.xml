@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="odinRom" translatable="false">OdinRom</string>
     <string name="samloader" translatable="false">Samloader</string>
     <string name="patreon" translatable="false">Patreon</string>
     <string name="mastodon" translatable="false">Mastodon</string>
     <string name="github" translatable="false">GitHub</string>
+    <string name="samfrew" translatable="false">Samfrew</string>
     <string name="zacharyWander" translatable="false">Zachary Wander</string>
 
     <!-- Displayed when Samsung returns an unexpected HTTP status. The format argument shows the raw error -->

@@ -129,7 +129,6 @@
     <string name="enable_offline_decryption_desc">Gdy ta opcja jest włączona, to przy pobieraniu oprogramowania będzie zapisywany dodatkowy plik tekstowy zawierający klucz deszyfrujący od Samsunga. Wprowadź go w zakładce \"Odszyfrowywanie\", aby odszyfrować oprogramowanie bez połączenia z internetem.</string>
     <string name="decryption_key_help">Jeśli masz klucz deszyfrujący do pliku, który chcesz odszyfrować, wprowadź go tutaj. W przeciwnym razie Bifrost pozyska ten klucz z serwerów Samsunga.</string>
     <string name="enable_offline_decryption">Odszyfrowywanie offline</string>
-    <string name="odinRom" translatable="false">OdinRom</string>
     <string name="patreon" translatable="false">Patreon</string>
     <string name="samloader" translatable="false">Samloader</string>
     <string name="mastodon" translatable="false">Mastodon</string>

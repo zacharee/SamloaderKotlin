@@ -129,7 +129,6 @@
     <string name="enable_offline_decryption_desc">"Quando questa opzione è abilitata, durante il download del firmware verrà salvato un file di testo aggiuntivo, contenente la chiave di decrittazione fornita da Samsung.  Questa chiave può quindi essere inserita nella pagina Decrittatore  per decrittografare il firmware senza una connessione Internet."</string>
     <string name="decryption_key_help">"Se conosci la chiave di decrittazione del file che stai tentando di decrittografare, puoi inserirla qui.  Altrimenti lascialo vuoto e Bifrost recupererà la chiave dai server Samsung."</string>
     <string name="enable_offline_decryption">Decripta Offline</string>
-    <string name="odinRom" translatable="false">OdinRom</string>
     <string name="samloader" translatable="false">Samloader</string>
     <string name="zacharyWander" translatable="false">Zachary Wander</string>
     <string name="github" translatable="false">GitHub</string>

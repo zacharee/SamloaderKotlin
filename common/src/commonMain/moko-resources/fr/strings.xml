@@ -39,7 +39,6 @@
     <string name="downloadFirmware">Télécharger le firmware</string>
     <string name="noBinaryFile">Aucun fichier binaire trouvé pour %1$s, %2$s ! Veuillez essayer avec un CSC différent.</string>
     <string name="help">Aide</string>
-    <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">Mauvais code de statut de réponse : %1$s</string>
     <string name="release">Date de sortie : %1$s</string>
     <string name="downloader">Téléchargement</string>

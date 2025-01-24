@@ -75,7 +75,7 @@ internal fun HistoryView() {
     val canCheckHistory = modelModel.isNotBlank()
             && region.isNotBlank() && !hasRunningJobs
 
-    val odinRomSource = buildAnnotatedString {
+    val historySource = buildAnnotatedString {
         withStyle(
             SpanStyle(
                 color = contentColor,
@@ -91,8 +91,8 @@ internal fun HistoryView() {
                     textDecoration = TextDecoration.Underline,
                 ),
             ) {
-                withLink(LinkAnnotation.Url("https://odinrom.com")) {
-                    append(MR.strings.odinRom())
+                withLink(LinkAnnotation.Url("https://samfrew.com")) {
+                    append(MR.strings.samfrew())
                 }
             }
         }
@@ -174,7 +174,7 @@ internal fun HistoryView() {
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
-                            text = odinRomSource,
+                            text = historySource,
                             style = LocalTextStyle.current.copy(LocalContentColor.current),
                         )
                     }

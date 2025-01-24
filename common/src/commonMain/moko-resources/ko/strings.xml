@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="odinRom" translatable="false">OdinRom</string>
     <string name="samloader" translatable="false">Samloader</string>
     <string name="patreon" translatable="false">Patreon</string>
     <string name="mastodon" translatable="false">Mastodon</string>

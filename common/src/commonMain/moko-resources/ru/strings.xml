@@ -38,7 +38,6 @@
     <string name="android">Андройд %1$s</string>
     <string name="noBinaryFile">Бинарный файл для %1$s, %2$s не найден! Пожалуйста, попробуйте другой CSC.</string>
     <string name="help">Помощь</string>
-    <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">Плохой статус возврата: %1$s</string>
     <string name="release">Выпуск: %1$s</string>
     <string name="downloader">Загрузчик</string>

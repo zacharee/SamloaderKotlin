@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="cancel">ரத்துசெய்</string>
-    <string name="odinRom">OdinRom</string>
     <string name="android">ஆண்ட்ராய்டு %1$s</string>
     <string name="version">v%1$s</string>
     <string name="samloader">Samloader</string>

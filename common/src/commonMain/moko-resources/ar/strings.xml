@@ -36,7 +36,6 @@
     <string name="downloadFirmware">تنزيل البرنامج الثابت</string>
     <string name="noBinaryFile">لم يتم العثور على ملف ثنائي لـ%1$s، %2$s! يرجى تجربة CSC مختلف.</string>
     <string name="help">مساعدة</string>
-    <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">حالة عودة غير صحيحة: %1$s</string>
     <string name="release">الإصدار: %1$s</string>
     <string name="downloader">برنامج التنزيل</string>

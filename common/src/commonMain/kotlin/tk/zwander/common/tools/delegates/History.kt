@@ -82,20 +82,20 @@ object History {
     private fun parseHistory(body: String): List<HistoryInfo> {
         val doc = Ksoup.parse(body)
 
-        val listItems = doc.select(".index_list").apply {
-            removeAt(0)
-        }
+        val listItems = doc.select("a[class*=\"firmwareTable_flexRow_\"]")
+
+        println(listItems.toList())
 
         return listItems.map {
-            val cols = it.select(".index_body_list")
-            val date = cols[6].text()
-            val version = cols[5].text()
+            val cols = it.select("div[class*=\"firmwareTable_flexCell\"]")
+            val date = cols[5].text().split(" ").last()
+            val version = cols[4].text().split(" ").last()
 
-            val link = cols[0].children()[0].children().attr("href")
-            val split = link.split("-")
+            val link = it.attr("href")
+            val split = link.split("/")
 
             val pda = split[split.lastIndex - 1]
-            val csc = split[split.lastIndex].split(".")[0]
+            val csc = split[split.lastIndex]
 
             val formats = arrayOf(
                 DateTimeComponents.Format {
@@ -132,7 +132,7 @@ object History {
             HistoryInfo(
                 parsed ?: throw IllegalArgumentException("Invalid date format $date"),
                 version,
-                makeFirmwareString(pda, csc)
+                makeFirmwareString(pda, csc),
             )
         }
     }

@@ -3,7 +3,6 @@
     <string name="manualWarning">Warning! Samsung may not supply the requested firmware!</string>
     <string name="selectEncrypted">Please select an encrypted firmware file ending in enc2 or enc4.</string>
     <string name="crcCheckFailed">CRC check failed. Please delete the file and download again.</string>
-    <string name="odinRom">OdinRom</string>
     <string name="sort">Sort</string>
     <string name="edit">Edit</string>
     <string name="copy">Copy</string>

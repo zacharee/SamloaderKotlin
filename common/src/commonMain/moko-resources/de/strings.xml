@@ -37,7 +37,6 @@
     <string name="downloadFirmware">Firmware Herunterladen</string>
     <string name="noBinaryFile">Es wurde keine Binärdatei für %1$s, %2$s gefunden. Bitte versuche eine andere CSC.</string>
     <string name="help">Hilfe</string>
-    <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">Schlechter Rückgabestatus: %1$s</string>
     <string name="release">Release: %1$s</string>
     <string name="downloader">Downloader</string>

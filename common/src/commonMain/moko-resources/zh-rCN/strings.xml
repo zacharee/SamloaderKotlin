@@ -37,7 +37,6 @@
     <string name="downloadFirmware">下载固件</string>
     <string name="noBinaryFile">没有找到地区代码%1$s，%2$s! 请尝试一个不同的CSC代码。</string>
     <string name="help">帮助</string>
-    <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">返回错误状态：%1$s</string>
     <string name="release">发布：%1$s</string>
     <string name="downloader">下载</string>

@@ -3,7 +3,6 @@
     <string name="badReturnStatus">Bad return status: %1$s</string>
     <string name="selectEncrypted">Please select an encrypted firmware file ending in enc2 or enc4.</string>
     <string name="cancel">Cancel</string>
-    <string name="odinRom">OdinRom</string>
     <string name="ascending">Ascending</string>
     <string name="edit">Edit</string>
     <string name="copy">Copy</string>

@@ -37,7 +37,6 @@
     <string name="downloadFirmware">Download Firmware</string>
     <string name="noBinaryFile">No binary file found for %1$s, %2$s! Please try a different CSC.</string>
     <string name="help">Help</string>
-    <string name="odinRom">OdinRom</string>
     <string name="badReturnStatus">Bad return status: %1$s</string>
     <string name="release">Release: %1$s</string>
     <string name="downloader">Downloader</string>
