@@ -11,6 +11,7 @@ import androidx.compose.ui.draganddrop.DragAndDropTarget
 import androidx.compose.ui.draganddrop.DragData
 import androidx.compose.ui.draganddrop.dragData
 import dev.zwander.kotlin.file.PlatformFile
+import java.io.IOException
 import java.net.URI
 import kotlin.io.path.toPath
 
@@ -42,6 +43,8 @@ private fun DragAndDropEvent.extractFile(): PlatformFile? {
 
         firstFile?.let { PlatformFile(URI.create(it).toPath().toFile()) }
     } catch (e: NullPointerException) {
+        null
+    } catch (e: IOException) {
         null
     }
 }
