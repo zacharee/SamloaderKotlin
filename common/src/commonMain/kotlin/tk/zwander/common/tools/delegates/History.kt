@@ -23,8 +23,6 @@ object History {
         val historical = doc.firstElementByTagName("firmware")?.firstElementByTagName("version")?.firstElementByTagName("upgrade")
             ?.getElementsByTag("value")
 
-        println(historical)
-
         val items = arrayListOf<HistoryInfo>()
 
         fun parseFirmware(string: String): String {
@@ -83,8 +81,6 @@ object History {
         val doc = Ksoup.parse(body)
 
         val listItems = doc.select("a[class*=\"firmwareTable_flexRow_\"]")
-
-        println(listItems.toList())
 
         return listItems.map {
             val cols = it.select("div[class*=\"firmwareTable_flexCell\"]")
