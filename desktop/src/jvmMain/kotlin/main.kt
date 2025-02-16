@@ -41,7 +41,6 @@ import tk.zwander.common.util.jna.windows.DwmWindowAttribute
 import tk.zwander.common.util.jna.windows.hwnd
 import tk.zwander.common.util.jna.windows.toBgr
 import tk.zwander.commonCompose.MainView
-import tk.zwander.commonCompose.util.jna.Kernel32
 import tk.zwander.commonCompose.util.toAwtColor
 import tk.zwander.commonCompose.view.LocalMenuBarHeight
 import tk.zwander.commonCompose.view.LocalPagerState
@@ -52,9 +51,7 @@ import tk.zwander.samloaderkotlin.resources.MR
 import java.awt.Desktop
 import java.awt.Dimension
 import java.awt.EventQueue
-import java.awt.Window
 import java.awt.event.WindowEvent
-import javax.swing.JOptionPane
 import javax.swing.SwingUtilities
 import kotlin.system.exitProcess
 import kotlin.time.ExperimentalTime
@@ -68,13 +65,9 @@ fun main() {
         WindowExceptionHandler { throwable ->
             throwable.printStackTrace()
             SwingUtilities.invokeLater {
-                // if there was an error during window init, we can't use it as a parent,
-                // otherwise we will have two exceptions in the log
-                showErrorDialog(window.takeIf { it.isDisplayable }, throwable)
                 window.dispatchEvent(WindowEvent(window, WindowEvent.WINDOW_CLOSING))
 
                 BugsnagUtils.notify(throwable, Severity.ERROR)
-                BugsnagUtils.destroy()
                 exitProcess(0)
             }
         }
@@ -250,16 +243,4 @@ fun main() {
     }
     BugsnagUtils.destroy()
     exitProcess(0)
-}
-
-private fun showErrorDialog(parentComponent: Window?, throwable: Throwable) {
-    val title = "Error"
-    val message = throwable.message ?: "Unknown error"
-    val pane = object : JOptionPane(message, ERROR_MESSAGE) {
-        // Limit width for long messages
-        override fun getMaxCharactersPerLineCount(): Int = 120
-    }
-    val dialog = pane.createDialog(parentComponent, title)
-    dialog.isVisible = true
-    dialog.dispose()
 }
