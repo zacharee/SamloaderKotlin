@@ -1,3 +1,10 @@
+# 1.19.8
+- Switch to Samfrew for firmware history.
+- Avoid a crash when checking for history multiple times.
+- Fix a crash caused by dragging an invalid file to the window on desktop.
+- Work on performance and efficiency of I/O functions.
+- Add and update TACs.
+
 # 1.19.7
 - Fix a crash.
 
