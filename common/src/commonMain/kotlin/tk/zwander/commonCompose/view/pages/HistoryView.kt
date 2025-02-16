@@ -226,7 +226,7 @@ internal fun HistoryView() {
                             pagerState.animateScrollToPage(Page.Decrypter)
                         }
                     },
-                    modifier = Modifier.animateItem(),
+                    modifier = Modifier.animateItem(fadeOutSpec = null),
                 )
             }
         }
