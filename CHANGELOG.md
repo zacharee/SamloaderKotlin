@@ -1,3 +1,6 @@
+# 1.19.9
+- Fix crashes caused by opening some dialogs.
+
 # 1.19.8
 - Switch to Samfrew for firmware history.
 - Avoid a crash when checking for history multiple times.
