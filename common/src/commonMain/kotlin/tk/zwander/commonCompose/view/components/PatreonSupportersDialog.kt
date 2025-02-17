@@ -1,11 +1,9 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import tk.zwander.common.util.PatreonSupportersParser
@@ -45,8 +43,8 @@ internal fun PatreonSupportersDialog(
         text = {
             PatreonSupportersList(
                 supporters = supporters,
-                modifier = Modifier.heightIn(min = 200.dp)
             )
-        }
+        },
+        contentsScrollable = false,
     )
 }

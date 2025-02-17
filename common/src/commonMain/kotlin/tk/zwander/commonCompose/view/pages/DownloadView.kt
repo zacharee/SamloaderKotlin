@@ -272,12 +272,9 @@ internal fun DownloadView() {
                                 append(MR.strings.manualWarningDetails3())
                             }
 
-                            val scroll = rememberScrollState()
-
                             Text(
                                 text = info,
                                 style = textStyle,
-                                modifier = Modifier.verticalScroll(scroll),
                             )
                         },
                         buttons = {
