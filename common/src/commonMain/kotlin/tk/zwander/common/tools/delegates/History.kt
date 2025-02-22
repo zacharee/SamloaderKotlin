@@ -167,7 +167,7 @@ object History {
                         e.printStackTrace()
                         null
                     }
-                    model.historyItems.value = parsed
+                    model.historyItems.value = parsed.distinctBy { it.firmwareString }
                     model.endJob("")
                 } catch (e: Exception) {
                     e.printStackTrace()
