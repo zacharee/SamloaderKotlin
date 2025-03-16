@@ -1,5 +1,5 @@
 [versions]
-android-gradle = "8.8.2"
+android-gradle = "8.9.0"
 androidx-activity-compose = "1.10.1"
 androidx-core = "1.15.0"
 androidx-documentfile = "1.1.0-alpha01"
@@ -7,7 +7,7 @@ androidx-preference = "1.2.1"
 bugsnag-android = "6.12.1"
 bugsnag-gradle = "0.3.0"
 bugsnag-jvm = "3.7.2"
-buildkonfig-gradle = "0.16.0"
+buildkonfig-gradle = "0.17.0"
 compose = "1.8.0+dev2210"
 composedialog = "0.2.0"
 conveyor = "1.12"
@@ -15,11 +15,11 @@ conveyor-control = "1.1"
 cryptography = "0.4.0"
 csv = "0.15"
 desugar_jdk_libs = "2.1.5"
-filekit = "0.8.8"
+filekit = "0.10.0-beta01"
 flatlaf = "3.5.4"
 githubApi = "1.327"
 google-material = "1.13.0-alpha11"
-jna = "5.16.0"
+jna = "5.17.0"
 jsystemthemedetector = "7dde337429"
 kmpfile = "0.7.0"
 kmpplatform = "0.1.0"
@@ -30,14 +30,14 @@ kotlinx-datetime = "0.6.2"
 kotlinx-serialization = "1.8.0"
 kotlinxCryptoCrc32 = "0.0.4"
 ksoup = "0.2.2"
-ktor = "3.1.0"
+ktor = "3.1.1"
 materialyou = "0.2.6"
 moko-resources = "0.24.5"
 multiplatform-settings = "1.3.0"
-oshi = "6.6.6"
-richeditorCompose = "1.0.0-rc10"
+oshi = "6.7.1"
+richeditorCompose = "1.0.0-rc12"
 semver = "2.0.0"
-slf4j = "2.0.16"
+slf4j = "2.0.17"
 windowStyler = "cad9442ec3"
 
 [libraries]
@@ -53,6 +53,7 @@ cryptography-provider-jdk = { module = "dev.whyoleg.cryptography:cryptography-pr
 csv = { module = "de.halfbit:csv", version.ref = "csv" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs_nio", version.ref = "desugar_jdk_libs" }
 filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }
+filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
 flatlaf = { module = "com.formdev:flatlaf", version.ref = "flatlaf" }
 github-api = { module = "org.kohsuke:github-api", version.ref = "githubApi" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }

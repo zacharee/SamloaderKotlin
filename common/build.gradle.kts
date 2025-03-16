@@ -80,6 +80,7 @@ kotlin {
                 api(libs.richeditor.compose)
                 api(libs.semver)
                 api(libs.filekit.core)
+                api(libs.filekit.dialogs.compose)
                 api(libs.kmpfile)
                 api(libs.kmpplatform)
                 api(libs.zwander.composedialog)
