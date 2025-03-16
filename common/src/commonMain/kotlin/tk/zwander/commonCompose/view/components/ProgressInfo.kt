@@ -23,7 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
-import korlibs.io.util.toStringDecimal
+import tk.zwander.common.util.toStringDecimal
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.util.CustomArrangement
 import tk.zwander.samloaderkotlin.resources.MR
@@ -109,7 +109,7 @@ internal fun ProgressInfo(model: BaseModel) {
                             text = "%",
                             textFormat = try {
                                 (progress.first.toFloat() / progress.second * 100 * 100.0).roundToInt() / 100.0
-                            } catch (e: IllegalArgumentException) {
+                            } catch (_: IllegalArgumentException) {
                                 0.0
                             }.toStringDecimal(2),
                             valueFontFamily = FontFamily.Monospace,
