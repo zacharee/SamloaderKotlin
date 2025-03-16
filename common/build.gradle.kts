@@ -64,7 +64,6 @@ kotlin {
                 api(compose.material3)
                 api(compose.runtime)
                 api(compose.ui)
-                api(libs.korlibs.io)
                 api(libs.kotlin)
                 api(libs.kotlin.reflect)
                 api(libs.kotlinx.coroutines)
@@ -88,6 +87,7 @@ kotlin {
                 api(libs.csv)
                 api(libs.cryptography.core)
                 api(libs.kotlinx.crypto.crc32)
+                api(libs.kotlin.xml.builder)
             }
         }
 

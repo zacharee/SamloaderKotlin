@@ -1,16 +1,15 @@
 package tk.zwander.common.util
 
-import korlibs.io.serialization.xml.Xml
-import korlibs.io.serialization.xml.XmlBuilder
+import org.redundent.kotlin.xml.Node
 
-fun XmlBuilder.textNode(tag: String, text: String): Xml {
-    return node(tag) {
-        text(text)
+fun Node.textNode(tag: String, text: String): Node {
+    return tag {
+        -text
     }
 }
 
-fun XmlBuilder.dataNode(tag: String, text: String): Xml {
-    return node(tag) {
+fun Node.dataNode(tag: String, text: String): Node {
+    return tag {
         textNode("Data", text)
     }
 }

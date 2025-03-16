@@ -4,9 +4,10 @@ import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.nodes.Document
 import dev.whyoleg.cryptography.DelicateCryptographyApi
 import io.ktor.utils.io.core.toByteArray
-import korlibs.io.serialization.xml.buildXml
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
+import org.redundent.kotlin.xml.PrintOptions
+import org.redundent.kotlin.xml.xml
 import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.data.exception.VersionCheckException
@@ -119,14 +120,14 @@ object Request {
             ""
         }
 
-        val xml = buildXml("FUSMsg") {
-            node("FUSHdr") {
+        val xml = xml("FUSMsg") {
+            "FUSHdr" {
                 textNode("ProtoVer", "1.0")
                 textNode("SessionID", "0")
                 textNode("MsgID", "1")
             }
-            node("FUSBody") {
-                node("Put") {
+            "FUSBody" {
+                "Put" {
                     dataNode("ACCESS_MODE", "2")
                     dataNode("BINARY_NATURE", "1")
                     dataNode("CLIENT_PRODUCT", "Smart Switch")
@@ -143,7 +144,7 @@ object Request {
                     dataNode("DEVICE_PDA_CODE1_VERSION", pda?.trim() ?: "")
                     dataNode("DEVICE_PHONE_FONT_VERSION", phone?.trim() ?: "")
 
-                    node("CLIENT_LANGUAGE") {
+                    "CLIENT_LANGUAGE" {
                         textNode("Type", "String")
                         textNode("Type", "ISO 3166-1-alpha-3")
                         textNode("Data", "1033")
@@ -162,14 +163,14 @@ object Request {
                     mnc?.let { dataNode("MNC_NUM", it) }
                 }
 
-                node("Get") {
+                "Get" {
                     textNode("CmdID", "2")
-                    node("LATEST_FW_VERSION")
+                    "LATEST_FW_VERSION"()
                 }
             }
         }
 
-        return xml.outerXml
+        return xml.toString(PrintOptions(singleLineTextElements = true))
     }
 
     /**
@@ -185,19 +186,19 @@ object Request {
             getLogicCheck(special, nonce)
         }
 
-        val xml = buildXml("FUSMsg") {
-            node("FUSHdr") {
+        val xml = xml("FUSMsg") {
+            "FUSHdr" {
                 textNode("ProtoVer", "1.0")
             }
-            node("FUSBody") {
-                node("Put") {
+            "FUSBody" {
+                "Put" {
                     dataNode("BINARY_FILE_NAME", fileName)
                     dataNode("LOGIC_CHECK", logicCheck)
                 }
             }
         }
 
-        return xml.outerXml
+        return xml.toString(PrintOptions(singleLineTextElements = true))
     }
 
     suspend fun retrieveBinaryFileInfo(

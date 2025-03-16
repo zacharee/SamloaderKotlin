@@ -23,12 +23,12 @@ jna = "5.17.0"
 jsystemthemedetector = "7dde337429"
 kmpfile = "0.7.0"
 kmpplatform = "0.1.0"
-korlibs = "6.0.1"
 kotlin = "2.1.10"
 kotlinx-coroutines = "1.10.1"
 kotlinx-datetime = "0.6.2"
 kotlinx-serialization = "1.8.0"
 kotlinxCryptoCrc32 = "0.0.4"
+kotlinXmlBuilder = "1.9.1"
 ksoup = "0.2.2"
 ktor = "3.1.1"
 materialyou = "0.2.6"
@@ -62,7 +62,6 @@ jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 jsystemthemedetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 kmpfile = { module = "dev.zwander:kmpfile", version.ref = "kmpfile" }
 kmpplatform = { module = "dev.zwander:kmpplatform", version.ref = "kmpplatform" }
-korlibs-io = { module = "com.soywiz:korlibs-io", version.ref = "korlibs" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -71,6 +70,7 @@ kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 kotlinx-crypto-crc32 = { module = "io.github.andreypfau:kotlinx-crypto-crc32", version.ref = "kotlinxCryptoCrc32" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlin-xml-builder = { module = "org.redundent:kotlin-xml-builder", version.ref = "kotlinXmlBuilder" }
 ksoup = { module = "com.fleeksoft.ksoup:ksoup", version.ref = "ksoup" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
