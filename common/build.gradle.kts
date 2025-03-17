@@ -88,6 +88,7 @@ kotlin {
                 api(libs.cryptography.core)
                 api(libs.kotlinx.crypto.crc32)
                 api(libs.kotlin.xml.builder)
+                api(libs.kotlinx.atomicfu)
             }
         }
 
