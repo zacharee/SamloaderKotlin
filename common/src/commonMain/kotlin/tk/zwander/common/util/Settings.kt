@@ -10,6 +10,7 @@ import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.SettingsListener
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -58,7 +59,7 @@ sealed class SettingsKey<Type : Any?> {
 
     protected abstract fun registerListener(callback: (Type?) -> Unit): SettingsListener
 
-    @OptIn(DelicateCoroutinesApi::class)
+    @OptIn(DelicateCoroutinesApi::class, ExperimentalForInheritanceCoroutinesApi::class)
     fun asMutableStateFlow(): MutableStateFlow<Type> {
         val wrappedFlow = MutableStateFlow(getValue())
         val flow = object : MutableStateFlow<Type> by wrappedFlow {
