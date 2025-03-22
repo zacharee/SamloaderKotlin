@@ -59,6 +59,16 @@ val options = arrayListOf<IOptionItem>().apply {
 //        )
 //    }
 
+    if (HostOS.current == HostOS.MacOS) {
+        add(
+            IOptionItem.BasicOptionItem.BooleanItem(
+                label = MR.strings.useVibrancyEffect,
+                desc = MR.strings.useVibrancyEffectDesc,
+                key = BifrostSettings.Keys.useVibrancyEffect,
+            ),
+        )
+    }
+
     add(
         IOptionItem.BasicOptionItem.BooleanItem(
             label = MR.strings.allowLowercaseCharacters,

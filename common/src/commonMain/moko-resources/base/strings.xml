@@ -200,6 +200,9 @@
     <!-- A toggle to enable use of Windows' Mica window background effect -->
     <string name="useMicaEffectDesc">On Windows 11 and later, Bifrost can apply the Windows Mica effect to the window background, making it look more like a native Windows app.</string>
 
+    <string name="useVibrancyEffect">Use Vibrancy Effect</string>
+    <string name="useVibrancyEffectDesc">On macOS, Bifrost can apply Apple's blurred background effect to the window, making the app appear more native.</string>
+
     <!-- The name of the notification channel on Android for displaying the current progress of an operation in the notification center -->
     <string name="notification_progress_channel_name">Progress</string>
     <!-- Displayed in the notification on Android while an operating is ongoing or idle -->

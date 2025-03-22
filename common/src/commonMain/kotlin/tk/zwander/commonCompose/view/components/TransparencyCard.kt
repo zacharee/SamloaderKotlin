@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import tk.zwander.commonCompose.view.LocalUseMicaEffect
+import tk.zwander.commonCompose.view.LocalUseTransparencyEffects
 
 @Composable
 fun TransparencyCard(
@@ -58,12 +58,12 @@ fun TransparencyCard(
 @Composable
 private fun cardColors(): CardColors {
     return CardDefaults.cardColors(
-        containerColor = if (LocalUseMicaEffect.current) {
+        containerColor = if (LocalUseTransparencyEffects.current) {
             MaterialTheme.colorScheme.onBackground.copy(alpha = 0.2f)
         } else {
             MaterialTheme.colorScheme.surfaceVariant
         },
-        contentColor = if (LocalUseMicaEffect.current) {
+        contentColor = if (LocalUseTransparencyEffects.current) {
             MaterialTheme.colorScheme.onBackground
         } else {
             MaterialTheme.colorScheme.onSurfaceVariant

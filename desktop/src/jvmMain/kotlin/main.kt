@@ -1,12 +1,18 @@
 @file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE", "EXPOSED_PARAMETER_TYPE")
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
@@ -53,7 +59,9 @@ import java.awt.Desktop
 import java.awt.Dimension
 import java.awt.EventQueue
 import java.awt.event.WindowEvent
+import javax.swing.JPanel
 import javax.swing.SwingUtilities
+import javax.swing.UIManager
 import kotlin.system.exitProcess
 import kotlin.time.ExperimentalTime
 
@@ -77,12 +85,20 @@ fun main() {
     System.setProperty("apple.laf.useScreenMenuBar", "true")
     System.setProperty("apple.awt.application.appearance", "system")
     System.setProperty("apple.awt.application.name", GradleConfig.appName)
+    System.setProperty("compose.swing.render.on.graphics", "true")
+    System.setProperty("compose.interop.blending", "true")
+
+    SwingUtilities.invokeLater {
+        if (HostOS.current == HostOS.MacOS) {
+            UIManager.setLookAndFeel("org.violetlib.aqua.AquaLookAndFeel")
+        }
+    }
 
     when (HostOS.current) {
         HostOS.Linux -> {
             val context = try {
                 DirectContext.makeGL()
-            } catch (e: Throwable) {
+            } catch (_: Throwable) {
                 null
             }
 
@@ -138,12 +154,6 @@ fun main() {
             val scope = rememberCoroutineScope()
             val density = LocalDensity.current
             val pagerState = LocalPagerState.current
-            val useMicaEffect by BifrostSettings.Keys.useMicaEffect.collectAsMutableState()
-
-            val captionColor =
-                if (useMicaEffect) Color.Unspecified else themeInfo.colors.onBackground
-            val titleBarColor =
-                if (useMicaEffect) Color.Unspecified else themeInfo.colors.background
 
             val iconPainter = painterResource(MR.images.icon_rounded)
 
@@ -170,24 +180,56 @@ fun main() {
                 state = mainWindowState,
                 onPreviewKeyEvent = keyCodeHandler(),
             ) {
-                WindowStyle(
-                    isDarkTheme = themeInfo.isDarkMode,
-                    frameStyle = WindowFrameStyle(
-                        borderColor = themeInfo.colors.background,
-                        captionColor = captionColor,
-                        titleBarColor = titleBarColor,
-                    ),
-                    backdropType = WindowBackdrop.Transparent(Color.Transparent),
-                )
+                val useTransparency by BifrostSettings.useTransparencyEffects.collectAsState(false)
+
+                val captionColor by remember {
+                    derivedStateOf {
+                        if (useTransparency) Color.Unspecified else themeInfo.colors.onBackground
+                    }
+                }
+                val titleBarColor by remember {
+                    derivedStateOf {
+                        if (useTransparency) Color.Unspecified else themeInfo.colors.background
+                    }
+                }
+
+                if (HostOS.current == HostOS.Windows) {
+                    WindowStyle(
+                        isDarkTheme = themeInfo.isDarkMode,
+                        frameStyle = WindowFrameStyle(
+                            borderColor = themeInfo.colors.background,
+                            captionColor = captionColor,
+                            titleBarColor = titleBarColor,
+                        ),
+                        backdropType = WindowBackdrop.Transparent(Color.Transparent),
+                    )
+
+                    LaunchedEffect(captionColor, titleBarColor) {
+                        if (isWindows11) {
+                            DwmImpl.DwmSetWindowAttribute(
+                                hwnd = window.hwnd,
+                                attribute = DwmWindowAttribute.DWMWA_TEXT_COLOR.value,
+                                value = IntByReference(captionColor.toBgr()),
+                                valueSize = 4,
+                            )
+                            DwmImpl.DwmSetWindowAttribute(
+                                hwnd = window.hwnd,
+                                attribute = DwmWindowAttribute.DWMWA_CAPTION_COLOR.value,
+                                value = IntByReference(titleBarColor.toBgr()),
+                                valueSize = 4,
+                            )
+                        }
+                    }
+                }
 
                 // For some reason this returns the title bar height on macOS.
                 val menuBarHeight = remember(window.height) {
                     if (HostOS.current == HostOS.MacOS) window.height.dp else 0.dp
                 }
+
                 LaunchedEffect(window) {
                     window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
                     window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
-                    window.background = themeInfo.colors.background.toAwtColor()
 
                     val map = mutableMapOf<String, String>()
 
@@ -215,23 +257,6 @@ fun main() {
                     }
                 }
 
-                LaunchedEffect(captionColor, titleBarColor) {
-                    if (isWindows11) {
-                        DwmImpl.DwmSetWindowAttribute(
-                            hwnd = window.hwnd,
-                            attribute = DwmWindowAttribute.DWMWA_TEXT_COLOR.value,
-                            value = IntByReference(captionColor.toBgr()),
-                            valueSize = 4,
-                        )
-                        DwmImpl.DwmSetWindowAttribute(
-                            hwnd = window.hwnd,
-                            attribute = DwmWindowAttribute.DWMWA_CAPTION_COLOR.value,
-                            value = IntByReference(titleBarColor.toBgr()),
-                            valueSize = 4,
-                        )
-                    }
-                }
-
                 MacMenuBar(
                     mainWindowState = mainWindowState,
                     applicationScope = this@application,
@@ -241,7 +266,26 @@ fun main() {
                     LocalMenuBarHeight provides menuBarHeight,
                     LocalWindowDecorations provides LocalWindowDecorations.current.copy(top = menuBarHeight),
                 ) {
-                    MainView()
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        if (HostOS.current == HostOS.MacOS) {
+                            SwingPanel(
+                                factory = {
+                                    JPanel()
+                                },
+                                modifier = Modifier.fillMaxSize(),
+                                background = Color.Transparent,
+                                update = {
+                                    it.putClientProperty("Aqua.backgroundStyle", if (themeInfo.isDarkMode) "vibrantUltraDark" else "vibrantLight")
+                                },
+                            )
+                        }
+
+                        MainView(
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 }
             }
         }

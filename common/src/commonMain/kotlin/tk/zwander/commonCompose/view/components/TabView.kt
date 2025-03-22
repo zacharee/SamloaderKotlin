@@ -29,7 +29,7 @@ import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import tk.zwander.commonCompose.view.LocalUseMicaEffect
+import tk.zwander.commonCompose.view.LocalUseTransparencyEffects
 import tk.zwander.commonCompose.view.pages.DecryptView
 import tk.zwander.commonCompose.view.pages.DownloadView
 import tk.zwander.commonCompose.view.pages.HistoryView
@@ -83,7 +83,7 @@ internal fun TabView(
             .height(48.dp),
         selectedTabIndex = selectedPage,
         divider = {},
-        containerColor = if (LocalUseMicaEffect.current) Color.Transparent else TabRowDefaults.primaryContainerColor,
+        containerColor = if (LocalUseTransparencyEffects.current) Color.Transparent else TabRowDefaults.primaryContainerColor,
     ) {
         pages.forEachIndexed { index, page ->
             Tab(

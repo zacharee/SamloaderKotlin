@@ -20,7 +20,7 @@ import dev.zwander.kmp.platform.HostOS
 import kotlinx.coroutines.launch
 import tk.zwander.commonCompose.locals.ProvideModels
 import tk.zwander.commonCompose.view.LocalPagerState
-import tk.zwander.commonCompose.view.LocalUseMicaEffect
+import tk.zwander.commonCompose.view.LocalUseTransparencyEffects
 import tk.zwander.commonCompose.view.components.BifrostTheme
 import tk.zwander.commonCompose.view.components.TabView
 import tk.zwander.commonCompose.view.components.pages
@@ -41,13 +41,13 @@ fun MainView(
         val pagerState = LocalPagerState.current
 
         BifrostTheme {
-            val useMicaEffect = LocalUseMicaEffect.current
+            val useTransparency = LocalUseTransparencyEffects.current
 
             Surface(
-                color = if (useMicaEffect) Color.Transparent else MaterialTheme.colorScheme.surface,
+                color = if (useTransparency) Color.Transparent else MaterialTheme.colorScheme.surface,
             ) {
                 CompositionLocalProvider(
-                    LocalContentColor provides if (useMicaEffect) MaterialTheme.colorScheme.onBackground else LocalContentColor.current,
+                    LocalContentColor provides if (useTransparency) MaterialTheme.colorScheme.onBackground else LocalContentColor.current,
                 ) {
                     Column(
                         modifier = modifier.fillMaxSize()

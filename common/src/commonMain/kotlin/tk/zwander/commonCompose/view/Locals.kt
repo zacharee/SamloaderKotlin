@@ -5,5 +5,5 @@ import androidx.compose.ui.unit.dp
 import tk.zwander.commonCompose.util.pager.BifrostPagerState
 
 val LocalMenuBarHeight = compositionLocalOf { 0.dp }
-val LocalUseMicaEffect = compositionLocalOf { false }
+val LocalUseTransparencyEffects = compositionLocalOf { false }
 val LocalPagerState = compositionLocalOf { BifrostPagerState() }

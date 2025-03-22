@@ -4,15 +4,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.SettingsListener
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalForInheritanceCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 expect fun ObservableSettings(): ObservableSettings
@@ -37,6 +41,7 @@ class ObservableBifrostSettings(private val wrapped: ObservableSettings) :
 object BifrostSettings {
     object Keys {
         val useMicaEffect = SettingsKey.Boolean("useMicaEffect", false, settings, disabled = true)
+        val useVibrancyEffect = SettingsKey.Boolean("useVibrancyEffect", false, settings)
         val allowLowercaseCharacters =
             SettingsKey.Boolean("allowLowercaseCharacters", false, settings)
         val autoDeleteEncryptedFirmware =
@@ -46,6 +51,9 @@ object BifrostSettings {
     }
 
     val settings = ObservableBifrostSettings(ObservableSettings())
+
+    val useTransparencyEffects: Flow<Boolean>
+        get() = combine(Keys.useMicaEffect.asMutableStateFlow(), Keys.useVibrancyEffect.asMutableStateFlow()) { m, v -> m || v }
 }
 
 @Suppress("unused", "UNCHECKED_CAST")

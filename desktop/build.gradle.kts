@@ -34,6 +34,8 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(project(":common"))
+
+                implementation("org.violetlib:vaqua:13")
             }
         }
     }
