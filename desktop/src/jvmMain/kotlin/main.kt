@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.LocalWindowExceptionHandlerFactory
+import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowExceptionHandler
 import androidx.compose.ui.window.WindowExceptionHandlerFactory
 import androidx.compose.ui.window.application
@@ -18,9 +19,9 @@ import androidx.compose.ui.window.rememberWindowState
 import com.bugsnag.Severity
 import com.formdev.flatlaf.FlatDarkLaf
 import com.formdev.flatlaf.FlatLaf
-import com.mayakapps.compose.windowstyler.NativeLookWindow
 import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
+import com.mayakapps.compose.windowstyler.WindowStyle
 import com.sun.jna.ptr.IntByReference
 import dev.icerock.moko.resources.compose.painterResource
 import dev.zwander.compose.alertdialog.LocalWindowDecorations
@@ -162,19 +163,23 @@ fun main() {
                 }
             }
 
-            NativeLookWindow(
+            Window(
                 onCloseRequest = ::exitApplication,
                 title = GradleConfig.appName,
                 icon = iconPainter,
                 state = mainWindowState,
-                preferredBackdropType = WindowBackdrop.MicaTabbed(themeInfo.isDarkMode),
-                frameStyle = WindowFrameStyle(
-                    borderColor = themeInfo.colors.background,
-                    captionColor = captionColor,
-                    titleBarColor = titleBarColor,
-                ),
                 onPreviewKeyEvent = keyCodeHandler(),
             ) {
+                WindowStyle(
+                    isDarkTheme = themeInfo.isDarkMode,
+                    frameStyle = WindowFrameStyle(
+                        borderColor = themeInfo.colors.background,
+                        captionColor = captionColor,
+                        titleBarColor = titleBarColor,
+                    ),
+                    backdropType = WindowBackdrop.Transparent(Color.Transparent),
+                )
+
                 // For some reason this returns the title bar height on macOS.
                 val menuBarHeight = remember(window.height) {
                     if (HostOS.current == HostOS.MacOS) window.height.dp else 0.dp

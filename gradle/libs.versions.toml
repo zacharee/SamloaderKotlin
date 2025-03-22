@@ -39,7 +39,7 @@ oshi = "6.7.1"
 richeditorCompose = "1.0.0-rc12"
 semver = "2.0.0"
 slf4j = "2.0.17"
-windowStyler = "cad9442ec3"
+windowStyler = "0.3.3-SNAPSHOT"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
@@ -85,7 +85,7 @@ oshi-core = { module = "com.github.oshi:oshi-core", version.ref = "oshi" }
 richeditor-compose = { module = "com.mohamedrejeb.richeditor:richeditor-compose", version.ref = "richeditorCompose" }
 semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
-window-styler = { module = "com.github.zacharee.ComposeWindowStyler:window-styler", version.ref = "windowStyler" }
+window-styler = { module = "com.mayakapps.compose:window-styler", version.ref = "windowStyler" }
 zwander-composedialog = { module = "dev.zwander:composedialog", version.ref = "composedialog" }
 zwander-materialyou = { module = "dev.zwander:materialyou", version.ref = "materialyou" }
 
