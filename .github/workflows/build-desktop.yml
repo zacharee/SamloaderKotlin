@@ -61,7 +61,7 @@ jobs:
         shell: bash
         run: |
           wget https://downloads.hydraulic.dev/conveyor/conveyor-17.0-mac-aarch64.zip
-          unzip conveyor-16.0-mac-aarch64.zip
+          unzip conveyor-17.0-mac-aarch64.zip
 
       - name: Run Conveyor
         shell: bash
