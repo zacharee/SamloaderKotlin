@@ -201,7 +201,7 @@ fun main() {
                             captionColor = captionColor,
                             titleBarColor = titleBarColor,
                         ),
-                        backdropType = WindowBackdrop.Transparent(Color.Transparent),
+                        backdropType = if (useTransparency) WindowBackdrop.Tabbed else WindowBackdrop.Transparent(Color.Transparent),
                     )
 
                     LaunchedEffect(captionColor, titleBarColor) {
