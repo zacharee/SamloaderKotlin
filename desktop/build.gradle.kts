@@ -35,7 +35,7 @@ kotlin {
             dependencies {
                 implementation(project(":common"))
 
-                implementation(files("lib/VAqua.jar"))
+                implementation(libs.vaqua)
             }
         }
     }
@@ -152,9 +152,9 @@ dependencies {
     linuxAarch64(compose.desktop.linux_arm64)
     linuxAmd64(compose.desktop.linux_x64)
     macAarch64(compose.desktop.macos_arm64)
-    macAarch64(files("lib/VAqua.jar"))
+    macAarch64(libs.vaqua)
     macAmd64(compose.desktop.macos_x64)
-    macAmd64(files("lib/VAqua.jar"))
+    macAmd64(libs.vaqua)
     windowsAarch64(compose.desktop.windows_arm64)
     windowsAmd64(compose.desktop.windows_x64)
 }
