@@ -1,3 +1,9 @@
+# 1.20.0
+- Add option on macOS to enable Vibrancy effect.
+- Update TACs.
+- Fix crashes.
+- Fix some UI issues.
+
 # 1.19.9
 - Fix crashes caused by opening some dialogs.
 
