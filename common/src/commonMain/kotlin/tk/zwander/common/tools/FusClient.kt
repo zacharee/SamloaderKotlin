@@ -164,8 +164,8 @@ object FusClient {
 
                 override fun isOpen(): Boolean {
                     return when (output) {
-                        is RealSink -> output.closed
-                        is Buffer -> false
+                        is RealSink -> !output.closed
+                        is Buffer -> true
                     }
                 }
 
