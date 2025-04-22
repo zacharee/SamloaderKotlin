@@ -64,6 +64,7 @@ kotlin {
                 api(compose.material3)
                 api(compose.runtime)
                 api(compose.ui)
+                api(libs.material.icons.core)
                 api(libs.kotlin)
                 api(libs.kotlin.reflect)
                 api(libs.kotlinx.coroutines)
