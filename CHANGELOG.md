@@ -1,3 +1,8 @@
+# 1.20.1
+- Update FileKit to fix an issue where confirming the save dialog wouldn't work on Linux.
+- Update Compose.
+- Add TACs.
+
 # 1.20.0
 - Add option on macOS to enable Vibrancy effect.
 - Update TACs.
