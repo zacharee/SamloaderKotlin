@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -78,7 +79,7 @@ internal fun TabView(
         derivedStateOf { ellipses.values.any { it } }
     }
 
-    TabRow(
+    PrimaryTabRow(
         modifier = Modifier.fillMaxWidth()
             .height(48.dp),
         selectedTabIndex = selectedPage,
