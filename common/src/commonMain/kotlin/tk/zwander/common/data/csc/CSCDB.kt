@@ -122,7 +122,7 @@ data object CSCDB {
     }
 
     private fun loadCsv(csvString: String) {
-        val csv = Csv.parserText(csvString)
+        val csv = Csv.parserCsvText(csvString)
 
         csv.allRows.forEach { line ->
             val (code, countries, carriers) = if (line.size == 2) {

@@ -116,7 +116,7 @@ data object IMEIDatabase {
     }
 
     private fun loadCsv(csvString: String) {
-        val csv = Csv.parserText(csvString)
+        val csv = Csv.parserCsvText(csvString)
         csv.allRows.forEach { line ->
             if (line.size >= 2) {
                 val tac = line[0]
