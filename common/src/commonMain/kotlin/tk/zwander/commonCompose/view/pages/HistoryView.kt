@@ -54,6 +54,7 @@ import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.samloaderkotlin.resources.MR
+import tk.zwander.common.util.invoke
 
 /**
  * The History View.
