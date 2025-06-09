@@ -42,7 +42,6 @@ import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.LazyVerticalStaggeredGridScrollbar
 import tk.zwander.common.tools.delegates.History
-import tk.zwander.common.util.invoke
 import tk.zwander.commonCompose.locals.LocalDecryptModel
 import tk.zwander.commonCompose.locals.LocalDownloadModel
 import tk.zwander.commonCompose.locals.LocalHistoryModel
