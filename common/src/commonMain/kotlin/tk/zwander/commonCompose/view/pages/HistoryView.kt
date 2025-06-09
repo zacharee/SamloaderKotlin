@@ -203,7 +203,7 @@ internal fun HistoryView() {
                     index = index,
                     info = historyInfo,
                     changelog = changelogs?.changelogs?.get(historyInfo.firmwareString.split("/")[0]),
-                    changelogExpanded = expanded[historyInfo.toString()] ?: false,
+                    changelogExpanded = expanded[historyInfo.toString()] == true,
                     onChangelogExpanded = { expanded[historyInfo.toString()] = it },
                     onDownload = {
                         downloadModel.manual.value = true
