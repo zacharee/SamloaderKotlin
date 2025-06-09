@@ -1,4 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.compose.reload.ComposeHotRun
+import org.jetbrains.kotlin.compose.compiler.gradle.ComposeFeatureFlag
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
@@ -7,6 +9,7 @@ plugins {
     alias(libs.plugins.conveyor)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.compose.hot.reload)
 }
 
 group = rootProject.extra["groupName"].toString()
@@ -49,6 +52,14 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 
 tasks.withType<org.gradle.jvm.tasks.Jar> {
     exclude("META-INF/*.RSA", "META-INF/*.DSA", "META-INF/*.SF")
+}
+
+tasks.withType<ComposeHotRun>().configureEach {
+    mainClass.set("MainKt")
+}
+
+composeCompiler {
+    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
 }
 
 compose.desktop {

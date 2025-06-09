@@ -8,7 +8,8 @@ bugsnag-android = "6.14.0"
 bugsnag-gradle = "0.4.0"
 bugsnag-jvm = "3.7.2"
 buildkonfig-gradle = "0.17.1"
-compose = "1.9.0-alpha02"
+compose = "1.8.10-alpha01"
+compose-hot-reload = "1.0.0-alpha10"
 composedialog = "0.2.1"
 conveyor = "1.12"
 conveyor-control = "1.1"
@@ -99,6 +100,7 @@ android-library = { id = "com.android.library", version.ref = "android-gradle" }
 bugsnag-gradle = { id = "com.bugsnag.gradle", version.ref = "bugsnag-gradle" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig-gradle" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+compose-hot-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hot-reload" }
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
