@@ -1,3 +1,9 @@
+# 1.20.2
+- Fix an issue where picking directories on Linux might just not do anything.
+- Work on addressing an issue where moving the window across displays would cause it to reset.
+- Update TACs.
+- UI tweaks.
+
 # 1.20.1
 - Update FileKit to fix an issue where confirming the save dialog wouldn't work on Linux.
 - Update Compose.
