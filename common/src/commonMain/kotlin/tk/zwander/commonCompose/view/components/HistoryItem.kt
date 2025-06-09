@@ -164,8 +164,6 @@ internal fun HistoryItem(
                                 visible = changelogExpanded
                             ) {
                                 Column {
-                                    Spacer(Modifier.height(8.dp))
-
                                     ChangelogDisplay(
                                         changelog = changelog,
                                         border = BorderStroke(
