@@ -1,0 +1,3 @@
+language = Objective-C
+package = dev.zwander.bugsnag.cinterop
+headers = Bugsnag.h BugsnagBreadcrumb.h BugsnagEvent.h BugsnagError.h BugsnagStackframe.h BugsnagFeatureFlag.h

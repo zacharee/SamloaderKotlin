@@ -25,6 +25,7 @@ plugins {
     alias(libs.plugins.kotlin.atomicfu) apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.native.cocoapods) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.moko.resources) apply false
     alias(libs.plugins.compose.hot.reload) apply false

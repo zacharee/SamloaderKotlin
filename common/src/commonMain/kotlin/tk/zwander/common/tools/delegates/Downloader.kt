@@ -1,5 +1,6 @@
 package tk.zwander.common.tools.delegates
 
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

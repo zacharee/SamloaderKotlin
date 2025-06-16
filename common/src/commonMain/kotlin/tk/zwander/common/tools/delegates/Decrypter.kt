@@ -86,7 +86,7 @@ object Decrypter {
             model.endJob(MR.strings.done())
         } catch (e: Throwable) {
             eventManager.sendEvent(Event.Decrypt.Finish)
-            model.endJob(MR.strings.decryptError((e.localizedMessage ?: e.message).toString()))
+            model.endJob(MR.strings.decryptError((e.message).toString()))
         }
     }
 

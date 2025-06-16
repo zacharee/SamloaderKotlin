@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlin.atomicfu)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.native.cocoapods)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.moko.resources)
 }
@@ -25,6 +26,34 @@ val javaVersionEnum: JavaVersion by rootProject.extra
 
 kotlin {
     jvmToolchain(javaVersionEnum.toString().toInt())
+
+    val iosArm64 = iosArm64()
+    val iosSimulatorArm64 = iosSimulatorArm64()
+
+    val versionCode: Int by rootProject.extra
+    val versionName: String by rootProject.extra
+    val packageName: String by rootProject.extra
+
+    listOf(iosArm64, iosSimulatorArm64).forEach {
+        it.compilations.getByName("main") {
+            cinterops.create("BugsnagSamloader") {
+                includeDirs("$projectDir/src/nativeInterop/cinterop/Bugsnag")
+                definitionFile.set(file("$projectDir/src/nativeInterop/cinterop/Bugsnag.def"))
+            }
+        }
+        it.binaries {
+            framework {
+                isStatic = true
+                binaryOption("bundleVersion", versionCode.toString())
+                binaryOption(
+                    "bundleShortVersionString",
+                    versionName,
+                )
+                binaryOption("bundleId", packageName)
+                export(libs.nsexceptionKt.core)
+            }
+        }
+    }
 
     androidTarget {
         compilations.all {
@@ -54,6 +83,32 @@ kotlin {
                     freeCompilerArgs.addAll("-Xexpect-actual-classes", "-Xdont-warn-on-error-suppression")
                 }
             }
+        }
+    }
+
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xexpect-actual-classes", "-Xdont-warn-on-error-suppression")
+    }
+
+    cocoapods {
+        version = versionCode.toString()
+        summary = "Bifrost"
+        homepage = "https://zwander.dev"
+        ios.deploymentTarget = "14.0"
+        osx.deploymentTarget = "10.13"
+        podfile = project.file("../iosApp/Podfile")
+        framework {
+            baseName = "common"
+            isStatic = true
+            export(libs.moko.resources)
+            export(libs.nsexceptionKt.core)
+
+            binaryOption("bundleVersion", versionCode.toString())
+            binaryOption(
+                "bundleShortVersionString",
+                versionName,
+            )
+            binaryOption("bundleId", packageName)
         }
     }
 
@@ -88,8 +143,8 @@ kotlin {
                 api(libs.csv)
                 api(libs.cryptography.core)
                 api(libs.kotlinx.crypto.crc32)
-                api(libs.kotlin.xml.builder)
                 api(libs.kotlinx.atomicfu)
+                api(libs.androidx.performance.annotation)
             }
         }
 
@@ -138,6 +193,28 @@ kotlin {
                 api(libs.kotlinx.coroutines.android)
                 api(libs.github.api)
             }
+        }
+
+        val darwinMain by creating {
+            dependsOn(skiaMain)
+            dependencies {
+                api(libs.ktor.client.darwin)
+                api(libs.nsexceptionKt.bugsnag)
+                api(libs.nsexceptionKt.core)
+                api(libs.nserrorKt)
+            }
+        }
+
+        val iosArm64Main by getting {
+            resources.srcDirs("build/generated/moko/iosArm64Main/src")
+        }
+        val iosSimulatorArm64Main by getting {
+            resources.srcDirs("build/generated/moko/iosSimulatorArm64Main/src")
+        }
+        val iosMain by creating {
+            dependsOn(darwinMain)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
         }
     }
 }

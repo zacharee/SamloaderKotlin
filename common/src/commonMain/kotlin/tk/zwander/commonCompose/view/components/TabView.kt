@@ -31,6 +31,10 @@ import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import tk.zwander.commonCompose.view.LocalUseTransparencyEffects
+import tk.zwander.commonCompose.view.components.Page.Decrypter
+import tk.zwander.commonCompose.view.components.Page.Downloader
+import tk.zwander.commonCompose.view.components.Page.History
+import tk.zwander.commonCompose.view.components.Page.SettingsAbout
 import tk.zwander.commonCompose.view.pages.DecryptView
 import tk.zwander.commonCompose.view.pages.DownloadView
 import tk.zwander.commonCompose.view.pages.HistoryView
@@ -38,9 +42,7 @@ import tk.zwander.commonCompose.view.pages.SettingsAboutView
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.time.ExperimentalTime
 
-val pages = Page::class.sealedSubclasses
-    .mapNotNull { it.objectInstance }
-    .sortedBy { it.index }
+val pages = arrayOf(Downloader, Decrypter, History, SettingsAbout)
 
 /**
  * Represents the available pages.

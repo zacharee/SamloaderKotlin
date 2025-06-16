@@ -16,19 +16,15 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.utils.io.InternalAPI
+import io.ktor.utils.io.asByteWriteChannel
 import io.ktor.utils.io.copyTo
 import io.ktor.utils.io.core.remaining
 import io.ktor.utils.io.core.toByteArray
-import kotlinx.io.Buffer
 import kotlinx.io.InternalIoApi
-import kotlinx.io.RealSink
 import kotlinx.io.Sink
-import kotlinx.io.write
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.trackOperationProgress
-import java.nio.ByteBuffer
-import java.nio.channels.WritableByteChannel
 
 /**
  * Manage communications with Samsung's server.
@@ -157,22 +153,7 @@ object FusClient {
         return request.execute { response ->
             val md5 = response.headers["Content-MD5"]
             val channel = response.bodyAsChannel()
-            val outputChannel = object : WritableByteChannel {
-                override fun close() {
-                    output.close()
-                }
-
-                override fun isOpen(): Boolean {
-                    return when (output) {
-                        is RealSink -> !output.closed
-                        is Buffer -> true
-                    }
-                }
-
-                override fun write(src: ByteBuffer): Int {
-                    return output.write(src)
-                }
-            }
+            val outputChannel = output.asByteWriteChannel()
 
             trackOperationProgress(
                 size = size,

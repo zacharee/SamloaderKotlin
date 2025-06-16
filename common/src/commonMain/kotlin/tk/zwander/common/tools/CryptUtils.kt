@@ -7,6 +7,7 @@ import dev.whyoleg.cryptography.algorithms.MD5
 import io.github.andreypfau.kotlinx.crypto.CRC32
 import io.ktor.utils.io.core.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import kotlinx.io.Sink
 import kotlinx.io.Source
