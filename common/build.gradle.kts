@@ -145,6 +145,7 @@ kotlin {
                 api(libs.kotlinx.crypto.crc32)
                 api(libs.kotlinx.atomicfu)
                 api(libs.androidx.performance.annotation)
+                api(libs.xmlbuilder)
             }
         }
 

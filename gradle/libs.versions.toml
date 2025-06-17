@@ -46,6 +46,7 @@ semver = "3.0.0"
 slf4j = "2.0.17"
 vaqua = "13"
 windowStyler = "0.3.3-20250226.143418-11"
+xmlbuilder = "0.1.0"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
@@ -98,6 +99,7 @@ semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 vaqua = { module = "org.violetlib:vaqua", version.ref = "vaqua" }
 window-styler = { module = "com.mayakapps.compose:window-styler", version.ref = "windowStyler" }
+xmlbuilder = { module = "dev.zwander:xmlbuilder", version.ref = "xmlbuilder" }
 zwander-composedialog = { module = "dev.zwander:composedialog", version.ref = "composedialog" }
 zwander-materialyou = { module = "dev.zwander:materialyou", version.ref = "materialyou" }
 
