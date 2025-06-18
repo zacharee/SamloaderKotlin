@@ -60,7 +60,7 @@ fun MainView(
                         HorizontalPager(
                             state = pagerState,
                             pageSpacing = 8.dp,
-                            userScrollEnabled = HostOS.current == HostOS.Android,
+                            userScrollEnabled = HostOS.current == HostOS.Android || HostOS.current == HostOS.IOS,
                             beyondViewportPageCount = pagerState.pageCount,
                         ) {
                             pages[it].render()
