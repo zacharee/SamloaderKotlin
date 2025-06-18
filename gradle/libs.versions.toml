@@ -59,6 +59,7 @@ bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 conveyor-control = { module = "dev.hydraulic.conveyor:conveyor-control", version.ref = "conveyor-control" }
 cryptography-core = { module = "dev.whyoleg.cryptography:cryptography-core", version.ref = "cryptography" }
 cryptography-provider-jdk = { module = "dev.whyoleg.cryptography:cryptography-provider-jdk", version.ref = "cryptography" }
+cryptography-provider-openssl3-prebuilt = { module = "dev.whyoleg.cryptography:cryptography-provider-openssl3-prebuilt", version.ref = "cryptography" }
 csv = { module = "de.halfbit:csv", version.ref = "csv" }
 desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs_nio", version.ref = "desugar_jdk_libs" }
 filekit-core = { module = "io.github.vinceglb:filekit-core", version.ref = "filekit" }

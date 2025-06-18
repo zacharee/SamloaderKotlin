@@ -203,6 +203,7 @@ kotlin {
                 api(libs.nsexceptionKt.bugsnag)
                 api(libs.nsexceptionKt.core)
                 api(libs.nserrorKt)
+                api(libs.cryptography.provider.openssl3.prebuilt)
             }
         }
 
