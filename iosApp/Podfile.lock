@@ -1,16 +1,23 @@
 PODS:
+  - BugsnagPerformance (1.14.0)
   - common (86)
 
 DEPENDENCIES:
+  - BugsnagPerformance
   - common (from `../common`)
+
+SPEC REPOS:
+  trunk:
+    - BugsnagPerformance
 
 EXTERNAL SOURCES:
   common:
     :path: "../common"
 
 SPEC CHECKSUMS:
+  BugsnagPerformance: 1ce529b5ade51e2048019850fd0f8da5bcb8ee39
   common: e9429ca9d7d21311a436f9708ab50976aef23678
 
-PODFILE CHECKSUM: af174b9a6fe5a52d33f8646784fd3766ff3664af
+PODFILE CHECKSUM: 000b91682bffe8883f1f0a58c28b251dc5538a59
 
 COCOAPODS: 1.16.2
