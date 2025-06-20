@@ -7,7 +7,7 @@ brew install cocoapods
 
 curl -s "https://get.sdkman.io" | bash
 . "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install java 21.0.7-amzn
+sdk install java 21.0.7-ms
 
 cd ../../ && chmod +x gradlew && ./gradlew common:podInstall
 
