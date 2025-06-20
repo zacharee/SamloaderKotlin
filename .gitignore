@@ -26,6 +26,7 @@
 .DS_Store
 /iosApp/Pods/
 /iosApp/iosApp.xcworkspace/contents.xcworkspacedata
+/iosApp/iosApp.xcworkspace/xcuserdata/*
 /iosApp/iosApp.xcworkspace/xcuserdata/zachary.xcuserdatad/UserInterfaceState.xcuserstate
 /iosApp/iosApp.xcodeproj/xcuserdata/zachary.xcuserdatad/xcschemes/xcschememanagement.plist
 /iosApp/output/
