@@ -26,6 +26,10 @@ Most of the functionality in Bifrost is based on [Samloader](https://github.com/
 
 Bifrost uses Jetpack Compose, JetBrains Compose for Desktop, and Kotlin Multiplatform to create a shared codebase for all supported platforms.
 
+# Support
+
+Enjoying the app? [Donate here](https://www.paypal.com/donate/?hosted_button_id=EWAPDSENZ7U44).
+
 # Download
 Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) page for the downloads.
 
