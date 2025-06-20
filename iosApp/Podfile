@@ -5,6 +5,7 @@ target 'iosApp' do
   platform :ios, '14.0'
   pod 'common', :path => '../common'
   pod 'BugsnagPerformance'
+  pod 'Bugsnag'
 #   plugin 'cocoapods-bugsnag'
 end
 
