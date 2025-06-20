@@ -258,4 +258,6 @@
     <string name="update_available">Update available: %s</string>
     <!-- Message shown when updates haven't been checked yet -->
     <string name="check_for_updates">Check for updates</string>
+
+    <string name="donate">Donate</string>
 </resources>

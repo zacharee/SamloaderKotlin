@@ -130,6 +130,19 @@ fun FooterView(
                         )
                     }
                 }
+
+                item {
+                    IconButton(
+                        onClick = {
+                            UrlHandler.launchUrl("https://www.paypal.com/donate/?hosted_button_id=EWAPDSENZ7U44")
+                        },
+                    ) {
+                        Icon(
+                            painterResource(MR.images.currency_usd), stringResource(MR.strings.donate),
+                            modifier = Modifier.padding(8.dp).size(24.dp)
+                        )
+                    }
+                }
             }
         }
     }

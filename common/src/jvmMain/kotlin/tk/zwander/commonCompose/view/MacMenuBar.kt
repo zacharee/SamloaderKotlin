@@ -70,6 +70,13 @@ fun FrameWindowScope.MacMenuBar(
                         UrlHandler.launchUrl("https://patreon.com/zacharywander")
                     },
                 )
+
+                Item(
+                    text = stringResource(MR.strings.donate),
+                    onClick = {
+                        UrlHandler.launchUrl("https://www.paypal.com/donate/?hosted_button_id=EWAPDSENZ7U44")
+                    },
+                )
             }
         }
     }
