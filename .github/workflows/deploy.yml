@@ -31,6 +31,8 @@ jobs:
         uses: robinraju/release-downloader@v1
         with:
           latest: true
+          out-file-path: '.'
+          fileName: '*'
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
