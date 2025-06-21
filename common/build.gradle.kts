@@ -277,3 +277,36 @@ tasks.withType<Copy> {
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
+
+afterEvaluate {
+    val versionName: String by rootProject.extra
+    val versionCode: Int by rootProject.extra
+
+    try {
+        providers.exec {
+            commandLine(
+                "plutil",
+                "-replace",
+                "CFBundleShortVersionString",
+                "-string",
+                versionName,
+                "../iosApp/iosApp/Info.plist",
+            )
+        }
+    } catch (_: Throwable) {
+    }
+
+    try {
+        providers.exec {
+            commandLine(
+                "plutil",
+                "-replace",
+                "CFBundleVersion",
+                "-string",
+                "$versionCode",
+                "../iosApp/iosApp/Info.plist",
+            )
+        }
+    } catch (_: Throwable) {
+    }
+}
