@@ -127,11 +127,14 @@ Conveyor can build for Windows and Linux from any host OS, but macOS is required
 2. Next, open a terminal to the project's root directory.
 3. Run `./gradlew :desktop:build` (`.\gradlew.bat :desktop:build` on Windows).
 4. Run the following command based on your target system.  
-   4.1. Windows: `conveyor make windows-zip`.  
-   4.2. Debian: `conveyor make debian-package`.  
-   4.3. Linux: `conveyor make linux-tarball`.  
-   4.4. Intel Macs: `conveyor -Kapp.machines=mac.amd64 make unnotarized-mac-zip`.  
-   4.5. Apple Silicon Macs: `conveyor -Kapp.machines=mac.arm64 make unnotarized-mac-zip`.
+   4.1. Intel/AMD (x86) Windows: `conveyor -Kapp.machines=windows.amd64 make windows-zip`.  
+   4.2. ARM64 Windows: `conveyor -Kapp.machines=windows.arm64 make windows-zip`.  
+   4.3. x86 Debian: `conveyor -Kapp.machines=linux.amd64 make debian-package`.  
+   4.4. ARM64 Debian: `conveyor -Kapp.machines=linux.arm64 make debian-package`.  
+   4.5. x86 Linux: `conveyor -Kapp.machines=linux.amd64 make linux-tarball`.  
+   4.6. ARM64 Linux: `conveyor -Kapp.machines=linux.arm64 make linux-tarball`.  
+   4.7. Intel Macs: `conveyor -Kapp.machines=mac.amd64 make unnotarized-mac-zip`.  
+   4.8. Apple Silicon Macs: `conveyor -Kapp.machines=mac.arm64 make unnotarized-mac-zip`.
 5. Check the `output` folder in the root of the project for the binary.
 
 ### Gradle
