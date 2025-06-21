@@ -33,6 +33,8 @@ jobs:
           latest: true
           out-file-path: '.'
           fileName: '*'
+      - name: Rename HTML file
+        run: ln -s download.html index.html
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
