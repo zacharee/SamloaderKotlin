@@ -161,9 +161,8 @@ Alternatively, you can run a debug binary by executing the `:desktop:run` task.
 Download `bifrost_android_<VERSION>.apk` and install it.
 
 ## Windows
-Download the .zip ending in `windows-amd64`.
-
-Native ARM64 Windows builds aren't currently available.
+- On Intel or AMD devices, download the .zip ending in `windows-amd64`.
+- On ARM64 devices, download the .zip ending in `windows-aarch64`.
 
 ## macOS
 - On Intel Macs, download the .zip ending in `mac-amd64`.
@@ -173,7 +172,7 @@ Native ARM64 Windows builds aren't currently available.
 - On Debian-based systems, download the `.deb` file.
 - On other Linux distros, download the `.tar.gz` file.
 
-On x64 Linux, download the `amd64` variant. On ARM64 Linux, choose `aarch64`.
+For Intel or AMD devices, download the `amd64` variant. For ARM64 devices, choose `aarch64` or `arm64`.
 
 # Translating
 
