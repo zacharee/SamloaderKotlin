@@ -157,6 +157,9 @@ Alternatively, you can run a debug binary by executing the `:desktop:run` task.
 
 # Running
 
+For Windows, macOS, and Linux, you can download from https://bifrost.zwander.dev. 
+Alternatively, you can use the steps below to manually download a release.
+
 ## Android
 Download `bifrost_android_<VERSION>.apk` and install it.
 
