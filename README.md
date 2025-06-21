@@ -31,7 +31,9 @@ Bifrost uses Jetpack Compose, JetBrains Compose for Desktop, and Kotlin Multipla
 Enjoying the app? [Donate here](https://www.paypal.com/donate/?hosted_button_id=EWAPDSENZ7U44).
 
 # Download
-Check out the [Releases](https://github.com/zacharee/SamloaderKotlin/releases) page for the downloads.
+For Windows, macOS, and Linux, you can download from https://bifrost.zwander.dev.
+
+Check the [Releases page](https://github.com/zacharee/SamloaderKotlin/releases) for binaries.
 
 ## Platform Compatibility
 
@@ -156,11 +158,6 @@ Alternatively, you can run a debug binary by executing the `:desktop:run` task.
 4. Once it finishes building, go to `android/build/outputs/apk/debug` and install `android-debug.apk`.
 
 # Running
-
-For Windows, macOS, and Linux, you can download from https://bifrost.zwander.dev. 
-Alternatively, you can use the steps below to manually download a release.
-
-Check the [Releases page](https://github.com/zacharee/SamloaderKotlin/releases) for binaries.
 
 ## Android
 Download `bifrost_android_<VERSION>.apk` and install it.
