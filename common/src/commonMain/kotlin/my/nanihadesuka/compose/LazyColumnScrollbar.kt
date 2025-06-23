@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import my.nanihadesuka.compose.controller.rememberLazyListStateController
 import my.nanihadesuka.compose.generic.ElementScrollbar
+import tk.zwander.commonCompose.view.keyboardDismissalNestedScrolling
 
 @Composable
 fun LazyColumnScrollbar(
@@ -16,14 +17,17 @@ fun LazyColumnScrollbar(
     indicatorContent: (@Composable (index: Int, isThumbSelected: Boolean) -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
-    if (!settings.enabled) content()
-    else Box(modifier) {
+    Box(
+        modifier = modifier.keyboardDismissalNestedScrolling(state),
+    ) {
         content()
-        InternalLazyColumnScrollbar(
-            state = state,
-            settings = settings,
-            indicatorContent = indicatorContent,
-        )
+        if (settings.enabled) {
+            InternalLazyColumnScrollbar(
+                state = state,
+                settings = settings,
+                indicatorContent = indicatorContent,
+            )
+        }
     }
 }
 

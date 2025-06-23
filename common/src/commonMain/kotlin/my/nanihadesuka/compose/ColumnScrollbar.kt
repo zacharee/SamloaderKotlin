@@ -9,6 +9,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import my.nanihadesuka.compose.controller.rememberScrollStateController
 import my.nanihadesuka.compose.generic.ElementScrollbar
+import tk.zwander.commonCompose.view.keyboardDismissalNestedScrolling
 
 
 @Composable
@@ -19,15 +20,18 @@ fun ColumnScrollbar(
     indicatorContent: (@Composable (normalizedOffset: Float, isThumbSelected: Boolean) -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
-    if (!settings.enabled) content()
-    else BoxWithConstraints(modifier) {
+    BoxWithConstraints(
+        modifier = modifier.keyboardDismissalNestedScrolling(state),
+    ) {
         content()
-        InternalColumnScrollbar(
-            state = state,
-            settings = settings,
-            visibleLengthDp = with(LocalDensity.current) { constraints.maxHeight.toDp() },
-            indicatorContent = indicatorContent,
-        )
+        if (settings.enabled) {
+            InternalColumnScrollbar(
+                state = state,
+                settings = settings,
+                visibleLengthDp = with(LocalDensity.current) { constraints.maxHeight.toDp() },
+                indicatorContent = indicatorContent,
+            )
+        }
     }
 }
 

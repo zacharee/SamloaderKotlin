@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import my.nanihadesuka.compose.controller.rememberLazyGridStateController
 import my.nanihadesuka.compose.generic.ElementScrollbar
+import tk.zwander.commonCompose.view.keyboardDismissalNestedScrolling
 
 @Composable
 fun LazyVerticalGridScrollbar(
@@ -16,14 +17,17 @@ fun LazyVerticalGridScrollbar(
     indicatorContent: (@Composable (index: Int, isThumbSelected: Boolean) -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
-    if (!settings.enabled) content()
-    else Box(modifier) {
+    Box(
+        modifier = modifier.keyboardDismissalNestedScrolling(state),
+    ) {
         content()
-        InternalLazyVerticalGridScrollbar(
-            state = state,
-            settings = settings,
-            indicatorContent = indicatorContent,
-        )
+        if (settings.enabled) {
+            InternalLazyVerticalGridScrollbar(
+                state = state,
+                settings = settings,
+                indicatorContent = indicatorContent,
+            )
+        }
     }
 }
 
