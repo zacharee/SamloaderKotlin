@@ -101,105 +101,107 @@ val options = arrayListOf<IOptionItem>().apply {
             },
         ),
     )
-    add(
-        IOptionItem.LiteralOptionItem(
-            label = MR.strings.updates,
-            desc = null,
-            listKey = "update_checker",
-            render = {
-                val scope = rememberCoroutineScope()
-                var availableVersion by rememberSaveable {
-                    mutableStateOf<String?>(null)
-                }
-                var loading by remember {
-                    mutableStateOf(false)
-                }
-
-                Row(
-                    modifier = it,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Box(
-                        modifier = Modifier.weight(1f)
-                            .heightIn(min = 48.dp)
-                            .align(Alignment.CenterVertically),
-                        contentAlignment = Alignment.CenterStart,
-                    ) {
-                        androidx.compose.animation.AnimatedVisibility(
-                            visible = loading,
-                            enter = fadeIn(),
-                            exit = fadeOut(),
-                            modifier = Modifier.align(Alignment.Center),
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(32.dp),
-                            )
-                        }
-
-                        androidx.compose.animation.AnimatedVisibility(
-                            visible = !loading && availableVersion != null,
-                            enter = fadeIn(),
-                            exit = fadeOut(),
-                        ) {
-                            Text(
-                                text = availableVersion
-                                    ?.takeIf { version -> version.isNotBlank() }
-                                    ?.let { version -> stringResource(MR.strings.update_available, version) }
-                                    ?: stringResource(MR.strings.no_updates_available),
-                            )
-                        }
-
-                        androidx.compose.animation.AnimatedVisibility(
-                            visible = !loading && availableVersion == null,
-                            enter = fadeIn(),
-                            exit = fadeOut(),
-                        ) {
-                            Text(
-                                text = stringResource(MR.strings.check_for_updates),
-                            )
-                        }
+    if (HostOS.current != HostOS.IOS) {
+        add(
+            IOptionItem.LiteralOptionItem(
+                label = MR.strings.updates,
+                desc = null,
+                listKey = "update_checker",
+                render = {
+                    val scope = rememberCoroutineScope()
+                    var availableVersion by rememberSaveable {
+                        mutableStateOf<String?>(null)
+                    }
+                    var loading by remember {
+                        mutableStateOf(false)
                     }
 
-                    Crossfade(
-                        modifier = Modifier.align(Alignment.CenterVertically),
-                        targetState = availableVersion?.isNotBlank() == true,
-                    ) { updateAvailable ->
+                    Row(
+                        modifier = it,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
                         Box(
-                            contentAlignment = Alignment.CenterEnd,
+                            modifier = Modifier.weight(1f)
+                                .heightIn(min = 48.dp)
+                                .align(Alignment.CenterVertically),
+                            contentAlignment = Alignment.CenterStart,
                         ) {
-                            if (updateAvailable) {
-                                Button(
-                                    onClick = {
-                                        scope.launch(Dispatchers.IO) {
-                                            loading = true
-                                            UpdateUtil.installUpdate()
-                                            loading = false
-                                        }
-                                    },
-                                    enabled = !loading,
-                                ) {
-                                    Text(text = stringResource(MR.strings.update))
-                                }
-                            } else {
-                                Button(
-                                    onClick = {
-                                        scope.launch(Dispatchers.IO) {
-                                            loading = true
-                                            availableVersion = UpdateUtil.checkForUpdate()?.newVersion ?: ""
-                                            loading = false
-                                        }
-                                    },
-                                    enabled = !loading,
-                                ) {
-                                    Text(text = stringResource(MR.strings.check))
+                            androidx.compose.animation.AnimatedVisibility(
+                                visible = loading,
+                                enter = fadeIn(),
+                                exit = fadeOut(),
+                                modifier = Modifier.align(Alignment.Center),
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(32.dp),
+                                )
+                            }
+
+                            androidx.compose.animation.AnimatedVisibility(
+                                visible = !loading && availableVersion != null,
+                                enter = fadeIn(),
+                                exit = fadeOut(),
+                            ) {
+                                Text(
+                                    text = availableVersion
+                                        ?.takeIf { version -> version.isNotBlank() }
+                                        ?.let { version -> stringResource(MR.strings.update_available, version) }
+                                        ?: stringResource(MR.strings.no_updates_available),
+                                )
+                            }
+
+                            androidx.compose.animation.AnimatedVisibility(
+                                visible = !loading && availableVersion == null,
+                                enter = fadeIn(),
+                                exit = fadeOut(),
+                            ) {
+                                Text(
+                                    text = stringResource(MR.strings.check_for_updates),
+                                )
+                            }
+                        }
+
+                        Crossfade(
+                            modifier = Modifier.align(Alignment.CenterVertically),
+                            targetState = availableVersion?.isNotBlank() == true,
+                        ) { updateAvailable ->
+                            Box(
+                                contentAlignment = Alignment.CenterEnd,
+                            ) {
+                                if (updateAvailable) {
+                                    Button(
+                                        onClick = {
+                                            scope.launch(Dispatchers.IO) {
+                                                loading = true
+                                                UpdateUtil.installUpdate()
+                                                loading = false
+                                            }
+                                        },
+                                        enabled = !loading,
+                                    ) {
+                                        Text(text = stringResource(MR.strings.update))
+                                    }
+                                } else {
+                                    Button(
+                                        onClick = {
+                                            scope.launch(Dispatchers.IO) {
+                                                loading = true
+                                                availableVersion = UpdateUtil.checkForUpdate()?.newVersion ?: ""
+                                                loading = false
+                                            }
+                                        },
+                                        enabled = !loading,
+                                    ) {
+                                        Text(text = stringResource(MR.strings.check))
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            },
-        ),
-    )
+                },
+            ),
+        )
+    }
 }
 
 @Composable
