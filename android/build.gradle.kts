@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose)
@@ -62,8 +64,10 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
 
-    kotlinOptions {
-        jvmTarget = rootProject.extra["javaVersionEnum"].toString()
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget(rootProject.extra["javaVersionEnum"].toString()))
+        }
     }
 
     lint {

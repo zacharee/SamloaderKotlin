@@ -2,7 +2,8 @@ package tk.zwander.common.util
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1_000_000_000) {
     data class ChunkData(
@@ -38,6 +39,7 @@ class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1
                 chunk.sumOf { it.read })
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun currentTimeNano(): Long {
         return Clock.System.now().toEpochMilliseconds() * 1_000_000
     }

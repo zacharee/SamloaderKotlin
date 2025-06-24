@@ -115,7 +115,7 @@ internal fun HistoryItem(
                                 LocalDate.Format {
                                     monthName(monthNames)
                                     char(' ')
-                                    dayOfMonth(Padding.NONE)
+                                    day(Padding.NONE)
                                     char(',')
                                     char(' ')
                                     year()

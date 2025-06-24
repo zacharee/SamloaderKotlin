@@ -9,11 +9,11 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.io.Sink
 import kotlinx.io.Source
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Instant
 import kotlin.time.measureTimedValue
 
 const val DEFAULT_CHUNK_SIZE = 1024 * 512

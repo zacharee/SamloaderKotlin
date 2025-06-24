@@ -99,19 +99,19 @@ object History {
                     char('/')
                     monthNumber(Padding.NONE)
                     char('/')
-                    dayOfMonth(Padding.NONE)
+                    day(Padding.NONE)
                 },
                 DateTimeComponents.Format {
                     year()
                     char('-')
                     monthNumber(Padding.NONE)
                     char('-')
-                    dayOfMonth(Padding.NONE)
+                    day(Padding.NONE)
                 },
                 DateTimeComponents.Format {
                     monthNumber(Padding.NONE)
                     char('/')
-                    dayOfMonth(Padding.NONE)
+                    day(Padding.NONE)
                     char('/')
                     year()
                 },
@@ -120,7 +120,7 @@ object History {
             val parsed = formats.firstNotNullOfOrNull { format ->
                 try {
                     format.parse(date).toLocalDate()
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     null
                 }
             }
