@@ -35,6 +35,8 @@ For Windows, macOS, and Linux, you can download from https://bifrost.zwander.dev
 
 Check the [Releases page](https://github.com/zacharee/SamloaderKotlin/releases) for binaries.
 
+If you want to run this on iOS or use the iOS version on macOS, you can sign up for the TestFlight version [here](https://testflight.apple.com/join/PVmWZNZn).
+
 ## Platform Compatibility
 
 |               | x86 | x86_64 | ARMv7 | ARM64 |
@@ -44,6 +46,7 @@ Check the [Releases page](https://github.com/zacharee/SamloaderKotlin/releases) 
 | Android       | ✅   | ✅      | ✅     | ✅     |
 | Debian-Based  | ❌   | ✅      | ❌     | ✅     |
 | Generic Linux | ❌   | ✅      | ❌     | ✅     |
+| iOS           | ❌   | ❌      | ❌     | ✅     |
 
 ## Note for Linux
 Make sure you have at least one of the following font families from each category installed.
