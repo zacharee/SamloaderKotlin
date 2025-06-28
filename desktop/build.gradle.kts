@@ -58,10 +58,6 @@ tasks.withType<ComposeHotRun>().configureEach {
     mainClass.set("MainKt")
 }
 
-composeCompiler {
-    featureFlags.add(ComposeFeatureFlag.OptimizeNonSkippingGroups)
-}
-
 compose.desktop {
     val packageName: String by rootProject.extra
     val appName: String by rootProject.extra
