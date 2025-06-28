@@ -1,0 +1,124 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources/0.25.0/resources-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "iosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources.klib",
+          "url": "resources-iosx64-0.25.0.klib",
+          "size": 71801,
+          "sha512": "d823d73530596ff8cbd6c9fb7e71be8c231fe366aa772da00f9257f3e7fca4cb2724ad5e73e5288a2c8fac997a824c55f38710f65f5830c6f8761903db5935cb",
+          "sha256": "6f0bcd1abf4d3eb55cb29f274a2ae801e05cc3bef55553afdbe4a175108d6f6f",
+          "sha1": "5e139a8398429bf7ab9c6e046de9b55206325fd0",
+          "md5": "4233208dca25531023740aba28416a44"
+        },
+        {
+          "name": "resources-cinterop-bundleSearcher.klib",
+          "url": "resources-iosx64-0.25.0-cinterop-bundleSearcher.klib",
+          "size": 26513,
+          "sha512": "f56e0708c0fbe2b9e7adb496729f2497fa30b032d0f6c75660a2b512e6ed5cb7d3039b6e5b54374a126aa26d2b3235d447e00df1ef1dc21e5a12d4921571530d",
+          "sha256": "1242046f999aef14484659c8f8d7925e957906fe365bdb4369f2deef2d5d6a2b",
+          "sha1": "e9bde028099d2cc843e6a8aa9388d0fba5aef3d4",
+          "md5": "46b7d7eb7b15881a7d3059ec746756df"
+        }
+      ]
+    },
+    {
+      "name": "iosX64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "resources-iosx64-0.25.0-sources.jar",
+          "url": "resources-iosx64-0.25.0-sources.jar",
+          "size": 28454,
+          "sha512": "d7a9480863a334eff6e2fb49e7ee0a62e119a6b0094d52b677d2cf01fcf98d85d1475f335a2f4fe3a57a950d1f1117b7725bf32a9a0208d3add53263ccb5e3a7",
+          "sha256": "2ec7b352f8486154d900550840dc7a9ebd4ae41054d54e3640853f19a397c626",
+          "sha1": "57a8fa13b870ab85d183c5071d220cfc15f5e5ed",
+          "md5": "d58fbe7a8118d24ec551102465e49670"
+        }
+      ]
+    },
+    {
+      "name": "iosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-iosx64-0.25.0-metadata.jar",
+          "url": "resources-iosx64-0.25.0-metadata.jar",
+          "size": 39472,
+          "sha512": "38958ad9e93974fc346d0074576f1de883f5f36bacff37c0d307dac95737a491a89eeb546ab615bd4abde26f7dd42727d591502b79fb6d2ef3b23217be7a0b81",
+          "sha256": "c5e7913f356b91ed64f8dfed2723a31ddc2a3081429325bdd9d032b0e0c7e63e",
+          "sha1": "255150f42e913fa0d0ee728ab77ee1205ca85a36",
+          "md5": "22cf9166661bfe3a9e865c974d9abd31"
+        }
+      ]
+    }
+  ]
+}

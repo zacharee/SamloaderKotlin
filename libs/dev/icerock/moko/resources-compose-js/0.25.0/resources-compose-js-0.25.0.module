@@ -1,0 +1,155 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources-compose/0.25.0/resources-compose-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources-compose",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "jsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-dom-api-compat",
+          "version": {
+            "requires": "1.9.20"
+          }
+        },
+        {
+          "group": "dev.icerock.moko",
+          "module": "resources",
+          "version": {
+            "requires": "0.25.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-compose-js-0.25.0.klib",
+          "url": "resources-compose-js-0.25.0.klib",
+          "size": 39794,
+          "sha512": "caa2f0b4073771845a765ab8ea03e40fd46b99772443aff5eab5ce8066b95f0531042d480abbfff380c68b4b65d0cdc22cd1d4ee77a2aafe5cf346cc716d8dab",
+          "sha256": "64217df93b6c2125ac7f80f64a4e254b27f22b33d9763e48315f8a995da99020",
+          "sha1": "ae126c522a4b77a514d1c2257554cd4a985d55ca",
+          "md5": "e453cdc61cb3f4b8217e36cfe518e0e2"
+        }
+      ]
+    },
+    {
+      "name": "jsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-dom-api-compat",
+          "version": {
+            "requires": "1.9.20"
+          }
+        },
+        {
+          "group": "dev.icerock.moko",
+          "module": "resources",
+          "version": {
+            "requires": "0.25.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-compose-js-0.25.0.klib",
+          "url": "resources-compose-js-0.25.0.klib",
+          "size": 39794,
+          "sha512": "caa2f0b4073771845a765ab8ea03e40fd46b99772443aff5eab5ce8066b95f0531042d480abbfff380c68b4b65d0cdc22cd1d4ee77a2aafe5cf346cc716d8dab",
+          "sha256": "64217df93b6c2125ac7f80f64a4e254b27f22b33d9763e48315f8a995da99020",
+          "sha1": "ae126c522a4b77a514d1c2257554cd4a985d55ca",
+          "md5": "e453cdc61cb3f4b8217e36cfe518e0e2"
+        }
+      ]
+    },
+    {
+      "name": "jsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "files": [
+        {
+          "name": "resources-compose-js-0.25.0-sources.jar",
+          "url": "resources-compose-js-0.25.0-sources.jar",
+          "size": 13437,
+          "sha512": "c36abe1492872d29f6a45d0c01e16754095bafdcf85d144e7fba64a6120d247aa4cdf4ad63157beb722470240f3b66b3e7f6dba5bff52fecadb6964f24da8302",
+          "sha256": "9783e7a29a88ad7f0e5eb2f9cd7601dc90bfe8c5be8bb92c30349cb9984dae86",
+          "sha1": "c2548bbafc840887f7112aff177aeb3adbca2717",
+          "md5": "4b4c48b4e16b9924c2267216928ed5d6"
+        }
+      ]
+    }
+  ]
+}

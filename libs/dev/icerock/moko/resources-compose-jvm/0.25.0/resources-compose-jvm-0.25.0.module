@@ -1,0 +1,141 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources-compose/0.25.0/resources-compose-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources-compose",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "resources",
+          "version": {
+            "requires": "0.25.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-compose-jvm-0.25.0.jar",
+          "url": "resources-compose-jvm-0.25.0.jar",
+          "size": 20144,
+          "sha512": "cd09be040e86a4da6837219a70aa8b71c8dd9e80d7b0ee66f876dc834949e8afa6eb7b67b52724c9e0b28ec1a91606d1023e86bc35e4cdce066d3ee8eba22dab",
+          "sha256": "61c19f74e2e00c857223d157c98ec13c863423793423a8a8a65e07551a82ac2c",
+          "sha1": "ad2676bcda45e7782acbcb9e3dcdc76990bc1679",
+          "md5": "5df24e1f7fb6b94b4270eca31dcb0d09"
+        }
+      ]
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "resources",
+          "version": {
+            "requires": "0.25.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-compose-jvm-0.25.0.jar",
+          "url": "resources-compose-jvm-0.25.0.jar",
+          "size": 20144,
+          "sha512": "cd09be040e86a4da6837219a70aa8b71c8dd9e80d7b0ee66f876dc834949e8afa6eb7b67b52724c9e0b28ec1a91606d1023e86bc35e4cdce066d3ee8eba22dab",
+          "sha256": "61c19f74e2e00c857223d157c98ec13c863423793423a8a8a65e07551a82ac2c",
+          "sha1": "ad2676bcda45e7782acbcb9e3dcdc76990bc1679",
+          "md5": "5df24e1f7fb6b94b4270eca31dcb0d09"
+        }
+      ]
+    },
+    {
+      "name": "jvmSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "resources-compose-jvm-0.25.0-sources.jar",
+          "url": "resources-compose-jvm-0.25.0-sources.jar",
+          "size": 9685,
+          "sha512": "62c239ecfa141f4787f2047a9f385757ea7998e9bdc4b12efdabd77d3db0eced5f9a5248ae1a038b893558cee4f4f36084527b9375362d845f6119b90ed5110e",
+          "sha256": "6efdb07b159488dadbb38ed0a61b609456cd8da4fd1147df8e1f0a6c2fd40a72",
+          "sha1": "3cf9f4e7f946abeaef533e9b674d0fa65e07d4f3",
+          "md5": "ad14db3f06394bc9d4c4d8cdc6363ff4"
+        }
+      ]
+    }
+  ]
+}

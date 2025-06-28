@@ -1,0 +1,124 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources/0.25.0/resources-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "watchosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources.klib",
+          "url": "resources-watchossimulatorarm64-0.25.0.klib",
+          "size": 70941,
+          "sha512": "6a275f22aed7f726c157efa4c39db122bc55e613144c190fc2d741bf77042d27f76776321836e7ecfdd83b628c74a88d6eb99163dcdc8519b44c4270ff928202",
+          "sha256": "4d2453b2c38402a33fa2c6b3c9554b0ea7a898fa20569574877f8e2414728cf1",
+          "sha1": "00e7859f2fd3cdef641724c57e1f2c48279189a3",
+          "md5": "46d0a5f7d17e7adc79126a4648903be5"
+        },
+        {
+          "name": "resources-cinterop-bundleSearcher.klib",
+          "url": "resources-watchossimulatorarm64-0.25.0-cinterop-bundleSearcher.klib",
+          "size": 26653,
+          "sha512": "55ea95f05ac4881a3293a630093b89631923ce422fc64a83d722feb3ce7da1e3b59abfb33554d8dc456d02c741ed4aa6d5851367a1b4bb6c9f0726b5f6230ba9",
+          "sha256": "7edfba7d9c63f33d528e1a40e5b8bb1b81a7368b26793a0f8e7868772d05c408",
+          "sha1": "fb6c1b86054c7fd29e3ff944aa664d8f80f7f5d4",
+          "md5": "89908f197f982a89d90db5b42f21acf3"
+        }
+      ]
+    },
+    {
+      "name": "watchosSimulatorArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "watchos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "resources-watchossimulatorarm64-0.25.0-sources.jar",
+          "url": "resources-watchossimulatorarm64-0.25.0-sources.jar",
+          "size": 28558,
+          "sha512": "8920efb78aa8a45f417c1fe56bb478935fd10c4c0b397e4a5bf349e8cda593d4cccc38a2ccac48e487369c505771dd2cec356d10b7f5f231dc0cdf17aeb0f4d4",
+          "sha256": "369c0e8c80875c39af839bfdc345503a610f6b1fdb0b7d130033ee456126e1c3",
+          "sha1": "876dbde9e31bbc7554e90f84bb486f6b272ad8a5",
+          "md5": "bb40ce2906833418f88a256a8b2b71b7"
+        }
+      ]
+    },
+    {
+      "name": "watchosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-watchossimulatorarm64-0.25.0-metadata.jar",
+          "url": "resources-watchossimulatorarm64-0.25.0-metadata.jar",
+          "size": 40016,
+          "sha512": "4317a50702121fd43b9036b687d748f111f9d661d56a8e323ae2d217c799c4c31e10001359bf5e422c62660f6bf65c912ad0da3ea3a75a26ed653d3713a67d19",
+          "sha256": "b5827b195faafef4e0148e861424ccb7bee6a0fdcc2df935a7511ccd344b9d7f",
+          "sha1": "32938f2767f61467eebfaa21acd2a2fecf6f14be",
+          "md5": "14a4363f7dfa7e6b08eb265bca39dd97"
+        }
+      ]
+    }
+  ]
+}

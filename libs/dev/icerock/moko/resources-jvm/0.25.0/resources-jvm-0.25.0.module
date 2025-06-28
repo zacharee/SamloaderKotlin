@@ -1,0 +1,134 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources/0.25.0/resources-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-jvm-0.25.0.jar",
+          "url": "resources-jvm-0.25.0.jar",
+          "size": 63859,
+          "sha512": "13d7b03b5c0a46ddadabb7c52927c34881b8f447b30321293dd05a5b08908ee4559de4bafbc9ef234be100590ed2e0c54885af98296a44643238a6b0ffc19bd8",
+          "sha256": "0e35eb80e2d4046ea0caaf8d4830009b11d8c0d3ae1c24e713744fa37c8d71f4",
+          "sha1": "dd7e5f2643064a570df4f23bd8bc50a51edbb65a",
+          "md5": "30431f17e12135c9e6a3a3d7555dcb37"
+        }
+      ]
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        },
+        {
+          "group": "com.ibm.icu",
+          "module": "icu4j",
+          "version": {
+            "requires": "73.1"
+          }
+        },
+        {
+          "group": "org.apache.xmlgraphics",
+          "module": "batik-rasterizer",
+          "version": {
+            "requires": "1.17"
+          }
+        },
+        {
+          "group": "org.apache.xmlgraphics",
+          "module": "batik-transcoder",
+          "version": {
+            "requires": "1.17"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-jvm-0.25.0.jar",
+          "url": "resources-jvm-0.25.0.jar",
+          "size": 63859,
+          "sha512": "13d7b03b5c0a46ddadabb7c52927c34881b8f447b30321293dd05a5b08908ee4559de4bafbc9ef234be100590ed2e0c54885af98296a44643238a6b0ffc19bd8",
+          "sha256": "0e35eb80e2d4046ea0caaf8d4830009b11d8c0d3ae1c24e713744fa37c8d71f4",
+          "sha1": "dd7e5f2643064a570df4f23bd8bc50a51edbb65a",
+          "md5": "30431f17e12135c9e6a3a3d7555dcb37"
+        }
+      ]
+    },
+    {
+      "name": "jvmSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "resources-jvm-0.25.0-sources.jar",
+          "url": "resources-jvm-0.25.0-sources.jar",
+          "size": 21310,
+          "sha512": "d3a9adb7f56dac163d36c4435372e315b23999ded3ef69fe7aa77790f2274e0ea92a9561f662ccd9176d859240f712359efa3dc68550902addcf1f3124aac943",
+          "sha256": "6ebc22d5d2849c870c04775a72a8a477e1ff3fdc669f9df3a0eb116f3233ae0c",
+          "sha1": "2ce6fb0be51d98a316ac80719352b0607a268e64",
+          "md5": "18fdecb3154e8ebd1461adc5208a4ded"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources-test/0.25.0/resources-test-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources-test",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "iosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "resources",
+          "version": {
+            "requires": "0.25.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-test.klib",
+          "url": "resources-test-iosx64-0.25.0.klib",
+          "size": 7317,
+          "sha512": "8a237a65f7b4289cdf1affd4ec82360f265145aebaf18ffd02ad1b0911e39cfc43c6e5c7a9fe6d7551860f6df867a68af62d4fabe687e8821624a32cfc797b7a",
+          "sha256": "db108758cec1ce9cce083820b90a0a950120c0f7b0423488d03d4784564e9807",
+          "sha1": "741c3d1f5da91c88bf058e044d453c37ccd71b19",
+          "md5": "86d6e1abb494ef3d127126baffc8dde8"
+        }
+      ]
+    },
+    {
+      "name": "iosX64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "resources-test-iosx64-0.25.0-sources.jar",
+          "url": "resources-test-iosx64-0.25.0-sources.jar",
+          "size": 3810,
+          "sha512": "01a54c84548c4b13137436616c57dfcf74d4ece30fd5a185e1e81563c7da49f68c3def0ce247d817a0f9baa42074419e3105e6994eb125f322bd53fc324da2b7",
+          "sha256": "61452d1261694947634042896dc496713f6ebe938e2737aae79b6b10ccf28b4a",
+          "sha1": "2e1671d2eaf6ae66ce9de406d6557b1b590185ab",
+          "md5": "724f61aef9459237ba4abc81b6d0fb41"
+        }
+      ]
+    },
+    {
+      "name": "iosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "resources",
+          "version": {
+            "requires": "0.25.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-test-iosx64-0.25.0-metadata.jar",
+          "url": "resources-test-iosx64-0.25.0-metadata.jar",
+          "size": 12817,
+          "sha512": "15012ef83112e47a8c82efbd87041be4c205b8590927f130efc5e7e9c80f94a89bdc5d64586396db8a4a991ea519ccbcb3fc18a37947010bef2efd03ce554ff7",
+          "sha256": "89beb6fa16ee5bbdf5193d90e226f5bfe9e863e1850b05f16531fa682ad07589",
+          "sha1": "3a293de371230e4ad8336f9a140a83ea6b728d75",
+          "md5": "8c96a647b359834c7c1a17b68ec928c9"
+        }
+      ]
+    }
+  ]
+}

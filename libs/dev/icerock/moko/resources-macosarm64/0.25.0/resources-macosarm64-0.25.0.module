@@ -1,0 +1,124 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources/0.25.0/resources-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "macosArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "macos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources.klib",
+          "url": "resources-macosarm64-0.25.0.klib",
+          "size": 72023,
+          "sha512": "9325cc296c4fa9bb33e7b507ee72e01e519ab54b0568918d2a1cd7cac24426b0a6bf4f316d2f431320822cf643935969055f5650710c82761c281694796497aa",
+          "sha256": "556a3807717423bea88861968f88933186db2078e2a7a41a5520ca9b5bbd9817",
+          "sha1": "6bf87d5bbbbbffc05ec0b4c1ebb51de266fa3e16",
+          "md5": "cd446b16e27747b39577ec3c1c6ab345"
+        },
+        {
+          "name": "resources-cinterop-bundleSearcher.klib",
+          "url": "resources-macosarm64-0.25.0-cinterop-bundleSearcher.klib",
+          "size": 26672,
+          "sha512": "3b1cf46e70a136a063430d8b4535363a1508d3949407bf6b94610a10f7dd8e4860f790b0c6370533123e17b34b4f9c583922017ce751694d57fc06299ed06159",
+          "sha256": "00a293fd4d7d2102043fb255ebe9a54120ebeca19fabd70c7a75fbd9e6dea4f6",
+          "sha1": "ea302d93bc7fe36d4dbc2d61ac9ac680a272180f",
+          "md5": "aa964b45822e9afb5b93d1bc7c0f8b0b"
+        }
+      ]
+    },
+    {
+      "name": "macosArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "macos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "resources-macosarm64-0.25.0-sources.jar",
+          "url": "resources-macosarm64-0.25.0-sources.jar",
+          "size": 28429,
+          "sha512": "d6491c340eeb1917bb210816b9fba244305c205d69902be9eefde6f9192ea52b5a473a528a976b01acd2f04d7d9121a3ae4802bce59f6eb782075137c6b2898e",
+          "sha256": "087b710cbcabbada8d08dbb6f7c9a4979d66374c22042e4153a5f5c657f845d4",
+          "sha1": "ce6ae59c8f512410fb642b743824339f06797203",
+          "md5": "cf0f7459e25127d1b46ec283bd306dfc"
+        }
+      ]
+    },
+    {
+      "name": "macosArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "macos_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-macosarm64-0.25.0-metadata.jar",
+          "url": "resources-macosarm64-0.25.0-metadata.jar",
+          "size": 39693,
+          "sha512": "a37d6d4607f954adbd568748b4abc0a3f568aa59dc0755eb4b6f0c307ca36e1a7df16db8503e9372ff7874b1d5f4d1a824cecc224760ec514c02450d8c861dbc",
+          "sha256": "049b25d6f2e624a5316b72e820f792789e433883a84c374ff9487208714f4a3a",
+          "sha1": "43960602d593b5147be9e18084aace0513ffaa5b",
+          "md5": "372bcacc710cd4d2d2dd1396b0705d6a"
+        }
+      ]
+    }
+  ]
+}

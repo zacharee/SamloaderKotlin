@@ -1,0 +1,124 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources/0.25.0/resources-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "watchosX64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "watchos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources.klib",
+          "url": "resources-watchosx64-0.25.0.klib",
+          "size": 70838,
+          "sha512": "a1f5803998231b2c420480d2a74658ada965b9fc7301a714f10fff17e253424364a21a433c467b5aaa5de082be426994c59953409518918a9174dfc574055e47",
+          "sha256": "216c622d3fb9d98e22640039935b0c6d204e174702f31e7966e7de4867a4d4ec",
+          "sha1": "115a16938dddf50e482a7daab446ec9061561130",
+          "md5": "8ef3194b58d503f18001457ff3863b79"
+        },
+        {
+          "name": "resources-cinterop-bundleSearcher.klib",
+          "url": "resources-watchosx64-0.25.0-cinterop-bundleSearcher.klib",
+          "size": 26415,
+          "sha512": "50ae98d2a90a001c52f6ed480ade172c67ca9cb0a8c343f8b9a49a345b4931491c7e00adc24e38bc0689e116aba4f9f303d2fd62d64609fad62a15ede5079d48",
+          "sha256": "1931b0eb99655276b04f073f11a3e3d56fb5117d92ee238d0a847635a33f8b7c",
+          "sha1": "0981f810365ea1c5fb3498380c17402fc7b98e6d",
+          "md5": "50825e393d171ed218462f2c50d8fa06"
+        }
+      ]
+    },
+    {
+      "name": "watchosX64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "watchos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "resources-watchosx64-0.25.0-sources.jar",
+          "url": "resources-watchosx64-0.25.0-sources.jar",
+          "size": 28558,
+          "sha512": "8920efb78aa8a45f417c1fe56bb478935fd10c4c0b397e4a5bf349e8cda593d4cccc38a2ccac48e487369c505771dd2cec356d10b7f5f231dc0cdf17aeb0f4d4",
+          "sha256": "369c0e8c80875c39af839bfdc345503a610f6b1fdb0b7d130033ee456126e1c3",
+          "sha1": "876dbde9e31bbc7554e90f84bb486f6b272ad8a5",
+          "md5": "bb40ce2906833418f88a256a8b2b71b7"
+        }
+      ]
+    },
+    {
+      "name": "watchosX64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "watchos_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-watchosx64-0.25.0-metadata.jar",
+          "url": "resources-watchosx64-0.25.0-metadata.jar",
+          "size": 40016,
+          "sha512": "57ee9d697dac9a1051947c3ff653dda7d5c10c34d3812ac1f1267ee1761648bcefef5baafac1818fa2cca940197bb924970f11c0b3080352768fbf313702248e",
+          "sha256": "f13a4355ddb513440a75955d276c40a6a18090eed89890cd2db748a6b10cfa25",
+          "sha1": "d87588734ffcdd09743650b959199c2f80815b9f",
+          "md5": "e27f40ad0002bda6d9c3ac70bb6a79e7"
+        }
+      ]
+    }
+  ]
+}

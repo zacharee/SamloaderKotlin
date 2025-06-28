@@ -1,0 +1,304 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources/0.25.0/resources-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "debugApiElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-debug.aar",
+          "url": "resources-android-0.25.0-debug.aar",
+          "size": 54979,
+          "sha512": "4d0e8731e5391be6810cbc2a07755aa3dc761a08cb2a43b6a836588c43d7fe60581790ad41e195565e5fdd29e78a7c60973266748fa5e735d1885e3e1e3e100a",
+          "sha256": "b343239554a64aaeae94cecd3e180ba9d54a1d2a537f07a454b777f482e49228",
+          "sha1": "d14dfac6610b8859ba1b88e2ebb46cc61a2d4794",
+          "md5": "7d3599ecdaa509d076872859a342b21e"
+        }
+      ]
+    },
+    {
+      "name": "debugRuntimeElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat-resources",
+          "version": {
+            "requires": "1.6.1"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        },
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-debug.aar",
+          "url": "resources-android-0.25.0-debug.aar",
+          "size": 54979,
+          "sha512": "4d0e8731e5391be6810cbc2a07755aa3dc761a08cb2a43b6a836588c43d7fe60581790ad41e195565e5fdd29e78a7c60973266748fa5e735d1885e3e1e3e100a",
+          "sha256": "b343239554a64aaeae94cecd3e180ba9d54a1d2a537f07a454b777f482e49228",
+          "sha1": "d14dfac6610b8859ba1b88e2ebb46cc61a2d4794",
+          "md5": "7d3599ecdaa509d076872859a342b21e"
+        }
+      ]
+    },
+    {
+      "name": "debugSourcesElements-published",
+      "attributes": {
+        "com.android.build.api.attributes.BuildTypeAttr": "debug",
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "files": [
+        {
+          "name": "resources-android-debug-0.25.0-sources.jar",
+          "url": "resources-android-0.25.0-debug-sources.jar",
+          "size": 22097,
+          "sha512": "dabc54ae89bbb84bb7511ab7c7b191ecce072236feead786b6811c2c6877c4663b39a2acab13f14e2807c2ec7c892e03eb009f27ece4dc61a0c81fd9096dc121",
+          "sha256": "b4f6ecc0fe3af3b356dba602a75604f1df1f93e18c08595925797c0849f6444d",
+          "sha1": "cd5e60141dd42625a5b451e9cf315af7f2aefbce",
+          "md5": "e4d80dad8090ce35d8fffa500117806f"
+        }
+      ]
+    },
+    {
+      "name": "releaseApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-release.aar",
+          "url": "resources-android-0.25.0.aar",
+          "size": 53198,
+          "sha512": "4e7357c5bd4fa4634192576be3db6af0f0f06cbc9287fa4b11f3ef5ab5e0039e500aee4fb373b125e8470639c534669976ed0474b6fd8f22d1e5cf69667166ce",
+          "sha256": "8d54d0ede97f0d346c5560a8696abe5d87ac8d732a0a6926cd73db6a3a267ee0",
+          "sha1": "cebb633afbb45e3ce35e1634173767ce0fcc62c4",
+          "md5": "b3f9dcb01abd650e3bdea954f2b381d2"
+        }
+      ]
+    },
+    {
+      "name": "releaseRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.appcompat",
+          "module": "appcompat-resources",
+          "version": {
+            "requires": "1.6.1"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        },
+        {
+          "group": "dev.icerock.moko",
+          "module": "graphics",
+          "version": {
+            "requires": "0.9.0"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          },
+          "excludes": [
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-stdlib-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-common"
+            },
+            {
+              "group": "org.jetbrains.kotlin",
+              "module": "kotlin-test-annotations-common"
+            }
+          ]
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-release.aar",
+          "url": "resources-android-0.25.0.aar",
+          "size": 53198,
+          "sha512": "4e7357c5bd4fa4634192576be3db6af0f0f06cbc9287fa4b11f3ef5ab5e0039e500aee4fb373b125e8470639c534669976ed0474b6fd8f22d1e5cf69667166ce",
+          "sha256": "8d54d0ede97f0d346c5560a8696abe5d87ac8d732a0a6926cd73db6a3a267ee0",
+          "sha1": "cebb633afbb45e3ce35e1634173767ce0fcc62c4",
+          "md5": "b3f9dcb01abd650e3bdea954f2b381d2"
+        }
+      ]
+    },
+    {
+      "name": "releaseSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "files": [
+        {
+          "name": "resources-android-0.25.0-sources.jar",
+          "url": "resources-android-0.25.0-sources.jar",
+          "size": 22097,
+          "sha512": "dabc54ae89bbb84bb7511ab7c7b191ecce072236feead786b6811c2c6877c4663b39a2acab13f14e2807c2ec7c892e03eb009f27ece4dc61a0c81fd9096dc121",
+          "sha256": "b4f6ecc0fe3af3b356dba602a75604f1df1f93e18c08595925797c0849f6444d",
+          "sha1": "cd5e60141dd42625a5b451e9cf315af7f2aefbce",
+          "md5": "e4d80dad8090ce35d8fffa500117806f"
+        }
+      ]
+    }
+  ]
+}

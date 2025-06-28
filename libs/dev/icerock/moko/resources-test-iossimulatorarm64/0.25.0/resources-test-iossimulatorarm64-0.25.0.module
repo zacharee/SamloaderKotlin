@@ -1,0 +1,115 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../resources-test/0.25.0/resources-test-0.25.0.module",
+    "group": "dev.icerock.moko",
+    "module": "resources-test",
+    "version": "0.25.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.14.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "resources",
+          "version": {
+            "requires": "0.25.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-test.klib",
+          "url": "resources-test-iossimulatorarm64-0.25.0.klib",
+          "size": 7420,
+          "sha512": "89b5c07538552a6492ea1e84cec66b5dfe2783def491d2f750076b7b154861a82a75dabe4bb57e20d0585daceb9adfdbc6358ce004b1f8b008514d81e269c65b",
+          "sha256": "5699d9396491fb6b0a15a49690d5351159f32f62a470658b6e0f27e6e60e851b",
+          "sha1": "4d8732d1f51eb81773636f99a331d87b460ffbf7",
+          "md5": "7d2630f7c4937ebfd7905eece5f633d6"
+        }
+      ]
+    },
+    {
+      "name": "iosSimulatorArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "resources-test-iossimulatorarm64-0.25.0-sources.jar",
+          "url": "resources-test-iossimulatorarm64-0.25.0-sources.jar",
+          "size": 3810,
+          "sha512": "01a54c84548c4b13137436616c57dfcf74d4ece30fd5a185e1e81563c7da49f68c3def0ce247d817a0f9baa42074419e3105e6994eb125f322bd53fc324da2b7",
+          "sha256": "61452d1261694947634042896dc496713f6ebe938e2737aae79b6b10ccf28b4a",
+          "sha1": "2e1671d2eaf6ae66ce9de406d6557b1b590185ab",
+          "md5": "724f61aef9459237ba4abc81b6d0fb41"
+        }
+      ]
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "dev.icerock.moko",
+          "module": "resources",
+          "version": {
+            "requires": "0.25.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "resources-test-iossimulatorarm64-0.25.0-metadata.jar",
+          "url": "resources-test-iossimulatorarm64-0.25.0-metadata.jar",
+          "size": 12817,
+          "sha512": "15012ef83112e47a8c82efbd87041be4c205b8590927f130efc5e7e9c80f94a89bdc5d64586396db8a4a991ea519ccbcb3fc18a37947010bef2efd03ce554ff7",
+          "sha256": "89beb6fa16ee5bbdf5193d90e226f5bfe9e863e1850b05f16531fa682ad07589",
+          "sha1": "3a293de371230e4ad8336f9a140a83ea6b728d75",
+          "md5": "8c96a647b359834c7c1a17b68ec928c9"
+        }
+      ]
+    }
+  ]
+}
