@@ -1,5 +1,5 @@
 PODS:
-  - Bugsnag (6.30.0)
+  - Bugsnag (6.32.2)
   - BugsnagPerformance (1.14.0)
   - common (86)
 
@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
     :path: "../common"
 
 SPEC CHECKSUMS:
-  Bugsnag: 17913f377e49520f06542cd16baea9f2cfbb014d
+  Bugsnag: 4f9b8e6beab17d7903b67959915d707ad9d96911
   BugsnagPerformance: 1ce529b5ade51e2048019850fd0f8da5bcb8ee39
   common: e9429ca9d7d21311a436f9708ab50976aef23678
 
