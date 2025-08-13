@@ -2,7 +2,7 @@
 
 package tk.zwander.common.data.imei
 
-import de.halfbit.csv.Csv
+import de.halfbit.csv.CsvWithHeader
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.isSuccess
@@ -117,8 +117,8 @@ data object IMEIDatabase {
     }
 
     private fun loadCsv(csvString: String) {
-        val csv = Csv.parserCsvText(csvString)
-        csv.allRows.forEach { line ->
+        val csv = CsvWithHeader.fromCsvText(csvString)
+        csv?.allRows?.forEach { line ->
             if (line.size >= 2) {
                 val tac = line[0]
                 val model = line[1].cleanUpModel()

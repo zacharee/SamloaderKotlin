@@ -14,7 +14,7 @@ pluginManagement {
 }
 
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
 dependencyResolutionManagement {
@@ -29,6 +29,7 @@ dependencyResolutionManagement {
         maven("https://jitpack.io")
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
         maven("file:libs/")
+        maven("https://repo.jenkins-ci.org/public/")
     }
 }
 
