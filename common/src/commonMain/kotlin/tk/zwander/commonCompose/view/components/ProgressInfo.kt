@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
@@ -46,7 +47,9 @@ internal fun ProgressInfo(model: BaseModel) {
         val speed by model.speed.collectAsState()
 
         if (statusText.isNotBlank()) {
-            Text(text = statusText)
+            SelectionContainer {
+                Text(text = statusText)
+            }
         }
 
         val isIndeterminate = progress.first <= 0 || progress.second <= 0
