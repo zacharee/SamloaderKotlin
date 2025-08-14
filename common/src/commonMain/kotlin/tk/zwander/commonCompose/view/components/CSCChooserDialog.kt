@@ -25,8 +25,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,8 +38,13 @@ import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.compose.alertdialog.InWindowAlertDialog
 import my.nanihadesuka.compose.LazyColumnScrollbar
 import tk.zwander.common.data.csc.CSCDB
+import tk.zwander.commonCompose.model.CSCDialogModel
+import tk.zwander.commonCompose.model.Column
+import tk.zwander.commonCompose.model.SelectionState
 import tk.zwander.commonCompose.util.OffsetCorrectedIdentityTransformation
 import tk.zwander.commonCompose.util.ThemeConstants
+import tk.zwander.commonCompose.util.collectAsImmediateMutableState
+import tk.zwander.commonCompose.util.collectAsMutableState
 import tk.zwander.samloaderkotlin.resources.MR
 
 @Composable
@@ -58,16 +61,10 @@ fun CSCChooserDialog(
             Text(text = stringResource(MR.strings.chooseCsc))
         },
         text = {
-            var filter by remember {
-                mutableStateOf("")
-            }
+            var filter by CSCDialogModel.filter.collectAsImmediateMutableState()
 
-            var selectedColumn by remember {
-                mutableStateOf(Column.CSC)
-            }
-            var sortState by remember(selectedColumn) {
-                mutableStateOf(SelectionState.ASCENDING)
-            }
+            var selectedColumn by CSCDialogModel.selectedColumn.collectAsMutableState()
+            var sortState by CSCDialogModel.sortState.collectAsMutableState()
 
             fun onColumnClick(column: Column) {
                 if (column == selectedColumn) {
@@ -247,16 +244,4 @@ private fun HeaderItem(
                 .size(24.dp),
         )
     }
-}
-
-private enum class SelectionState {
-    ASCENDING,
-    DESCENDING,
-    NONE,
-}
-
-private enum class Column {
-    CSC,
-    COUNTRY,
-    CARRIER
 }

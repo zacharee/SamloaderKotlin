@@ -216,7 +216,7 @@ internal fun MRFLayout(
             if (!hasRunningJobs) {
                 model.region.value = it
             }
-        }
+        },
     )
 
     InWindowAlertDialog(
