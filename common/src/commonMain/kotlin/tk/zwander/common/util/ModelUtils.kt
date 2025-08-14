@@ -1,4 +1,4 @@
 package tk.zwander.common.util
 
 val String?.isAccessoryModel: Boolean
-    get() = this?.startsWith("SM-R") == true
+    get() = this?.startsWith("SM-R") == true || this?.startsWith("SM-L") == true
