@@ -1,3 +1,12 @@
+# 1.20.3
+- Add support for running on iOS.
+- Add a donate button to the About page.
+- Fix issue with audio library dependencies on Debian.
+- Remember CSC dialog state (search content, sorting) while app is running.
+- Make download response text selectable.
+- Update logic to show download warning for SM-L* watches as well as SM-R* devices.
+- Add TACs.
+
 # 1.20.2
 - Fix an issue where picking directories on Linux might just not do anything.
 - Work on addressing an issue where moving the window across displays would cause it to reset.
