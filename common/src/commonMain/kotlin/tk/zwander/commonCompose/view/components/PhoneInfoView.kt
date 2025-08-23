@@ -13,16 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
 import io.ktor.http.URLBuilder
+import kotlinx.coroutines.launch
 import tk.zwander.common.util.LocalPhoneInfo
 import tk.zwander.common.util.UrlHandler
+import tk.zwander.commonCompose.util.asClipEntry
 import tk.zwander.samloaderkotlin.resources.MR
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -31,7 +33,9 @@ fun PhoneInfoView(
     modifier: Modifier = Modifier,
 ) {
     val phoneInfo = LocalPhoneInfo.current
-    val clipboard = LocalClipboardManager.current
+    val clipboard = LocalClipboard.current
+    val scope = rememberCoroutineScope()
+
     var expanded by remember {
         mutableStateOf(true)
     }
@@ -75,10 +79,14 @@ fun PhoneInfoView(
                     ) {
                         Button(
                             onClick = {
-                                clipboard.setText(buildAnnotatedString {
-                                    appendLine("TAC,Model")
-                                    appendLine("${phoneInfo?.tac},${phoneInfo?.model}")
-                                })
+                                scope.launch {
+                                    clipboard.setClipEntry(
+                                        buildString {
+                                            appendLine("TAC,Model")
+                                            appendLine("${phoneInfo?.tac},${phoneInfo?.model}")
+                                        }.asClipEntry(),
+                                    )
+                                }
                             },
                         ) {
                             Text(text = stringResource(MR.strings.copy))
