@@ -2,6 +2,7 @@
 
 package tk.zwander.common.tools
 
+import com.fleeksoft.io.exception.ArrayIndexOutOfBoundsException
 import com.fleeksoft.ksoup.Ksoup
 import io.ktor.client.plugins.HttpTimeoutConfig
 import io.ktor.client.plugins.timeout
@@ -22,6 +23,9 @@ import io.ktor.utils.io.core.remaining
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.io.InternalIoApi
 import kotlinx.io.Sink
+import tk.zwander.common.util.BreadcrumbType
+import tk.zwander.common.util.BugsnagUtils
+import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.trackOperationProgress
@@ -51,8 +55,18 @@ object FusClient {
     }
 
     private suspend fun generateNonce() {
+        BugsnagUtils.addBreadcrumb(
+            message = "Generating nonce.",
+            data = mapOf(),
+            type = BreadcrumbType.LOG,
+        )
         println("Generating nonce.")
         makeReq(Request.GENERATE_NONCE)
+        BugsnagUtils.addBreadcrumb(
+            message = "Nonce: $nonce, Auth: $auth",
+            data = mapOf(),
+            type = BreadcrumbType.LOG,
+        )
         println("Nonce: $nonce")
         println("Auth: $auth")
     }
@@ -99,9 +113,18 @@ object FusClient {
         }
 
         if (response.headers["NONCE"] != null || response.headers["nonce"] != null) {
-            encNonce = response.headers["NONCE"] ?: response.headers["nonce"] ?: ""
-            nonce = CryptUtils.decryptNonce(encNonce)
-            auth = CryptUtils.getAuth(nonce)
+            try {
+                encNonce = response.headers["NONCE"] ?: response.headers["nonce"] ?: ""
+                nonce = CryptUtils.decryptNonce(encNonce)
+                auth = CryptUtils.getAuth(nonce)
+            } catch (e: ArrayIndexOutOfBoundsException) {
+                BugsnagUtils.addBreadcrumb(
+                    message = "Error generating nonce.",
+                    data = mapOf("error" to e),
+                    type = BreadcrumbType.ERROR,
+                )
+                println("Error generating nonce.")
+            }
         }
 
         if (response.headers["Set-Cookie"] != null || response.headers["set-cookie"] != null) {
