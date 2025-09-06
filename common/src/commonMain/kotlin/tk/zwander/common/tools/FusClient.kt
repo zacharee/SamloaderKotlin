@@ -25,7 +25,6 @@ import kotlinx.io.InternalIoApi
 import kotlinx.io.Sink
 import tk.zwander.common.util.BreadcrumbType
 import tk.zwander.common.util.BugsnagUtils
-import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.trackOperationProgress
