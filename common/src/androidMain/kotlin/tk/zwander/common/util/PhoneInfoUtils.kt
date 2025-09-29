@@ -49,7 +49,7 @@ fun rememberPhoneInfo(): PhoneInfo? {
             } else {
                 suspendCoroutine { continuation ->
                     if (context.checkCallingOrSelfPermission(android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                        continuation.resume(telephonyManager.imei?.slice(0..7))
+                        continuation.resume(telephonyManager.imei?.takeIf { it.length >= 8 }?.slice(0..7))
                     } else {
                         permissionContinuation = continuation
                         permissionRequester.launch(android.Manifest.permission.READ_PHONE_STATE)
