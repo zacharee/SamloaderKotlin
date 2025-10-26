@@ -7,6 +7,8 @@ import io.ktor.http.*
 import tk.zwander.common.data.FetchResult
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.firstElementByTagName
+import tk.zwander.common.util.invoke
+import tk.zwander.samloaderkotlin.resources.MR
 
 /**
  * Handle fetching the latest version for a given model and region.
@@ -41,9 +43,26 @@ object VersionFetch {
             try {
                 val latest = responseXml.firstElementByTagName("firmware")
                     ?.firstElementByTagName("version")
-                    ?.firstElementByTagName("latest")!!
+                    ?.firstElementByTagName("latest")
 
-                val vc = latest.text().split("/").toMutableList()
+                val latestText = latest?.text()
+
+                if (latestText.isNullOrBlank()) {
+                    val hasAccessDenied = responseXml.firstElementByTagName("code")
+                        ?.text() == "AccessDenied"
+
+                    return FetchResult.VersionFetchResult(
+                        error = Exception(
+                            if (hasAccessDenied) {
+                                MR.strings.invalidCscError()
+                            } else {
+                                MR.strings.noFirmwareFoundError()
+                            },
+                        ),
+                    )
+                }
+
+                val vc = latestText.split("/").toMutableList()
 
                 if (vc.size == 3) {
                     vc.add(vc[0])
@@ -65,7 +84,7 @@ object VersionFetch {
             }
         } catch (e: Exception) {
             return FetchResult.VersionFetchResult(
-                error = e
+                error = e,
             )
         }
     }

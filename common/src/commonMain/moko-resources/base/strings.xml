@@ -39,6 +39,10 @@
     <string name="decryptError">Unable to decrypt firmware. Make sure model, region, and firmware are correct.\nError: %1$s</string>
     <!-- Displayed when Samsung indicates that the requested firmware version is invalid -->
     <string name="invalidFirmwareError">Invalid firmware string. Make sure all groups are specified.</string>
+    <!-- Displayed when Samsung has no firmware listed for the given model and CSC. -->
+    <string name="noFirmwareFoundError">No firmware found for this model and CSC. Please try a different CSC.</string>
+    <!-- Displayed when the user has specified a CSC that either doesn't exist or isn't used for the given model. -->
+    <string name="invalidCscError">Invalid CSC specified. Please try a different CSC.</string>
 
     <!-- Displayed when Bifrost is decrypting an encrypted firmware file -->
     <string name="decrypting">Decrypting</string>
