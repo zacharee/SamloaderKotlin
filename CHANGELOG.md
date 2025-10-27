@@ -1,3 +1,10 @@
+# 1.20.4
+- Improve error messages for invalid CSCs or missing firmware.
+- Update transparent appearance on macOS 26.
+- Fix some crashes.
+- Update TACs.
+- Update dependencies.
+
 # 1.20.3
 - Add support for running on iOS.
 - Add a donate button to the About page.
