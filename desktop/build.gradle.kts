@@ -155,12 +155,12 @@ tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorCon
 }
 
 dependencies {
-    linuxAarch64(compose.desktop.linux_arm64)
-    linuxAmd64(compose.desktop.linux_x64)
-    macAarch64(compose.desktop.macos_arm64)
+    linuxAarch64(libs.compose.linux.arm64)
+    linuxAmd64(libs.compose.linux.x64)
+    macAarch64(libs.compose.macos.arm64)
     macAarch64(libs.vaqua)
-    macAmd64(compose.desktop.macos_x64)
+    macAmd64(libs.compose.macos.x64)
     macAmd64(libs.vaqua)
-    windowsAarch64(compose.desktop.windows_arm64)
-    windowsAmd64(compose.desktop.windows_x64)
+    windowsAarch64(libs.compose.windows.arm64)
+    windowsAmd64(libs.compose.windows.x64)
 }

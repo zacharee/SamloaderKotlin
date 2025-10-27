@@ -115,10 +115,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(compose.foundation)
-                api(compose.material3)
-                api(compose.runtime)
-                api(compose.ui)
+                api(libs.compose.foundation)
+                api(libs.compose.material3)
+                api(libs.compose.runtime)
+                api(libs.compose.ui)
                 api(libs.material.icons.core)
                 api(libs.kotlin)
                 api(libs.kotlin.reflect)
