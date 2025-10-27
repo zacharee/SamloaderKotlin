@@ -34,6 +34,7 @@ import dev.zwander.compose.alertdialog.LocalWindowDecorations
 import dev.zwander.compose.rememberThemeInfo
 import dev.zwander.kmp.platform.HostArch
 import dev.zwander.kmp.platform.HostOS
+import dev.zwander.kmp.platform.OSVersion
 import kotlinx.coroutines.launch
 import org.jetbrains.skia.DirectContext
 import org.jetbrains.skiko.GraphicsApi
@@ -277,7 +278,14 @@ fun main() {
                                 modifier = Modifier.fillMaxSize(),
                                 background = Color.Transparent,
                                 update = {
-                                    it.putClientProperty("Aqua.backgroundStyle", if (themeInfo.isDarkMode) "vibrantUltraDark" else "vibrantLight")
+                                    it.putClientProperty(
+                                        "Aqua.backgroundStyle",
+                                        when {
+                                            (OSVersion.current.major ?: 0) >= 26 -> "vibrantHUDWindow"
+                                            themeInfo.isDarkMode -> "vibrantUltraDark"
+                                            else -> "vibrantLight"
+                                        },
+                                    )
                                 },
                             )
                         }
