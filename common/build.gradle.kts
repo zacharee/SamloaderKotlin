@@ -1,14 +1,15 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import org.gradle.kotlin.dsl.androidComponents
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.library)
     alias(libs.plugins.bugsnag.gradle)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlin.atomicfu)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform.android.library)
     alias(libs.plugins.kotlin.native.cocoapods)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.moko.resources)
@@ -55,15 +56,35 @@ kotlin {
         }
     }
 
-    androidTarget {
-        compilations.all {
-            compileTaskProvider.configure {
-                compilerOptions {
-                    freeCompilerArgs.addAll("-opt-in=kotlin.RequiresOptIn", "-Xdont-warn-on-error-suppression")
-                    jvmTarget = JvmTarget.fromTarget(javaVersionEnum.toString())
-                }
-            }
+    androidLibrary {
+        withJava()
+
+        val compileSdk: Int by rootProject.extra
+        val minSdk: Int by rootProject.extra
+
+        this.compileSdk = compileSdk
+        this.minSdk = minSdk
+
+        androidResources {
+            enable = true
         }
+
+        namespace = "tk.zwander.common"
+
+        this.enableCoreLibraryDesugaring = true
+
+        compilerOptions {
+            val javaVersionEnum: JavaVersion by rootProject.extra
+            jvmTarget.set(JvmTarget.fromTarget(javaVersionEnum.toString()))
+        }
+
+//        buildFeatures {
+//            aidl = true
+//        }
+
+//        sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+//        sourceSets["main"].res.srcDirs("src/androidMain/res")
+//        sourceSets["main"].res.srcDir(layout.buildDirectory.file("generated/moko/androidMain/res"))
     }
 
     jvm {
@@ -221,35 +242,10 @@ kotlin {
     }
 }
 
-android {
-    val compileSdk: Int by rootProject.extra
-
-    this.compileSdk = compileSdk
-
-    defaultConfig {
-        val minSdk: Int by rootProject.extra
-
-        this.minSdk = minSdk
-
-        resValue("string", "app_name", "${rootProject.extra["appName"]}")
+androidComponents {
+    onVariants { variant ->
+        variant.sources.res?.addStaticSourceDirectory("generated/moko/androidMain/res")
     }
-
-    namespace = "tk.zwander.common"
-
-    compileOptions {
-        val javaVersionEnum: JavaVersion by rootProject.extra
-        sourceCompatibility = javaVersionEnum
-        targetCompatibility = javaVersionEnum
-        isCoreLibraryDesugaringEnabled = true
-    }
-
-    buildFeatures {
-        aidl = true
-    }
-
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].res.srcDir(layout.buildDirectory.file("generated/moko/androidMain/res"))
 }
 
 buildkonfig {

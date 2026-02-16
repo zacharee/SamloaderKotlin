@@ -1,7 +1,13 @@
 package tk.zwander.samsungfirmwaredownloader
 
 import android.annotation.SuppressLint
-import android.app.*
+import android.app.Activity
+import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -15,7 +21,9 @@ import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 import tk.zwander.common.IDownloaderService
 import tk.zwander.common.R
-import tk.zwander.common.util.*
+import tk.zwander.common.util.Event
+import tk.zwander.common.util.EventManager
+import tk.zwander.common.util.eventManager
 import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.time.ExperimentalTime
@@ -41,7 +49,7 @@ class DownloaderService : Service(), EventManager.EventListener {
         fun bind(context: Context, connection: ServiceConnection) {
             val startIntent = Intent(context, DownloaderService::class.java)
 
-            context.bindService(startIntent, connection, Context.BIND_AUTO_CREATE)
+            context.bindService(startIntent, connection, BIND_AUTO_CREATE)
         }
 
         /**
@@ -90,7 +98,7 @@ class DownloaderService : Service(), EventManager.EventListener {
         }
     private var activityRunning = false
 
-    private val nm by lazy { getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
+    private val nm by lazy { getSystemService(NOTIFICATION_SERVICE) as NotificationManager }
 
     private val lifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
@@ -196,7 +204,7 @@ class DownloaderService : Service(), EventManager.EventListener {
 
     private fun makeForegroundNotification(progress: Triple<String, Long, Long>? = null): Notification {
         return NotificationCompat.Builder(this, "progress")
-            .setContentTitle(getString(R.string.app_name))
+            .setContentTitle(getString(tk.zwander.samsungfirmwaredownloader.R.string.app_name))
             .setStyle(NotificationCompat.BigTextStyle())
             .setContentText(getString(R.string.notification_progress_text))
             .setContentIntent(

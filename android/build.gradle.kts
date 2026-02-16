@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.moko.resources)
 }
@@ -36,7 +35,7 @@ android {
         this.versionCode = versionCode
         this.versionName = versionName
 
-        setProperty("archivesBaseName", "bifrost_android_$versionName")
+        resValue("string", "app_name", "${rootProject.extra["appName"]}")
     }
 
     namespace = packageName
@@ -44,6 +43,7 @@ android {
     buildFeatures {
         compose = true
         aidl = true
+        resValues = true
     }
 
     buildTypes {
@@ -64,12 +64,6 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
 
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.fromTarget(rootProject.extra["javaVersionEnum"].toString()))
-        }
-    }
-
     lint {
         abortOnError = false
     }
@@ -84,6 +78,18 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.fromTarget(rootProject.extra["javaVersionEnum"].toString()))
+    }
+}
+
 multiplatformResources {
     resourcesPackage.set("tk.zwander.samloaderkotlin.android")
+}
+
+afterEvaluate {
+    base {
+        archivesName.set("bifrost_android_${android.defaultConfig.versionName}")
+    }
 }

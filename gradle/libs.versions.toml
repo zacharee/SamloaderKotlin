@@ -1,5 +1,5 @@
 [versions]
-android-gradle = "8.12.3"
+android-gradle = "9.0.1"
 androidx-activity-compose = "1.12.4"
 androidx-core = "1.17.0"
 androidx-documentfile = "1.1.0"
@@ -22,10 +22,10 @@ flatlaf = "3.7"
 githubApi = "2.0-rc.5"
 google-material = "1.14.0-alpha09"
 jna = "5.18.1"
-jsystemthemedetector = "7dde337429"
+jsystemthemedetector = "e4ba26cabf"
 kmpfile = "0.8.0"
 kmpplatform = "0.1.0"
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 kotlinx-atomicfu = "0.31.0"
 kotlinx-coroutines = "1.10.2"
 kotlinx-datetime = "0.7.1"
@@ -122,10 +122,10 @@ buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig-
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 compose-hot-reload = { id = "org.jetbrains.compose.hot-reload", version.ref = "compose-hot-reload" }
 conveyor = { id = "dev.hydraulic.conveyor", version.ref = "conveyor" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-multiplatform-android-library = { id = "com.android.kotlin.multiplatform.library", version.ref = "android-gradle" }
 kotlin-native-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }

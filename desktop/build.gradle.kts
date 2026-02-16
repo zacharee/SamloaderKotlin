@@ -130,16 +130,8 @@ compose.desktop {
     }
 }
 
-// region Work around temporary Compose bugs.
-configurations.all {
-    attributes {
-        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
-        attribute(Attribute.of("ui", String::class.java), "awt")
-    }
-}
-
 project.configurations.create("desktopRuntimeClasspath") {
-    extendsFrom(project.configurations.findByName("jvmRuntimeClasspath"))
+    extendsFrom(project.configurations.findByName("jvmRuntimeClasspath")!!)
 }
 
 tasks.named<hydraulic.conveyor.gradle.WriteConveyorConfigTask>("writeConveyorConfig") {

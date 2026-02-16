@@ -1,5 +1,6 @@
 package tk.zwander.samsungfirmwaredownloader
 
+import android.Manifest
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
@@ -47,9 +48,9 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), Service
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkCallingOrSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+            if (checkCallingOrSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED) {
-                permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
 
@@ -62,7 +63,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), Service
                 LocalPhoneInfo provides rememberPhoneInfo(),
             ) {
                 MainView(
-                    modifier = Modifier
+                    modifier = Modifier.Companion
                         .imePadding()
                         .systemBarsPadding(),
                 )
