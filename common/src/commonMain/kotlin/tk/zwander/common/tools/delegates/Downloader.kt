@@ -87,7 +87,7 @@ object Downloader {
             val fullFileName = fileName.replace(
                 ".zip",
                 "_${model.fw.value.replace("/", "_")}_${model.region.value}.zip",
-            )
+            ).substringAfterLast("/")
 
             val decryptionKeyFileName = if (BifrostSettings.Keys.enableDecryptKeySave()) {
                 "DecryptionKey_${fullFileName}.txt"
@@ -97,11 +97,6 @@ object Downloader {
 
             val downloadDirectory = FileManager.pickDirectory()
             val encFile = downloadDirectory?.child(fullFileName, false)
-            val decFile = downloadDirectory?.child(
-                fullFileName.replace(".enc2", "")
-                .replace(".enc4", ""),
-                false,
-            )
             val decKeyFile = downloadDirectory?.let { dir ->
                 decryptionKeyFileName?.let { dec ->
                     dir.child(dec, false)
@@ -125,13 +120,14 @@ object Downloader {
                     }
                 }
 
-                val outputStream = encFile?.openOutputStream(true) ?: return
+//                val outputStream = encFile?.openOutputStream(true) ?: return
+                println("Enc len ${encFile?.getLength()}")
                 val md5 = try {
                     FusClient.downloadFile(
                         path + fileName,
-                        encFile.getLength(),
+                        encFile?.getLength() ?: return,
                         size,
-                        outputStream,
+                        encFile,
                         encFile.getLength(),
                     ) { current, max, bps ->
                         model.progress.value = current to max
@@ -146,9 +142,33 @@ object Downloader {
                         )
                     }
                 } finally {
-                    outputStream.flush()
-                    outputStream.close()
+//                    outputStream.flush()
+//                    outputStream.close()
                 }
+
+                println("Done with download $crc32")
+
+                val mappedDirectory = FileManager.finishDownload(
+                    encFile = encFile,
+                    onProgress = { current, max, bps ->
+                        model.progress.value = current to max
+                        model.speed.value = bps
+
+                        eventManager.sendEvent(
+                            Event.Download.Progress(
+                                "Copying",
+                                current,
+                                max,
+                            )
+                        )
+                    },
+                )
+
+                val decFile = mappedDirectory.child(
+                    fullFileName.replace(".enc2", "")
+                        .replace(".enc4", ""),
+                    false,
+                )
 
                 if (crc32 != null) {
                     model.speed.value = 0L

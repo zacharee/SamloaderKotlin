@@ -11,13 +11,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.linroid.kdown.api.DownloadState
 import dev.zwander.kmp.platform.HostOS
 import kotlinx.coroutines.launch
+import tk.zwander.common.util.kdown
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.LocalUseTransparencyEffects
 import tk.zwander.commonCompose.view.components.BifrostTheme
@@ -37,6 +40,15 @@ fun MainView(
     val scope = rememberCoroutineScope()
 
     val pagerState = LocalPagerState.current
+
+    LaunchedEffect(null) {
+        kdown.loadTasks()
+        kdown.tasks.value.forEach {
+            if (it.state.value is DownloadState.Completed) {
+                it.remove()
+            }
+        }
+    }
 
     BifrostTheme {
         val useTransparency = LocalUseTransparencyEffects.current

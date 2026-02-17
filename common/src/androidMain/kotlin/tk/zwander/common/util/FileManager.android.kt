@@ -4,13 +4,14 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.provider.DocumentsContract
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import dev.zwander.kotlin.file.IPlatformFile
+import dev.zwander.kotlin.file.PlatformFile
 import dev.zwander.kotlin.file.PlatformUriFile
 import kotlinx.atomicfu.AtomicRef
 import kotlinx.atomicfu.atomic
@@ -28,6 +29,8 @@ actual object FileManager {
     private val openFileLauncher: AtomicRef<ActivityResultLauncher<Array<String>>?> = atomic(null)
     private val saveFileLauncher: AtomicRef<ActivityResultLauncher<String>?> = atomic(null)
 
+    private val pendingDestinationDirectory: AtomicRef<PlatformUriFile?> = atomic(null)
+
     fun init(activity: ComponentActivity) {
         openDownloadTreeLauncher.value = activity.registerForActivityResult(
             object : ActivityResultContract<Uri?, Uri?>() {
@@ -36,9 +39,7 @@ actual object FileManager {
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                        && input != null
-                    ) {
+                    if (input != null) {
                         intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, input)
                     }
                     return intent
@@ -68,15 +69,20 @@ actual object FileManager {
     }
 
     actual suspend fun pickDirectory(): IPlatformFile? {
-        return suspendCoroutine {
+        pendingDestinationDirectory.value = suspendCoroutine {
             openDownloadTreeContinuation.value = it
             openDownloadTreeLauncher.value?.launch(null)
         }?.also {
             App.instance.contentResolver.takePersistableUriPermission(
                 it,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
             )
         }?.let { PlatformUriFile(App.instance, it, true) }
+
+        return PlatformFile(App.instance.cacheDir, "downloads").also {
+            it.mkdirs()
+        }
     }
 
     actual suspend fun saveFile(name: String): IPlatformFile? {
@@ -87,5 +93,23 @@ actual object FileManager {
                     .replace(".enc4", ""),
             )
         }?.let { PlatformUriFile(App.instance, it, false) }
+    }
+
+    actual suspend fun finishDownload(
+        encFile: IPlatformFile,
+        onProgress: suspend (Long, Long, Long) -> Unit,
+    ): IPlatformFile {
+        val destFile = pendingDestinationDirectory.value?.child(encFile.getName(), false)!!
+
+        streamOperationWithProgress(
+            input = encFile.openInputStream()!!,
+            output = destFile.openOutputStream()!!,
+            progressCallback = onProgress,
+            size = encFile.getLength(),
+        )
+
+        encFile.delete()
+
+        return pendingDestinationDirectory.value!!
     }
 }

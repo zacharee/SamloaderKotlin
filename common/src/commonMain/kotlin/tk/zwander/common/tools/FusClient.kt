@@ -4,30 +4,32 @@ package tk.zwander.common.tools
 
 import com.fleeksoft.io.exception.ArrayIndexOutOfBoundsException
 import com.fleeksoft.ksoup.Ksoup
-import io.ktor.client.plugins.HttpTimeoutConfig
-import io.ktor.client.plugins.timeout
+import com.linroid.kdown.api.DownloadRequest
+import com.linroid.kdown.api.DownloadState
+import com.linroid.kdown.api.KDownError
+import com.linroid.kdown.api.Output
+import dev.zwander.kotlin.file.IPlatformFile
 import io.ktor.client.request.headers
-import io.ktor.client.request.prepareRequest
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
-import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.utils.io.InternalAPI
-import io.ktor.utils.io.asByteWriteChannel
-import io.ktor.utils.io.copyTo
-import io.ktor.utils.io.core.remaining
 import io.ktor.utils.io.core.toByteArray
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.launch
 import kotlinx.io.InternalIoApi
-import kotlinx.io.Sink
 import tk.zwander.common.util.BreadcrumbType
 import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.globalHttpClient
-import tk.zwander.common.util.trackOperationProgress
+import tk.zwander.common.util.kdown
 
 /**
  * Manage communications with Samsung's server.
@@ -148,52 +150,105 @@ object FusClient {
         fileName: String,
         start: Long = 0,
         size: Long,
-        output: Sink,
+        output: IPlatformFile,
         outputSize: Long,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ): String? {
         val authV = getAuthV()
         val url = getDownloadUrl(fileName)
 
-        val request = globalHttpClient.prepareRequest {
-            method = HttpMethod.Get
-            url(url)
-            headers {
-                append("Authorization", authV)
-                append("User-Agent", "Kies2.0_FUS")
-                if (start > 0) {
-                    append("Range", "bytes=${start}-")
+//        val request = globalHttpClient.prepareRequest {
+//            method = HttpMethod.Get
+//            url(url)
+//            headers {
+//                append("Authorization", authV)
+//                append("User-Agent", "Kies2.0_FUS")
+//                if (start > 0) {
+//                    append("Range", "bytes=${start}-")
+//                }
+//            }
+//            timeout {
+//                this.requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+//                this.socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+//                this.connectTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+//            }
+//        }
+
+        val task = kdown.tasks.value.find { it.request.url == url }
+            ?.let { download ->
+                download.resume(output.getAbsolutePath())
+                download.takeIf {
+                    it.state.value !is DownloadState.Completed
+                }
+            } ?: kdown.download(
+                request = DownloadRequest(
+                    url = url,
+                    headers = mapOf(
+                        "Authorization" to authV,
+                        "User-Agent" to "Kies2.0_FUS",
+                    ),
+                    output = Output.DirectoryAndFile(
+                        directory = output.getParentFile()!!.getAbsolutePath(),
+                        fileName = output.getName(),
+                    ),
+                    connections = 4,
+                ),
+        )
+
+        CoroutineScope(currentCoroutineContext()).launch(Dispatchers.IO) {
+            task.state.collect {
+                if (it is DownloadState.Downloading) {
+                    progressCallback(
+                        it.progress.downloadedBytes,
+                        it.progress.totalBytes,
+                        it.progress.bytesPerSecond,
+                    )
                 }
             }
-            timeout {
-                this.requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                this.socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                this.connectTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+        }
+
+        try {
+            while (true) {
+                val result = task.await()
+
+                if (result.isSuccess) {
+                    break
+                }
+
+                (result.exceptionOrNull() as? KDownError)?.let { error ->
+                    if (!error.isRetryable) {
+                        break
+                    }
+                }
             }
+        } catch (_: CancellationException) {
+            task.pause()
         }
 
-        return request.execute { response ->
-            val md5 = response.headers["Content-MD5"]
-            val channel = response.bodyAsChannel()
-            val outputChannel = output.asByteWriteChannel()
+        return null
 
-            trackOperationProgress(
-                size = size,
-                progressCallback = progressCallback,
-                operation = {
-                    val chunkSize = 1024 * 256L
-                    // awaitContent() should prevent unnecessary looping by making sure there are actually [chunkSize]
-                    // bytes available to read.
-                    channel.awaitContent(min = minOf(chunkSize, channel.readBuffer.remaining).toInt())
-                    channel.copyTo(outputChannel, chunkSize)
-                },
-                progressOffset = outputSize,
-                condition = { !channel.isClosedForRead },
-                throttle = false,
-            )
-
-            md5
-        }
+//        return request.execute { response ->
+//            val md5 = response.headers["Content-MD5"]
+//            val channel = response.bodyAsChannel()
+//            val outputChannel = output.asByteWriteChannel()
+//
+//            trackOperationProgress(
+//                size = size,
+//                progressCallback = progressCallback,
+//                operation = {
+//                    val chunkSize = 1024 * 256L
+//                    // awaitContent() should prevent unnecessary looping by making sure there are actually [chunkSize]
+//                    // bytes available to read.
+//                    channel.awaitContent(min = minOf(chunkSize, channel.readBuffer.remaining).toInt())
+//                    channel.copyTo(outputChannel, chunkSize)
+//                },
+//                progressOffset = outputSize,
+//                condition = { !channel.isClosedForRead },
+//                throttle = false,
+//            )
+//
+//            md5
+//        }
     }
 
     private fun HttpResponse.is401(body: String): Boolean {

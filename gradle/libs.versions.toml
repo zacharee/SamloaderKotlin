@@ -5,6 +5,7 @@ androidx-core = "1.17.0"
 androidx-documentfile = "1.1.0"
 androidx-performance-annotation = "1.0.0-alpha01"
 androidx-preference = "1.2.1"
+appdirs = "1.5.0"
 bugsnag-android = "6.24.0"
 bugsnag-gradle = "1.0.0"
 bugsnag-jvm = "3.8.0"
@@ -23,6 +24,7 @@ githubApi = "2.0-rc.5"
 google-material = "1.14.0-alpha09"
 jna = "5.18.1"
 jsystemthemedetector = "e4ba26cabf"
+kdown = "0.0.2-dev"
 kmpfile = "0.8.0"
 kmpplatform = "0.1.0"
 kotlin = "2.3.10"
@@ -54,6 +56,7 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx
 androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "androidx-documentfile" }
 androidx-performance-annotation = { module = "androidx.performance:performance-annotation", version.ref = "androidx-performance-annotation" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx-preference" }
+appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose" }
@@ -80,6 +83,9 @@ google-material = { module = "com.google.android.material:material", version.ref
 jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
 jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 jsystemthemedetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
+kdown-core = { module = "com.linroid.kdown:core", version.ref = "kdown" }
+kdown-ktor = { module = "com.linroid.kdown:ktor", version.ref = "kdown" }
+kdown-sqlite = { module = "com.linroid.kdown:sqlite", version.ref = "kdown" }
 kmpfile = { module = "dev.zwander:kmpfile", version.ref = "kmpfile" }
 kmpplatform = { module = "dev.zwander:kmpplatform", version.ref = "kmpplatform" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }

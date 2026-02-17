@@ -167,6 +167,9 @@ kotlin {
                 api(libs.kotlinx.atomicfu)
                 api(libs.androidx.performance.annotation)
                 api(libs.xmlbuilder)
+                api(libs.kdown.core)
+                api(libs.kdown.ktor)
+                api(libs.kdown.sqlite)
             }
         }
 
@@ -199,6 +202,7 @@ kotlin {
                 api(libs.slf4j)
                 api(libs.window.styler)
                 api(libs.conveyor.control)
+                api(libs.appdirs)
             }
         }
 

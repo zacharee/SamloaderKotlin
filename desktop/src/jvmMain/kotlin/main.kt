@@ -25,6 +25,8 @@ import androidx.compose.ui.window.rememberWindowState
 import com.bugsnag.Severity
 import com.formdev.flatlaf.FlatDarkLaf
 import com.formdev.flatlaf.FlatLaf
+import com.linroid.kdown.sqlite.DriverFactory
+import com.linroid.kdown.sqlite.createSqliteTaskStore
 import com.mayakapps.compose.windowstyler.WindowBackdrop
 import com.mayakapps.compose.windowstyler.WindowFrameStyle
 import com.mayakapps.compose.windowstyler.WindowStyle
@@ -36,6 +38,7 @@ import dev.zwander.kmp.platform.HostArch
 import dev.zwander.kmp.platform.HostOS
 import dev.zwander.kmp.platform.OSVersion
 import kotlinx.coroutines.launch
+import net.harawata.appdirs.AppDirsFactory
 import org.jetbrains.skia.DirectContext
 import org.jetbrains.skiko.GraphicsApi
 import org.jetbrains.skiko.RenderException
@@ -60,6 +63,7 @@ import java.awt.Desktop
 import java.awt.Dimension
 import java.awt.EventQueue
 import java.awt.event.WindowEvent
+import java.io.File
 import javax.swing.JPanel
 import javax.swing.SwingUtilities
 import javax.swing.UIManager
