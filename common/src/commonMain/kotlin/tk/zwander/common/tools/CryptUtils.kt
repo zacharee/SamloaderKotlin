@@ -130,7 +130,7 @@ object CryptUtils {
         val keyData = nonce.map { (it.code % 16).toByte() }.toByteArray()
         val fKey = getFKey(keyData)
 
-        return Base64.Default.encode(aesEncrypt(nonce.toByteArray(), fKey))
+        return Base64.encode(aesEncrypt(nonce.toByteArray(), fKey))
     }
 
     /**
@@ -140,7 +140,7 @@ object CryptUtils {
      */
     @OptIn(ExperimentalEncodingApi::class)
     fun decryptNonce(input: String): String {
-        val d = Base64.Default.decode(input)
+        val d = Base64.decode(input)
         return aesDecrypt(d, KEY_1.toByteArray())
             .decodeToString()
     }
