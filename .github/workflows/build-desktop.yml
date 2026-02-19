@@ -66,8 +66,8 @@ jobs:
       - name: Download Conveyor
         shell: bash
         run: |
-          wget https://downloads.hydraulic.dev/conveyor/conveyor-19.0-mac-aarch64.zip
-          unzip conveyor-19.0-mac-aarch64.zip
+          wget https://downloads.hydraulic.dev/conveyor/conveyor-21.1-mac-aarch64.zip
+          unzip conveyor-21.1-mac-aarch64.zip
 
       - name: Run Conveyor
         shell: bash
