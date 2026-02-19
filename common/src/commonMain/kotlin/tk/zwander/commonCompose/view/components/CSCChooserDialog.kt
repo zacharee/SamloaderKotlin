@@ -23,6 +23,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -62,9 +64,23 @@ fun CSCChooserDialog(
         },
         text = {
             var filter by CSCDialogModel.filter.collectAsImmediateMutableState()
-
             var selectedColumn by CSCDialogModel.selectedColumn.collectAsMutableState()
             var sortState by CSCDialogModel.sortState.collectAsMutableState()
+            var scrollPosition by CSCDialogModel.scrollPosition.collectAsMutableState()
+            val items by CSCDialogModel.filteredItems.collectAsState(listOf())
+
+            val listState = rememberLazyListState()
+
+            LaunchedEffect(listState.firstVisibleItemIndex) {
+                if (items.isNotEmpty()) {
+                    scrollPosition = listState.firstVisibleItemIndex to
+                            listState.firstVisibleItemScrollOffset
+                }
+            }
+
+            LaunchedEffect(items.size) {
+                listState.scrollToItem(scrollPosition.first, scrollPosition.second)
+            }
 
             fun onColumnClick(column: Column) {
                 if (column == selectedColumn) {
@@ -76,15 +92,6 @@ fun CSCChooserDialog(
                     selectedColumn = column
                 }
             }
-
-            val items = CSCDB.rememberFilteredItems(
-                query = filter,
-                sortBy = when (selectedColumn) {
-                    Column.CSC -> CSCDB.SortBy.Code(sortState == SelectionState.ASCENDING)
-                    Column.COUNTRY -> CSCDB.SortBy.Country(sortState == SelectionState.ASCENDING)
-                    Column.CARRIER -> CSCDB.SortBy.Carrier(sortState == SelectionState.ASCENDING)
-                }
-            )
 
             val columnStates by derivedStateOf {
                 mapOf(
@@ -115,8 +122,6 @@ fun CSCChooserDialog(
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = OffsetCorrectedIdentityTransformation(filter),
             )
-
-            val listState = rememberLazyListState()
 
             LazyColumnScrollbar(
                 state = listState,
@@ -161,10 +166,10 @@ fun CSCChooserDialog(
                             )
                         }
                     }
-                    items(items, { it.code }) {
+                    items(items, { it.code }) { item ->
                         OutlinedCard(
                             onClick = {
-                                onCscSelected(it.code)
+                                onCscSelected(item.code)
                                 onDismissRequest()
                             }
                         ) {
@@ -176,18 +181,18 @@ fun CSCChooserDialog(
                                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                             ) {
                                 Text(
-                                    text = it.code,
+                                    text = item.code,
                                     modifier = Modifier.weight(codeWeight)
                                 )
 
                                 Text(
-                                    text = it.countries.map { CSCDB.getCountryName(it) }
+                                    text = item.countries.map { CSCDB.getCountryName(it) }
                                         .sortedBy { it.lowercase() }.joinToString(",\n"),
                                     modifier = Modifier.weight(countryWeight)
                                 )
 
                                 Text(
-                                    text = it.carriers?.sortedBy { it.lowercase() }
+                                    text = item.carriers?.sortedBy { it.lowercase() }
                                         ?.joinToString(",\n") ?: "",
                                     modifier = Modifier.weight(carrierWeight)
                                 )
