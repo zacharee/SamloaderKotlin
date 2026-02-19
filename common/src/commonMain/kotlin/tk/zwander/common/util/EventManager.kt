@@ -3,8 +3,6 @@ package tk.zwander.common.util
 import io.ktor.util.collections.ConcurrentSet
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import tk.zwander.common.data.DecryptFileInfo
-import tk.zwander.common.data.DownloadFileInfo
 
 val eventManager: EventManager
     get() = EventManager.getInstance()
@@ -49,11 +47,6 @@ class EventManager private constructor() {
 
 sealed class Event {
     sealed class Download : Event() {
-        data class GetInput(
-            val fileName: String,
-            val decryptKeyFileName: String?,
-            val callback: suspend (DownloadFileInfo?) -> Unit,
-        ) : Download()
         data class Progress(
             val status: String,
             val current: Long,
@@ -63,9 +56,6 @@ sealed class Event {
         data object Finish : Download()
     }
     sealed class Decrypt : Event() {
-        data class GetInput(
-            val callback: suspend (DecryptFileInfo?) -> Unit,
-        ) : Decrypt()
         data class Progress(
             val status: String,
             val current: Long,

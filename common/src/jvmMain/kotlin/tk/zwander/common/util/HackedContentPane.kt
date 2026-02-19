@@ -13,7 +13,7 @@ internal class HackedContentPane : JPanel() {
 
             try {
                 if (gg is Graphics2D) {
-                    gg.setColor(background)
+                    gg.color = background
                     gg.composite = AlphaComposite.getInstance(AlphaComposite.SRC)
                     gg.fillRect(0, 0, width, height)
                 }

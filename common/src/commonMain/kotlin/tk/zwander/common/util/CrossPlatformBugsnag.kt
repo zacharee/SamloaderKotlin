@@ -69,7 +69,6 @@ expect object BugsnagUtils {
     )
 }
 
-@Suppress("unused")
 enum class BreadcrumbType {
     ERROR,
     LOG,

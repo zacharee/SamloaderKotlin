@@ -39,7 +39,7 @@ fun InternalLazyColumnScrollbar(
     state: LazyListState,
     modifier: Modifier = Modifier,
     settings: ScrollbarSettings = ScrollbarSettings.Default,
-    indicatorContent: @Composable() ((index: Int, isThumbSelected: Boolean) -> Unit)? = null,
+    indicatorContent: @Composable ((index: Int, isThumbSelected: Boolean) -> Unit)? = null,
 ) {
     val controller = rememberLazyListStateController(
         state = state,

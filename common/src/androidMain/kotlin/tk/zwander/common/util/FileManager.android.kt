@@ -14,10 +14,10 @@ import dev.zwander.kotlin.file.IPlatformFile
 import dev.zwander.kotlin.file.PlatformUriFile
 import kotlinx.atomicfu.AtomicRef
 import kotlinx.atomicfu.atomic
+import kotlinx.coroutines.suspendCancellableCoroutine
 import tk.zwander.samsungfirmwaredownloader.App
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 actual object FileManager {
     private val openDownloadTreeContinuation: AtomicRef<Continuation<Uri?>?> = atomic(null)
@@ -61,14 +61,14 @@ actual object FileManager {
     }
 
     actual suspend fun pickFile(): IPlatformFile? {
-        return suspendCoroutine {
+        return suspendCancellableCoroutine {
             openFileContinuation.value = it
             openFileLauncher.value?.launch(arrayOf("application/octet-stream"))
         }?.let { PlatformUriFile(App.instance, it, false) }
     }
 
     actual suspend fun pickDirectory(): IPlatformFile? {
-        return suspendCoroutine {
+        return suspendCancellableCoroutine {
             openDownloadTreeContinuation.value = it
             openDownloadTreeLauncher.value?.launch(null)
         }?.also {
@@ -80,7 +80,7 @@ actual object FileManager {
     }
 
     actual suspend fun saveFile(name: String): IPlatformFile? {
-        return suspendCoroutine {
+        return suspendCancellableCoroutine {
             saveFileContinuation.value = it
             saveFileLauncher.value?.launch(
                 name.replace(".enc2", "")

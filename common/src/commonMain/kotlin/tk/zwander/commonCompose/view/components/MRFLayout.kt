@@ -32,7 +32,8 @@ import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.samloaderkotlin.resources.MR
 
 /**
- * A common container for the model, region, and firmware text inputs used in [DownloadView] and [DecryptView]
+ * A common container for the model, region, and firmware text inputs used in
+ * [tk.zwander.commonCompose.view.pages.DownloadView] and [tk.zwander.commonCompose.view.pages.DecryptView]
  * @param model the view model.
  * @param canChangeOption whether the model and region fields should be editable.
  * @param canChangeFirmware whether the firmware field should be editable.
@@ -190,17 +191,17 @@ internal fun MRFLayout(
         if (firmwareImeiSerial.size == 1) {
             val first = firmwareImeiSerial.first()
 
-            first.render()
+            first.Render()
         } else {
             val first = firmwareImeiSerial.first()
             val second = firmwareImeiSerial[1]
 
             SplitComponent(
                 startComponent = {
-                    first.render()
+                    first.Render()
                 },
                 endComponent = {
-                    second.render()
+                    second.Render()
                 },
                 startRatio = 0.6,
                 endRatio = 0.4,
@@ -268,7 +269,7 @@ private data class DynamicField(
     val leadingIcon: (@Composable () -> Unit)? = null,
 ) {
     @Composable
-    fun render(modifier: Modifier = Modifier) {
+    fun Render(modifier: Modifier = Modifier) {
         OutlinedTextField(
             value = value,
             onValueChange = {

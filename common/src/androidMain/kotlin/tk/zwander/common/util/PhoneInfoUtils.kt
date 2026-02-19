@@ -17,10 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 @SuppressLint("MissingPermission", "NewApi")
 @Composable
@@ -47,9 +47,10 @@ fun rememberPhoneInfo(): PhoneInfo? {
             tac = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
                 telephonyManager.typeAllocationCode
             } else {
-                suspendCoroutine { continuation ->
+                suspendCancellableCoroutine { continuation ->
                     if (context.checkCallingOrSelfPermission(android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-                        continuation.resume(telephonyManager.imei?.takeIf { it.length >= 8 }?.slice(0..7))
+                        continuation.resume(telephonyManager.imei?.takeIf { it.length >= 8 }
+                            ?.slice(0..7))
                     } else {
                         permissionContinuation = continuation
                         permissionRequester.launch(android.Manifest.permission.READ_PHONE_STATE)

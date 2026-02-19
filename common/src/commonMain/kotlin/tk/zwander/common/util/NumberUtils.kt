@@ -8,7 +8,7 @@ import kotlin.math.round
 /* From korlibs.io */
 
 //private fun Double.normalizeZero(): Double = if (this.isAlmostZero()) 0.0 else this
-private val MINUS_ZERO_D = -0.0
+private const val MINUS_ZERO_D = -0.0
 private fun Double.normalizeZero(): Double = if (this == MINUS_ZERO_D) 0.0 else this
 
 fun Double.toStringDecimal(decimalPlaces: Int, skipTrailingZeros: Boolean = false): String {

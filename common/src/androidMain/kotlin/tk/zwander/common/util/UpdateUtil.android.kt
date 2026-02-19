@@ -25,9 +25,9 @@ actual object UpdateUtil {
             val currentVersion = GradleConfig.versionName
 
             if (currentVersion.toVersion() >= latestVersion.toVersion()) {
-                return null
+                null
             } else {
-                return UpdateInfo(latestVersion)
+                UpdateInfo(latestVersion)
             }
         } catch (e: Throwable) {
             CrossPlatformBugsnag.notify(e)
@@ -59,7 +59,7 @@ actual object UpdateUtil {
                 destinationFile.writeChannel().use { channel.copyTo(this) }
             }
 
-            @Suppress("DEPRECATION")
+            @Suppress("DEPRECATION", "RequestInstallPackagesPolicy")
             val intent = Intent(Intent.ACTION_INSTALL_PACKAGE)
             intent.data = FileProvider.getUriForFile(
                 App.instance,

@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), Service
                 LocalPhoneInfo provides rememberPhoneInfo(),
             ) {
                 MainView(
-                    modifier = Modifier.Companion
+                    modifier = Modifier
                         .imePadding()
                         .systemBarsPadding(),
                 )
