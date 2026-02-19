@@ -227,6 +227,7 @@ kotlin {
                 api(libs.nsexceptionKt.core)
                 api(libs.nserrorKt)
                 api(libs.cryptography.provider.openssl3.prebuilt)
+                api(libs.ktor.client.darwin)
             }
         }
 
