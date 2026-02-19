@@ -1,24 +1,29 @@
 package tk.zwander.common.util
 
+import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlin.time.Clock
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
+import kotlin.time.TimeSource
+import kotlin.time.toDuration
 
-class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1_000_000_000) {
+class Averager(private val timeThreshold: Duration = 1000L.toDuration(DurationUnit.MILLISECONDS)) {
     data class ChunkData(
-        val durationNano: Long,
+        val duration: Duration,
         val read: Long,
-        val currentTimeNano: Long
+        val currentTime: TimeSource.Monotonic.ValueTimeMark,
     )
 
     private val mutex = Mutex()
-    private val chunk = ArrayList<ChunkData>(initialCapacity)
+    private val chunk = ArrayDeque<ChunkData>(30)
+    private val sum = atomic(Pair(Duration.ZERO, 0L))
 
-    suspend fun updateAndSum(durationNano: Long, read: Long): Pair<Long, Long> {
+    suspend fun updateAndSum(duration: Duration, read: Long): Pair<Duration, Long> {
         return mutex.withLock {
-            unsafeUpdate(durationNano, read)
-            unsafeSum()
+            unsafeUpdate(duration, read)
+            sum.value
         }
     }
 
@@ -28,19 +33,28 @@ class Averager(initialCapacity: Int = 1000, private val thresholdNanos: Long = 1
         }
     }
 
-    private fun unsafeUpdate(durationNano: Long, read: Long) {
-        val currentTimeNano = currentTimeNano()
-        chunk.add(ChunkData(durationNano, read, currentTimeNano))
-        chunk.removeAll { currentTimeNano - it.currentTimeNano > thresholdNanos }
-    }
+    private fun unsafeUpdate(duration: Duration, read: Long) {
+        val currentTime = currentTime()
+        chunk.addFirst(ChunkData(duration, read, currentTime))
 
-    private fun unsafeSum(): Pair<Long, Long> {
-        return (chunk.sumOf { it.durationNano } to
-                chunk.sumOf { it.read })
+        var remDur = Duration.ZERO
+        var remRead = 0L
+
+        while ((currentTime - chunk.last().currentTime) > timeThreshold) {
+            val removed = chunk.removeLast()
+
+            remDur += removed.duration
+            remRead += removed.read
+        }
+
+        sum.value = sum.value.copy(
+            first = sum.value.first + duration - remDur,
+            second = sum.value.second + read - remRead,
+        )
     }
 
     @OptIn(ExperimentalTime::class)
-    private fun currentTimeNano(): Long {
-        return Clock.System.now().toEpochMilliseconds() * 1_000_000
+    private fun currentTime(): TimeSource.Monotonic.ValueTimeMark {
+        return TimeSource.Monotonic.markNow()
     }
 }

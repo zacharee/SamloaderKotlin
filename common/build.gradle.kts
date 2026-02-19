@@ -145,10 +145,12 @@ kotlin {
                 api(libs.kotlin.reflect)
                 api(libs.kotlinx.coroutines)
                 api(libs.kotlinx.datetime)
+                api(libs.kotlinx.io.core)
                 api(libs.kotlinx.serialization.json)
                 api(libs.ksoup)
                 api(libs.ktor.client.auth)
                 api(libs.ktor.client.core)
+                api(libs.ktor.client.cio)
                 api(libs.moko.resources)
                 api(libs.moko.resources.compose)
                 api(libs.multiplatformSettings)
@@ -174,7 +176,7 @@ kotlin {
             dependsOn(commonMain)
 
             dependencies {
-                api(libs.ktor.client.okhttp)
+//                api(libs.ktor.client.okhttp)
                 api(libs.cryptography.provider.jdk)
             }
         }
@@ -220,7 +222,7 @@ kotlin {
         val darwinMain by creating {
             dependsOn(skiaMain)
             dependencies {
-                api(libs.ktor.client.darwin)
+//                api(libs.ktor.client.darwin)
                 api(libs.nsexceptionKt.bugsnag)
                 api(libs.nsexceptionKt.core)
                 api(libs.nserrorKt)

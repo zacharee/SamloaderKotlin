@@ -36,7 +36,7 @@ object Downloader {
 
     suspend fun onDownload(
         model: DownloadModel,
-        confirmCallback: DownloadErrorCallback
+        confirmCallback: DownloadErrorCallback,
     ) {
         eventManager.sendEvent(Event.Download.Start)
         model.statusText.value = MR.strings.downloading()
@@ -99,7 +99,7 @@ object Downloader {
             val encFile = downloadDirectory?.child(fullFileName, false)
             val decFile = downloadDirectory?.child(
                 fullFileName.replace(".enc2", "")
-                .replace(".enc4", ""),
+                    .replace(".enc4", ""),
                 false,
             )
             val decKeyFile = downloadDirectory?.let { dir ->
@@ -128,20 +128,19 @@ object Downloader {
                 val outputStream = encFile?.openOutputStream(true) ?: return
                 val md5 = try {
                     FusClient.downloadFile(
-                        path + fileName,
-                        encFile.getLength(),
-                        size,
-                        outputStream,
-                        encFile.getLength(),
+                        fileName = path + fileName,
+                        start = encFile.getLength(),
+                        size = size,
+                        output = outputStream,
                     ) { current, max, bps ->
                         model.progress.value = current to max
                         model.speed.value = bps
 
                         eventManager.sendEvent(
                             Event.Download.Progress(
-                                MR.strings.downloading(),
-                                current,
-                                max,
+                                status = MR.strings.downloading(),
+                                current = current,
+                                max = max,
                             )
                         )
                     }
@@ -163,9 +162,9 @@ object Downloader {
 
                         eventManager.sendEvent(
                             Event.Download.Progress(
-                                MR.strings.checkingCRC(),
-                                current,
-                                max,
+                                status = MR.strings.checkingCRC(),
+                                current = current,
+                                max = max,
                             )
                         )
                     }
@@ -182,9 +181,9 @@ object Downloader {
 
                     eventManager.sendEvent(
                         Event.Download.Progress(
-                            MR.strings.checkingMD5(),
-                            0,
-                            1
+                            status = MR.strings.checkingMD5(),
+                            current = 0,
+                            max = 1,
                         )
                     )
 
@@ -226,9 +225,9 @@ object Downloader {
 
                     eventManager.sendEvent(
                         Event.Download.Progress(
-                            MR.strings.decrypting(),
-                            current,
-                            max
+                            status = MR.strings.decrypting(),
+                            current = current,
+                            max = max,
                         )
                     )
                 }

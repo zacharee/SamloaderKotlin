@@ -17,10 +17,8 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.utils.io.InternalAPI
-import io.ktor.utils.io.asByteWriteChannel
-import io.ktor.utils.io.copyTo
-import io.ktor.utils.io.core.remaining
 import io.ktor.utils.io.core.toByteArray
+import io.ktor.utils.io.readTo
 import kotlinx.io.InternalIoApi
 import kotlinx.io.Sink
 import tk.zwander.common.util.BreadcrumbType
@@ -91,17 +89,18 @@ object FusClient {
 
         val authV = getAuthV(includeNonce)
 
-        val response = globalHttpClient.request("https://neofussvr.sslcs.cdngc.net/${request.value}") {
-            method = HttpMethod.Post
-            headers {
-                append("Authorization", authV)
-                append("User-Agent", "Kiss2.0_FUS")
-                append("Cookie", "JSESSIONID=${sessionId}")
-                append("Set-Cookie", "JSESSIONID=${sessionId}")
-                append(HttpHeaders.ContentLength, "${data.toByteArray().size}")
+        val response =
+            globalHttpClient.request("https://neofussvr.sslcs.cdngc.net/${request.value}") {
+                method = HttpMethod.Post
+                headers {
+                    append("Authorization", authV)
+                    append("User-Agent", "Kiss2.0_FUS")
+                    append("Cookie", "JSESSIONID=${sessionId}")
+                    append("Set-Cookie", "JSESSIONID=${sessionId}")
+                    append(HttpHeaders.ContentLength, "${data.toByteArray().size}")
+                }
+                setBody(data)
             }
-            setBody(data)
-        }
 
         val body = response.bodyAsText()
 
@@ -127,7 +126,8 @@ object FusClient {
         }
 
         if (response.headers["Set-Cookie"] != null || response.headers["set-cookie"] != null) {
-            sessionId = response.headers.entries().find { it.value.any { value -> value.contains("JSESSIONID=") } }
+            sessionId = response.headers.entries()
+                .find { it.value.any { value -> value.contains("JSESSIONID=") } }
                 ?.value?.find {
                     it.contains("JSESSIONID=")
                 }
@@ -149,7 +149,6 @@ object FusClient {
         start: Long = 0,
         size: Long,
         output: Sink,
-        outputSize: Long,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ): String? {
         val authV = getAuthV()
@@ -175,22 +174,19 @@ object FusClient {
         return request.execute { response ->
             val md5 = response.headers["Content-MD5"]
             val channel = response.bodyAsChannel()
-            val outputChannel = output.asByteWriteChannel()
 
             trackOperationProgress(
                 size = size,
                 progressCallback = progressCallback,
                 operation = {
-                    val chunkSize = 1024 * 256L
-                    // awaitContent() should prevent unnecessary looping by making sure there are actually [chunkSize]
-                    // bytes available to read.
-                    channel.awaitContent(min = minOf(chunkSize, channel.readBuffer.remaining).toInt())
-                    channel.copyTo(outputChannel, chunkSize)
+                    channel.readTo(output, 8192L)
                 },
-                progressOffset = outputSize,
+                progressOffset = start,
                 condition = { !channel.isClosedForRead },
                 throttle = false,
             )
+
+            output.flush()
 
             md5
         }
