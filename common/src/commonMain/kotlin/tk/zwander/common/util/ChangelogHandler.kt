@@ -75,7 +75,7 @@ object ChangelogHandler {
     private fun parseChangelogs(body: String): Map<String, Changelog> {
         val doc = try {
             Ksoup.parse(body)
-        } catch (e: NullPointerException) {
+        } catch (_: NullPointerException) {
             return mapOf()
         }
         val container = doc.selectFirst(".container")

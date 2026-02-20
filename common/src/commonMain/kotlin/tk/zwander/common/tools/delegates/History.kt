@@ -80,10 +80,10 @@ object History {
     private fun parseHistory(body: String): List<HistoryInfo> {
         val doc = Ksoup.parse(body)
 
-        val listItems = doc.select("a[class*=\"firmwareTable_flexRow_\"]")
+        val listItems = doc.select("a[class*=\"firmwareTable-module\"][class*=\"flexRow\"]")
 
         return listItems.map {
-            val cols = it.select("div[class*=\"firmwareTable_flexCell\"]")
+            val cols = it.select("div[class*=\"firmwareTable-module\"][class*=\"flexCell\"]")
             val date = cols[5].text().split(" ").last()
             val version = cols[4].text().split(" ").last()
 
