@@ -1,3 +1,10 @@
+# 1.20.5
+- Decryption and file verification should now be much faster.
+- Remember scroll position when closing and reopening CSC selector dialog.
+- Fix History fetching.
+- Update TACs.
+- Update dependencies.
+
 # 1.20.4
 - Improve error messages for invalid CSCs or missing firmware.
 - Update transparent appearance on macOS 26.
