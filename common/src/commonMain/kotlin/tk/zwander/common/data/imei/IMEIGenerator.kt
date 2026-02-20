@@ -2,6 +2,11 @@
 
 package tk.zwander.common.data.imei
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import de.halfbit.csv.CsvWithHeader
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -11,23 +16,48 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.invoke
 import tk.zwander.samloaderkotlin.resources.MR
 
 data object IMEIGenerator {
-    fun makeImeisForModel(
-        model: String?,
-        imeis: Map<String, Set<String>> = IMEIDatabase.tacs.value,
+    fun makeImeisForTacs(
+        tacs: Set<String>,
     ): List<String> {
-        val tacs = imeis[model] ?: return emptyList()
-
         return IMEIDatabase.DUMMY_SERIALS.flatMap { serial ->
             tacs.map { tac ->
                 val baseImei = "${tac}${serial}"
                 calculateCheckDigitForPartialImei(baseImei)
             }
+        }
+    }
+
+    @Composable
+    fun CollectImeisForModel(
+        model: String?,
+        initialValue: String,
+        onValueChange: (List<String>) -> Unit,
+    ) {
+        val initialModel = remember {
+            model
+        }
+        val initialValue = remember(model) {
+            initialValue
+        }
+        val tacs by remember(model) {
+            IMEIDatabase.mapByModel(model)
+        }.collectAsState(null)
+
+        LaunchedEffect(model, tacs) {
+            if (initialValue.isNotBlank() && model == initialModel) return@LaunchedEffect
+
+            val fullImeis = tacs?.takeIf { it.isNotEmpty() }?.let { tacs ->
+                makeImeisForTacs(tacs)
+            } ?: listOf()
+
+            onValueChange(fullImeis)
         }
     }
 
@@ -95,6 +125,8 @@ data object IMEIDatabase {
             }
         }
     }
+
+    fun mapByModel(model: String?) = tacs.map { it[model] }
 
     private fun String.cleanUpModel(): String {
         val trimmed = trim()

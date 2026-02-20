@@ -20,9 +20,6 @@ import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
 import dev.zwander.compose.alertdialog.InWindowAlertDialog
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.launch
 import tk.zwander.common.data.imei.IMEIGenerator
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.commonCompose.model.BaseModel
@@ -47,8 +44,6 @@ internal fun MRFLayout(
     showFirmware: Boolean = true,
     showImeiSerial: Boolean = false,
 ) {
-    val scope = rememberCoroutineScope()
-
     var modelState by model.model.collectAsImmediateMutableState()
     var regionState by model.region.collectAsImmediateMutableState()
     var firmwareState by model.fw.collectAsImmediateMutableState()
@@ -67,22 +62,21 @@ internal fun MRFLayout(
     val allowLowercase by BifrostSettings.Keys.allowLowercaseCharacters.asMutableStateFlow().collectAsImmediateMutableState()
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
 
+    IMEIGenerator.CollectImeisForModel(
+        model = modelState,
+        initialValue = imeiState,
+        onValueChange = {
+            imeiState = it.take(100)
+                .joinToString("\n")
+        },
+    )
+
     SplitComponent(
         startComponent = {
             OutlinedTextField(
                 value = modelState,
                 onValueChange = {
-                    val new = it.transformText(allowLowercase)
-
-                    if (new != modelState) {
-                        scope.launch(Dispatchers.IO) {
-                            imeiState = IMEIGenerator.makeImeisForModel(new)
-                                .take(100)
-                                .joinToString("\n")
-                        }
-                    }
-
-                    modelState = new
+                    modelState = it.transformText(allowLowercase)
                     if (model is DownloadModel && !model.manual.value) {
                         model.fw.value = ""
                         model.osCode.value = ""
