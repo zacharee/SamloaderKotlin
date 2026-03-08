@@ -56,7 +56,7 @@ kotlin {
         }
     }
 
-    androidLibrary {
+    android {
         withJava()
 
         val compileSdk: Int by rootProject.extra
