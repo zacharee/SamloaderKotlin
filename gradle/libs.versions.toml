@@ -5,6 +5,7 @@ androidx-core = "1.17.0"
 androidx-documentfile = "1.1.0"
 androidx-performance-annotation = "1.0.0-alpha01"
 androidx-preference = "1.2.1"
+appdirs = "1.5.0"
 bugsnag-android = "6.25.0"
 bugsnag-gradle = "1.0.0"
 bugsnag-jvm = "3.8.0"
@@ -56,6 +57,7 @@ androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx
 androidx-documentfile = { module = "androidx.documentfile:documentfile", version.ref = "androidx-documentfile" }
 androidx-performance-annotation = { module = "androidx.performance:performance-annotation", version.ref = "androidx-performance-annotation" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx-preference" }
+appdirs = { module = "net.harawata:appdirs", version.ref = "appdirs" }
 bugsnag-android = { module = "com.bugsnag:bugsnag-android", version.ref = "bugsnag-android" }
 bugsnag-jvm = { module = "com.bugsnag:bugsnag", version.ref = "bugsnag-jvm" }
 compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose" }
@@ -84,6 +86,7 @@ jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 jsystemthemedetector = { module = "com.github.zacharee:jSystemThemeDetector", version.ref = "jsystemthemedetector" }
 ketch-core = { module = "com.linroid.ketch:core", version.ref = "ketch" }
 ketch-ktor = { module = "com.linroid.ketch:ktor", version.ref = "ketch" }
+ketch-sqlite = { module = "com.linroid.ketch:sqlite", version.ref = "ketch" }
 kmpfile = { module = "dev.zwander:kmpfile", version.ref = "kmpfile" }
 kmpplatform = { module = "dev.zwander:kmpplatform", version.ref = "kmpplatform" }
 kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }

@@ -171,6 +171,7 @@ kotlin {
                 api(libs.xmlbuilder)
                 api(libs.ketch.core)
                 api(libs.ketch.ktor)
+                api(libs.ketch.sqlite)
             }
         }
 
@@ -203,6 +204,7 @@ kotlin {
                 api(libs.slf4j)
                 api(libs.window.styler)
                 api(libs.conveyor.control)
+                api(libs.appdirs)
             }
         }
 

@@ -3,7 +3,7 @@ val versionName by extra("1.20.5")
 
 val compileSdk by extra(36)
 val targetSdk by extra(36)
-val minSdk by extra(24)
+val minSdk by extra(26)
 
 val javaVersionEnum by extra(JavaVersion.VERSION_21)
 

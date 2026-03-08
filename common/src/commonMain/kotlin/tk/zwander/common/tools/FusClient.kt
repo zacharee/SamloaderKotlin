@@ -4,6 +4,12 @@ package tk.zwander.common.tools
 
 import com.fleeksoft.io.exception.ArrayIndexOutOfBoundsException
 import com.fleeksoft.ksoup.Ksoup
+import com.linroid.ketch.api.Destination
+import com.linroid.ketch.api.DownloadRequest
+import com.linroid.ketch.api.DownloadState
+import com.linroid.ketch.api.KetchError
+import dev.zwander.kmp.platform.HostOS
+import dev.zwander.kotlin.file.IPlatformFile
 import io.ktor.client.plugins.HttpTimeoutConfig
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.headers
@@ -19,12 +25,18 @@ import io.ktor.http.HttpMethod
 import io.ktor.utils.io.InternalAPI
 import io.ktor.utils.io.core.toByteArray
 import io.ktor.utils.io.readTo
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.launch
 import kotlinx.io.InternalIoApi
-import kotlinx.io.Sink
 import tk.zwander.common.util.BreadcrumbType
 import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.globalHttpClient
+import tk.zwander.common.util.ketch
 import tk.zwander.common.util.trackOperationProgress
 
 /**
@@ -148,48 +160,107 @@ object FusClient {
         fileName: String,
         start: Long = 0,
         size: Long,
-        output: Sink,
+        dest: IPlatformFile,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ): String? {
         val authV = getAuthV()
         val url = getDownloadUrl(fileName)
 
-        val request = globalHttpClient.prepareRequest {
-            method = HttpMethod.Get
-            url(url)
-            headers {
-                append("Authorization", authV)
-                append("User-Agent", "Kies2.0_FUS")
-                if (start > 0) {
-                    append("Range", "bytes=${start}-")
-                }
-            }
-            timeout {
-                this.requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                this.socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                this.connectTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-            }
-        }
-
-        return request.execute { response ->
-            val md5 = response.headers["Content-MD5"]
-            val channel = response.bodyAsChannel()
-
-            trackOperationProgress(
-                size = size,
-                progressCallback = progressCallback,
-                operation = {
-                    channel.readTo(output, 8192L)
-                },
-                progressOffset = start,
-                condition = { !channel.isClosedForRead },
-                throttle = false,
+        return if (HostOS.current != HostOS.Android) {
+            val task = ketch.tasks.value.find { it.request.url == url }
+                ?.let { download ->
+                    download.resume(Destination(dest.getAbsolutePath()))
+                    download.takeIf {
+                        it.state.value !is DownloadState.Completed
+                    }
+                } ?: ketch.download(
+                DownloadRequest(
+                    url = url,
+                    destination = Destination(dest.getAbsolutePath()),
+                    headers = mapOf(
+                        "Authorization" to authV,
+                        "User-Agent" to "Kies2.0_FUS",
+                    ),
+                ),
             )
 
-            output.flush()
+            CoroutineScope(currentCoroutineContext()).launch(Dispatchers.IO) {
+                task.state.collect {
+                    if (it is DownloadState.Downloading) {
+                        progressCallback(
+                            it.progress.downloadedBytes,
+                            size,
+                            it.progress.bytesPerSecond,
+                        )
+                    }
+                }
+            }
 
-            md5
+            try {
+                while (true) {
+                    val result = task.await()
+
+                    if (result.isSuccess) {
+                        break
+                    }
+
+                    (result.exceptionOrNull() as? KetchError)?.let { error ->
+                        if (!error.isRetryable) {
+                            break
+                        }
+                    }
+                }
+            } catch (_: CancellationException) {
+                task.pause()
+            }
+
+            null
+        } else {
+            val outputStream = dest.openOutputStream(true) ?: return null
+
+            val request = globalHttpClient.prepareRequest {
+                method = HttpMethod.Get
+                url(url)
+                headers {
+                    append("Authorization", authV)
+                    append("User-Agent", "Kies2.0_FUS")
+                    if (start > 0) {
+                        append("Range", "bytes=${start}-")
+                    }
+                }
+                timeout {
+                    this.requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                    this.socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                    this.connectTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                }
+            }
+
+            try {
+                request.execute { response ->
+                    val md5 = response.headers["Content-MD5"]
+                    val channel = response.bodyAsChannel()
+
+                    trackOperationProgress(
+                        size = size,
+                        progressCallback = progressCallback,
+                        operation = {
+                            channel.readTo(outputStream, 8192L)
+                        },
+                        progressOffset = start,
+                        condition = { !channel.isClosedForRead },
+                        throttle = false,
+                    )
+
+                    outputStream.flush()
+
+                    md5
+                }
+            } finally {
+                outputStream.flush()
+                outputStream.close()
+            }
         }
+
     }
 
     private fun HttpResponse.is401(body: String): Boolean {
