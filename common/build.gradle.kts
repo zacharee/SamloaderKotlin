@@ -169,6 +169,8 @@ kotlin {
                 api(libs.kotlinx.atomicfu)
                 api(libs.androidx.performance.annotation)
                 api(libs.xmlbuilder)
+                api(libs.ketch.core)
+                api(libs.ketch.ktor)
             }
         }
 
