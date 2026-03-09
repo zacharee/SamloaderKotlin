@@ -309,7 +309,6 @@ internal fun DownloadView() {
                 model,
                 canChangeOption,
                 manual && canChangeOption,
-                showImeiSerial = true
             )
 
             AnimatedVisibility(

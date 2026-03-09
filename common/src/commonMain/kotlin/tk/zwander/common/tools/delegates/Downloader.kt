@@ -46,7 +46,6 @@ object Downloader {
             fw = model.fw.value,
             model = model.model.value,
             region = model.region.value,
-            imeiSerial = model.imeiSerial.value,
             onVersionException = { exception, info ->
                 confirmCallback.onError(
                     info = DownloadErrorInfo(
@@ -70,6 +69,7 @@ object Downloader {
             shouldReportError = {
                 !model.manual.value
             },
+            imeiSerial = "",
         )
 
         if (info != null) {
