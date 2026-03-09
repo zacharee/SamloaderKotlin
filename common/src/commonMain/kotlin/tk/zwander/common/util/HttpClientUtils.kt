@@ -3,7 +3,6 @@
 package tk.zwander.common.util
 
 import com.linroid.ketch.api.DownloadConfig
-import com.linroid.ketch.api.log.KetchLogger
 import com.linroid.ketch.api.log.LogLevel
 import com.linroid.ketch.api.log.Logger
 import com.linroid.ketch.core.Ketch
