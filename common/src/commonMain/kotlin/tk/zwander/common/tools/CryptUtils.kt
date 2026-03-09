@@ -1,11 +1,14 @@
 package tk.zwander.common.tools
 
+import com.fleeksoft.io.ByteBufferFactory
+import com.fleeksoft.io.getInt
 import dev.whyoleg.cryptography.CryptographyProvider
 import dev.whyoleg.cryptography.DelicateCryptographyApi
 import dev.whyoleg.cryptography.algorithms.AES
 import dev.whyoleg.cryptography.algorithms.MD5
 import io.github.andreypfau.kotlinx.crypto.CRC32
-import io.ktor.utils.io.core.*
+import io.ktor.utils.io.core.readAvailable
+import io.ktor.utils.io.core.toByteArray
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -13,6 +16,7 @@ import kotlinx.io.Sink
 import kotlinx.io.Source
 import kotlinx.io.bytestring.toHexString
 import tk.zwander.common.util.DEFAULT_CHUNK_SIZE
+import tk.zwander.common.util.RandomAccessStream
 import tk.zwander.common.util.streamOperationWithProgress
 import tk.zwander.common.util.trackOperationProgress
 import kotlin.io.encoding.Base64
@@ -21,12 +25,15 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 /**
  * Handle encryption and decryption stuff.
  */
+@OptIn(ExperimentalUnsignedTypes::class)
 object CryptUtils {
     /**
      * Decryption keys for the firmware and other data.
      */
     private const val KEY_1 = "vicopx7dqu06emacgpnpy8j8zwhduwlh"
     private const val KEY_2 = "9u7qab84rpc16gvk"
+    private val SHIFT_INDICES = intArrayOf(0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11)
+    private val SEL32_IDX = List(32) { it }
 
     @OptIn(DelicateCryptographyApi::class)
     val md5Provider = CryptographyProvider.Default.get(MD5)
@@ -120,6 +127,128 @@ object CryptUtils {
         return key.toByteArray()
     }
 
+    private suspend fun createAuthHeader(): Map<String, Int> {
+        val stream = AuthParamsHandler.getAuthParamStream()
+        val headerBytes = stream[0, 56]
+        val values = (0 until 56 step 4).map { index ->
+            val slice = headerBytes.slice(index until index + 4)
+
+            ByteBufferFactory.wrap(slice.reversed().map { it.toByte() }.toByteArray()).getInt()
+        }
+        val keys = listOf(
+            "magic", "alignment",
+            "block_1_offset", "block_1_size",
+            "block_2_offset", "block_2_size",
+            "block_5_offset", "block_5_size",
+            "block_6_offset", "block_6_size",
+            "block_3_offset", "block_3_size",
+            "block_4_offset", "block_4_size",
+        )
+
+        return keys.zip(values).toMap()
+    }
+
+    suspend fun authenticateBlock(inBlock: ByteArray): ByteArray {
+        val header = createAuthHeader()
+        val wrapped = AuthParamsHandler.getAuthParamStream()
+        val stream = object : RandomAccessStream {
+            override fun get(pos: Long): UByte {
+                return wrapped[pos + 56]
+            }
+
+            override fun get(pos: Long, len: Int): UByteArray {
+                return wrapped[pos + 56, len]
+            }
+        }
+        val tempArray = IntArray(320)
+        inBlock.slice(0 until 16).forEachIndexed { index, b ->
+            tempArray[index] = b.toUByte().toInt()
+        }
+
+        val v15 = IntArray(64)
+
+        for (j in 0 until 9) {
+            val srcStart = 32 * j
+
+            for (idx in 0 until 16) {
+                tempArray[srcStart + 16 + idx] = tempArray[srcStart + SHIFT_INDICES[idx]]
+            }
+
+            val j32_16 = 32 * j + 16
+            val jNext = 32 * (j + 1)
+            val blkIdBase = j * 16
+
+            for (i in 0 until 4) {
+                val i4 = i.shl(2)
+                val i16 = i.shl(4)
+                val blkIdRow = blkIdBase + i.shl(2)
+
+                for (k in 0 until 4) {
+                    val idxVal = tempArray[j32_16 + i4 + k]
+                    val blkId = blkIdRow + k
+                    val base257 = blkId.shl(12) + idxVal.shl(4)
+                    val selOffset = header["block_1_size"]!! + header["block_2_size"]!! + blkId.shl(5)
+                    val src16Ptr = stream[base257.toLong(), 16]
+                    val selectorPtr = stream[selOffset.toLong(), 32]
+                    val outStart = i16 + k.shl(2)
+
+                    for (outIdx in 0 until 4) {
+                        var acc = 0
+                        val selBase = outIdx.shl(3)
+
+                        for (bitIdx in 0 until 8) {
+                            val selByte = selectorPtr[SEL32_IDX[selBase + bitIdx]].toInt()
+                            val srcIdx = selByte.shr(3) and 0x1F
+                            val bitPos = 7 - (selByte and 0x7)
+                            val srcByte = if (srcIdx < 16) src16Ptr[srcIdx].toInt() else 0
+
+                            acc = acc or (((srcByte shr bitPos) and 1) shl (7 - bitIdx))
+                        }
+
+                        v15[outStart + outIdx] = (acc and 0xFF)
+                    }
+                }
+
+                val base262 = header["block_1_size"]!! +
+                        header["block_2_size"]!! +
+                        header["block_3_size"]!! +
+                        (6144 * (i + j.shl(2)))
+
+                for (k2 in 0 until 4) {
+                    val a1 = v15[i16 + k2]
+                    val a2 = v15[i16 + k2 + 4]
+                    val a3 = v15[i16 + k2 + 8]
+                    val a4 = v15[i16 + k2 + 12]
+                    val tblBase = base262 + 1536 * k2
+                    val tbl = stream[tblBase.toLong(), 1536]
+                    val hi1 = ((a1 and 0xF0) or (a2 shr 4)) and 0xFF
+                    val lo1 = (((a1 and 0x0F) shl 4) or (a2 and 0x0F)) and 0xFF
+                    val v6 = (((16 * tbl[hi1].toInt()) xor tbl[256 + lo1].toInt()) and 0xFF)
+                    val hi2 = ((a3 and 0xF0) or (a4 shr 4)) and 0xFF
+                    val lo2 = (((a3 and 0x0F) shl 4) or (a4 and 0x0F)) and 0xFF
+                    val v7 = (((16 * tbl[512 + hi2].toInt()) xor tbl[768 + lo2].toInt()) and 0xFF)
+                    val hi3 = ((v6 and 0xF0) or (v7 shr 4)) and 0xFF
+                    val lo3 = (((v6 and 0x0F) shl 4) or (v7 and 0x0F)) and 0xFF
+
+                    tempArray[jNext + i4 + k2] =
+                        (((16 * tbl[1024 + hi3].toInt()) xor tbl[1280 + lo3].toInt()) and 0xFF)
+                }
+            }
+        }
+
+        val finalBlock = tempArray.slice(288 until 304)
+        val finalSr = SHIFT_INDICES.map { finalBlock[it] }
+        val out = IntArray(16)
+        val baseFinal = header["block_1_size"]!!
+
+        for (idx in 0 until 16) {
+            val pos = baseFinal + idx.shl(8) + finalSr[idx]
+            out[idx] = stream[pos.toLong()].toInt()
+        }
+
+        return out.map { it.toByte() }.toByteArray()
+    }
+
     /**
      * Generate an auth token with a given nonce.
      * @param nonce the nonce seed.
@@ -139,10 +268,8 @@ object CryptUtils {
      * @return the decrypted nonce.
      */
     @OptIn(ExperimentalEncodingApi::class)
-    fun decryptNonce(input: String): String {
-        val d = Base64.decode(input)
-        return aesDecrypt(d, KEY_1.toByteArray())
-            .decodeToString()
+    suspend fun decryptNonce(input: String): String {
+        return authenticateBlock(input.toByteArray()).toHexString()
     }
 
     /**
@@ -152,8 +279,8 @@ object CryptUtils {
      * @param region the device region corresponding to the file.
      * @return the decryption key for this firmware.
      */
-    suspend fun getV4Key(version: String, model: String, region: String, imeiSerial: String, tries: Int = 0, includeNonce: Boolean = true): Pair<ByteArray, String>? {
-        val (_, responseXml) = Request.performBinaryInformRetry(version.uppercase(), model, region, imeiSerial, includeNonce)
+    suspend fun getV4Key(version: String, model: String, region: String, imeiSerial: String, tries: Int = 0): Pair<ByteArray, String>? {
+        val (_, responseXml) = Request.performBinaryInformRetry(version.uppercase(), model, region, imeiSerial)
 
         return try {
             responseXml.extractV4Key()
@@ -311,4 +438,9 @@ object CryptUtils {
             }
         }
     }
+}
+
+expect object AuthParamsHandler {
+    suspend fun extractFile()
+    suspend fun getAuthParamStream(): RandomAccessStream
 }

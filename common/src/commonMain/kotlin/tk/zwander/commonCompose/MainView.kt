@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.linroid.ketch.api.DownloadState
 import dev.zwander.kmp.platform.HostOS
 import kotlinx.coroutines.launch
+import tk.zwander.common.tools.AuthParamsHandler
 import tk.zwander.common.util.ketch
 import tk.zwander.commonCompose.view.LocalPagerState
 import tk.zwander.commonCompose.view.LocalUseTransparencyEffects
@@ -48,6 +49,8 @@ fun MainView(
                 it.remove()
             }
         }
+
+        AuthParamsHandler.extractFile()
     }
 
     BifrostTheme {

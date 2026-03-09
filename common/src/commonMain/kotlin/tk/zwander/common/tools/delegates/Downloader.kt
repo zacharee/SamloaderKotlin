@@ -79,8 +79,8 @@ object Downloader {
     @OptIn(ExperimentalTime::class)
     private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel) {
         try {
-            val (path, fileName, size, crc32, v4Key) = info
-            val request = Request.createBinaryInit(fileName, FusClient.getNonce())
+            val (path, fileName, size, crc32, v4Key, fwVer, modelType) = info
+            val request = Request.createBinaryInit(fileName, FusClient.getNonce(), fwVer, modelType, model.region.value)
 
             FusClient.makeReq(FusClient.Request.BINARY_INIT, request)
 

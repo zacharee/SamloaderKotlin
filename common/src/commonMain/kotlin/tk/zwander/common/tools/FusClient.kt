@@ -32,6 +32,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
 import kotlinx.io.InternalIoApi
+import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.util.BreadcrumbType
 import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.firstElementByTagName
@@ -43,10 +44,10 @@ import tk.zwander.common.util.trackOperationProgress
  * Manage communications with Samsung's server.
  */
 object FusClient {
-    enum class Request(val value: String) {
-        GENERATE_NONCE("NF_DownloadGenerateNonce.do"),
-        BINARY_INFORM("NF_DownloadBinaryInform.do"),
-        BINARY_INIT("NF_DownloadBinaryInitForMass.do")
+    enum class Request(val value: String, val cloud: Boolean) {
+        GENERATE_NONCE("NF_SmartDownloadGenerateNonce.do", false),
+        BINARY_INFORM("NF_SmartDownloadBinaryInform.do", false),
+        BINARY_INIT("NF_SmartDownloadBinaryInitForMass.do", false)
     }
 
     private var encNonce = ""
@@ -80,12 +81,31 @@ object FusClient {
         println("Auth: $auth")
     }
 
-    private fun getAuthV(includeNonce: Boolean = true): String {
-        return "FUS nonce=\"${if (includeNonce) encNonce else ""}\", signature=\"${this.auth}\", nc=\"\", type=\"\", realm=\"\", newauth=\"1\""
+    private suspend fun makeSignatureHash(signature: String?): String? {
+        if (signature == null) return null
+
+        val hasher = CryptUtils.md5Provider.hasher()
+        val a = hasher.hash("auth:$nonce:00000001".toByteArray()).toHexString()
+        val b = hasher.hash("interface:$signature".toByteArray()).toHexString()
+
+        return hasher.hash("$a:FUS:$b".toByteArray()).toHexString()
+    }
+
+    private suspend fun getAuthV(includeNonce: Boolean = true, signature: String? = null, cloud: Boolean = false): String {
+        val hasSignature = !signature.isNullOrBlank()
+        val nonce = when {
+            includeNonce && hasSignature -> {
+                val chars = "abcdefghijklmnopqrstuvwxyz0123456789"
+                CharArray(16) { chars.random() }.joinToString("")
+            }
+            includeNonce -> encNonce
+            else -> ""
+        }
+        return "FUS nonce=\"${if (cloud) nonce else ""}\", signature=\"${makeSignatureHash(signature?.takeIf { !it.isBlank() }) ?: this.auth}\", nc=\"${if (hasSignature) "00000001" else ""}\", type=\"${if (hasSignature) "auth" else ""}\", realm=\"${if (hasSignature) "auth" else ""}\""
     }
 
     private fun getDownloadUrl(path: String): String {
-        return "http://cloud-neofussvr.samsungmobile.com/NF_DownloadBinaryForMass.do?file=${path}"
+        return "http://cloud-neofussvr.samsungmobile.com/NF_SmartDownloadBinaryForMass.do?file=${path}"
     }
 
     /**
@@ -94,19 +114,19 @@ object FusClient {
      * @param data any body data that needs to go into the request.
      * @return the response body data, as text. Usually XML.
      */
-    suspend fun makeReq(request: Request, data: String = "", includeNonce: Boolean = true): String {
+    suspend fun makeReq(request: Request, data: String = ""): String {
         if (nonce.isBlank() && request != Request.GENERATE_NONCE) {
             generateNonce()
         }
 
-        val authV = getAuthV(includeNonce)
+        val authV = getAuthV(cloud = request.cloud)
 
         val response =
             globalHttpClient.request("https://neofussvr.sslcs.cdngc.net/${request.value}") {
                 method = HttpMethod.Post
                 headers {
                     append("Authorization", authV)
-                    append("User-Agent", "Kiss2.0_FUS")
+                    append("User-Agent", "SMART 2.0")
                     append("Cookie", "JSESSIONID=${sessionId}")
                     append("Set-Cookie", "JSESSIONID=${sessionId}")
                     append(HttpHeaders.ContentLength, "${data.toByteArray().size}")
@@ -119,14 +139,17 @@ object FusClient {
         if (request != Request.GENERATE_NONCE && response.is401(body)) {
             generateNonce()
 
-            return makeReq(request, data, includeNonce)
+            return makeReq(request, data)
         }
 
         if (response.headers["NONCE"] != null || response.headers["nonce"] != null) {
             try {
                 encNonce = response.headers["NONCE"] ?: response.headers["nonce"] ?: ""
-                nonce = CryptUtils.decryptNonce(encNonce)
-                auth = CryptUtils.getAuth(nonce)
+                nonce = encNonce
+
+                try {
+                    auth = CryptUtils.decryptNonce(encNonce.take(16).padEnd((16 - encNonce.length).coerceAtLeast(0), '0'))
+                } catch (_: Exception) {}
             } catch (e: ArrayIndexOutOfBoundsException) {
                 BugsnagUtils.addBreadcrumb(
                     message = "Error generating nonce.",
@@ -134,6 +157,7 @@ object FusClient {
                     type = BreadcrumbType.ERROR,
                 )
                 println("Error generating nonce.")
+                e.printStackTrace()
             }
         }
 
@@ -163,7 +187,7 @@ object FusClient {
         dest: IPlatformFile,
         progressCallback: suspend (current: Long, max: Long, bps: Long) -> Unit,
     ): String? {
-        val authV = getAuthV()
+        val authV = getAuthV(cloud = true)
         val url = getDownloadUrl(fileName)
 
         return if (HostOS.current != HostOS.Android) {
@@ -178,8 +202,9 @@ object FusClient {
                     url = url,
                     destination = Destination(dest.getAbsolutePath()),
                     headers = mapOf(
-                        "Authorization" to authV,
-                        "User-Agent" to "Kies2.0_FUS",
+                        "Authorization" to authV.also { println(it) },
+                        "User-Agent" to "SMART 2.0",
+                        "Cache-Control" to "no-cache",
                     ),
                 ),
             )
@@ -206,7 +231,7 @@ object FusClient {
 
                     (result.exceptionOrNull() as? KetchError)?.let { error ->
                         if (!error.isRetryable) {
-                            break
+                            throw error
                         }
                     }
                 }
@@ -223,7 +248,7 @@ object FusClient {
                 url(url)
                 headers {
                     append("Authorization", authV)
-                    append("User-Agent", "Kies2.0_FUS")
+                    append("User-Agent", "SMART 2.0")
                     if (start > 0) {
                         append("Range", "bytes=${start}-")
                     }
