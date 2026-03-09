@@ -96,7 +96,10 @@ object Downloader {
             }
 
             val downloadDirectory = FileManager.pickDirectory()
-            val encFile = downloadDirectory?.child(fullFileName, false) ?: return
+            val encFile = downloadDirectory?.child(fullFileName, false) ?: run {
+                model.endJob("")
+                return
+            }
             val decFile = downloadDirectory.child(
                 fullFileName.replace(".enc2", "")
                     .replace(".enc4", ""),
@@ -124,27 +127,22 @@ object Downloader {
                 }
             }
 
-            val md5 = try {
-                FusClient.downloadFile(
-                    fileName = path + fileName,
-                    start = encFile.getLength(),
-                    size = size,
-                    dest = encFile,
-                ) { current, max, bps ->
-                    model.progress.value = current to max
-                    model.speed.value = bps
+            val md5 = FusClient.downloadFile(
+                fileName = path + fileName,
+                start = encFile.getLength(),
+                size = size,
+                dest = encFile,
+            ) { current, max, bps ->
+                model.progress.value = current to max
+                model.speed.value = bps
 
-                    eventManager.sendEvent(
-                        Event.Download.Progress(
-                            status = MR.strings.downloading(),
-                            current = current,
-                            max = max,
-                        )
+                eventManager.sendEvent(
+                    Event.Download.Progress(
+                        status = MR.strings.downloading(),
+                        current = current,
+                        max = max,
                     )
-                }
-            } finally {
-//                outputStream.flush()
-//                outputStream.close()
+                )
             }
 
             if (crc32 != null) {
