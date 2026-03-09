@@ -299,7 +299,7 @@ internal fun DownloadView() {
                 exit = fadeOut() + shrinkOut(shrinkTowards = Alignment.CenterStart),
             ) {
                 Text(
-                    text = stringResource(MR.strings.invalid_model),
+                    text = stringResource(MR.strings.accessory_model_warning),
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
