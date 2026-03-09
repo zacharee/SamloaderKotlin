@@ -15,6 +15,7 @@ import tk.zwander.common.util.Event
 import tk.zwander.common.util.FileManager
 import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
+import tk.zwander.common.util.streamOperationWithProgress
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.time.ExperimentalTime
@@ -96,7 +97,13 @@ object Downloader {
             }
 
             val downloadDirectory = FileManager.pickDirectory()
-            val encFile = downloadDirectory?.child(fullFileName, false) ?: run {
+            val tempDirectory = FileManager.getTempDirectory()
+
+            val encFile = (tempDirectory ?: downloadDirectory)?.child(fullFileName, false) ?: run {
+                model.endJob("")
+                return
+            }
+            val extractedEncFile = downloadDirectory?.child(fullFileName, false) ?: run {
                 model.endJob("")
                 return
             }
@@ -127,22 +134,26 @@ object Downloader {
                 }
             }
 
-            val md5 = FusClient.downloadFile(
-                fileName = path + fileName,
-                start = encFile.getLength(),
-                size = size,
-                dest = encFile,
-            ) { current, max, bps ->
-                model.progress.value = current to max
-                model.speed.value = bps
+            val md5 = if (extractedEncFile.getLength() < size) {
+                FusClient.downloadFile(
+                    fileName = path + fileName,
+                    start = encFile.getLength(),
+                    size = size,
+                    dest = encFile,
+                ) { current, max, bps ->
+                    model.progress.value = current to max
+                    model.speed.value = bps
 
-                eventManager.sendEvent(
-                    Event.Download.Progress(
-                        status = MR.strings.downloading(),
-                        current = current,
-                        max = max,
+                    eventManager.sendEvent(
+                        Event.Download.Progress(
+                            status = MR.strings.downloading(),
+                            current = current,
+                            max = max,
+                        )
                     )
-                )
+                }
+            } else {
+                null
             }
 
             if (crc32 != null) {
@@ -196,6 +207,44 @@ object Downloader {
                 }
             }
 
+            if (tempDirectory != null && tempDirectory != downloadDirectory && extractedEncFile.getLength() < size) {
+                model.speed.value = 0L
+                model.statusText.value = "Copying"
+
+                val input = encFile.openInputStream() ?: run {
+                    model.endJob("")
+                    return
+                }
+                val output = extractedEncFile.openOutputStream() ?: run {
+                    model.endJob("")
+                    return
+                }
+
+                try {
+                    streamOperationWithProgress(
+                        input = input,
+                        output = output,
+                        size = encFile.getLength(),
+                        progressCallback = { current, max, bps ->
+                            model.progress.value = current to max
+                            model.speed.value = bps
+
+                            eventManager.sendEvent(
+                                Event.Download.Progress(
+                                    status = "Copying",
+                                    current = current,
+                                    max = max,
+                                )
+                            )
+                        },
+                    )
+                } finally {
+                    input.close()
+                    output.close()
+                    encFile.delete()
+                }
+            }
+
             model.speed.value = 0L
             model.statusText.value = MR.strings.decrypting()
 
@@ -211,7 +260,7 @@ object Downloader {
                 }
 
             CryptUtils.decryptProgress(
-                encFile.openInputStream() ?: return,
+                extractedEncFile.openInputStream() ?: return,
                 decFile?.openOutputStream() ?: return,
                 key,
                 size,
@@ -230,6 +279,7 @@ object Downloader {
 
             if (BifrostSettings.Keys.autoDeleteEncryptedFirmware()) {
                 encFile.delete()
+                extractedEncFile.delete()
             }
 
             model.endJob(MR.strings.done())

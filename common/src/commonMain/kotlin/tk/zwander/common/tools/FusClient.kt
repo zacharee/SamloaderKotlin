@@ -8,7 +8,6 @@ import com.linroid.ketch.api.Destination
 import com.linroid.ketch.api.DownloadRequest
 import com.linroid.ketch.api.DownloadState
 import com.linroid.ketch.api.KetchError
-import dev.zwander.kmp.platform.HostOS
 import dev.zwander.kotlin.file.IPlatformFile
 import io.ktor.client.plugins.HttpTimeoutConfig
 import io.ktor.client.plugins.timeout
@@ -18,13 +17,11 @@ import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.utils.io.InternalAPI
 import io.ktor.utils.io.core.toByteArray
-import io.ktor.utils.io.readTo
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,13 +29,11 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
 import kotlinx.io.InternalIoApi
-import tk.zwander.common.data.BinaryFileInfo
 import tk.zwander.common.util.BreadcrumbType
 import tk.zwander.common.util.BugsnagUtils
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.globalHttpClient
 import tk.zwander.common.util.ketch
-import tk.zwander.common.util.trackOperationProgress
 
 /**
  * Manage communications with Samsung's server.
@@ -190,102 +185,76 @@ object FusClient {
         val authV = getAuthV(cloud = true)
         val url = getDownloadUrl(fileName)
 
-        return if (HostOS.current != HostOS.Android) {
-            val task = ketch.tasks.value.find { it.request.url == url }
-                ?.let { download ->
-                    download.resume(Destination(dest.getAbsolutePath()))
-                    download.takeIf {
-                        it.state.value !is DownloadState.Completed
-                    }
-                } ?: ketch.download(
-                DownloadRequest(
-                    url = url,
-                    destination = Destination(dest.getAbsolutePath()),
-                    headers = mapOf(
-                        "Authorization" to authV.also { println(it) },
-                        "User-Agent" to "SMART 2.0",
-                        "Cache-Control" to "no-cache",
-                    ),
-                ),
-            )
-
-            CoroutineScope(currentCoroutineContext()).launch(Dispatchers.IO) {
-                task.state.collect {
-                    if (it is DownloadState.Downloading) {
-                        progressCallback(
-                            it.progress.downloadedBytes,
-                            size,
-                            it.progress.bytesPerSecond,
-                        )
-                    }
+        val md5Request = globalHttpClient.prepareRequest {
+            method = HttpMethod.Get
+            url(url)
+            headers {
+                append("Authorization", authV)
+                append("User-Agent", "SMART 2.0")
+                if (start > 0) {
+                    append("Range", "bytes=${start}-")
                 }
             }
-
-            try {
-                while (true) {
-                    val result = task.await()
-
-                    if (result.isSuccess) {
-                        break
-                    }
-
-                    (result.exceptionOrNull() as? KetchError)?.let { error ->
-                        if (!error.isRetryable) {
-                            throw error
-                        }
-                    }
-                }
-            } catch (_: CancellationException) {
-                task.pause()
-            }
-
-            null
-        } else {
-            val outputStream = dest.openOutputStream(true) ?: return null
-
-            val request = globalHttpClient.prepareRequest {
-                method = HttpMethod.Get
-                url(url)
-                headers {
-                    append("Authorization", authV)
-                    append("User-Agent", "SMART 2.0")
-                    if (start > 0) {
-                        append("Range", "bytes=${start}-")
-                    }
-                }
-                timeout {
-                    this.requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                    this.socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                    this.connectTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
-                }
-            }
-
-            try {
-                request.execute { response ->
-                    val md5 = response.headers["Content-MD5"]
-                    val channel = response.bodyAsChannel()
-
-                    trackOperationProgress(
-                        size = size,
-                        progressCallback = progressCallback,
-                        operation = {
-                            channel.readTo(outputStream, 8192L)
-                        },
-                        progressOffset = start,
-                        condition = { !channel.isClosedForRead },
-                        throttle = false,
-                    )
-
-                    outputStream.flush()
-
-                    md5
-                }
-            } finally {
-                outputStream.flush()
-                outputStream.close()
+            timeout {
+                this.requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                this.socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                this.connectTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
             }
         }
 
+        val md5 = md5Request.execute { response ->
+            response.headers["Content-MD5"]
+        }
+
+        val task = ketch.tasks.value.find { it.request.url == url }
+            ?.let { download ->
+                download.resume(Destination(dest.getAbsolutePath()))
+                download.takeIf {
+                    it.state.value !is DownloadState.Completed
+                }
+            } ?: ketch.download(
+            DownloadRequest(
+                url = url,
+                destination = Destination(dest.getAbsolutePath()),
+                headers = mapOf(
+                    "Authorization" to authV.also { println(it) },
+                    "User-Agent" to "SMART 2.0",
+                    "Cache-Control" to "no-cache",
+                ),
+            ),
+        )
+
+        CoroutineScope(currentCoroutineContext()).launch(Dispatchers.IO) {
+            task.state.collect {
+                if (it is DownloadState.Downloading) {
+                    progressCallback(
+                        it.progress.downloadedBytes,
+                        size,
+                        it.progress.bytesPerSecond,
+                    )
+                }
+            }
+        }
+
+        try {
+            while (true) {
+                val result = task.await()
+
+                if (result.isSuccess) {
+                    break
+                }
+
+                (result.exceptionOrNull() as? KetchError)?.let { error ->
+                    if (!error.isRetryable) {
+                        throw error
+                    }
+                }
+            }
+        } catch (_: CancellationException) {
+            task.pause()
+        }
+
+        return md5
     }
 
     private fun HttpResponse.is401(body: String): Boolean {
