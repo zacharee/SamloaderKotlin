@@ -15,6 +15,7 @@ import tk.zwander.common.util.Event
 import tk.zwander.common.util.FileManager
 import tk.zwander.common.util.eventManager
 import tk.zwander.common.util.invoke
+import tk.zwander.common.util.streamOperationWithProgress
 import tk.zwander.commonCompose.model.DownloadModel
 import tk.zwander.samloaderkotlin.resources.MR
 import kotlin.time.ExperimentalTime
@@ -45,7 +46,6 @@ object Downloader {
             fw = model.fw.value,
             model = model.model.value,
             region = model.region.value,
-            imeiSerial = model.imeiSerial.value,
             onVersionException = { exception, info ->
                 confirmCallback.onError(
                     info = DownloadErrorInfo(
@@ -69,6 +69,7 @@ object Downloader {
             shouldReportError = {
                 !model.manual.value
             },
+            imeiSerial = "",
         )
 
         if (info != null) {
@@ -79,8 +80,8 @@ object Downloader {
     @OptIn(ExperimentalTime::class)
     private suspend fun performDownload(info: BinaryFileInfo, model: DownloadModel) {
         try {
-            val (path, fileName, size, crc32, v4Key) = info
-            val request = Request.createBinaryInit(fileName, FusClient.getNonce())
+            val (path, fileName, size, crc32, v4Key, fwVer, modelType) = info
+            val request = Request.createBinaryInit(fileName, FusClient.getNonce(), fwVer, modelType, model.region.value)
 
             FusClient.makeReq(FusClient.Request.BINARY_INIT, request)
 
@@ -96,7 +97,16 @@ object Downloader {
             }
 
             val downloadDirectory = FileManager.pickDirectory()
-            val encFile = downloadDirectory?.child(fullFileName, false) ?: return
+            val tempDirectory = FileManager.getTempDirectory()
+
+            val encFile = (tempDirectory ?: downloadDirectory)?.child(fullFileName, false) ?: run {
+                model.endJob("")
+                return
+            }
+            val extractedEncFile = downloadDirectory?.child(fullFileName, false) ?: run {
+                model.endJob("")
+                return
+            }
             val decFile = downloadDirectory.child(
                 fullFileName.replace(".enc2", "")
                     .replace(".enc4", ""),
@@ -124,7 +134,7 @@ object Downloader {
                 }
             }
 
-            val md5 = try {
+            val md5 = if (extractedEncFile.getLength() < size) {
                 FusClient.downloadFile(
                     fileName = path + fileName,
                     start = encFile.getLength(),
@@ -142,9 +152,8 @@ object Downloader {
                         )
                     )
                 }
-            } finally {
-//                outputStream.flush()
-//                outputStream.close()
+            } else {
+                null
             }
 
             if (crc32 != null) {
@@ -198,6 +207,44 @@ object Downloader {
                 }
             }
 
+            if (tempDirectory != null && tempDirectory != downloadDirectory && extractedEncFile.getLength() < size) {
+                model.speed.value = 0L
+                model.statusText.value = "Copying"
+
+                val input = encFile.openInputStream() ?: run {
+                    model.endJob("")
+                    return
+                }
+                val output = extractedEncFile.openOutputStream() ?: run {
+                    model.endJob("")
+                    return
+                }
+
+                try {
+                    streamOperationWithProgress(
+                        input = input,
+                        output = output,
+                        size = encFile.getLength(),
+                        progressCallback = { current, max, bps ->
+                            model.progress.value = current to max
+                            model.speed.value = bps
+
+                            eventManager.sendEvent(
+                                Event.Download.Progress(
+                                    status = "Copying",
+                                    current = current,
+                                    max = max,
+                                )
+                            )
+                        },
+                    )
+                } finally {
+                    input.close()
+                    output.close()
+                    encFile.delete()
+                }
+            }
+
             model.speed.value = 0L
             model.statusText.value = MR.strings.decrypting()
 
@@ -213,7 +260,7 @@ object Downloader {
                 }
 
             CryptUtils.decryptProgress(
-                encFile.openInputStream() ?: return,
+                extractedEncFile.openInputStream() ?: return,
                 decFile?.openOutputStream() ?: return,
                 key,
                 size,
@@ -232,6 +279,7 @@ object Downloader {
 
             if (BifrostSettings.Keys.autoDeleteEncryptedFirmware()) {
                 encFile.delete()
+                extractedEncFile.delete()
             }
 
             model.endJob(MR.strings.done())

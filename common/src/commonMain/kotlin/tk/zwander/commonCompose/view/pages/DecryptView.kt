@@ -137,7 +137,7 @@ internal fun DecryptView() {
                 }
             }
 
-            MRFLayout(model, canChangeOption, canChangeOption, showImeiSerial = true)
+            MRFLayout(model, canChangeOption, canChangeOption)
 
             SplitComponent(
                 startComponent = {

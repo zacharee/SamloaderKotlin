@@ -1,26 +1,27 @@
 package tk.zwander.commonCompose.view.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.stringResource
-import dev.zwander.compose.alertdialog.InWindowAlertDialog
-import tk.zwander.common.data.imei.IMEIGenerator
 import tk.zwander.common.util.BifrostSettings
 import tk.zwander.commonCompose.model.BaseModel
 import tk.zwander.commonCompose.model.DownloadModel
@@ -42,34 +43,17 @@ internal fun MRFLayout(
     canChangeOption: Boolean,
     canChangeFirmware: Boolean,
     showFirmware: Boolean = true,
-    showImeiSerial: Boolean = false,
 ) {
     var modelState by model.model.collectAsImmediateMutableState()
     var regionState by model.region.collectAsImmediateMutableState()
     var firmwareState by model.fw.collectAsImmediateMutableState()
-    var imeiState by model.imeiSerial.collectAsImmediateMutableState()
 
     var showingCscChooser by remember {
-        mutableStateOf(false)
-    }
-    var showingImeiHelp by remember {
-        mutableStateOf(false)
-    }
-    var showingImeiEditor by remember {
         mutableStateOf(false)
     }
 
     val allowLowercase by BifrostSettings.Keys.allowLowercaseCharacters.asMutableStateFlow().collectAsImmediateMutableState()
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
-
-    IMEIGenerator.CollectImeisForModel(
-        model = modelState,
-        initialValue = imeiState,
-        onValueChange = {
-            imeiState = it.take(100)
-                .joinToString("\n")
-        },
-    )
 
     SplitComponent(
         startComponent = {
@@ -141,40 +125,6 @@ internal fun MRFLayout(
                 )
             }
 
-            if (showImeiSerial) {
-                items.add(
-                    DynamicField(
-                        value = imeiState.replace("\n", ";"),
-                        onValueChange = { imeiState = it.replace(";", "\n") },
-                        labelRes = MR.strings.imei_serial,
-                        readOnly = !canChangeOption,
-                        trailingIcon = {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                IconButton(
-                                    onClick = { showingImeiEditor = true }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Edit,
-                                        contentDescription = stringResource(MR.strings.edit),
-                                    )
-                                }
-
-                                IconButton(
-                                    onClick = { showingImeiHelp = true }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Info,
-                                        contentDescription = stringResource(MR.strings.help),
-                                    )
-                                }
-                            }
-                        },
-                    ),
-                )
-            }
-
             items
         }
     }
@@ -185,7 +135,7 @@ internal fun MRFLayout(
         if (firmwareImeiSerial.size == 1) {
             val first = firmwareImeiSerial.first()
 
-            first.Render()
+            first.Render(modifier = Modifier.fillMaxWidth())
         } else {
             val first = firmwareImeiSerial.first()
             val second = firmwareImeiSerial[1]
@@ -210,36 +160,6 @@ internal fun MRFLayout(
         onCscSelected = {
             if (!hasRunningJobs) {
                 model.region.value = it
-            }
-        },
-    )
-
-    InWindowAlertDialog(
-        showing = showingImeiHelp,
-        onDismissRequest = { showingImeiHelp = false },
-        title = { Text(text = stringResource(MR.strings.imei_serial)) },
-        text = { Text(text = stringResource(MR.strings.imei_serial_help)) },
-        buttons = {
-            TextButton(onClick = { showingImeiHelp = false }) {
-                Text(text = stringResource(MR.strings.ok))
-            }
-        },
-    )
-
-    InWindowAlertDialog(
-        showing = showingImeiEditor,
-        onDismissRequest = { showingImeiEditor = false },
-        title = { Text(text = stringResource(MR.strings.edit)) },
-        text = {
-            TextField(
-                value = imeiState,
-                onValueChange = { imeiState = it },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        },
-        buttons = {
-            TextButton(onClick = { showingImeiEditor = false }) {
-                Text(text = stringResource(MR.strings.close))
             }
         },
     )

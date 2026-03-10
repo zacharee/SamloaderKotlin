@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import dev.zwander.kotlin.file.IPlatformFile
+import dev.zwander.kotlin.file.PlatformFile
 import dev.zwander.kotlin.file.PlatformUriFile
 import kotlinx.atomicfu.AtomicRef
 import kotlinx.atomicfu.atomic
@@ -87,5 +88,11 @@ actual object FileManager {
                     .replace(".enc4", ""),
             )
         }?.let { PlatformUriFile(App.instance, it, false) }
+    }
+
+    actual suspend fun getTempDirectory(): IPlatformFile? {
+        return PlatformFile(App.instance.cacheDir, "downloadTmp").also {
+            it.mkdirs()
+        }
     }
 }

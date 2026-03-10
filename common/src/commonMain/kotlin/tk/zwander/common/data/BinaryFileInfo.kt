@@ -9,4 +9,7 @@ data class BinaryFileInfo(
     val size: Long,
     val crc32: Long?,
     val v4Key: Pair<ByteArray, String>?,
+    val fwVer: String,
+    val modelType: String,
+    val logicVal: String,
 )

@@ -26,4 +26,6 @@ actual object FileManager {
             extension = extension,
         )?.let { PlatformFile(it.file) }
     }
+
+    actual suspend fun getTempDirectory(): IPlatformFile? = null
 }
