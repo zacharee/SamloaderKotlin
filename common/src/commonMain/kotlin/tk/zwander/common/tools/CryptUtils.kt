@@ -15,6 +15,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.io.Sink
 import kotlinx.io.Source
 import kotlinx.io.bytestring.toHexString
+import tk.zwander.common.data.AuthHeader
+import tk.zwander.common.data.AuthHeaderBlock
 import tk.zwander.common.util.DEFAULT_CHUNK_SIZE
 import tk.zwander.common.util.RandomAccessStream
 import tk.zwander.common.util.streamOperationWithProgress
@@ -34,69 +36,77 @@ object CryptUtils {
     @OptIn(DelicateCryptographyApi::class)
     val aesEcbProvider = CryptographyProvider.Default.get(AES.ECB)
 
-    private suspend fun createAuthHeader(): Map<String, Int> {
-        val stream = AuthParamsHandler.getAuthParamStream()
+    private fun createAuthHeader(stream: RandomAccessStream): AuthHeader {
         val headerBytes = stream[0, 56]
         val values = (0 until 56 step 4).map { index ->
             val slice = headerBytes.slice(index until index + 4)
 
             ByteBufferFactory.wrap(slice.reversed().map { it.toByte() }.toByteArray()).getInt()
         }
-        val keys = listOf(
-            "magic", "alignment",
-            "block_1_offset", "block_1_size",
-            "block_2_offset", "block_2_size",
-            "block_5_offset", "block_5_size",
-            "block_6_offset", "block_6_size",
-            "block_3_offset", "block_3_size",
-            "block_4_offset", "block_4_size",
+
+        val header = AuthHeader(
+            magic = values[0],
+            alignment = values[1],
+            block1 = AuthHeaderBlock(offset = values[2], size = values[3]),
+            block2 = AuthHeaderBlock(offset = values[4], size = values[5]),
+            block5 = AuthHeaderBlock(offset = values[6], size = values[7]),
+            block6 = AuthHeaderBlock(offset = values[8], size = values[9]),
+            block3 = AuthHeaderBlock(offset = values[10], size = values[11]),
+            block4 = AuthHeaderBlock(offset = values[12], size = values[13]),
         )
 
-        return keys.zip(values).toMap()
+        return header
     }
 
     suspend fun authenticateBlock(inBlock: ByteArray): ByteArray {
-        val header = createAuthHeader()
         val wrapped = AuthParamsHandler.getAuthParamStream()
+        val header = createAuthHeader(wrapped)
         val stream = object : RandomAccessStream {
+            val headerOffset = 56
+
             override fun get(pos: Long): UByte {
-                return wrapped[pos + 56]
+                return wrapped[pos + headerOffset]
             }
 
             override fun get(pos: Long, len: Int): UByteArray {
-                return wrapped[pos + 56, len]
+                return wrapped[pos + headerOffset, len]
             }
         }
-        val tempArray = IntArray(320)
-        inBlock.slice(0 until 16).forEachIndexed { index, b ->
-            tempArray[index] = b.toUByte().toInt()
+        val tempBlock = IntArray(320)
+        for (i in 0 until 16) {
+            tempBlock[i] = inBlock[i].toUByte().toInt()
         }
-
+        val outBlock = ByteArray(16)
         val v15 = IntArray(64)
+        val baseFinal = header.block1.size
+        val finalSrcStart = 288 // 9 * 32
 
         for (j in 0 until 9) {
-            val srcStart = 32 * j
+            val srcStart = j * 32
+            val nextSrcStart = (j + 1) * 32
+            val blkIdBase = j * 16
+            val srcMid = srcStart + 16
 
             for (idx in 0 until 16) {
-                tempArray[srcStart + 16 + idx] = tempArray[srcStart + SHIFT_INDICES[idx]]
+                tempBlock[srcStart + 16 + idx] = tempBlock[srcStart + SHIFT_INDICES[idx]]
             }
-
-            val j32_16 = 32 * j + 16
-            val jNext = 32 * (j + 1)
-            val blkIdBase = j * 16
 
             for (i in 0 until 4) {
                 val i4 = i.shl(2)
                 val i16 = i.shl(4)
-                val blkIdRow = blkIdBase + i.shl(2)
+                val blkIdRow = blkIdBase + i4
+                val base262 = baseFinal.toLong() +
+                        header.block2.size +
+                        header.block3.size +
+                        (6144 * (i + j.toLong().shl(2)))
 
                 for (k in 0 until 4) {
-                    val idxVal = tempArray[j32_16 + i4 + k]
+                    val idxVal = tempBlock[srcMid + i4 + k]
                     val blkId = blkIdRow + k
-                    val base257 = blkId.shl(12) + idxVal.shl(4)
-                    val selOffset = header["block_1_size"]!! + header["block_2_size"]!! + blkId.shl(5)
-                    val src16Ptr = stream[base257.toLong(), 16]
-                    val selectorPtr = stream[selOffset.toLong(), 32]
+                    val base257 = blkId.toLong().shl(12) + idxVal.shl(4)
+                    val selOffset = baseFinal.toLong() + header.block2.size + blkId.toLong().shl(5)
+                    val src16Ptr = stream[base257, 16]
+                    val selectorPtr = stream[selOffset, 32]
                     val outStart = i16 + k.shl(2)
 
                     for (outIdx in 0 until 4) {
@@ -116,18 +126,13 @@ object CryptUtils {
                     }
                 }
 
-                val base262 = header["block_1_size"]!! +
-                        header["block_2_size"]!! +
-                        header["block_3_size"]!! +
-                        (6144 * (i + j.shl(2)))
-
                 for (k2 in 0 until 4) {
                     val a1 = v15[i16 + k2]
                     val a2 = v15[i16 + k2 + 4]
                     val a3 = v15[i16 + k2 + 8]
                     val a4 = v15[i16 + k2 + 12]
                     val tblBase = base262 + 1536 * k2
-                    val tbl = stream[tblBase.toLong(), 1536]
+                    val tbl = stream[tblBase, 1536]
                     val hi1 = ((a1 and 0xF0) or (a2 shr 4)) and 0xFF
                     val lo1 = (((a1 and 0x0F) shl 4) or (a2 and 0x0F)) and 0xFF
                     val v6 = (((16 * tbl[hi1].toInt()) xor tbl[256 + lo1].toInt()) and 0xFF)
@@ -137,23 +142,19 @@ object CryptUtils {
                     val hi3 = ((v6 and 0xF0) or (v7 shr 4)) and 0xFF
                     val lo3 = (((v6 and 0x0F) shl 4) or (v7 and 0x0F)) and 0xFF
 
-                    tempArray[jNext + i4 + k2] =
+                    tempBlock[nextSrcStart + i4 + k2] =
                         (((16 * tbl[1024 + hi3].toInt()) xor tbl[1280 + lo3].toInt()) and 0xFF)
                 }
             }
         }
 
-        val finalBlock = tempArray.slice(288 until 304)
-        val finalSr = SHIFT_INDICES.map { finalBlock[it] }
-        val out = IntArray(16)
-        val baseFinal = header["block_1_size"]!!
-
         for (idx in 0 until 16) {
-            val pos = baseFinal + idx.shl(8) + finalSr[idx]
-            out[idx] = stream[pos.toLong()].toInt()
+            val pos = baseFinal + idx.toLong().shl(8) +
+                    tempBlock[SHIFT_INDICES[idx] + finalSrcStart]
+            outBlock[idx] = stream[pos].toByte()
         }
 
-        return out.map { it.toByte() }.toByteArray()
+        return outBlock
     }
 
     /**
