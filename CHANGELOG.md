@@ -1,3 +1,13 @@
+# 2.0.0
+This release has some pretty big changes, so Bifrost is being bumped to v2. Read more below.
+- It's now possible to download firmware without providing an IMEI or serial again!
+  - TAC submissions are still welcome and encouraged; I don't know if or when Samsung will block this.
+- The same changes also allow downloading most watch firmware. Some CSCs don't have firmware available, so if you see an error, try a different CSC.
+- Manually downloading old firmware versions should also be possible again. This won't work for all devices or firmware versions, but you shouldn't be forced to download the latest anymore.
+- Downloads now use multiple simultaneous connections for faster speeds.
+  - Android has to download to Bifrost's internal data first and then copy it to the chosen directory to support multiple connections. This seems to still be faster than a single connection and a direct download, but it's subject to change.
+- Update TACs.
+
 # 1.20.5
 - Decryption and file verification should now be much faster.
 - Remember scroll position when closing and reopening CSC selector dialog.
