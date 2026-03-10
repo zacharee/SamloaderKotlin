@@ -19,7 +19,6 @@ import tk.zwander.common.util.DEFAULT_CHUNK_SIZE
 import tk.zwander.common.util.RandomAccessStream
 import tk.zwander.common.util.streamOperationWithProgress
 import tk.zwander.common.util.trackOperationProgress
-import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 /**
@@ -27,105 +26,13 @@ import kotlin.io.encoding.ExperimentalEncodingApi
  */
 @OptIn(ExperimentalUnsignedTypes::class)
 object CryptUtils {
-    /**
-     * Decryption keys for the firmware and other data.
-     */
-    private const val KEY_1 = "vicopx7dqu06emacgpnpy8j8zwhduwlh"
-    private const val KEY_2 = "9u7qab84rpc16gvk"
     private val SHIFT_INDICES = intArrayOf(0, 5, 10, 15, 4, 9, 14, 3, 8, 13, 2, 7, 12, 1, 6, 11)
     private val SEL32_IDX = List(32) { it }
 
     @OptIn(DelicateCryptographyApi::class)
     val md5Provider = CryptographyProvider.Default.get(MD5)
-    val aesCbcProvider = CryptographyProvider.Default.get(AES.CBC)
     @OptIn(DelicateCryptographyApi::class)
     val aesEcbProvider = CryptographyProvider.Default.get(AES.ECB)
-
-    /**
-     * Samsung uses its own padding for its AES
-     * encryption, so decrypted bytes need to be manually
-     * unpadded.
-     *
-     * @param d the data to unpad.
-     * @return the unpadded data.
-     */
-    private fun unpad(d: ByteArray): ByteArray {
-        val lastByte = d.last().toInt()
-        val padIndex = (d.size - (lastByte % d.size))
-
-        return d.slice(0 until padIndex).toByteArray()
-    }
-
-    /**
-     * Manually pad data to be encrypted.
-     *
-     * @param d the data to pad.
-     * @return the padded data.
-     */
-    private fun pad(d: ByteArray): ByteArray {
-        val size = 16 - (d.size % 16)
-        val array = ByteArray(size)
-
-        for (i in 0 until size) {
-            array[i] = size.toByte()
-        }
-
-        return d + array
-    }
-
-    /**
-     * Encrypt data using AES CBC with custom padding.
-     * @param input the data to encrypt.
-     * @param key the key to use for encryption.
-     * @return the encrypted data.
-     */
-    @OptIn(DelicateCryptographyApi::class)
-    private fun aesEncrypt(input: ByteArray, key: ByteArray): ByteArray {
-        val paddedInput = pad(input)
-        val iv = key.slice(0 until 16).toByteArray()
-
-        return aesCbcProvider
-            .keyDecoder()
-            .decodeFromByteArrayBlocking(AES.Key.Format.RAW, key)
-            .cipher(padding = false)
-            .encryptWithIvBlocking(iv, paddedInput)
-    }
-
-    /**
-     * Decrypt data using AES CBC with custom padding.
-     * @param input the data to decrypt.
-     * @param key the key to use for decryption.
-     * @return the decrypted data.
-     */
-    @OptIn(DelicateCryptographyApi::class)
-    private fun aesDecrypt(input: ByteArray, key: ByteArray): ByteArray {
-        val iv = key.slice(0 until 16).toByteArray()
-
-        return unpad(
-            aesCbcProvider
-                .keyDecoder()
-                .decodeFromByteArrayBlocking(AES.Key.Format.RAW, key)
-                .cipher(padding = false)
-                .decryptWithIvBlocking(iv, input)
-        )
-    }
-
-    /**
-     * Generate a key given a specific input.
-     * @param input the input seed.
-     * @return the generated key.
-     */
-    private fun getFKey(input: ByteArray): ByteArray {
-        var key = ""
-
-        for (i in 0 until 16) {
-            key += KEY_1[input[i].toInt() % KEY_1.length]
-        }
-
-        key += KEY_2
-
-        return key.toByteArray()
-    }
 
     private suspend fun createAuthHeader(): Map<String, Int> {
         val stream = AuthParamsHandler.getAuthParamStream()
@@ -247,19 +154,6 @@ object CryptUtils {
         }
 
         return out.map { it.toByte() }.toByteArray()
-    }
-
-    /**
-     * Generate an auth token with a given nonce.
-     * @param nonce the nonce seed.
-     * @return an auth token based on the nonce.
-     */
-    @OptIn(ExperimentalEncodingApi::class)
-    fun getAuth(nonce: String): String {
-        val keyData = nonce.map { (it.code % 16).toByte() }.toByteArray()
-        val fKey = getFKey(keyData)
-
-        return Base64.encode(aesEncrypt(nonce.toByteArray(), fKey))
     }
 
     /**
