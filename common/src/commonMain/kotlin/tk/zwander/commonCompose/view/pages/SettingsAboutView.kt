@@ -70,6 +70,18 @@ val options = arrayListOf<IOptionItem>().apply {
         )
     }
 
+    if (HostOS.current == HostOS.Android) {
+        add(
+            IOptionItem.BasicOptionItem.BooleanItem(
+                label = MR.strings.use_file_framework,
+                desc = MR.strings.use_file_framework_desc,
+                key = BifrostSettings.Keys.useFileFramework,
+                validator = { PlatformSettingsActions.androidHasStoragePermission() },
+                onEnabledAction = { PlatformSettingsActions.androidRequestStoragePermission() },
+            ),
+        )
+    }
+
     add(
         IOptionItem.BasicOptionItem.BooleanItem(
             label = MR.strings.allowLowercaseCharacters,
@@ -261,5 +273,10 @@ fun SettingsAboutView() {
             modifier = Modifier.fillMaxWidth(),
         )
     }
+}
+
+expect object PlatformSettingsActions {
+    fun androidHasStoragePermission(): Boolean
+    fun androidRequestStoragePermission()
 }
 

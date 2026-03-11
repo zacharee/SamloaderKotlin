@@ -220,6 +220,7 @@ kotlin {
                 api(libs.google.material)
                 api(libs.kotlinx.coroutines.android)
                 api(libs.github.api)
+                api(libs.filepicker)
             }
         }
 

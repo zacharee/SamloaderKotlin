@@ -33,6 +33,8 @@ sealed interface IOptionItem {
             override val label: StringResource,
             override val desc: StringResource?,
             override val key: SettingsKey<Boolean>,
+            val validator: () -> Boolean = { true },
+            val onEnabledAction: () -> Unit = {},
         ) : BasicOptionItem<Boolean>
     }
 }

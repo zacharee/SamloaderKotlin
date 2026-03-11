@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.fragment.app.FragmentActivity
 import io.github.vinceglb.filekit.FileKit
 import io.github.vinceglb.filekit.dialogs.init
 import kotlinx.atomicfu.atomic
@@ -31,7 +31,7 @@ import kotlin.time.ExperimentalTime
  * The Activity to show the downloader UI.
  */
 @ExperimentalTime
-class MainActivity : ComponentActivity(), CoroutineScope by MainScope(), ServiceConnection {
+class MainActivity : FragmentActivity(), CoroutineScope by MainScope(), ServiceConnection {
     private val downloaderService = atomic<IDownloaderService?>(null)
 
     private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {}

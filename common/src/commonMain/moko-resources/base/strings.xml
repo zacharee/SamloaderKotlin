@@ -266,4 +266,7 @@
     <string name="check_for_updates">Check for updates</string>
 
     <string name="donate">Donate</string>
+
+    <string name="use_file_framework">Use File Framework</string>
+    <string name="use_file_framework_desc">Android\'s default file access framework doesn\'t support multi-connection downloads, so Bifrost has to download internally and then copy the file to your chosen destination. Enabling this will request file management permissions, allowing Bifrost direct file access to your internal storage.</string>
 </resources>
