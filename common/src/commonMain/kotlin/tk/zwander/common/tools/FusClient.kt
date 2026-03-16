@@ -42,7 +42,8 @@ object FusClient {
     enum class Request(val value: String, val cloud: Boolean) {
         GENERATE_NONCE("NF_SmartDownloadGenerateNonce.do", false),
         BINARY_INFORM("NF_SmartDownloadBinaryInform.do", false),
-        BINARY_INIT("NF_SmartDownloadBinaryInitForMass.do", false)
+        BINARY_INIT("NF_SmartDownloadBinaryInitForMass.do", false),
+        HISTORY("SmartHistory.do", false),
     }
 
     private var encNonce = ""
@@ -109,12 +110,12 @@ object FusClient {
      * @param data any body data that needs to go into the request.
      * @return the response body data, as text. Usually XML.
      */
-    suspend fun makeReq(request: Request, data: String = ""): String {
+    suspend fun makeReq(request: Request, data: String = "", signature: String? = null): String {
         if (nonce.isBlank() && request != Request.GENERATE_NONCE) {
             generateNonce()
         }
 
-        val authV = getAuthV(cloud = request.cloud)
+        val authV = getAuthV(cloud = request.cloud, signature = signature)
 
         val response =
             globalHttpClient.request("https://neofussvr.sslcs.cdngc.net/${request.value}") {

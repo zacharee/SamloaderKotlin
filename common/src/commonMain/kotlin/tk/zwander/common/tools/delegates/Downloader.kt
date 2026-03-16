@@ -296,7 +296,7 @@ object Downloader {
         model.changelog.value = null
         model.osCode.value = ""
 
-        val (fw, os, error, output) = VersionFetch.getLatestVersion(
+        val (fw, os, error, output) = VersionFetch.hybridGetLatestVersion(
             model.model.value,
             model.region.value,
         )
