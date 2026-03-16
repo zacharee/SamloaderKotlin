@@ -1,3 +1,9 @@
+# 2.1.0
+- Add an option on Android to use the File framework (requires All Files Access, find it in the Settings tab).
+- Improve firmware version matching for model variants with multiple variant characters (e.g., SM-J710FN).
+- Implement a new endpoint for checking for the latest firmware version.
+- Use that same endpoint for showing firmware history instead of scraping Samfrew.
+
 # 2.0.0
 This release has some pretty big changes, so Bifrost is being bumped to v2. Read more below.
 - It's now possible to download firmware without providing an IMEI or serial again!
