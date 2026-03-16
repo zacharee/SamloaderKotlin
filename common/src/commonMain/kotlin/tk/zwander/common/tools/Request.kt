@@ -17,6 +17,7 @@ import tk.zwander.common.exceptions.DownloadError
 import tk.zwander.common.exceptions.NoBinaryFileError
 import tk.zwander.common.util.CrossPlatformBugsnag
 import tk.zwander.common.util.dataNode
+import tk.zwander.common.util.firstDataElementDataByTagName
 import tk.zwander.common.util.firstElementByTagName
 import tk.zwander.common.util.invoke
 import tk.zwander.common.util.isAccessoryModel
@@ -308,9 +309,8 @@ object Request {
 
             val size = responseXml.firstElementByTagName("FUSBody")
                 ?.firstElementByTagName("Put")
-                ?.firstElementByTagName("BINARY_BYTE_SIZE")
-                ?.firstElementByTagName("Data")
-                ?.text().run {
+                ?.firstDataElementDataByTagName("BINARY_BYTE_SIZE")
+                .run {
                     if (isNullOrBlank()) {
                         return noBinaryError()
                     } else {
@@ -320,34 +320,44 @@ object Request {
 
             val fileName = responseXml.firstElementByTagName("FUSBody")
                 ?.firstElementByTagName("Put")
-                ?.firstElementByTagName("BINARY_NAME")
-                ?.firstElementByTagName("Data")
-                ?.text() ?: return noBinaryError()
+                ?.firstDataElementDataByTagName("BINARY_NAME")
+                ?: return noBinaryError()
+
+            fun checkAgainstModelString(fileSegment: String, modelString: String): Boolean {
+                if (modelString.isEmpty() || modelString.endsWith('-')) {
+                    return false
+                }
+
+                val modelSuffix = modelString.split("-").getOrElse(1) { modelString }
+                val joinedModel = modelString.replace("-", "")
+
+                if (fileSegment.startsWith(modelSuffix) ||
+                    fileSegment.startsWith(joinedModel)) {
+                    return true
+                }
+
+                return checkAgainstModelString(fileSegment, modelString.dropLast(1))
+            }
 
             fun getIndex(file: String?): Int? {
                 if (file.isNullOrBlank()) return null
 
                 val fileSplit = file.split("_")
-                val modelSuffix = model.split("-").getOrElse(1) { model }
 
                 return fileSplit.indexOfFirst {
-                    it.startsWith(modelSuffix) ||
-                            it.startsWith(model.replace("-", ""))
+                    checkAgainstModelString(it, model)
                 }
             }
 
             fun generateInfo(): BinaryFileInfo {
                 val path = responseXml.firstElementByTagName("FUSBody")
                     ?.firstElementByTagName("Put")
-                    ?.firstElementByTagName("MODEL_PATH")
-                    ?.firstElementByTagName("Data")
-                    ?.text()!!
+                    ?.firstDataElementDataByTagName("MODEL_PATH")!!
 
                 val crc32 = responseXml.firstElementByTagName("FUSBody")
                     ?.firstElementByTagName("Put")
-                    ?.firstElementByTagName("BINARY_CRC")
-                    ?.firstElementByTagName("Data")
-                    ?.text()?.toLongOrNull()
+                    ?.firstDataElementDataByTagName("BINARY_CRC")
+                    ?.toLongOrNull()
 
                 val v4Key = try {
                     responseXml.extractV4Key()
@@ -358,24 +368,17 @@ object Request {
 
                 val fwVer = responseXml.firstElementByTagName("FUSBody")
                     ?.firstElementByTagName("Put")
-                    ?.firstElementByTagName("BINARY_SW_VERSION")
-                    ?.firstElementByTagName("Data")
-                    ?.text()!!
+                    ?.firstDataElementDataByTagName("BINARY_SW_VERSION")!!
 
                 val modelType = responseXml.firstElementByTagName("FUSBody")
                     ?.firstElementByTagName("Put")
-                    ?.firstElementByTagName("DEVICE_MODEL_TYPE")
-                    ?.firstElementByTagName("Data")
-                    ?.text()!!
+                    ?.firstDataElementDataByTagName("DEVICE_MODEL_TYPE")!!
 
                 val logicVal = responseXml.firstElementByTagName("FUSBody")
                     ?.firstElementByTagName("Put")
                     .run {
-                        this?.firstElementByTagName("LOGIC_VALUE_FACTORY")
-                            ?.firstElementByTagName("Data")
-                            ?.text() ?: this?.firstElementByTagName("LOGIC_VALUE_HOME")
-                            ?.firstElementByTagName("Data")
-                            ?.text()!!
+                        this?.firstDataElementDataByTagName("LOGIC_VALUE_FACTORY")
+                            ?: this?.firstDataElementDataByTagName("LOGIC_VALUE_HOME")!!
                     }
 
                 return BinaryFileInfo(
@@ -403,9 +406,8 @@ object Request {
             val dataFile = dataKeys.firstNotNullOfOrNull {
                 responseXml.firstElementByTagName("FUSBody")
                     ?.firstElementByTagName("Put")
-                    ?.firstElementByTagName(it)
-                    ?.firstElementByTagName("Data")
-                    ?.text().run { if (isNullOrBlank()) null else this }
+                    ?.firstDataElementDataByTagName(it)
+                    .run { if (isNullOrBlank()) null else this }
             }
 
             if (dataFile.isNullOrBlank()) {
@@ -426,9 +428,7 @@ object Request {
                     if (isNullOrBlank()) {
                         responseXml.firstElementByTagName("FUSBody")
                             ?.firstElementByTagName("Put")
-                            ?.firstElementByTagName("DEVICE_CSC_FILE")
-                            ?.firstElementByTagName("Data")
-                            ?.text()
+                            ?.firstDataElementDataByTagName("DEVICE_CSC_FILE")
                     } else {
                         this
                     }
@@ -511,20 +511,17 @@ fun Document.extractV4Key(): Pair<ByteArray, String>? {
     val fwVer = firstElementByTagName("FUSBody")
         ?.firstElementByTagName("Results")
         .run {
-            this?.firstElementByTagName("LATEST_FW_VERSION") ?:
-                this?.firstElementByTagName("BINARY_SW_VERSION")
+            this?.firstDataElementDataByTagName("LATEST_FW_VERSION") ?:
+                this?.firstDataElementDataByTagName("BINARY_SW_VERSION")
         }
-        ?.firstElementByTagName("Data")
-        ?.text()
 
     val logicVal = firstElementByTagName("FUSBody")
         ?.firstElementByTagName("Put")
         .run {
             this?.firstElementByTagName("LOGIC_VALUE_FACTORY")
-                ?.firstElementByTagName("Data")
-                ?.text() ?: this?.firstElementByTagName("LOGIC_VALUE_HOME")
-                ?.firstElementByTagName("Data")
-                ?.text()
+                ?.firstDataElementDataByTagName("Data")
+                ?: this?.firstElementByTagName("LOGIC_VALUE_HOME")
+                ?.firstDataElementDataByTagName("Data")
         }
 
     return if (fwVer != null && logicVal != null) {
