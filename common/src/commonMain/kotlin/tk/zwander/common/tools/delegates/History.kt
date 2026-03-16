@@ -105,7 +105,12 @@ object History {
                                 HistoryInfo(
                                     date = it.openDate?.let { date ->
                                         if (date.isNotBlank()) {
-                                            dateFormat.parse(date).toLocalDate()
+                                            try {
+                                                dateFormat.parse(date).toLocalDate()
+                                            } catch (e: Exception) {
+                                                CrossPlatformBugsnag.notify(e)
+                                                null
+                                            }
                                         } else {
                                             null
                                         }
