@@ -17,10 +17,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,14 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withLink
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import kotlinx.coroutines.launch
@@ -54,7 +43,6 @@ import tk.zwander.commonCompose.view.components.HybridButton
 import tk.zwander.commonCompose.view.components.MRFLayout
 import tk.zwander.commonCompose.view.components.Page
 import tk.zwander.samloaderkotlin.resources.MR
-import tk.zwander.common.util.invoke
 
 /**
  * The History View.
@@ -65,8 +53,6 @@ internal fun HistoryView() {
     val downloadModel = LocalDownloadModel.current
     val decryptModel = LocalDecryptModel.current
     val pagerState = LocalPagerState.current
-    val contentColor = LocalContentColor.current
-    val primaryColor = MaterialTheme.colorScheme.primary
 
     val scope = rememberCoroutineScope()
     val hasRunningJobs by model.hasRunningJobs.collectAsState(false)
@@ -74,29 +60,6 @@ internal fun HistoryView() {
     val region by model.region.collectAsState()
     val canCheckHistory = modelModel.isNotBlank()
             && region.isNotBlank() && !hasRunningJobs
-
-    val historySource = buildAnnotatedString {
-        withStyle(
-            SpanStyle(
-                color = contentColor,
-                fontSize = 16.sp,
-            ),
-        ) {
-            append(MR.strings.source())
-            append(" ")
-
-            withStyle(
-                SpanStyle(
-                    color = primaryColor,
-                    textDecoration = TextDecoration.Underline,
-                ),
-            ) {
-                withLink(LinkAnnotation.Url("https://samfrew.com")) {
-                    append(MR.strings.samfrew())
-                }
-            }
-        }
-    }
 
     val historyItems by model.historyItems.collectAsState()
     val changelogs by model.changelogs.collectAsState()
@@ -169,15 +132,6 @@ internal fun HistoryView() {
                     Spacer(Modifier.height(8.dp))
 
                     MRFLayout(model, !hasRunningJobs, !hasRunningJobs, false)
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(
-                            text = historySource,
-                            style = LocalTextStyle.current.copy(LocalContentColor.current),
-                        )
-                    }
 
                     AnimatedVisibility(
                         visible = hasRunningJobs,
