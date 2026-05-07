@@ -179,7 +179,6 @@ class DownloaderService : Service(), EventManager.EventListener {
             is Event.Decrypt.Progress -> {
                 onProgress(event.status, event.current, event.max)
             }
-            else -> {}
         }
     }
 
