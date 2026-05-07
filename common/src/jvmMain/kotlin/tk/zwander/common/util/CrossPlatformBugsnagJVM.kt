@@ -1,9 +1,10 @@
 package tk.zwander.common.util
 
 import com.bugsnag.Bugsnag
-import com.bugsnag.CustomReport
-import com.bugsnag.Report
+import com.bugsnag.BugsnagEvent
+import com.bugsnag.CustomEvent
 import com.bugsnag.Severity
+import com.bugsnag.ThreadSendPolicy
 import oshi.SystemInfo
 import tk.zwander.common.GradleConfig
 import java.lang.reflect.Proxy
@@ -31,30 +32,31 @@ actual object BugsnagUtils {
 
         bugsnag.setProjectPackages(*CrossPlatformBugsnag.appPackages)
         bugsnag.setAppVersion(GradleConfig.versionName)
-        bugsnag.addCallback {
+        bugsnag.addOnError {
             it.setUserId(uuid)
-            it.addToTab("device", "manufacturer", oshiSystemInfo.hardware.computerSystem.manufacturer)
-            it.addToTab("device", "model", oshiSystemInfo.hardware.computerSystem.model)
-            it.addToTab("device", "memory", oshiSystemInfo.hardware.memory.total)
-            it.addToTab("device", "motherboard", oshiSystemInfo.hardware.computerSystem.baseboard.model)
-            it.addToTab("device", "firmwareVersion", oshiSystemInfo.hardware.computerSystem.firmware.version)
-            it.addToTab("device", "processorModel", oshiSystemInfo.hardware.processor.processorIdentifier.model)
-            it.addToTab("device", "processorFamily", oshiSystemInfo.hardware.processor.processorIdentifier.family)
-            it.addToTab("device", "processorName", oshiSystemInfo.hardware.processor.processorIdentifier.name)
-            it.addToTab("app", "version_code", GradleConfig.versionCode)
-            it.addToTab("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
+            it.addMetadata("device", "manufacturer", oshiSystemInfo.hardware.computerSystem.manufacturer)
+            it.addMetadata("device", "model", oshiSystemInfo.hardware.computerSystem.model)
+            it.addMetadata("device", "memory", oshiSystemInfo.hardware.memory.total)
+            it.addMetadata("device", "motherboard", oshiSystemInfo.hardware.computerSystem.baseboard.model)
+            it.addMetadata("device", "firmwareVersion", oshiSystemInfo.hardware.computerSystem.firmware.version)
+            it.addMetadata("device", "processorModel", oshiSystemInfo.hardware.processor.processorIdentifier.model)
+            it.addMetadata("device", "processorFamily", oshiSystemInfo.hardware.processor.processorIdentifier.family)
+            it.addMetadata("device", "processorName", oshiSystemInfo.hardware.processor.processorIdentifier.name)
+            it.addMetadata("app", "version_code", GradleConfig.versionCode)
+            it.addMetadata("app", "jdk_architecture", System.getProperty("sun.arch.data.model"))
+            true
         }
-        val beforeSendSessionClass = Class.forName("com.bugsnag.BeforeSendSession")
+        val beforeSendSessionClass = Class.forName("com.bugsnag.OnSession")
         val sessionPayloadClass = Class.forName("com.bugsnag.SessionPayload")
         val diagnosticsClass = Class.forName("com.bugsnag.Diagnostics")
-        bugsnag::class.java.getDeclaredMethod("addBeforeSendSession", beforeSendSessionClass)
+        bugsnag::class.java.getDeclaredMethod("addOnSession", beforeSendSessionClass)
             .apply {
                 isAccessible = true
             }.invoke(
                 bugsnag,
                 Proxy.newProxyInstance(
                     beforeSendSessionClass.classLoader,
-                    arrayOf(beforeSendSessionClass)
+                    arrayOf(beforeSendSessionClass),
                 ) { _, _, args ->
                     val payload = args[0]
 
@@ -68,10 +70,10 @@ actual object BugsnagUtils {
 
                     userMap["id"] = uuid
 
-                    null
+                    true
                 }
             )
-        bugsnag.setSendThreads(true)
+        bugsnag.setSendThreads(ThreadSendPolicy.ALWAYS)
         bugsnag.startSession()
     }
 
@@ -84,11 +86,11 @@ actual object BugsnagUtils {
     }
 
     fun notify(e: Throwable, severity: Severity) {
-        val report = CustomReport(bugsnag, e)
+        val report = CustomEvent(bugsnag, e)
         report.setSeverity(severity)
 
         breadcrumbs.forEach { (time, data) ->
-            report.addToTab("breadcrumbs", "$time", "${data.message}\n\n" +
+            report.addMetadata("breadcrumbs", "$time", "${data.message}\n\n" +
                     "Type: ${data.type}\n\n" +
                     data.data.entries.joinToString("\n") { "${it.key}==${it.value}" })
         }
@@ -97,7 +99,7 @@ actual object BugsnagUtils {
         notify(report)
     }
 
-    fun notify(report: Report) {
+    fun notify(report: BugsnagEvent) {
         bugsnag.notify(report)
     }
 
