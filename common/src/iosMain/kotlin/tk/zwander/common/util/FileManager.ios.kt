@@ -17,7 +17,8 @@ actual object FileManager {
     }
 
     actual suspend fun saveFile(name: String): IPlatformFile? {
-        return FileKit.openFileSaver(suggestedName = name)?.let { PlatformFile(it.nsUrl) }
+        return FileKit.openFileSaver(suggestedName = name, defaultExtension = null)
+            ?.let { PlatformFile(it.nsUrl) }
     }
 
     actual suspend fun getTempDirectory(): IPlatformFile? = null
