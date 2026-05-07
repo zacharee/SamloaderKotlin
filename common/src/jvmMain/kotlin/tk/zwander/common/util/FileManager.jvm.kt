@@ -23,7 +23,7 @@ actual object FileManager {
 
         return FileKit.openFileSaver(
             suggestedName = baseName,
-            extension = extension,
+            defaultExtension = extension,
         )?.let { PlatformFile(it.file) }
     }
 
