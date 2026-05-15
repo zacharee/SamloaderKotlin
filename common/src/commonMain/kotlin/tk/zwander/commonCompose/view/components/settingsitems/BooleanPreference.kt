@@ -15,7 +15,6 @@ import androidx.lifecycle.compose.LifecyclePauseOrDisposeEffectResult
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import tk.zwander.common.data.IOptionItem
-import tk.zwander.commonCompose.util.collectAsImmediateMutableState
 import tk.zwander.commonCompose.view.components.LabelDesc
 import tk.zwander.commonCompose.view.components.TransparencyCard
 
@@ -25,7 +24,7 @@ fun BooleanPreference(
     modifier: Modifier = Modifier,
 ) {
     val lifecycle = LocalLifecycleOwner.current
-    var state by item.key.asMutableStateFlow().collectAsImmediateMutableState()
+    var state by item.key.collectAsMutableState()
 
     LaunchedEffect(state) {
         if (state) {
@@ -35,7 +34,7 @@ fun BooleanPreference(
 
     LifecycleResumeEffect(null, lifecycle) {
         if (lifecycle.lifecycle.currentState == Lifecycle.State.RESUMED) {
-            if (state || !item.validator()) {
+            if (state && !item.validator()) {
                 state = false
             }
         }

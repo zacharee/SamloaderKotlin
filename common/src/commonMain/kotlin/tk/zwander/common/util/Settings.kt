@@ -117,7 +117,7 @@ sealed class SettingsKey<Type> {
 
         DisposableEffect(this) {
             val listener = registerListener {
-                state.value = getValue()
+                state.value = it ?: default
             }
 
             onDispose {
